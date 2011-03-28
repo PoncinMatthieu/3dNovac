@@ -1,0 +1,356 @@
+
+/*-----------------------------------------------------------------------------
+
+	3dNovac Core
+	Copyright (C) 2010-2011, The 3dNovac Team
+
+    This file is part of 3dNovac.
+
+    3dNovac is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    3dNovac is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
+
+    File Created At:        17/10/2010
+    File Author(s):         Poncin Matthieu
+
+-----------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------
+
+    abstract class Vector<T,D>
+    Define a point witch contain an array of data T
+
+    operator defined : = [] += -= *= /= + - * / == !=
+    function :         Lenght / Normalize / Dot / Reverse
+
+-----------------------------------------------------------------------------*/
+
+#ifndef NC_CORE_MATH_VECTOR_INCLUDED_H_
+#define NC_CORE_MATH_VECTOR_INCLUDED_H_
+
+#include <math.h>
+#include "../Define.h"
+
+namespace Nc
+{
+    namespace Math
+    {
+        /// template class Vector to manipulate a vector of Dimension D of type T
+        template<typename T, unsigned char D>
+        class /*LINK_OPTION_BREP*/ Vector
+        {
+            public:
+                Vector();
+                Vector(const Vector &v);
+                template<typename U> Vector(const Vector<U,D> &v);
+                template<typename U, unsigned char D2> Vector(const Vector<U,D2> &v);
+                virtual ~Vector()    {}
+
+                /// operator
+                T &operator                             []  (unsigned char i);
+                const T &operator                       []  (unsigned char i) const;
+                Vector &operator                        =   (const Vector &v);
+                template<typename U> Vector &operator   =   (const Vector<U,D> &v);
+                template<typename U, unsigned char D2> Vector &operator   =   (const Vector<U,D2> &v);
+                template<typename U> bool operator      ==  (const Vector<U,D> &v) const;
+                template<typename U> bool operator      !=  (const Vector<U,D> &v) const;
+
+                template<typename U> Vector &operator   +=  (const Vector<U,D> &v);
+
+                template<typename U> Vector &operator   -=  (const Vector<U,D> &v);
+
+                template<typename U> Vector &operator   *=  (const Vector<U,D> &v);
+                template<typename U> Vector &operator   *=  (const U &a);
+
+                template<typename U> Vector &operator   /=  (const Vector<U,D> &v);
+                template<typename U> Vector &operator   /=  (const U &a);
+
+                template<typename U> Vector operator    +   (const Vector<U,D> &v) const;
+
+                template<typename U> Vector operator    -   (const Vector<U,D> &v) const;
+
+                template<typename U> Vector operator    *   (const Vector<U,D> &v) const;
+                template<typename U> Vector operator    *   (const U &v) const;
+
+                template<typename U> Vector operator    /   (const Vector<U,D> &a) const;
+                template<typename U> Vector operator    /   (const U &a) const;
+
+
+                /// function
+                T       Length() const;
+                Vector  &Normalize();
+                template<typename U> T       Dot(const Vector<U,D> &u) const;
+                Vector  Reverse() const;
+
+
+                friend std::ostream &operator << (std::ostream &os, const Vector<T,D> &V)
+                {
+                    char c = 'x';
+                    for (unsigned char i = 0; i < D; ++i, ++c)
+                        os << c << " = " << V.Data[i] << "\t";
+                    return os;
+                }
+
+                T   Data[D];        // data en public, pour des raison de performance a l'acces en dehos de la class
+
+                static const Vector<T,D>    Null;// = Vector<T,D>();
+
+            protected:
+        };
+
+        template<typename T, unsigned char D>
+        const Vector<T,D>   Vector<T,D>::Null;
+
+        template<typename T, unsigned char D>
+        Vector<T,D>::Vector()
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] = 0;
+        }
+
+        template<typename T, unsigned char D>
+        Vector<T,D>::Vector(const Vector &v)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] = v.Data[i];
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D>::Vector(const Vector<U,D> &v)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] = v.Data[i];
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U, unsigned char D2>
+        Vector<T,D>::Vector(const Vector<U,D2> &v)
+        {
+            unsigned char i = 0;
+            for (; i < D && i < D2; ++i)
+                Data[i] = v.Data[i];
+            for (; i < D; ++i)
+                Data[i] = 0;
+        }
+
+        template<typename T, unsigned char D>
+        Vector<T,D> &Vector<T,D>::operator = (const Vector &v)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] = v.Data[i];
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> &Vector<T,D>::operator = (const Vector<U,D> &v)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] = v.Data[i];
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U, unsigned char D2>
+        Vector<T,D> &Vector<T,D>::operator = (const Vector<U,D2> &v)
+        {
+            unsigned char i = 0;
+            for (; i < D && i < D2; ++i)
+                Data[i] = v.Data[i];
+            for (; i < D; ++i)
+                Data[i] = 0;
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        T &Vector<T,D>::operator [] (unsigned char i)
+        {
+            if (i >= D)
+                throw Utils::Exception("Math::Vector", "Overflow in the operator[] of class Vector");
+            return Data[i];
+        }
+
+        template<typename T, unsigned char D>
+        const T &Vector<T,D>::operator [] (unsigned char i) const
+        {
+            if (i >= D)
+                throw Utils::Exception("Math::Vector", "Overflow in the operator[] of class Vector");
+            return Data[i];
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        bool Vector<T,D>::operator == (const Vector<U,D> &v) const
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                if (Data[i] != v.Data[i])
+                    return false;
+            return true;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        bool Vector<T,D>::operator != (const Vector<U,D> &v) const
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                if (Data[i] != v.Data[i])
+                    return true;
+            return false;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> &Vector<T,D>::operator += (const Vector<U,D> &v)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] += v.Data[i];
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> &Vector<T,D>::operator -= (const Vector<U,D> &v)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] -= v.Data[i];
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> &Vector<T,D>::operator *= (const Vector<U,D> &v)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] *= v.Data[i];
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> &Vector<T,D>::operator /= (const Vector<U,D> &v)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] /= v.Data[i];
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> &Vector<T,D>::operator *= (const U &a)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] *= a;
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> &Vector<T,D>::operator /= (const U &a)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                Data[i] /= a;
+            return *this;
+        }
+
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> Vector<T,D>::operator + (const Vector<U,D> &v) const
+        {
+            Vector r(*this);
+            r += v;
+            return r;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> Vector<T,D>::operator - (const Vector<U,D> &v) const
+        {
+            Vector<T,D> r(*this);
+            r -= v;
+            return r;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> Vector<T,D>::operator * (const Vector<U,D> &v) const
+        {
+            Vector<T,D> r(*this);
+            r *= v;
+            return r;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> Vector<T,D>::operator * (const U &a) const
+        {
+            Vector<T,D> r(*this);
+            r *= a;
+            return r;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> Vector<T,D>::operator / (const Vector<U,D> &v) const
+        {
+            Vector<T,D> r(*this);
+            r /= v;
+            return r;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Vector<T,D> Vector<T,D>::operator / (const U &a) const
+        {
+            Vector<T,D> r(*this);
+            r /= a;
+            return r;
+        }
+
+        template<typename T, unsigned char D>
+        T Vector<T,D>::Length() const
+        {
+            T   r = Data[0] * Data[0];
+            for (unsigned int i = 1; i < D; ++i)
+                r += Data[i] * Data[i];
+            return sqrt(r);
+        }
+
+        template<typename T, unsigned char D>
+        Vector<T,D> &Vector<T,D>::Normalize()
+        {
+            (*this) /= Length();
+            return (*this);
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        T   Vector<T,D>::Dot(const Vector<U,D> &u) const
+        {
+            T   r = Data[0] * u.Data[1];
+            for (unsigned char i = 1; i < D; ++i)
+                r += Data[i] * u.Data[1];
+            return r;
+        }
+
+        template<typename T, unsigned char D>
+        Vector<T,D>  Vector<T,D>::Reverse() const
+        {
+            Vector<T,D> v;
+            for (unsigned char i = 0; i < D; ++i)
+                v.Data[i] = -Data[i];
+            return v;
+        }
+    }
+}
+
+#endif

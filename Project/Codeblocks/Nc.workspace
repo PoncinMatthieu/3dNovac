@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Nc">
+		<Project filename="../../../ProjectsNc/Editor/Editor.cbp" />
+		<Project filename="../../../ProjectsNc/Populous/Populous.cbp" active="1">
+			<Depends filename="Audio/Audio.cbp" />
+			<Depends filename="Contrib/Contrib.cbp" />
+		</Project>
+		<Project filename="../../../ProjectsNc/RType/Client/Project/Codeblocks/Client_R-Type.cbp">
+			<Depends filename="GUI/GUI.cbp" />
+			<Depends filename="Graphics/Graphics.cbp" />
+			<Depends filename="Audio/Audio.cbp" />
+		</Project>
+		<Project filename="GUI/GUI.cbp">
+			<Depends filename="Graphics/Graphics.cbp" />
+		</Project>
+		<Project filename="Graphics/Graphics.cbp">
+			<Depends filename="Core/Core.cbp" />
+		</Project>
+		<Project filename="Core/Core.cbp" />
+		<Project filename="Audio/Audio.cbp">
+			<Depends filename="Core/Core.cbp" />
+		</Project>
+		<Project filename="Contrib/Contrib.cbp">
+			<Depends filename="GUI/GUI.cbp" />
+		</Project>
+	</Workspace>
+</CodeBlocks_workspace_file>

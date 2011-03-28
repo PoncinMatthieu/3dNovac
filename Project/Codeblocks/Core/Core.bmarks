@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="../../../Nc/Core/Core.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Debug.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Define.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/EventManager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/EventManager.h" open="0" top="0" tabpos="0">
+		<Cursor position="1434" topLine="33" />
+	</File>
+	<File name="../../../Nc/Core/Engine/Handler.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/Handler.h" open="0" top="0" tabpos="0">
+		<Cursor position="144" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/IEngine.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/IEngine.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/MainEngine.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/MainEngine.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/Manager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Engine/Manager.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Array.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Box.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Box2D.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Box3D.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Math.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Math.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Matrix.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Matrix4x4.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Pixel.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Vector.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Vector2D.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Math/Vector3D.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/API/API.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/API/API.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/API/IMutex.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/API/IThread.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Config.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Config.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="4" />
+	</File>
+	<File name="../../../Nc/Core/System/Input/Event.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Input/Event.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Input/Input.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Input/InputManager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Input/InputManager.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Object.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1068" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Object.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/System/Plugin.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1499" topLine="33" />
+		<Book_Marks positions="1409,1409,1499" />
+	</File>
+	<File name="../../../Nc/Core/System/Plugin.h" open="0" top="0" tabpos="0">
+		<Cursor position="1122" topLine="16" />
+	</File>
+	<File name="../../../Nc/Core/System/System.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Clock.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Convert.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Debug/MemoryManager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Debug/MemoryManager.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Debug/OverloadAlloc.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Exception.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/FileName.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/FileName.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/IntrusiveSmartPointer.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Logger.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Logger.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/NonCopyable.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Singleton.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/SmartPointer.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Unicode.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Unicode.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Utils.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Xml/File.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Xml/File.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Xml/Parser.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Xml/Parser.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Xml/XmlObject.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Xml/XmlObject.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="../../../Nc/Core/Utils/include.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+</BrowseTracker_layout_file>

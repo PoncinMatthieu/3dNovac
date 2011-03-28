@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="../../../Nc/GUI/Button.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/Button.h" open="0" top="0" tabpos="1">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/Console.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/Console.h" open="0" top="0" tabpos="0">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/Define.h" open="0" top="0" tabpos="1">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/FPSWidget.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/FPSWidget.h" open="0" top="0" tabpos="1">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/GUI.h" open="0" top="0" tabpos="0">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/ProgressBar.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/ProgressBar.h" open="0" top="0" tabpos="0">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/SceneGraph.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/SceneGraph.h" open="0" top="0" tabpos="1">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/SpriteWidget.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/SpriteWidget.h" open="0" top="0" tabpos="0">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/TextBox.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/TextBox.h" open="0" top="0" tabpos="0">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/Widget.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="139" topLine="0" />
+		<BrowseMarks positions="3246" />
+	</File>
+	<File name="../../../Nc/GUI/Widget.h" open="0" top="0" tabpos="0">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/WidgetLabeled.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/WidgetLabeled.h" open="0" top="0" tabpos="3">
+		<Cursor position="139" topLine="0" />
+	</File>
+	<File name="../../../Nc/GUI/WindowBox.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="139" topLine="0" />
+		<BrowseMarks positions="6159" />
+	</File>
+	<File name="../../../Nc/GUI/WindowBox.h" open="0" top="0" tabpos="4">
+		<Cursor position="139" topLine="0" />
+	</File>
+</BrowseTracker_layout_file>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="../../../Nc/Audio/Audio.h" open="0" top="0" tabpos="0">
+		<Cursor position="141" topLine="0" />
+	</File>
+	<File name="../../../Nc/Audio/Define.h" open="0" top="0" tabpos="0">
+		<Cursor position="141" topLine="0" />
+	</File>
+	<File name="../../../Nc/Audio/Engine.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="141" topLine="0" />
+	</File>
+	<File name="../../../Nc/Audio/Engine.h" open="0" top="0" tabpos="0">
+		<Cursor position="141" topLine="0" />
+	</File>
+</BrowseTracker_layout_file>
