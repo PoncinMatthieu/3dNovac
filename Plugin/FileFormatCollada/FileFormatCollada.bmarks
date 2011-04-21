@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="Define.h" open="0" top="0" tabpos="0">
+		<Cursor position="1882" topLine="27" />
+	</File>
+	<File name="Plugin.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="11249" topLine="262" />
+		<BrowseMarks positions="4768,13157" />
+		<Book_Marks positions="3629,3552,3552,3552,3512,3506,3439,3186,3125,3053,1194,1246,3619,2053,3137,3508,2637,2503,1219,3638" />
+	</File>
+	<File name="Plugin.h" open="0" top="0" tabpos="2">
+		<Cursor position="2862" topLine="42" />
+	</File>
+	<File name="Triangulate.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1825" topLine="170" />
+	</File>
+	<File name="Triangulate.h" open="0" top="0" tabpos="0">
+		<Cursor position="1164" topLine="9" />
+	</File>
+</BrowseTracker_layout_file>
