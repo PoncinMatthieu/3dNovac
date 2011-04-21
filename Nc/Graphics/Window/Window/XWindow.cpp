@@ -33,7 +33,7 @@ using namespace Nc;
 using namespace Nc::Math;
 using namespace Nc::Graphic;
 
-/// stuct used in the function `SetWindowStyle` to set the window properties
+// struct used in the function `SetWindowStyle` to set the window properties
 struct WMHints
 {
     unsigned long Flags;
@@ -215,8 +215,8 @@ void XWindow::ChooseBestVisualInfo()
 bool XWindow::SetIcon(const Utils::FileName &f)
 {
     Image image;
-    Utils::FileName filename = CONFIG->Block("RessourcesPath")->Line("Image")->Param("path") + f.Fullname();
-    if (f.Fullname().empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
+    Utils::FileName filename = f;
+    if (f.empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
         return false;
     image.LoadFromFile(filename);
 

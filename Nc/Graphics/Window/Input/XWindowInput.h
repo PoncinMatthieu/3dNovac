@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Provide an implementation of WindowInput for a server X
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_WINDOW_X_WINDOW_INPUT_H_
 #define NC_GRAPHICS_WINDOW_X_WINDOW_INPUT_H_
@@ -41,6 +36,10 @@ namespace Nc
     {
         class XWindow;
 
+        /// Implementation of a WindowInput for an X11 System
+        /**
+            For more detail show WindowInput
+        */
         class LCORE XWindowInput : public WindowInput
         {
             public:

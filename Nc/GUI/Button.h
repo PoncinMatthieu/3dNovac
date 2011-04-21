@@ -23,20 +23,9 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
 
-
-                        Implementation de la classe "gButton"
-
-            permet l'affichage d'un button, et la definision d'une action
-                                sur l'appui de celui ci
-
-Herite de gWidget
-
------------------------------------------------------------------------------*/
-
-#ifndef NOVAC_GRAPHIC_GUI_BUTTON_H_INCLUDED
-#define NOVAC_GRAPHIC_GUI_BUTTON_H_INCLUDED
+#ifndef NC_GUI_BUTTON_H_
+#define NC_GUI_BUTTON_H_
 
 #include "Widget.h"
 
@@ -44,36 +33,43 @@ namespace Nc
 {
     namespace GUI
     {
+        /// To manage a button
         class LGUI  Button : public Widget
         {
             public:
                 Button(const std::string &text, const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Left, Corner y = Top,
-                        Widget *parent = NULL, const std::string &ttf = "arial", const Utils::FileName& texture = Utils::FileName("button.png"));
+                        Widget *parent = NULL, const std::string &ttf = "arial", const Utils::FileName& texture = Utils::FileName("Nc:GUI:button.png"));
                 virtual ~Button();
-
-                inline void     Text(const std::string &t)  {_font->Text(t);}
 
                 Button(const Button &w);
                 Button &operator = (const Button &w);
                 virtual void    Copy(const Button &w);
                 virtual Widget* Clone() const               {return new Button(*this);}
 
+                /** Set the text of the widget */
+                inline void     Text(const std::string &t)  {_font->Text(t);}
+
+
             protected:
+                /** Update the geometry of the button */
                 virtual void Update();
+                /** Render the button */
                 virtual void Draw(Graphic::ISceneGraph *scene);
+
+                /** The mouse button handler */
                 void MouseButtonEvent(const System::Event &event);
+                /** Send an event to the good engine */
                 virtual void execHanle();
 
             private:
-                Graphic::Material<Graphic::BasicVertexType::Textured2d>                     *_material;
-                Graphic::MaterialConfig<Graphic::BasicVertexType::Textured2d>               _config;
-                Graphic::GL::GeometryBuffer<Graphic::BasicVertexType::Textured2d, false>    _geometry;
+                Graphic::Material<Graphic::BasicVertexType::Textured2d>             *_material;     ///< the material used to render the button
+                Graphic::Drawable<Graphic::BasicVertexType::Textured2d, false>      _drawable;      ///< the drawable used to render the button
 
-                Graphic::String         *_font;
-                int                     _textWidth;
-                int                     _textHeight;
-                bool                    _buttonPressed;
-                Color                   _colorDisable;
+                Graphic::String         *_font;                 ///< The text of the button
+                int                     _textWidth;             ///< The width of the text
+                int                     _textHeight;            ///< The height of the text
+                bool                    _buttonPressed;         ///< Mark if the button is pressed
+                Color                   _colorDisable;          ///< The color of the disabled button
         };
     }
 }

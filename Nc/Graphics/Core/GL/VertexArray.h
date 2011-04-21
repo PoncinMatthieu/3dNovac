@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Implement a c++ Object to use the opengl VAO (Vertex Array Object)
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_CORE_GL_VERTEXARRAY_H_
 #define NC_GRAPHICS_CORE_GL_VERTEXARRAY_H_
@@ -40,20 +35,25 @@ namespace Nc
     {
         namespace GL
         {
+            /// To use an OpenGL VAO (Vertex Array Object)
             class LCORE VertexArray : public Object
             {
                 public:
                     VertexArray();
                     virtual ~VertexArray();
 
+                    /** Return the index of the VAO */
                     virtual unsigned int    GetIndex() const    {return _index;}
+                    /** Enable the VAO */
                     virtual inline void     Enable() const      {glBindVertexArray(_index);}
+                    /** Disable the VAO */
                     virtual inline void     Disable() const     {glBindVertexArray(0);}
 
                 private:
+                    /** Release the VAO */
                     virtual inline void     Release()           {glDeleteVertexArrays(1, &_index);}
 
-                    unsigned int    _index;
+                    unsigned int    _index;         ///< the index of the VAO
             };
         }
     }

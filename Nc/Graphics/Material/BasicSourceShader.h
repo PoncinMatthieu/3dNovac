@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-	Description : contient les sources des shaders de base
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHIC_BASICSOURCESHADER_H_
 #define NC_GRAPHIC_BASICSOURCESHADER_H_
@@ -38,22 +33,23 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Reference the sources of the shaders used with the DefaultMaterial and BasicVertexType
         namespace BasicSource
         {
-            extern const char* LGRAPHICS ColoredVertexShader;
-            extern const char* LGRAPHICS ColoredFragmentShader;
+            extern const char* LGRAPHICS ColoredVertexShader;               ///< Default Vertex shader to render a Colored VertexType
+            extern const char* LGRAPHICS ColoredFragmentShader;             ///< Default Fragment shader to render a Colored VertexType
 
-            extern const char* LGRAPHICS Colored2dVertexShader;
-            extern const char* LGRAPHICS Colored2dFragmentShader;
+            extern const char* LGRAPHICS Colored2dVertexShader;             ///< Default Vertex shader to render a Colored2d VertexType
+            extern const char* LGRAPHICS Colored2dFragmentShader;           ///< Default Fragment shader to render a Colored2d VertexType
 
-            extern const char* LGRAPHICS TexturedVertexShader;
-            extern const char* LGRAPHICS TexturedFragmentShader;
+            extern const char* LGRAPHICS TexturedVertexShader;              ///< Default Vertex shader to render a Textured VertexType
+            extern const char* LGRAPHICS TexturedFragmentShader;            ///< Default Fragment shader to render a Textured VertexType
 
-            extern const char* LGRAPHICS Textured2dVertexShader;
-            extern const char* LGRAPHICS Textured2dFragmentShader;
+            extern const char* LGRAPHICS Textured2dVertexShader;            ///< Default Vertex shader to render a Textured2d VertexType
+            extern const char* LGRAPHICS Textured2dFragmentShader;          ///< Default Fragment shader to render a Textured2d VertexType
 
-            extern const char* LGRAPHICS Textured3dVertexShader;
-            extern const char* LGRAPHICS Textured3dFragmentShader;
+            extern const char* LGRAPHICS Textured3dVertexShader;            ///< Default Vertex shader to render a Textured3d VertexType
+            extern const char* LGRAPHICS Textured3dFragmentShader;          ///< Default Fragment shader to render a Textured3d VertexType
         }
     }
 }

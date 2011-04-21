@@ -34,7 +34,14 @@ namespace Nc
 {
     namespace Graphic
     {
-        /** Interface used by the SceneGraphManager to store data of a scene and render it */
+        /// Interface used by the SceneGraphManager to store data of a scene and render it
+        /**
+            A SceneGraph is basically composed by 3 stack of matrix used to render the scene. <br/>
+            So there are : <br/>
+                * the ProjectionMatrix      <-- Used to project the model like in a perspective or in a orthonormal repere  <br/>
+                * the ViewMatrix            <-- Used to Set the View (camera) in the scene                                  <br/>
+                * the ModelMatrix           <-- Used to locate the model in the repere                                      <br/>
+        */
         class LGRAPHICS ISceneGraph : public System::Object, Utils::NonCopyable
         {
             public:
@@ -46,25 +53,37 @@ namespace Nc
                 }
                 virtual ~ISceneGraph()      {}
 
+                /** To update the projection and view matrix */
                 virtual void    SetCurrentScene() = 0;
+
+                /** Render the scene */
                 virtual void    Render() = 0;
 
+                /** Return the current projection matrix */
                 inline TMatrix  &ProjectionMatrix()                 {return _stackProjectionMatrix.top();}
+                /** Push in the stack the projection matrix */
                 inline void     PushProjectionMatrix()              {_stackProjectionMatrix.push(_stackProjectionMatrix.top());}
+                /** Unstack the projection matrix */
                 inline void     PopProjectionMatrix()               {_stackProjectionMatrix.pop();}
 
+                /** Return the current view matrix */
                 inline TMatrix  &ViewMatrix()                       {return _stackViewMatrix.top();}
+                /** Push in the stack the view matrix */
                 inline void     PushViewMatrix()                    {_stackViewMatrix.push(_stackViewMatrix.top());}
+                /** Unstack the view matrix */
                 inline void     PopViewMatrix()                     {_stackViewMatrix.pop();}
 
+                /** Return the current model matrix */
                 inline TMatrix  &ModelMatrix()                      {return _stackModelMatrix.top();}
+                /** Push in the stack the model matrix */
                 inline void     PushModelMatrix()                   {_stackModelMatrix.push(_stackModelMatrix.top());}
+                /** Unstack the model matrix */
                 inline void     PopModelMatrix()                    {_stackModelMatrix.pop();}
 
             private:
-                std::stack<TMatrix>     _stackProjectionMatrix;
-                std::stack<TMatrix>     _stackViewMatrix;
-                std::stack<TMatrix>     _stackModelMatrix;
+                std::stack<TMatrix>     _stackProjectionMatrix;     ///< the stack of projection matrix
+                std::stack<TMatrix>     _stackViewMatrix;           ///< the stack of view matrix
+                std::stack<TMatrix>     _stackModelMatrix;          ///< the stack of model matrix
         };
     }
 }

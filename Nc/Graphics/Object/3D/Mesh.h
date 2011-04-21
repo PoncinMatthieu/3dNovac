@@ -23,14 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "Mesh"
-
-                  Classe permettant de definir un mesh 3D,
-                a partir de gVertexBuffer et de gIndexBuffer
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHIC_MESH_H_
 #define NC_GRAPHIC_MESH_H_
@@ -41,47 +33,54 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Base class to render a 3d mesh using a vertex type a material politic and a material config politic
+        /**
+            A mesh is composed by a list of Drawable
+        */
         template<typename VertexType, bool INDEX, typename MaterialPolitic, typename MaterialConfigPolitic>
         class Mesh : public Object3d
         {
             public:
-                Mesh(const GL::GeometryBuffer<VertexType, INDEX> &geometry, const Box3f &box, const TMatrix &mat = TMatrix::Identity);
+                typedef std::list<Drawable<VertexType, INDEX, MaterialConfigPolitic> >      ListDrawable;       ///< the list of drawable used by the mesh
+
+            public:
+                Mesh(const Box3f &box, const TMatrix &mat = TMatrix::Identity);
                 virtual ~Mesh();
 
+                /** Copy the mesh */
                 virtual inline Object3d     *Clone() const          {return new Mesh<VertexType,INDEX, MaterialPolitic, MaterialConfigPolitic>(*this);}
 
-                // accesseur
-                inline void     SetMaterialConfig(MaterialConfig<VertexType, MaterialConfigPolitic> *c)     {_materialConfig = c;}
-
-                /** Set the material */
-                inline void     SetMaterial(Material<VertexType, MaterialPolitic> *m)                       {_material = m; _material->Configure(_geometry);}
+                /** Set the material instance used to render the mesh */
+                inline void     SetMaterial(Material<VertexType, MaterialPolitic> *m)           {_material = m;}
 
                 /** Return the material used to render the mesh */
-                inline Material<VertexType, MaterialPolitic>                *GetMaterial()                  {return _material;}
+                inline Material<VertexType, MaterialPolitic>                *GetMaterial()      {return _material;}
 
-                /** Return the material used to render the mesh */
-                inline MaterialConfig<VertexType, MaterialConfigPolitic>    &GetMaterialConfig()            {return _materialConfig;}
+                /** Create a new Drawable, and return its pointer */
+                Drawable<VertexType, INDEX, MaterialConfigPolitic>          *NewDrawable()      {_drawables.push_back(Drawable<VertexType, INDEX, MaterialConfigPolitic>()); return &(*_drawables.begin());}
 
-                /** Return the GeometryBuffer associated to the mesh */
-                inline GL::GeometryBuffer<VertexType,INDEX>  &GetGeometryBuffer()                           {return _geometry;}
+                /** Add an existing drawable */
+                void    AddDrawable(const Drawable<VertexType, INDEX, MaterialConfigPolitic> &drawable)     {_drawables.push_back(drawable);}
+
+                /** Configure the list of drawables with the good material */
+                void    ConfigureDrawables();
 
             protected:
                 /**
-                    Display the object, by using the material of the object
+                    Display the object, by using the material of the object.
                     Could be redefine be your own object
                 */
                 virtual void Draw(ISceneGraph *scene);
 
-                Material<VertexType, MaterialPolitic>               *_material;             ///< a pointer to the rendering material, if the material isn't set, we use the default material (Material::DefaultMaterial())
-                MaterialConfig<VertexType, MaterialConfigPolitic>   _materialConfig;        ///< a pointer to the material config class to configure the rendering material (for exemple to set a texture)
-                GL::GeometryBuffer<VertexType, INDEX>               _geometry;
+                Material<VertexType, MaterialPolitic>       *_material;         ///< A pointer to the rendering material, if the material isn't set, we use the default material (Material::DefaultMaterial())
+                ListDrawable                                _drawables;         ///< The list of drawable that define the configs and geometries of the mesh
         };
 
         template<typename VertexType, bool INDEX, typename MaterialPolitic, typename MaterialConfigPolitic>
-        Mesh<VertexType, INDEX, MaterialPolitic, MaterialConfigPolitic>::Mesh(const GL::GeometryBuffer<VertexType, INDEX> &geometry, const Box3f &box, const TMatrix &mat)
-            : Object3d(box, mat), _geometry(geometry)
+        Mesh<VertexType, INDEX, MaterialPolitic, MaterialConfigPolitic>::Mesh(const Box3f &box, const TMatrix &mat)
+            : Object3d(box, mat)
         {
-            SetMaterial(&Material<VertexType>::Instance());
+            SetMaterial(&Material<VertexType, MaterialPolitic>::Instance());
         }
 
         template<typename VertexType, bool INDEX, typename MaterialPolitic, typename MaterialConfigPolitic>
@@ -92,8 +91,16 @@ namespace Nc
         template<typename VertexType, bool INDEX, typename MaterialPolitic, typename MaterialConfigPolitic>
         void Mesh<VertexType, INDEX, MaterialPolitic, MaterialConfigPolitic>::Draw(ISceneGraph *scene)
         {
-            _material->Render(scene, _geometry, _materialConfig);
+            for (typename ListDrawable::iterator it = _drawables.begin(); it != _drawables.end(); ++it)
+                _material->Render(scene, *it);
             Object3d::Draw(scene);
+        }
+
+        template<typename VertexType, bool INDEX, typename MaterialPolitic, typename MaterialConfigPolitic>
+        void Mesh<VertexType, INDEX, MaterialPolitic, MaterialConfigPolitic>::ConfigureDrawables()
+        {
+            for (typename ListDrawable::iterator it = _drawables.begin(); it != _drawables.end(); ++it)
+                _material->Configure(*it);
         }
     }
 }

@@ -1,7 +1,7 @@
 
 /*-----------------------------------------------------------------------------
 
-	3dNovac Core
+	3dNovac Graphics
 	Copyright (C) 2010-2011, 3dNovac Team
 
     This file is part of 3dNovac.
@@ -27,29 +27,36 @@
 #ifndef NC_GRAPHICS_OBJECT_3D_MESHMANAGER_H_
 #define NC_GRAPHICS_OBJECT_3D_MESHMANAGER_H_
 
-#include "Mesh.h"
+#include <Nc/Core/System/PluginLoader.h>
+#include "MeshFormatPlugin.h"
 
 namespace Nc
 {
     namespace Graphic
     {
-        class LGRAPHICS MeshManager
+        /// Manage a list of MeshFormatPlugin and load mesh files
+        /**
+            Plugins are loaded with the Xml System::Config file using the "MeshFormatPlugin" path in the "RessourcesPath".
+        */
+        class LGRAPHICS MeshFormatManager
         {
             private:
-                //typedef std::map<MeshProcessor*>  MapMeshProcessor;
+                typedef std::list<System::PluginLoader<MeshFormatPlugin> >  ListMeshFormat;
 
             public:
-                MeshManager();
-                ~MeshManager();
+                MeshFormatManager();
+                ~MeshFormatManager();
 
+                /** Load and return the object loaded */
                 Object3d    *Load(const Utils::FileName &file);
 
             private:
-                //MeshProcessor   *GetProcessorByExtension(const std::string &extension);
+                /** Return the plugin associated with the given extension */
+                MeshFormatPlugin    *GetMeshFormatByExtension(const std::string &extension);
 
-                //MapMeshProcessor        _mapProcessor;
+                ListMeshFormat      _listMeshFormat;        ///< list of MeshFormatPlugin
         };
     }
 }
 
-#endif // NC_GRAPHICS_OBJECT_3D_MESHMANAGER_H_
+#endif

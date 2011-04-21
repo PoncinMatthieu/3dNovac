@@ -41,7 +41,8 @@ namespace Nc
 {
     namespace Graphic
     {
-        class LGRAPHICS BoundingBox : public Object3d
+        /// Basic 3d graphical object to render a box
+        class LGRAPHICS BoundingBox : public Object3d, public Box3f
         {
             public:
                 BoundingBox();
@@ -49,22 +50,22 @@ namespace Nc
                 BoundingBox(const Vector3f &min, const Vector3f &max);
                 virtual ~BoundingBox();
 
+                /** Render the box */
                 void    Render(ISceneGraph *scene);
 
-                inline const Box3f  &GetBox() const         {return _box;}
-                inline void         SetBox(const Box3f &b)  {_box = b;}
-                inline float        Height() const          {return _box.Length(2);}
+                /** Return the height of the box */
+                inline float        Height() const          {return Length(2);}
 
             private:
+                /** Create the geometry of the box */
                 void    CreateGeometry();
+                /** Update the geometry of the box */
                 void    UpdateGeometry();
 
-                Box3f   _box;
-                Color   _color;
+                Color   _color;         ///< the color of the box
 
-                static Material<BasicVertexType::Colored>                   *_material;
-                static MaterialConfig<BasicVertexType::Colored>             *_config;
-                static GL::GeometryBuffer<BasicVertexType::Colored>         *_geometry;
+                static Material<BasicVertexType::Colored>           *_material;     ///< the material in static because it's the same for all boxs
+                static Drawable<BasicVertexType::Colored>           *_drawable;     ///< the drawable in static because it's the same for all boxs
         };
     }
 }

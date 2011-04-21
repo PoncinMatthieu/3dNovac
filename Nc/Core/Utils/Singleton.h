@@ -75,10 +75,8 @@ namespace Nc
 
             /**
                 Delete the instance.
-                If this function is not called before the program exit,
-                the data will be not released and appears in valgrind,
-                it's totally normal and not ugly with a static witch exist
-                during the all execution of the program
+                If this function is not called before the program exit, the data will be not released and appears in valgrind.
+                It's totally normal and not ugly with a static witch exist during the all execution of the program
             */
               static void DeleteInstance()  {if (_instance != NULL) delete _instance; _instance = NULL;}
 

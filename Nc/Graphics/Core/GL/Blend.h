@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Help to manipulate the blending opengl
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_CORE_GL_BLEND_H_
 #define NC_GRAPHICS_CORE_GL_BLEND_H_
@@ -40,15 +35,20 @@ namespace Nc
     {
         namespace GL
         {
+            /// help to manipulate the blending opengl method
+            /**
+                \todo manage the transparency color and rate
+            */
             class LCORE  Blend
             {
                 public:
+                    /// The pattern of the using blend function
                     enum    Pattern
                     {
                         Disabled = 0,
-                        Alpha,
-                        Add,
-                        Mutiply
+                        Alpha,                  ///< Color Pixel = Src * a + Dest * (1 - a)
+                        Add,                    ///< Color Pixel = Src + Dest
+                        Mutiply                 ///< Color Pixel = Src * Dest.
                     };
 
                 public:
@@ -56,8 +56,10 @@ namespace Nc
                     Blend(Pattern p) : _pattern(p)  {}
                     ~Blend()    {}
 
+                    /** Set the blending pattern */
                     void SetPattern(Pattern p)      {_pattern = p;}
 
+                    /** Enable the blend func */
                     inline void Enable() const
                     {
                         if (_pattern != Disabled)
@@ -72,10 +74,11 @@ namespace Nc
                         }
                     }
 
+                    /** Disable the blending */
                     inline void Disable() const     {if (_pattern != Disabled) glDisable(GL_BLEND);}
 
                 protected:
-                    Pattern     _pattern;
+                    Pattern     _pattern;       ///< the blending pattern
             };
         }
     }

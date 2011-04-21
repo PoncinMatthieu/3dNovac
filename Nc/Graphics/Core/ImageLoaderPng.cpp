@@ -51,9 +51,9 @@ ImageLoaderPng::~ImageLoaderPng()
 void ImageLoaderPng::Load(const Utils::FileName &file, Image &image)
 {
 	// open the file
-	std::FILE *fp = fopen(file.Fullname().c_str(), "rb");
+	std::FILE *fp = fopen(file.c_str(), "rb");
     if (!fp)
-        throw Utils::Exception("Image", "Can't open the file `" + file.Fullname() + "`");
+        throw Utils::Exception("Image", "Can't open the file `" + file + "`");
 
     // init png lib
     int bit_depth, color_type;
@@ -134,14 +134,14 @@ void ImageLoaderPng::InitPng(const Utils::FileName &file, std::FILE *fp, unsigne
 	if (size != 8)
 	{
 		if(feof(fp) != 0)
-			throw Utils::Exception("Image", "End of file reached. " + Utils::Convert::ToString(size) + " Blocks read. The file `" + file.Fullname() + "` is not a png file.");
+			throw Utils::Exception("Image", "End of file reached. " + Utils::Convert::ToString(size) + " Blocks read. The file `" + file + "` is not a png file.");
 		throw Utils::Exception("Image", "Error in disk read : Buffer write failed. " + Utils::Convert::ToString(size));
 	}
 
 	if (png_sig_cmp(header, 0, 8))
     {
         fclose(fp);
-		throw Utils::Exception("Image", "The file `" + file.Fullname() + "` is not a png file.");
+		throw Utils::Exception("Image", "The file `" + file + "` is not a png file.");
     }
 
 	// set the file stream in the png lib
@@ -156,4 +156,10 @@ void ImageLoaderPng::InitPng(const Utils::FileName &file, std::FILE *fp, unsigne
         fclose(fp);
         throw Utils::Exception("Image", "pnglib: setJump failed");
     }
+}
+
+void    ImageLoaderPng::Save(const Utils::FileName &file, Image &image)
+{
+///\todo implemente the ImageLoaderPng::Save() method
+    LOG << "ImageLoaderPng::Save() not implemented" << std::endl;
 }

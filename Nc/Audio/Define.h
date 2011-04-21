@@ -41,7 +41,7 @@
             #define LAUDIO
         #endif
     #else                                                       // others os (do nothing)
-        #define LAUDIO
+        #define LAUDIO                  ///< Linking option of Nc-Audio module
     #endif
 
 #endif

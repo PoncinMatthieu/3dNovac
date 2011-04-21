@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    define the basic types of vertex used by the Nc::Graphics API
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHIC_BASICVERTEXTYPE_H_
 #define NC_GRAPHIC_BASICVERTEXTYPE_H_
@@ -39,9 +34,11 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Reference some struct that define default VertexTypes
         namespace BasicVertexType
         {
             #pragma pack(push, 1) // pragma pack to remove padding byte on structure
+            /// A VertexType for 3d colored geometry
             struct  Colored
             {
                 float           coord[3];     // position
@@ -51,6 +48,7 @@ namespace Nc
                 void Fill(float coordX, float coordY, float coordZ, const Color &c);
             };
 
+            /// A VertexType for 2d colored geometry
             struct  Colored2d
             {
                 float           coord[2];     // position
@@ -60,6 +58,7 @@ namespace Nc
                 void Fill(float coordX, float coordY, const Color &c);
             };
 
+            /// A VertexType for 3d textured geometry (with a normal to apply lighting on it)
             struct  Textured
             {
                 float           coord[3];     // position
@@ -71,6 +70,7 @@ namespace Nc
                 void Fill(float coordX, float coordY, float coordZ, float texCoordX, float texCoordY, float normalX, float normalY, float normalZ, const Color &c);
             };
 
+            /// A VertexType for 2d textured geometry
             struct  Textured2d
             {
                 float           coord[2];     // position
@@ -81,6 +81,7 @@ namespace Nc
                 void Fill(float coordX, float coordY, float texCoordX, float texCoordY, const Color &c);
             };
 
+            /// A VertexType for 3d textured geometry (a SkyBox use these VertexType)
             struct  Textured3d
             {
                 float           coord[3];     // position

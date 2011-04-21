@@ -38,7 +38,7 @@
     //#define DYNAMIC_LINK
     //#define EXPORT_MATH
 
-/// linking option (static or shared)
+// linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef DYNAMIC_LINK                                     // dynamic
             #ifdef EXPORT_GUI
@@ -53,7 +53,7 @@
         #define LGUI
     #endif
 
-/// includes interne
+// includes interne
 
     #ifdef _DEBUG
         //#define _DEBUG_GUI
@@ -66,10 +66,10 @@
     {
         namespace GUI
         {
-            /// definition of the classes to typedef the diferrent types
+            // definition of the classes to typedef the diferrent types
             class Widget;
 
-            /// typedef
+            // typedef
             typedef std::list<Widget*>      ListPWidget;
         }
     }

@@ -23,12 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------
-
-    Config class, too save and load configs like ressources path
-    The Config Class is a Singleton
-
---------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_SYSTEM_CONFIG_H_
 #define NC_CORE_SYSTEM_CONFIG_H_
@@ -44,15 +38,17 @@ namespace Nc
 {
     namespace System
     {
-        class LCORE Config : Utils::NonCopyable
+        /// To save and load configs like ressources path
+        class LCORE Config : public Utils::Singleton<Config>
         {
             public:
-                static Config &Instance();
-                static void DeleteInstance();
-
+                /** Load the configuration file */
                 void Load(const Utils::FileName &f);
+
+                /** Save the configuration file */
                 void Save();
 
+                /** Return the Content of the configuration in Xml structure */
                 inline Utils::Xml::Object *operator -> ()
                 {
                     if (_content == NULL)
@@ -60,7 +56,11 @@ namespace Nc
                     return _content;
                 }
 
-                // config error:
+                /**
+                    Check the state of the "GlobalConfig/ErrorTreatAsWarning/state" option,
+                    if true, then Write a warning
+                    else, throw an exception
+                */
                 static inline void Error(const std::string &s1, const std::string &s2)
                 {
                     bool state;
@@ -70,16 +70,19 @@ namespace Nc
                         throw Utils::Exception(s1, s2);
                 }
 
-            private:
+            protected:
                 Config()    {_content = NULL;}
                 ~Config();
 
                 Utils::Xml::File        _file;
                 Utils::Xml::Object      *_content;
-                Mutex                   _mutex;
-                static Config           *_instance;
+
+                friend class Utils::Singleton<Config>;
         };
     }
+
+    // explicit instantiation
+    static template class Utils::Singleton<System::Config>;
 }
 
 #endif

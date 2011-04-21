@@ -37,7 +37,7 @@ namespace Nc
         class LCORE NonCopyable
         {
             public:
-                virtual ~NonCopyable() {}
+                ~NonCopyable() {}
 
             protected:
                 NonCopyable() {}

@@ -30,27 +30,31 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Object3d *BasicMeshCreator::Repere(float echelle, const Vector3f &center)
+Object3d *BasicMeshCreator::Repere(float scale, const Vector3f &center)
 {
-    return Repere(Vector3f(echelle, echelle, echelle), center);
+    return Repere(Vector3f(scale, scale, scale), center);
 }
 
-Object3d *BasicMeshCreator::Repere(const Vector3f &echelle, const Vector3f &center)
+Object3d *BasicMeshCreator::Repere(const Vector3f &scale, const Vector3f &center)
 {
     Array<BasicVertexType::Colored, 4>  vertices;
     Array<unsigned int, 3*2>            indices;
 
     vertices[0].Fill(center.Data[0], center.Data[1], center.Data[2], Color(1, 1, 1));
-    vertices[1].Fill(center.Data[0] + echelle.Data[0], center.Data[1], center.Data[2], Color(1, 0, 0));
-    vertices[2].Fill(center.Data[0], center.Data[1] + echelle.Data[1], center.Data[2], Color(0, 0, 1));
-    vertices[3].Fill(center.Data[0], center.Data[1], center.Data[2] + echelle.Data[2], Color(0, 1, 0));
+    vertices[1].Fill(center.Data[0] + scale.Data[0], center.Data[1], center.Data[2], Color(1, 0, 0));
+    vertices[2].Fill(center.Data[0], center.Data[1] + scale.Data[1], center.Data[2], Color(0, 0, 1));
+    vertices[3].Fill(center.Data[0], center.Data[1], center.Data[2] + scale.Data[2], Color(0, 1, 0));
 
     indices[0] = 0; indices[1] = 1;
     indices[2] = 0; indices[3] = 2;
     indices[4] = 0; indices[5] = 3;
 
     // creation du mesh
-    GL::GeometryBuffer<BasicVertexType::Colored> geometry(GL::VertexBuffer<BasicVertexType::Colored>(vertices, GL_STATIC_DRAW),
-                                                          GL::IndexBuffer(indices, 2), GL_LINES);
-    return new Mesh<BasicVertexType::Colored>(geometry, Box3f(center, center + Vector3f(echelle.Data[0], echelle.Data[1], echelle.Data[2])));
+    Mesh<BasicVertexType::Colored> *mesh = new Mesh<BasicVertexType::Colored>(Box3f(center, center + Vector3f(scale.Data[0], scale.Data[1], scale.Data[2])));
+    Drawable<BasicVertexType::Colored> *drawable = mesh->NewDrawable();
+    drawable->GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
+    drawable->GetIBO().UpdateData(indices, 2);
+    drawable->SetPrimitiveType(GL_LINES);
+    mesh->ConfigureDrawables();
+    return mesh;
 }

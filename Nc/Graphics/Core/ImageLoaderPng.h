@@ -39,17 +39,24 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Load a png file using the libpng
+        /**
+            \todo Save method not implemented.
+        */
         class LGRAPHICS  ImageLoaderPng : public ImageLoader
         {
             public:
                 ImageLoaderPng();
                 virtual ~ImageLoaderPng();
 
-                void        Load(const Utils::FileName &file, Image &image);
-                //virtual void        Save(const Utils::FileName &file, Image &image) = 0;
+                /** Load the png file */
+                virtual void    Load(const Utils::FileName &file, Image &image);
+                /** Save the png file */
+                virtual void    Save(const Utils::FileName &file, Image &image);
 
             private:
-                void        InitPng(const Utils::FileName &file, FILE *fp, unsigned int &width, unsigned int &height, int &bit_depth, int &color_type);
+                /** Initialize the libpng */
+                void            InitPng(const Utils::FileName &file, FILE *fp, unsigned int &width, unsigned int &height, int &bit_depth, int &color_type);
 
                 png_structp     _pngPtr;
                 png_infop       _infoPtr;

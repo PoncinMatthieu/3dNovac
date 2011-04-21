@@ -128,7 +128,7 @@ namespace Nc
         static int		_status;		// status d'ecriture du logger (default = 0; error = 1; debug = 2)
 
         friend class Singleton<Logger>; // pour avoir acces a l'instance du singleton
-      };
+    };
 
         template<class T>
         Logger &Logger::operator << (const T& ToLog)
@@ -141,6 +141,9 @@ namespace Nc
             _mutex.Unlock();
             return *this;
         }
+
+        // explicit instanciation
+        static template class Singleton<Logger>;
     }
 }
 

@@ -2,198 +2,201 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="../../../Nc/Core/Core.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1274" topLine="0" />
 	</File>
 	<File name="../../../Nc/Core/Debug.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="140" topLine="0" />
 	</File>
 	<File name="../../../Nc/Core/Define.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2534" topLine="56" />
 	</File>
 	<File name="../../../Nc/Core/Engine/EventManager.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="4807" topLine="125" />
 	</File>
-	<File name="../../../Nc/Core/Engine/EventManager.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1434" topLine="33" />
+	<File name="../../../Nc/Core/Engine/EventManager.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3841" topLine="27" />
 	</File>
 	<File name="../../../Nc/Core/Engine/Handler.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="140" topLine="0" />
 	</File>
-	<File name="../../../Nc/Core/Engine/Handler.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="144" topLine="0" />
+	<File name="../../../Nc/Core/Engine/Handler.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2303" topLine="30" />
 	</File>
-	<File name="../../../Nc/Core/Engine/IEngine.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+	<File name="../../../Nc/Core/Engine/IEngine.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1956" topLine="33" />
 	</File>
-	<File name="../../../Nc/Core/Engine/IEngine.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+	<File name="../../../Nc/Core/Engine/IEngine.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3306" topLine="51" />
 	</File>
 	<File name="../../../Nc/Core/Engine/MainEngine.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2582" topLine="22" />
 	</File>
-	<File name="../../../Nc/Core/Engine/MainEngine.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+	<File name="../../../Nc/Core/Engine/MainEngine.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1685" topLine="21" />
 	</File>
 	<File name="../../../Nc/Core/Engine/Manager.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1206" topLine="30" />
 	</File>
-	<File name="../../../Nc/Core/Engine/Manager.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+	<File name="../../../Nc/Core/Engine/Manager.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2392" topLine="63" />
 	</File>
 	<File name="../../../Nc/Core/Math/Array.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2778" topLine="51" />
 	</File>
 	<File name="../../../Nc/Core/Math/Box.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="3987" topLine="25" />
 	</File>
 	<File name="../../../Nc/Core/Math/Box2D.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1182" topLine="32" />
 	</File>
 	<File name="../../../Nc/Core/Math/Box3D.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1182" topLine="17" />
 	</File>
 	<File name="../../../Nc/Core/Math/Math.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1660" topLine="25" />
 	</File>
 	<File name="../../../Nc/Core/Math/Math.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1830" topLine="35" />
 	</File>
 	<File name="../../../Nc/Core/Math/Matrix.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2747" topLine="58" />
 	</File>
-	<File name="../../../Nc/Core/Math/Matrix4x4.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+	<File name="../../../Nc/Core/Math/Matrix4x4.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="12999" topLine="93" />
 	</File>
 	<File name="../../../Nc/Core/Math/Pixel.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1371" topLine="19" />
 	</File>
-	<File name="../../../Nc/Core/Math/Vector.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+	<File name="../../../Nc/Core/Math/Vector.h" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="12071" topLine="329" />
 	</File>
 	<File name="../../../Nc/Core/Math/Vector2D.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2523" topLine="42" />
 	</File>
-	<File name="../../../Nc/Core/Math/Vector3D.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+	<File name="../../../Nc/Core/Math/Vector3D.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1970" topLine="36" />
 	</File>
 	<File name="../../../Nc/Core/System/API/API.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="140" topLine="0" />
 	</File>
 	<File name="../../../Nc/Core/System/API/API.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1141" topLine="15" />
 	</File>
 	<File name="../../../Nc/Core/System/API/IMutex.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="142" topLine="11" />
 	</File>
 	<File name="../../../Nc/Core/System/API/IThread.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1188" topLine="41" />
 	</File>
 	<File name="../../../Nc/Core/System/Config.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1093" topLine="14" />
 	</File>
 	<File name="../../../Nc/Core/System/Config.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="4" />
+		<Cursor1 position="1455" topLine="23" />
 	</File>
 	<File name="../../../Nc/Core/System/Input/Event.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="140" topLine="0" />
 	</File>
 	<File name="../../../Nc/Core/System/Input/Event.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="7425" topLine="225" />
 	</File>
 	<File name="../../../Nc/Core/System/Input/Input.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1562" topLine="32" />
 	</File>
 	<File name="../../../Nc/Core/System/Input/InputManager.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="140" topLine="8" />
 	</File>
 	<File name="../../../Nc/Core/System/Input/InputManager.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1260" topLine="26" />
 	</File>
 	<File name="../../../Nc/Core/System/Object.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="1068" topLine="0" />
 	</File>
 	<File name="../../../Nc/Core/System/Object.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1177" topLine="25" />
 	</File>
-	<File name="../../../Nc/Core/System/Plugin.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1499" topLine="33" />
-	</File>
-	<File name="../../../Nc/Core/System/Plugin.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1122" topLine="16" />
+	<File name="../../../Nc/Core/System/PluginLoader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1217" topLine="16" />
 	</File>
 	<File name="../../../Nc/Core/System/System.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1189" topLine="0" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Clock.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2112" topLine="36" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Convert.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="3374" topLine="66" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Debug/MemoryManager.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="4032" topLine="47" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Debug/MemoryManager.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="3667" topLine="28" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Debug/OverloadAlloc.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="140" topLine="33" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Exception.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2744" topLine="37" />
 	</File>
 	<File name="../../../Nc/Core/Utils/FileName.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1880" topLine="37" />
 	</File>
 	<File name="../../../Nc/Core/Utils/FileName.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1419" topLine="23" />
 	</File>
 	<File name="../../../Nc/Core/Utils/IntrusiveSmartPointer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1217" topLine="22" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Logger.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2720" topLine="91" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Logger.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1753" topLine="51" />
+	</File>
+	<File name="../../../Nc/Core/Utils/Mask.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1765" topLine="37" />
 	</File>
 	<File name="../../../Nc/Core/Utils/NonCopyable.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1300" topLine="13" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Singleton.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2119" topLine="43" />
 	</File>
 	<File name="../../../Nc/Core/Utils/SmartPointer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1736" topLine="27" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Unicode.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1079" topLine="18" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Unicode.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1331" topLine="15" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Utils.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1763" topLine="46" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Xml/File.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1767" topLine="35" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Xml/File.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2414" topLine="28" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Xml/Parser.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="2714" topLine="82" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Xml/Parser.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="4074" topLine="56" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Xml/XmlObject.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="140" topLine="0" />
 	</File>
 	<File name="../../../Nc/Core/Utils/Xml/XmlObject.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1552" topLine="27" />
 	</File>
 	<File name="../../../Nc/Core/Utils/include.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="140" topLine="0" />
+		<Cursor1 position="1112" topLine="0" />
+	</File>
+	<File name="../../../Nc/Define.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="783" topLine="4" />
 	</File>
 </CodeBlocks_layout_file>

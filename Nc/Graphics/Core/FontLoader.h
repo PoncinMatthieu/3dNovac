@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Interface class to Load Fonts files ".ttf"
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_CORE_FONT_LOADER_H_
 #define NC_GRAPHICS_CORE_FONT_LOADER_H_
@@ -39,12 +34,14 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Interface to load font files
         class LGRAPHICS FontLoader
         {
             public:
                 FontLoader()            {}
                 virtual ~FontLoader()   {}
 
+                /** Load a font from a file using a charset */
                 virtual void        LoadFromFile(const Utils::FileName &file, const Utils::Unicode::UTF32 &charset, Font &font) = 0;
         };
     }

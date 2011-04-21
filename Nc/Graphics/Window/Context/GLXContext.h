@@ -40,10 +40,14 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Implementation of GLContext for an X11 system
+        /**
+            For more detail please show the class GLContext
+        */
         class LCORE GLXContext : public GLContext
         {
             public:
-                GLXContext(XWindow *win/*, GLXWindow drawable = 0*/);
+                GLXContext(XWindow *win);
                 virtual ~GLXContext();
 
                 void            Create(GLContext *sharedContext = NULL);
@@ -56,7 +60,6 @@ namespace Nc
 
             private:
                 ::GLXContext    _context;
-                //GLXWindow       _drawable;
                 GLXPbuffer      _pbuffer;  // for any shared context, we draw in a off screen renderer
         };
     }

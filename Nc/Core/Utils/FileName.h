@@ -36,40 +36,50 @@ namespace Nc
     namespace Utils
     {
         /// manipulate your filename path
-        /** Parse filename to access the path, filename, extention, change filename, etc... */
-        class LCORE FileName
+        /**
+            Parse filename to access the path, filename, extention, change filename, etc...
+            For transparency and simplicity, FileName inherite of std::string
+
+            If the given path begin with "Nc:Type:", then the beginning of the filename will be set to the "RessourcePath/Type" of the Config file of 3dNovac
+        */
+        class LCORE FileName : public std::string
         {
             public:
                 FileName()  {};
                 FileName(const std::string &path);
                 FileName(const char *path);
 
-                bool	    operator == (const FileName& f) const;
+                FileName &operator = (const std::string &path);
+                FileName &operator = (const char *path);
 
+                /** Print the filename */
                 friend std::ostream& operator << (std::ostream& os, const FileName& f)
                 {
-                    os << "Filename : `" << f._path << "`";
+                    os << "Filename : `" << static_cast<std::string>(f) << "`";
                     return os;
                 }
 
             //Accesseurs
-            // nom complet
-                inline operator const std::string & () const		                {return _path;}	    ///< cast operateur in std::string
-                inline void		            Fullname(const std::string& aPath)	    {_path = aPath;}    ///< set the Fullpath
-                inline const std::string    &Fullname() const			            {return _path;}     ///< access the Fullpath passed to the fileName class
-
             // partie du nom
-                std::string		Path() const;			        ///< path file
-                std::string		Filename() const;		        ///< name + extension
-                void		    SetFilename(std::string s);     ///< set the name
-                std::string		ShortFilename() const;		    ///< only the name
-                std::string		Extension() const;		        ///< only the extension
+                /** \return the path of the file */
+                std::string		Path() const;
+                /** \return the name + extension */
+                std::string		Filename() const;
+                /** Set the name + extension */
+                void		    SetFilename(const std::string &s);
+                /** \return Only the name */
+                std::string		ShortFilename() const;
+                /** Set only the name */
+                void		    SetShortFilename(const std::string &s);
+                /** \return Only the extension */
+                std::string		Extension() const;
 
             // Accessibilite du fichier
+                /** \return true if the file is readable */
                 bool		    IsReadable() const;
 
-            protected:
-                std::string		_path;  ///< Full path (path+name+extention)
+            private:
+                void            SetFullname(const char *name);
         };
     }
 }

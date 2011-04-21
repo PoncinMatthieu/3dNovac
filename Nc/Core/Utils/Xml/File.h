@@ -47,18 +47,18 @@ namespace Nc
                     File(const FileName &filename);
                     File(const FileName &filename, Object *content);
 
-                    Object  *Read(const FileName &f);
-                    Object  *Read();                            /** read the file and return content */
-                    void    Save() const;                       /** save the file with the propertie _content */
-                    void    Save(Object *content);              /** save the file with the content passed in param */
+                    Object  *Read(const FileName &f);           ///< read the given file
+                    Object  *Read();                            ///< read the file and return content
+                    void    Save() const;                       ///< save the file with the propertie _content
+                    void    Save(Object *content);              ///< save the file with the content passed in param
 
                     // accesseurs
-                    inline const Object *Content() const        {return _content;}
-                    inline Object       *Content()              {return _content;}
+                    inline const Object *Content() const        {return _content;}  ///< Return the content of the file
+                    inline Object       *Content()              {return _content;}  ///< Return the content of the file
 
                 private:
-                    FileName    _filename;
-                    Object      *_content;   ///< content of the XML file
+                    FileName    _filename;      ///< The name of the file to read
+                    Object      *_content;      ///< Content of the XML file
             };
         }
     }

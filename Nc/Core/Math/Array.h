@@ -23,20 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    struct Array<T, D = 0>
-    Define an array with the dimension D and data T
-    the accessor operator[] is protected by an Exception
-
-    specialisation Array<T, 0> allow dynamic allocation array
-
-
-    exemple:
-    Array<float, 20>    a1;     // array static
-    Array<float>        a2(20); // array dynamic
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_MATH_ARRAY_INCLUDED_H_
 #define NC_CORE_MATH_ARRAY_INCLUDED_H_
@@ -54,7 +40,7 @@ namespace Nc
         template<typename T, unsigned int D = 0>
         struct Array
         {
-            /// constructor
+            // constructor
             Array() {}
             Array(const Array &a);
             Array &operator = (const Array &a);
@@ -64,12 +50,13 @@ namespace Nc
             Array &operator = (const Array<T,D2> &a);
             virtual ~Array()    {};
 
-            /// initialisation
+            // initialisation
             void Init(const T &data);
 
-            /// accessor
+            // accessor
             inline unsigned int Size()  const {return D;}
 
+            /** Accessor with a protection with exception */
             inline T &operator [] (unsigned int i)
             {
                 if (i >= D)
@@ -77,6 +64,7 @@ namespace Nc
                 return Data[i];
             }
 
+            /** Accessor with a protection with exception */
             inline const T &operator [] (unsigned int i) const
             {
                 if (i >= D)
@@ -92,7 +80,7 @@ namespace Nc
             }
 
             // array
-            T               Data[D];
+            T               Data[D];            ///< data of type T. Could be directly accessed insteed of unsing the operator []
         };
 
         template<typename T, unsigned int D>
@@ -134,7 +122,7 @@ namespace Nc
         template<typename T>
         struct Array<T, 0>
         {
-            /// constructor
+            // constructor
             Array()
             {
                 _size = 0;
@@ -190,16 +178,19 @@ namespace Nc
                 return *this;
             }
 
-            /// initialisation
+            // initialisation
             void InitSize(unsigned int s) // init de la taille
             {
-                _size = s;
-                if (Data != NULL)
-                    delete[] Data;
-                if (_size > 0)
-                    Data = new T[_size];
-                else
-                    Data = NULL;
+                if (s != _size)
+                {
+                    _size = s;
+                    if (Data != NULL)
+                        delete[] Data;
+                    if (_size > 0)
+                        Data = new T[_size];
+                    else
+                        Data = NULL;
+                }
             }
 
             /// don't delete the data, just reset the property _size if s is lesser than _size
@@ -234,9 +225,10 @@ namespace Nc
                 _size = s;
             }
 
-            /// accessor
+            // accessor
             inline unsigned int Size()  const {return _size;}
 
+            /** Accessor with a protection with exception */
             inline T &operator [] (unsigned int i)
             {
                 if (i >= _size)
@@ -244,6 +236,7 @@ namespace Nc
                 return Data[i];
             }
 
+            /** Accessor with a protection with exception */
             inline const T &operator [] (unsigned int i) const
             {
                 if (i >= _size)

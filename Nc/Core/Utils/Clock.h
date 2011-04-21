@@ -67,9 +67,9 @@ namespace Nc
                 inline double PauseTime() const         {return _pauseTime;}
 
             private:
-                double  _startTime;
-                double  _startPause;
-                double  _pauseTime;
+                double  _startTime;         ///< The time when the clock was started
+                double  _startPause;        ///< The time when the clock was paused
+                double  _pauseTime;         ///< The totol of time in pause
         };
     }
 }

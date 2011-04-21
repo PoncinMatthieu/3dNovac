@@ -32,7 +32,7 @@
 #ifndef NC_GRAPHICS_DEFINE_H_
 #define NC_GRAPHICS_DEFINE_H_
 
-/// includes extern
+// includes extern
     #include <list>
     #include <Nc/Define.h>
     #include <Nc/Core/Core.h>
@@ -40,7 +40,7 @@
     //#define DYNAMIC_LINK
     //#define EXPORT_MATH
 
-/// linking option (static or shared)
+// linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef DYNAMIC_LINK                                     // dynamic
             #ifdef EXPORT_GRAPHICS
@@ -52,26 +52,27 @@
             #define LGRAPHICS
         #endif
     #else                                                       // othes os (do nothing)
-        #define LGRAPHICS
+        #define LGRAPHICS       ///< Linking option of Nc-Graphics module
     #endif
 
-/// includes interne
+// includes interne
     #include "Window/Window/Window.h"
 
-/// define
+// define
     #ifdef  _DEBUG
         #define     _DEBUG_LIGHT
         #define     _DEBUG_GLOBJECT
     #endif
 
-/// Singleton
-    #define EXT                 Nc::Graphic::GL::Extension::Instance()                           ///< to access to the Extension class
+// Singleton
+    #define EXT                 Nc::Graphic::GL::Extension::Instance()          ///< to access to the Extension class
 
     namespace Nc
     {
         namespace Graphic
         {
-            /// default material definition
+            // definition of the classes to typedef the diferrent types
+            // default material definition
             template<typename VertexType>
             class DefaultMaterialPolitics;
             template<typename VertexType>
@@ -79,7 +80,13 @@
             template<typename VertexType, typename MaterialPolitic = DefaultMaterialPolitics<VertexType> >
             class Material;
 
-            /// definition of the classes to typedef the diferrent types
+            // drawable
+            template<typename VertexType, typename MaterialConfigPolitic = DefaultMaterialConfigPolitics<VertexType> >
+            struct IDrawable;
+            template<typename VertexType, bool INDEX = true, typename MaterialConfigPolitic = DefaultMaterialConfigPolitics<VertexType> >
+            struct Drawable;
+
+            // Graphical objects
             class Basic3dSceneGraph;
             class Object;
             class Object2d;
@@ -87,13 +94,25 @@
             template<typename VertexType, bool INDEX = true, typename MaterialPolitic = DefaultMaterialPolitics<VertexType>, typename MaterialConfigPolitic = DefaultMaterialConfigPolitics<VertexType> >
             class Mesh;
             class Light;
-            class Effect;
 
-            /// typedef
+            // effects
+            class Effect;
+            template<typename FRAME>
+            class Animation;
+            class SpriteAnimFrame;
+
+            // camera
+            class Camera;
+            class Camera2d;
+            class Camera3d;
+            class StandardCamera3d;
+
+            // typedef
+            typedef Animation<SpriteAnimFrame>      SpriteAnim;
             typedef std::list<Basic3dSceneGraph*>   ListPBasic3dSceneGraph;
             typedef std::list<Object*>              ListPObject;
-            typedef std::list<Object2d*>            ListPObject2D;
-            typedef std::list<Object3d*>            ListPObject3D;
+            typedef std::list<Object2d*>            ListPObject2d;
+            typedef std::list<Object3d*>            ListPObject3d;
             typedef std::list<Light*>               ListPLight;
             typedef std::list<Effect*>              ListPEffect;
         }

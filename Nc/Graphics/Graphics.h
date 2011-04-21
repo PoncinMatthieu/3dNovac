@@ -43,7 +43,7 @@
     #include "Object/2D/String.h"
     #include "Object/3D/Light.h"
     #include "Object/3D/SkyBox.h"
-    #include "Object/3D/MeshManager.h"
+    #include "Object/3D/MeshFormatManager.h"
 
 // Scene
     #include "Scene/Basic3dSceneGraph.h"

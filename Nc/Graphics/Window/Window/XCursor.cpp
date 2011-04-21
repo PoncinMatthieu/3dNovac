@@ -59,15 +59,21 @@ Graphic::Cursor::~Cursor()
 
 void Graphic::Cursor::Enable()
 {
-    XDefineCursor(_win->_display, _win->_xwin, (_cursor) ? *_cursor : None);
-//    XFlush(_win->_display); // genere un XIO error avec Qt
+    if (_win->IsOwn())
+    {
+        XDefineCursor(_win->_display, _win->_xwin, (_cursor) ? *_cursor : None);
+        //XFlush(_win->_display); // genere un XIO error avec Qt
+    }
     _win->_currentCursor = this;
 }
 
 void Graphic::Cursor::Disable()
 {
-    XDefineCursor(_win->_display, _win->_xwin, *_hiddenCursor);
-//    XFlush(_win->_display); // genere un XIO error avec Qt
+    if (_win->IsOwn())
+    {
+        XDefineCursor(_win->_display, _win->_xwin, *_hiddenCursor);
+        //XFlush(_win->_display); // genere un XIO error avec Qt
+    }
     _win->_currentCursor = this;
 }
 
@@ -95,6 +101,9 @@ void Graphic::Cursor::CreateHiddenCursor()
 
 void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned char *mask, const Vector2ui &size, const Vector2ui &posCenter)
 {
+    if (!_win->IsOwn())
+        return;
+
     if (_cursor) // delete the last cursor
         XFreeCursor(_win->_display, *_cursor);
 
@@ -148,11 +157,10 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
 	if (!_cursor)
         _cursor = new ::Cursor;
     *_cursor = XCreatePixmapCursor(_win->_display, data_pixmap, mask_pixmap,
-                                  &black, &white, posCenter.Data[0], posCenter.Data[1]);
+                                   &black, &white, posCenter.Data[0], posCenter.Data[1]);
 	XFreePixmap(_win->_display, data_pixmap);
 	XFreePixmap(_win->_display, mask_pixmap);
 
-// TODO implemente cursor loading
 /*
     char *x_data = (char*)malloc(sizeof(char) * size.Data[0] * size.Data[1] / 8);
     char *x_mask = (char*)malloc(sizeof(char) * size.Data[0] * size.Data[1] / 8);
@@ -218,7 +226,7 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
 /*
 void Graphic::Cursor::LoadFromImage(const Utils::FileName &f)
 {
-// TODO implemente cursor loading
+
 }
 */
 

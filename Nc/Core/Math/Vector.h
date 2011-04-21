@@ -23,15 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    abstract class Vector<T,D>
-    Define a point witch contain an array of data T
-
-    operator defined : = [] += -= *= /= + - * / == !=
-    function :         Lenght / Normalize / Dot / Reverse
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_MATH_VECTOR_INCLUDED_H_
 #define NC_CORE_MATH_VECTOR_INCLUDED_H_
@@ -44,8 +35,13 @@ namespace Nc
     namespace Math
     {
         /// template class Vector to manipulate a vector of Dimension D of type T
+        /**
+            template class Vector to manipulate a vector of Dimension D of type T
+            operator defined : = [] += -= *= /= + - * / == !=       <br\>
+            function :         Lenght / Normalize / Dot / Reverse   <br\>
+        */
         template<typename T, unsigned char D>
-        class /*LINK_OPTION_BREP*/ Vector
+        class Vector
         {
             public:
                 Vector();
@@ -54,7 +50,7 @@ namespace Nc
                 template<typename U, unsigned char D2> Vector(const Vector<U,D2> &v);
                 virtual ~Vector()    {}
 
-                /// operator
+                // operator
                 T &operator                             []  (unsigned char i);
                 const T &operator                       []  (unsigned char i) const;
                 Vector &operator                        =   (const Vector &v);
@@ -84,12 +80,14 @@ namespace Nc
                 template<typename U> Vector operator    /   (const U &a) const;
 
 
-                /// function
+                // function
                 T       Length() const;
                 Vector  &Normalize();
-                template<typename U> T       Dot(const Vector<U,D> &u) const;
+                template<typename U>
+                T       Dot(const Vector<U,D> &u) const;
                 Vector  Reverse() const;
-
+                template<typename U>
+                T       Angle(const Vector<U,D> &v) const;
 
                 friend std::ostream &operator << (std::ostream &os, const Vector<T,D> &V)
                 {
@@ -328,7 +326,9 @@ namespace Nc
         template<typename T, unsigned char D>
         Vector<T,D> &Vector<T,D>::Normalize()
         {
-            (*this) /= Length();
+            T len = Length();
+            if (len != 0)
+                (*this) /= Length();
             return (*this);
         }
 
@@ -349,6 +349,18 @@ namespace Nc
             for (unsigned char i = 0; i < D; ++i)
                 v.Data[i] = -Data[i];
             return v;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        T   Vector<T,D>::Angle(const Vector<U,D> &v) const
+        {
+            T len1 = Length();
+            T len2 = v.Length();
+            if (len1 != 0 && len2 != 0)
+                return acos(Dot(v) / (Length() * v.Length()));
+            else
+                return 0;
         }
     }
 }

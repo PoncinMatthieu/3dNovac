@@ -34,20 +34,22 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 Sprite::Sprite(const Vector2f &size, const GL::Texture &t, const Box2f &box, const GL::Blend::Pattern &blendPattern)
-    : _material(&Material<BasicVertexType::Textured2d>::Instance()), _config(blendPattern, t), _needUpdate(true), _spriteSize(size), _textureBox(box), _color(1, 1, 1)
+    : _material(&Material<BasicVertexType::Textured2d>::Instance()), _needUpdate(true), _spriteSize(size), _textureBox(box), _color(1, 1, 1)
 {
-    _geometry.GetVBO().Init(4, GL_STATIC_DRAW);
-    _geometry.SetPrimitiveType(GL_TRIANGLE_STRIP);
-    _material->Configure(_geometry);
+    _drawable.texture = t;
+    _drawable.SetBlend(blendPattern);
+    _drawable.GetVBO().Init(4, GL_STATIC_DRAW);
+    _drawable.SetPrimitiveType(GL_TRIANGLE_STRIP);
+    _material->Configure(_drawable);
 }
 
 void Sprite::Render(ISceneGraph *scene)
 {
     if (_needUpdate)
         UpdateGeometry();
-    _material->Render(scene, _geometry, _config);
+    _material->Render(scene, _drawable);
 
-// TODO: recode le debug
+///\todo recode the debug equivalent in opengl 3.3
     #ifdef _DEBUG_SPRITES
     glDisable(GL_TEXTURE_2D);
     Color::Red();
@@ -62,7 +64,7 @@ void Sprite::Render(ISceneGraph *scene)
 
 void Sprite::UpdateGeometry()
 {
-    const Vector2i  &size = _config.Texture.Size();
+    const Vector2i  &size = _drawable.texture.Size();
     float           xb = _textureBox.Min(0) / (float)size.Data[0];
     float           yb = _textureBox.Min(1) / (float)size.Data[1];
     float           xh = _textureBox.Max(0) / (float)size.Data[0];
@@ -74,7 +76,7 @@ void Sprite::UpdateGeometry()
     vertices[2].Fill(0, _spriteSize[1], xb, yh, _color);
     vertices[3].Fill(_spriteSize[0], _spriteSize[1], xh, yh, _color);
 
-    _geometry.GetVBO().UpdateData(vertices.Data);
+    _drawable.GetVBO().UpdateData(vertices.Data);
     _needUpdate = false;
 }
 

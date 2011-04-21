@@ -38,6 +38,7 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Define an Object witch has a list of Object
         class LGRAPHICS ObjectContainer : public Object
         {
             public:
@@ -45,19 +46,19 @@ namespace Nc
 
                 virtual ~ObjectContainer();
 
+                /** Add an object in the container */
                 inline void AddObject(Object *o)        {_listObject.push_back(o);}
-                inline void DeleteObject(Object *o)
+
+                /** Remove the given object in the container */
+                inline void RemoveObject(Object *o)
                 {
-                    std::list<Object*>::iterator it = find(_listObject.begin(), _listObject.end(), o);
+                    ListPObject::iterator it = find(_listObject.begin(), _listObject.end(), o);
                     if (it != _listObject.end())
-                    {
-                        delete *it;
                         _listObject.erase(it);
-                    }
                 }
 
             protected:
-                std::list<Object*>  _listObject;
+                ListPObject     _listObject;        ///< list of objects
         };
     }
 }

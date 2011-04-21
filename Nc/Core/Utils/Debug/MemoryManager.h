@@ -44,6 +44,7 @@ namespace Nc
             Log the memory allocations in the file DebugMemory.log                          <br/>
             To Use this class, you have just to include `OverloadAlloc.h` in your file      <br/>
 
+            \todo recode this memory manager to be thread safe
             \warning `OverloadAlloc.h` need to be not included in a .h and included after all include
         */
         class MemoryManager
@@ -67,24 +68,22 @@ namespace Nc
                 MemoryManager();   // constructeur et destructeur en privé (singleton)
                 ~MemoryManager();
 
-                // structure definissant les infos de chaque objets aloué
-                // notament la taille, le nom du fichier et la ligne du fichier
+                /// Define infos of each allocated object for the MemoryManager class
                 struct DataMemory
                 {
-                    std::size_t Size;
-                    Utils::FileName File;
-                    int Line;
-                    bool Type;
+                    std::size_t         Size;
+                    Utils::FileName     File;
+                    int                 Line;
+                    bool                Type;
                 };
-                typedef std::map<void*, DataMemory> MapDataMemory; // typedef pour utiliser facilement les map
+                typedef std::map<void*, DataMemory>     MapDataMemory;  ///< Definition of a map of DataMemory
 
-                MapDataMemory               _mapMemory;          // contient toutes les infos des allocations de memoires
-                std::stack<DataMemory>      _stackCurrentFree;   // contient toutes les infos des prochainne suppression
-                std::ofstream               _logFile;            // fichier de log
-                System::Mutex               _mutex;             // protection des list, map, fichier de log
+                MapDataMemory               _mapMemory;             // contient toutes les infos des allocations de memoires
+                std::stack<DataMemory>      _stackCurrentFree;      // contient toutes les infos des prochainne suppression
+                std::ofstream               _logFile;               // fichier de log
+                System::Mutex               _mutex;                 // protection des list, map, fichier de log
 
                 static MemoryManager       *_instance;
-
         };
     }
 }

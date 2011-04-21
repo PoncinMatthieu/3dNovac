@@ -31,37 +31,35 @@ using namespace Nc::Graphic;
 
 SceneGraphManager::SceneGraphManager() : _3dSceneGraph(NULL), _2dSceneGraph(NULL)
 {
+    _clearMask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 }
 
 SceneGraphManager::~SceneGraphManager()
 {
 }
 
-void SceneGraphManager::InitGL(const Color &clearColor, bool multisample, bool initExtension)
+void SceneGraphManager::InitGL(bool multisampling)
 {
 // defini les valeur des tompon a vider
-    glClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
+    glClearColor(_clearColor.R, _clearColor.G, _clearColor.B, _clearColor.A);
 
 // enable l'antialiasing
-    if (multisample > 0)
+    if (multisampling > 0)
         glEnable(GL_MULTISAMPLE);
 
 // enable le Z-buffer
-//    glDepthFunc(GL_LEQUAL);
+    glDepthFunc(GL_LEQUAL);
     glEnable(GL_DEPTH_TEST);
 
 // initialistation des extensions
-    if (initExtension)
-    {
-        if(!EXT.Init())
-            throw Utils::Exception("SceneGraphManager", "Can't initialize gl extension");
-    }
+    if(!EXT.Init())
+        throw Utils::Exception("SceneGraphManager", "Can't initialize gl extensions");
 }
 
 void SceneGraphManager::Render(GLContext *context)
 {
 // vide les tampons
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(_clearMask);
 
 // render les 2 scenes
     if (_3dSceneGraph)

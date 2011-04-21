@@ -29,22 +29,6 @@
 using namespace Nc;
 using namespace Nc::System;
 
-Config  *Config::_instance = NULL;
-
-Config &Config::Instance()
-{
-    if (_instance == NULL)
-        _instance = new Config();
-    return *_instance;
-}
-
-void Config::DeleteInstance()
-{
-    if (_instance != NULL)
-        delete _instance;
-    _instance = NULL;
-}
-
 Config::~Config()
 {
     if (_file.Content() != NULL)

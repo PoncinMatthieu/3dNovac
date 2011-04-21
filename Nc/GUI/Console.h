@@ -23,19 +23,9 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
 
-
-                        Implementation de la classe "gConsole"
-
-                permet l'affichage et la gestion d'une console ingame
-
-Herite de gWindowBox
-
------------------------------------------------------------------------------*/
-
-#ifndef NOVAC_GUI_CONSOLE_H_INCLUDED
-#define NOVAC_GUI_CONSOLE_H_INCLUDED
+#ifndef NC_GUI_CONSOLE_H_
+#define NC_GUI_CONSOLE_H_
 
 #include <list>
 #include "WindowBox.h"
@@ -45,48 +35,59 @@ namespace Nc
 {
     namespace GUI
     {
+        /// To manage a console
         class LGUI  Console : public WindowBox, Utils::NonCopyable
         {
+            /// The pattern of the console
             enum Pattern
             {
                 Nop,
-                TranslateAtFocus
+                TranslateAtFocus        ///< if set, then the console will translate itsel when she has the focus
             };
 
-            typedef std::list<Utils::Unicode::UTF32>    ListMsg;
+            typedef std::list<Utils::Unicode::UTF32>    ListMsg;    ///< The list of message in UTF-32
 
             public:
                 Console(Pattern p = TranslateAtFocus);
                 virtual ~Console();
 
+                /** Render the console */
                 virtual void        Render(Graphic::ISceneGraph *scene);
 
+                /** Return the reel position of the console */
                 virtual Vector2f    GetReelPos() const;
 
-                static void         PushMsg(const std::string &s); // push un msg dans la list de msg
+                /** Push a message in the message list of the console */
+                static void         PushMsg(const std::string &s);
+                /** Write a message for the Utils::Logger */
                 static void         Write(const std::string msg, bool flush);
 
             private:
+                /** Update the geometry of the console */
                 virtual void Update();
 
+                /** Keyboadr event Handler */
                 void KeyboardEvent(const System::Event &event); // receptionne les commandes clavier et l'inscrit dans la console
+                /** Delete the list of font used to render the msg */
                 void DeleteListFont();
+
+                /** Execute a command by sending an event the good engine */
                 void ExecCmd(const std::string &cmd);
 
-                static ListMsg                      _listMsg;
-                static System::Mutex                _mutexMsg; // protege l'acces a la list de msg
-                static ListMsg::reverse_iterator    _itCurrentMsg;
 
-                std::list<Graphic::String*>     _listFont;
-                std::list<WidgetLabeled*>       _listLabel;
-                WidgetLabeled                   *_labelPrompt;
-                WidgetLabeled                   *_labelWrite;
-                WidgetLabeled                   *_labelCursor;
-                float                           _cursorWidth;
+                static ListMsg                      _listMsg;           ///< The message list
+                static System::Mutex                _mutexMsg;          ///< Protect the acces of the message list
+                static ListMsg::reverse_iterator    _itCurrentMsg;      ///< the current message, to scroll the messages
 
-                unsigned int                    _scroll;
-                std::string                     _prompt;
-                Pattern                         _pattern;
+                std::list<Graphic::String*>         _listFont;          ///< list of string used to render the messages
+                WidgetLabeled                       *_labelPrompt;      ///< the label used to render the prompt
+                WidgetLabeled                       *_labelWrite;       ///< the label used to render the command text
+                WidgetLabeled                       *_labelCursor;      ///< the label used to render the cursor
+                float                               _cursorWidth;       ///< posittion of the cursor
+
+                unsigned int                        _scroll;            ///< scroll position
+                std::string                         _prompt;            ///< prompt string
+                Pattern                             _pattern;           ///< the pattern of the console
         };
     }
 }

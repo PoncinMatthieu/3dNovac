@@ -23,14 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------
-
-
-                Implementation de la classe "AudioEngine"
-
-Herite de Engine
-
---------------------------------------------------------------------------------*/
 
 #ifndef NOVAC_ENGINE_AUDIO_H_
 #define NOVAC_ENGINE_AUDIO_H_
@@ -41,23 +33,32 @@ Herite de Engine
 
 namespace Nc
 {
+    /// Provide an AudioEngine to play sounds and musics
     namespace Audio
     {
+        /// An Audio Engine to load/play sounds and musics
+        /**
+            Actually the Audio engine could load and play only one music at one time.
+            But there is not limit for sounds. And the Audio engine use the sfml-audio librairy to play audio.  <br\>
+            Nb: A Sounds is not encoded and a Music is
+        */
         class LAUDIO Engine : public Nc::Engine::IEngine
         {
             public:
+                /// The event command for the Audio::Engine
                 enum CmdIndex
                 {
-                    LoadDescFile = 0,   /// Load a .desc file witch contain all the sounds to load
-                    LoadMusic,          /// Load a music file on memory
-                    PlayMusic,          /// Play the music loaded
-                    StopMusic,          /// Stop the music loaded
-                    LoadSound,          /// Load a sound file on memory
-                    PlaySound           /// Play the sound number
+                    LoadDescFile = 0,   ///< Load a .desc xml configuration file witch contain all the sounds to load
+                    LoadMusic,          ///< Load a music file on memory
+                    PlayMusic,          ///< Play the music loaded
+                    StopMusic,          ///< Stop the music loaded
+                    LoadSound,          ///< Load a sound file on memory
+                    PlaySound           ///< Play the sound number
                 };
 
             private:
-                struct              s_sound
+                /// To link a sound and sound buffer with an index
+                struct              SoundIndex
                 {
                     unsigned int    index;
                     sf::SoundBuffer buffer;
@@ -71,15 +72,14 @@ namespace Nc
                 virtual inline void Execute(float runningTime) {}
 
             protected:
-                inline void ActiveContext() {};
-                inline void DisableContext() {};
+                virtual inline void ActiveContext() {};
+                virtual inline void DisableContext() {};
 
-                void LdDescFile(const std::string &file);
-                void LdMusic(const std::string &file);
-                void LdSound(const std::string &file);
+                void LdDescFile(const Utils::FileName &file);
+                void LdMusic(const Utils::FileName &file);
+                void LdSound(const Utils::FileName &file);
                 void PlSound(unsigned int no);
 
-            /// cmd
                 void LoadDescFileCmd(Nc::Engine::IEvent *e);
                 void LoadMusicCmd(Nc::Engine::IEvent *e);
                 void PlMusic(Nc::Engine::IEvent *);
@@ -87,11 +87,10 @@ namespace Nc
                 void LoadSoundCmd(Nc::Engine::IEvent *e);
                 void PlaySoundCmd(Nc::Engine::IEvent *e);
 
-                sf::Music                       _music;
 
-                std::list<s_sound>              _listSounds;
+                sf::Music                       _music;
+                std::list<SoundIndex>           _listSounds;        ///< The list of sounds loaded
                 bool                            _musicOpened;
-                float                           _timeout;
         };
     }
 }

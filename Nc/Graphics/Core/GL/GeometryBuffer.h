@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Implemente a class to define a geometry with a VBO/IBO/VAO
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_CORE_GL_GEOMETRYBUFFER_H_
 #define NC_GRAPHICS_CORE_GL_GEOMETRYBUFFER_H_
@@ -42,98 +37,116 @@ namespace Nc
     {
         namespace GL
         {
+            /// template interface wich define a geometry with it's given VertexType
+            /**
+                Define the geometry with a VertexBuffer and a primitive type
+                And a VertexArray to optimised the rendering
+            */
+            template<typename T>
             class LGRAPHICS IGeometryBuffer
             {
                 public:
-                    IGeometryBuffer()               {}
+                    IGeometryBuffer()  : _needUpdate(true), _primitiveType(GL_TRIANGLES)    {}
+                    IGeometryBuffer(const VertexBuffer<T> &vbo, GLenum primitiveType)  : _needUpdate(true), _primitiveType(GL_TRIANGLES)    {}
                     virtual ~IGeometryBuffer()      {}
 
-                    virtual void    Render() = 0;
-            };
-
-            template<typename T, bool IndexToRender = true>
-            class GeometryBuffer : public IGeometryBuffer
-            {
-                public:
-                    GeometryBuffer() : _needUpdate(true), _primitiveType(GL_TRIANGLES) {}
-                    GeometryBuffer(const VertexBuffer<T> &vbo, const IndexBuffer &ibo, GLenum primitiveType) : _needUpdate(true), _VBO(vbo), _IBO(ibo), _primitiveType(primitiveType) {}
-                    virtual ~GeometryBuffer()   {}
-
+                    /** Return the vertex buffer */
                     inline VertexBuffer<T>          &GetVBO()                                   {return _VBO;}
-                    inline IndexBuffer              &GetIBO()                                   {return _IBO;}
+                    /** Set the primitive type to render the geometry buffer */
                     inline void                     SetPrimitiveType(GLenum primitiveType)      {_primitiveType = primitiveType;}
-                    inline void                     SetGeometry(const VertexBuffer<T> &vbo, const IndexBuffer &ibo) {_needUpdate = true; _VBO = vbo; _IBO = ibo;}
 
-                    void    Render()
-                    {
-                        //if (_needUpdate || _VBO.NeedUpdate())
-                            Map();
-                        _VAO.Enable();
-                        _IBO.Draw(_primitiveType);
-                        _VAO.Disable();
-                    }
-
-                private:
-                    // (it appears that the vertexArrays are not shared beetween contexts like the displayLists)
-                    // so the Map method is private and called once by the render method
-                    void    Map()
-                    {
-                        _VAO = VertexArray();
-                        _VAO.Enable();
-                        _VBO.Enable();
-                        _VBO.Map();         // no need to Unmap, we are using opengl3.x (only rendering with shader)
-                        _VBO.Disable();
-                        _IBO.Enable();
-                        _VAO.Disable();
-                        _needUpdate = false;
-                    }
-
-                    bool                _needUpdate;    // to map the vertexArray in the rendering thread
-                    VertexBuffer<T>     _VBO;
-                    IndexBuffer         _IBO;
-                    VertexArray         _VAO;
-                    unsigned int        _primitiveType;  // GL_TRIANGLES, GL_QUADS, etc..
-            };
-
-            // specialisation, if we don't use the IBO
-            template<typename T>
-            class GeometryBuffer<T, false> : public IGeometryBuffer
-            {
-                public:
-                    GeometryBuffer() : _needUpdate(true), _primitiveType(GL_TRIANGLES) {}
-                    GeometryBuffer(const VertexBuffer<T> &vbo, GLenum primitiveType) : _needUpdate(true), _VBO(vbo), _primitiveType(primitiveType) {}
-                    virtual ~GeometryBuffer()   {}
-
-                    inline VertexBuffer<T>          &GetVBO()                                   {return _VBO;}
-                    inline void                     SetPrimitiveType(GLenum primitiveType)      {_primitiveType = primitiveType;}
+                    /** Set the geometry (vertex buffer) */
                     inline void                     SetGeometry(const VertexBuffer<T> &vbo)     {_VBO = vbo;}
 
+                    /** Render the geoemtry */
+                    virtual void    Render() = 0;
+
+                protected:
+                    bool                _needUpdate;        ///< to map the vertexArray in the rendering thread
+                    VertexBuffer<T>     _VBO;               ///< the VBO used to stored the geometry data
+                    VertexArray         _VAO;               ///< the VAO used to optimised the rendering
+                    unsigned int        _primitiveType;     ///< Should be: GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY and GL_TRIANGLES_ADJACENCY
+            };
+
+            /// template class to define a geometry with an index buffer
+            template<typename T, bool IndexToRender = true>
+            class GeometryBuffer : public IGeometryBuffer<T>
+            {
+                public:
+                    GeometryBuffer() {}
+                    GeometryBuffer(const VertexBuffer<T> &vbo, const IndexBuffer &ibo, GLenum primitiveType) : IGeometryBuffer<T>(vbo, primitiveType), _IBO(ibo)    {}
+                    virtual ~GeometryBuffer()   {}
+
+                    /** Return the Index buffer of the geometry */
+                    inline IndexBuffer              &GetIBO()                                   {return _IBO;}
+                    /** Set the geometry */
+                    inline void                     SetGeometry(const VertexBuffer<T> &vbo, const IndexBuffer &ibo) {IGeometryBuffer<T>::_needUpdate = true; IGeometryBuffer<T>::_VBO = vbo; _IBO = ibo;}
+
+                    /** Render the geometry with the index buffer */
                     void    Render()
                     {
                         //if (_needUpdate || _VBO.NeedUpdate())
                             Map();
-                        _VAO.Enable();
-                        _VBO.Draw(_primitiveType);
-                        _VAO.Disable();
+                        IGeometryBuffer<T>::_VAO.Enable();
+                        _IBO.Draw(IGeometryBuffer<T>::_primitiveType);
+                        IGeometryBuffer<T>::_VAO.Disable();
                     }
 
                 private:
-                    // (it appears that the vertexArrays are not shared beetween contexts like the displayLists)
-                    // so the Map method is private and called once by the render method
+                    /**
+                        Map the Vertex and Index buffer in the VAO (Vertex Array Object). <br/>
+                        (it appears that the vertexArrays are not shared beetween contexts like the displayLists)
+                        So the Map method is private and called once by the render method
+                    */
                     void    Map()
                     {
-                        _VAO.Enable();
-                        _VBO.Enable();
-                        _VBO.Map();         // no need to Unmap, we are using opengl3.x (only rendering with shader)
-                        _VBO.Disable();
-                        _VAO.Disable();
-                        _needUpdate = false;
+                        IGeometryBuffer<T>::_VAO = VertexArray();
+                        IGeometryBuffer<T>::_VAO.Enable();
+                        IGeometryBuffer<T>::_VBO.Enable();
+                        IGeometryBuffer<T>::_VBO.Map();         // no need to Unmap, we are using opengl3.x (only rendering with shader)
+                        IGeometryBuffer<T>::_VBO.Disable();
+                        _IBO.Enable();
+                        IGeometryBuffer<T>::_VAO.Disable();
+                        IGeometryBuffer<T>::_needUpdate = false;
                     }
 
-                    bool                _needUpdate;    // to map the vertexArray in the rendering thread
-                    VertexBuffer<T>     _VBO;
-                    VertexArray         _VAO;
-                    unsigned int        _primitiveType;  // GL_TRIANGLES, GL_QUADS, etc..
+                    IndexBuffer         _IBO;           ///< the index buffer
+            };
+
+            /// Specialisation of the geometry buffer without IndexBuffer
+            template<typename T>
+            class GeometryBuffer<T, false> : public IGeometryBuffer<T>
+            {
+                public:
+                    GeometryBuffer() {}
+                    GeometryBuffer(const VertexBuffer<T> &vbo, GLenum primitiveType) : IGeometryBuffer<T>(vbo, primitiveType)   {}
+                    virtual ~GeometryBuffer()   {}
+
+                    /** Render the geometry without index buffer */
+                    virtual void    Render()
+                    {
+                        //if (_needUpdate || _VBO.NeedUpdate())
+                            Map();
+                        IGeometryBuffer<T>::_VAO.Enable();
+                        IGeometryBuffer<T>::_VBO.Draw(IGeometryBuffer<T>::_primitiveType);
+                        IGeometryBuffer<T>::_VAO.Disable();
+                    }
+
+                private:
+                    /**
+                        Map the Vertex buffer in the VAO (Vertex Array Object). <br/>
+                        (it appears that the vertexArrays are not shared beetween contexts like the displayLists)
+                        So the Map method is private and called once by the render method
+                    */
+                    void    Map()
+                    {
+                        IGeometryBuffer<T>::_VAO.Enable();
+                        IGeometryBuffer<T>::_VBO.Enable();
+                        IGeometryBuffer<T>::_VBO.Map();         // no need to Unmap, we are using opengl3.x (only rendering with shader)
+                        IGeometryBuffer<T>::_VBO.Disable();
+                        IGeometryBuffer<T>::_VAO.Disable();
+                        IGeometryBuffer<T>::_needUpdate = false;
+                    }
             };
         }
     }

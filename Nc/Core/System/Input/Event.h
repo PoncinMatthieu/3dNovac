@@ -23,26 +23,24 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Provide definitions for different event :
-        System
-            namespace Key     enum Code
-            namespace Mouse   enum Button
-            class Event
-            {
-                enum EventType
-                union
-                {
-                    struct KeyEvent
-                    struct MouseMoveEvent
-                    struct MouseButtonEvent
-                    struct MouseWheelEvent
-                    struct SizeEvent
-                }
-            }
-
------------------------------------------------------------------------------*/
+/** \file
+    Provide definitions for different event :   <br\>
+        System                                  <br\>
+            namespace Key     enum Code         <br\>
+            namespace Mouse   enum Button       <br\>
+            class Event                         <br\>
+            {                                   <br\>
+                enum EventType                  <br\>
+                union                           <br\>
+                {                               <br\>
+                    struct KeyEvent             <br\>
+                    struct MouseMoveEvent       <br\>
+                    struct MouseButtonEvent     <br\>
+                    struct MouseWheelEvent      <br\>
+                    struct SizeEvent            <br\>
+                }                               <br\>
+            }                                   <br\>
+*/
 
 #ifndef NC_CORE_SYSTEM_EVENT_H_
 #define NC_CORE_SYSTEM_EVENT_H_
@@ -54,6 +52,7 @@ namespace Nc
 {
     namespace System
     {
+        /// Provide Definition of the key codes
         namespace Key
         {
             enum Code
@@ -167,6 +166,7 @@ namespace Nc
             };
         }
 
+        /// Provide Definition of the mouses button code
         namespace Mouse
         {
             enum Button
@@ -181,8 +181,10 @@ namespace Nc
             };
         }
 
+        /// Provide a definition of input event designed especially to manage event of WindowInput
         struct LCORE Event
         {
+            /// Define a key evenement
             struct KeyEvent
             {
                 Key::Code Code;
@@ -191,12 +193,14 @@ namespace Nc
                 bool      Shift;
             };
 
+            /// Define a mouse move evenement
             struct MouseMoveEvent
             {
                 int X;
                 int Y;
             };
 
+            /// Define a mouse button evenement
             struct MouseButtonEvent
             {
                 Mouse::Button Button;
@@ -204,24 +208,27 @@ namespace Nc
                 int           Y;
             };
 
+            /// Define a mouse weel event
             struct MouseWheelEvent
             {
                 int Delta;
             };
 
+            /// Define a size evenement (eg: for resize)
             struct SizeEvent
             {
                 unsigned int Width;
                 unsigned int Height;
             };
 
+            /// Define the type of evenement
             enum EventType
             {
                 Closed,
                 Resized,
                 LostFocus,
                 GainedFocus,
-                TextEntered, // TODO
+                TextEntered, ///\todo implement the text entered event
                 KeyPressed,
                 KeyReleased,
                 MouseWheelMoved,

@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    manage the gl extension
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_CORE_GL_EXTENSION_H_
 #define NC_GRAPHICS_CORE_GL_EXTENSION_H_
@@ -47,17 +42,17 @@
 #endif
 //#define CALL_GLEXT		__stdcall
 /*
-/// draw
+// draw
 #define GL_STATIC_DRAW              0x88E4
 #define GL_STREAM_DRAW              0x88E0
 
-/// buffer
+// buffer
 #define GL_ELEMENT_ARRAY_BUFFER     0x8893
 #define GL_ARRAY_BUFFER             0x8892
 #define GL_READ_WRITE               0x88BA
 #define GL_WRITE_ONLY               0x88B9
 
-/// shader
+// shader
 #ifndef GL_SHADING_LANGUAGE_VERSION
 #define GL_SHADING_LANGUAGE_VERSION 0x8B8C
 #endif
@@ -83,28 +78,32 @@ namespace Nc
     {
         namespace GL
         {
-            // TODO: les instance sont duplique d'une .so a l'autre en utilisant Utils::Singleton
-            class LCORE Extension : public Utils::NonCopyable// : public Utils::Singleton<Extension>
+            /// Manage the OpenGL extensions
+            class LCORE Extension : public Utils::Singleton<Extension>
             {
                 public:
                     virtual ~Extension();
 
-                    static Extension &Instance();
+                    /** Init and load the extensions */
                     bool Init();
 
+                    /** Return the gl info */
                     const GLubyte    *GetInfo(unsigned int type);
 
+                    /** Return true if the given extension name is support */
                     bool    IsSupported(const char *extName);
+                    /** Return true if non power of 2 texture is supported */
                     bool    NonPowerOf2Supported()              {return _supportNonPowerOfTwoTexture;}
 
-                private:
+                protected:
                     Extension();
 
+                    /** Load the given function */
                     void *LoadFunc(const char *functionName);
 
-                    bool        _supportNonPowerOfTwoTexture;
+                    bool        _supportNonPowerOfTwoTexture;   ///< true if we support non power of 2 texture
     /*
-                /// matrix
+                // matrix
                 private:
                     typedef void (CALL_GLEXT *MULTTRANSPOSEMATRIXD_PROC)(const GLdouble m[16]);
                     typedef void (CALL_GLEXT *MULTTRANSPOSEMATRIXF_PROC)(const GLfloat m[16]);
@@ -113,7 +112,7 @@ namespace Nc
                     MULTTRANSPOSEMATRIXD_PROC   MultTransposeMatrixd;
                     MULTTRANSPOSEMATRIXF_PROC   MultTransposeMatrixf;
 
-                /// Texture
+                // Texture
                 private:
                     typedef void (CALL_GLEXT *TEXIMAGE3D_PROC)(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
                     typedef void (CALL_GLEXT *ACTIVETEXTURE_PROC)(GLenum texture);
@@ -128,7 +127,7 @@ namespace Nc
                     UNIFORM4F_PROC              Uniform4f;
                     UNIFORMMATRIX4FV_PROC       UniformMatrix4fv;
 
-                /// buffer
+                // buffer
                 private:
                     typedef void (CALL_GLEXT *GENBUFFERS_PROC)(GLsizei n, GLuint* buffers);
                     typedef void (CALL_GLEXT *BINDBUFFER_PROC)(GLenum target, GLuint buffer);
@@ -153,7 +152,7 @@ namespace Nc
                     ENABLEVERTEXATTRIBARRAY_PROC    EnableVertexAttribArray;
                     DISABLEVERTEXATTRIBARRAY_PROC   DisableVertexAttribArray;
 
-                /// shader functions :
+                // shader functions :
                 private:
                     typedef void (CALL_GLEXT *DELETESHADER_PROC)(GLuint shader);
                     typedef void (CALL_GLEXT *DELETEPROGRAM_PROC)(GLuint program);
@@ -197,16 +196,18 @@ namespace Nc
                     typedef HDC (CALL_GLEXT *WGLGETPBUFFERDC_PROC)(::HPBUFFERARB hPbuffer);
 
                 public:
-                    WGLCHOOSEPIXELFORMAT_PROC   wglChoosePixelFormat;
-                    WGLCREATEPBUFFER_PROC       wglCreatePbuffer;
-                    WGLGETPBUFFERDC_PROC        wglGetPbufferDC;
+                    WGLCHOOSEPIXELFORMAT_PROC   wglChoosePixelFormat;       ///< to choose a pixel format in Win32 System
+                    WGLCREATEPBUFFER_PROC       wglCreatePbuffer;           ///< to create a pbuffer in Win32 System
+                    WGLGETPBUFFERDC_PROC        wglGetPbufferDC;            ///< to get a DC pbuffer in Win32 System
                 #endif
 
-                private:
-                    static Extension   *_instance;
+                friend class Utils::Singleton<Extension>;
             };
         }
     }
+
+    // explicit instantiation
+    static template class Utils::Singleton<Graphic::GL::Extension>;         ///< explicit instanciation of the extention singleton
 }
 
 #endif

@@ -23,60 +23,65 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "GraphicEngine"
-
-                  Moteur permettant la gestion du moteur graphic,
-                    permet la relation avec le graphe de scene
-
-Herite de Engine
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NC_GRAPIHCS_GRAPHIC_ENGINE_H_
 #define NC_GRAPIHCS_GRAPHIC_ENGINE_H_
 
 #include <map>
+
+#include <Nc/Core/Engine/MainEngine.h>
+
 #include "Define.h"
 #include "Scene/SceneGraphManager.h"
 #include "Window/Context/GLContext.h"
 
 namespace Nc
 {
+    /// Base namespace of the 3dNovac Graphical Engine
     namespace Graphic
     {
+        /// The threaded GraphicEngine of 3dNovac
+        /**
+            Helps you to have a rendering thread.
+            The engine has a Window instance and to create it you will need to set the pointer to a member function of the "Main" engine    <br\>
+            The rendering is done with the SceneGraphManager.
+        */
         class LGRAPHICS   Engine : public Nc::Engine::IEngine
         {
             public:
-                typedef void (Nc::Engine::MainEngine::*CreateWindowFunc)(Window *win);
+                typedef void (Nc::Engine::MainEngine::*CreateWindowFunc)(Window *win);      ///< the typedef of the member function pointer used to create the window
 
             public:
                 Engine(Nc::Engine::Manager *manager, CreateWindowFunc func);
                 virtual ~Engine();
 
-                virtual inline void CreateContext();
-                virtual inline void ActiveContext()                         {if (_context != NULL) _context->Active();}
-                virtual inline void DisableContext()                        {if (_context != NULL) _context->Disable();}
-                inline GLContext    *CreateSharedContext()                  {return _context->CreateNewSharedContext();}
-
-            /// accesseurs
-                inline SceneGraphManager        &GetSceneManager()      {return _sceneGraphManager;}
-                inline Window                   *GetWindow()            {return _win;}
-                static unsigned int             GetFPS()                {return (unsigned int)(1./_elapsedTime);}
-
-                virtual void CheckGLVersion();
+                /** Render the scene with the SceneGraphManager, Check the WindowInput Event and update the elapsed time to compute the FPS */
                 virtual void Execute(float runningTime);
 
-            protected:
-                SceneGraphManager       _sceneGraphManager;
+                /** Create and return a GLContext shared with the rendering context (Call the function CreateNewSharedContext of GLContext) */
+                inline GLContext            *CreateSharedContext()              {return _context->CreateNewSharedContext();}
 
-                bool                    _windowCreated;         // permet au thread de savoir si le context de la fenetre a bien ete creer
-                CreateWindowFunc        _createWinFunction;
-                Window                  *_win;
-                GLContext               *_context;
-                static double           _elapsedTime;           // elapsed Time between 2 frame
+            // accessor
+                inline SceneGraphManager    &GetSceneManager()      {return _sceneGraphManager;}                ///< Return the SceneGraphManager used to render the scene
+                inline Window               *GetWindow()            {return _win;}                              ///< Return the window instance used to setup the Window/WindowInput/GLContext
+                static unsigned int         GetFPS()                {return (unsigned int)(1./_elapsedTime);}   ///< Return the current number of frame per second (static, so you could call it anytime)
+
+            protected:
+                /** To Create the GLContext, this function is called by the IEngine */
+                virtual inline void         CreateContext();
+                /** To Active the GLContext, this function is called by the IEngine */
+                virtual inline void         ActiveContext()                     {if (_context != NULL) _context->Active();}
+                /** To Disable the GLContext, this function is called by the IEngine */
+                virtual inline void         DisableContext()                    {if (_context != NULL) _context->Disable();}
+
+                virtual void CheckGLVersion();
+
+                SceneGraphManager       _sceneGraphManager;     ///< The Scene graph manager that is used to render the scene
+
+                CreateWindowFunc        _createWinFunction;     ///< The member function pointer of the "Main" engine used to create the window
+                Window                  *_win;                  ///< The instance of the window
+                GLContext               *_context;              ///< The GL context used to render the scene with the scene graph manager
+                static double           _elapsedTime;           ///< Elapsed Time between 2 frame (in second)
         };
     }
 }

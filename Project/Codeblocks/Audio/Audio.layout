@@ -5,12 +5,12 @@
 		<Cursor1 position="141" topLine="0" />
 	</File>
 	<File name="../../../Nc/Audio/Define.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="141" topLine="0" />
+		<Cursor1 position="1784" topLine="8" />
 	</File>
 	<File name="../../../Nc/Audio/Engine.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="141" topLine="0" />
+		<Cursor1 position="3867" topLine="101" />
 	</File>
 	<File name="../../../Nc/Audio/Engine.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="141" topLine="0" />
+		<Cursor1 position="3231" topLine="59" />
 	</File>
 </CodeBlocks_layout_file>

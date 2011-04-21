@@ -23,13 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "gMatrixAnimation"
-            permet la gestion d'animation simple par matrice sur un objet 3d
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NOVAC_GRAPHIC_MATRIXANIMATION_H_
 #define NOVAC_GRAPHIC_MATRIXANIMATION_H_
@@ -40,6 +33,10 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// To manage simple animation with matrix like Rotation/Translation
+        /**
+            \todo this class should be recode
+        */
         class LGRAPHICS   MatrixAnimation : public Effect
         {
             public:
@@ -47,27 +44,32 @@ namespace Nc
                 MatrixAnimation(Object *o, const TMatrix &transformation = TMatrix());
                 ~MatrixAnimation();
 
+                /** Copy the matrix animation */
                 virtual Effect  *Clone() const      {return new MatrixAnimation(*this);}
 
                 virtual void    Start()             {}
                 virtual void    Stop()              {}
                 virtual bool    Started() const     {return true;}
 
+                /** Reset the anim with the initial matrix */
                 inline void     Reset()                     {if (_object != NULL) _object->Matrix = _initialMatrix;}
+                /** Update the matrix animation */
                 virtual void    Update(float runningTime);
                 virtual void    Render(ISceneGraph *scene)  {}
 
 
                 // accesseurs
+                /** set a pointer object to set it's matrix */
                 inline void     SetObject(Object *o)                            {_object = o; _initialMatrix = _object->Matrix;}
     //            inline void   Transfornation(const mMatrice &m)   {_transformation = m;}    //TODO
+                /** Program a rotatation animation */
                 inline void     Rotation(const Vector3f &axe, float angle)      {_rotation = axe; _angle = angle;}
 
             private:
-                Object          *_object;
-                float           _angle;             // angle de rotation
-                Vector3f        _rotation;          // vecteur de rotation, la matrice de tranformation n'est pas utiliser, il faudrai trouver un moyen d'utiliser le facteur temp
-                TMatrix         _initialMatrix;
+                Object          *_object;           ///< instance to an object that should be animated
+                float           _angle;             ///< Rotation angle
+                Vector3f        _rotation;          ///< Rotation vector. The matrix transformation is not used. We should find a way to use the time factor
+                TMatrix         _initialMatrix;     ///< the initial matrix of the object
         };
     }
 }

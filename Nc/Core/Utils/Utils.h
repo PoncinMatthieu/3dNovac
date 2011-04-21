@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 /** \file
-    include the principal files of the libUtils
+    include the principal files of the lib Nc-Utils
 */
 
 #ifndef NC_CORE_UTILS_UTILS_H_
@@ -44,9 +44,21 @@
 
     namespace Nc
     {
+        /// This namespace provide many usefull classes and function, like Logger, FileName and Singleton
         namespace Utils
         {
         // usefull functions
+            /** template Strlen to use with unicode string for exemple*/
+            template<typename T>
+            std::size_t Strlen(const T *str)
+            {
+                std::size_t len = 0;
+                while (*str++)
+                    len++;
+                return len;
+            }
+
+            /** Delete a container like std::list */
             template<typename T>
             void    DeleteContainer(T &container)
             {
@@ -58,15 +70,15 @@
             }
 
         // usefull templates
-            /** conditional inheritance */
+            /// conditional inheritance
             template<bool T, typename TRUE_CLASS, typename FALSE_CLASS>
             struct IF : TRUE_CLASS {};
 
-            /** specialisation of the struct IF, to make the inheritance with the conditional to false*/
+            /// specialisation of the struct IF, to make the inheritance with the conditional to false
             template<typename TRUE_CLASS, typename FALSE_CLASS>
             struct IF<false, TRUE_CLASS, FALSE_CLASS> : FALSE_CLASS {};
 
-            /** container of type T */
+            /// container of type T
             template<typename T>
             struct Container    { T   Data; };
         }

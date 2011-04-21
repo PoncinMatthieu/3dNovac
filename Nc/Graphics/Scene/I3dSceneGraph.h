@@ -23,10 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_SCENE_I3DSCENEGRAPH_H_
 #define NC_GRAPHICS_SCENE_I3DSCENEGRAPH_H_
@@ -38,23 +34,28 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Interface to render a scene in 3d
+        /**
+            The camera associated to the scene graph is not deleted by the scene graph
+        */
         class LGRAPHICS I3dSceneGraph : public ISceneGraph
         {
             public:
                 I3dSceneGraph(Camera3d *camera);
                 virtual ~I3dSceneGraph();
 
+                /// Used to update the projection and view matrix
                 virtual void     SetCurrentScene();
 
-                /// Set the Camera3d
+                /// Set the 3d Camera, it used to update the projection and view matrix
                 inline void                 SetCamera(Camera3d* aCamera)    {_camera = aCamera;}
 
-                /// Return the camera (the camera is deleted in the Basic3dRenderer in the destructor)
+                /// Return the camera
                 inline Camera3d             *GetCamera()                    {return _camera;}
                 inline const Camera3d       *GetCamera() const              {return _camera;}
 
             protected:
-                Camera3d      *_camera;
+                Camera3d      *_camera;     ///< the 3d Camera used to update the projection and view matrix
         };
     }
 }

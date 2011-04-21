@@ -33,14 +33,15 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Define a basic SceneGraph to renderer a scene in 3 dimension.
         /**
-            Define a basic SceneGraph to renderer a scene in 3 dimension,
-            the Basic3dSceneGraph is an ISceneGraph used by the SceneGraphManager to render the scene
-
-            Could be redefine to render some specifique renderering effect like postprocessing/preprocessing effect
-
-            The basic 3d SceneGraph Could be see as a container of drawable object witch describe and used to renderer the scene.
-            But the Objects contained be the Basic3dSceneGraph are not deleted when the scene is destroyed !
+            The Basic3dSceneGraph is an I3dSceneGraph used by the SceneGraphManager to render the scene. <br/>
+            <br/>
+            Could be redefine to render some specifique renderering effect like preprocessing/postprocessing effect. <br/>
+            <br/>
+            The basic 3d SceneGraph Could be see as a container of drawable Object witch describe and used to renderer the scene.
+            But the Objects contained be the Basic3dSceneGraph are not deleted when the scene is destroyed ! <br/>
+            Unfortunately there are no routine or abstraction to manage any frustum or space partitionning.
         */
         class LGRAPHICS Basic3dSceneGraph : public I3dSceneGraph
         {
@@ -79,12 +80,12 @@ namespace Nc
                 virtual void                Update(float runningTime);
 
             protected:
-                ListPObject             _listObject;
-                ListPLight              _listLight;
-                ListPEffect             _listEffect;
-                System::Mutex           _mutex;
+                ListPObject             _listObject;        ///< the list of object used to render the scene
+                ListPLight              _listLight;         ///< the list of light used by the DefaultLightingMaterial
+                ListPEffect             _listEffect;        ///< the list of effect
+                System::Mutex           _mutex;             ///< the mutex witch protect the lists
 
-                Color                   _colorAmbiant;
+                Color                   _colorAmbiant;      ///< the color that used by DefaultLightingMaterial
 
 //                Fog                     _fog;               // objet permettant la gestion du fog
         };

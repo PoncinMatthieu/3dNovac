@@ -38,9 +38,9 @@ TextBox::TextBox(const std::string &label, const Vector2f &pos, const Vector2f &
     _margin.Data[0] = 4;
     _font = new Graphic::String("", size.Data[1], Color(1, 1, 1), ttf);
 
-    _geometry.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_geometry);
-    _geometry.SetPrimitiveType(GL_LINE_LOOP);
+    _drawable.GetVBO().Init(4, GL_STREAM_DRAW);
+    _materialColored2d->Configure(_drawable);
+    _drawable.SetPrimitiveType(GL_LINE_LOOP);
 }
 
 TextBox::~TextBox()
@@ -63,7 +63,7 @@ void    TextBox::Copy(const TextBox &w)
 {
     Widget::Copy(w);
     _font = new Graphic::String(*w._font);
-    _text = w._text;
+    _drawable = w._drawable;
 }
 
 void    TextBox::Update()
@@ -79,7 +79,7 @@ void    TextBox::Update()
     vertices[1].Fill(_label->Size().Data[0], _size.Data[1], c);
     vertices[2].Fill(_label->Size().Data[0] + _size.Data[0], _size.Data[1], c);
     vertices[3].Fill(_label->Size().Data[0] + _size.Data[0], 0, c);
-    _geometry.GetVBO().UpdateData(vertices.Data);
+    _drawable.GetVBO().UpdateData(vertices.Data);
 
     _font->Matrix.Translation(_label->Size().Data[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 }
@@ -87,7 +87,7 @@ void    TextBox::Update()
 void TextBox::Draw(Graphic::ISceneGraph *scene)
 {
     WidgetLabeled::Draw(scene);
-    _materialColored2d->Render(scene, _geometry, _config);
+    _materialColored2d->Render(scene, _drawable);
     _font->Render(scene);
 }
 
@@ -95,31 +95,27 @@ void TextBox::KeyboardEvent(const System::Event &event)
 {
     if (event.Type == System::Event::KeyPressed)
     {
-        if (event.Key.Code == System::Key::Back && !_text.empty()) // suppression du dernier caractere
+        if (event.Key.Code == System::Key::Back && !_font->Text().empty()) // suppression du dernier caractere
         {
-            _text.erase(_text.end() - 1);
-            _font->Text(_text.c_str());
+            Utils::Unicode::UTF32 s = _font->Text();
+            s.erase(s.end() - 1);
+            _font->Text(s);
         }
         else
         {
-            char c = WindowInput::ToChar(event.Key.Code);
+            UInt32 c = (UInt32)WindowInput::ToChar(event.Key.Code);
             if (c != '\0' && _font->Size().Data[0] + _font->GetCharSize(c).Data[0] < _size.Data[0]) // ajout du caractere dans la string)
             {
-                _text += c;
-                _font->Text(_text.c_str());
+                Utils::Unicode::UTF32 s = _font->Text();
+                s += c;
+                _font->Text(s);
             }
         }
         _stateChange = true;
     }
 }
 
-void TextBox::Text(const string &t)
+void TextBox::GetData(std::string &data)
 {
-    _text = t;
-    _font->Text(_text.c_str());
-}
-
-string TextBox::GetData()
-{
-    return _text;
+    data = _font->Text().ToStdString();
 }

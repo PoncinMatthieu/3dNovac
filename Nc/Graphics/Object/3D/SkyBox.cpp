@@ -35,8 +35,8 @@ SkyBox::SkyBox(const Camera3d *camera, const Utils::FileName filenames[])
     : Object3d(false), _material(&Material<BasicVertexType::Textured3d>::Instance()), _camera(camera)
 {
     // load la cubemap et disable le test de profondeur
-    _config.Texture.LoadCubeMap(filenames);
-    _config.DepthTest = false;
+    _drawable.texture.LoadCubeMap(filenames);
+    _drawable.depthTest = false;
 
     // construction de la geometry
     UpdateGeometry();
@@ -57,7 +57,7 @@ void SkyBox::TransformModelMatrixToRender(ISceneGraph *scene)
 
 void SkyBox::Draw(ISceneGraph *scene)
 {
-    _material->Render(scene, _geometry, _config);
+    _material->Render(scene, _drawable);
 }
 
 void SkyBox::UpdateGeometry()
@@ -92,7 +92,7 @@ void SkyBox::UpdateGeometry()
     indices[30] = 1; indices[31] = 5; indices[32] = 4;  // y-
     indices[33] = 1; indices[34] = 4; indices[35] = 0;
 
-    _geometry.SetGeometry(GL::VertexBuffer<BasicVertexType::Textured3d>(vertices, GL_STATIC_DRAW), GL::IndexBuffer(indices, 3));
-    _geometry.SetPrimitiveType(GL_TRIANGLES);
-    _material->Configure(_geometry);
+    _drawable.SetGeometry(GL::VertexBuffer<BasicVertexType::Textured3d>(vertices, GL_STATIC_DRAW), GL::IndexBuffer(indices, 3));
+    _drawable.SetPrimitiveType(GL_TRIANGLES);
+    _material->Configure(_drawable);
 }

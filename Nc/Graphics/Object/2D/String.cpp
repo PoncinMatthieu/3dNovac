@@ -33,8 +33,9 @@ using namespace Nc;
 String::MapFont         String::_mapFont;
 System::Mutex           String::_mutex;
 
-String::String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color &color, const std::string &ttf, unsigned long style)
-    : Object2d(), _material(&Material<BasicVertexType::Textured2d>::Instance()), _materialUnderline(&Material<BasicVertexType::Colored2d>::Instance())
+String::String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color &color, const std::string &ttf, const Utils::Mask<Style> &style)
+    : Object2d(), _material(&Material<BasicVertexType::Textured2d>::Instance()), _materialUnderline(&Material<BasicVertexType::Colored2d>::Instance()),
+      _needUpdate(true), _needUpdateSize(true), _text(text), _style(style), _charSize(size), _color(color)
 {
     // search the font in the map
     MapFont::iterator it = _mapFont.find(ttf);
@@ -47,18 +48,12 @@ String::String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color
     else
         _font = it->second;
 
-    _config.Blend = GL::Blend::Alpha;
-    _config.Texture = _font->Bitmap();
+    _drawable.SetBlend(GL::Blend::Alpha);
+    _drawable.texture = _font->Bitmap();
 
-    _text = text;
-    _color = color;
-    _style = style;
-    _charSize = size;
-
-    _geometry.GetVBO().Init(); // force la creation du buffer, pour eviter que ce soit fait dans l'update geometry
-    _materialUnderline->Configure(_geometryUnderline);
-    _material->Configure(_geometry);
-    _needUpdate = _needUpdateSize = true;
+    _drawable.GetVBO().Init(); // force la creation du buffer, pour eviter que ce soit fait dans l'update geometry
+    _material->Configure(_drawable);
+    _materialUnderline->Configure(_drawableUnderline);
 }
 
 String::~String()
@@ -72,13 +67,13 @@ void    String::Render(ISceneGraph *scene)
         if (_needUpdate)
             UpdateGeometry();
         TMatrix m = scene->ModelMatrix() * Matrix * _matrixText;
-        _material->Render(scene, m, _geometry, _config);
-        if (_style & Underlined)
-            _materialUnderline->Render(scene, m, _geometryUnderline, _configUnderline);
+        _material->Render(scene, m, _drawable);
+        if (_style.Enabled(Underlined))
+            _materialUnderline->Render(scene, m, _drawableUnderline);
     }
 }
 
-Vector2f String::GetCharSize(char c) const
+Vector2f String::GetCharSize(UInt32 c) const
 {
     float           factor = _charSize / _font->BaseSize();
     const Glyph     *r = _font->GetGlyph(c);
@@ -96,7 +91,7 @@ void String::UpdateGeometry()
     unsigned int        nbVertices = 6 * _text.size(), noVertice = 0, noBackSlashN = 0;
     float               thickness = 0;
 
-    if (_style & Bold)
+    if (_style.Enabled(Bold))
         nbVertices += 6 * 4 * _text.size();
 
     // construit les arrays de vertices
@@ -104,10 +99,10 @@ void String::UpdateGeometry()
     Array<BasicVertexType::Colored2d>       underlines;
 
     // Holds the lines to draw later, for underlined style
-    if (_style & Underlined)
+    if (_style.Enabled(Underlined))
     {
         underlines.InitSize((_text.CharCount('\n') + 1) * 6);
-        thickness = (_style & Bold) ? 3.f : 2.f;
+        thickness = (_style.Enabled(Bold)) ? 3.f : 2.f;
     }
 
     _matrixText.Translation(0.f, -baseSize, 0.f);
@@ -117,7 +112,7 @@ void String::UpdateGeometry()
     float X = 0.f, Y = baseSize;
 
     // Compute the shearing to apply if we're using the italic style
-    float italicCoeff = (_style & Italic) ? 0.208f : 0.f; // 12 degrees
+    float italicCoeff = (_style.Enabled(Italic)) ? 0.208f : 0.f; // 12 degrees
 
     // Draw one quad for each character
     for (std::size_t i = 0; i < _text.size(); ++i)
@@ -131,7 +126,7 @@ void String::UpdateGeometry()
 
         // If we're using the underlined style and there's a new line,
         // we keep track of the previous line to draw it later
-        if ((curChar == L'\n') && (_style & Underlined))
+        if ((curChar == L'\n') && (_style.Enabled(Underlined)))
         {
             underlines.Data[noBackSlashN++].Fill(0, Y - 2, _color);
             underlines.Data[noBackSlashN++].Fill(0, Y - 2 + thickness, _color);
@@ -168,7 +163,7 @@ void String::UpdateGeometry()
 
         // If we're using the bold style, we must render the character 4 more times,
         // slightly offseted, to simulate a higher weight
-        if (_style & Bold)
+        if (_style.Enabled(Bold))
         {
             static const float OffsetsX[] = {-0.5f, 0.5f, 0.f, 0.f};
             static const float OffsetsY[] = {0.f, 0.f, -0.5f, 0.5f};
@@ -195,7 +190,7 @@ void String::UpdateGeometry()
     _mutex.Unlock();
 
     // Add the last line (which was not finished with a \n)
-    if (_style & Underlined)
+    if (_style.Enabled(Underlined))
     {
         underlines.Data[noBackSlashN++].Fill(0, Y - 2, _color);
         underlines.Data[noBackSlashN++].Fill(0, Y - 2 + thickness, _color);
@@ -206,14 +201,14 @@ void String::UpdateGeometry()
         underlines.Data[noBackSlashN++].Fill(0, Y - 2, _color);
 
         underlines.UnderSize(noBackSlashN); // resize the buffer, to be sure that we render the good number of vertices
-        _geometryUnderline.GetVBO().UpdateData(underlines, GL_STATIC_DRAW);
+        _drawableUnderline.GetVBO().UpdateData(underlines, GL_STATIC_DRAW);
     }
 
     vertices.UnderSize(noVertice); // resize the buffer, to be sure that we render the good number of vertices
-    _geometry.GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
+    _drawable.GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
 }
 
-void String::RecomputeRect()
+void String::RecomputeSize()
 {
     _mutex.Lock();
 
@@ -273,18 +268,18 @@ void String::RecomputeRect()
     height += curHeight;
 
     // Add a slight width / height if we're using the bold style
-    if (_style & Bold)
+    if (_style.Enabled(Bold))
     {
         width  += 1 * factor;
         height += 1 * factor;
     }
 
     // Add a slight width if we're using the italic style
-    if (_style & Italic)
+    if (_style.Enabled(Italic))
         width += 0.208f * _charSize;
 
     // Add a slight height if we're using the underlined style
-    if ((_style & Underlined) && (Math::Abs(curHeight) < _charSize + 4 * factor))
+    if ((_style.Enabled(Underlined)) && (Math::Abs(curHeight) < _charSize + 4 * factor))
         height += 4 * factor;
 
     // Finally update the rectangle

@@ -35,17 +35,12 @@ MainEngine::MainEngine(Manager *manager, unsigned int pattern, unsigned char del
     : IEngine("Game Engine", manager, pattern, deletePriority, loadingContextPriority, loadingPriority)
 {
 }
-/*
-void  MainEngine::CreateWindow(System::Window *win)
-{
-    win->Create("3dNovac", Vector2ui(800, 600), Nc::System::Window::Titlebar | Nc::System::Window::Closeable | Nc::System::Window::Resizeable, "icone.png", 3);
-}
-*/
+
 MainEngine::~MainEngine()
 {
 }
 
-void MainEngine::Execute(float runningTime)        // This is a hack to force some windows managers to disable resizing
+void MainEngine::Execute(float runningTime)
 {
     ManageWindowEvents(runningTime);// maj des event window
     Update(runningTime);
@@ -53,7 +48,7 @@ void MainEngine::Execute(float runningTime)        // This is a hack to force so
 
 void MainEngine::ManageWindowEvents(float runningTime)
 {
-/// traitement des evenements de la fenetre
+// traitement des evenements de la fenetre
     System::Event event;
 
     while (PollEvent(event))
@@ -80,5 +75,5 @@ void MainEngine::ManageWindowEvent(System::Event &event, float runningTime)
 void MainEngine::Quit()
 {
     if (ReleaseContent())
-        _manager->Stop(0);
+        _manager->Stop();
 }

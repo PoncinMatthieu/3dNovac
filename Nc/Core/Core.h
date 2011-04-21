@@ -36,9 +36,4 @@
     #include "Math/Math.h"
     #include "System/System.h"
 
-    #include "Engine/EventManager.h"
-    #include "Engine/Handler.h"
-    #include "Engine/Manager.h"
-    #include "Engine/MainEngine.h"
-
 #endif // NC_CORE_CORE_H_

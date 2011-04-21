@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Provide a Sprite
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_2D_SPRITE_H_
 #define NC_GRAPHICS_2D_SPRITE_H_
@@ -39,6 +34,10 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Provide a way to display sprites
+        /**
+            A sprite is defined by a size, a texture, a box that delimit the sprite in the texture and finaly a blend pattern
+        */
         class LGRAPHICS Sprite : public Object2d
         {
             public:
@@ -46,26 +45,32 @@ namespace Nc
                 virtual ~Sprite() {};
 
                 // accessors
-                inline const GL::Texture    &GetTexture() const         {return _config.Texture;}
+                /** Return the texture */
+                inline const GL::Texture    &GetTexture() const         {return _drawable.texture;}
+                /** Return the box texture */
                 inline const Box2f          &TextureBox() const         {return _textureBox;}
+                /** Set the box texture */
                 inline void                 TextureBox(const Box2f &b)  {_needUpdate = true; _textureBox = b;}
+                /** Return the size of the sprite */
                 inline const Vector2f       Size() const                {return _spriteSize;}
+                /** Set the size of the sprite */
                 inline void                 Size(const Vector2f &v)     {_needUpdate = true; _spriteSize = v;}
 
+                /** Render the sprite */
                 virtual void Render(ISceneGraph *scene);
 
             protected:
+                /** Update the geometry of the sprite */
                 void    UpdateGeometry();
 
             protected:
-                Material<BasicVertexType::Textured2d>                   *_material;
-                MaterialConfig<BasicVertexType::Textured2d>             _config;
-                GL::GeometryBuffer<BasicVertexType::Textured2d, false>  _geometry;
+                Material<BasicVertexType::Textured2d>                   *_material;     ///< the instance of the rendering material
+                Drawable<BasicVertexType::Textured2d, false>            _drawable;      ///< the drawable used to render the sprite
 
-                bool        _needUpdate;
-                Vector2f    _spriteSize;    // size of the sprite
-                Box2f       _textureBox;    // the box in the texture
-                Color       _color;         // color of the vertexs
+                bool        _needUpdate;        ///< set at true if the geometry needs to be updated
+                Vector2f    _spriteSize;        ///< size of the sprite
+                Box2f       _textureBox;        ///< the box in the texture
+                Color       _color;             ///< color of the vertexs
         };
     }
 }

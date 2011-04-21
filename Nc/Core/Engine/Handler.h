@@ -23,39 +23,45 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                Implementation de la classe abstraite "Handle"
-
-    permet au classes filles de generer des evenements sur les engines voulu
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_ENGINE_HANDLER_H_
 #define NC_CORE_ENGINE_HANDLER_H_
 
 #include "../Define.h"
 #include "../Utils/Utils.h"
+#include "Manager.h"
 
 namespace Nc
 {
     namespace Engine
     {
+        /// Used to simplify the sending of events to an Engine
+        /**
+            Inherite of this class to use it.
+        */
         class LCORE Handler
         {
             public:
                 Handler();
                 Handler(const std::string &engineName, unsigned int id);
 
+                /** Set the name of the engine to send the event */
                 inline void HandlerEngineName(const std::string &name)      {_engineName = name;}
-                inline void HandlerId(unsigned int id)                      {_idCmd = id;}
+                /** \return the EngineName to send the event */
+                inline const std::string    &HandlerEngineName() const      {return _engineName;}
 
-                inline const std::string    &HandlerEngineName()            {return _engineName;}
-                inline unsigned int         HandlerId()                     {return _idCmd;}
+                /** Set the Id of the Cmd to send */
+                inline void HandlerId(unsigned int id)                      {_idCmd = id;}
+                /** \return the Id of the Cmd to send */
+                inline unsigned int         HandlerId() const               {return _idCmd;}
 
             protected:
-                std::string     _engineName;
-                unsigned int    _idCmd;
+                /** Send to the GameManager an event, the GameManager will redispatch the event */
+                template<typename T>
+                void SendEvent(T &arg)                                      {Manager::PushEvent(_engineName, _idCmd, arg);}
+
+                std::string     _engineName;    ///< The name of the engine to send the event
+                unsigned int    _idCmd;         ///< The id of the cmd to send
         };
     }
 }

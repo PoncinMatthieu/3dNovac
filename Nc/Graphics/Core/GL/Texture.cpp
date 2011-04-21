@@ -31,7 +31,6 @@ using namespace Nc;
 using namespace Nc::Graphic::GL;
 
 unsigned int Texture::_currentBind = 0;
-int          Texture::_currentType = -1;
 int          Texture::_maxSize = -1;
 
 Texture::Texture() : Object()
@@ -59,11 +58,6 @@ void  Texture::Enable() const
 {
     if (_type >= 0)
     {
-        if (_currentType != _type)
-        {
-            _currentType = _type;
-            glEnable(_type);
-        }
         if (_currentBind != _texture)
         {
             _currentBind = _texture;
@@ -74,8 +68,8 @@ void  Texture::Enable() const
 
 void  Texture::Disable() const
 {
-    _currentType = 0;
-    glDisable(_type);
+    // do nothing (maybe we will need to have a method to force the unbind ?)
+    //glBindTexture(_type, 0);
 }
 
 int Texture::MaxSize()
@@ -107,10 +101,10 @@ void Texture::LoadFromFile(const Utils::FileName &file, bool useMipMap)
 {
 // Load the image and reverse it
     Image image;
-    image.LoadFromFile(file.Fullname());
+    image.LoadFromFile(file);
     image.Reverse();
 
-    LoadFromImage(image, useMipMap, file.Fullname());
+    LoadFromImage(image, useMipMap, file);
 }
 
 void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::string &name)
@@ -216,26 +210,32 @@ void Texture::GenereSphereMap(const unsigned int d)
     NewRef();
 
     float           *data;
-    unsigned int    size = d * d * d * 3;
-    float           length, size2 = ((float)d)/2.0f;
+    unsigned int    sizeTotal = d * d * d * 3;
+    float           length;
+    float           radius = ((float)d)/2.0f;
 
     if (d < 1)
         throw Utils::Exception("Texture", "Can't gernerate a SphereMap with a raduis lower than 1");
 
     // creation des donnees de la texture
-    data = new float[size];
-    for (unsigned int i = 0; i < size; i++) // reset la map de noir
-        data[i] = 0;
+    data = new float[sizeTotal];
+    memset(data, 0, sizeTotal * sizeof(float)); // reset la map de noir
     for (float i = 0; i < d; i++) // remplit la sphere
+    {
         for (float j = 0; j < d; j++)
+        {
             for (float k = 0; k < d; k++)
             {
-                length = ((size2-1) - sqrt(pow(i-size2, 2) + pow(j-size2, 2) + pow(k-size2, 2)));
-                length /= size2;
-                data[(int)i*d*d*3 + (int)j*d*3 + (int)k*3] = length;
-                data[(int)i*d*d*3 + (int)j*d*3 + (int)k*3 + 1] = length;
-                data[(int)i*d*d*3 + (int)j*d*3 + (int)k*3 + 2] = length;
+                length = ((radius-1) - sqrt(pow(i-radius, 2) + pow(j-radius, 2) + pow(k-radius, 2)));
+                length /= radius;
+
+                int offset = (i*d*d*3) + (j*d*3) + (k*3);
+                data[offset] = length;
+                data[offset + 1] = length;
+                data[offset + 2] = length;
             }
+        }
+    }
     // creation de la texture
     _type = GL_TEXTURE_3D;
     glGenTextures(1, &_texture);

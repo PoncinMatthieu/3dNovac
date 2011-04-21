@@ -23,13 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Provide an interface for the gestion of a window
-    Provide usefull function for the managing of a window
-//TODO: Actually we can't manage more than one window
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_WINDOW_WINDOW_H_
 #define NC_GRAPHICS_WINDOW_WINDOW_H_
@@ -46,54 +39,81 @@ namespace Nc
         class WindowInput;
         class ICursor;
 
+        /// Interface to create and manage a window for multiarchi
+        /**
+            \todo Actually we can't manage more than one window
+        */
         class LCORE Window : public Utils::NonCopyable
         {
             public:
                 enum PATTERN
                 {
-                    Resizeable  =   1 << 0,         /// set the window resizable
-                    Fullscreen  =   1 << 1,         /// fullscreen mode
-                    Titlebar    =   1 << 2,         /// show the Titlebar
-                    Closeable   =   1 << 3          /// set the window closable
+                    Resizeable  =   1 << 0,         ///< set the window resizable
+                    Fullscreen  =   1 << 1,         ///< fullscreen mode
+                    Titlebar    =   1 << 2,         ///< show the Titlebar
+                    Closeable   =   1 << 3          ///< set the window closable
                 };
 
             public:
                 Window() : _isCreate(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)  {}
                 virtual ~Window() {}
 
-                // return true if the Window is create
+                /** Return true if the Window is create */
                 virtual bool        IsCreate() const  {return _isCreate;}
 
-                // interface to create the window with the suitable attribute
+                /** Interface to create the window with the suitable attributes */
                 virtual void        Create(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel) = 0;
+
+                /** Interface to create a Window instance using an existing window (for Qt by exemple) */
                 virtual void        UseExistingWindow(void *disp, int winId, const Math::Vector2ui &size, unsigned int antialiasingLevel) = 0;
+
+                /** Create and return a new GLContext associated to the window */
                 virtual GLContext  *CreateGLContext() = 0;
 
-                // close the window
+                /** close the window */
                 virtual void        Close() = 0;
 
                 // accessor
+                /** Set an Icon to the window with the given image filename */
                 virtual bool                    SetIcon(const Utils::FileName &f) = 0;
+
+                /** Resize the window */
                 virtual void                    Resize(unsigned int width, unsigned int height) = 0;
+
+                /** Return the width of the window */
                 static inline unsigned int		Width()                 {return _width;}
+
+                /** Return the height of the window */
                 static inline unsigned int		Height()                {return _height;}
+
+                /** Return the window input associated */
                 inline WindowInput              *GetInput()             {return _input;}                // get a pointer to a Windowinput who manage the inputs of a window
+
+                /** return false if the window use an existing window (Created with the method UseExistingWindow) */
                 inline bool                     IsOwn()                 {return _own;}
+
+                /** Return the antialiasing level available, this could be smaller than the level you put in the Create method */
                 inline unsigned int             AntialiasingLevel()     {return _antialisingLevel;}
+
+                /** Return the default cursor */
                 inline ICursor                  *DefaultCursor()        {return _defaultCursor;}
+
+                /** Return the activated cursor */
                 inline ICursor                  *CurrentCursor()        {return _currentCursor;}
+
+                /** create and return a New Cursor */
                 virtual ICursor                 *NewCursor() = 0;
 
             protected:
-                bool                    _isCreate;
-                static unsigned int     _width;
-                static unsigned int     _height;
-                GLContext               *_context;
-                WindowInput             *_input;
-                bool                    _own;
-                unsigned int            _antialisingLevel;
-                ICursor                 *_defaultCursor;
-                ICursor                 *_currentCursor;
+                bool                    _isCreate;          ///< true if the window has been created
+                static unsigned int     _width;             ///< the width of the window (shouldn't be static if we want a multi-window managing)
+                static unsigned int     _height;            ///< the height of the window (shouldn't be static if we want a multi-window managing)
+                GLContext               *_context;          ///< the associated OpenGL context
+                WindowInput             *_input;            ///< the window input associated
+                bool                    _own;               ///< false if the window use an existing window (Created with the method UseExistingWindow) */
+                unsigned int            _antialisingLevel;  ///< the antialising level of the window
+                ICursor                 *_defaultCursor;    ///< instance of the default cursor of the window
+                ICursor                 *_currentCursor;    ///< instance of the current cursor activated
 
                 friend class WindowInput;
         };

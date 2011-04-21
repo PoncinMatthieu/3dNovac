@@ -24,6 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
+#include <Nc/Core/Engine/Manager.h>
 #include "Console.h"
 
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>

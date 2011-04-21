@@ -23,18 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-
-                    Implementation de la classe "Object3d"
-
-        Classe de base permettant de definir un objet graphique 3D,
-                        contient une list de meshs
-
-Hérite de Object
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NOVAC_GRAPHIC_OBJECT3D_H_
 #define NOVAC_GRAPHIC_OBJECT3D_H_
@@ -48,16 +36,20 @@ namespace Nc
     {
         class BoundingBox;
 
+        /// Base class to define a 3d graphical object
+        /**
+            A 3d object can have childs and parent 3d objects, maybe we should put this feature on the Graphic::Object insteed of Graphic::Object3d ?
+        */
         class LGRAPHICS Object3d : public Object
         {
             public:
-                //Object3d(std::list<Mesh*> &listMesh, const Box3f &box = Box3f(), const TMatrix &mat = TMatrix::Identity);
-                //Object3d(Mesh *mesh);
+                Object3d(const Box3f &box, const TMatrix &mat = TMatrix::Identity);
                 Object3d(bool createBox = true);
                 Object3d(const Object3d &O);
                 Object3d &operator = (const Object3d &O);
                 virtual ~Object3d();
 
+                /** Copy the objet */
                 virtual Object3d        *Clone() const              {return new Object3d(*this);}
 
                 /** Render the Box, to redefine in your own object3D */
@@ -68,31 +60,38 @@ namespace Nc
                 //virtual void            UpdateBoundingBox();
 
                 //accesseurs
-                inline ListPObject3D    &Childs()                   {return _listChild;}
+                /** Return the childs */
+                inline ListPObject3d    &Childs()                   {return _listChild;}
+                /** Add a child, and set the parent of the child */
                 void                    AddChild(Object3d *o);
-                inline void             SetParent(Object3d *p)      {_parent = p;}
+                /** Return the parent */
                 inline Object3d         *Parent()                   {return _parent;}
+                /** Set the parent */
+                inline void             SetParent(Object3d *p)      {_parent = p;}
 
                 // operations sur la matrice
+                /** Scale the object with the given height */
                 void                    HeightScale(float height); // /!\ metre a jour la bounding box avant
                 //void                    PosBase(Vector3f &CenterBase);
+                /** Compute the recursive model matrix with the parents matrix */
                 void                    ComputeReelMatrix(TMatrix &m);
 
-                // box
+                /** Return the box of the object */
                 const Box3f             &Box() const;
 
             protected:
-                /** draw the object, to redefine */
+                /** draw the object, display the box if needed, to redefine */
                 virtual void            Draw(ISceneGraph *);
 
+                /** Transform the scene model matrix before rendering the object, could be redefine */
                 virtual inline void     TransformModelMatrixToRender(ISceneGraph *scene)    {scene->ModelMatrix().AddTransformation(Matrix);}
 
-                Object3d(const Box3f &box, const TMatrix &mat = TMatrix::Identity);
+                /** free the object, delete childs and box */
                 void Free();
 
-                ListPObject3D       _listChild;
-                Object3d            *_parent;
-                BoundingBox         *_box;
+                ListPObject3d       _listChild;         ///< list of child
+                Object3d            *_parent;           ///< parent of the object
+                BoundingBox         *_box;              ///< the box of the object
         };
     }
 }

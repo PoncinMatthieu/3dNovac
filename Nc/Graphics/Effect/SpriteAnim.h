@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Provide a Sprite Animation
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_2D_SPRITE_ANIM_H_
 #define NC_GRAPHICS_2D_SPRITE_ANIM_H_
@@ -39,6 +34,10 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Provide a Sprite Animation Frame to render and manage an animation of sprites `SpriteAnim`
+        /**
+            It's simpli a container of sprite, a frame is composed of one sprite, so the Animation class will animate his collection of frames
+        */
         struct LGRAPHICS SpriteAnimFrame : public AnimationFrame
         {
             SpriteAnimFrame(AnimationFrame::Pattern p, double d) : AnimationFrame(p, d), sprite(NULL) {}
@@ -55,13 +54,13 @@ namespace Nc
                 return *this;
             }
 
+            /** Update the sprite */
             virtual void Update(float runningTime);
+            /** Render the sprite */
             virtual void Render(ISceneGraph *scene);
 
-            Sprite      *sprite;
+            Sprite      *sprite;        ///< the sprite of the frame
         };
-
-        typedef Animation<SpriteAnimFrame>  SpriteAnim;
     }
 }
 

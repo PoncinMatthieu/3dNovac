@@ -23,12 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------
-
-    class Vector3D<T>
-    Define a vector 3d with the data T
-
---------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_MATH_VECTOR3D_INCLUDED_H_
 #define NC_CORE_MATH_VECTOR3D_INCLUDED_H_
@@ -41,7 +35,7 @@ namespace Nc
     {
         /// To manipulate 3 composante of type T
         template<typename T>
-        class /*LINK_OPTION_BREP*/ Vector3D : public Vector<T,3>
+        class Vector3D : public Vector<T,3>
         {
             public:
                 Vector3D() : Vector<T,3>()  {};
@@ -53,8 +47,10 @@ namespace Nc
                 template<typename U>
                 Vector3D    &operator = (const Vector3D<U> &v);
 
+                /** Initialize the values of the vector */
                 void    Init(const T &x = 0, const T &y = 0, const T &z = 0);
 
+                /** Compute the crossProduct with `v` in `result` */
                 void    Cross(const Vector3D &v, Vector3D<T> &result) const;
 
                 const T   &X() const    {return Vector<T,3>::Data[0];}

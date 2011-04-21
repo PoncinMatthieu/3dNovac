@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    namespace to create some basic mesh
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHIC_BASICMESHCREATOR_H_
 #define NC_GRAPHIC_BASICMESHCREATOR_H_
@@ -38,11 +33,20 @@ namespace Nc
 {
     namespace Graphic
     {
-        namespace LGRAPHICS BasicMeshCreator
+        /// Reference some usefull function used to create simple Mesh like Repere
+        namespace BasicMeshCreator
         {
-            // cree un repere :   rouge:X     bleu:Y      vert:Z
-            Object3d *Repere(float echelle, const Vector3f &center = Vector3f(0,0,0));
-            Object3d *Repere(const Vector3f &echelle, const Vector3f &center = Vector3f(0,0,0));
+            /**
+                Create a repere with this color sheme : Red:X  Blue:Y Green:Z
+                \return the corresponding Mesh
+            */
+            Object3d *Repere(float scale, const Vector3f &center = Vector3f(0,0,0));
+
+            /**
+                Create a repere with this color sheme : Red:X  Blue:Y Green:Z
+                \return the corresponding Mesh
+            */
+            Object3d *Repere(const Vector3f &scale, const Vector3f &center = Vector3f(0,0,0));
         }
     }
 }

@@ -32,7 +32,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 Basic3dSceneGraph::Basic3dSceneGraph(Camera3d *camera)
-    : I3dSceneGraph(camera), _colorAmbiant(51, 51, 51, 0)
+    : I3dSceneGraph(camera), _colorAmbiant(0.2, 0.2, 0.2, 0)
 {}
 
 Basic3dSceneGraph::~Basic3dSceneGraph()
@@ -82,11 +82,11 @@ void Basic3dSceneGraph::Render()
     _mutex.Lock(); // lock la mutex
     try
     {
-        /// Fixe la camera :
+        // Fixe la camera :
         _camera->Fix();
         _camera->Render(this);
 
-        /// rend les objets un par un
+        // rend les objets un par un
         if (!_listObject.empty() || !_listLight.empty() || !_listEffect.empty())
         {
             for(ListPObject::iterator it = _listObject.begin(); it != _listObject.end(); it++)

@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-D_DEBUG" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -70,8 +71,7 @@
 		<Unit filename="../../../Nc/Core/System/Input/InputManager.h" />
 		<Unit filename="../../../Nc/Core/System/Object.cpp" />
 		<Unit filename="../../../Nc/Core/System/Object.h" />
-		<Unit filename="../../../Nc/Core/System/Plugin.cpp" />
-		<Unit filename="../../../Nc/Core/System/Plugin.h" />
+		<Unit filename="../../../Nc/Core/System/PluginLoader.h" />
 		<Unit filename="../../../Nc/Core/System/System.h" />
 		<Unit filename="../../../Nc/Core/Utils/Clock.h" />
 		<Unit filename="../../../Nc/Core/Utils/Convert.h" />
@@ -84,6 +84,7 @@
 		<Unit filename="../../../Nc/Core/Utils/IntrusiveSmartPointer.h" />
 		<Unit filename="../../../Nc/Core/Utils/Logger.cpp" />
 		<Unit filename="../../../Nc/Core/Utils/Logger.h" />
+		<Unit filename="../../../Nc/Core/Utils/Mask.h" />
 		<Unit filename="../../../Nc/Core/Utils/NonCopyable.h" />
 		<Unit filename="../../../Nc/Core/Utils/Singleton.h" />
 		<Unit filename="../../../Nc/Core/Utils/SmartPointer.h" />
@@ -97,6 +98,7 @@
 		<Unit filename="../../../Nc/Core/Utils/Xml/XmlObject.cpp" />
 		<Unit filename="../../../Nc/Core/Utils/Xml/XmlObject.h" />
 		<Unit filename="../../../Nc/Core/Utils/include.cpp" />
+		<Unit filename="../../../Nc/Define.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-	Description : The index buffer to display mesh
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_CORE_GL_INDEXBUFFER_H_
 #define NC_GRAPHICS_CORE_GL_INDEXBUFFER_H_
@@ -40,6 +35,7 @@ namespace Nc
     {
         namespace GL
         {
+            /// Define an index buffer used to describe a GeometryBuffer
             class LGRAPHICS IndexBuffer : public DataBuffer<unsigned int>
             {
                 public:
@@ -52,6 +48,7 @@ namespace Nc
                     }
                     virtual ~IndexBuffer();
 
+                    /** Update the data */
                     template<unsigned int D>
                     void    UpdateData(const Array<unsigned int, D> &tabIndices, unsigned int stride, bool keepContent = false)
                     {
@@ -59,13 +56,14 @@ namespace Nc
                         _nbElements = tabIndices.Size();
                     }
 
+                    /** Draw the elements index */
                     inline void             Draw(GLenum primitiveType)                  {glDrawElements(primitiveType, _nbElements, GL_UNSIGNED_INT, NULL);}
 
+                    /** Return the number of elements */
                     inline unsigned int     NbElements()                                {return _nbElements;}
-                    inline void             NbElements(unsigned int nbElements)         {_nbElements = nbElements;}
 
                 private:
-                    unsigned int            _nbElements;
+                    unsigned int            _nbElements;            ///< the number of elements in the buffer
             };
         }
     }

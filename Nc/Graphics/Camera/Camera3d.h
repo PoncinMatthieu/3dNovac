@@ -23,28 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-
-                Implementation de la classe abstraite "gCamera"
-
-                Classe mere permettant la definition d'une camera
-
-On considere qu'une camera doit pouvoir recevoir les evennements souris et claviers
-de l'application pour pouvoir effecuer correctement les calcul de deplacement de
-camera
-
-ainsi qu'une fonction de calcul avec le temps ecoulé en paramêtre pour certaine
-camera comme la camera freefly
-
-Et enfin une fonction permettant de fixé la camera sur la scene
-
-
-Derivé par : gCameraTrackball
-             gCameraFreefly     TODO
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NC_GRAPHIC_CAMERA_CAMERA3D_H_
 #define NC_GRAPHIC_CAMERA_CAMERA3D_H_
@@ -56,6 +34,13 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Abstract class to define 3d Camera
+        /**
+            A 3d Camera needs to have the routines to manage the events and to update the mouvement of the camera.
+            The camera is composed by an Eye, a Center and a vector Up
+
+            \todo Recode gluUnProject that is deprecated and reimplement the Get3dCoordinateFromProjection method.
+        */
         class LGRAPHICS Camera3d : public Camera, public Object3d
         {
             public:
@@ -64,36 +49,46 @@ namespace Nc
                 {}
                 virtual ~Camera3d() {};
 
+                /** To reception the mouse motion event */
                 virtual void    MouseMotionEvent(const Nc::System::Event &event) = 0;
+                /** To reception the mouse button event */
                 virtual void    MouseButtonEvent(const Nc::System::Event &event) = 0;
+                /** To reception the keybord event */
                 virtual void    KeyboardEvent(const Nc::System::Event &event) = 0;
 
+                /** To update the mouvement of the camera with the keystates of WindowInput */
                 virtual void    Update(float RunningTime) = 0; // Running Time in second
 
+                /** Update the projectionMatrix to a perspective projection */
                 inline void     UpdateProjection()          {_projectionMatrix->SetProjection(_ratioAspect, _near, _far, _fieldOfView);}
+                /** Fix the camera */
                 virtual void    Fix()                       {Camera::Fix(); _viewMatrix->SetLookAt(_eye, _center, _up);}
 
-//                Vector3f                Get3dCoordinateFromProjection(int x, int y); // TODO: recode gluUnProject who is deprecated
+//                Vector3f                Get3dCoordinateFromProjection(int x, int y);
 
-                /// accesseurs
+                // accesseurs
+                /** Return the eye of the camera */
                 inline const    Vector3f &Eye() const           {return _eye;}
+                /** Set the eye of the camera */
                 inline void     Eye(Vector3f &eye)              {_eye = eye;}
+                /** Return the center of the camera */
                 inline const    Vector3f &Center() const        {return _center;}
+                /** Set the center of the camera */
                 inline void     Center(Vector3f &pos)           {_center = pos; MajEye();}
 
             protected:
-                virtual void MajEye() = 0;
+                virtual void    MajEye() = 0;
 
                 // eye properties
-                Vector3f    _eye;
-                Vector3f    _center;
-                Vector3f    _up;
+                Vector3f    _eye;               ///< Vector to define the eye of the camera
+                Vector3f    _center;            ///< Vector to define the center of the camera
+                Vector3f    _up;                ///< Vector to define the up of the camera
 
                 // projection properties
-                float       _ratioAspect;
-                float       _near;
-                float       _far;
-                float       _fieldOfView;
+                float       _ratioAspect;       ///< define the ratio of the perspective projection
+                float       _near;              ///< define the near value of the perspective projection
+                float       _far;               ///< define the far value of the perspective projection
+                float       _fieldOfView;       ///< define the fieldOfView of the perspective projection
         };
     }
 }

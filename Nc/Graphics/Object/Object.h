@@ -23,24 +23,21 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "Object"
-                Classe de base pour definir un objet graphique
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NOVAC_GRAPHIC_OBJECT_H_
 #define NOVAC_GRAPHIC_OBJECT_H_
 
 #include "../Define.h"
-#include "../Material/Material.h"
+#include "Drawable.h"
 
 namespace Nc
 {
     namespace Graphic
     {
+        /// Interface to define a Graphical object
+        /**
+            An object has just a TMatrix and boolean statement
+        */
         class LGRAPHICS Object : public System::Object
         {
             public:
@@ -49,21 +46,25 @@ namespace Nc
                 virtual ~Object();
 
                 /**
-                    To update an object with the running time (in second)
+                    To update an object with the running time (in second),
                     To redefine in your own object
                 */
                 virtual inline void     Update(float)           {}
 
                 /**
-                    To Render the object
+                    To Render the object,
                     To redefine in your own object
                 */
                 virtual void            Render(ISceneGraph *scene) = 0;
 
                 // set the display states
+                /** Set the display statement */
                 inline void             DisplayState(bool state)            {_displayState = state;}
+                /** Return the display statement */
                 virtual inline bool     DisplayState() const                {return _displayState;}
+                /** Set the display box statement */
 				inline void             DisplayStateBox(bool state)         {_displayStateBox = state;}
+                /** Return the display box statement */
                 virtual inline bool     DisplayStateBox() const             {return _displayStateBox;}
 
                 /** The matrix transformation of the object (basic transformation: rotate, translate, scale) */

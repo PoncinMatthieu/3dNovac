@@ -38,7 +38,6 @@ MapEngine      Manager::_mapEngine;
 Manager::Manager()
 {
     _isLaunched = false;
-    _retVal = 0;
 
     // redirect signal SIGSEGV functions
     set_terminate(Terminate);
@@ -145,12 +144,11 @@ void Manager::Start()
         itEngine->second->Start();
 }
 
-int Manager::WaitEngines()
+void Manager::WaitEngines()
 {
 // on attend que les thread se finisse
     for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); itEngine++)
         itEngine->second->Wait();
-    return _retVal;
 }
 
 void Manager::PushEvent(const std::string &engineName, unsigned int id, IEvent *e)

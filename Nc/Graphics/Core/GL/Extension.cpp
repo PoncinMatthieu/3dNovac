@@ -35,15 +35,6 @@
 
 using namespace Nc::Graphic::GL;
 
-Extension   *Extension::_instance = NULL;
-
-Extension &Extension::Instance()
-{
-    if (_instance == NULL)
-        _instance = new Extension();
-    return *_instance;
-}
-
 Extension::Extension()
 {
     _supportNonPowerOfTwoTexture = false;
@@ -106,12 +97,12 @@ bool Extension::Init()
     r = (r && (UniformMatrix4fv = (UNIFORMMATRIX4FV_PROC)LoadFunc("glUniformMatrix4fv")) != NULL);
     r = (r && (Uniform4f = (UNIFORM4F_PROC)LoadFunc("glUniform4f")) != NULL);
 
-/// Texture
+// Texture
     r = (r && (TexImage3D = (TEXIMAGE3D_PROC)LoadFunc("glTexImage3D")) != NULL);
     r = (r && (ActiveTexture = (ACTIVETEXTURE_PROC)LoadFunc("glActiveTexture")) != NULL);
     r = (r && (Uniform1i = (UNIFORM1I_PROC)LoadFunc("glUniform1i")) != NULL);
 
-/// Buffer
+// Buffer
     r = (r && (GenBuffers = (GENBUFFERS_PROC)LoadFunc("glGenBuffers")) != NULL);
     r = (r && (BindBuffer = (BINDBUFFER_PROC)LoadFunc("glBindBuffer")) != NULL);
     r = (r && (BufferData = (BUFFERDATA_PROC)LoadFunc("glBufferData")) != NULL);
@@ -123,7 +114,7 @@ bool Extension::Init()
     r = (r && (EnableVertexAttribArray = (ENABLEVERTEXATTRIBARRAY_PROC)LoadFunc("glEnableVertexAttribArray")) != NULL);
     r = (r && (DisableVertexAttribArray = (DISABLEVERTEXATTRIBARRAY_PROC)LoadFunc("glDisableVertexAttribArray")) != NULL);
 
-/// shader
+// shader
     r = (r && (DeleteShader = (DELETESHADER_PROC)LoadFunc("glDeleteShader")) != NULL);
     r = (r && (DeleteProgram = (DELETEPROGRAM_PROC)LoadFunc("glDeleteProgram")) != NULL);
     r = (r && (UseProgram = (USEPROGRAM_PROC)LoadFunc("glUseProgram")) != NULL);

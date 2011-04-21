@@ -23,12 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    class Matrix<T, D1, D2>
-    Define a Matrix with the dimension D1*D2 and data T, stock in a one dimension Array
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_MATH_MATRIX_INCLUDED_H_
 #define NC_CORE_MATH_MATRIX_INCLUDED_H_
@@ -43,16 +37,16 @@ namespace Nc
     {
         /// template class to manipulate matrix of type T with nb line D1 and row D2
         template<typename T, unsigned int D1, unsigned int D2>
-        class /*LINK_OPTION_BREP*/ Matrix
+        class Matrix
         {
             public:
-                /// constructor
+                // constructor
                 Matrix();
                 Matrix(const Matrix &m);
                 Matrix &operator = (const Matrix &m);
                 virtual ~Matrix()   {};
 
-                /// ascessor
+                // ascessor
                 inline T const *operator [] (unsigned int i) const
                 {
                     if (i >= D1)
@@ -81,7 +75,7 @@ namespace Nc
 
                 inline T *Elements() {return _data;}
 
-                /// functions
+                // functions
                 void    Transpose(Matrix<T, D2, D1> &t) const;  // set the transpose in t
 
             protected:

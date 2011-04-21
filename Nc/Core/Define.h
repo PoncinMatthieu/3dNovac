@@ -80,7 +80,7 @@
             #define LCORE
         #endif
     #else                                                       // others os (do nothing)
-        #define LCORE
+        #define LCORE               ///< Linking option of Nc-Core module
     #endif
 
 // includes interne

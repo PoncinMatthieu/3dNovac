@@ -43,14 +43,16 @@ namespace Nc
 {
     namespace Utils
     {
-        /// this namespace provide some Fonctor class utility
+        /// This namespace provide some fonctor class utility
         namespace Fonctor
         {
+            /// fonctor to transform the case of a string
             struct ToLower  {char operator()(char c) const  {return std::tolower(static_cast<unsigned char>(c));} };
+            /// fonctor to transform the case of a string
             struct ToUpper  {char operator()(char c) const  {return std::toupper(static_cast<unsigned char>(c));} };
         }
 
-        /// this namespace provide some function to convert data
+        /// This namespace provide some function to convert data
         namespace Convert
         {
             /// Convert Degree to Radians number
@@ -70,60 +72,38 @@ namespace Nc
             /// Convert the first occurence of the delimitor to T in dest
             template <typename T>
             bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest);
+            inline bool LCORE SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest)
+            {
+                std::string::size_type pos = str.find_first_of(delimitor);
+                dest = str.substr(0, pos);
+                if (pos != std::string::npos && pos < str.size())
+                   str = str.substr(pos, std::string::npos);
+                else
+                   str.clear();
+                return true;
+            }
 
             /// Convert the caracters of the string in lower caracters
             inline void ToLower(std::string &s)     {std::transform(s.begin(), s.end(), s.begin(), Fonctor::ToLower());}
             /// Convert the caracters of the string in upper caracters
             inline void ToUpper(std::string &s)     {std::transform(s.begin(), s.end(), s.begin(), Fonctor::ToUpper());}
 
-
+            /// To Convert unicode strings
             namespace Unicode
             {
-                /** Generic function to convert an UTF-32 characters range
-                    to an ANSI characters range, using the given locale class
-
-                    \param begin :  Iterator pointing to the beginning of the input sequence
-                    \param end :    Iterator pointing to the end of the input sequence
-                    \param output : Iterator pointing to the beginning of the output sequence
-                    \param lc :     Locale to use for conversion
-                    \return Iterator to the end of the output sequence which has been written
-                */
+                /** Generic function to convert an UTF-32 characters range to an ANSI characters range, using the given locale class */
                 template<typename In, typename Out>
                 Out UTF32ToANSI(In begin, In end, Out output, char replacement = '?', const std::locale& lc = std::locale());
 
-                /** Generic function to convert an ANSI characters range
-                    to an UTF-32 characters range, using the given locale class
-
-                    \param begin :  Iterator pointing to the beginning of the input sequence
-                    \param end :    Iterator pointing to the end of the input sequence
-                    \param output : Iterator pointing to the beginning of the output sequence
-                    \param lc :     Locale to use for conversion
-                    \return Iterator to the end of the output sequence which has been written
-                */
+                /** Generic function to convert an ANSI characters range to an UTF-32 characters range, using the given locale class */
                 template<typename In, typename Out>
                 Out ANSIToUTF32(In begin, In end, Out output, const std::locale& lc = std::locale());
 
-                /** Generic function to convert an UTF-16 characters range
-                    to an UTF-32 characters range, using the given locale class
-
-                    \param begin :  Iterator pointing to the beginning of the input sequence
-                    \param end :    Iterator pointing to the end of the input sequence
-                    \param output : Iterator pointing to the beginning of the output sequence
-                    \param lc :     Locale to use for conversion
-                    \return Iterator to the end of the output sequence which has been written
-                */
+                /** Generic function to convert an UTF-16 characters range to an UTF-32 characters range, using the given locale class */
                 template <typename In, typename Out>
                 Out UTF16ToUTF32(In begin, In end, Out output, Nc::UInt32 replacement = '?');
 
-                /** Generic function to convert an UTF-32 characters range
-                    to an UTF-16 characters range, using the given locale class
-
-                    \param begin :  Iterator pointing to the beginning of the input sequence
-                    \param end :    Iterator pointing to the end of the input sequence
-                    \param output : Iterator pointing to the beginning of the output sequence
-                    \param lc :     Locale to use for conversion
-                    \return Iterator to the end of the output sequence which has been written
-                */
+                /** Generic function to convert an UTF-32 characters range to an UTF-16 characters range, using the given locale class */
                 template<typename In, typename Out>
                 Out UTF32ToUTF16(In begin, In end, Out output, Nc::UInt16 replacement = '?');
             }

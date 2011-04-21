@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-	Description : Interface for camera
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_CAMERA_CAMERA_H_
 #define NC_GRAPHICS_CAMERA_CAMERA_H_
@@ -42,16 +37,25 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Interface to define a camera
+        /**
+            A camera typically used to set the Projection and the View Matrix in a ISceneGraph
+        */
         class LGRAPHICS Camera
         {
             public:
                 Camera() : _resized(false), _projectionMatrix(NULL), _viewMatrix(NULL) {}
                 virtual ~Camera() {}
 
+                /** called by the SceneGraph to set instance of the ProjectionMatrix */
                 void SetProjectionMatrix(TMatrix *m)        {_projectionMatrix = m;}
+                /** called by the SceneGraph to set instance of the ViewMatrix */
                 void SetViewMatrix(TMatrix *m)              {_viewMatrix = m;}
 
+                /** Update the projection of the scene */
                 virtual void UpdateProjection() = 0;
+
+                /** Fix the camera, Should set the ViewMatrix. If the window has been resized, the camera will resize the viewport of OpenGL */
                 virtual void Fix()
                 {
                     if (_resized)
@@ -62,16 +66,13 @@ namespace Nc
                     }
                 }
 
-                virtual void Resized(const System::Event &event)
-                {
-                    if (event.Type == System::Event::Resized)
-                        _resized = true;
-                }
+                /** Set true the resized statement */
+                virtual inline void Resized(const System::Event &)               {_resized = true;}
 
             protected:
-                bool        _resized;
-                TMatrix     *_projectionMatrix;
-                TMatrix     *_viewMatrix;
+                bool        _resized;               ///< resize statement
+                TMatrix     *_projectionMatrix;     ///< instance of the ProjectionMatrix
+                TMatrix     *_viewMatrix;           ///< instance of the ViewMatrix
         };
     }
 }

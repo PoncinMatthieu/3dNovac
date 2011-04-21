@@ -26,75 +26,112 @@
 
 
 #include <fstream>
+#include <string.h>
+#include "../System/Config.h"
 #include "FileName.h"
+#include "Logger.h"
 
 using namespace std;
 using namespace Nc;
 using namespace Nc::Utils;
 
-FileName::FileName(const std::string& path)
+FileName::FileName(const string &path)
 {
-    _path = path;
+    SetFullname(path.c_str());
 }
 
 FileName::FileName(const char *path)
 {
-    _path = string(path);
+    SetFullname(path);
 }
 
-bool FileName::operator == (const FileName& f) const
+FileName &FileName::operator = (const std::string &path)
 {
-    if (_path == f._path)
-        return true;
-    return false;
+    SetFullname(path.c_str());
+    return *this;
 }
 
-std::string FileName::Path() const
+FileName &FileName::operator = (const char *path)
 {
-    std::string::size_type Pos = _path.find_last_of("\\/");
+    SetFullname(path);
+    return *this;
+}
 
-    if (Pos != std::string::npos)
-        return _path.substr(0, Pos + 1);
+void   FileName::SetFullname(const char *name)
+{
+    if (strncmp(name, "Nc:", 3) != 0)
+        string::operator=(name);
     else
-        return _path;
+    {
+        string subn(name + 3);
+        size_t pos = subn.find_first_of(':');
+        if (pos == string::npos)
+            string::operator=(name);
+        else
+        {
+            string str = CONFIG->Block("RessourcesPath")->Line(subn.substr(0, pos))->Param("path");
+            str += subn.substr(pos+1, string::npos);
+            string::operator=(str);
+        }
+    }
 }
 
-std::string FileName::Filename() const
+string FileName::Path() const
 {
-    std::string::size_type Pos = _path.find_last_of("\\/");
+    string::size_type Pos = find_last_of("\\/");
 
-    if (Pos != std::string::npos)
-        return _path.substr(Pos + 1, std::string::npos);
+    if (Pos != string::npos)
+        return substr(0, Pos + 1);
     else
-        return _path;
+        return *this;
 }
 
-void FileName::SetFilename(std::string s)
+string FileName::Filename() const
 {
-    std::string::size_type Pos = _path.find_last_of("\\/");
+    string::size_type Pos = find_last_of("\\/");
 
-    if (Pos != std::string::npos)
-        _path = _path.replace(Pos + 1, std::string::npos, s);
+    if (Pos != string::npos)
+        return substr(Pos + 1, string::npos);
     else
-        _path = s;
+        return *this;
 }
 
-std::string FileName::ShortFilename() const
+void FileName::SetFilename(const string &s)
+{
+    string::size_type Pos = find_last_of("\\/");
+
+    if (Pos != string::npos)
+        *this = replace(Pos + 1, string::npos, s);
+    else
+        *this = s;
+}
+
+string FileName::ShortFilename() const
 {
     return Filename().substr(0, Filename().find_last_of("."));
 }
 
-std::string FileName::Extension() const
+void FileName::SetShortFilename(const string &s)
 {
-    std::string::size_type Pos = _path.find_last_of(".");
-    if (Pos != std::string::npos)
-        return _path.substr(Pos + 1, std::string::npos);
+    string::size_type Pos = find_last_of("\\/");
+    string::size_type LastPos = find_last_of(".");
+    if (Pos != string::npos)
+        *this = replace(Pos + 1, LastPos - Pos - 1, s);
+    else
+        *this = s;
+}
+
+string FileName::Extension() const
+{
+    string::size_type Pos = find_last_of(".");
+    if (Pos != string::npos)
+        return substr(Pos + 1, string::npos);
     else
         return "";
 }
 
 bool FileName::IsReadable() const
 {
-    ifstream fichier(_path.c_str());
+    ifstream fichier(c_str());
     return !fichier.fail();
 }

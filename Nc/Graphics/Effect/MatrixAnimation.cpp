@@ -52,8 +52,9 @@ void MatrixAnimation::Update(float runningTime)
 {
     if (_object != NULL)
     {
+//TODO, trouver un moyen d'appliquer le facteur temp a la matrice
 /*
-        mMatrice m(_transformation); // TODO, trouver un moyen d'appliquer le facteur temp a la matrice
+        mMatrice m(_transformation);
         for (int i = 0; i < 16; i++)
         {
             m.Element()[i] *= runningTime * 0.1;

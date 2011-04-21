@@ -23,19 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "gDataBuffer"
-
-                  Classe permettant de definir un buffer OpenGL
-    (Buffer directement aloué dans la memoire graphique, permettant un
-     gain considerable en performance et de limiter la bande passante
-                            entre le CPU et le GPU)
-
-          !! Le buffer ne doit contenir qu'un seul type de données
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NC_GRAPHICS_CORE_GL_BUFFERDATA_H_
 #define NC_GRAPHICS_CORE_GL_BUFFERDATA_H_
@@ -49,51 +36,85 @@ namespace Nc
     {
         namespace GL
         {
+/*-----------------------------------------------------------------------------
+
+                    Implementation de la classe "gDataBuffer"
+
+                  Classe permettant de definir un buffer OpenGL
+    (Buffer directement aloué dans la memoire graphique, permettant un
+     gain considerable en performance et de limiter la bande passante
+                            entre le CPU et le GPU)
+
+          !! Le buffer ne doit contenir qu'un seul type de données
+
+-----------------------------------------------------------------------------*/
+            /// Template Interface to manage an OpenGL buffer
+            /**
+                The openGL buffer is directly allocated in the graphic card.
+                By default no memory is keep on local, but it't possible to save the data in local
+                <br/> <br/>
+                typeBuffer can take : <br/>
+                    GL_ARRAY_BUFFER : for a data tab <br/>
+                    GL_ELEMENT_ARRAY_BUFFER : for an index tab <br/>
+
+                flags peut prendre pour valeur :
+                    GL_STREAM_DRAW : you update your data at each render pass <br/>
+                    GL_DYNAMIC_DRAW : you update your data frequently, more than once in one render pass <br/>
+                    GL_STATIC_DRAW : your data is not frequently update <br/>
+            */
             template <typename T>
             class DataBuffer : public Object
             {
                 public:
-                /*
-                aTypeBuffer peut prendre pour valeur :  GL_ARRAY_BUFFER : pour un tableau de données
-                                                        GL_ELEMENT_ARRAY_BUFFER : pour un tableau d'indices
-
-                aFlags peut prendre pour valeur :   GL_STREAM_DRAW : vous mettez vos données à jour à chaque affichage ( glDraw*() )
-                                                    GL_DYNAMIC_DRAW : vous mettez fréquemment à jour vos données. (plus d'une fois par affichage)
-                                                    GL_STATIC_DRAW : vous mettez peu souvent voir jamais vos données à jour
-                */
                     DataBuffer();
                     DataBuffer(GLenum typeBuffer, unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab = NULL, bool conserveData = false);
                     virtual ~DataBuffer();
 
+                    /** Init the buffer */
                     void    Init(GLenum typeBuffer);
+                    /** Init the buffer */
                     void    Init(GLenum typeBuffer, unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab, bool conserveData = false);
+                    /** Update the buffer */
                     void    UpdateData(unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab, bool conserveData = false);
+                    /** Update the buffer */
                     void    UpdateData(const T *dataTab, bool conserveData = false);
 
+                    /** Enable the buffer */
                     virtual inline void         Enable() const              {glBindBuffer(_typeBuffer, _index);}
+                    /** Disable the buffer */
                     virtual inline void         Disable() const             {glBindBuffer(_typeBuffer, 0);}
+                    /** return the gl index of the buffer */
                     virtual inline unsigned int	GetIndex() const            {return _index;}
 
+                    /** Return the size of the buffer */
                     inline unsigned int         Size() const                {return _size;}
+                    /** Return the stride of the data in the buffer */
                     inline unsigned int         Stride() const              {return _stride;}
 
+                    /**
+                        Map the buffer in local, and return it's pointer. <br/>
+                        The access flag should be GL_READ_ONLY, GL_WRITE_ONLY, or GL_READ_WRITE to specifie the access policy of the buffer
+                     */
                     inline T                    *MapBuffer(GLenum access)   {return (T*)glMapBuffer(_typeBuffer, access);}
+                    /** Unmap the buffer */
                     inline void                 UnmapBuffer()               {glUnmapBuffer(_typeBuffer);}
 
-                    inline T                    *GetLocalBuffer()            {return _dataTab;}
+                    /** Return the local buffer, if no local has been keeped, the ret value will be null */
+                    inline T                    *GetLocalBuffer()           {return _dataTab;}
+                    /** Delete the local buffer */
                     inline void                 DeleteLocalBuffer()         {if (_dataTab) delete _dataTab; _dataTab = NULL;}
 
                 protected:
+                    /** Release the gl buffer */
                     virtual  void   Release();
 
-                    unsigned int    _index;
-                    unsigned int    _size;
-                    unsigned int    _stride;
-                    GLenum          _typeBuffer;
-                    unsigned int    _flags;
-                    bool            _conserveData;
+                    unsigned int    _index;             ///< the gl buffer index
+                    unsigned int    _size;              ///< the size of the buffer
+                    unsigned int    _stride;            ///< the stride between two data in the buffer
+                    GLenum          _typeBuffer;        ///< the type of the buffer (GL_ARRAY_BUFFER or GL_ELEMENT_ARRAY_BUFFER)
+                    unsigned int    _flags;             ///< the flag of the buffer (GL_STREAM_DRAW, GL_DYNAMIC_DRAW, GL_STATIC_DRAW)
 
-                    T               *_dataTab;
+                    T               *_dataTab;          ///< the local data tab (never used by default)
             };
 
             template <typename T>
@@ -156,7 +177,7 @@ namespace Nc
                     throw Utils::Exception("GL::DataBuffer", "Can't update the data if it wasn't init before !");
 
                 unsigned int completeSize =  _size * _stride;
-                if (_conserveData && dataTab != NULL)
+                if (conserveData && dataTab != NULL)
                 {
                     _dataTab = new T[completeSize];
                     memcpy(_dataTab, dataTab, completeSize * sizeof(T));

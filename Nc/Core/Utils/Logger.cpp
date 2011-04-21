@@ -108,9 +108,9 @@ void Logger::CheckFile()
 {
     if (!_file.is_open())
     {
-        _file.open(_filename.Fullname().c_str());
+        _file.open(_filename.c_str());
         if (!_file)
-            throw Exception("Logger", "Can't open the file '" + _filename.Fullname() + "' for the logger class");
+            throw Exception("Logger", "Can't open the file '" + _filename + "' for the logger class");
     }
 }
 

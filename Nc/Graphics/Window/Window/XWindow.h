@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Provide an implementation of a Window on a server X
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHIC_WINDOW__WINDOW_H_
 #define NC_GRAPHIC_WINDOW__WINDOW_H_
@@ -44,6 +39,10 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Implementation of a Window for an X11 server
+        /**
+            For more detail, please see the Window documentation
+        */
         class XWindow : public Window
         {
             public:

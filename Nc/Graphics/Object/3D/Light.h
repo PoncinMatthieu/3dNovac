@@ -23,14 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "Light"
-
-                Classe permettant de definir une lumiere et d'effectuer
-                            des calculs d'eclairages
-
------------------------------------------------------------------------------*/
 
 #ifndef GLIGHT_H_INCLUDED
 #define GLIGHT_H_INCLUDED
@@ -41,31 +33,42 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Define a light especially using with the DefaultMaterialPolitic class
+        /**
+            Just define a position, a color and a radius for the light
+            \todo Manage different types of lights (sun, spot, etc...)
+        */
         class LGRAPHICS Light : public Object3d
         {
             public:
-            /// constructeur
+            // constructeur
                 Light();
                 Light(const Vector3f &p, const Color &c, const float radius = 10);
 
+                /** copy the light */
                 virtual inline Object3d     *Clone() const          {return new Light(*this);}
 
                 //void Draw(ISceneGraph *scene);
 
-            /// accesseurs
-                Vector3f    Position()                {return _positionLight;}
-                Color       ColorRGB()                {return _colorLight;}
-                float       Radius()                      {return _radius;}
+            // accesseurs
+                /** Return the position of the light */
+                Vector3f    &Position()                 {return _positionLight;}
+                /** Return the color of the light */
+                Color       &ColorRGB()                 {return _colorLight;}
+                /** Return the raduis of the light */
+                float       Radius()                    {return _radius;}
 
-                void Position(const Vector3f& V)    {_positionLight=V;}
-                void ColorRGB(Color& C)         {_colorLight=C;}
-                void Radius(float f)                {_radius=f;}
+                /** Set the position of the light */
+                void Position(const Vector3f &V)        {_positionLight=V;}
+                /** Set the color of the light */
+                void ColorRGB(Color &C)                 {_colorLight=C;}
+                /** Set the raduis of the light */
+                void Radius(float f)                    {_radius=f;}
 
             protected:
-            /// variables definissant la position, la couleur et le rayon maximum de la lumiere
-                Vector3f    _positionLight;
-                Color       _colorLight;
-                float       _radius;
+                Vector3f    _positionLight;             ///< the position of the light
+                Color       _colorLight;                ///< the color of the light
+                float       _radius;                    ///< the raduis of the light
         };
     }
 }

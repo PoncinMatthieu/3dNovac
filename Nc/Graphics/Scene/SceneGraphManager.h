@@ -34,10 +34,12 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Provide a way to organise the rendering in a scene
         /**
-            The SceneGraph class, is used to define a scene, basicly contain 2 SceneGraph Object.
-            (one for a 3d rendering, and one other for the 2d rendering in front of the sceen like GUI)
-            The 2 SceneGraph contained by the SceneGraphManager are not deleted when the SceneGraphManager is destroyed
+            The SceneGraphManager class, is used to define a scene. Basicly contain and render 2 SceneGraph Object. <br/>
+            (one for a 3d rendering, and another for the 2d rendering in front of the screen like GUI) <br/>
+            The SceneGraphs contained by the SceneGraphManager are not deleted when the SceneGraphManager is destroyed.
+            So it's your role to destroy it if they are dynamically allocated.
         */
         class LGRAPHICS SceneGraphManager
         {
@@ -45,13 +47,14 @@ namespace Nc
                 SceneGraphManager();
                 ~SceneGraphManager();
 
-                void                InitGL(const Color &clearColor, bool multisample, bool initExtension);
+                /** Init the OpenGL Lib */
+                void                InitGL(bool multisampling);
 
                 /** Set the 3dSceneGraph */
-                inline void         Set3dSceneGraph(I3dSceneGraph *s)       {_3dSceneGraph = s; _3dSceneGraph->SetCurrentScene();}
+                inline void         Set3dSceneGraph(I3dSceneGraph *s)       {_3dSceneGraph = s; if (s != NULL) _3dSceneGraph->SetCurrentScene();}
 
                 /** Set the 2dSceneGraph */
-                inline void         Set2dSceneGraph(I2dSceneGraph *s)       {_2dSceneGraph = s; _2dSceneGraph->SetCurrentScene();}
+                inline void         Set2dSceneGraph(I2dSceneGraph *s)       {_2dSceneGraph = s; if (s != NULL) _2dSceneGraph->SetCurrentScene();}
 
                 /** return the 3dSceneGraph */
                 inline I3dSceneGraph *Get3dSceneGraph()                     {return _3dSceneGraph;}
@@ -63,8 +66,10 @@ namespace Nc
                 void            Render(GLContext *context);
 
             private:
-                I3dSceneGraph   *_3dSceneGraph;
-                I2dSceneGraph   *_2dSceneGraph;
+                I3dSceneGraph   *_3dSceneGraph;     ///< the instance of the 3d scene graph
+                I2dSceneGraph   *_2dSceneGraph;     ///< the instance of the 2d scene graph
+                GLbitfield      _clearMask;         ///< the clear mask (defaul: GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+                Color           _clearColor;        ///< the clear color of the scene
         };
     }
 }

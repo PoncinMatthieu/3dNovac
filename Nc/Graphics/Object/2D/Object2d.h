@@ -23,16 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-
-                        Implementation de la classe "Object2d"
-
-                            permet de definir des objets 2D
-
-Herite de Object
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHIC_2D_OBJECT2D_H_
 #define NC_GRAPHIC_2D_OBJECT2D_H_
@@ -43,6 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Define a 2d Object to rendering in 2d
         class LGRAPHICS   Object2d : public Object
         {
             public:

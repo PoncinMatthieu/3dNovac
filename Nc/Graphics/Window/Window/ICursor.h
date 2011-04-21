@@ -40,19 +40,62 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Interface to manipulate a Cursor
+        /**
+            A cursor can be load from an xpm format and as to be Enable to be seeing.
+            When you Enable the cursor, the current cursor of the window will be automatically set
+            <br/> <br/>
+            Here is an exemple of xmp cursor:
+
+ \code
+    const char *StandardCamera3d::XpmHandOpen[] =
+    {
+        // width height num_colors chars_per_pixel
+        " 16 16 3 1 ",
+        // colors
+        "X c #000000",
+        ". c #ffffff",
+        "  c None",
+        // pixels
+        "       XX       ",
+        "   XX X..XXX    ",
+        "  X..XX..X..X   ",
+        "  X..XX..X..X X ",
+        "   X..X..X..XX.X",
+        "   X..X..X..X..X",
+        " XX X.......X..X",
+        "X..XX..........X",
+        "X...X.........X ",
+        " X............X ",
+        "  X...........X ",
+        "  X..........X  ",
+        "   X.........X  ",
+        "    X.......X   ",
+        "     X......X   ",
+        "     X......X   ",
+        // pos mouse center
+        "0,0"
+    };
+ \endcode
+        */
         class LCORE ICursor : Utils::NonCopyable
         {
             public:
                 ICursor()               {}
                 virtual ~ICursor()      {}
 
+                /** Enable the cursor and set the current cursor of the attached window */
                 virtual void Enable() = 0;
+                /** Disable the cursor */
                 virtual void Disable() = 0;
 
-                /// load data from 1 bit per pixel, TODO: challenge do better !
-                virtual void LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter) = 0;
-                //virtual void LoadFromImage(const Utils::FileName &f) = 0; //todo
+                /** Load the cursor from an Xpm image */
                 virtual void LoadFromXpm(const char *xpm[]) = 0;
+
+                //virtual void LoadFromImage(const Utils::FileName &f) = 0; //todo
+
+                /// load data from 1 bit per pixel
+                virtual void LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter) = 0;
         };
     }
 }

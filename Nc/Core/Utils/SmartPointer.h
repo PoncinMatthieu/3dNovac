@@ -40,20 +40,22 @@ namespace Nc
             Provide a SmartPointer class with type T, and the bool IsArray to inform if the operator delete[] needs to be called insteed of the delete operator
 
             <h3>To use the SmartPointer, use a typedef like this :  <h3/>
-                typedef SmartPointer<MyClass>    SPMyClass;     <br/>
+                typedef SmartPointer<MyClass>    SPMyClass;     <br/> <br/>
+                And next create the instance like this : <br/>
                 SPMyClass sp = new MyClass();
         */
-        //TODO : gestion des ptr NULL, pour le moment on throw une exception, mais boost ne throw jamais pour avoir un truc thread safe
-        // voir comment BOOST fait
         template<typename T, bool IsArray = false>
         class SmartPointer
         {
             public:
+                /**
+                    Construct the smartPointer with the ptr, and if `destroyable` is true delete the pointer when the number of reference is null
+                */
                 SmartPointer(T *ptr = 0, bool destroyable = true);
                 SmartPointer(const SmartPointer &sp);
                 virtual ~SmartPointer();
 
-                /// operator
+                // operator
                 SmartPointer    &operator = (const SmartPointer &sp);
                 bool            operator == (const SmartPointer &sp) const;
                 bool            operator != (const SmartPointer &sp) const;
@@ -66,13 +68,13 @@ namespace Nc
                     return os;
                 }
 
-                /// Accesseurs
-                inline T        *Get() const    {return _ptr;}              /** Return the pointer */
-                inline bool     Unique() const  {return ((*_nbRef) == 1);}  /** Return true if the reference is unique (no another reference on the pointer)*/
+                // Accesseurs
+                inline T        *Get() const    {return _ptr;}              ///< Return the pointer
+                inline bool     Unique() const  {return ((*_nbRef) == 1);}  ///< Return true if the reference is unique (no another reference on the pointer)
 
-                /// modificateurs
-                void                    Swap(SmartPointer &sp);             /** Swap tow smartPointer */
-                inline SmartPointer     CloneNoDestroyable() const {return SmartPointer<T,IsArray>(_ptr, false);}   /** Clone the SmartPointer in no destroyable (the pointer is never deleted) */
+                // modificateurs
+                void                    Swap(SmartPointer &sp);             ///< Swap tow smartPointer
+                inline SmartPointer     CloneNoDestroyable() const {return SmartPointer<T,IsArray>(_ptr, false);}   ///< Clone the SmartPointer in no destroyable (the pointer is never deleted)
 
             protected:
                 void Release();

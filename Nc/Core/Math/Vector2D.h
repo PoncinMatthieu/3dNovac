@@ -23,12 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------
-
-    class Vector2D<T>
-    Define a vector 2d with the data T
-
---------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_MATH_VECTOR2D_INCLUDED_H_
 #define NC_CORE_MATH_VECTOR2D_INCLUDED_H_
@@ -41,7 +35,7 @@ namespace Nc
     {
         /// Vector 2d to manipulate 2 composante of type T
         template<typename T>
-        class /*LINK_OPTION_BREP*/ Vector2D : public Vector<T,2>
+        class Vector2D : public Vector<T,2>
         {
             public:
                 Vector2D() : Vector<T,2>()                      {}
@@ -54,8 +48,8 @@ namespace Nc
                 template<typename U>
                 Vector2D    &operator = (const Vector2D<U> &v);
 
-                template<typename U>
-                void Init(const U &u = 0, const U &v = 0);
+                /** Initialize the values of the vector */
+                void Init(const T &u = 0, const T &v = 0);
 
                 const T   &X() const    {return Vector<T,2>::Data[0];}
                 const T   &Y() const    {return Vector<T,2>::Data[1];}
@@ -76,8 +70,7 @@ namespace Nc
         }
 
         template<typename T>
-        template<typename U>
-        void Vector2D<T>::Init(const U &u, const U &v)
+        void Vector2D<T>::Init(const T &u, const T &v)
         {
             Vector<T,2>::Data[0] = u;
             Vector<T,2>::Data[1] = v;

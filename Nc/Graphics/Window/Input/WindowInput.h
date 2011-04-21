@@ -23,12 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Provide an interface for a WindowInput
-    manage all the input associated to the window (keyboard/mouse/etc)
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_WINDOW_WINDOW_INPUT_H_
 #define NC_GRAPHICS_WINDOW_WINDOW_INPUT_H_
@@ -42,25 +36,41 @@ namespace Nc
     {
         class Window;
 
+        /// Interface to manage the window inputs (keyboard/mouse/etc)
+        /**
+            Manage all the input associated to the window <br/>
+            A WindowInput is automatically created with his associated window so to get it call Window::GetInput()
+        */
         class LCORE WindowInput : public System::Input
         {
             public:
                 WindowInput(Window *win);
                 virtual ~WindowInput() {};
 
+                /** */
                 virtual void Create() = 0;
-                virtual void CheckEvents() {};
+                virtual void CheckEvents() = 0;
 
-                // generation of events
+                /** Generate a resize event */
                 void GenereResizeEvent(unsigned int x, unsigned int y);
+
+                /** Generate an event */
                 void GenereEvent(const System::Event &e);
 
                 // return input state
-                static const Math::Vector2i &MousePosition()                                {return _mousePosition;}    /// return the mouse position with the top/left ref point
-                static Math::Vector2i       MousePositionInGLCoord();                                                   /// return the mouse position with the bottom/left ref point
+                /** Return the mouse position with the top/left ref point */
+                static const Math::Vector2i &MousePosition()                                {return _mousePosition;}
+
+                /** return the mouse position with the bottom/left ref point */
+                static Math::Vector2i       MousePositionInGLCoord();
+
+                /** Return true if the key is enabled */
                 static bool                 KeyState(System::Key::Code code)                {return _keyStates[code];}
+
+                /** Return true if the mouse button is enabled */
                 static bool                 MouseButtonState(System::Mouse::Button code)    {return _mouseButtonStates[code];}
 
+                /** return the corresponding char */
                 static char                 ToChar(System::Key::Code key);
 
             protected:

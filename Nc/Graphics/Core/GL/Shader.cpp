@@ -79,9 +79,9 @@ void    Shader::Release()
 unsigned int    Shader::NewShader(const Utils::FileName &filename, GLenum type)
 {
     //envoie du code source au shader
-    ifstream file(filename.Fullname().c_str(), ios::in);
+    ifstream file(filename.c_str(), ios::in);
     if(!file)
-        throw Utils::Exception("Shader", "Can't open the source file GLSL " + filename.Fullname());
+        throw Utils::Exception("Shader", "Can't open the source file GLSL " + filename);
     string source;
     while (!file.eof())
         source.push_back(file.get());
@@ -149,7 +149,7 @@ void            Shader::AttachAndLinkProgram(unsigned int program, unsigned int 
     LOG << "DONE" << std::endl;
 }
 
-unsigned int    Shader::Uniform(const char *name)
+unsigned int    Shader::UniformLocation(const char *name)
 {
     int location = glGetUniformLocation(_program, name);
     if (location == -1)
@@ -157,7 +157,7 @@ unsigned int    Shader::Uniform(const char *name)
     return location;
 }
 
-unsigned int    Shader::Attrib(const char *name)
+unsigned int    Shader::AttribLocation(const char *name)
 {
     int location = glGetAttribLocation(_program, name);
     if (location == -1)

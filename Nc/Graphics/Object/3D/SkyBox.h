@@ -23,14 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "gSkyBox"
-
-                Classe permettant d'afficher une sky box en background
-                la skyBox doit etre affiche la premiere dans le rendu
-
------------------------------------------------------------------------------*/
 
 #ifndef NOVAC_GRAPHIC_SKYBOX_H_
 #define NOVAC_GRAPHIC_SKYBOX_H_
@@ -43,24 +35,43 @@ namespace Nc
     {
         class Camera3d;
 
+        /// To render a skybox in background
+        /**
+            The skybox needs to have a pointer to the Camera3d and a tab of filename like that:
+ \code
+    Utils::FileName filenamesSky1[6] =
+    {
+        ("Nc:Image:sky/space_lf.png"),
+        ("Nc:Image:sky/space_rt.png"),
+        ("Nc:Image:sky/space_ft.png"),
+        ("Nc:Image:sky/space_bk.png"),
+        ("Nc:Image:sky/space_dn.png"),
+        ("Nc:Image:sky/space_up.png")
+    };
+ \endcode
+        */
         class LGRAPHICS SkyBox : public Object3d
         {
             public:
                 SkyBox(const Camera3d *camera, const Utils::FileName filenames[]);
                 virtual ~SkyBox();
 
+                /** return a copy of the skybox */
                 virtual inline Object3d     *Clone() const          {return new SkyBox(*this);}
 
             protected:
+                /** Transform the model matrix to be a the eye of the camera */
                 virtual void    TransformModelMatrixToRender(ISceneGraph *scene);
+
+                /** Draw the skybox */
                 virtual void    Draw(ISceneGraph *scene);
+                /** Update the geometry of the drawable */
                 void            UpdateGeometry();
 
-                Material<BasicVertexType::Textured3d>                   *_material;
-                MaterialConfig<BasicVertexType::Textured3d>             _config;
-                GL::GeometryBuffer<BasicVertexType::Textured3d>         _geometry;
+                Material<BasicVertexType::Textured3d>           *_material;     ///< the material used to render the skybox
+                Drawable<BasicVertexType::Textured3d>           _drawable;      ///< the drawable used to render the skybox
 
-                const Camera3d      *_camera;
+                const Camera3d      *_camera;                                   ///< the pointer to the camera, used to know where is the eye
         };
     }
 }

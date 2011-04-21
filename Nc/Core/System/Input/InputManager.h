@@ -23,12 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Implementation de la classe "System::InputManager"
-    gere les inputs Window, et autre
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_SYSTEM_INPUT_MANAGER_H_
 #define NC_CORE_SYSTEM_INPUT_MANAGER_H_
@@ -43,24 +37,27 @@ namespace Nc
 {
     namespace System
     {
+        /// Manage the inputs, like WindowInput
         class LCORE InputManager : public Utils::NonCopyable
         {
             private:
                 typedef std::list<Input*>           ListInput;
-//                typedef std::list<InputAction*>     ListAction;
+                //typedef std::list<InputAction*>     ListAction;
 
             public:
                 InputManager() {};
                 virtual ~InputManager() {};
 
+                /** Add the given input and set the eventQueue pointer of the input */
                 inline void    AddInput(Input *input)           {input->SetEventQueue(&_eventQueue, &_mutexQueue); _inputList.push_back(input);}
-//                inline void    AddAction(InputAction *action)   {_inputActionList.push_back(action);}
+                //inline void    AddAction(InputAction *action)   {_inputActionList.push_back(action);}
 
+                /** Fill the given event by the event wich was in the eventQueue */
                 bool    PollEvent(Event &e);
 
             private:
                 ListInput       _inputList;
-//                ListAction      _inputActionList;
+                //ListAction      _inputActionList;
                 EventQueue      _eventQueue;
                 Mutex           _mutexQueue;
         };

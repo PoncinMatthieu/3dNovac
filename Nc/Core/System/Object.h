@@ -23,15 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-
-                    Implementation de la classe "Object"
-
-                     Classe mere de base pour un objet
-                permet d'identifier chaque objet du programme
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_SYSTEM_OBJECT_H_
 #define NC_CORE_SYSTEM_OBJECT_H_
@@ -43,6 +34,7 @@ namespace Nc
 {
     namespace System
     {
+        /// base class, with an Id and a Name, the Id is unique
         class LCORE  Object
         {
             public:
@@ -50,11 +42,16 @@ namespace Nc
                 Object(const std::string &name);
                 virtual ~Object();
 
-                inline void Name(std::string name)			{_name = name;}
-                inline std::string Name()					{return _name;}
-                inline unsigned int Id()					{return _id;}
+                /** Set the name of the object */
+                inline void Name(const std::string &name)       {_name = name;}
 
-                friend std::ostream& operator << (std::ostream& Out, const Object& o);
+                /** Return the name of the object */
+                inline const std::string &Name() const		    {return _name;}
+
+                /** Return the Id of the object */
+                inline unsigned int Id() const			        {return _id;}
+
+                friend std::ostream& operator << (std::ostream& Out, const Object &o);
 
             protected:
                 std::string         _name;

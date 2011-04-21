@@ -52,9 +52,9 @@ Object *File::Read()
     ifstream    file;
 
     if (_filename.IsReadable())
-        file.open(_filename.Fullname().c_str());
+        file.open(_filename.c_str());
     else
-        throw Exception("Xml::File", "Can't open the file " + (string)_filename);
+        throw Exception("Xml::File", "Can't open the file " + _filename);
     _content = Parser::Parse(file);
     file.close();
     return _content;
@@ -62,7 +62,7 @@ Object *File::Read()
 
 void File::Save() const
 {
-    ofstream file(_filename.Fullname().c_str());
+    ofstream file(_filename.c_str());
     file << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>" << endl;
     for (ListObject::iterator it = _content->ListChild().begin(); it != _content->ListChild().end(); ++it)
         file << **it;

@@ -46,11 +46,11 @@ Button::Button(const std::string &text, const Vector2f &pos, const Vector2f &siz
     _parent = parent;
     if (_parent != NULL)
         _parent->AddChild(this);
-    _config.Texture.LoadFromFile(CONFIG->Block("RessourcesPath")->Line("GUI")->Param("path") + texture.Fullname());
+    _drawable.texture.LoadFromFile(texture);
 
-    _geometry.GetVBO().Init(4, GL_STREAM_DRAW);
-    _material->Configure(_geometry);
-    _geometry.SetPrimitiveType(GL_TRIANGLE_STRIP);
+    _drawable.GetVBO().Init(4, GL_STREAM_DRAW);
+    _material->Configure(_drawable);
+    _drawable.SetPrimitiveType(GL_TRIANGLE_STRIP);
 }
 
 Button::~Button()
@@ -75,7 +75,7 @@ void    Button::Copy(const Button &w)
     _font = new Graphic::String(*w._font);
     _textWidth = w._textWidth;
     _textHeight = w._textHeight;
-    _config = w._config;
+    _drawable = w._drawable;
     _buttonPressed = w._buttonPressed;
 }
 
@@ -102,7 +102,7 @@ void Button::Update()
     vertices[1].Fill(_size[0], 0, 1, 0, c);
     vertices[2].Fill(0, _size[1], 0, 1, c);
     vertices[3].Fill(_size[0], _size[1], 1, 1, c);
-    _geometry.GetVBO().UpdateData(vertices.Data);
+    _drawable.GetVBO().UpdateData(vertices.Data);
 
     // centre la font, puis l'affiche
     const Vector2f &fontSize = _font->Size();
@@ -112,7 +112,7 @@ void Button::Update()
 void Button::Draw(Graphic::ISceneGraph *scene)
 {
     Widget::Draw(scene);
-    _material->Render(scene, _geometry, _config);
+    _material->Render(scene, _drawable);
     _font->Render(scene);
 }
 
@@ -149,7 +149,8 @@ void Button::execHanle()
     if (Enable())
     {
         string datas;
-        list<string> listData = GetParentChildData();
+        list<string> listData;
+        GetParentChildData(listData);
         for (list<string>::iterator it = listData.begin(); it != listData.end();)
         {
             datas += *it;
@@ -157,6 +158,6 @@ void Button::execHanle()
             if (it != listData.end())
                 datas += ':';
         }
-        Engine::Manager::PushEvent(_engineName, _idCmd, datas);
+        SendEvent(datas);
     }
 }

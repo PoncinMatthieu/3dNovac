@@ -33,8 +33,8 @@ Herite de gWidgetLabeled
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NOVAC_GRAPHIC_GUI_TEXTBOX_H_
-#define NOVAC_GRAPHIC_GUI_TEXTBOX_H_
+#ifndef NC_GUI_TEXTBOX_H_
+#define NC_GUI_TEXTBOX_H_
 
 #include "WidgetLabeled.h"
 
@@ -42,6 +42,7 @@ namespace Nc
 {
     namespace GUI
     {
+        /// to manage a text box
         class LGUI  TextBox : public WidgetLabeled
         {
             public:
@@ -54,22 +55,26 @@ namespace Nc
                 virtual void    Copy(const TextBox &w);
                 virtual Widget* Clone() const               {return new TextBox(*this);}
 
-                virtual void KeyboardEvent(const System::Event &event);
-
-                void                        Text(const std::string &t);
-                inline const std::string    &Text() const                   {return _text;}
+                /** Set the text of the text box */
+                void                                Text(const Utils::Unicode::UTF32 &t)        {_font->Text(t);}
+                /** Return the text of the text box */
+                inline const Utils::Unicode::UTF32  &Text() const                               {return _font->Text();}
 
             protected:
+                /** update the geometry of the text box */
                 virtual void Update();
+                /** Render the text box */
                 virtual void Draw(Graphic::ISceneGraph *scene);
-                std::string GetData();
+                /** Fill the string of the text box */
+                void GetData(std::string &data);
 
-                Graphic::String     *_font;
-                std::string         _text;
+                /** the keyboard handler */
+                virtual void KeyboardEvent(const System::Event &event);
+
+                Graphic::String     *_font;         ///< the text in the text box
 
             private:
-                Graphic::MaterialConfig<Graphic::BasicVertexType::Colored2d>                _config;
-                Graphic::GL::GeometryBuffer<Graphic::BasicVertexType::Colored2d, false>     _geometry;
+                Graphic::Drawable<Graphic::BasicVertexType::Colored2d, false>   _drawable;      ///< the drawable of the text box
         };
     }
 }

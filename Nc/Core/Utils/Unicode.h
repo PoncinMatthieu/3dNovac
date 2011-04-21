@@ -39,15 +39,6 @@ namespace Nc
         /// this namespace provide classes to manipulate any Unicode strings
         namespace Unicode
         {
-            template<typename T>
-            std::size_t Strlen(const T *str)
-            {
-                std::size_t len = 0;
-                while (*str++)
-                    len++;
-                return len;
-            }
-
             /// manipulate UTF32 string
             class LCORE UTF32 : public std::basic_string<Nc::UInt32>
             {
@@ -60,9 +51,13 @@ namespace Nc
                     UTF32(const std::wstring &str);
                     virtual ~UTF32()    {}
 
+                    /** Return the number of occurence of the caractere 'c' in the unicode string */
                     unsigned int    CharCount(Nc::UInt32 c) const;
 
+                    /** Convert and return the unicode string in standard std::string */
                     std::string     ToStdString() const;
+
+                    /** Convert and return the unicode string in standard std::wstring */
                     std::wstring    ToStdWString() const;
 
                     friend std::ostream& operator << (std::ostream& os, const UTF32& s)

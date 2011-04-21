@@ -35,7 +35,7 @@
 #include "../../Define.h"
 #include "XmlObject.h"
 
-#define SIZE_BUFFER 4096
+#define NC_UTILS_XML_SIZE_BUFFER 4096        ///< buffer size used to parse an xml file
 
 namespace Nc
 {
@@ -49,11 +49,12 @@ namespace Nc
                 private:
                     enum TOKEN_TYPE {CDATA, DATA, TAG, END_TAG, COMMENT};
 
+                    /// token used to parse Xml
                     struct Token
                     {
-                        TOKEN_TYPE      type;
-                        Object::TYPE    objectType;
-                        std::string     data;
+                        TOKEN_TYPE      type;           ///< the type of token
+                        Object::TYPE    objectType;     ///< the type of the xml object to create
+                        std::string     data;           ///< the data string of the token
                     };
 
                 public:
@@ -66,21 +67,26 @@ namespace Nc
                 private:
                     Parser(std::istream &in);
 
+                    /** read the header and next call the Read function */
                     void ReadAll();
+                    /** read all the file, call the GenereToken and next the CreateObject method */
                     void Read();
 
+                    /** Generate a token */
                     bool GenereToken(Token &newToken);
                     // avis aux amateur, ne pas regarder le code de ces 2 fonctions, ca pique les yeaux :), elles fonctionnent tres bien et c'est tout ce qu'on lui demande
                     bool SearchTokenInBuffer(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract); // search and fill a token, in the stream
                     unsigned int ChooseTypeToken(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract);
 
+                    /** Create an Xml object with the given token */
                     void CreateObject(Token &token, Object *&newObject);
+                    /** Return the params of the data of the given token <"name param1=value1 param2=value2"> */
                     void GetParamsAndName(Token &token, std::string &name, std::map<std::string, std::string> &param);
 
-                    std::istream    &_in;
-                    Object          *_lastObject;
-                    Object          *_content;
-                    char            _buffer[SIZE_BUFFER];
+                    std::istream    &_in;                               ///< the input stream to parse
+                    Object          *_lastObject;                       ///< the last parsed object
+                    Object          *_content;                          ///< the content that has been parsed
+                    char            _buffer[NC_UTILS_XML_SIZE_BUFFER];  ///< the buffer used to read the input stream
             };
         }
     }

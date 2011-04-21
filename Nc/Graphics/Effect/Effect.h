@@ -23,13 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Implementation de la classe mere abstraite "Effect.h"
-    permet la gestion et l'affichage d'effet et d'animation
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NOVAC_GRAPHIC_EFFECT_EFFECT_H_
 #define NOVAC_GRAPHIC_EFFECT_EFFECT_H_
@@ -40,26 +33,35 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Interface to manage and render effect and animation
         class LGRAPHICS   Effect : public Object
         {
             public:
                 Effect()                                        {_alive = true;}
                 virtual ~Effect()                               {}
 
-                virtual Effect  *Clone() const = 0;                 /// clone the object
+                /** copy the effect */
+                virtual Effect  *Clone() const = 0;
 
-                virtual void    Start() = 0;                        /// Start the effect
-                virtual void    Stop() = 0;                         /// Stop the effect
-                virtual bool    Started() const = 0;                /// return true if the effect is started
+                /** Start the effect */
+                virtual void    Start() = 0;
+                /** Stop the effect */
+                virtual void    Stop() = 0;
+                /** Return true if the effect is started */
+                virtual bool    Started() const = 0;
 
-                virtual void    Update(float runningTime) = 0;      /// To Update the effect
-                virtual void    Render(ISceneGraph *scene) = 0;     /// To Display the effect
+                /** To Update the effect */
+                virtual void    Update(float runningTime) = 0;
+                /** To Display the effect */
+                virtual void    Render(ISceneGraph *scene) = 0;
 
-                void                Alive(bool state)           {_alive = state;}       /// Set set alive state
-                virtual inline bool Alive() const               {return _alive;}        /// Return the alive state
+                /** Set alive statement */
+                void                Alive(bool state)           {_alive = state;}
+                /** Return the alive statement */
+                virtual inline bool Alive() const               {return _alive;}
 
             protected:
-                bool            _alive;                         /// statement to specifiy if the effect is dead (terminate), in that case we could destroy the animation upstream
+                bool            _alive;                         ///< statement to specifiy if the effect is dead (terminate), in that case we could destroy the animation upstream
         };
     }
 }

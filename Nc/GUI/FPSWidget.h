@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    class FPSWidget, print in as a label Widget the Frame Per Second
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GUI_FPSWIDGET_H_
 #define NC_GUI_FPSWIDGET_H_
@@ -38,17 +33,17 @@ namespace Nc
 {
     namespace GUI
     {
+        /// To display the Frame per second of the Graphic::Engine
         class LGUI FPSWidget : public WidgetLabeled
         {
             public:
                 FPSWidget(Corner x = Center, Corner y = Top);
 
+                /** Copy a new WidgetFPS */
                 virtual Widget* Clone() const               {return new FPSWidget(*this);}
 
+                /** Render the fps */
                 void Render(Graphic::ISceneGraph *scene);
-
-            protected:
-                unsigned int    _fps;
         };
     }
 }

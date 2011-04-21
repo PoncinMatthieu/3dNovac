@@ -39,6 +39,7 @@ namespace Nc
 {
     namespace Math
     {
+        /// Define a 4 composant pixel rgba of type T (basicly float or char)
         template<typename T>
         struct  Pixel
         {

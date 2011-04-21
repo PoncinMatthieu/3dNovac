@@ -23,12 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    class Box2D<T>
-    Define a Box in dimension two with the data T
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_MATH_BOX2D_INCLUDED_H_
 #define NC_CORE_MATH_BOX2D_INCLUDED_H_
@@ -42,7 +36,7 @@ namespace Nc
     {
         /// To manipulate a box in 2 Dimension of type T
         template<typename T>
-        class /*LINK_OPTION_BREP*/ Box2D : public Box<T,2>
+        class Box2D : public Box<T,2>
         {
             public:
                 Box2D() : Box<T,2>()    {}

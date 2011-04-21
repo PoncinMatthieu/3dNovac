@@ -55,14 +55,14 @@ FontLoaderFreeType::~FontLoaderFreeType()
 void FontLoaderFreeType::LoadFromFile(const Utils::FileName &file, const Utils::Unicode::UTF32 &charset, Font &font)
 {
 	if (!file.IsReadable())
-		throw Utils::Exception("FontLoaderFreeType", "The font file `" + file.Fullname() + "` is not readable");
+		throw Utils::Exception("FontLoaderFreeType", "The font file `" + file + "` is not readable");
 
 	FT_Face face;
-    FT_Error error = FT_New_Face(_lib, file.Fullname().c_str(), 0, &face);
+    FT_Error error = FT_New_Face(_lib, file.c_str(), 0, &face);
     if (error == FT_Err_Unknown_File_Format)
-        throw Utils::Exception("FontLoaderFreeType", "Can't read the font, the format of the file `" + file.Fullname() + "` is not supported");
+        throw Utils::Exception("FontLoaderFreeType", "Can't read the font, the format of the file `" + file + "` is not supported");
     else if (error)
-        throw Utils::Exception("FontLoaderFreeType", "Can't read the font, the file `" + file.Fullname() + "` is probably broken");
+        throw Utils::Exception("FontLoaderFreeType", "Can't read the font, the file `" + file + "` is probably broken");
 
     Image bitmap;
     CreateBitmapFont(face, charset, bitmap, font);

@@ -1,16 +1,28 @@
 
-/*--------------------------------------------------------------------------------
+/*-----------------------------------------------------------------------------
 
-	PonponUtils
-	Copyright (C) 2010, Poncin Matthieu
-	All rights reserved.
+	3dNovac Core
+	Copyright (C) 2010-2011, The 3dNovac Team
 
-	This work is licensed under the Creative Commons
-	Attribution-Share Alike 2.0 France License.
-	To view a copy of this license, visit :
-	http://creativecommons.org/licenses/by-sa/2.0/fr/
+    This file is part of 3dNovac.
 
---------------------------------------------------------------------------------*/
+    3dNovac is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    3dNovac is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
+
+    File Created At:        24/03/2011
+    File Author(s):         Poncin Matthieu
+
+-----------------------------------------------------------------------------*/
 
 template <typename T>
 bool StringTo(const std::string &s, T &dest)
@@ -30,9 +42,12 @@ std::string ToString(const T &data)
 template <typename T>
 bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest)
 {
-    size_t pos = str.find_first_of(delimitor);
+    std::string::size_type pos = str.find_first_of(delimitor);
     bool b = StringTo(str.substr(0, pos++), dest);
-    str = str.substr(pos, std::string::npos);
+    if (pos != std::string::npos && pos < str.size())
+       str = str.substr(pos, std::string::npos);
+    else
+       str.clear();
     return b;
 }
 

@@ -23,13 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    abstract class Box<T,D>
-    Define a box witch contain a couple of data T for each dimension D
-    For the representation of a bounding box
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_MATH_BOX_INCLUDED_H_
 #define NC_CORE_MATH_BOX_INCLUDED_H_
@@ -41,7 +34,10 @@ namespace Nc
 {
     namespace Math
     {
-        /// Template class to manipulate a box of type T and Dimension D. (a bax is constitued of 2 Vector<T,D>)
+        /// Template class to manipulate a box of type T and Dimension D.
+        /**
+            A box is defined by 2 extrema Vector<T,D> : Min and Max
+        */
         template<typename T, unsigned char D>
         class Box
         {
@@ -51,29 +47,36 @@ namespace Nc
                 template<typename U>    Box(const Box<U,D> &b);
                 virtual ~Box()    {}
 
-                /// operator
+                // operator
                 template<typename U>    Box &operator   =   (const Box<U,D> &b);
                 template<typename U>    Box &operator   +=  (const Box<U,D> &b);
                 template<typename U>    Box &operator   +=  (const U coord[]);
                 template<typename U>    Box operator    +   (const Box<U,D> &b) const;
 
-                /// accessor
+                // accessor
                 inline const Vector<T,D>    &Min() const               {return _min;}
                 inline const Vector<T,D>    &Max() const               {return _max;}
                 const T                     &Min(unsigned char dimension) const;
                 const T                     &Max(unsigned char dimension) const;
                 void                        Min(unsigned char dimension, const T &v);
                 void                        Max(unsigned char dimension, const T &v);
+
+                /** \return the center of the box */
                 Vector<T,D>                 Center() const;
+                /** \return the lenght of the given dimension index */
                 T                           Length(unsigned char dimension) const;
+                /** \return the size of the box for each dimension */
                 Vector<T,D>                 Size() const;
+                /** \return the are of the box */
                 T                           Area() const;
 
-                /// modifier
+                // modifier
+                /** Initialize the box */
                 void                        Init();
+                /** Transform the box with the given matrix */
                 void                        Transform(const TMatrix &m);
 
-
+                /** Print the Min and Max vector of the box */
                 friend std::ostream &operator << (std::ostream &os, const Box<T,D> &V)
                 {
                     os << "Min: " << V._min << std::endl;
@@ -82,8 +85,8 @@ namespace Nc
                 }
 
             protected:
-                Vector<T,D>     _min;
-                Vector<T,D>     _max;
+                Vector<T,D>     _min;       ///< minima of the box
+                Vector<T,D>     _max;       ///< maxima of the box
         };
 
         template<typename T, unsigned char D>

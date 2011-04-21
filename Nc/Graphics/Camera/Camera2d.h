@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-	Description : a camera to manage a 2dScene projection
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CAMERA_CAMERA2D_H_
 #define NC_CAMERA_CAMERA2D_H_
@@ -39,9 +34,11 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Implementation of a 2d Camera to used an orthonormal projection
         class LGRAPHICS Camera2d : public Camera, public Object2d
         {
             public:
+                /** Update the projection Matrix to an orthonormal projection */
                 inline void     UpdateProjection()          {_projectionMatrix->SetOrtho(0.0, Window::Width(), 0.0, Window::Height(), -1, 1);}
 
                 virtual void    Fix()
@@ -52,7 +49,8 @@ namespace Nc
                         _viewMatrix->SetIdentity();
                 }
 
-                virtual void    Render(ISceneGraph *scene)  {}
+                /** Do nothing */
+                virtual void    Render(ISceneGraph *)  {}
         };
     }
 }

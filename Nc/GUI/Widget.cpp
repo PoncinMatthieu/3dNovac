@@ -24,6 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
+#include <Nc/Core/Engine/Manager.h>
 #include "Widget.h"
 #include "WidgetLabeled.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
@@ -49,9 +50,9 @@ Widget::Widget(const Vector2i &pos, const Vector2i &size, Corner x, Corner y, Wi
     if (_parent != NULL)
         _parent->AddChild(this); // ajoute this comme child au parent
 
-    _geometryEdgeBox.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_geometryEdgeBox);
-    _geometryEdgeBox.SetPrimitiveType(GL_LINE_LOOP);
+    _drawableEdgeBox.GetVBO().Init(4, GL_STREAM_DRAW);
+    _materialColored2d->Configure(_drawableEdgeBox);
+    _drawableEdgeBox.SetPrimitiveType(GL_LINE_LOOP);
     _stateChange = true;
 }
 
@@ -88,8 +89,7 @@ void Widget::Copy(const Widget &w)
     _percent = w._percent;
 
     _materialColored2d = w._materialColored2d;
-    _configEdgeBox = w._configEdgeBox;
-    _geometryEdgeBox = w._geometryEdgeBox;
+    _drawableEdgeBox = w._drawableEdgeBox;
 
     for (std::list<Widget*>::const_iterator it = w._listChild.begin(); it != w._listChild.end(); ++it)
         _listChild.push_back((*it)->Clone());
@@ -119,7 +119,7 @@ void Widget::Update()
     vertices[1].Fill(0, size.Data[1], _edgeColor);
     vertices[2].Fill(size.Data[0], size.Data[1], _edgeColor);
     vertices[3].Fill(size.Data[0], 0, _edgeColor);
-    _geometryEdgeBox.GetVBO().UpdateData(vertices.Data);
+    _drawableEdgeBox.GetVBO().UpdateData(vertices.Data);
 }
 
 void Widget::Render(Graphic::ISceneGraph *scene)
@@ -269,7 +269,7 @@ void Widget::Focus(bool state)
         if (_childFocused != NULL)
             _childFocused->Focus(state);
         if (_focus && _generateHandleAtEnterFocus && _displayState)
-            Engine::Manager::PushEvent(_engineName, _idCmd, _id);
+            SendEvent(_id);
         _stateChange = true;
     }
 }
@@ -287,21 +287,19 @@ void Widget::CheckState()
     }
 }
 
-list<string> Widget::GetParentChildData()
+void Widget::GetParentChildData(list<string> &listData)
 {
-    list<string> listData;
     string s;
 
     if (_parent != NULL)
     {
         for (list<Widget*>::iterator it = _parent->_listChild.begin(); it != _parent->_listChild.end(); it++)
         {
-            s = (*it)->GetData();
+            (*it)->GetData(s);
             if (!s.empty())
                 listData.push_back(s);
         }
     }
-    return listData;
 }
 
 void Widget::Percent(Vector2f percent)
@@ -330,5 +328,5 @@ void Widget::Resized()
 
 void Widget::DrawEdgeBox(Graphic::ISceneGraph *scene)
 {
-    _materialColored2d->Render(scene, _geometryEdgeBox, _configEdgeBox);
+    _materialColored2d->Render(scene, _drawableEdgeBox);
 }

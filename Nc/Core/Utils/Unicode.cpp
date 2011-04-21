@@ -26,6 +26,7 @@
 
 #include <iterator>
 #include "Unicode.h"
+#include "Utils.h"
 
 using namespace std;
 using namespace Nc::Utils;

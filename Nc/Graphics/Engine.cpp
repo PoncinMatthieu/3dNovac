@@ -24,6 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
+#include <Nc/Core/Engine/Manager.h>
+
 #include "Define.h"
 #include "Engine.h"
 
@@ -43,8 +45,7 @@ double      Graphic::Engine::_elapsedTime = 0;
 
 Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func)
     : Engine::IEngine("Graphic Engine", manager, Nc::Engine::HasAContext | Nc::Engine::DontWaitOthersContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
-      _windowCreated(false), _createWinFunction(func), _context(NULL)
-// TODO: delete the WaitingLoadContentsOfOthersEngines
+      _createWinFunction(func), _context(NULL)
 {
 }
 
@@ -72,16 +73,14 @@ void Graphic::Engine::CreateContext()
 
     // initialise opengl
     CheckGLVersion();
-    _sceneGraphManager.InitGL(Color(0,0,0,0), (_win->AntialiasingLevel() > 0), true);
-
-    _windowCreated = true;
+    _sceneGraphManager.InitGL((_win->AntialiasingLevel() > 0));
 }
 
 void Graphic::Engine::CheckGLVersion()
 {
     float   nbr;
 
-    /// on a linux system, we check if the graphic acceleration is support and enable
+    // on a linux system, we check if the graphic acceleration is support and enable
     #ifdef SYSTEM_LINUX
     LOG << "Direct Rendering : \t\t\t\t\t";
     char *alwaysIndirect = getenv("LIBGL_ALWAYS_INDIRECT");     // if the `LIBGL_ALWAYS_INDIRECT` is set, no graphic acceleration
@@ -94,7 +93,7 @@ void Graphic::Engine::CheckGLVersion()
         LOG << "Ok" << std::endl;
     #endif
 
-    /// check la version actuel d'opengl
+    // check la version actuel d'opengl
     std::string version((const char*)(EXT.GetInfo(GL_VERSION)));
     LOG << "GL_VERSION = `" << version << "`\t";
     Utils::Convert::StringTo(version, nbr);

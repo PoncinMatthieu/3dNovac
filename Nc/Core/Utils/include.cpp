@@ -24,7 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
-// This file is used only for forcing the compilation in the dll of the classes without .cpp
+// This file is used only to forcing the compilation in the dll of the classes without .cpp
 
 #include "Clock.h"
 #include "Exception.h"

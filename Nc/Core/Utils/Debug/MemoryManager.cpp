@@ -112,11 +112,11 @@ void MemoryManager::Free(void* Ptr, bool aType)
 // Si le type d'allocation ne correspond pas, on génère une exeption
     else if (It->second.Type != aType)
     {
-        //throw BadDelete(); //TODO : exception
         _logFile << "Bad Delete" << endl;
 #ifdef _DEBUG_MEMORY_CONSOLE
         LOG << "Bad Delete" << endl;
 #endif
+        throw Utils::Exception("MemoryManager", "Bad Delete !");
     }
 
 // enfin, enregistrement dans le log et destruction de l'objet dans la map et la pile

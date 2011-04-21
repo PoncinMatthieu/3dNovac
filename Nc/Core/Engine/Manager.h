@@ -23,16 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "Manager"
-
-                     gestion des differrents modules du jeux
-                Les modules du jeu sont represente par des Engine
-                    chaque engine et execute par un thread
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NC_CORE_ENGINE_MANAGER_H_
 #define NC_CORE_ENGINE_MANAGER_H_
@@ -46,26 +36,42 @@
 
 namespace Nc
 {
+    /// Provide abstraction to create multithreaded engine, like a GraphicalEngine, GameEngine, AudioEngine, and NetworkEngine
     namespace Engine
     {
         class   IEngine;
         struct  IEvent;
         typedef std::map<std::string, IEngine*>  MapEngine;
 
+        /// Manage Engines of 3dNovac
+        /**
+            Manage the launching of the threads (engines) and dispatch events between them
+        */
         class LCORE Manager : public Utils::NonCopyable
         {
             public:
                 Manager();
                 virtual ~Manager();
 
+                /** Add an engine with his corresponding name */
                 virtual void        AddEngine(const std::string &name, IEngine *engine);
+
+                /** \return the corresponding engine */
                 static IEngine      *GetEngine(const std::string &name);
 
+                /** \return true if the engines is launch */
                 inline bool         IsLaunched()                    {return _isLaunched;}
+
+                /** Start the engines */
                 virtual void        Start();   // demarre les threads (engine)
-                inline void         Stop(int retVal)                {_retVal = retVal; _isLaunched = false;}    // stop les threads
-                virtual int         WaitEngines();
-                inline int          RetVal()                        {return _retVal;}
+
+                /** Stop the engines */
+                inline void         Stop()                          {_isLaunched = false;}    // stop les threads
+
+                /** Wait the engines until they are stoped */
+                virtual void        WaitEngines();
+
+                /** \return the mutex witch is used to protect and synchronize the engines */
                 inline System::Mutex &MutexGlobal()                 {return _mutexGlobal;}
 
                 void                WaitLoadingContextPriority(unsigned char priority);
@@ -73,7 +79,7 @@ namespace Nc
                 void                WaitEnginesContextLoading();
                 void                WaitEnginesLoading();
 
-                // send un event a l'engine (thread) correspondant
+                /** Dispatch events to the corresponding engine */
                 template<typename T>
                 static void         PushEvent(const std::string &engineName, unsigned int id, const T &arg);
                 static void         PushEvent(const std::string &engineName, unsigned int id, IEvent *e);
@@ -81,16 +87,16 @@ namespace Nc
                 static void         PushEvent(const std::string &engineName, const std::string &cmdName);                           // from console
 
             protected:
-                static MapEngine    _mapEngine;     // map d'engine
+                static MapEngine    _mapEngine;             ///< Engine map container
 
                 #ifdef SYSTEM_LINUX
-                static void         RecieveSegv(int);   // this function is called when a signal SIGSEGV is catch
+                /** this function is called when a signal SIGSEGV is catch, only in unix system. */
+                static void         RecieveSegv(int);
                 #endif
                 static void         Terminate();
 
-                bool                _isLaunched;
-                int                 _retVal;
-                System::Mutex       _mutexGlobal; // to synchronize threads if needed
+                bool                _isLaunched;            ///< true, if the engines are launched.
+                System::Mutex       _mutexGlobal;           ///< global mutex used to synchronize threads if needed.
         };
     }
 }

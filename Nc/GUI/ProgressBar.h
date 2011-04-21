@@ -23,14 +23,9 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
 
-    class ProgessBar
-
------------------------------------------------------------------------------*/
-
-#ifndef NOVAC_GRAPHIC_GUI_PROGRESS_BAR_H_
-#define NOVAC_GRAPHIC_GUI_PROGRESS_BAR_H_
+#ifndef NC_GUI_PROGRESS_BAR_H_
+#define NC_GUI_PROGRESS_BAR_H_
 
 #include "Widget.h"
 
@@ -38,38 +33,45 @@ namespace Nc
 {
     namespace GUI
     {
+        /// To manage a progress bar
         class LGUI  ProgressBar : public Widget
         {
             public:
                 ProgressBar(const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Top, Corner y = Left,
-                            Widget *parent = NULL, const std::string &file = "ProgressBar.png");
+                            Widget *parent = NULL, const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
                 virtual ~ProgressBar();
 
+                /** Return a copy of the progress Bat */
                 virtual Widget* Clone() const                                   {return new ProgressBar(*this);}
 
+                /** Set the box of the progress bar */
                 void    SetProgressBox(const Box2f &b)                          {_progressBox = b;}
+                /** Set the color left and right of the progress bar */
                 void    SetColor(const Color &c1, const Color &c2)              {_colorLeft = c1; _colorRight = c2; _stateChange = true;}
 
+                /** Set the percent of the progress bar */
                 void    Percent(float p)                                        {_percent = p; _stateChange = true;}
+                /** Set the number of evolution of the progress bar */
                 void    NbEvolution(unsigned int nb)                            {_nbEvolution = nb;}
+                /** Add an evolution to the progress bar */
                 void    Evolution()                                             {_percent += 100.f / (float)_nbEvolution; _stateChange = true;}
 
             protected:
+                /** update the geometry of the progress bar */
                 virtual void Update();
+
+                /** Render the progress bar */
                 virtual void Draw(Graphic::ISceneGraph *scene);
 
-                Graphic::MaterialConfig<Graphic::BasicVertexType::Colored2d>                _configProgress;
-                Graphic::GL::GeometryBuffer<Graphic::BasicVertexType::Colored2d, false>     _geometryProgress;
+                Graphic::Material<Graphic::BasicVertexType::Textured2d>             *_materialTexture;  ///< The material used to render the texture of the progress bar
+                Graphic::Drawable<Graphic::BasicVertexType::Colored2d, false>       _drawableProgress;  ///< The drawable used to render the progress bar
+                Graphic::Drawable<Graphic::BasicVertexType::Textured2d, false>      _drawableTexture;   ///< The drawable used to render the texture of the drawable
 
-                Graphic::Material<Graphic::BasicVertexType::Textured2d>                     *_materialTexture;
-                Graphic::MaterialConfig<Graphic::BasicVertexType::Textured2d>               _configTexture;
-                Graphic::GL::GeometryBuffer<Graphic::BasicVertexType::Textured2d, false>    _geometryTexture;
-
-                Box2f                   _progressBox;
-                unsigned int            _nbEvolution;
-                float                   _percent;      // progression in percent
-                Color                   _colorLeft;
-                Color                   _colorRight;
+                Box2f                   _progressBox;           ///< The progress box to delimit the progress bar
+                unsigned int            _nbEvolution;           ///< The number of evolution, used to compute the percent of the progress bar
+                float                   _percent;               ///< The progression in percent
+                Color                   _colorLeft;             ///< The color left of the progress bar
+                Color                   _colorRight;            ///< The color right of the progress bar
         };
     }
 }

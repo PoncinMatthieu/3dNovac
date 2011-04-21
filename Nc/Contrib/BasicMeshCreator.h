@@ -23,16 +23,12 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------
-
-    namespace to create some basic mesh
-
---------------------------------------------------------------------------------*/
 
 #ifndef NC_CONTRIB_BASICMESHCREATOR_H_
 #define NC_CONTRIB_BASICMESHCREATOR_H_
 
 #include <Nc/Graphics/Object/3D/Mesh.h>
+#include "Define.h"
 
 namespace Nc
 {
@@ -43,11 +39,21 @@ namespace Nc
             // cree un Pave Texture
             //Object3d *Pave(const Vector3f& center, const Vector3f &size, const Color& color, const GL::Texture &texture);
 
-            // cree un plan
+            /**
+                Create a plan
+                \param size : the 2d dimension size
+                \param texture : and the texture
+                \return the Mesh using the given MaterialPolitic and MaterialConfigPolitic
+            */
             template<typename MaterialPolitic = DefaultMaterialPolitics<BasicVertexType::Textured>, typename MaterialConfigPolitic = DefaultMaterialConfigPolitics<BasicVertexType::Textured> >
             Object3d *Plan(const Vector2f &size, const GL::Texture &texture);
 
-            // cree une grille
+            /**
+                Create a grid
+                \param size to specified the 2d size of the whole grid. A case has the size 1*1. The z coord is to specified the height of the grid
+                \param c the color of the grid lines
+                \return the resulting Mesh
+            */
             Object3d *Grid(const Vector3f &size, const Color &c);
         }
 
@@ -70,9 +76,12 @@ namespace Nc
                 Box3f box(Vector3f(0.f, 0.f, -0.1f), Vector3f(size[0], size[1], 0.1f));
 
             // creation du mesh
-                GL::GeometryBuffer<BasicVertexType::Textured, false> geometry(GL::VertexBuffer<BasicVertexType::Textured>(vertices, GL_STATIC_DRAW), GL_TRIANGLE_STRIP);
-                Mesh<BasicVertexType::Textured, false, MaterialPolitic, MaterialConfigPolitic>  *mesh = new Mesh<BasicVertexType::Textured, false>(geometry, box);
-                mesh->GetMaterialConfig().Texture = texture;
+                Mesh<BasicVertexType::Textured, false, MaterialPolitic, MaterialConfigPolitic>  *mesh = new Mesh<BasicVertexType::Textured, false>(box);
+                Drawable<BasicVertexType::Textured, false> *drawable = mesh->NewDrawable();
+                drawable->GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
+                drawable->SetPrimitiveType(GL_TRIANGLE_STRIP);
+                drawable->texture = texture;
+                mesh->ConfigureDrawables();
                 return mesh;
             }
         }

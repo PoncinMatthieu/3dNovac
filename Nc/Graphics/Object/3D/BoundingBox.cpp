@@ -30,9 +30,8 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Material<BasicVertexType::Colored>                      *BoundingBox::_material = NULL;
-MaterialConfig<BasicVertexType::Colored>                *BoundingBox::_config = NULL;
-GL::GeometryBuffer<BasicVertexType::Colored>            *BoundingBox::_geometry = NULL;
+Material<BasicVertexType::Colored>              *BoundingBox::_material = NULL;
+Drawable<BasicVertexType::Colored>              *BoundingBox::_drawable = NULL;
 
 BoundingBox::BoundingBox()
     : Object3d(false), _color(1,1,1)
@@ -41,13 +40,13 @@ BoundingBox::BoundingBox()
 }
 
 BoundingBox::BoundingBox(const Box3f &box)
-    : Object3d(false), _box(box), _color(1,1,1)
+    : Object3d(false), Box3f(box), _color(1,1,1)
 {
     CreateGeometry();
 }
 
 BoundingBox::BoundingBox(const Vector3f &min, const Vector3f &max)
-    : Object3d(false), _box(min, max), _color(1,1,1)
+    : Object3d(false), Box3f(min, max), _color(1,1,1)
 {
     CreateGeometry();
 }
@@ -61,8 +60,7 @@ void BoundingBox::CreateGeometry()
     if (_material == NULL)
     {
         _material = &Material<BasicVertexType::Colored>::Instance();
-        _config = new MaterialConfig<BasicVertexType::Colored>();
-        _geometry = new GL::GeometryBuffer<BasicVertexType::Colored>();
+        _drawable = new Drawable<BasicVertexType::Colored>();
         UpdateGeometry();
     }
 }
@@ -94,18 +92,18 @@ void BoundingBox::UpdateGeometry()
     indices[20] = 6;    indices[21] = 7;
     indices[22] = 4;    indices[23] = 7;
 
-    _geometry->GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
-    _geometry->GetIBO().UpdateData(indices, 2);
-    _geometry->SetPrimitiveType(GL_LINES);
-    _material->Configure(*_geometry);
+    _drawable->GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
+    _drawable->GetIBO().UpdateData(indices, 2);
+    _drawable->SetPrimitiveType(GL_LINES);
+    _material->Configure(*_drawable);
 }
 
 void BoundingBox::Render(ISceneGraph *scene)
 {
-    Vector3f minToMax = _box.Max() - _box.Min();
+    Vector3f minToMax = _max - _min;
     Matrix.Scale(minToMax);
-    Matrix.AddTranslation(_box.Min());
+    Matrix.AddTranslation(_min);
     TMatrix matrix = Matrix * scene->ModelMatrix();
-    _material->Render(scene, matrix, *_geometry, *_config);
+    _material->Render(scene, matrix, *_drawable);
 }
 

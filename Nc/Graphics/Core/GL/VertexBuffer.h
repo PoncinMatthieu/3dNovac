@@ -23,31 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-
-          Implementation des classes "gVertexBuffer" et "gIndexBuffer"
- scpécifie un tampon de tableau de gVertex et d'index directement dans la memoire
-  de la carte graphique permettant un affichage rapide et simplifié de models 3D
-
-"gVertex" est une structure de sommet ou est enregistré :
-        - sa position,
-        - sa couleur,
-        - ses coordonnées de texture et de normale
-
-Le parametre "aFlags " prent pour valeur :
-        - GL_STREAM_DRAW : vous mettez vos données à jour à chaque affichage ( glDraw*() )
-        - GL_DYNAMIC_DRAW : vous mettez fréquemment à jour vos données. (plus d'une fois par affichage)
-        - GL_STATIC_DRAW : vous mettez peu souvent voir jamais vos données à jour
-Dans les gIndexBuffer, on utilise par defaut le "GL_STATIC_DRAW", on considere
-qu'une fois créé, il ne bouge plus, ce sont plutot les coordonnées des vertex qui
-peuvent changer
-
-Les rendu se feront par la classe "VertexBuffer" en appellan la fonction "Draw"
-et en lui passant en parametre un "IndexBuffer"
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NC_GRAPHICS_CORE_GL_VERTEXBUFFER_H_
 #define NC_GRAPHICS_CORE_GL_VERTEXBUFFER_H_
@@ -58,42 +33,61 @@ et en lui passant en parametre un "IndexBuffer"
 #include "../../Define.h"
 #include "IndexBuffer.h"
 
-#define NC_VBO_BUFFER_OFFSET(n) ((char*)NULL + (n))
-
 namespace Nc
 {
     namespace Graphic
     {
         namespace GL
         {
+            /// Structure to define a data of a VertexDescriptor that describe a composant of a VertexType
             struct DataVertexDescriptor
             {
-                int             Size;
-                GLenum          Type;
-                unsigned int    PointerOffset;
-                unsigned int    IndexAttrib;
-                bool            Normalized;
+                int             Size;               ///< the size of the data in the vertex
+                GLenum          Type;               ///< the type of the data in the vertex
+                unsigned int    PointerOffset;      ///< the pointer offset of the data in the vertex
+                unsigned int    IndexAttrib;        ///< the index Attrib (in relation with the Shader::AttribLocation) of the data in the vertex
+                bool            Normalized;         ///< if true, the data will be normalized before enterring in the shader program pipeline
             };
-            typedef Array<DataVertexDescriptor>     VertexDescriptor;
+            typedef Array<DataVertexDescriptor>     VertexDescriptor;   ///< define the componants of a VertexType
 
+            /// Interface to define a VertexBuffer
             class LGRAPHICS IVertexBuffer
             {
                 public:
                     IVertexBuffer(const VertexDescriptor &descriptor) : Descriptor(descriptor), MaskDescriptor(0xffff)    {}
                     virtual ~IVertexBuffer()    {}
 
+                    /** Return true if we need to update the geometry */
                     inline bool         NeedUpdate()                        {return _needUpdate;}
+                    /** Map the buffer (activate it to be rendered) */
                     virtual void        Map() = 0;
+                    /** Unmap the buffer (Disable it) */
                     virtual void        Unmap() = 0;
+                    /**
+                        Draw the vertex buffer with the given primitive type <br/>
+                        Primitive type could be :       <br/>
+                            GL_POINTS,                  <br/>
+                            GL_LINE_STRIP,              <br/>
+                            GL_LINE_LOOP,               <br/>
+                            GL_LINES,                   <br/>
+                            GL_LINE_STRIP_ADJACENCY,    <br/>
+                            GL_LINES_ADJACENCY,         <br/>
+                            GL_TRIANGLE_STRIP,          <br/>
+                            GL_TRIANGLE_FAN,            <br/>
+                            GL_TRIANGLES,               <br/>
+                            GL_TRIANGLE_STRIP_ADJACENCY and <br/>
+                            GL_TRIANGLES_ADJACENCY      <br/>
+                     */
                     virtual void        Draw(GLenum primitiveType) = 0;
 
-                    VertexDescriptor    Descriptor;         ///< used to describe the vertex structure
-                    unsigned short      MaskDescriptor;     ///< used to render the good data vertex
+                    VertexDescriptor    Descriptor;         ///< used to describe the vertex type structure
+                    unsigned short      MaskDescriptor;     ///< used to render the good componants vertex
 
                 protected:
-                    bool                _needUpdate;
+                    bool                _needUpdate;        ///< used to mark if we need to update the geometry
             };
 
+            /// Template class which define a buffer of vertex to describe a geometry
             template<typename T>
             class VertexBuffer : public IVertexBuffer, public DataBuffer<T>
             {
@@ -105,15 +99,22 @@ namespace Nc
                     virtual ~VertexBuffer();
 
                     // manage content
+                    /** Init the buffer */
                     void    Init();
+                    /** Init the buffer */
                     void    Init(unsigned int size, unsigned int flags);
+                    /** Update the buffer */
                     template<unsigned int D>
                     void    UpdateData(const Array<T,D> &tabVertices, unsigned int flags, bool keepContent = false);
+                    /** Update the buffer */
                     void    UpdateData(const T *aDataTab, bool conserveData = false);
 
                     // affichage
+                    /** Map the buffer (Activate it to be rendered) */
                     virtual void        Map();
+                    /** Unmap the buffer (Disable it) */
                     virtual void        Unmap();
+                    /** Draw the buffer with the given primitive type */
                     virtual void        Draw(GLenum primitiveType);
             };
 
@@ -180,20 +181,24 @@ namespace Nc
             template<typename T>
             void    VertexBuffer<T>::Map()
             {
-                /// enable client states and set pointer, Draw, and then disable the client states
+                #define BUFFER_OFFSET(n) ((char*)NULL + (n))
+
+                // enable client states and set pointer, Draw, and then disable the client states
                 for (unsigned short i = 0; i < Descriptor.Size(); ++i)
                 {
                     if ((MaskDescriptor >> i) & 1)
                     {
                         DataVertexDescriptor &desc = Descriptor[i];
-                        if (desc.IndexAttrib >= 0)
-                        {
+                        //if (desc.IndexAttrib >= 0)
+                        //{
                             glEnableVertexAttribArray(desc.IndexAttrib);
-                            glVertexAttribPointer(desc.IndexAttrib, desc.Size, desc.Type, desc.Normalized, sizeof(T), NC_VBO_BUFFER_OFFSET(desc.PointerOffset));
-                        }
+                            glVertexAttribPointer(desc.IndexAttrib, desc.Size, desc.Type, desc.Normalized, sizeof(T), BUFFER_OFFSET(desc.PointerOffset));
+                        //}
                     }
                 }
                 _needUpdate = false;
+
+                #undef BUFFER_OFFSET
             }
 
             template<typename T>
@@ -204,7 +209,7 @@ namespace Nc
                     if ((MaskDescriptor >> i) | 1)
                     {
                         DataVertexDescriptor &desc = Descriptor[i];
-                        if (desc.IndexAttrib >= 0)
+                        //if (desc.IndexAttrib >= 0)
                             glDisableVertexAttribArray(desc.IndexAttrib);
                     }
                 }

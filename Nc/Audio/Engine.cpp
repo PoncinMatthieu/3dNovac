@@ -39,7 +39,6 @@ Engine::Engine(Nc::Engine::Manager *manager)
     : Nc::Engine::IEngine("Audio Engine", manager, 0, 1, 1, 1)
 {
     _musicOpened = false;
-    _timeout = 0.5;
 
     AddNewCmd(LoadDescFile, (Nc::Engine::CmdFunction)&Engine::LoadDescFileCmd);
     AddNewCmd(LoadMusic,    (Nc::Engine::CmdFunction)&Engine::LoadMusicCmd);
@@ -53,11 +52,10 @@ Engine::~Engine()
 {
 }
 
-void Engine::LdDescFile(const std::string &file)
+void Engine::LdDescFile(const Utils::FileName &file)
 {
     // load the desc file
-    const std::string &audioPath = CONFIG->Block("RessourcesPath")->Line("Audio")->Param("path");
-    Xml::File   descFile(audioPath + file);
+    Xml::File   descFile(file);
     Xml::Object *content = descFile.Read();
 
     // Load Sounds
@@ -75,10 +73,10 @@ void Engine::LdDescFile(const std::string &file)
     delete content;
 }
 
-void Engine::LdMusic(const std::string &file)
+void Engine::LdMusic(const Utils::FileName &file)
 {
     _musicOpened = false;
-    if (!_music.OpenFromFile(CONFIG->Block("RessourcesPath")->Line("Audio")->Param("path") + file))
+    if (!_music.OpenFromFile(file))
         throw Utils::Exception("AudioEngine", "Can't open music `" + file + "`");
     _musicOpened = true;
 }
@@ -97,11 +95,11 @@ void Engine::StpMusic(Nc::Engine::IEvent*)
         _music.Stop();
 }
 
-void Engine::LdSound(const std::string &file)
+void Engine::LdSound(const Utils::FileName &file)
 {
-    s_sound sound;
+    SoundIndex sound;
 
-    if (!sound.buffer.LoadFromFile(CONFIG->Block("RessourcesPath")->Line("Audio")->Param("path") + file))
+    if (!sound.buffer.LoadFromFile(file))
         throw Utils::Exception("AudioEngine", "Can't open sound `" + file + "`");
     sound.index = _listSounds.size();
     _listSounds.push_back(sound);
@@ -109,7 +107,7 @@ void Engine::LdSound(const std::string &file)
 
 void Engine::PlSound(unsigned int no)
 {
-    for (list<s_sound>::iterator it = _listSounds.begin(); it != _listSounds.end(); it++)
+    for (list<SoundIndex>::iterator it = _listSounds.begin(); it != _listSounds.end(); it++)
         if (it->index == no)
         {
             it->sound.SetBuffer(it->buffer);
@@ -121,27 +119,27 @@ void Engine::PlSound(unsigned int no)
 
 void Engine::LoadDescFileCmd(Nc::Engine::IEvent *e)
 {
-    Nc::Engine::Event<std::string> *es = dynamic_cast<Nc::Engine::Event<std::string>*>(e);
+    Nc::Engine::Event<Utils::FileName> *es = dynamic_cast<Nc::Engine::Event<Utils::FileName>*>(e);
     if (es == NULL)
-        throw Utils::Exception("AudioEngine", "Function LoadDescFileCmd: bad argument. Event<std::string> is expecting");
+        throw Utils::Exception("AudioEngine", "Function LoadDescFileCmd: bad argument. Event<Utils::FileName> is expecting");
 
     LdDescFile(es->Data);
 }
 
 void Engine::LoadMusicCmd(Nc::Engine::IEvent *e)
 {
-    Nc::Engine::Event<std::string> *es = dynamic_cast<Nc::Engine::Event<std::string>*>(e);
+    Nc::Engine::Event<Utils::FileName> *es = dynamic_cast<Nc::Engine::Event<Utils::FileName>*>(e);
     if (es == NULL)
-        throw Utils::Exception("AudioEngine", "Function LoadMusicCmd: bad argument. Event<std::string> is expecting");
+        throw Utils::Exception("AudioEngine", "Function LoadMusicCmd: bad argument. Event<Utils::FileName> is expecting");
 
     LdMusic(es->Data);
 }
 
 void Engine::LoadSoundCmd(Nc::Engine::IEvent *e)
 {
-    Nc::Engine::Event<std::string> *es = dynamic_cast<Nc::Engine::Event<std::string>*>(e);
+    Nc::Engine::Event<Utils::FileName> *es = dynamic_cast<Nc::Engine::Event<Utils::FileName>*>(e);
     if (es == NULL)
-        throw Utils::Exception("AudioEngine", "Function LoadSoundCmd: bad argument. Event<std::string> is expecting");
+        throw Utils::Exception("AudioEngine", "Function LoadSoundCmd: bad argument. Event<Utils::FileName> is expecting");
 
     LdSound(es->Data);
 }

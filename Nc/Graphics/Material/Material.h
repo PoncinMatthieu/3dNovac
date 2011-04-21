@@ -19,21 +19,10 @@
     You should have received a copy of the GNU Lesser General Public License
     along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
 
-    File Created At:        22/05/2010
+    File Created At:        22/01/2011
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-                  Implementation de la classe mere "Material"
-
-        Classe de base permettant de definir un type de materiaux,
-                    chaque mesh est associer a un materiaux,
-                celui ci, s'occupera de faire le rendu du mesh
-    en fonction du type de materiaux et des parametres qui lui sont fourni
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NC_GRAPHIC_MATERIAL_MATERIAL_H_
 #define NC_GRAPHIC_MATERIAL_MATERIAL_H_
@@ -44,22 +33,41 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// To render a drawable with a Politic that affect how the drawable is rendered
+        /**
+            A MaterialPolitic should define these 2 methodes :
+ \code
+    void    Configure(GL::IGeometryBuffer<VertexType> &geometry);
+
+    void    Render(ISceneGraph *scene, TMatrix &modelMatrix, Drawable<VertexType, INDEX, ConfigPolitic> &drawable);
+ \endcode
+            If you are looking for an exemple of material politics you should show the DefaultMaterialPolitics and the DefaultLightingMaterialConfigPolitic classes.
+        */
         template<typename VertexType, typename MaterialPolitic>
         class Material : public MaterialPolitic, public Utils::Singleton<Material<VertexType, MaterialPolitic> >
         {
             public:
+                /** Render the given drawable with the scene using the Politic */
                 template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, GL::GeometryBuffer<VertexType, INDEX> &geometry, MaterialConfig<VertexType, ConfigPolitic> &config)
+                void    Render(ISceneGraph *scene, Drawable<VertexType, INDEX, ConfigPolitic> &drawable)
                 {
-                    MaterialPolitic::Render(scene, scene->ModelMatrix(), geometry, config);
+                    MaterialPolitic::Render(scene, scene->ModelMatrix(), drawable);
                 }
 
+                /** Render the given drawable with the scene and the given model matrix using the Politic */
                 template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, GL::GeometryBuffer<VertexType, INDEX> &geometry, MaterialConfig<VertexType, ConfigPolitic> &config)
+                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, Drawable<VertexType, INDEX, ConfigPolitic> &drawable)
                 {
-                    MaterialPolitic::Render(scene, modelMatrix, geometry, config);
+                    MaterialPolitic::Render(scene, modelMatrix, drawable);
                 }
         };
+
+        // explicit instantiation for basic types
+        static template class Material<BasicVertexType::Colored>;               ///< explicit instanciation of a DefaultMaterial colored
+        static template class Material<BasicVertexType::Colored2d>;             ///< explicit instanciation of a DefaultMaterial colored 2d
+        static template class Material<BasicVertexType::Textured>;              ///< explicit instanciation of a DefaultMaterial textured
+        static template class Material<BasicVertexType::Textured2d>;            ///< explicit instanciation of a DefaultMaterial textured 2d
+        static template class Material<BasicVertexType::Textured3d>;            ///< explicit instanciation of a DefaultMaterial textured 3d
     }
 }
 

@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "Math.h"
-#include "Pixel.h" // to force the compilatio
+#include "Pixel.h" // to force the compilation
 
 namespace Nc
 {
@@ -48,20 +48,6 @@ void Normalize(float p[3])
     p[0] /= len;
     p[1] /= len;
     p[2] /= len;
-}
-
-void AddVector3D(float v1[3], const Vector3f &v2)
-{
-	v1[0] += v2.Data[0];
-	v1[1] += v2.Data[1];
-	v1[2] += v2.Data[2];
-}
-
-void AddVector3D(float v1[3], const float v2[3])
-{
-	v1[0] += v2[0];
-	v1[1] += v2[1];
-	v1[2] += v2[2];
 }
 
 bool InRect(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &pointTest)

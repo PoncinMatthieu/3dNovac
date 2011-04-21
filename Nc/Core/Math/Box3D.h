@@ -23,12 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    class Box3D<T>
-    Define a Box in dimension three with the data T
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_MATH_BOX3D_INCLUDED_H_
 #define NC_CORE_MATH_BOX3D_INCLUDED_H_

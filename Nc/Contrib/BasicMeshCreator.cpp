@@ -101,8 +101,11 @@ Object3d    *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
     Vector3f bmax(size.Data[0], size.Data[1], size.Data[2] + 0.1f);
 
 // creation du mesh
-    GL::GeometryBuffer<BasicVertexType::Colored, false> geometry(GL::VertexBuffer<BasicVertexType::Colored>(vertices, GL_STATIC_DRAW), GL_LINES);
-    Mesh<BasicVertexType::Colored, false>  *mesh = new Mesh<BasicVertexType::Colored, false>(geometry, Box3f(bmin, bmax));
+    Mesh<BasicVertexType::Colored, false>  *mesh = new Mesh<BasicVertexType::Colored, false>(Box3f(bmin, bmax));
+    Drawable<BasicVertexType::Colored, false> *drawable = mesh->NewDrawable();
+    drawable->GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
+    drawable->SetPrimitiveType(GL_LINES);
+    mesh->ConfigureDrawables();
     return mesh;
 }
 

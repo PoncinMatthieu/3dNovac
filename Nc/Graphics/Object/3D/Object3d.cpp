@@ -33,28 +33,15 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic;
 
+Object3d::Object3d(const Box3f &box, const TMatrix &mat)
+    : Object(mat), _parent(NULL), _box(new BoundingBox(box))
+{
+}
+
 Object3d::Object3d(bool createBox)
     : _parent(NULL)
 {
     _box = (createBox) ? new BoundingBox() : NULL;
-}
-/*
-Object3d::Object3d(Mesh *mesh)
-    : _parent(NULL)
-{
-    _listMesh.push_back(mesh);
-    _box = mesh->Box();
-}
-Object3d::Object3d(list<Mesh*> &listMesh, const Box3f &box, const TMatrix &mat) : Object(mat)
-{
-    _listMesh = listMesh;
-    _box = box;
-}
-*/
-
-Object3d::Object3d(const Box3f &box, const TMatrix &mat)
-    : Object(mat), _parent(NULL), _box(new BoundingBox(box))
-{
 }
 
 Object3d::~Object3d()
@@ -72,7 +59,7 @@ void Object3d::Free()
 Object3d::Object3d(const Object3d &O) : Object(O)
 {
     Object::operator = (O);
-    for (ListPObject3D::const_iterator it = O._listChild.begin(); it != O._listChild.end(); it++)
+    for (ListPObject3d::const_iterator it = O._listChild.begin(); it != O._listChild.end(); it++)
     {
         Object3d *newObj = (*it)->Clone();
         newObj->SetParent(this);
@@ -86,7 +73,7 @@ Object3d& Object3d::operator = (const Object3d& O)
 {
     Free();
     Object::operator = (O);
-    for (ListPObject3D::const_iterator it = O._listChild.begin(); it != O._listChild.end(); it++)
+    for (ListPObject3d::const_iterator it = O._listChild.begin(); it != O._listChild.end(); it++)
     {
         Object3d *newObj = (*it)->Clone();
         newObj->SetParent(this);
@@ -100,14 +87,15 @@ Object3d& Object3d::operator = (const Object3d& O)
 void Object3d::AddChild(Object3d *o)
 {
     _listChild.push_back(o);
+    o->SetParent(this);
     if (_box != NULL && o->_box != NULL)
-        _box->SetBox(_box->GetBox() + o->_box->GetBox());
+        *_box += *o->_box;
 }
 
 const Box3f &Object3d::Box() const
 {
     if (_box != NULL)
-        return _box->GetBox();
+        return *_box;
     else
         return Box3f::EmptyBox;
 }
@@ -122,7 +110,7 @@ void Object3d::Render(ISceneGraph *scene)
     Draw(scene);
 
     // render the childs
-    for (ListPObject3D::iterator it = _listChild.begin(); it != _listChild.end(); it++)
+    for (ListPObject3d::iterator it = _listChild.begin(); it != _listChild.end(); it++)
         (*it)->Render(scene);
     scene->PopModelMatrix();
 }
@@ -136,7 +124,7 @@ void Object3d::Draw(ISceneGraph *scene)
 /*
 void Object3d::Transform(const TMatrix& M)
 {
-    for (ListPObject3D::iterator it = _listChild.begin(); it != _listChild.end(); it++)
+    for (ListPObject3d::iterator it = _listChild.begin(); it != _listChild.end(); it++)
         (*it)->Transform(M);
     _box->Transform(M);
 }
@@ -144,7 +132,7 @@ void Object3d::Transform(const TMatrix& M)
 void Object3d::UpdateBoundingBox()
 {
     Box3f b;
-    for (ListPObject3D::iterator it = _listChild.begin(); it != _listChild.end(); it++)
+    for (ListPObject3d::iterator it = _listChild.begin(); it != _listChild.end(); it++)
         b += (*it)->Box();
     b->SetBox(b);
 }
@@ -154,7 +142,7 @@ void Object3d::HeightScale(float height)
     if (_box != NULL)
     {
         float k;
-        k = height / _box->GetBox().Length(2);
+        k = height / _box->Height();
         Matrix.AddScale(k);
     }
 }

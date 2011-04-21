@@ -15,6 +15,7 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-D_DEBUG" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -39,6 +40,7 @@
 		<Unit filename="../../../Nc/Contrib/BasicMeshCreator.cpp" />
 		<Unit filename="../../../Nc/Contrib/BasicMeshCreator.h" />
 		<Unit filename="../../../Nc/Contrib/Contrib.h" />
+		<Unit filename="../../../Nc/Contrib/Define.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

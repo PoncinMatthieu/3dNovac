@@ -23,15 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-	Description : Material configuration class to set basic properties of a material
-                  Each Material needs a MaterialConfig to render a mesh,
-                  so the material configs are contained by the mesh
-                  and used in the render pass
-                  if the _texture is set, the material will use it
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_MATERIAL_MATERIALCONFIG_H_
 #define NC_GRAPHICS_MATERIAL_MATERIALCONFIG_H_
@@ -45,32 +36,47 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Default template MaterialConfig Politics
+        /**
+            For mode detail show the specialisations of the class
+        */
         template<typename VertexType>
         struct DefaultMaterialConfigPolitics    {};
 
+        /// Base structure for Material configuration to set properties in the rendering of a Geometry.
+        /**
+            Each geometry needs a MaterialConfig to be render with a Material
+            material config set store properties like blend, deapth test, texture ....
+        */
         struct LGRAPHICS IMaterialConfig
         {
-            IMaterialConfig() : DepthTest(true)                 {}
-            IMaterialConfig(GL::Blend::Pattern &p) : Blend(p), DepthTest(true)  {}
+            IMaterialConfig() : depthTest(true)         {}
+            IMaterialConfig(GL::Blend::Pattern &p) : blend(p), depthTest(true)  {}
             ~IMaterialConfig()                          {}
 
+            /** Set the blend method */
+            void SetBlend(const GL::Blend::Pattern &p)    {blend.SetPattern(p);}
+
+            /** Enable the default basic config (blend and depthTest) */
             void Enable()
             {
-                Blend.Enable();
-                if (!DepthTest)
+                blend.Enable();
+                if (!depthTest)
                     glDisable(GL_DEPTH_TEST);
             }
+            /** Disable the default basic config (blend and depthTest) */
             void Disable()
             {
-                Blend.Disable();
-                if (!DepthTest)
+                blend.Disable();
+                if (!depthTest)
                     glEnable(GL_DEPTH_TEST);
             }
 
-            GL::Blend   Blend;
-            bool        DepthTest;
+            GL::Blend   blend;          ///< the blend methode of the material
+            bool        depthTest;      ///< true if the depth test should be enable
         };
 
+        /// Material configuration
         template<typename VertexType, typename ConfigPolitic = DefaultMaterialConfigPolitics<VertexType> >
         struct  MaterialConfig : public IMaterialConfig, public ConfigPolitic
         {
@@ -79,32 +85,42 @@ namespace Nc
         };
 
 
+        /// Specialisation of Material configuration for a Textured VertexType
         template<typename ConfigPolitic>
         struct  MaterialConfig<BasicVertexType::Textured, ConfigPolitic> : public IMaterialConfig, public ConfigPolitic
         {
             MaterialConfig()                                                                        {}
-            MaterialConfig(GL::Blend::Pattern p, GL::Texture t) : IMaterialConfig(p), Texture(t)    {}
+            MaterialConfig(GL::Blend::Pattern p, GL::Texture t) : IMaterialConfig(p), texture(t)    {}
 
-            GL::Texture     Texture;
+            GL::Texture     texture;
         };
 
+        /// Specialisation of Material configuration for a Textured2d VertexType
         template<typename ConfigPolitic>
         struct  MaterialConfig<BasicVertexType::Textured2d, ConfigPolitic> : public IMaterialConfig, public ConfigPolitic
         {
             MaterialConfig()                                                                        {}
-            MaterialConfig(GL::Blend::Pattern p, GL::Texture t) : IMaterialConfig(p), Texture(t)    {}
+            MaterialConfig(GL::Blend::Pattern p, GL::Texture t) : IMaterialConfig(p), texture(t)    {}
 
-            GL::Texture     Texture;
+            GL::Texture     texture;
         };
 
+        /// Specialisation of Material configuration for a Textured3d VertexType
         template<typename ConfigPolitic>
         struct  MaterialConfig<BasicVertexType::Textured3d, ConfigPolitic> : public IMaterialConfig, public ConfigPolitic
         {
             MaterialConfig()                                                                        {}
-            MaterialConfig(GL::Blend::Pattern p, GL::Texture t) : IMaterialConfig(p), Texture(t)    {}
+            MaterialConfig(GL::Blend::Pattern p, GL::Texture t) : IMaterialConfig(p), texture(t)    {}
 
-            GL::Texture     Texture;
+            GL::Texture     texture;
         };
+
+        // explicit instantiation for basic types
+        static template class MaterialConfig<BasicVertexType::Colored>;             ///< Explicite instanciation of DefaulMaterialConfig Colored
+        static template class MaterialConfig<BasicVertexType::Colored2d>;           ///< Explicite instanciation of DefaulMaterialConfig Colored2d
+        static template class MaterialConfig<BasicVertexType::Textured>;            ///< Explicite instanciation of DefaulMaterialConfig Textured
+        static template class MaterialConfig<BasicVertexType::Textured2d>;          ///< Explicite instanciation of DefaulMaterialConfig Textured2d
+        static template class MaterialConfig<BasicVertexType::Textured3d>;          ///< Explicite instanciation of DefaulMaterialConfig Textured3d
     }
 }
 

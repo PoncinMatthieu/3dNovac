@@ -23,13 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------
-
-    Provide an implementation of cursor for an X11 system
-    the cursor is actually loading the data with only 1 bit per pixel
-    TODO implemente cursor loading with more than 1 bit per pixel
-
---------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_WINDOW_XCURSOR_H_
 #define NC_GRAPHICS_WINDOW_XCURSOR_H_
@@ -44,18 +37,32 @@ namespace Nc
     {
         class XWindow;
 
+        /// Implementation of a ICursor for an X11 system
+        /**
+            The cursor is actually loading the data with only 1 bit per pixel <br/>
+            To create a cursor you will need to have an XWindow but you shouldn't create a create directly a cursor, the best way is to use the methode Window::NewCursor() <br/>
+            <br/>
+            \todo We have disabled cursor management when the window is created using an existing window. Because cursor management cause freese with Qt
+            \todo Implemente cursor loading with more than 1 bit per pixel (it's a problem on X11)
+            \todo Implement a load from image methode
+        */
         class Cursor : public ICursor
         {
             public:
                 Cursor(XWindow *w);
                 virtual ~Cursor();
 
+                /** Enable the cursor */
                 virtual void Enable();
+
+                /** Disable the cursor */
                 virtual void Disable();
 
-                /// Load Data, with 1 bit per pixel
-                virtual void LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter);
+                /** Load from an Xpm (for more detail show the detailed description of ICursor) */
                 virtual void LoadFromXpm(const char *xpm[]);
+
+                /** Load Data, with 1 bit per pixel */
+                virtual void LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter);
 
             private:
                 void    CreateHiddenCursor();

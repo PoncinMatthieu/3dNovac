@@ -65,5 +65,5 @@ void Image::LoadFromFile(const Utils::FileName &file)
         png.Load(file, *this);
     }
     else
-        throw Utils::Exception("Image", file.Fullname() + ": This file format is not supported");
+        throw Utils::Exception("Image", file + ": This file format is not supported");
 }

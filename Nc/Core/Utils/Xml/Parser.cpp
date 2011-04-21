@@ -99,7 +99,7 @@ bool Parser::GenereToken(Token &newToken)
         }
         if (pos >= (unsigned int)size)
         {
-            _in.read(_buffer, SIZE_BUFFER);
+            _in.read(_buffer, NC_UTILS_XML_SIZE_BUFFER);
             size = _in.gcount();
             pos = 0;
             if (size == 0)

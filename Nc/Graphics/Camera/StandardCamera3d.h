@@ -23,14 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Implementation de la classe "StandardCamera3d"
-    Permet la gestion d'une camera de type trackball ou turntable
-
-Herite de : Camera3d
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHIC_CAMERATRACKBALL_H_
 #define NC_GRAPHIC_CAMERATRACKBALL_H_
@@ -42,6 +34,11 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Implementation of a standard Camera3d
+        /**
+            To manage trackball or turntable camera
+            \todo Implemete trackball and freefly system (only the trackball is implemented)
+        */
         class LGRAPHICS StandardCamera3d : public Camera3d
         {
             public:
@@ -62,32 +59,40 @@ namespace Nc
 
                 virtual void Resized(const System::Event &event);
 
-                inline Pattern  GetPattern() const      {return _pattern;}
+                /** \return the pattern used by camera */
+                inline Pattern  GetPattern() const                  {return _pattern;}
+                /** Set the pattern used by the camera */
+                inline void     SetPattern(Pattern p)               {_pattern = p;}
+
 
                 // Manage events
+                /** Manage the mouse motion event */
                 virtual void    MouseMotionEvent(const System::Event &event);
+                /** Manage the mouse button event */
                 virtual void    MouseButtonEvent(const System::Event &event);
+                /** Manage the keyboard event */
                 virtual void    KeyboardEvent(const System::Event &) {};
 
-                // to compute the actual position
+                /** to compute the actual position */
                 virtual void    Update(float runningTime);
 
             private:
+                /** Recompute the eye, center and up vector after a modification */
                 void MajEye();
 
-                Pattern     _pattern;
-                float       _moveSpeed;
-                float       _SensibilityRotate;
-                float       _SensibilityTranslate;
-                float       _SensibilityZoom;
-                bool        _StateButtonRight;
-                bool        _StateButtonLeft;
-                float       _distance;
-                Vector2f    _angles;
-                Vector2i    _lastPosMouse;
+                Pattern     _pattern;                   ///< the pattern of the camera
+                float       _moveSpeed;                 ///< the speed of the movement of the camera
+                float       _SensibilityRotate;         ///< the rotation sensibility
+                float       _SensibilityTranslate;      ///< the translation sensibility
+                float       _SensibilityZoom;           ///< the zoom sensibility
+                bool        _StateButtonRight;          ///< the button right state
+                bool        _StateButtonLeft;           ///< the button left state
+                float       _distance;                  ///< the distance between the center and the eye
+                Vector2f    _angles;                    ///< the angle of rotation
+                Vector2i    _lastPosMouse;              ///< the last position of the mouse
 
-                ICursor     *_cursorOpen;
-                ICursor     *_cursorClose;
+                ICursor     *_cursorOpen;               ///< the cursor when the button mouse is up
+                ICursor     *_cursorClose;              ///< the cursor when the button mouse is down
         };
     }
 }

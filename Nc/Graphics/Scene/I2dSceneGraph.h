@@ -34,8 +34,10 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Interface to render a scene in 2d, Like GUI
         /**
-            Interface to render in 2d, Like GUI
+            Typically disable the depth test before the rendering
+            The camera associated to the scene graph is not deleted by the scene graph
         */
         class LGRAPHICS I2dSceneGraph : public ISceneGraph
         {
@@ -43,20 +45,24 @@ namespace Nc
                 I2dSceneGraph(Camera2d *camera) : _camera(camera) {}
                 virtual ~I2dSceneGraph()    {}
 
+                /** Render the scene, call the method RenderIn2D */
                 virtual void    Render();
+
+                /** Render the scene in 2d on top of the screen */
                 virtual void    RenderIn2D() = 0;
 
+                /** To update the projection and view matrix */
                 virtual void    SetCurrentScene();
 
-                /// Set the Camera3d
+                /** Set the Camera2d associated to the scene, the camera is used to setup the projection and view matrix */
                 inline void                 SetCamera(Camera2d* aCamera)      {_camera = aCamera;}
 
-                /// Return the camera (the camera is deleted in the Basic3dRenderer in the destructor)
+                /** Return the camera */
                 inline Camera2d             *GetCamera()                    {return _camera;}
                 inline const Camera2d       *GetCamera() const              {return _camera;}
 
             protected:
-                Camera2d        *_camera;
+                Camera2d        *_camera;           ///< the 2d Camera associated to the scene, it used to update the projection and view matrix
         };
     }
 }

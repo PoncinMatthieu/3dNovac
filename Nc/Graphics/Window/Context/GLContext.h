@@ -23,11 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    Provide a GLContext interface for multiarchi
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GRAPHICS_WINDOW_CONTEXT_GLCONTEXT_H_
 #define NC_GRAPHICS_WINDOW_CONTEXT_GLCONTEXT_H_
@@ -44,31 +39,36 @@ namespace Nc
     {
         class Window;
 
+        /// Interface to provide an OpenGL context for multiarchi
+        /**
+            Typically a GLContext is created in 2 ways. With a Window by calling the method Window::CreateGLContext(),
+            or with an other context by calling the method GLContext::CreateNewSharedContext().
+        */
         class LCORE GLContext : public Utils::NonCopyable
         {
             public:
                 GLContext(Window *win);
                 virtual ~GLContext();
 
-                // return the current Renderer Associate to the current thread
-                static GLContext *Current();
-
-                // create the context opengl
+                /** Create the context opengl */
                 virtual void        Create(GLContext *sharedContext = NULL) = 0;
+
+                /** Create a new shared OpenGL context with the current */
                 virtual GLContext  *CreateNewSharedContext() = 0;
 
-                // active/disable the opengl context
+                /** Active the opengl context */
                 virtual void        Active() = 0;
+
+                /** Disable the opengl context */
                 virtual void        Disable() = 0;
 
-                // swap the buffers, (for a double buffered appli)
-                void                Refresh();  // swap buffers and limit the frame rate
+                /** swap the buffers, (for a double buffered appli) */
                 virtual void        SwapBuffers() = 0;
 
             protected:
-                Window  *_win;
-                bool    _isCreate;
-                bool    _isShared;
+                Window  *_win;          ///< The instance of the associated window
+                bool    _isCreate;      ///< a boolean to define if the context is create
+                bool    _isShared;      ///< a boolean to define if the context is shared
         };
     }
 }

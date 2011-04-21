@@ -123,6 +123,7 @@ const char *Nc::Graphic::BasicSource::TexturedFragmentShader =
 precision highp float;\
 \
 uniform sampler2D   TextureId;\
+uniform bool        Textured;\
 \
 in Vertice\
 {\
@@ -134,7 +135,10 @@ out vec4            FragmentColor;\
 \
 void main()\
 {\
-    FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+    if (Textured)\
+        FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+    else\
+        FragmentColor = vec4(vertice.Color, 1.0);\
 }";
 
 const char *Nc::Graphic::BasicSource::Textured2dVertexShader =
@@ -163,6 +167,7 @@ const char *Nc::Graphic::BasicSource::Textured2dFragmentShader =
 "#version 330 core\n\
 precision highp float;\
 \
+uniform bool        Textured;\
 uniform sampler2D   TextureId;\
 \
 in Vertice\
@@ -175,7 +180,10 @@ out vec4            FragmentColor;\
 \
 void main()\
 {\
-    FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+    if (Textured)\
+        FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+    else\
+        FragmentColor = vec4(vertice.Color, 1.0);\
 }";
 
 const char *Nc::Graphic::BasicSource::Textured3dVertexShader =
@@ -204,6 +212,7 @@ const char *Nc::Graphic::BasicSource::Textured3dFragmentShader =
 "#version 330 core\n\
 precision highp float;\
 \
+uniform bool        Textured;\
 uniform samplerCube TextureId;\
 \
 in Vertice\
@@ -216,5 +225,8 @@ out vec4            FragmentColor;\
 \
 void main()\
 {\
-    FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+    if (Textured)\
+        FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+    else\
+        FragmentColor = vec4(vertice.Color, 1.0);\
 }";

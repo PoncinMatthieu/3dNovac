@@ -50,7 +50,7 @@ Graphic::GLXContext::~GLXContext()
 }
 
 typedef GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, GLXContext, Bool, const int*);
-
+/*
 // Helper to check for extension string presence.  Adapted from:
 //   http://www.opengl.org/resources/features/OGLextensions/
 static bool isExtensionSupported(const char *extList, const char *extension)
@@ -59,14 +59,14 @@ static bool isExtensionSupported(const char *extList, const char *extension)
   const char *start;
   const char *where, *terminator;
 
-  /* Extension names should not have spaces. */
+  // Extension names should not have spaces.
   where = strchr(extension, ' ');
   if ( where || *extension == '\0' )
     return false;
 
-  /* It takes a bit of care to be fool-proof about parsing the
-     OpenGL extensions string. Don't be fooled by sub-strings,
-     etc. */
+  // It takes a bit of care to be fool-proof about parsing the
+  // OpenGL extensions string. Don't be fooled by sub-strings,
+  // etc.
   for ( start = extList; ; ) {
     where = strstr( start, extension );
 
@@ -90,7 +90,7 @@ static int ctxErrorHandler( Display *dpy, XErrorEvent *ev )
     ctxErrorOccurred = true;
     return 0;
 }
-
+*/
 void Graphic::GLXContext::Create(GLContext *sharedContext)
 {
     XWindow *window = static_cast<XWindow*>(_win);
@@ -182,6 +182,8 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
     if (_context == 0)
         throw Utils::Exception("GLXContext", "Can't create a GLXContext");
 
+    // Sync to ensure any errors generated are processed.
+    XSync(window->_display, False);
 
     // if we don't have any drawable
     //  Create a GLX window to associate the frame buffer configuration with the created X window
@@ -196,21 +198,30 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
 
 Graphic::GLContext *Graphic::GLXContext::CreateNewSharedContext()
 {
+LOG << "create shared context" << std::endl;
     if (!_isCreate)
         throw Utils::Exception("GLXContext", "Can't create a shared GLXContext if the first is not yet create");
 
+LOG << "activate context" << std::endl;
     // creer un nouveau renderer et recopie chaque membre (un renderer n'est pas copyable) :
     Active();
 
     XWindow *window = static_cast<XWindow*>(_win);
+
+LOG << "Create new context instance" << std::endl;
     GLXContext   *newSharedRenderer = new GLXContext(window/*, _drawable*/);
 //    newSharedRenderer->_isCreate = _isCreate;
     // recreer un context opengl pour le thread, et un pbuffer pour rendu sur off-screen
 //    newSharedRenderer->_context = glXCreateNewContext(window->_display, *window->_fbConfig, GLX_RGBA_TYPE, _context, True);
+LOG << "Create new context" << std::endl;
     newSharedRenderer->Create(this);
+LOG << "Create new pbuffer" << std::endl;
     newSharedRenderer->_pbuffer = glXCreatePbuffer(window->_display, *window->_fbConfig, NULL);
     newSharedRenderer->_isShared = true;
+
+LOG << "Disable" << std::endl;
     Disable();
 
+LOG << "create shared context DONE" << std::endl;
     return newSharedRenderer;
 }

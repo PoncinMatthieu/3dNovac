@@ -23,13 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-    provide an interface for Inputs
-    CheckEvent needs to be redefined,
-    and all the events need to be push into the _eventQueue pointer
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_CORE_SYSTEM_INPUT_H_
 #define NC_CORE_SYSTEM_INPUT_H_
@@ -42,21 +35,32 @@ namespace Nc
 {
     namespace System
     {
+        /// Provide an interface for Inputs
+        /**
+            Provide an interface for Inputs.
+            CheckEvent needs to be redefined,
+            and all the events need to be push into the `_eventQueue` pointer wich should be set with `SetEventQueue`
+            The `_eventQueue` pointer is shared with the InputManager
+        */
         class LCORE Input
         {
             public:
                 Input() {_eventQueue = NULL; _mutexQueue = NULL; _eventQueueIsSet = false;}
                 virtual ~Input() {}
 
+                /** Set the pointer of the eventQueue and the mutex witch protect the queue */
                 void SetEventQueue(EventQueue *eventQueue, Mutex *mutexQueue)
                 {
                     _eventQueue = eventQueue;
                     _mutexQueue = mutexQueue;
                     _eventQueueIsSet = true;
                 }
+
+                /** To be redefine, called to check if there is new events */
                 virtual void CheckEvents() = 0;
 
             protected:
+                /** push a new event in the eventQueue pointer */
                 void PushEvent(const Event &e)
                 {
                     if (!_eventQueueIsSet || _eventQueue == NULL)

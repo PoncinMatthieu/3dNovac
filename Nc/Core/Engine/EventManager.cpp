@@ -32,6 +32,7 @@ using namespace Nc::Engine;
 EventManager::EventManager(const std::string &name) : Object(name)
 {
     _execEvents = true;
+    _receiveEvents = true;
     AddNewCmd("help", "display help", (CmdFunctionString)&EventManager::Help);
 }
 
@@ -147,20 +148,23 @@ void  EventManager::ExecuteEvents()
 void    EventManager::PushEvent(unsigned int id, IEvent *e)
 {
     _mutexQueue.Lock();
-    _queueEvent.push(std::pair<unsigned int, IEvent*>(id, e));
+    if (_receiveEvents)
+        _queueEvent.push(std::pair<unsigned int, IEvent*>(id, e));
     _mutexQueue.Unlock();
 }
 
 void EventManager::PushEvent(const std::string &cmdName)
 {
     _mutexQueue.Lock();
-    _queueEventString.push(std::pair<std::string, EventString*>(cmdName, (EventString*)NULL));
+    if (_receiveEvents)
+        _queueEventString.push(std::pair<std::string, EventString*>(cmdName, (EventString*)NULL));
     _mutexQueue.Unlock();
 }
 
 void EventManager::PushEvent(const std::string &cmdName, const std::string &args)
 {
     _mutexQueue.Lock();
-    _queueEventString.push(std::pair<std::string, EventString*>(cmdName, new EventString(args)));
+    if (_receiveEvents)
+        _queueEventString.push(std::pair<std::string, EventString*>(cmdName, new EventString(args)));
     _mutexQueue.Unlock();
 }

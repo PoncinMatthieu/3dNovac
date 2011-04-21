@@ -23,14 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-TODO : a recoder integralement et peut etre a integrer dans les nouveaux objet du Nc-Math
-           Implementation de plusieur fonctions de math utile
-
-
------------------------------------------------------------------------------*/
-
 
 #ifndef NC_CORE_MATH_MATH_H_INCLUDED
 #define NC_CORE_MATH_MATH_H_INCLUDED
@@ -57,12 +49,9 @@ namespace Nc
         // Calculs 3d
         Vector3f LCORE Normal(const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, bool normalize = true);
         void     LCORE Normalize(float p[3]);
-        void     LCORE AddVector3D(float v1[3], const Vector3f &v2);
-        void     LCORE AddVector3D(float v1[3], const float v2[3]);
 
         // Calculs 2d
         bool     LCORE InRect(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &pointTest);
-        //void     LCORE AddBoxInBox(const Vector2f &box1Pos, Vector2f &box1Size, const Vector2f &box2Pos, const Vector2f &box2Size); //TODO
 
         /** Init the rand to call srand() function */
         inline void     InitRand()                          {srand((unsigned int)time(0));}

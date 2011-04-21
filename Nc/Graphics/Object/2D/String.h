@@ -23,15 +23,11 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------
-
-    Implementation de la classe "String", pour afficher du text
-
---------------------------------------------------------------------------------*/
 
 #ifndef NOVAC_GRAPHIC_2D_STRING_H_
 #define NOVAC_GRAPHIC_2D_STRING_H_
 
+#include <Nc/Core/Utils/Mask.h>
 #include "../../Core/Font.h"
 #include "Object2d.h"
 
@@ -43,9 +39,14 @@ namespace Nc
     {
         class Font;
 
+        /// string Object2d class to render text
+        /**
+            A Graphical 2d string is defined by an UTF32 string, a size, a color, pattern style and a font
+        */
         class LGRAPHICS   String : public Object2d
         {
             public:
+                /** Define the style of the text */
                 enum Style
                 {
                     Regular =       0,
@@ -58,45 +59,54 @@ namespace Nc
                 typedef std::map<std::string, Font*>    MapFont;
 
             public:
-                String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color &color, const std::string &ttf, unsigned long s = Regular);
+                String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color &color, const std::string &ttf, const Utils::Mask<Style> &s = Regular);
                 virtual ~String();
 
+                /** Render the text */
                 virtual void        Render(ISceneGraph *scene);
-                void                UpdateGeometry();
 
+                /** Set the UTF32 text */
                 void                            Text(const Utils::Unicode::UTF32 &text)         {_needUpdate = _needUpdateSize = true;   _text = text;}
+                /** Return the UTF32 text */
                 const Utils::Unicode::UTF32     &Text() const                                   {return _text;}
 
+                /** Set the color */
                 void                SetColor(const Color &color)        {_needUpdate = true; _color = color;}
-                const Vector2f      &Size()                             {if (_needUpdateSize) RecomputeRect(); return _size;}
-                Vector2f            GetCharSize(char c) const;
+                /** Return the size */
+                const Vector2f      &Size()                             {if (_needUpdateSize) RecomputeSize(); return _size;}
+                /** Return the size of the specified character */
+                Vector2f            GetCharSize(UInt32 c) const;
+                /** Return the global char size */
                 float               CharSize() const                    {return _charSize;}
+                /** Set the global char size */
                 void                CharSize(float size)                {_charSize = size; _needUpdate = _needUpdateSize = true;}
 
             private:
-                void                RecomputeRect();
+                /** Update the geometry of the drawables used to render the text */
+                void                UpdateGeometry();
 
-                Material<BasicVertexType::Textured2d>                       *_material;
-                MaterialConfig<BasicVertexType::Textured2d>                 _config;
-                GL::GeometryBuffer<BasicVertexType::Textured2d, false>      _geometry;
+                /** Recompute the size of the text, called when you will try to acces to the size */
+                void                RecomputeSize();
 
-                Material<BasicVertexType::Colored2d>                        *_materialUnderline;
-                GL::GeometryBuffer<BasicVertexType::Colored2d, false>       _geometryUnderline;
-                MaterialConfig<BasicVertexType::Colored2d>                  _configUnderline;
+                Material<BasicVertexType::Textured2d>                   *_material;             ///< the material used to render the text
+                Drawable<BasicVertexType::Textured2d, false>            _drawable;              ///< the drawable used to render the text
 
-                bool                _needUpdate;
-                bool                _needUpdateSize;
+                Material<BasicVertexType::Colored2d>                    *_materialUnderline;    ///< the material used to render the line in underline style
+                Drawable<BasicVertexType::Colored2d, false>             _drawableUnderline;     ///< the drawable used to render the line in underline style
 
-                Utils::Unicode::UTF32   _text;
-                TMatrix                 _matrixText;
-                Font                    *_font;
-                Vector2f                _size;
-                unsigned long           _style;
-                float                   _charSize;
-                Color                   _color;
+                bool                _needUpdate;                ///< if true, update the geometry of the text
+                bool                _needUpdateSize;            ///< if true, update the rendering size of the string
 
-                static MapFont          _mapFont;
-                static System::Mutex    _mutex;
+                Utils::Unicode::UTF32   _text;                  ///< the UTF32 string
+                TMatrix                 _matrixText;            ///< the matrix placement of the text, used to scale it with the good char size
+                Font                    *_font;                 ///< the instance of the used font
+                Vector2f                _size;                  ///< the size of the string (computed with RecomputeSize)
+                Utils::Mask<Style>      _style;                 ///< the pattern rendering style mask
+                float                   _charSize;              ///< the global char size
+                Color                   _color;                 ///< the color of the string
+
+                static MapFont          _mapFont;               ///< the map of loaded font
+                static System::Mutex    _mutex;                 ///< the mutex used to protect the string
         };
     }
 }
