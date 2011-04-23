@@ -1,0 +1,23 @@
+/**
+	\mainpage 3dNovac Reference Documentation
+
+	<center><a href="http://sites.google.com/site/3dnovac/">http://sites.google.com/site/3dnovac/</a></center>
+
+	\section welcome Welcome
+	Welcome to the official 3dNovac documentation. Here you will find a detailed
+	view of all the 3dNovac <a href="./namespaces.html">namespaces</a>,
+	as well as <a href="./annotated.html">classes</a>. <br/> <br/>
+
+	<div class="title">Downloads</div>
+	- <a target=_blank href="http://sites.google.com/site/3dnovac/developpeur/history">Change Log</a>
+	- <a target=_blank href="http://code.google.com/p/3dnovac/downloads/list">Releases</a>
+	- <a target=_blank href="http://code.google.com/p/3dnovac/source/checkout">Svn</a>
+
+	<div class="title">Getting Started</div>
+        - \subpage PageTutorials 		"Tutorials"
+        - \subpage PageArchitectureDiagrams 	"Architecture Diagrams"
+
+	<div class="title">Licensing and Credits</div>
+	- \subpage PageLicensing     "Licensing"
+	- \subpage PageCredits 	     "Credits"
+*/

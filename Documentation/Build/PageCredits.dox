@@ -1,0 +1,10 @@
+/**
+	\page PageCredits 3dNovac Credits
+
+	<div class="title"> Here the list of third party libraries used by 3dNovac: </div>
+	- <a target=_blank href="http://www.freetype.org">FreeType lib</a>
+	- <a target=_blank href="http://www.libpng.org">libpng</a>
+
+	<div class="title"> The list of Developers and Contributors: </div>
+	- <a target=_blank href="http://www.doyoubuzz.com/poncin-matthieu">Matthieu Poncin</a>
+*/

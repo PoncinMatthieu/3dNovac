@@ -1,0 +1,43 @@
+/**
+	\page PageTutorial0 Introduction to the 3dNovac Framework
+
+	<div class="title">Introduction</div>
+	If your are beginner with 3dNovac or if you don't know what is 3dNovac, this is the first tutorial you should read.
+	It will gives you a brief description of the entire 3dNovac Framework
+
+
+	<div class="title">What is 3dNovac ?</div>
+	It's a C++ framework, composed by some libraries designed to help you as much as possible (but without decreasing performances and possibilities)
+	to create a multimedia software. Firstly 3dNovac is designed to make games but it could be used to create many other types of program.
+
+	So here the list of 3dNovac Libraries:
+	- Nc-Core
+	- Nc-Graphics
+	- Nc-GUI
+	- Nc-Audio
+	- Nc-Contrib
+
+	If you are looking for a brief UML description of the architecture you could be intersted by this page: <a href="./PageArchitectureDiagrams.html">Architecture Diagrams</a>
+
+	<div class="title">The Nc-Core</div>
+	This is the base and more important package of every other 3dNovac package. It provide many usefull features.
+
+	Firstly this paquage is composed of four main namespace:
+	- The Nc::Utils namespace, it gives us some usefull classes like `Utils::Logger` to create a logging system.
+	- The Nc::System namespace, it gives us some API abstraction like `System::Thread` and `System::Mutex` to create plateform independent software.
+	- The Nc::Math namespace, it gives us some classes to abstract and manipulate some mathematical componant like `Math::Vector` or `Math::Matrix`.
+	- The Nc::Engine namespace, it gives us some classes to abstract and manage a multithreaded software. To create Threaded Engines and manage their inter-communications.
+
+	<div class="title">The Nc-Graphics</div>
+	This is probably the bigest package of 3dNovac. It reference the entire Nc::Graphic namespace that define an engine to create 3d and 2d application using OpenGL and GLSL shader program.
+	It is able to helps you to create and display mesh with their own Material display effect.
+
+	<div class="title">The Nc-GUI</div>
+	This package could be used to render a GUI "in game" associated with the Graphic engine. It reference the Nc::GUI namespace.
+
+	<div class="title">The Nc-Audio</div>
+	This package reference the Nc::Audio namespace and define an Audio engine witch could be used to play easily sounds ans music.
+
+	<div class="title">The Nc-Contrib</div>
+	This is an experimental package used to reference some usefull (but non needy) classes to create samples and help beginners to apprehend more easily 3dNovac.
+*/

@@ -1,0 +1,24 @@
+/**
+	\page PageArchitectureDiagrams Architecture Diagrams
+
+	The diagrams of the 3dNovac framework, to see the whole diagram please look at the "UML.dia" in the Documentation directory of the sources paquage.
+
+	<div class="title">Namespace Nc::Math</div>
+	\image html UML-Nc-Math.jpeg
+
+	<div class="title">Namespace Nc::System</div>
+	\image html UML-Nc-System.jpeg
+
+	<div class="title">Namespace Nc::Utils</div>
+	\image html UML-Nc-Utils.jpeg
+
+	<div class="title">Namespace Nc::Engine</div>
+	\image html UML-Nc-Engine.jpeg
+
+	<div class="title">Namespace Nc::Graphic</div>
+	\image html UML-Nc-Graphics.jpeg
+
+	<div class="title">Namespace Nc::GUI</div>
+	\image html UML-Nc-GUI.jpeg
+
+*/

@@ -1,0 +1,15 @@
+/**
+	\page PageTutorials Tutorials
+
+	<div class="tutorials">
+	     <div class="tutorialsTitle">
+		<table><tr>
+			<td><img src="icone-tutorials-getting-started.png"></td>
+	     		 <td>Getting started</td>
+	     	</tr></table>
+	     </div>
+
+	     - \subpage PageTutorial0 "Introduction to the 3dNovac Framework"
+	     - \subpage PageTutorial1 "Your first 3dNovac application. (Minimal code to start a project with the Graphical engine)"
+	</div>
+*/
