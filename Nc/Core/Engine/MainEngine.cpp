@@ -42,34 +42,34 @@ MainEngine::~MainEngine()
 
 void MainEngine::Execute(float runningTime)
 {
-    ManageWindowEvents(runningTime);// maj des event window
+    ManageWindowEvents();// maj des event window
     Update(runningTime);
 }
 
-void MainEngine::ManageWindowEvents(float runningTime)
+void MainEngine::ManageWindowEvents()
 {
 // traitement des evenements de la fenetre
     System::Event event;
 
     while (PollEvent(event))
-        ManageWindowEvent(event, runningTime);
+        ManageWindowEvent(event);
 }
 
-void MainEngine::ManageWindowEvent(System::Event &event, float runningTime)
+void MainEngine::ManageWindowEvent(System::Event &event)
 {
     if (event.Type == System::Event::Closed)
         Quit();
 
     if (event.Type == System::Event::KeyPressed)
-        KeyboardEvent(event, runningTime);
+        KeyboardEvent(event);
     else if (event.Type == System::Event::KeyReleased)
-        KeyboardEvent(event, runningTime);
+        KeyboardEvent(event);
     else if (event.Type == System::Event::MouseMoved)
-        MouseMotionEvent(event, runningTime);
+        MouseMotionEvent(event);
     else if (event.Type == System::Event::MouseButtonPressed ||
              event.Type == System::Event::MouseButtonReleased ||
              event.Type == System::Event::MouseWheelMoved)
-        MouseButtonEvent(event, runningTime);
+        MouseButtonEvent(event);
 }
 
 void MainEngine::Quit()

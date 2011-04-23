@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Nc">
-		<Project filename="../../../ProjectsNc/Editor/Editor.cbp" active="1">
+		<Project filename="../../../ProjectsNc/Editor/Editor.cbp">
 			<Depends filename="GUI/GUI.cbp" />
 			<Depends filename="Contrib/Contrib.cbp" />
 			<Depends filename="../../Plugin/FileFormatCollada/FileFormatCollada.cbp" />
 		</Project>
-		<Project filename="../../../ProjectsNc/Populous/Populous.cbp">
+		<Project filename="../../../ProjectsNc/Populous/Populous.cbp" active="1">
 			<Depends filename="Audio/Audio.cbp" />
 			<Depends filename="Contrib/Contrib.cbp" />
 			<Depends filename="../../Plugin/FileFormatCollada/FileFormatCollada.cbp" />

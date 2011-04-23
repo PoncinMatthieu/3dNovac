@@ -26,6 +26,7 @@
 
 #include <signal.h>
 #include "Manager.h"
+#include "../System/Config.h"
 #ifdef SYSTEM_LINUX
 	#include <execinfo.h>
 #endif
@@ -35,9 +36,16 @@ using namespace Nc::Engine;
 
 MapEngine      Manager::_mapEngine;
 
-Manager::Manager()
+Manager::Manager(const Utils::FileName &confFile)
 {
     _isLaunched = false;
+
+    // Open the Config file of 3dNovac
+    if (!confFile.empty())
+    {
+        CONFIG.Load(confFile);
+        _confFileOpened = true;
+    }
 
     // redirect signal SIGSEGV functions
     set_terminate(Terminate);
@@ -76,6 +84,10 @@ Manager::~Manager()
         }
         lowestPriority = nextPriority;
     }
+
+// close the Config file of 3dNovac
+    if (_confFileOpened)
+        CONFIG.DeleteInstance();
 }
 
 #ifdef SYSTEM_LINUX
@@ -144,7 +156,7 @@ void Manager::Start()
         itEngine->second->Start();
 }
 
-void Manager::WaitEngines()
+void Manager::Wait()
 {
 // on attend que les thread se finisse
     for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); itEngine++)

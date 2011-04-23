@@ -50,7 +50,10 @@ namespace Nc
         class LCORE Manager : public Utils::NonCopyable
         {
             public:
-                Manager();
+                /**
+                    \param confFile to load the 3dNovac System::Config file, it will be closed in the destructor. if empty, do not load the confFile
+                */
+                Manager(const Utils::FileName &confFile = "");
                 virtual ~Manager();
 
                 /** Add an engine with his corresponding name */
@@ -69,7 +72,7 @@ namespace Nc
                 inline void         Stop()                          {_isLaunched = false;}    // stop les threads
 
                 /** Wait the engines until they are stoped */
-                virtual void        WaitEngines();
+                virtual void        Wait();
 
                 /** \return the mutex witch is used to protect and synchronize the engines */
                 inline System::Mutex &MutexGlobal()                 {return _mutexGlobal;}
@@ -97,6 +100,9 @@ namespace Nc
 
                 bool                _isLaunched;            ///< true, if the engines are launched.
                 System::Mutex       _mutexGlobal;           ///< global mutex used to synchronize threads if needed.
+
+            private:
+                bool                _confFileOpened;        ///< true, if the Config file of 3dNovac has been loaded by the Manager, in this case it will be closed be the Manager
         };
     }
 }

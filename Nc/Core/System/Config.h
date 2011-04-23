@@ -38,7 +38,11 @@ namespace Nc
 {
     namespace System
     {
-        /// To save and load configs like ressources path
+        /// To save and load configs like ressources path in an Xml format
+        /**
+            Sample of 3dNovac config file : \p Samples/Tuto1/3dNovac.conf
+            \include Tuto1/3dNovac.conf
+        */
         class LCORE Config : public Utils::Singleton<Config>
         {
             public:

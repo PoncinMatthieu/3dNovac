@@ -42,9 +42,6 @@ namespace Nc
                            unsigned char deletePriority = 2, unsigned char loadingContextPriority = 2, unsigned int loadingPriority = 2);
                 virtual ~MainEngine();
 
-                /** Retreive the events and call the function `ManageWindowEvent` */
-                void            ManageWindowEvents(float runningTime);
-
             protected:
                 /**
                     Use this function to stop the engines normally.
@@ -67,29 +64,28 @@ namespace Nc
 
                 /**
                     Called at each input evenement received, and call the associated funciton `KeyboardEvent`, `MouseButtonEvent`, `MouseMotionEvent`
-                    \param runningTime in second
                 */
-                virtual void    ManageWindowEvent(System::Event &event, float runningTime);
+                virtual void    ManageWindowEvent(System::Event &event);
 
                 /**
                     Called at each keyboard input received. To redefine
-                    \param runningTime in second
                  */
-                virtual void    KeyboardEvent(System::Event &event, float runningTime) = 0;
+                virtual void    KeyboardEvent(System::Event &event) = 0;
 
                 /**
                     Called at each mouse button input received. To redefine
-                    \param runningTime in second
                  */
-                virtual void    MouseButtonEvent(System::Event &event, float runningTime) = 0;
+                virtual void    MouseButtonEvent(System::Event &event) = 0;
 
                 /**
                     Called at each mouse motion input received. To redefine
-                    \param runningTime in second
                  */
-                virtual void    MouseMotionEvent(System::Event &event, float runningTime) = 0;
+                virtual void    MouseMotionEvent(System::Event &event) = 0;
 
             private:
+                /** Retreive the events and call the function `ManageWindowEvent` */
+                void            ManageWindowEvents();
+
                 /**
                     Manage the event and Update the engine
                     \param runningTime in second
