@@ -36,7 +36,7 @@ namespace Nc
         namespace GL
         {
             /// To use an OpenGL VAO (Vertex Array Object)
-            class LCORE VertexArray : public Object
+            class LGRAPHICS VertexArray : public Object
             {
                 public:
                     VertexArray();

@@ -29,6 +29,7 @@
 
 #include <Nc/Core/Math/Math.h>
 #include <Nc/Core/System/Input/Input.h>
+#include "../../Define.h"
 
 namespace Nc
 {
@@ -41,7 +42,7 @@ namespace Nc
             Manage all the input associated to the window <br/>
             A WindowInput is automatically created with his associated window so to get it call Window::GetInput()
         */
-        class LCORE WindowInput : public System::Input
+        class LGRAPHICS WindowInput : public System::Input
         {
             public:
                 WindowInput(Window *win);

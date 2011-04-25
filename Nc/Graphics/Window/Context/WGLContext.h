@@ -39,14 +39,14 @@ namespace Nc
         /**
             For more detail please show the class GLContext
         */
-        class LSYSTEM WGLContext : public GLContext
+        class LGRAPHICS WGLContext : public GLContext
         {
             public:
                 WGLContext(WWindow *win, HDC drawable = 0);
                 virtual ~WGLContext();
 
-                void            Create();
-                GLContext      *CreateNewSharedRenderer();
+                void            Create(GLContext *sharedContext = NULL);
+                GLContext		*CreateNewSharedContext();
 
                 virtual inline void            Active()        {wglMakeCurrent(_drawable, _context);}
                 virtual inline void            Disable()       {wglMakeCurrent(0, 0);}

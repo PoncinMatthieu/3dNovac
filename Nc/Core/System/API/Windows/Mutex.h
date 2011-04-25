@@ -28,8 +28,10 @@
 #define NC_CORE_UTILS_SYSTEM_WINDOWS_MUTEX_H_
 
 #include <windows.h>
-#include "../../Exception.h"
+#include "../../../Utils/Exception.h"
 #include "../IMutex.h"
+
+#undef CreateWindow
 
 namespace Nc
 {
@@ -38,7 +40,7 @@ namespace Nc
         class ThreadCondition;
 
         /// Implementation of mutex for unix system (with pthread)
-        class LUTILS Mutex : public IMutex
+        class LCORE Mutex : public IMutex
         {
             public:
                 Mutex()
@@ -46,7 +48,7 @@ namespace Nc
 					static unsigned int i = 0;
 					_i = i++;
                     if (!InitializeCriticalSectionAndSpinCount(&_mutexId, 0x80000400))
-                        throw Exception("Failed to create the mutex.");
+                        throw Utils::Exception("Failed to create the mutex.");
                 }
 
                 virtual ~Mutex()            {DeleteCriticalSection(&_mutexId);}

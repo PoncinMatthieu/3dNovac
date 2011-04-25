@@ -25,6 +25,7 @@
 using namespace std;
 using namespace Nc;
 using namespace Nc::System;
+using namespace Nc::Graphic;
 
 WWindowInput::WWindowInput(WWindow *win) : WindowInput(win)
 {

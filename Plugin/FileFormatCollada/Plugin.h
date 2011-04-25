@@ -37,7 +37,7 @@
 
 namespace Nc
 {
-    class LFILEOBJPLUGIN Plugin : public Graphic::MeshFormatPlugin
+    class Plugin : public Graphic::MeshFormatPlugin
     {
         private:
             typedef std::map<std::string, Graphic::GL::Texture>                                             MapTexture;

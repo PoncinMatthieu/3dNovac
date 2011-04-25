@@ -39,7 +39,7 @@ namespace Nc
             /**
                 \todo manage the transparency color and rate
             */
-            class LCORE  Blend
+            class LGRAPHICS  Blend
             {
                 public:
                     /// The pattern of the using blend function

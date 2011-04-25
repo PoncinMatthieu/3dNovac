@@ -38,44 +38,55 @@ using namespace Nc::Graphic::GL;
 Extension::Extension()
 {
     _supportNonPowerOfTwoTexture = false;
-/*
-    MultTransposeMatrixd = NULL;
-    MultTransposeMatrixf = NULL;
 
-    TexImage3D = NULL;
-    ActiveTexture = NULL;
-    Uniform1i = NULL;
-    Uniform4f = NULL;
-    UniformMatrix4fv = NULL;
-
-    GenBuffers = NULL;
-    BindBuffer = NULL;
-    BufferData = NULL;
-    BufferSubData = NULL;
-    DeleteBuffers = NULL;
-    MapBuffer = NULL;
-    UnmapBuffer = NULL;
-    VertexAttribPointer = NULL;
-    EnableVertexAttribArray = NULL;
-    DisableVertexAttribArray = NULL;
-
-    DeleteShader = NULL;
-    DeleteProgram = NULL;
-    UseProgram = NULL;
-    CreateShader = NULL;
-    ShaderSource = NULL;
-    CompileShader = NULL;
-    CreateProgram = NULL;
-    AttachShader = NULL;
-    LinkProgram = NULL;
-    GetUniformLocation = NULL;
-    GetAttribLocation = NULL;
-    GetShaderiv = NULL;
-    GetShaderInfoLog = NULL;
-    GetProgramInfoLog = NULL;
-    GetProgramiv = NULL;
-*/
 #ifdef SYSTEM_WINDOWS
+	// buffer
+	glGenVertexArrays = NULL;
+	glEnableVertexAttribArray = NULL;
+	glDisableVertexAttribArray = NULL;
+	glBindVertexArray = NULL;
+	glDeleteVertexArrays = NULL;
+	glVertexAttribPointer = NULL;
+	glDeleteBuffers = NULL;
+	glBufferData = NULL;
+	glBufferSubData = NULL;
+	glGenBuffers = NULL;
+	glMapBuffer = NULL;
+	glUnmapBuffer = NULL;
+	glBindBuffer = NULL;
+	glDrawArrays = NULL;
+	glDrawElements = NULL;
+
+	// texture
+	glActiveTexture = NULL;
+	glTexImage3D = NULL;
+	glGenerateMipmap = NULL;
+
+	// shader
+	glAttachShader = NULL;
+	glLinkProgram = NULL;
+	glGetProgramiv = NULL;
+	glGetShaderiv = NULL;
+	glGetProgramInfoLog = NULL;
+	glGetShaderInfoLog = NULL;
+	glCreateProgram = NULL;
+	glCreateShader = NULL;
+	glCompileShader = NULL;
+	glShaderSource = NULL;
+	glDeleteShader = NULL;
+	glDeleteProgram = NULL;
+	glUseProgram = NULL;
+
+	// uniform
+	glUniform1i = NULL;
+	glUniform4f = NULL;
+	glUniformMatrix4fv = NULL;
+	glGetUniformLocation = NULL;
+
+	// attrib
+	glBindAttribLocation = NULL;
+	glGetAttribLocation = NULL;
+
     wglChoosePixelFormat = NULL;
     wglCreatePbuffer = NULL;
     wglGetPbufferDC = NULL;
@@ -91,48 +102,56 @@ bool Extension::Init()
     bool r = true;
 
     _supportNonPowerOfTwoTexture = IsSupported("GL_ARB_texture_non_power_of_two");
-/*
-    r = (r && (MultTransposeMatrixd = (MULTTRANSPOSEMATRIXD_PROC)LoadFunc("glMultTransposeMatrixd")) != NULL);
-    r = (r && (MultTransposeMatrixf = (MULTTRANSPOSEMATRIXF_PROC)LoadFunc("glMultTransposeMatrixf")) != NULL);
-    r = (r && (UniformMatrix4fv = (UNIFORMMATRIX4FV_PROC)LoadFunc("glUniformMatrix4fv")) != NULL);
-    r = (r && (Uniform4f = (UNIFORM4F_PROC)LoadFunc("glUniform4f")) != NULL);
 
-// Texture
-    r = (r && (TexImage3D = (TEXIMAGE3D_PROC)LoadFunc("glTexImage3D")) != NULL);
-    r = (r && (ActiveTexture = (ACTIVETEXTURE_PROC)LoadFunc("glActiveTexture")) != NULL);
-    r = (r && (Uniform1i = (UNIFORM1I_PROC)LoadFunc("glUniform1i")) != NULL);
-
-// Buffer
-    r = (r && (GenBuffers = (GENBUFFERS_PROC)LoadFunc("glGenBuffers")) != NULL);
-    r = (r && (BindBuffer = (BINDBUFFER_PROC)LoadFunc("glBindBuffer")) != NULL);
-    r = (r && (BufferData = (BUFFERDATA_PROC)LoadFunc("glBufferData")) != NULL);
-    r = (r && (BufferSubData = (BUFFERSUBDATA_PROC)LoadFunc("glBufferSubData")) != NULL);
-    r = (r && (DeleteBuffers = (DELETEBUFFERS_PROC)LoadFunc("glDeleteBuffers")) != NULL);
-    r = (r && (MapBuffer = (MAPBUFFER_PROC)LoadFunc("glMapBuffer")) != NULL);
-    r = (r && (UnmapBuffer = (UNMAPBUFFER_PROC)LoadFunc("glUnmapBuffer")) != NULL);
-    r = (r && (VertexAttribPointer = (VERTEXATTRIBPOINTER_PROC)LoadFunc("glVertexAttribPointer")) != NULL);
-    r = (r && (EnableVertexAttribArray = (ENABLEVERTEXATTRIBARRAY_PROC)LoadFunc("glEnableVertexAttribArray")) != NULL);
-    r = (r && (DisableVertexAttribArray = (DISABLEVERTEXATTRIBARRAY_PROC)LoadFunc("glDisableVertexAttribArray")) != NULL);
-
-// shader
-    r = (r && (DeleteShader = (DELETESHADER_PROC)LoadFunc("glDeleteShader")) != NULL);
-    r = (r && (DeleteProgram = (DELETEPROGRAM_PROC)LoadFunc("glDeleteProgram")) != NULL);
-    r = (r && (UseProgram = (USEPROGRAM_PROC)LoadFunc("glUseProgram")) != NULL);
-    r = (r && (CreateShader = (CREATESHADER_PROC)LoadFunc("glCreateShader")) != NULL);
-    r = (r && (ShaderSource = (SHADERSOURCE_PROC)LoadFunc("glShaderSource")) != NULL);
-    r = (r && (CompileShader = (COMPILESHADER_PROC)LoadFunc("glCompileShader")) != NULL);
-    r = (r && (CreateProgram = (CREATEPROGRAM_PROC)LoadFunc("glCreateProgram")) != NULL);
-    r = (r && (AttachShader = (ATTACHSHADER_PROC)LoadFunc("glAttachShader")) != NULL);
-    r = (r && (LinkProgram = (LINKPROGRAM_PROC)LoadFunc("glLinkProgram")) != NULL);
-    r = (r && (GetUniformLocation = (GETUNIFORMLOCATION_PROC)LoadFunc("glGetUniformLocation")) != NULL);
-    r = (r && (GetAttribLocation = (GETATTRIBLOCATION_PROC)LoadFunc("glGetAttribLocation")) != NULL);
-    r = (r && (GetShaderiv = (GETSHADERIV_PROC)LoadFunc("glGetShaderiv")) != NULL);
-    r = (r && (GetShaderInfoLog = (GETSHADERINFOLOG_PROC)LoadFunc("glGetShaderInfoLog")) != NULL);
-    r = (r && (GetProgramInfoLog = (GETPROGRAMINFOLOG_PROC)LoadFunc("glGetProgramInfoLog")) != NULL);
-    r = (r && (GetProgramiv = (GETPROGRAMIV_PROC)LoadFunc("glGetProgramiv")) != NULL);
-*/
-/// wgl
 #ifdef SYSTEM_WINDOWS
+	// buffer
+	r = (r && (glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)LoadFunc("glGenVertexArrays")) != NULL);
+	r = (r && (glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)LoadFunc("glEnableVertexAttribArray")) != NULL);
+	r = (r && (glDisableVertexAttribArray = (PFNGLDISABLEVERTEXATTRIBARRAYPROC)LoadFunc("glDisableVertexAttribArray")) != NULL);
+	r = (r && (glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)LoadFunc("glBindVertexArray")) != NULL);
+	r = (r && (glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC)LoadFunc("glDeleteVertexArrays")) != NULL);
+	r = (r && (glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)LoadFunc("glVertexAttribPointer")) != NULL);
+	r = (r && (glDeleteBuffers = (PFNGLDELETEBUFFERSPROC)LoadFunc("glDeleteBuffers")) != NULL);
+	r = (r && (glBufferData = (PFNGLBUFFERDATAPROC)LoadFunc("glBufferData")) != NULL);
+	r = (r && (glBufferSubData = (PFNGLBUFFERSUBDATAPROC)LoadFunc("glBufferSubData")) != NULL);
+	r = (r && (glGenBuffers = (PFNGLGENBUFFERSPROC)LoadFunc("glGenBuffers")) != NULL);
+	r = (r && (glMapBuffer = (PFNGLMAPBUFFERPROC)LoadFunc("glMapBuffer")) != NULL);
+	r = (r && (glUnmapBuffer = (PFNGLUNMAPBUFFERPROC)LoadFunc("glUnmapBuffer")) != NULL);
+	r = (r && (glBindBuffer = (PFNGLBINDBUFFERPROC)LoadFunc("glBindBuffer")) != NULL);
+	r = (r && (glDrawArrays = ::glDrawArrays) != NULL);
+	r = (r && (glDrawElements = ::glDrawElements) != NULL);
+
+	// texture
+	r = (r && (glActiveTexture = (PFNGLACTIVETEXTUREPROC)LoadFunc("glActiveTexture")) != NULL);
+	r = (r && (glTexImage3D = (PFNGLTEXIMAGE3DPROC)LoadFunc("glTexImage3D")) != NULL);
+	r = (r && (glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)LoadFunc("glGenerateMipmap")) != NULL);
+
+	// shader
+	r = (r && (glAttachShader = (PFNGLATTACHSHADERPROC)LoadFunc("glAttachShader")) != NULL);
+	r = (r && (glLinkProgram = (PFNGLLINKPROGRAMPROC)LoadFunc("glLinkProgram")) != NULL);
+	r = (r && (glGetProgramiv = (PFNGLGETPROGRAMIVPROC)LoadFunc("glGetProgramiv")) != NULL);
+	r = (r && (glGetShaderiv = (PFNGLGETSHADERIVPROC)LoadFunc("glGetShaderiv")) != NULL);
+	r = (r && (glGetProgramInfoLog = (PFNGLGETPROGRAMINFOLOGPROC)LoadFunc("glGetProgramInfoLog")) != NULL);
+	r = (r && (glGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC)LoadFunc("glGetShaderInfoLog")) != NULL);
+	r = (r && (glCreateProgram = (PFNGLCREATEPROGRAMPROC)LoadFunc("glCreateProgram")) != NULL);
+	r = (r && (glCreateShader = (PFNGLCREATESHADERPROC)LoadFunc("glCreateShader")) != NULL);
+	r = (r && (glCompileShader = (PFNGLCOMPILESHADERPROC)LoadFunc("glCompileShader")) != NULL);
+	r = (r && (glShaderSource = (PFNGLSHADERSOURCEPROC)LoadFunc("glShaderSource")) != NULL);
+	r = (r && (glDeleteShader = (PFNGLDELETESHADERPROC)LoadFunc("glDeleteShader")) != NULL);
+	r = (r && (glDeleteProgram = (PFNGLDELETEPROGRAMPROC)LoadFunc("glDeleteProgram")) != NULL);
+	r = (r && (glUseProgram = (PFNGLUSEPROGRAMPROC)LoadFunc("glUseProgram")) != NULL);
+
+	// uniform
+	r = (r && (glUniform1i = (PFNGLUNIFORM1IPROC)LoadFunc("glUniform1i")) != NULL);
+	r = (r && (glUniform4f = (PFNGLUNIFORM4FPROC)LoadFunc("glUniform4f")) != NULL);
+	r = (r && (glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)LoadFunc("glUniformMatrix4fv")) != NULL);
+	r = (r && (glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)LoadFunc("glGetUniformLocation")) != NULL);
+
+	// attrib
+	r = (r && (glBindAttribLocation = (PFNGLBINDATTRIBLOCATIONPROC)LoadFunc("glBindAttribLocation")) != NULL);
+	r = (r && (glGetAttribLocation = (PFNGLGETATTRIBLOCATIONPROC)LoadFunc("glGetAttribLocation")) != NULL);
+
+	/// wgl
     r = (r && (wglChoosePixelFormat = (WGLCHOOSEPIXELFORMAT_PROC)LoadFunc("wglChoosePixelFormatARB")) != NULL);
     r = (r && (wglCreatePbuffer = (WGLCREATEPBUFFER_PROC)LoadFunc("wglCreatePbufferARB")) != NULL);
     r = (r && (wglGetPbufferDC = (WGLGETPBUFFERDC_PROC)LoadFunc("wglGetPbufferDCARB")) != NULL);

@@ -4,12 +4,10 @@
 		<Project filename="../../../ProjectsNc/Editor/Editor.cbp">
 			<Depends filename="GUI/GUI.cbp" />
 			<Depends filename="Contrib/Contrib.cbp" />
-			<Depends filename="../../Plugin/FileFormatCollada/FileFormatCollada.cbp" />
 		</Project>
 		<Project filename="../../../ProjectsNc/Populous/Populous.cbp" active="1">
 			<Depends filename="Audio/Audio.cbp" />
 			<Depends filename="Contrib/Contrib.cbp" />
-			<Depends filename="../../Plugin/FileFormatCollada/FileFormatCollada.cbp" />
 		</Project>
 		<Project filename="../../../ProjectsNc/RType/Client/Project/Codeblocks/Client_R-Type.cbp">
 			<Depends filename="GUI/GUI.cbp" />
@@ -29,6 +27,6 @@
 		<Project filename="Contrib/Contrib.cbp">
 			<Depends filename="GUI/GUI.cbp" />
 		</Project>
-		<Project filename="../../Plugin/FileFormatCollada/FileFormatCollada.cbp" />
+		<Project filename="../../Plugin/FileFormatCollada/Build/Codeblocks/FileFormatCollada.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

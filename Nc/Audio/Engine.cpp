@@ -52,7 +52,7 @@ Engine::~Engine()
 {
 }
 
-void Engine::LdDescFile(const Utils::FileName &file)
+void Engine::LdDescFile(const FileName &file)
 {
     // load the desc file
     Xml::File   descFile(file);
@@ -60,11 +60,11 @@ void Engine::LdDescFile(const Utils::FileName &file)
 
     // Load Sounds
 	bool playMusic;
-	if (Utils::Convert::StringTo(CONFIG->Block("GameConf")->Line("AudioMusic")->Param("state"), playMusic) && playMusic)
+	if (Convert::StringTo(CONFIG->Block("GameConf")->Line("AudioMusic")->Param("state"), playMusic) && playMusic)
         LdMusic(content->Line("Music")->Param("path"));
 
 	bool playSound;
-	if (Utils::Convert::StringTo(CONFIG->Block("GameConf")->Line("AudioSound")->Param("state"), playSound) && playSound)
+	if (Convert::StringTo(CONFIG->Block("GameConf")->Line("AudioSound")->Param("state"), playSound) && playSound)
 	{
         Xml::ListObject &sounds = content->Block("Sounds")->ListChild();
         for (Xml::ListObject::iterator it = sounds.begin(); it != sounds.end(); ++it)
@@ -73,7 +73,7 @@ void Engine::LdDescFile(const Utils::FileName &file)
     delete content;
 }
 
-void Engine::LdMusic(const Utils::FileName &file)
+void Engine::LdMusic(const FileName &file)
 {
     _musicOpened = false;
     if (!_music.OpenFromFile(file))
@@ -95,7 +95,7 @@ void Engine::StpMusic(Nc::Engine::IEvent*)
         _music.Stop();
 }
 
-void Engine::LdSound(const Utils::FileName &file)
+void Engine::LdSound(const FileName &file)
 {
     SoundIndex sound;
 

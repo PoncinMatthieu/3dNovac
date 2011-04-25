@@ -30,6 +30,7 @@
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
+using namespace Nc;
 using namespace Nc::System;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
@@ -37,6 +38,7 @@ using namespace Nc::GUI;
 Console::ListMsg                    Console::_listMsg;
 Console::ListMsg::reverse_iterator  Console::_itCurrentMsg = Console::_listMsg.rbegin();
 Mutex                               Console::_mutexMsg;
+std::string							Console::_currentWritingMsg;
 
 Console::Console(Pattern p) : WindowBox("Console", "Prototype"), _pattern(p)
 {
@@ -82,13 +84,11 @@ void Console::DeleteListFont()
 
 void Console::Write(const std::string msg, bool flush)
 {
-    static string m;
-
-    m += msg;
+    _currentWritingMsg += msg;
     if (flush)
     {
-        PushMsg(m);
-        m.clear();
+        PushMsg(_currentWritingMsg);
+        _currentWritingMsg.clear();
     }
 }
 
@@ -121,7 +121,7 @@ void Console::Update()
             m.AddTranslation(10., (double)textHeight1 + _margin.Data[1] + _pos.Data[1], 0.);
             for (unsigned int i = 0; i < nbMsg; i++)
             {
-                String *newString = new String("", textHeight2, Color(0.8, 0.8, 0.8), "arial");
+                String *newString = new String("", textHeight2, Color(0.8f, 0.8f, 0.8f), "arial");
                 newString->Matrix = m;
                 _listFont.push_back(newString);
                 m.AddTranslation(0., (double)textHeight2, 0.);
@@ -255,14 +255,16 @@ void Console::ExecCmd(const string &cmd)
 {
     string cmdName(cmd), engineName = _engineName;
     size_t pos = cmd.find_first_of(":");
-    if (pos != string::npos)
+
+	// npos en commentaire a cause d'un bug VC 2010 a l'export de string::npos (et oui encore ce foutu windows)  ref: http://connect.microsoft.com/VisualStudio/feedback/details/562448/std-string-npos-lnk2001-when-inheriting-a-dll-class-from-std-string
+	if (pos != /*string::npos*/ -1)
     {
         engineName = cmd.substr(0, pos);
         cmdName = cmdName.substr(pos + 1, cmd.length());
     }
     size_t pos2 = cmdName.find_first_of(" ");
-    if (pos2 != string::npos)   // execution de la commande avec les arguments
-        Engine::Manager::PushEvent(engineName, cmdName.substr(0, pos2), cmdName.substr(pos2+1, string::npos));
+    if (pos2 != /*string::npos*/ -1)   // execution de la commande avec les arguments
+        Engine::Manager::PushEvent(engineName, cmdName.substr(0, pos2), cmdName.substr(pos2+1, /*string::npos*/ -1));
     else                        // execution de la commande sans argument
         Engine::Manager::PushEvent(engineName, cmdName.substr(0, pos2));
 }

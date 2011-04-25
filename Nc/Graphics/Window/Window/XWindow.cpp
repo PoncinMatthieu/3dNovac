@@ -333,7 +333,7 @@ void XWindow::SetWindowStyle(unsigned long pattern)
     }
 }
 
-void XWindow::SwitchToFullscreen(const Vector2i &size)
+void XWindow::SwitchToFullscreen(const Vector2ui &size)
 {
     // Check if the XRandR extension is present
     int version;
@@ -356,7 +356,7 @@ void XWindow::SwitchToFullscreen(const Vector2i &size)
             int nbSizes;
             XRRScreenSize* sizesAvailable = XRRConfigSizes(config, &nbSizes);
             for (int i = 0; i < nbSizes && sizesAvailable && !match; ++i)  // Search a compatible resolution
-                if (sizesAvailable[i].width == size.Data[0] && sizesAvailable[i].height == size.Data[1]) // the size match, Switch to fullscreen mode
+                if ((unsigned int)sizesAvailable[i].width == size.Data[0] && sizesAvailable[i].height == size.Data[1]) // the size match, Switch to fullscreen mode
                 {
                     XRRSetScreenConfig(_display, config, RootWindow(_display, _screen), i, currentRotation, CurrentTime);
                     match = true;
@@ -366,7 +366,7 @@ void XWindow::SwitchToFullscreen(const Vector2i &size)
                 LOG_ERROR << "Can't switch to fullscreen mode, the resolution size (" << size.Data[0] << "/" << size.Data[1] << ") don't match." << std::endl;
                 LOG_ERROR << "Here the list of compatibles size:" << std::endl;
                 for (int i = 0; i < nbSizes && sizesAvailable && !match; ++i)  // print the compatibles resolutions
-                    LOG_ERROR << "\t" << sizesAvailable[i].width << "/" << sizesAvailable[i].height << std::endl;
+                    LOG_ERROR << "\t" << (unsigned int)sizesAvailable[i].width << "/" << sizesAvailable[i].height << std::endl;
             }
             XRRFreeScreenConfigInfo(config);   // Free the configuration instance
         }

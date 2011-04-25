@@ -72,7 +72,7 @@ namespace Nc
 
         /// Define an event, it's a simple container used to stock a data with an event
         template<typename T>
-        struct LCORE Event : public IEvent
+        struct Event : public IEvent
         {
             Event(const T &d)  : Data(d)   {}
 

@@ -40,13 +40,13 @@ namespace Nc
                 Create a repere with this color sheme : Red:X  Blue:Y Green:Z
                 \return the corresponding Mesh
             */
-            Object3d *Repere(float scale, const Vector3f &center = Vector3f(0,0,0));
+            LGRAPHICS Object3d *Repere(float scale, const Vector3f &center = Vector3f(0,0,0));
 
             /**
                 Create a repere with this color sheme : Red:X  Blue:Y Green:Z
                 \return the corresponding Mesh
             */
-            Object3d *Repere(const Vector3f &scale, const Vector3f &center = Vector3f(0,0,0));
+            LGRAPHICS Object3d *Repere(const Vector3f &scale, const Vector3f &center = Vector3f(0,0,0));
         }
     }
 }

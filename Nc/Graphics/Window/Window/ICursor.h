@@ -78,7 +78,7 @@ namespace Nc
     };
  \endcode
         */
-        class LCORE ICursor : Utils::NonCopyable
+        class LGRAPHICS ICursor : Utils::NonCopyable
         {
             public:
                 ICursor()               {}

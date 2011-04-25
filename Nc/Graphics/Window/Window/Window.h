@@ -43,7 +43,7 @@ namespace Nc
         /**
             \todo Actually we can't manage more than one window
         */
-        class LCORE Window : public Utils::NonCopyable
+        class LGRAPHICS Window : public Utils::NonCopyable
         {
             public:
                 enum PATTERN

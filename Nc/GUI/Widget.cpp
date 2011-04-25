@@ -30,6 +30,7 @@
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
+using namespace Nc;
 using namespace Nc::System;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;

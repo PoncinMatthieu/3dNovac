@@ -28,6 +28,7 @@
 
 using namespace std;
 using namespace Nc;
+using namespace Nc::Graphic;
 using namespace Nc::Graphic::GL;
 
 unsigned int Texture::_currentBind = 0;

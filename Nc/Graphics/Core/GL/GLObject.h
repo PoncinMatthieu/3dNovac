@@ -29,7 +29,7 @@
 
 #include <iostream>
 #include "../../Define.h"
-#include "Extension.h"
+#include "../GL.h"
 
 namespace Nc
 {
@@ -50,7 +50,7 @@ namespace Nc
                     * The shared ressources of a child like GL index needs to be a pointer and malloc at the loading. <br/>
                     * Redefine the function Release() to destroy the shared ressources. <br/>
             */
-            class LCORE Object
+            class LGRAPHICS Object
             {
                 public:
                     Object(const Object &sp);

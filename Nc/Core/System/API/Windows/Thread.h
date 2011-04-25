@@ -30,15 +30,18 @@
 #include <Windows.h>
 #include <iostream>
 #include <exception>
+
+#undef CreateWindow
+
 #include "../IThread.h"
-#include "../../Exception.h"
+#include "../../../Utils/Exception.h"
 
 namespace Nc
 {
     namespace System
     {
         /// Thread implementation for a unix system
-        class LUTILS Thread : public IThread
+        class LCORE Thread : public IThread
         {
             public:
                 Thread()
@@ -60,7 +63,7 @@ namespace Nc
                                             0,              // use default creation flags
                                             &_threadId);    // returns the thread identifier
                     if (_handle == NULL)
-                        throw Exception("The creation of the thread as failed");
+                        throw Utils::Exception("The creation of the thread as failed");
                 }
 
                 void Wait()

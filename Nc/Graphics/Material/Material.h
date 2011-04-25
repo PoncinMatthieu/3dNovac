@@ -63,11 +63,18 @@ namespace Nc
         };
 
         // explicit instantiation for basic types
-        static template class Material<BasicVertexType::Colored>;               ///< explicit instanciation of a DefaultMaterial colored
+        /*
+		static template class Material<BasicVertexType::Colored>;               ///< explicit instanciation of a DefaultMaterial colored
         static template class Material<BasicVertexType::Colored2d>;             ///< explicit instanciation of a DefaultMaterial colored 2d
         static template class Material<BasicVertexType::Textured>;              ///< explicit instanciation of a DefaultMaterial textured
         static template class Material<BasicVertexType::Textured2d>;            ///< explicit instanciation of a DefaultMaterial textured 2d
         static template class Material<BasicVertexType::Textured3d>;            ///< explicit instanciation of a DefaultMaterial textured 3d
+		*/
+		template class Material<BasicVertexType::Colored>;               ///< explicit instanciation of a DefaultMaterial colored
+        template class Material<BasicVertexType::Colored2d>;             ///< explicit instanciation of a DefaultMaterial colored 2d
+        template class Material<BasicVertexType::Textured>;              ///< explicit instanciation of a DefaultMaterial textured
+        template class Material<BasicVertexType::Textured2d>;            ///< explicit instanciation of a DefaultMaterial textured 2d
+        template class Material<BasicVertexType::Textured3d>;            ///< explicit instanciation of a DefaultMaterial textured 3d
     }
 }
 

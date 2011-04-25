@@ -44,7 +44,7 @@ namespace Nc
             Typically a GLContext is created in 2 ways. With a Window by calling the method Window::CreateGLContext(),
             or with an other context by calling the method GLContext::CreateNewSharedContext().
         */
-        class LCORE GLContext : public Utils::NonCopyable
+        class LGRAPHICS GLContext : public Utils::NonCopyable
         {
             public:
                 GLContext(Window *win);

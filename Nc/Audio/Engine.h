@@ -29,6 +29,7 @@
 
 #include <SFML/Audio.hpp>
 #include <Nc/Core/Engine/IEngine.h>
+#include <Nc/Core/Utils/FileName.h>
 #include "Define.h"
 
 namespace Nc

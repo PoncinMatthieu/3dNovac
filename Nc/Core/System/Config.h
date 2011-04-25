@@ -28,8 +28,9 @@
 #define NC_CORE_SYSTEM_CONFIG_H_
 
 #include "../Define.h"
+#include "../Utils/Logger.h"
 #include "../Utils/Xml/File.h"
-#include "../Utils/NonCopyable.h"
+#include "../Utils/Singleton.h"
 #include "../System/API/API.h"
 
 #define CONFIG      Nc::System::Config::Instance()      /// allow you to access to the Config class
@@ -86,7 +87,7 @@ namespace Nc
     }
 
     // explicit instantiation
-    static template class Utils::Singleton<System::Config>;
+    //static template class Utils::Singleton<System::Config>;
 }
 
 #endif

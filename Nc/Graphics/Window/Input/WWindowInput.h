@@ -50,7 +50,7 @@ namespace Nc
         /**
             For more detail show WindowInput
         */
-        class LSYSTEM WWindowInput : public WindowInput
+        class LGRAPHICS WWindowInput : public WindowInput
         {
             public:
                 WWindowInput(WWindow *win);
@@ -63,7 +63,7 @@ namespace Nc
 
             private:
                 void ProcessEvent(UINT Message, WPARAM WParam, LPARAM LParam);
-                Key::Code ConvertVirtualKey(WPARAM VirtualKey, LPARAM Flags);
+                System::Key::Code ConvertVirtualKey(WPARAM VirtualKey, LPARAM Flags);
 
                 long    _callback;
                 bool    _isCursorIn;

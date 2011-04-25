@@ -26,6 +26,7 @@
 
 #include "MeshFormatManager.h"
 
+using namespace Nc;
 using namespace Nc::Utils;
 using namespace Nc::System;
 using namespace Nc::Graphic;
@@ -50,7 +51,7 @@ MeshFormatManager::~MeshFormatManager()
 {
 }
 
-Object3d *MeshFormatManager::Load(const Utils::FileName &file)
+Object3d *MeshFormatManager::Load(const FileName &file)
 {
     MeshFormatPlugin *meshFormat = GetMeshFormatByExtension(file.Extension());
     if (meshFormat)

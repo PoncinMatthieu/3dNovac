@@ -40,8 +40,19 @@ namespace Nc
         namespace GL
         {
             /// Structure to define a data of a VertexDescriptor that describe a composant of a VertexType
-            struct DataVertexDescriptor
+            struct LGRAPHICS DataVertexDescriptor
             {
+				DataVertexDescriptor()
+					: Size(0), Type(0), PointerOffset(0), IndexAttrib(-1), Normalized(false) {}
+
+				void Init(int size, GLenum type, unsigned int pointerOffset, bool normalized = false)
+				{
+					Size = size;
+					Type = type;
+					PointerOffset = pointerOffset;
+					Normalized = normalized;
+				}
+
                 int             Size;               ///< the size of the data in the vertex
                 GLenum          Type;               ///< the type of the data in the vertex
                 unsigned int    PointerOffset;      ///< the pointer offset of the data in the vertex

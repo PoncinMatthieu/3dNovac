@@ -78,6 +78,7 @@ namespace Nc
                 static ListMsg                      _listMsg;           ///< The message list
                 static System::Mutex                _mutexMsg;          ///< Protect the acces of the message list
                 static ListMsg::reverse_iterator    _itCurrentMsg;      ///< the current message, to scroll the messages
+				static std::string					_currentWritingMsg;	///< The message that is save between a Write and a flush
 
                 std::list<Graphic::String*>         _listFont;          ///< list of string used to render the messages
                 WidgetLabeled                       *_labelPrompt;      ///< the label used to render the prompt

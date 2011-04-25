@@ -61,7 +61,7 @@ namespace Nc
 
 
             private:
-                void                    SwitchToFullscreen(const Math::Vector2i &size);
+                void                    SwitchToFullscreen(const Math::Vector2ui &size);
                 void                    SetWindowStyle(unsigned long pattern);
                 void                    ChooseBestVisualInfo();
 

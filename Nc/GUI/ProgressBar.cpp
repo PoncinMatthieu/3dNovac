@@ -26,6 +26,7 @@
 
 #include "ProgressBar.h"
 
+using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 

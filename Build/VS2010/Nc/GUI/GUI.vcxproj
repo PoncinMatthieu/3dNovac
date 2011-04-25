@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Nc\GUI\Button.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\Console.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\FPSWidget.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\ProgressBar.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\SceneGraph.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\SpriteWidget.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\TextBox.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\Widget.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\WidgetLabeled.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\GUI\WindowBox.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Nc\GUI\Button.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\Console.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\Define.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\FPSWidget.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\GUI.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\ProgressBar.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\SceneGraph.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\SpriteWidget.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\TextBox.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\Widget.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\WidgetLabeled.h" />
+    <ClInclude Include="..\..\..\..\Nc\GUI\WindowBox.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FB89180E-AE27-4C81-B5C2-3581BA6B637A}</ProjectGuid>
+    <RootNamespace>GUI</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ProjectDir)..\..\..\..\lib\</OutDir>
+    <TargetName>Nc-$(ProjectName)_D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>Nc-$(ProjectName)</TargetName>
+    <OutDir>$(ProjectDir)..\..\..\..\lib\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalOptions>/D DYNAMIC_LINK /D EXPORT_GUI /D _DEBUG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\;$(ProjectDir)..\..\..\..\extlibs\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <CallingConvention>Cdecl</CallingConvention>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Nc-Graphics_D.lib;Nc-Core_D.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);glu32.lib;opengl32.lib;msvcrtd.lib;msvcprtd.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\;C:\SFML\include\;$(ProjectDir)..\..\..\..\extlibs\</AdditionalIncludeDirectories>
+      <AdditionalOptions>/D DYNAMIC_LINK /D EXPORT_GUI %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Nc-Graphics.lib;Nc-Core.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);glu32.lib;opengl32.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

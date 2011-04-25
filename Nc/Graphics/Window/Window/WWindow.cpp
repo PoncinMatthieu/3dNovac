@@ -25,12 +25,13 @@
 -----------------------------------------------------------------------------*/
 
 #include "WWindow.h"
-#include "../SysConfig.h"
 #include "../Input/WWindowInput.h"
-#include "../Renderer/WGLRenderer.h"
+#include "../Context/WGLContext.h"
+#include "../../Core/Image.h"
 
 using namespace Nc;
 using namespace Nc::System;
+using namespace Nc::Graphic;
 
 const char *WWindow::_classNameA = "Nc_Window";
 
@@ -48,7 +49,7 @@ WWindow::~WWindow()
         Close();
 }
 
-void WWindow::Create(const std::string &title, const Vector2i &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel)
+void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel)
 {
     // register the window class
     WNDCLASSA WindowClass;
@@ -121,7 +122,7 @@ void WWindow::Create(const std::string &title, const Vector2i &size, unsigned lo
     _isCreate = true;
 }
 
-void WWindow::UseExistingWindow(void *disp, int winId, const Vector2i &size, unsigned int antialiasingLevel)
+void WWindow::UseExistingWindow(void *disp, int winId, const Vector2ui &size, unsigned int antialiasingLevel)
 {
     _handle = reinterpret_cast<HWND>(disp);
     if (_handle == NULL)
@@ -139,18 +140,18 @@ void WWindow::UseExistingWindow(void *disp, int winId, const Vector2i &size, uns
     _isCreate = true;
 }
 
-GLRenderer *WWindow::CreateRenderer()
+GLContext *WWindow::CreateGLContext()
 {
-    _renderer = new WGLRenderer(this);
-    _renderer->Create();
-    return _renderer;
+    _context = new WGLContext(this);
+    _context->Create();
+    return _context;
 }
 
 void WWindow::Close()
 {
     // Destroy the renderer attach to the window
-    if (_renderer)
-        delete _renderer;
+    if (_context)
+        delete _context;
 
     // Destroy the input context
     if (_input)
@@ -179,7 +180,7 @@ void WWindow::Resize(unsigned int width, unsigned int height)
     _height = Rect.bottom - Rect.top;
 }
 
-void	WWindow::SwitchToFullscreen(const Vector2i &size)
+void	WWindow::SwitchToFullscreen(const Vector2ui &size)
 {
     DEVMODE DevMode;
     DevMode.dmSize       = sizeof(DEVMODE);
@@ -203,9 +204,10 @@ void	WWindow::SwitchToFullscreen(const Vector2i &size)
 
 bool	WWindow::SetIcon(const Utils::FileName &f)
 {
-    Utils::FileName filename = CONFIG->Block("RessourcesPath")->Line("Image")->Param("path") + f.Fullname();
-    if (f.Fullname().empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
+    Utils::FileName filename = CONFIG->Block("RessourcesPath")->Line("Image")->Param("path") + f;
+    if (f.empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
         return false;
+
 	Image image;
     image.LoadFromFile(filename);
 

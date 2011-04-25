@@ -35,7 +35,7 @@ using namespace Nc::GUI;
 using namespace Nc::System;
 
 Button::Button(const std::string &text, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent, const std::string &ttf, const Utils::FileName& texture)
-    : Widget(pos, size, x, y, NULL), _material(&Material<Graphic::BasicVertexType::Textured2d>::Instance()), _colorDisable(0.2, 0.2, 0.2)
+    : Widget(pos, size, x, y, NULL), _material(&Material<Graphic::BasicVertexType::Textured2d>::Instance()), _colorDisable(0.2f, 0.2f, 0.2f)
 {
     _textWidth = 15;
     _textHeight = 15;

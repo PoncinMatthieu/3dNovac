@@ -336,9 +336,9 @@ namespace Nc
         template<typename U>
         T   Vector<T,D>::Dot(const Vector<U,D> &u) const
         {
-            T   r = Data[0] * u.Data[1];
+            T   r = Data[0] * u.Data[0];
             for (unsigned char i = 1; i < D; ++i)
-                r += Data[i] * u.Data[1];
+                r += Data[i] * u.Data[i];
             return r;
         }
 
@@ -358,7 +358,7 @@ namespace Nc
             T len1 = Length();
             T len2 = v.Length();
             if (len1 != 0 && len2 != 0)
-                return acos(Dot(v) / (Length() * v.Length()));
+                return acos(Dot(v) / (len1 * len2));
             else
                 return 0;
         }

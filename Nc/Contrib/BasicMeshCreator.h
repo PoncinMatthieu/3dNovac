@@ -45,7 +45,8 @@ namespace Nc
                 \param texture : and the texture
                 \return the Mesh using the given MaterialPolitic and MaterialConfigPolitic
             */
-            template<typename MaterialPolitic = DefaultMaterialPolitics<BasicVertexType::Textured>, typename MaterialConfigPolitic = DefaultMaterialConfigPolitics<BasicVertexType::Textured> >
+			// VC 2010: template par default autorisé uniquement sur une classes. Une fois de plus windows a frapé.
+            template<typename MaterialPolitic /*= DefaultMaterialPolitics<BasicVertexType::Textured>*/, typename MaterialConfigPolitic /*= DefaultMaterialConfigPolitics<BasicVertexType::Textured>*/ >
             Object3d *Plan(const Vector2f &size, const GL::Texture &texture);
 
             /**
@@ -54,7 +55,7 @@ namespace Nc
                 \param c the color of the grid lines
                 \return the resulting Mesh
             */
-            Object3d *Grid(const Vector3f &size, const Color &c);
+            LCONTRIB Object3d *Grid(const Vector3f &size, const Color &c);
         }
 
 

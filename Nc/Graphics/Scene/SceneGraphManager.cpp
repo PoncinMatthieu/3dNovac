@@ -44,7 +44,7 @@ void SceneGraphManager::InitGL(bool multisampling)
     glClearColor(_clearColor.R, _clearColor.G, _clearColor.B, _clearColor.A);
 
 // enable l'antialiasing
-    if (multisampling > 0)
+    if (multisampling)
         glEnable(GL_MULTISAMPLE);
 
 // enable le Z-buffer

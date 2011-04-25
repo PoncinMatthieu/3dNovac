@@ -49,12 +49,12 @@
 			<Add library="minizip" />
 			<Add directory="../../lib" />
 		</Linker>
-		<Unit filename="Define.h" />
-		<Unit filename="Plugin.cpp" />
-		<Unit filename="Plugin.h" />
-		<Unit filename="Triangulate.cpp" />
-		<Unit filename="Triangulate.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="../../Define.h" />
+		<Unit filename="../../Plugin.cpp" />
+		<Unit filename="../../Plugin.h" />
+		<Unit filename="../../Triangulate.cpp" />
+		<Unit filename="../../Triangulate.h" />
+		<Unit filename="../../main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

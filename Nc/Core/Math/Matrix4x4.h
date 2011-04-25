@@ -54,7 +54,7 @@ namespace Nc
                 Matrix4x4   operator * (const Matrix4x4 &m) const;
 
                 void SetIdentity();                                                                     ///< Set the atrix to the identity
-                void SetProjection(const T &ratioAspect, const T &near, const T &far, const T &fieldOfView);///< Set to the projection matrix for rendering
+                void SetProjection(const T &ratioAspect, const T &nearv, const T &farv, const T &fieldOfView);///< Set to the projection matrix for rendering
                 void SetLookAt(const Vector3D<T> &eye, const Vector3D<T> &center, const Vector3D<T> &up);///< set the matrix with eye properties
                 void SetOrtho(const T &left, const T &right, const T &bottom, const T &top, const T &nearVal, const T &farVal); ///< set the orthographic matrix to draw in a plane
 
@@ -201,31 +201,31 @@ namespace Nc
         }
 
         template<typename T>
-        void Matrix4x4<T>::SetProjection(const T &ratioAspect, const T &near, const T &far, const T &fieldOfView)
+        void Matrix4x4<T>::SetProjection(const T &ratioAspect, const T &nearv, const T &farv, const T &fieldOfView)
         {
-			T maxY = near * tanf(fieldOfView * M_PI / 360.0f);
+			T maxY = tanf(fieldOfView * (M_PI / 360.f)) * nearv;
             T minY = -maxY;
             T minX = minY * ratioAspect;
             T maxX = maxY * ratioAspect;
 
-			Matrix<T,4,4>::_data[0] = 2.0f * near / (maxX - minX);
+			Matrix<T,4,4>::_data[0] = 2.f * (nearv / (maxX - minX));
 			Matrix<T,4,4>::_data[1] = 0;
 			Matrix<T,4,4>::_data[2] = 0;
 			Matrix<T,4,4>::_data[3] = 0;
 
 			Matrix<T,4,4>::_data[4] = 0;
-			Matrix<T,4,4>::_data[5] = 2.0f * near / (maxY - minY);
+			Matrix<T,4,4>::_data[5] = 2.f * (nearv / (maxY - minY));
 			Matrix<T,4,4>::_data[6] = 0;
 			Matrix<T,4,4>::_data[7] = 0;
 
 			Matrix<T,4,4>::_data[8] = 0;
 			Matrix<T,4,4>::_data[9] = 0;
-			Matrix<T,4,4>::_data[10] = -(far + near) / (far - near);
-			Matrix<T,4,4>::_data[11] = -(2.0f * far * near) / (far - near);
+			Matrix<T,4,4>::_data[10] = -(farv + nearv) / (farv - nearv);
+			Matrix<T,4,4>::_data[11] = -(2.f * farv * nearv) / (farv - nearv);
 
 			Matrix<T,4,4>::_data[12] = 0;
 			Matrix<T,4,4>::_data[13] = 0;
-			Matrix<T,4,4>::_data[14] = -1.0f;
+			Matrix<T,4,4>::_data[14] = -1.f;
 			Matrix<T,4,4>::_data[15] = 0;
 			_isIdentity = false;
         }

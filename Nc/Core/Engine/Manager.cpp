@@ -32,6 +32,7 @@
 #endif
 
 using namespace std;
+using namespace Nc;
 using namespace Nc::Engine;
 
 MapEngine      Manager::_mapEngine;

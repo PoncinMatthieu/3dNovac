@@ -32,6 +32,7 @@
 #include <string>
 
 #include "../Define.h"
+#include "../Utils/FileName.h"
 #include "../System/API/API.h"
 
 namespace Nc

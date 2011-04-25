@@ -32,7 +32,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 Basic3dSceneGraph::Basic3dSceneGraph(Camera3d *camera)
-    : I3dSceneGraph(camera), _colorAmbiant(0.2, 0.2, 0.2, 0)
+    : I3dSceneGraph(camera), _colorAmbiant(0.2f, 0.2f, 0.2f, 0.f)
 {}
 
 Basic3dSceneGraph::~Basic3dSceneGraph()

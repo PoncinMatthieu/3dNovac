@@ -11,11 +11,11 @@
 		<Cursor position="3706" topLine="52" />
 	</File>
 	<File name="../../../Nc/Graphics/Camera/StandardCamera3d.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="6553" topLine="204" />
-		<BrowseMarks positions="6600" />
+		<Cursor position="5832" topLine="172" />
+		<BrowseMarks positions="6557" />
 	</File>
 	<File name="../../../Nc/Graphics/Camera/StandardCamera3d.h" open="0" top="0" tabpos="2">
-		<Cursor position="2984" topLine="56" />
+		<Cursor position="3915" topLine="43" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/Font.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="144" topLine="0" />
@@ -184,7 +184,7 @@
 		<Cursor position="4619" topLine="60" />
 	</File>
 	<File name="../../../Nc/Graphics/Object/3D/BasicMeshCreator.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="1204" topLine="13" />
+		<Cursor position="2431" topLine="21" />
 	</File>
 	<File name="../../../Nc/Graphics/Object/3D/BasicMeshCreator.h" open="0" top="0" tabpos="1">
 		<Cursor position="1275" topLine="13" />
@@ -217,7 +217,7 @@
 		<Cursor position="3532" topLine="95" />
 	</File>
 	<File name="../../../Nc/Graphics/Object/3D/Object3d.h" open="0" top="0" tabpos="5">
-		<Cursor position="3994" topLine="52" />
+		<Cursor position="3602" topLine="60" />
 	</File>
 	<File name="../../../Nc/Graphics/Object/3D/SkyBox.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1801" topLine="26" />
@@ -232,7 +232,7 @@
 		<Cursor position="1094" topLine="0" />
 	</File>
 	<File name="../../../Nc/Graphics/Object/Object.h" open="0" top="0" tabpos="2">
-		<Cursor position="1183" topLine="27" />
+		<Cursor position="1183" topLine="36" />
 	</File>
 	<File name="../../../Nc/Graphics/Object/ObjectContainer.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="144" topLine="0" />
@@ -307,7 +307,7 @@
 		<Cursor position="1913" topLine="23" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Window/XWindow.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="18281" topLine="378" />
+		<Cursor position="16455" topLine="337" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Window/XWindow.h" open="0" top="0" tabpos="1">
 		<Cursor position="1632" topLine="30" />

@@ -40,7 +40,7 @@ WindowBox::WindowBox(const std::string &title, const std::string &ttf)
 
     //_dragable = true;
     _drawTitle = true;
-    _titleColor1 = Color(1, 0.788235294, 0.48627451);
+    _titleColor1 = Color(1.f, 0.788235294f, 0.48627451f);
     _titleColor2 = Color(0, 0, 0);
 
     _drawableTitle.GetVBO().Init(4, GL_STREAM_DRAW);
@@ -65,7 +65,7 @@ WindowBox::WindowBox(const std::string &title, const Vector2f &pos, const Vector
 
     //_dragable = true;
     _drawTitle = true;
-    _titleColor1 = Color(1, 0.788235294, 0.48627451);
+    _titleColor1 = Color(1.f, 0.788235294f, 0.48627451f);
     _titleColor2 = Color(0, 0, 0);
 
     _drawableTitle.GetVBO().Init(4, GL_STREAM_DRAW);

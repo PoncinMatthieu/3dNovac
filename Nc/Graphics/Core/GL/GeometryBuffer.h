@@ -43,7 +43,7 @@ namespace Nc
                 And a VertexArray to optimised the rendering
             */
             template<typename T>
-            class LGRAPHICS IGeometryBuffer
+            class IGeometryBuffer
             {
                 public:
                     IGeometryBuffer()  : _needUpdate(true), _primitiveType(GL_TRIANGLES)    {}

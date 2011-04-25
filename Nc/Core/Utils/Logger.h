@@ -143,7 +143,7 @@ namespace Nc
         }
 
         // explicit instanciation
-        static template class Singleton<Logger>;
+        //static template class Singleton<Logger>;
     }
 }
 

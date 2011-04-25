@@ -219,55 +219,50 @@ void StandardCamera3d::MajEye()
     else
     {
         LOG << "Trackball not implemented yet" << std::endl;
-    }
-
 /*
     static TMatrix  matriceRotationEye;
-    Vector3f spherePoint;
     Vector3f lastSpherePoint;
+    Vector3f spherePoint;
 
     //set xy to -1/-1, 1/1 coord
     spherePoint.Data[0] = ((float)WindowInput::MousePosition().Data[0] / (float)(Window::Width()/2.f)) - 1;
-    spherePoint.Data[1] = 1 - ((float)WindowInput::MousePosition().Data[1] / (float)(Window::Height()/2.f));
-    spherePoint.Data[2] = 1 - (spherePoint.Data[0] * spherePoint.Data[0]) - (spherePoint.Data[1] * spherePoint.Data[1]);
-    LOG << spherePoint.Data[2] << std::endl;
-    spherePoint.Data[2] = (spherePoint.Data[2] > 0) ? sqrt(spherePoint.Data[2]) : 0;
-    spherePoint.Normalize();
+    spherePoint.Data[2] = 1 - ((float)WindowInput::MousePosition().Data[1] / (float)(Window::Height()/2.f));
+    spherePoint.Data[1] = 1 - (spherePoint.Data[0] * spherePoint.Data[0]) - (spherePoint.Data[2] * spherePoint.Data[2]);
+    spherePoint.Data[1] = (spherePoint.Data[1] > 0) ? sqrt(spherePoint.Data[1]) : 0;
 
     lastSpherePoint.Data[0] = ((float)_lastPosMouse.Data[0] / (float)(Window::Width()/2.f)) - 1;
-    lastSpherePoint.Data[1] = 1 - ((float)_lastPosMouse.Data[1] / (float)(Window::Height()/2.f));
-    lastSpherePoint.Data[2] = 1 - (lastSpherePoint.Data[0] * lastSpherePoint.Data[0]) - (lastSpherePoint.Data[1] * lastSpherePoint.Data[1]);
-    LOG << lastSpherePoint.Data[2] << std::endl;
-    lastSpherePoint.Data[2] = (lastSpherePoint.Data[2] > 0) ? sqrt(lastSpherePoint.Data[2]) : 0;
-    lastSpherePoint.Normalize();
+    lastSpherePoint.Data[2] = 1 - ((float)_lastPosMouse.Data[1] / (float)(Window::Height()/2.f));
+    lastSpherePoint.Data[1] = 1 - (lastSpherePoint.Data[0] * lastSpherePoint.Data[0]) - (lastSpherePoint.Data[2] * lastSpherePoint.Data[2]);
+    lastSpherePoint.Data[1] = (lastSpherePoint.Data[1] > 0) ? sqrt(lastSpherePoint.Data[1]) : 0;
 
+    matriceRotationEye.Transform(spherePoint);
+    matriceRotationEye.Transform(lastSpherePoint);
 
     // compute the axis and theta rotation
     Vector3f axis;
     lastSpherePoint.Cross(spherePoint, axis);
-    float theta = lastSpherePoint.Angle(spherePoint);
-//    float theta = acos(lastSpherePoint * spherePoint);
+    axis.Normalize();
 
-    LOG << "lastSpherePoint: " << lastSpherePoint << std::endl;
-    LOG << "spherePoint: " << spherePoint << std::endl;
-    LOG << "axis:" << axis << "\t\ttheta:" << theta << std::endl;
-    LOG << std::endl;
+    float theta = lastSpherePoint.Angle(spherePoint);
+
+//    LOG << "lastSpherePoint: " << lastSpherePoint << std::endl;
+//    LOG << "spherePoint: " << spherePoint << std::endl;
+//    LOG << "axis:" << axis << "\ntheta:" << theta << std::endl;
+//    LOG << std::endl;
 
     _eye.Init(_distance, 0, 0);
     _up.Init(0,0,1);
 
     if (axis.Data[0] != 0 || axis.Data[1] != 0 || axis.Data[2] != 0)
-        matriceRotationEye.Rotation(axis, -theta);
+        matriceRotationEye.AddRotation(axis, theta);
     matriceRotationEye.Transform(_eye);
-//    matriceRotationEye.Transform(_up);
-    _up = axis;
+    matriceRotationEye.Transform(_up);
 
     TMatrix matrixTranslation;
     matrixTranslation.Translation(_center);
     matrixTranslation.Transform(_eye);
 
-
-    lastSpherePoint = spherePoint;
-    Matrix.Translation(_center); // positionne la matrice de la camera sur le centre
+    Matrix.Translation(_center); // positionne la matrice de la camera sur le centre pour les childs
 */
+    }
 }

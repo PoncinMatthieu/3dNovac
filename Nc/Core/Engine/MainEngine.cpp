@@ -55,7 +55,7 @@ void MainEngine::ManageWindowEvents()
         ManageWindowEvent(event);
 }
 
-void MainEngine::ManageWindowEvent(System::Event &event)
+void MainEngine::ManageWindowEvent(Nc::System::Event &event)
 {
     if (event.Type == System::Event::Closed)
         Quit();

@@ -32,44 +32,44 @@ using namespace Nc::Graphic::BasicVertexType;
 const GL::VertexDescriptor   Colored::GetDescriptor()
 {
     static GL::VertexDescriptor desc(2);
-    desc[0] = {3, GL_FLOAT, 0, -1, false};
-    desc[1] = {3, GL_FLOAT, 3 * sizeof(float), -1, false};
+    desc[0].Init(3, GL_FLOAT, 0);
+    desc[1].Init(3, GL_FLOAT, 3 * sizeof(float));
     return desc;
 }
 
 const GL::VertexDescriptor   Colored2d::GetDescriptor()
 {
     static GL::VertexDescriptor desc(2);
-    desc[0] = {2, GL_FLOAT, 0, -1, false};
-    desc[1] = {3, GL_FLOAT, 2 * sizeof(float), -1, false};
+    desc[0].Init(2, GL_FLOAT, 0);
+    desc[1].Init(3, GL_FLOAT, 2 * sizeof(float));
     return desc;
 }
 
 const GL::VertexDescriptor   &Textured::GetDescriptor()
 {
     static GL::VertexDescriptor desc(4);
-    desc[0] = {3, GL_FLOAT, 0, -1, false};
-    desc[1] = {2, GL_FLOAT, 3 * sizeof(float), -1, false};
-    desc[2] = {3, GL_FLOAT, 5 * sizeof(float), -1, false};
-    desc[3] = {3, GL_FLOAT, 8 * sizeof(float), -1, false};
+    desc[0].Init(3, GL_FLOAT, 0);
+    desc[1].Init(2, GL_FLOAT, 3 * sizeof(float));
+    desc[2].Init(3, GL_FLOAT, 5 * sizeof(float));
+    desc[3].Init(3, GL_FLOAT, 8 * sizeof(float));
     return desc;
 }
 
 const GL::VertexDescriptor   &Textured2d::GetDescriptor()
 {
     static GL::VertexDescriptor desc(3);
-    desc[0] = {2, GL_FLOAT, 0, -1, false};
-    desc[1] = {2, GL_FLOAT, 2 * sizeof(float), -1, false};
-    desc[2] = {3, GL_FLOAT, 4 * sizeof(float), -1, false};
+    desc[0].Init(2, GL_FLOAT, 0);
+    desc[1].Init(2, GL_FLOAT, 2 * sizeof(float));
+    desc[2].Init(3, GL_FLOAT, 4 * sizeof(float));
     return desc;
 }
 
 const GL::VertexDescriptor   &Textured3d::GetDescriptor()
 {
     static GL::VertexDescriptor desc(3);
-    desc[0] = {3, GL_FLOAT, 0, -1, false};
-    desc[1] = {3, GL_FLOAT, 3 * sizeof(float), -1, false};
-    desc[2] = {3, GL_FLOAT, 6 * sizeof(float), -1, false};
+    desc[0].Init(3, GL_FLOAT, 0);
+    desc[1].Init(3, GL_FLOAT, 3 * sizeof(float));
+    desc[2].Init(3, GL_FLOAT, 6 * sizeof(float));
     return desc;
 }
 

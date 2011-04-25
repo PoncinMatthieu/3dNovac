@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Nc\Core\Core.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Debug.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Define.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Engine\EventManager.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Engine\Handler.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Engine\IEngine.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Engine\MainEngine.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Engine\Manager.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Array.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Box.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Box2D.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Box3D.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Math.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Matrix.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Matrix4x4.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Pixel.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Vector.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Vector2D.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Math\Vector3D.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\API\API.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\API\IMutex.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\API\IThread.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\Config.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\Input\Event.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\Input\Input.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\Input\InputManager.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\Object.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\PluginLoader.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\System\System.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Clock.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Convert.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Debug\MemoryManager.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Debug\OverloadAlloc.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Exception.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\FileName.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\IntrusiveSmartPointer.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Logger.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Mask.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\NonCopyable.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Singleton.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\SmartPointer.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Unicode.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Utils.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Xml\File.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Xml\Parser.h" />
+    <ClInclude Include="..\..\..\..\Nc\Core\Utils\Xml\XmlObject.h" />
+    <ClInclude Include="..\..\..\..\Nc\Define.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Nc\Core\Utils\Convert.tpl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Nc\Core\Engine\EventManager.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Engine\Handler.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Engine\IEngine.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Engine\MainEngine.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Engine\Manager.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Math\Math.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\System\API\API.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\System\Config.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\System\Input\Event.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\System\Input\InputManager.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\System\Object.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Utils\Debug\MemoryManager.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Utils\FileName.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Utils\include.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Utils\Logger.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Utils\Unicode.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Utils\Xml\File.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Utils\Xml\Parser.cpp" />
+    <ClCompile Include="..\..\..\..\Nc\Core\Utils\Xml\XmlObject.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2160F458-9E81-48E8-8A7B-C6B47B81BFDB}</ProjectGuid>
+    <RootNamespace>Core</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\..\..\..\lib\</OutDir>
+    <TargetName>Nc-$(ProjectName)_D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>Nc-$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)\..\..\..\lib\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extlibs\;$(ProjectDir)..\..\..\..\</AdditionalIncludeDirectories>
+      <AdditionalOptions>/D DYNAMIC_LINK /D EXPORT_CORE /D _DEBUG %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\extlibs\;$(ProjectDir)..\..\..\..\lib\;</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\extlibs\;$(ProjectDir)..\..\..\..\</AdditionalIncludeDirectories>
+      <AdditionalOptions>/D DYNAMIC_LINK /D EXPORT_CORE %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\extlibs\;$(ProjectDir)..\..\..\..\lib\;$(ProjectDir)..\..\..\..\..\Utils\lib\</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

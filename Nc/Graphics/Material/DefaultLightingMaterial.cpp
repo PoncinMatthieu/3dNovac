@@ -88,7 +88,7 @@ void DrawNormal(ISceneGraph *scene, TMatrix &modelMatrix, GL::IGeometryBuffer<Ba
 
         // and create 2 new vertices per vertex
         unsigned int    size = geometry->GetVBO().Size();
-        float           normalPercent = 0.1;
+        float           normalPercent = 0.1f;
         Array<BasicVertexType::Colored>   verticesNormal(size * 2);
         for (unsigned int i = 0; i < size; ++i)
         {
@@ -141,7 +141,7 @@ void    DefaultLightingMaterialPolitic::Render(ISceneGraph *scene, TMatrix &mode
 
     // First pass --> render the scene with the ambiant color
     glUniform1i(_uniformLightPass, false);
-    drawable.GetGeometry().GetVBO().MaskDescriptor = 0b0111;
+    drawable.GetGeometry().GetVBO().MaskDescriptor = 0x07;
     drawable.Render();
     drawable.GetGeometry().GetVBO().MaskDescriptor = lastDesc;
 

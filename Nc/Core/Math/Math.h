@@ -30,6 +30,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <math.h>
+#include <time.h>
 
 #include "../Define.h"
 #include "Array.h"

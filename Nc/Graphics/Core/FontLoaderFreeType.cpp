@@ -143,7 +143,7 @@ void FontLoaderFreeType::CreateBitmapFont(FT_Face &face, const Utils::Unicode::U
         // Compute the top coordinate
         top = tops[left];
         for (int x = 0; x < bt.width + 1; ++x)
-            top = std::max(top, tops[left + x]);
+            top = max(top, tops[left + x]);
         top++;
 
         // Make sure we don't go over the texture height -- resize it if we need more space

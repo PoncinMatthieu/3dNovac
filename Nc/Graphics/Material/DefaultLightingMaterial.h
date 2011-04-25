@@ -87,7 +87,8 @@ namespace Nc
         };
 
         // instanciation explicit
-        static template class Material<BasicVertexType::Textured, DefaultLightingMaterialPolitic>;      ///< explicit instanciation of the material with DefaultLightingPolitic
+        //static template class Material<BasicVertexType::Textured, DefaultLightingMaterialPolitic>;      ///< explicit instanciation of the material with DefaultLightingPolitic
+		template class Material<BasicVertexType::Textured, DefaultLightingMaterialPolitic>;      ///< explicit instanciation of the material with DefaultLightingPolitic
     }
 }
 

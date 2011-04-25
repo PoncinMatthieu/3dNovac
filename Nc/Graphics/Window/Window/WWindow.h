@@ -38,31 +38,31 @@ namespace Nc
         /**
             For more detail, please see the Window documentation
         */
-        class LSYSTEM WWindow : public Window
+        class LGRAPHICS WWindow : public Window
         {
             public:
                 WWindow();
                 virtual ~WWindow();
 
-                virtual void				Create(const std::string &title, const Vector2i &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel);
-                virtual void				UseExistingWindow(void *disp, int winId, const Vector2i &size, unsigned int antialiasingLevel);
-                virtual GLRenderer			*CreateRenderer();
-
+				virtual void				Create(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel);
+				virtual void				UseExistingWindow(void *disp, int winId, const Vector2ui &size, unsigned int antialiasingLevel);
+                virtual GLContext			*CreateGLContext();
                 virtual void				Close();
 
 				virtual bool				SetIcon(const Utils::FileName &f);
                 virtual void				Resize(unsigned int width, unsigned int height);
-				virtual System::ICursor		*NewCursor()										{return new System::Cursor(this);}
+
+				virtual ICursor				*NewCursor()										{return new Cursor(this);}
 
             protected:
-				void						SwitchToFullscreen(const Vector2i &size);
+				void						SwitchToFullscreen(const Vector2ui &size);
 
                 static const char *_classNameA;
                 HWND          _handle;
                 DWORD         _win32Style;
                 HICON         _icon;
 
-                friend class WGLRenderer;
+                friend class WGLContext;
                 friend class WWindowInput;
 				friend class Cursor;
         };

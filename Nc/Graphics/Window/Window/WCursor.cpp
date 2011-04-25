@@ -29,36 +29,36 @@
 
 using namespace Nc;
 
-System::Cursor::Cursor(WWindow *w)
+Graphic::Cursor::Cursor(WWindow *w)
     : _win(w), _cursor(NULL)
 {
 	_cursor = LoadCursor(NULL, IDC_ARROW);
 }
 
-System::Cursor::~Cursor()
+Graphic::Cursor::~Cursor()
 {
     if (_win->_currentCursor == this)
         _win->_currentCursor = NULL;
 }
 
-void System::Cursor::Enable()
+void Graphic::Cursor::Enable()
 {
 	SetCursor(_cursor);
 	_win->_currentCursor = this;
 }
 
-void System::Cursor::Disable()
+void Graphic::Cursor::Disable()
 {
 	SetCursor(NULL);
 	_win->_currentCursor = this;
 }
 
-void System::Cursor::LoadFromData(const unsigned char *data, const unsigned char *mask, const Vector2ui &size, const Vector2ui &posCenter)
+void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned char *mask, const Vector2ui &size, const Vector2ui &posCenter)
 {
 	LOG << "WCursor::LoadFromData Not implemented, please implemente me" << std::endl;
 }
 
-void System::Cursor::LoadFromXpm(const char *xpm[])
+void Graphic::Cursor::LoadFromXpm(const char *xpm[])
 {
 	LOG << "WCursor::LoadFromXmp Not implemented, please implemente me" << std::endl;
 }

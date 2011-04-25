@@ -25,6 +25,8 @@
 -----------------------------------------------------------------------------*/
 
 #include "EventManager.h"
+#include "../Utils/Logger.h"
+#include "../Utils/FileName.h"
 
 using namespace std;
 using namespace Nc::Engine;

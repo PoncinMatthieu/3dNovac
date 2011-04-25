@@ -27,6 +27,7 @@
 #include "WindowInput.h"
 #include "../Window/Window.h"
 
+using namespace Nc;
 using namespace Nc::Math;
 using namespace Nc::Graphic;
 

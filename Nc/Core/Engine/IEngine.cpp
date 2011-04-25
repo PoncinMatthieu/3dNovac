@@ -25,12 +25,14 @@
 -----------------------------------------------------------------------------*/
 
 #include "IEngine.h"
+#include "../Utils/Logger.h"
 #include "Manager.h"
 
 using namespace std;
+using namespace Nc;
 using namespace Nc::Engine;
 
-IEngine::IEngine(const std::string &name, Manager* manager, const Utils::Mask<PATTERN> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
+IEngine::IEngine(const std::string &name, Manager* manager, const Utils::Mask<Nc::Engine::PATTERN> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
     : EventManager(name), _manager(manager), _loaded(false), _pattern(pattern),
       _deletePriority(deletePriority), _loadingContextPriority(loadingContextPriority), _loadingPriority(loadingPriority),
       _elapsedTime(0), _limitFPS(0)

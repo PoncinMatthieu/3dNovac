@@ -27,8 +27,12 @@
 #ifndef NC_CORE_SYSTEM_PLUGIN_H_
 #define NC_CORE_SYSTEM_PLUGIN_H_
 
-#include <dlfcn.h>
 #include "../Define.h"
+
+#ifdef SYSTEM_LINUX
+	#include <dlfcn.h>
+#endif
+
 #include "../Utils/Exception.h"
 #include "../Utils/FileName.h"
 
@@ -71,8 +75,13 @@ namespace Nc
             private:
                 typedef T *(*GetPluginFunc)();
 
-                void    *_handle;
-                T       *_instance;
+				#ifdef SYSTEM_WINDOWS
+					HMODULE	_handle;			///< The handle used to load the library on win32
+				#else
+					void    *_handle;			///< The handle used to load the library on linux
+				#endif
+
+				T       *_instance;				///< The plugin instance, loaded with the function "T *GetPlugin();" in the library
         };
 
         template<typename T>
@@ -86,11 +95,17 @@ namespace Nc
         template<typename T>
         void    PluginLoader<T>::Open(const Utils::FileName &file)
         {
-            _handle = dlopen(file.c_str(), RTLD_LAZY);
-            if (!_handle)
-                throw Utils::Exception("Plugin", dlerror());
-            dlerror();    // Clear any existing error
-        }
+			#ifdef SYSTEM_WINDOWS
+				_handle = LoadLibrary(file.c_str());
+				if(_handle == NULL)
+				   throw Utils::Exception("Plugin", "Can't load the library " + file);
+			#else
+				_handle = dlopen(file.c_str(), RTLD_LAZY);
+				if (!_handle)
+					throw Utils::Exception("Plugin", dlerror());
+				dlerror();    // Clear any existing error
+			#endif
+		}
 
         template<typename T>
         void    PluginLoader<T>::Close()
@@ -102,8 +117,12 @@ namespace Nc
             }
             if (_handle)
             {
-                dlclose(_handle);
-                _handle = NULL;
+				#ifdef SYSTEM_WINDOWS
+					FreeLibrary(_handle);
+				#else
+					dlclose(_handle);
+				#endif
+				_handle = NULL;
             }
         }
 
@@ -114,12 +133,18 @@ namespace Nc
             if (_handle == NULL)
                 throw Utils::Exception("plugin", "Can't load the symbol `" + sym + "`, the library is not loaded.");
 
-            char *error;
-            SYM s = (SYM)dlsym(_handle, sym.c_str());
-
-            if ((error = dlerror()) != NULL)
-                throw Utils::Exception("Plugin", error);
-            return s;
+			#ifdef SYSTEM_WINDOWS
+				FARPROC symbol = GetProcAddress(_handle, sym.c_str());
+				if(symbol == NULL)
+					throw Utils::Exception("Plugin", "Can't load the symbole.");
+				return (SYM)symbol;
+			#else
+				char *error;
+				SYM s = (SYM)dlsym(_handle, sym.c_str());
+				if ((error = dlerror()) != NULL)
+					throw Utils::Exception("Plugin", error);
+				return s;
+			#endif
         }
     }
 }

@@ -24,12 +24,13 @@
 
 -----------------------------------------------------------------------------*/
 
-//#include <GL/wglext.h>
 #include "WGLContext.h"
+#include <strsafe.h>
 
 using namespace std;
 using namespace Nc;
 using namespace Nc::System;
+using namespace Nc::Graphic;
 
 WGLContext::WGLContext(WWindow *win, HDC drawable) : GLContext(win), _drawable(drawable)
 {
@@ -55,7 +56,7 @@ WGLContext::~WGLContext()
     }
 }
 
-void WGLContext::Create()
+void WGLContext::Create(GLContext *sharedContext)
 {
     if (!_win->IsCreate())
         throw Utils::Exception("WGLContext", "Can't create any renderer if the Window isn't create");
@@ -192,37 +193,36 @@ void WGLContext::Create()
 //        glEnable(GL_MULTISAMPLE_ARB);
 
     // ajout du renderer dans la map d'association avec le PID du thread courant
-    unsigned int pid = ThreadId();
+/* // n'est plus neccessaire, mais un system similaire pourrai etre utile si on fait du multi-window
+	unsigned int pid = ThreadId();
     _mapPIDRendererMutex.Lock();
     MapPIDRenderer::iterator it = _mapPIDRenderer.find(pid);
     if (it != _mapPIDRenderer.end())
         throw Utils::Exception("WGLContext", "The Current Thread as already a GLContext !");
     _mapPIDRenderer[pid] = this;
     _mapPIDRendererMutex.Unlock();
-    _isCreate = true;
+*/
+	_isCreate = true;
 }
 
-#include <strsafe.h>
-
-GLContext *WGLContext::CreateNewSharedRenderer()
+GLContext *WGLContext::CreateNewSharedContext()
 {
-
-    LOG << "Create New Shared Renderer" << std::endl;
+    LOG_DEBUG << "Create New Shared Context" << std::endl;
     if (!_isCreate)
         throw Utils::Exception("WGLContext", "Can't create a shared WGLContext if the first is not yet create");
 
     // creer un nouveau renderer et recopie chaque membre (un renderer n'est pas copyable) :
 //    Disable();
 	Active();
-    WGLContext   *newSharedRenderer = new WGLContext(static_cast<WWindow*>(_win), _drawable);
-    newSharedRenderer->_isCreate = true;
+    WGLContext   *newSharedContext = new WGLContext(static_cast<WWindow*>(_win), _drawable);
+    newSharedContext->_isCreate = true;
 	// recreer un context opengl pour le thread, et un pbuffer pour rendu sur off-screen
 
-	newSharedRenderer->_context = wglCreateContext(_drawable);
-	if (newSharedRenderer->_context == NULL)
+	newSharedContext->_context = wglCreateContext(_drawable);
+	if (newSharedContext->_context == NULL)
 		throw Utils::Exception("WGLContext", "Can't create a new context");
-    newSharedRenderer->_drawable = _drawable;
-	newSharedRenderer->_format = _format;
+    newSharedContext->_drawable = _drawable;
+	newSharedContext->_format = _format;
 /*
 	// Extract the depth and stencil bits from the chosen format
     PIXELFORMATDESCRIPTOR ActualFormat;
@@ -236,7 +236,7 @@ GLContext *WGLContext::CreateNewSharedRenderer()
     if (!SetPixelFormat(_drawable, _format, &ActualFormat))
         throw Utils::Exception("WGLContext", "Can't set pixel format for the shared context");
 */
-	if (!wglShareLists(_context, newSharedRenderer->_context))
+	if (!wglShareLists(_context, newSharedContext->_context))
 	{
 		LPVOID lpMsgBuf;
 		LPVOID lpDisplayBuf;
@@ -253,7 +253,7 @@ GLContext *WGLContext::CreateNewSharedRenderer()
 			0, NULL );
 
 		// Display the error message and exit the process
-
+		// du code windows bien crade...
 		lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
 			(lstrlen((LPCTSTR)lpMsgBuf)+lstrlen((LPCTSTR)TEXT("plopiplop"))+40)*sizeof(TCHAR));
 		StringCchPrintf((LPTSTR)lpDisplayBuf,
@@ -283,12 +283,14 @@ GLContext *WGLContext::CreateNewSharedRenderer()
     newSharedRenderer->_isShared = true;
 */
 // ajout du renderer dans la map d'association avec le PID du thread courant
-    unsigned int pid = ThreadId();
+/*
+	unsigned int pid = ThreadId();
     _mapPIDRendererMutex.Lock();
     MapPIDRenderer::iterator it = _mapPIDRenderer.find(pid);
     if (it != _mapPIDRenderer.end())
         throw Utils::Exception("WGLContext", "The Current Thread as already a GLContext !");
     _mapPIDRenderer[pid] = this;
     _mapPIDRendererMutex.Unlock();
-	return newSharedRenderer;
+*/
+	return newSharedContext;
 }
