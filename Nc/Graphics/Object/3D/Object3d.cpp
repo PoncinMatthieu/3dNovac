@@ -92,12 +92,32 @@ void Object3d::AddChild(Object3d *o)
         *_box += *o->_box;
 }
 
-const Box3f &Object3d::Box() const
+void  Object3d::SetBox(const Box3f &box)
+{
+    if (_box != NULL)
+        *_box = box;
+    else
+        _box = new BoundingBox(box);
+}
+
+
+const Box3f &Object3d::GetBox() const
 {
     if (_box != NULL)
         return *_box;
     else
         return Box3f::EmptyBox;
+}
+
+void  Object3d::GetReelBox(Box3f &box) const
+{
+    if (_box != NULL)
+    {
+        box = *_box;
+        box.Transform(Matrix);
+    }
+    else
+        box.Init();
 }
 
 void Object3d::Render(ISceneGraph *scene)
@@ -141,23 +161,26 @@ void Object3d::HeightScale(float height)
 {
     if (_box != NULL)
     {
-        float k;
-        k = height / _box->Height();
-        Matrix.AddScale(k);
+        Box3f b = *_box; // creer une box temporaire pour utiliser la matrice en cour
+        b.Transform(Matrix);
+        // scale la matrice pour obtenir la bonne hauteur
+        Matrix.AddScale(height / b.Length(2));
     }
 }
-/*
-void Object3d::PosBase(Vector3f &centerBase)
-{
-    Box3f b = _box->GetBox();
-    b.Transform(Matrix);
 
-    Vector3f center = _box.Center();
-    center.Data[2] = _box.Min().Data[2];
-    centerBase -= center;
-    Matrix.AddTranslation(centerBase);
+void Object3d::CenterBase(const Vector3f &centerBase)
+{
+    if (_box != NULL)
+    {
+        Box3f b = *_box;
+        b.Transform(Matrix);
+
+        Vector3f center = b.Center();
+        center.Data[2] = b.Min(2);
+        Matrix.AddTranslation(centerBase - center);
+    }
 }
-*/
+
 void Object3d::ComputeReelMatrix(TMatrix &m)
 {
     if (_parent != NULL)

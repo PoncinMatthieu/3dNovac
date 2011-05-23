@@ -37,7 +37,7 @@ namespace Nc
         /// Implementation of a standard Camera3d
         /**
             To manage trackball or turntable camera
-            \todo Implemete trackball and freefly system (only the trackball is implemented)
+            \todo Implemete the freefly system
         */
         class LGRAPHICS StandardCamera3d : public Camera3d
         {
@@ -46,7 +46,8 @@ namespace Nc
                 enum Pattern
                 {
                     Trackball,
-                    Turntable
+                    Turntable,
+                    Freefly
                 };
 
             // two default X PixMap cursor
@@ -64,6 +65,8 @@ namespace Nc
                 /** Set the pattern used by the camera */
                 inline void     SetPattern(Pattern p)               {_pattern = p;}
 
+                /** Set the button with active the movement of the camera */
+                void            SetMoveButton(System::Mouse::Button button) {_mouveButton = button;}
 
                 // Manage events
                 /** Manage the mouse motion event */
@@ -80,16 +83,26 @@ namespace Nc
                 /** Recompute the eye, center and up vector after a modification */
                 void MajEye();
 
+                /** Recompute the trackball point with the given mouse position */
+                void MajTrackballPoint(int x, int y);
+
+                System::Mouse::Button   _mouveButton;   ///< the button witch active the movement of the camera
+
                 Pattern     _pattern;                   ///< the pattern of the camera
                 float       _moveSpeed;                 ///< the speed of the movement of the camera
-                float       _SensibilityRotate;         ///< the rotation sensibility
-                float       _SensibilityTranslate;      ///< the translation sensibility
-                float       _SensibilityZoom;           ///< the zoom sensibility
-                bool        _StateButtonRight;          ///< the button right state
-                bool        _StateButtonLeft;           ///< the button left state
+                float       _sensibilityRotate;         ///< the rotation sensibility
+                float       _sensibilityTranslate;      ///< the translation sensibility
+                float       _sensibilityZoom;           ///< the zoom sensibility
+                bool        _stateButtonRight;          ///< the button right state
+                bool        _stateButtonLeft;           ///< the button left state
                 float       _distance;                  ///< the distance between the center and the eye
                 Vector2f    _angles;                    ///< the angle of rotation
                 Vector2i    _lastPosMouse;              ///< the last position of the mouse
+
+                // fo the trackball system
+                TMatrix     _matrixRotationEye;         ///< the current rotation matrix of the eye, for trackball system
+                Vector3f    _currentSpherePoint;        ///< the current sphere point of the trackball
+                Vector3f    _lastSpherePoint;           ///< the last sphere point of the trackball (between a mouse motion event)
 
                 ICursor     *_cursorOpen;               ///< the cursor when the button mouse is up
                 ICursor     *_cursorClose;              ///< the cursor when the button mouse is down

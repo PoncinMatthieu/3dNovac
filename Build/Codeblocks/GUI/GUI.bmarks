@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="../../../Nc/GUI/Button.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="1869" topLine="29" />
+	<File name="../../../Nc/GUI/Button.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="3416" topLine="95" />
 	</File>
 	<File name="../../../Nc/GUI/Button.h" open="0" top="0" tabpos="1">
 		<Cursor position="1544" topLine="39" />
 	</File>
 	<File name="../../../Nc/GUI/Console.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="9467" topLine="231" />
+		<Cursor position="4436" topLine="99" />
 	</File>
 	<File name="../../../Nc/GUI/Console.h" open="0" top="0" tabpos="2">
-		<Cursor position="1043" topLine="3" />
+		<Cursor position="1323" topLine="33" />
 	</File>
 	<File name="../../../Nc/GUI/Define.h" open="0" top="0" tabpos="1">
 		<Cursor position="2383" topLine="8" />
@@ -54,7 +54,7 @@
 		<BrowseMarks positions="3242" />
 	</File>
 	<File name="../../../Nc/GUI/Widget.h" open="0" top="0" tabpos="7">
-		<Cursor position="1068" topLine="0" />
+		<Cursor position="10161" topLine="156" />
 	</File>
 	<File name="../../../Nc/GUI/WidgetLabeled.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="2219" topLine="59" />

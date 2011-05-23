@@ -68,19 +68,6 @@
                     container.pop_front();
                 }
             }
-
-        // usefull templates
-            /// conditional inheritance
-            template<bool T, typename TRUE_CLASS, typename FALSE_CLASS>
-            struct IF : TRUE_CLASS {};
-
-            /// specialisation of the struct IF, to make the inheritance with the conditional to false
-            template<typename TRUE_CLASS, typename FALSE_CLASS>
-            struct IF<false, TRUE_CLASS, FALSE_CLASS> : FALSE_CLASS {};
-
-            /// container of type T
-            template<typename T>
-            struct Container    { T   Data; };
         }
     }
 

@@ -24,6 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
+#include <algorithm>
 #include "Basic3dSceneGraph.h"
 #include "../Object/3D/Light.h"
 #include "../Effect/Effect.h"
@@ -74,8 +75,13 @@ void Basic3dSceneGraph::Update(float runningTime)
     }
 }
 
+#include "../Material/DefaultLightingMaterial.h"
+
 void Basic3dSceneGraph::Render()
 {
+    _mode.Enable();
+
+
     if (!ModelMatrix().IsIdentity())
         ModelMatrix().SetIdentity();
 
@@ -105,6 +111,45 @@ void Basic3dSceneGraph::Render()
         LOG_ERROR << "Error in the render pass: " << e.what() << std::endl;
     }
     _mutex.Unlock(); // unlock la mutex
+
+/*
+    GL::RasterMode r(GL_FRONT_AND_BACK, GL_LINE);
+    r.Enable();
+    glEnable(GL_POLYGON_OFFSET_LINE);
+    glPolygonOffset(-1.0, -1.0);
+    Material<BasicVertexType::Textured, DefaultLightingMaterialPolitic>::Instance().Pattern().Enable(DefaultLightingMaterialPolitic::Disabled);
+
+    if (!ModelMatrix().IsIdentity())
+        ModelMatrix().SetIdentity();
+
+    _mutex.Lock(); // lock la mutex
+    try
+    {
+        // Fixe la camera :
+        _camera->Fix();
+        _camera->Render(this);
+
+        // rend les objets un par un
+        if (!_listObject.empty() || !_listLight.empty() || !_listEffect.empty())
+        {
+            for(ListPObject::iterator it = _listObject.begin(); it != _listObject.end(); it++)
+                if ((*it)->DisplayState())
+                    (*it)->Render(this);
+            for(ListPLight::iterator it = _listLight.begin(); it != _listLight.end(); it++)
+                if ((*it)->DisplayState())
+                    (*it)->Render(this);
+            for(ListPEffect::iterator it = _listEffect.begin(); it != _listEffect.end(); it++)
+                if ((*it)->DisplayState())
+                    (*it)->Render(this);
+        }
+    }
+    catch (const std::exception &e)
+    {
+        LOG_ERROR << "Error in the render pass: " << e.what() << std::endl;
+    }
+    _mutex.Unlock(); // unlock la mutex
+    Material<BasicVertexType::Textured, DefaultLightingMaterialPolitic>::Instance().Pattern().Disable(DefaultLightingMaterialPolitic::Disabled);
+*/
 }
 
 void Basic3dSceneGraph::AddObject(Graphic::Object* objectToAdd)
@@ -129,24 +174,48 @@ void Basic3dSceneGraph::AddObject(Graphic::Object* objectToAdd)
     }
 }
 
-void Basic3dSceneGraph::DeleteObject(Graphic::Object *objectToDelete, bool del)
+bool Basic3dSceneGraph::DeleteObject(Graphic::Object *objectToDelete, bool del)
 {
+    bool find = false;
+
     _mutex.Lock();
 
     Effect *effect = dynamic_cast<Effect*>(objectToDelete);
     if (effect != NULL)
-        _listEffect.remove(effect);
+    {
+        ListPEffect::iterator it = std::find(_listEffect.begin(), _listEffect.end(), objectToDelete);
+        if (it != _listEffect.end())
+        {
+            _listEffect.erase(it);
+            find = true;
+        }
+    }
     else
     {
         Graphic::Light *light = dynamic_cast<Graphic::Light*>(objectToDelete);
         if (light != NULL)
-            _listLight.remove(light);
+        {
+            ListPLight::iterator it = std::find(_listLight.begin(), _listLight.end(), objectToDelete);
+            if (it != _listLight.end())
+            {
+                _listLight.erase(it);
+                find = true;
+            }
+        }
         else
-            _listObject.remove(objectToDelete);
+        {
+            ListPObject::iterator it = std::find(_listObject.begin(), _listObject.end(), objectToDelete);
+            if (it != _listObject.end())
+            {
+                _listObject.erase(it);
+                find = true;
+            }
+        }
     }
 
     if (del)
         delete objectToDelete;
 
     _mutex.Unlock();
+    return find;
 }

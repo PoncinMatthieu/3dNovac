@@ -73,6 +73,10 @@
 		<Unit filename="../../../Nc/Core/System/Object.h" />
 		<Unit filename="../../../Nc/Core/System/PluginLoader.h" />
 		<Unit filename="../../../Nc/Core/System/System.h" />
+		<Unit filename="../../../Nc/Core/Tree/BinaryTree.h" />
+		<Unit filename="../../../Nc/Core/Tree/DotGraph.h" />
+		<Unit filename="../../../Nc/Core/Tree/Node.h" />
+		<Unit filename="../../../Nc/Core/Tree/PortalTree.h" />
 		<Unit filename="../../../Nc/Core/Utils/Clock.h" />
 		<Unit filename="../../../Nc/Core/Utils/Convert.h" />
 		<Unit filename="../../../Nc/Core/Utils/Debug/MemoryManager.cpp" />
@@ -81,10 +85,12 @@
 		<Unit filename="../../../Nc/Core/Utils/Exception.h" />
 		<Unit filename="../../../Nc/Core/Utils/FileName.cpp" />
 		<Unit filename="../../../Nc/Core/Utils/FileName.h" />
+		<Unit filename="../../../Nc/Core/Utils/IFileFormat.h" />
 		<Unit filename="../../../Nc/Core/Utils/IntrusiveSmartPointer.h" />
 		<Unit filename="../../../Nc/Core/Utils/Logger.cpp" />
 		<Unit filename="../../../Nc/Core/Utils/Logger.h" />
 		<Unit filename="../../../Nc/Core/Utils/Mask.h" />
+		<Unit filename="../../../Nc/Core/Utils/Metaprog.h" />
 		<Unit filename="../../../Nc/Core/Utils/NonCopyable.h" />
 		<Unit filename="../../../Nc/Core/Utils/Singleton.h" />
 		<Unit filename="../../../Nc/Core/Utils/SmartPointer.h" />

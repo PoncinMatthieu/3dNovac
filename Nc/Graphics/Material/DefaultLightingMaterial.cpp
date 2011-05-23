@@ -37,6 +37,7 @@ DefaultLightingMaterialPolitic::DefaultLightingMaterialPolitic()
     _shader.Enable();
     _uniformM = _shader.UniformLocation("MMatrix");
     _uniformPV = _shader.UniformLocation("VPMatrix");
+    _uniformNormalMatrix = _shader.UniformLocation("NormalMatrix");
     _uniformLight = _shader.UniformLocation("Light");
     _uniformLightPass = _shader.UniformLocation("LightPass");
     _uniformLightColor = _shader.UniformLocation("LightColor");
@@ -68,7 +69,7 @@ void    DefaultLightingMaterialPolitic::Configure(GL::IGeometryBuffer<BasicVerte
 #ifdef _DEBUG
 // Draw the normals of the given geometry
 // for reason of performance we choose to stock the normal drawable with the geometry pointer in a map, and create the drawable only the first time
-void DrawNormal(ISceneGraph *scene, TMatrix &modelMatrix, GL::IGeometryBuffer<BasicVertexType::Textured> *geometry)
+void DrawNormal(ISceneGraph *scene, const TMatrix &modelMatrix, GL::IGeometryBuffer<BasicVertexType::Textured> *geometry)
 {
     // /!\ si le drawable change, pas celui des normals
     static std::map<GL::IGeometryBuffer<BasicVertexType::Textured>*, Drawable<BasicVertexType::Colored, false> >    mapDrawableNormalDebug;
@@ -86,23 +87,28 @@ void DrawNormal(ISceneGraph *scene, TMatrix &modelMatrix, GL::IGeometryBuffer<Ba
         BasicVertexType::Textured *vertices = geometry->GetVBO().MapBuffer(GL_READ_ONLY);
         Color color(1,0,0);
 
-        // and create 2 new vertices per vertex
-        unsigned int    size = geometry->GetVBO().Size();
-        float           normalPercent = 0.1f;
-        Array<BasicVertexType::Colored>   verticesNormal(size * 2);
-        for (unsigned int i = 0; i < size; ++i)
+        if (vertices != NULL)
         {
-            verticesNormal[i*2].Fill(vertices[i].coord[0], vertices[i].coord[1], vertices[i].coord[2], color);
-            verticesNormal[(i*2) + 1].Fill(vertices[i].coord[0], vertices[i].coord[1], vertices[i].coord[2], color);
-            verticesNormal[(i*2) + 1].coord[0] += (vertices[i].normal[0] * normalPercent);
-            verticesNormal[(i*2) + 1].coord[1] += (vertices[i].normal[1] * normalPercent);
-            verticesNormal[(i*2) + 1].coord[2] += (vertices[i].normal[2] * normalPercent);
-        }
-        normalDrawable->GetVBO().UpdateData(verticesNormal, GL_STREAM_DRAW);
+            // and create 2 new vertices per vertex
+            unsigned int    size = geometry->GetVBO().Size();
+            float           normalPercent = 0.1f;
+            Array<BasicVertexType::Colored>   verticesNormal(size * 2);
+            for (unsigned int i = 0; i < size; ++i)
+            {
+                verticesNormal[i*2].Fill(vertices[i].coord[0], vertices[i].coord[1], vertices[i].coord[2], color);
+                verticesNormal[(i*2) + 1].Fill(vertices[i].coord[0], vertices[i].coord[1], vertices[i].coord[2], color);
+                verticesNormal[(i*2) + 1].coord[0] += (vertices[i].normal[0] * normalPercent);
+                verticesNormal[(i*2) + 1].coord[1] += (vertices[i].normal[1] * normalPercent);
+                verticesNormal[(i*2) + 1].coord[2] += (vertices[i].normal[2] * normalPercent);
+            }
+            normalDrawable->GetVBO().UpdateData(verticesNormal, GL_STREAM_DRAW);
 
+        }
         // finaly, unmap the buffer and configure with the material
+        geometry->GetVBO().Enable();
         geometry->GetVBO().UnmapBuffer();
         Material<BasicVertexType::Colored>::Instance().Configure(*normalDrawable);
+        geometry->GetVBO().Disable();
     }
     else
         normalDrawable = &it->second;
@@ -112,7 +118,7 @@ void DrawNormal(ISceneGraph *scene, TMatrix &modelMatrix, GL::IGeometryBuffer<Ba
 }
 #endif
 
-void    DefaultLightingMaterialPolitic::Render(ISceneGraph *scene, TMatrix &modelMatrix, IDrawable<BasicVertexType::Textured, DefaultLightingMaterialConfigPolitic> &drawable)
+void    DefaultLightingMaterialPolitic::Render(ISceneGraph *scene, const TMatrix &modelMatrix, DrawableType &drawable)
 {
 // /!\ static_cast, could be dangerous
     const ListPLight    &listLight = static_cast<Basic3dSceneGraph*>(scene)->Lights();
@@ -122,10 +128,15 @@ void    DefaultLightingMaterialPolitic::Render(ISceneGraph *scene, TMatrix &mode
     drawable.Enable();
     _shader.Enable(); // enable the shader
 
-    // set the matrix
+    // set the model project and view matrix
     TMatrix pv = scene->ProjectionMatrix() * scene->ViewMatrix();
     glUniformMatrix4fv(_uniformM, 1, GL_TRUE, modelMatrix.Elements());
     glUniformMatrix4fv(_uniformPV, 1, GL_TRUE, pv.Elements());
+    // set the normal matrix
+    TMatrix normalMatrix;
+    modelMatrix.Transpose(normalMatrix);
+    normalMatrix.Inverse();
+    glUniformMatrix4fv(_uniformNormalMatrix, 1, GL_TRUE, normalMatrix.Elements());
 
     // set the ambiant color light
     glUniform4f(_uniformLightColor, ambiantColor.R, ambiantColor.G, ambiantColor.B, ambiantColor.A);
@@ -144,6 +155,10 @@ void    DefaultLightingMaterialPolitic::Render(ISceneGraph *scene, TMatrix &mode
     drawable.GetGeometry().GetVBO().MaskDescriptor = 0x07;
     drawable.Render();
     drawable.GetGeometry().GetVBO().MaskDescriptor = lastDesc;
+
+    // if the lighting is disabled, stop here
+    if (_patternMask.Enabled(Disabled))
+        return;
 
     // next pass --> render the lights
     glUniform1i(_uniformLightPass, true);
@@ -170,7 +185,8 @@ void    DefaultLightingMaterialPolitic::Render(ISceneGraph *scene, TMatrix &mode
 
     for (ListPLight::const_iterator it = listLight.begin(); it != listLight.end(); it++)
     {
-        const Vector3f  &posLight = (*it)->Position();
+        Vector3f  posLight = (*it)->Position();
+        (*it)->Matrix.Transform(posLight);
         glUniform4f(_uniformLight, posLight.Data[0], posLight.Data[1], posLight.Data[2], 1.0f / ((*it)->Radius()));
         glUniform4f(_uniformLightColor, (*it)->ColorRGB().R, (*it)->ColorRGB().G, (*it)->ColorRGB().B, (*it)->ColorRGB().A);
 

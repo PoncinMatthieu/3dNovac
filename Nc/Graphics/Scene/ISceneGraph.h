@@ -29,6 +29,7 @@
 
 #include <stack>
 #include "../Define.h"
+#include "../Core/GL/RasterMode.h"
 
 namespace Nc
 {
@@ -79,6 +80,12 @@ namespace Nc
                 inline void     PushModelMatrix()                   {_stackModelMatrix.push(_stackModelMatrix.top());}
                 /** Unstack the model matrix */
                 inline void     PopModelMatrix()                    {_stackModelMatrix.pop();}
+
+                /** Set the raster mode of the scene */
+                inline void     SetRasterMode(GLenum face, GLenum mode) {_mode.SetRasterMode(face, mode);}
+
+            protected:
+                GL::RasterMode          _mode;                      ///< the raster mode used to render the scene
 
             private:
                 std::stack<TMatrix>     _stackProjectionMatrix;     ///< the stack of projection matrix

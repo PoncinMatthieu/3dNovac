@@ -37,6 +37,8 @@ void     I2dSceneGraph::SetCurrentScene()
 
 void    I2dSceneGraph::Render()
 {
+    _mode.Enable();
+
     if (!ModelMatrix().IsIdentity())
         ModelMatrix().SetIdentity();
 

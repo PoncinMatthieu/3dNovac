@@ -40,11 +40,15 @@ namespace Nc
     class Plugin : public Graphic::MeshFormatPlugin
     {
         private:
-            typedef std::map<std::string, Graphic::GL::Texture>                                             MapTexture;
-            typedef std::map<std::string, Graphic::MaterialConfig<Graphic::BasicVertexType::Textured, Graphic::DefaultLightingMaterialConfigPolitic> >      MapMaterialConfig;
-            typedef std::map<void*, Graphic::Drawable<Graphic::BasicVertexType::Textured, true, Graphic::DefaultLightingMaterialConfigPolitic> *>           MapDrawable;
-            typedef std::map<std::string, std::string>                                                      MapMaterial;        // just to link with the material config (effect with collada), weird !
-            typedef std::map<std::string, Graphic::Object3d*>                                               MapNode;
+            typedef Graphic::MaterialConfig<Graphic::BasicVertexType::Textured, Graphic::DefaultLightingMaterialConfigPolitic>                                      DefaultMaterialConfig;
+            typedef Graphic::Drawable<Graphic::BasicVertexType::Textured, true, Graphic::DefaultLightingMaterialConfigPolitic>                                      DefaultDrawable;
+            typedef Graphic::Mesh<Graphic::BasicVertexType::Textured, true, Graphic::DefaultLightingMaterialPolitic, Graphic::DefaultLightingMaterialConfigPolitic> DefaultMesh;
+
+            typedef std::map<std::string, Graphic::GL::Texture>         MapTexture;
+            typedef std::map<std::string, DefaultMaterialConfig>        MapMaterialConfig;
+            typedef std::map<void*, DefaultDrawable *>                  MapDrawable;
+            typedef std::map<std::string, std::string>                  MapMaterial;        // just to link with the material config (effect with collada), weird !
+            typedef std::map<std::string, Graphic::Object3d*>           MapNode;
 
         public:
             Plugin();
@@ -66,11 +70,11 @@ namespace Nc
             void    ReadEffectLibrary(domLibrary_effectsRef lib);
             void    ReadEffect(domEffectRef lib);
 
-            void    ReadConstant(Graphic::MaterialConfig<Graphic::BasicVertexType::Textured, Graphic::DefaultLightingMaterialConfigPolitic> &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant);
-            void    ReadLambert(Graphic::MaterialConfig<Graphic::BasicVertexType::Textured, Graphic::DefaultLightingMaterialConfigPolitic> &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert);
-            void    ReadPhong(Graphic::MaterialConfig<Graphic::BasicVertexType::Textured, Graphic::DefaultLightingMaterialConfigPolitic> &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong);
-            void    ReadBlinn(Graphic::MaterialConfig<Graphic::BasicVertexType::Textured, Graphic::DefaultLightingMaterialConfigPolitic> &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn);
-            void    ReadTextureFromTechniqueEffect(Graphic::MaterialConfig<Graphic::BasicVertexType::Textured, Graphic::DefaultLightingMaterialConfigPolitic> &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader);
+            void    ReadConstant(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant);
+            void    ReadLambert(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert);
+            void    ReadPhong(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong);
+            void    ReadBlinn(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn);
+            void    ReadTextureFromTechniqueEffect(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader);
 
             // materials (-> effects)
             void    ReadMaterialLibrary(domLibrary_materialsRef lib);
@@ -79,11 +83,12 @@ namespace Nc
             // scene
             void    ReadScene(domVisual_sceneRef scene);
             void    ReadNode(domNodeRef node, Graphic::Object3d *parentNode);
+            void    ReadNodeTranforms(Graphic::Object3d *obj, domNodeRef node, Graphic::Object3d *);
 
             // Drawable
-            void    ReadDrawable(domGeometry *lib, Graphic::Mesh<Graphic::BasicVertexType::Textured, true, Graphic::DefaultLightingMaterialPolitic, Graphic::DefaultLightingMaterialConfigPolitic> *mesh);
-            void    ParseGeometry(domGeometry *domGeometry, Graphic::Mesh<Graphic::BasicVertexType::Textured, true, Graphic::DefaultLightingMaterialPolitic, Graphic::DefaultLightingMaterialConfigPolitic> *mesh);
-            void    BuildTriangles(domTriangles *domTriangles, Graphic::Drawable<Graphic::BasicVertexType::Textured, true, Graphic::DefaultLightingMaterialConfigPolitic> &drawable);
+            void    ReadDrawable(domGeometry *lib, DefaultMesh *mesh);
+            void    ParseGeometry(domGeometry *domGeometry, DefaultMesh *mesh);
+            Box3f   BuildTriangles(domTriangles *domTriangles, DefaultDrawable &drawable);
 
 
             DAE                 *_dae;

@@ -33,7 +33,7 @@ using namespace Nc::Graphic;
 Light::Light() : Object3d()
 {
     _positionLight = Vector3f(0, 0, 0);;
-    _colorLight = Color(255, 255, 255, 0);
+    _colorLight = Color(0.5f, 0.5f, 0.5f, 0);
     _radius = 10;
 }
 

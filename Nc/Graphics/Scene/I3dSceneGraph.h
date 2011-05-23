@@ -55,7 +55,7 @@ namespace Nc
                 inline const Camera3d       *GetCamera() const              {return _camera;}
 
             protected:
-                Camera3d      *_camera;     ///< the 3d Camera used to update the projection and view matrix
+                Camera3d        *_camera;     ///< the 3d Camera used to update the projection and view matrix
         };
     }
 }

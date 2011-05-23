@@ -71,7 +71,7 @@ namespace Nc
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
                 template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, Drawable<BasicVertexType::Colored, INDEX, ConfigPolitic> &drawable)
+                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<BasicVertexType::Colored, INDEX, ConfigPolitic> &drawable)
                 {
                     drawable.Enable();
                     _shader.Enable(); // enable the shader
@@ -116,7 +116,7 @@ namespace Nc
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
                 template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, Drawable<BasicVertexType::Colored2d, INDEX, ConfigPolitic> &drawable)
+                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<BasicVertexType::Colored2d, INDEX, ConfigPolitic> &drawable)
                 {
                     drawable.Enable();
                     _shader.Enable(); // enable the shader
@@ -163,8 +163,8 @@ namespace Nc
                 }
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, Drawable<BasicVertexType::Textured, INDEX, ConfigPolitic> &drawable)
+                template<typename ConfigPolitic>
+                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, IDrawable<BasicVertexType::Textured, ConfigPolitic> &drawable)
                 {
                     drawable.Enable();
                     _shader.Enable(); // enable the shader
@@ -220,7 +220,7 @@ namespace Nc
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
                 template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, Drawable<BasicVertexType::Textured2d, INDEX, ConfigPolitic> &drawable)
+                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<BasicVertexType::Textured2d, INDEX, ConfigPolitic> &drawable)
                 {
                     drawable.Enable();
                     _shader.Enable(); // enable the shader
@@ -275,7 +275,7 @@ namespace Nc
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
                 template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, Drawable<BasicVertexType::Textured3d, INDEX, ConfigPolitic> &drawable)
+                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<BasicVertexType::Textured3d, INDEX, ConfigPolitic> &drawable)
                 {
                     drawable.Enable();
                     _shader.Enable(); // enable the shader

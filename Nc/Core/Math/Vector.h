@@ -85,7 +85,7 @@ namespace Nc
                 Vector  &Normalize();
                 template<typename U>
                 T       Dot(const Vector<U,D> &u) const;
-                Vector  Reverse() const;
+                Vector  Inverse() const;
                 template<typename U>
                 T       Angle(const Vector<U,D> &v) const;
 
@@ -343,7 +343,7 @@ namespace Nc
         }
 
         template<typename T, unsigned char D>
-        Vector<T,D>  Vector<T,D>::Reverse() const
+        Vector<T,D>  Vector<T,D>::Inverse() const
         {
             Vector<T,D> v;
             for (unsigned char i = 0; i < D; ++i)

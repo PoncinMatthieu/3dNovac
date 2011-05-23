@@ -49,6 +49,10 @@ namespace Nc
                     std::string                     &Name()             {return _name;}
                     /** Return the index of the gl texture */
                     virtual inline unsigned int		GetIndex() const    {return _texture;}
+
+                    /** \todo fonction a Supprimer (a l'origine pour faire des test sur les frame buffer en dur */
+                    void SetIndex(unsigned int i) {_texture = i;}
+
                     /** Bind the texture */
                     virtual void					Enable() const;
                     /** Unbind the texture */

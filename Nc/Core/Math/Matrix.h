@@ -73,7 +73,7 @@ namespace Nc
                     return os;
                 }
 
-                inline T *Elements() {return _data;}
+                inline const T *Elements() const        {return _data;}
 
                 // functions
                 void    Transpose(Matrix<T, D2, D1> &t) const;  // set the transpose in t

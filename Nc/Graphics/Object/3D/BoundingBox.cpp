@@ -100,10 +100,8 @@ void BoundingBox::UpdateGeometry()
 
 void BoundingBox::Render(ISceneGraph *scene)
 {
-    Vector3f minToMax = _max - _min;
-    Matrix.Scale(minToMax);
+    Matrix.Scale(_max - _min);
     Matrix.AddTranslation(_min);
-    TMatrix matrix = Matrix * scene->ModelMatrix();
-    _material->Render(scene, matrix, *_drawable);
+    _material->Render(scene, scene->ModelMatrix() * Matrix, *_drawable);
 }
 

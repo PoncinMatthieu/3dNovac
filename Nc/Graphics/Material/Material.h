@@ -56,7 +56,7 @@ namespace Nc
 
                 /** Render the given drawable with the scene and the given model matrix using the Politic */
                 template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, Drawable<VertexType, INDEX, ConfigPolitic> &drawable)
+                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<VertexType, INDEX, ConfigPolitic> &drawable)
                 {
                     MaterialPolitic::Render(scene, modelMatrix, drawable);
                 }

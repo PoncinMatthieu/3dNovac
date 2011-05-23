@@ -36,18 +36,6 @@ namespace Nc
     {
         namespace GL
         {
-/*-----------------------------------------------------------------------------
-
-                    Implementation de la classe "gDataBuffer"
-
-                  Classe permettant de definir un buffer OpenGL
-    (Buffer directement aloué dans la memoire graphique, permettant un
-     gain considerable en performance et de limiter la bande passante
-                            entre le CPU et le GPU)
-
-          !! Le buffer ne doit contenir qu'un seul type de données
-
------------------------------------------------------------------------------*/
             /// Template Interface to manage an OpenGL buffer
             /**
                 The openGL buffer is directly allocated in the graphic card.
@@ -95,9 +83,9 @@ namespace Nc
                         Map the buffer in local, and return it's pointer. <br/>
                         The access flag should be GL_READ_ONLY, GL_WRITE_ONLY, or GL_READ_WRITE to specifie the access policy of the buffer
                      */
-                    inline T                    *MapBuffer(GLenum access)   {return (T*)glMapBuffer(_typeBuffer, access);}
+                    T                           *MapBuffer(GLenum access);
                     /** Unmap the buffer */
-                    inline void                 UnmapBuffer()               {glUnmapBuffer(_typeBuffer);}
+                    void                        UnmapBuffer();
 
                     /** Return the local buffer, if no local has been keeped, the ret value will be null */
                     inline T                    *GetLocalBuffer()           {return _dataTab;}
@@ -205,6 +193,23 @@ namespace Nc
                 LOG_DEBUG << "Data Buffer " << _index << " DELETED" << std::endl;
                 _index = 0;
             }
+
+            template<typename T>
+            T    *DataBuffer<T>::MapBuffer(GLenum access)
+            {
+                T *p = (T*)glMapBuffer(_typeBuffer, access);
+                if (p == NULL)
+                    LOG_ERROR << "DataBuffer::glMapBuffer: " << EXT.GetError() << std::endl;
+                return p;
+            }
+
+            template<typename T>
+            void   DataBuffer<T>::UnmapBuffer()
+            {
+                if (glUnmapBuffer(_typeBuffer) == GL_FALSE)
+                    LOG_ERROR << "DataBuffer::glUnmapBuffer: " << EXT.GetError() << std::endl;
+            }
+
         }
     }
 }

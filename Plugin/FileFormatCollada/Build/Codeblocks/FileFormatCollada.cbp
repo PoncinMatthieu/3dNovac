@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="./bin/libPluginFileFormatCollada" prefix_auto="1" extension_auto="1" />
+				<Option output="../../bin/libPluginFileFormatCollada" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -34,7 +34,7 @@
 			<Add option="-DBOOST_ALL_NO_LIB" />
 			<Add option="-DPCRE_STATIC" />
 			<Add option="-DDOM_INCLUDE_LIBXML" />
-			<Add directory="../../" />
+			<Add directory="../../../../" />
 			<Add directory="/usr/local/include/colladadom" />
 			<Add directory="/usr/local/include/colladadom/1.4/" />
 		</Compiler>
@@ -47,7 +47,7 @@
 			<Add library="pcrecpp" />
 			<Add library="boost_filesystem" />
 			<Add library="minizip" />
-			<Add directory="../../lib" />
+			<Add directory="../../../../lib" />
 		</Linker>
 		<Unit filename="../../Define.h" />
 		<Unit filename="../../Plugin.cpp" />

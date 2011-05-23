@@ -39,7 +39,7 @@ namespace Nc
             A 3d Camera needs to have the routines to manage the events and to update the mouvement of the camera.
             The camera is composed by an Eye, a Center and a vector Up
 
-            \todo Recode gluUnProject that is deprecated and reimplement the Get3dCoordinateFromProjection method.
+            \todo Recode gluUnProject witch is deprecated and reimplement the Get3dCoordinateFromProjection method.
         */
         class LGRAPHICS Camera3d : public Camera, public Object3d
         {
@@ -70,11 +70,11 @@ namespace Nc
                 /** Return the eye of the camera */
                 inline const    Vector3f &Eye() const           {return _eye;}
                 /** Set the eye of the camera */
-                inline void     Eye(Vector3f &eye)              {_eye = eye;}
+                inline void     Eye(const Vector3f &eye)        {_eye = eye;}
                 /** Return the center of the camera */
                 inline const    Vector3f &Center() const        {return _center;}
                 /** Set the center of the camera */
-                inline void     Center(Vector3f &pos)           {_center = pos; MajEye();}
+                inline void     Center(const Vector3f &pos)     {_center = pos; MajEye();}
 
             protected:
                 virtual void    MajEye() = 0;

@@ -21,7 +21,7 @@ void CreateEngines(Engine::Manager &manager)
   manager.AddEngine("Main", game);
   LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << std::endl;
 
-  LOG << "-----------GameManager-ENGINES-CREATION-SUCESS--------------" << std::endl;
+  LOG << "-----------GameManager-ENGINES-CREATION-SUCCESS--------------" << std::endl;
 }
 
 int main()

@@ -50,33 +50,36 @@ namespace Nc
                 virtual ~Basic3dSceneGraph();
 
                 // accessors
-                /// Return the list of objects contained by the Basic3dSceneGraph
+                /** \return the list of objects contained by the Basic3dSceneGraph */
                 inline const ListPObject    &Objects() const                {return _listObject;}
 
-                /// Return the list of lights contained by the Basic3dSceneGraph
+                /** \return the list of lights contained by the Basic3dSceneGraph */
                 inline const ListPLight     &Lights() const                 {return _listLight;}
 
-                /// Return the list of effects contained by the Basic3dSceneGraph
+                /** \return the list of effects contained by the Basic3dSceneGraph */
                 inline const ListPEffect    &Effects() const                {return _listEffect;}
 
                 // manage content
-                /// To Add an object, Add it to the list of light or effect or Object with a dynamic_cast test
+                /** To Add an object, Add it to the list of light or effect or Object with a dynamic_cast test */
                 void        AddObject(Graphic::Object* objectToAdd);
 
-                /// To Delete an object, search it in the list of light or effect or object with a dynamic_cast test
-                void        DeleteObject(Graphic::Object *objectToDelete, bool del = true);
+                /**
+                    To Delete an object, search it in the list of light or effect or object with a dynamic_cast test
+                    \return true if the object has been removed from the list of object
+                */
+                bool        DeleteObject(Graphic::Object *objectToDelete, bool del = true);
 
-                /// clear the content of the scene, if del is true, we delete the objects
+                /** clear the content of the scene, if del is true, we delete the objects */
                 void        Clear(bool del);
 
-                /// Return the AmbiantColor of the scene (for lighting effect)
+                /** \return the AmbiantColor of the scene (for lighting effect) */
                 inline void                 ColorAmbiant(Color c)       {_colorAmbiant = c;};
                 inline const Color          &ColorAmbiant() const       {return _colorAmbiant;}
 
-                /// rendering the scene (all Objects, lights and effects), Called by the SceneGraph
+                /** rendering the scene (all Objects, lights and effects), Called by the SceneGraph */
                 virtual void                Render();
 
-                /// Update all Effects. You will need to call this function in the GameEngine
+                /** Update all Effects. You will need to call this function in the GameEngine */
                 virtual void                Update(float runningTime);
 
             protected:

@@ -56,6 +56,9 @@ namespace Nc
                 /** Return the material used to render the mesh */
                 inline Material<VertexType, MaterialPolitic>                *GetMaterial()      {return _material;}
 
+                /** \return the drawables */
+                inline ListDrawable                                         &GetDrawables()     {return _drawables;}
+
                 /** Create a new Drawable, and return its pointer */
                 Drawable<VertexType, INDEX, MaterialConfigPolitic>          *NewDrawable()      {_drawables.push_back(Drawable<VertexType, INDEX, MaterialConfigPolitic>()); return &(*_drawables.begin());}
 

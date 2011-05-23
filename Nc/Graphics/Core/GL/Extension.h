@@ -63,7 +63,8 @@ namespace Nc
                     bool Init();
 
                     /** Return the gl info */
-                    const GLubyte    *GetInfo(unsigned int type);
+                    const GLubyte       *GetInfo(unsigned int type);
+                    std::string         GetError();
 
                     /** Return true if the given extension name is support */
                     bool    IsSupported(const char *extName);

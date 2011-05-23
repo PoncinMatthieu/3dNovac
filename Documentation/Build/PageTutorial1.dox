@@ -87,7 +87,7 @@ void CreateEngines(Engine::Manager &manager)
   	manager.AddEngine("Main", game);
   	LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << std::endl;
 
-  	LOG << "-----------GameManager-ENGINES-CREATION-SUCESS--------------" << std::endl;
+  	LOG << "-----------GameManager-ENGINES-CREATION-SUCCESS--------------" << std::endl;
 }
 
 int main()
@@ -258,7 +258,7 @@ void GameEngine::MouseMotionEvent(Nc::System::Event &event)
 	Here we use the StandardCamera3d so it has a predefined comportement. But if you want you could create your own camera.
 
 	<div class="title">Conclusion</div>
-	Voila ! Now you have a window with a repere and can move the camera and resize the window.
+	Voila ! Now you have a window with a repere, and you can move the camera and resize the window.
 
 	Enjoy :)
 */

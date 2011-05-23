@@ -50,6 +50,7 @@ namespace Nc
                 // operator
                 template<typename U>    Box &operator   =   (const Box<U,D> &b);
                 template<typename U>    Box &operator   +=  (const Box<U,D> &b);
+                template<typename U>    Box &operator   +=  (const Vector<U,D> &p);
                 template<typename U>    Box &operator   +=  (const U coord[]);
                 template<typename U>    Box operator    +   (const Box<U,D> &b) const;
 
@@ -123,6 +124,20 @@ namespace Nc
                     _min.Data[i] = b._min.Data[i];
                 if (_max.Data[i] < b._max.Data[i])
                     _max.Data[i] = b._max.Data[i];
+            }
+            return *this;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        Box<T,D> &Box<T,D>::operator   +=  (const Vector<U,D> &p)
+        {
+            for (unsigned char i = 0; i < D; ++i)
+            {
+                if (_min.Data[i] > p.Data[i])
+                    _min.Data[i] = p.Data[i];
+                if (_max.Data[i] < p.Data[i])
+                    _max.Data[i] = p.Data[i];
             }
             return *this;
         }

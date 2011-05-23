@@ -90,7 +90,9 @@ const char *StandardCamera3d::XpmHandClose[] =
 };
 
 StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
-    : Camera3d((float)win->Width()/(float)win->Height(), 0.1, 1000, 70), _pattern(p), _angles(-90, -15)
+    : Camera3d((float)win->Width()/(float)win->Height(), 0.1, 1000, 70),
+      _mouveButton(System::Mouse::Right), _pattern(p),
+      _angles(-90, -15)
 {
     // create cursors
     _cursorOpen = win->NewCursor();
@@ -100,11 +102,11 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
     _cursorOpen->Enable();
 
     _moveSpeed = 1;
-    _SensibilityRotate = 1;
-    _SensibilityTranslate = 0.1f;
-    _SensibilityZoom = 1;
-    _StateButtonRight = false;
-    _StateButtonLeft = false;
+    _sensibilityRotate = 1;
+    _sensibilityTranslate = 0.1f;
+    _sensibilityZoom = 1;
+    _stateButtonRight = false;
+    _stateButtonLeft = false;
     _distance = 7;
     MajEye();
 }
@@ -123,37 +125,58 @@ void StandardCamera3d::Resized(const System::Event &event)
 
 void StandardCamera3d::MouseMotionEvent(const System::Event &event)
 {
-    if (_StateButtonRight)
+    if (_stateButtonRight)
     {
-        _angles.Data[0] += (_lastPosMouse[0] - event.MouseMove.X) * _SensibilityRotate;
-        _angles.Data[1] -= (_lastPosMouse[1] - event.MouseMove.Y) * _SensibilityRotate;
+        if (_pattern == Turntable)
+        {
+            _angles.Data[0] += (_lastPosMouse.Data[0] - event.MouseMove.X) * _sensibilityRotate;
+            _angles.Data[1] -= (_lastPosMouse.Data[1] - event.MouseMove.Y) * _sensibilityRotate;
+        }
+        else
+        {
+            MajTrackballPoint(event.MouseMove.X, event.MouseMove.Y);
+        }
+
         MajEye();
-        _lastPosMouse[0] = event.MouseMove.X;
-        _lastPosMouse[1] = event.MouseMove.Y;
+
+        if (_pattern == Trackball)
+            _lastSpherePoint = _currentSpherePoint;
+        else
+        {
+            _lastPosMouse.Data[0] = event.MouseMove.X;
+            _lastPosMouse.Data[1] = event.MouseMove.Y;
+        }
     }
 }
 
 void StandardCamera3d::MouseButtonEvent(const System::Event &event)
 {
 // bouton gauche
-    if (event.MouseButton.Button == System::Mouse::Right)
+    if (event.MouseButton.Button == _mouveButton)
     {
-        if (!_StateButtonRight && event.Type == System::Event::MouseButtonPressed)
+        if (!_stateButtonRight && event.Type == System::Event::MouseButtonPressed)
         {
             _cursorClose->Enable();
-            _StateButtonRight = true;
+            _stateButtonRight = true;
         }
-        else if (_StateButtonRight && event.Type == System::Event::MouseButtonReleased)
+        else if (_stateButtonRight && event.Type == System::Event::MouseButtonReleased)
         {
             _cursorOpen->Enable();
-            _StateButtonRight = false;
+            _stateButtonRight = false;
         }
-        _lastPosMouse = WindowInput::MousePosition();
+
+        if (_pattern == Trackball)
+        {
+            MajTrackballPoint(WindowInput::MousePosition().Data[0], WindowInput::MousePosition().Data[1]);
+            _lastSpherePoint = _currentSpherePoint;
+        }
+        else
+            _lastPosMouse = WindowInput::MousePosition();
     }
 // molette
     if (event.Type == System::Event::MouseWheelMoved)
     {
-        _distance -= event.MouseWheel.Delta * _SensibilityZoom;
+        _distance -= event.MouseWheel.Delta * _sensibilityZoom;
         if (_distance < 1)
             _distance = 1;
         else if (_distance > 100)
@@ -179,32 +202,42 @@ void StandardCamera3d::Update(float runningTime)
     }
     if (WindowInput::KeyState(System::Key::A))
     {
-        _angles.Data[0] +=  _SensibilityRotate * 100 * runningTime;
+        if (_pattern == Trackball)
+        {
+
+        }
+        else
+            _angles.Data[0] +=  _sensibilityRotate * 100 * runningTime;
         MajEye();
     }
     if (WindowInput::KeyState(System::Key::D))
     {
-        _angles.Data[0] -=  _SensibilityRotate * 100 * runningTime;
+        if (_pattern == Trackball)
+        {
+
+        }
+        else
+            _angles.Data[0] -=  _sensibilityRotate * 100 * runningTime;
         MajEye();
     }
 }
 
 void StandardCamera3d::MajEye()
 {
-// reglage de l'angle
-    if (_angles.Data[0] > 180)
-        _angles.Data[0] -= 360;
-    if (_angles.Data[0] < -180)
-        _angles.Data[0] += 360;
-
-    if (_angles.Data[1] > 180)
-        _angles.Data[1] -= 360;
-    if (_angles.Data[1] < -180)
-        _angles.Data[1] += 360;
-
 // mise a jour de l'oeil
     if (_pattern == Turntable)
     {
+        // reglage de l'angle
+        if (_angles.Data[0] > 180)
+            _angles.Data[0] -= 360;
+        if (_angles.Data[0] < -180)
+            _angles.Data[0] += 360;
+
+        if (_angles.Data[1] > 180)
+            _angles.Data[1] -= 360;
+        if (_angles.Data[1] < -180)
+            _angles.Data[1] += 360;
+
         _eye.Init(); // init l'oeil
         TMatrix matriceEye;
         matriceEye.TranslationX(_distance);
@@ -216,53 +249,44 @@ void StandardCamera3d::MajEye()
 
         Matrix.Translation(_center); // positionne la matrice de la camera sur le centre
     }
+    else if (_pattern == Trackball)
+    {
+        // get the reel sphere and last sphere point
+        Vector3f currentSpherePoint(_currentSpherePoint), lastSpherePoint(_lastSpherePoint);
+        _matrixRotationEye.Transform(currentSpherePoint);
+        _matrixRotationEye.Transform(lastSpherePoint);
+
+        // compute the axis and theta rotation
+        Vector3f axis;
+        lastSpherePoint.Cross(currentSpherePoint, axis);
+        axis.Normalize();
+        float theta = lastSpherePoint.Angle(currentSpherePoint);
+
+        _eye.Init(_distance, 0, 0);
+        _up.Init(0,0,1);
+
+        if (axis.Data[0] != 0 || axis.Data[1] != 0 || axis.Data[2] != 0)
+            _matrixRotationEye.AddRotation(axis, -theta);
+        _matrixRotationEye.Transform(_eye);
+        _matrixRotationEye.Transform(_up);
+
+        TMatrix matrixTranslation;
+        matrixTranslation.Translation(_center);
+        matrixTranslation.Transform(_eye);
+
+        Matrix.Translation(_center); // positionne la matrice de la camera sur le centre pour les childs
+    }
     else
     {
-        LOG << "Trackball not implemented yet" << std::endl;
-/*
-    static TMatrix  matriceRotationEye;
-    Vector3f lastSpherePoint;
-    Vector3f spherePoint;
-
-    //set xy to -1/-1, 1/1 coord
-    spherePoint.Data[0] = ((float)WindowInput::MousePosition().Data[0] / (float)(Window::Width()/2.f)) - 1;
-    spherePoint.Data[2] = 1 - ((float)WindowInput::MousePosition().Data[1] / (float)(Window::Height()/2.f));
-    spherePoint.Data[1] = 1 - (spherePoint.Data[0] * spherePoint.Data[0]) - (spherePoint.Data[2] * spherePoint.Data[2]);
-    spherePoint.Data[1] = (spherePoint.Data[1] > 0) ? sqrt(spherePoint.Data[1]) : 0;
-
-    lastSpherePoint.Data[0] = ((float)_lastPosMouse.Data[0] / (float)(Window::Width()/2.f)) - 1;
-    lastSpherePoint.Data[2] = 1 - ((float)_lastPosMouse.Data[1] / (float)(Window::Height()/2.f));
-    lastSpherePoint.Data[1] = 1 - (lastSpherePoint.Data[0] * lastSpherePoint.Data[0]) - (lastSpherePoint.Data[2] * lastSpherePoint.Data[2]);
-    lastSpherePoint.Data[1] = (lastSpherePoint.Data[1] > 0) ? sqrt(lastSpherePoint.Data[1]) : 0;
-
-    matriceRotationEye.Transform(spherePoint);
-    matriceRotationEye.Transform(lastSpherePoint);
-
-    // compute the axis and theta rotation
-    Vector3f axis;
-    lastSpherePoint.Cross(spherePoint, axis);
-    axis.Normalize();
-
-    float theta = lastSpherePoint.Angle(spherePoint);
-
-//    LOG << "lastSpherePoint: " << lastSpherePoint << std::endl;
-//    LOG << "spherePoint: " << spherePoint << std::endl;
-//    LOG << "axis:" << axis << "\ntheta:" << theta << std::endl;
-//    LOG << std::endl;
-
-    _eye.Init(_distance, 0, 0);
-    _up.Init(0,0,1);
-
-    if (axis.Data[0] != 0 || axis.Data[1] != 0 || axis.Data[2] != 0)
-        matriceRotationEye.AddRotation(axis, theta);
-    matriceRotationEye.Transform(_eye);
-    matriceRotationEye.Transform(_up);
-
-    TMatrix matrixTranslation;
-    matrixTranslation.Translation(_center);
-    matrixTranslation.Transform(_eye);
-
-    Matrix.Translation(_center); // positionne la matrice de la camera sur le centre pour les childs
-*/
+        LOG << "The Freefly pattern is not yet implemented." << std::endl;
     }
+}
+
+void StandardCamera3d::MajTrackballPoint(int x, int y)
+{
+    //set xy to -1/-1, 1/1 coord
+    _currentSpherePoint.Data[1] = ((float)x / (float)(Window::Width()/2.f)) - 1;
+    _currentSpherePoint.Data[2] = 1 - ((float)y / (float)(Window::Height()/2.f));
+    _currentSpherePoint.Data[0] = 1 - (_currentSpherePoint.Data[1] * _currentSpherePoint.Data[1]) - (_currentSpherePoint.Data[2] * _currentSpherePoint.Data[2]);
+    _currentSpherePoint.Data[0] = (_currentSpherePoint.Data[0] > 0) ? sqrt(_currentSpherePoint.Data[0]) : 0;
 }

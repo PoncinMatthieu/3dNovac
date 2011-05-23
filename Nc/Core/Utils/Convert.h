@@ -75,7 +75,7 @@ namespace Nc
             inline bool LCORE SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest)
             {
                 std::string::size_type pos = str.find_first_of(delimitor);
-                dest = str.substr(0, pos);
+                dest = str.substr(0, pos++);
                 if (pos != std::string::npos && pos < str.size())
                    str = str.substr(pos, std::string::npos);
                 else

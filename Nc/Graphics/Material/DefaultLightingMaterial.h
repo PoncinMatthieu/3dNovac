@@ -49,11 +49,14 @@ namespace Nc
         class LGRAPHICS DefaultLightingMaterialPolitic
         {
             public:
+                typedef IDrawable<BasicVertexType::Textured, DefaultLightingMaterialConfigPolitic>      DrawableType;
+
                 /// Pattern of the DefaultLighting rendering method
                 enum MaterialPattern
                 {
-                    BumpMapping = 1 << 0,     ///< Display the drawable using normal mapping (only if the material config has a normalMap)
-                    DisplayNormal = 1 << 1      ///< Display the normals (only in debug)
+                    Disabled = 1 << 0,          ///< No lighting
+                    BumpMapping = 1 << 1,       ///< Display the drawable using normal mapping (only if the material config has a normalMap)
+                    DisplayNormal = 1 << 2      ///< Display the normals (only in debug)
                 };
 
             public:
@@ -63,9 +66,9 @@ namespace Nc
                 /** Configure the geometry with the suitable attributes according to the shader */
                 void    Configure(GL::IGeometryBuffer<BasicVertexType::Textured> &geometry);
                 /** Render the drawable */
-                void    Render(ISceneGraph *scene, TMatrix &modelMatrix, IDrawable<BasicVertexType::Textured, DefaultLightingMaterialConfigPolitic> &drawable);
+                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, DrawableType &drawable);
 
-                /** Return the pattern */
+                /** \return the pattern */
                 Utils::Mask<MaterialPattern>    &Pattern()      {return _patternMask;}
 
             protected:
@@ -76,6 +79,7 @@ namespace Nc
 
                 unsigned int    _uniformM;
                 unsigned int    _uniformPV;
+                unsigned int    _uniformNormalMatrix;
                 unsigned int    _uniformLight;
                 unsigned int    _uniformLightColor;
                 unsigned int    _uniformLightPass;

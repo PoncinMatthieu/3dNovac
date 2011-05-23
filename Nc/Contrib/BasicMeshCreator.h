@@ -77,8 +77,8 @@ namespace Nc
                 Box3f box(Vector3f(0.f, 0.f, -0.1f), Vector3f(size[0], size[1], 0.1f));
 
             // creation du mesh
-                Mesh<BasicVertexType::Textured, false, MaterialPolitic, MaterialConfigPolitic>  *mesh = new Mesh<BasicVertexType::Textured, false>(box);
-                Drawable<BasicVertexType::Textured, false> *drawable = mesh->NewDrawable();
+                Mesh<BasicVertexType::Textured, false, MaterialPolitic, MaterialConfigPolitic>  *mesh = new Mesh<BasicVertexType::Textured, false, MaterialPolitic, MaterialConfigPolitic>(box);
+                Drawable<BasicVertexType::Textured, false, MaterialConfigPolitic> *drawable = mesh->NewDrawable();
                 drawable->GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
                 drawable->SetPrimitiveType(GL_TRIANGLE_STRIP);
                 drawable->texture = texture;

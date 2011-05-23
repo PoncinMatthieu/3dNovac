@@ -72,12 +72,21 @@ namespace Nc
                 // operations sur la matrice
                 /** Scale the object with the given height */
                 void                    HeightScale(float height); // /!\ metre a jour la bounding box avant
-                //void                    PosBase(Vector3f &CenterBase);
+
+                /** Translate the model Matrix to the given vector using the xy center of the box */
+                void                    CenterBase(const Vector3f &centerBase);
+
                 /** Compute the recursive model matrix with the parents matrix */
                 void                    ComputeReelMatrix(TMatrix &m);
 
-                /** Return the box of the object */
-                const Box3f             &Box() const;
+                /** Set the box of the model */
+                void                    SetBox(const Box3f &box);
+
+                /** \return the box of the object (the box is not modified by the matrix, so if you want the reel box call the methode GetReelBox) */
+                const Box3f             &GetBox() const;
+
+                /** \param box filled by the box transformed by the model matrix */
+                void                    GetReelBox(Box3f &box) const;
 
             protected:
                 /** draw the object, display the box if needed, to redefine */

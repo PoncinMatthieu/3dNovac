@@ -65,6 +65,11 @@ namespace Nc
                 Mask(D m) : _mask(m)    {}
                 Mask(T v) : _mask(v)    {}
 
+                /** \return true if the given mask value is only one activated in the mask */
+                bool operator == (T v)          {return (_mask == v);}
+                /** \return true if the given mask is the same */
+                bool operator == (D m)          {return (_mask == m);}
+
                 /** Enable the bit `v` in the mask */
                 void    Enable(T v)             {_mask |= v;}
 
