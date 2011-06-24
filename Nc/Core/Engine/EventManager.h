@@ -59,30 +59,33 @@ namespace Nc
             virtual ~IEvent()       {}
 
             /**
-                Return the data of type T of the event.
+                \return the data of type T of the event.
                 Use a dynamic_cast with the template class Event<T> to return the data,
                 so the method throw an exception if the event is not of type Event<T>.
             */
             template<typename T>
             T   &GetData();
 
-            /** Return the typeid of the event data, to debug and know what type of event you received. */
+            /** \return the typeid of the event data, to debug and know what type of event you received. */
             virtual const std::type_info    &GetDataTypeId() = 0;
         };
 
-        /// Define an event, it's a simple container used to stock a data with an event
+        /// Define an event, simple container used to stock a data with an event
         template<typename T>
         struct Event : public IEvent
         {
             Event(const T &d)  : Data(d)   {}
 
-            /** Return the typeid of the event data, to debug and know what type of event you received. */
+            /** \return the typeid of the event data, to debug and know what type of event you received. */
             virtual const std::type_info    &GetDataTypeId();
 
             T   Data;           ///< data of type T
         };
 
-        /// Define an event string, used to send event witch contain a string. Principaly used to manage the console events
+        /// Define an event string
+        /**
+            Used to send event witch contain a string. Principaly used to manage the console events
+        */
         struct LCORE EventString : public IEvent
         {
             EventString(const std::string &s)    : args(s)     {}
@@ -91,7 +94,7 @@ namespace Nc
             template<typename T>
             void NextArg(T &arg, const std::string delimit = " ");
 
-            /** Return the typeid of the event data, to debug and know what type of event you received. */
+            /** \return the typeid of the event data, to debug and know what type of event you received. */
             virtual inline const std::type_info    &GetDataTypeId()        {return typeid(std::string);}
 
             std::string     args;           ///< the string argument of the event
@@ -126,7 +129,7 @@ namespace Nc
                 typedef std::list<CmdString>                                ListCmdString;
 
             public:
-                EventManager(const std::string &name);
+                EventManager(const char *className, const std::string &name);
                 virtual ~EventManager();
 
                 /** Push an EventString (from console) without arg */
@@ -177,6 +180,8 @@ namespace Nc
         template<typename T>
         T   &IEvent::GetData()
         {
+            if (this == NULL)
+                throw Utils::Exception("IEvent", "GetData: Event if Null, Event<" + std::string(typeid(T).name()) + "> expected");
             Event<T> *e = dynamic_cast<Event<T>*>(this);
             if (e == NULL)
                 throw Utils::Exception("IEvent", "GetData: bad param, Event<" + std::string(typeid(T).name()) + "> expected");

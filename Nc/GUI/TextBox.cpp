@@ -32,15 +32,18 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-TextBox::TextBox(const std::string &label, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent, const std::string &ttf)
-    : WidgetLabeled(label, pos, size, x, y, parent, ttf)
+TextBox::TextBox(const std::string &label, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, const std::string &ttf)
+    : WidgetLabeled(ClassName(), label, pos, size, x, y, ttf)
 {
     _margin.Data[0] = 4;
     _font = new Graphic::String("", size.Data[1], Color(1, 1, 1), ttf);
 
-    _drawable.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_drawable);
-    _drawable.SetPrimitiveType(GL_LINE_LOOP);
+    // creation des drawable
+    _indexDrawable = _drawables.size();
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_LOOP);
+    geometry1->VBO().Init(4, GL_STREAM_DRAW);
+    _drawables.push_back(new Drawable(geometry1));
+    ChooseDefaultMaterial();
 }
 
 TextBox::~TextBox()
@@ -48,22 +51,28 @@ TextBox::~TextBox()
     delete _font;
 }
 
-TextBox::TextBox(const TextBox &w) : WidgetLabeled(w)
+TextBox::TextBox(const TextBox &w)
+    : WidgetLabeled(w)
 {
     Copy(w);
 }
 
 TextBox &TextBox::operator = (const TextBox &w)
 {
+    WidgetLabeled::operator = (w);
     Copy(w);
     return *this;
 }
 
 void    TextBox::Copy(const TextBox &w)
 {
-    Widget::Copy(w);
     _font = new Graphic::String(*w._font);
-    _drawable = w._drawable;
+}
+
+void    TextBox::ToString(std::ostream &os) const
+{
+    Widget::ToString(os);
+    os << " Text: " << _font->Text();
 }
 
 void    TextBox::Update()
@@ -74,20 +83,20 @@ void    TextBox::Update()
     if (!_focus)
         c = Color(0,1,0);
 
-    Array<BasicVertexType::Colored2d, 4>   vertices;
+    Array<DefaultVertexType::Colored2d, 4>   vertices;
     vertices[0].Fill(_label->Size().Data[0], 0, c);
     vertices[1].Fill(_label->Size().Data[0], _size.Data[1], c);
     vertices[2].Fill(_label->Size().Data[0] + _size.Data[0], _size.Data[1], c);
     vertices[3].Fill(_label->Size().Data[0] + _size.Data[0], 0, c);
-    _drawable.GetVBO().UpdateData(vertices.Data);
+    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable]->Geometry)->VBO().UpdateData(vertices.Data);
 
     _font->Matrix.Translation(_label->Size().Data[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 }
 
-void TextBox::Draw(Graphic::ISceneGraph *scene)
+void TextBox::Draw(Graphic::SceneGraph *scene)
 {
     WidgetLabeled::Draw(scene);
-    _materialColored2d->Render(scene, _drawable);
+    GetMaterial()->Render(scene, *_drawables[_indexDrawable]);
     _font->Render(scene);
 }
 
@@ -111,7 +120,7 @@ void TextBox::KeyboardEvent(const System::Event &event)
                 _font->Text(s);
             }
         }
-        _stateChange = true;
+        _stateChanged = true;
     }
 }
 

@@ -55,6 +55,7 @@ void Parser::ReadAll()
     CreateObject(t, object);
     if (object->Type() != Object::HEADER || object->Name() != "xml")
         throw Exception("Xml::Parser", "This is not an XML file");
+    delete object; // pas besoin du header
 
     // lecture du fichier si le header est bien conforme
     Read();
@@ -200,6 +201,8 @@ unsigned int Parser::ChooseTypeToken(Token &newToken, unsigned int &pos, const s
     {
         newToken.type = (TOKEN_TYPE)-1;
         for (; pos < (unsigned int)size && (_buffer[pos] == ' ' || _buffer[pos] == '\t' || _buffer[pos] == '\n' || _buffer[pos] == '\r'); ++pos);
+        if ((std::streamsize)pos >= size)
+            return pos;
         if (_buffer[pos] != '<') // si on a pas de '<', on a un block de data
             newToken.type = DATA;
         else if (pos + 1 < (unsigned int)size && _buffer[pos] == '<' && _buffer[pos + 1] == '!')

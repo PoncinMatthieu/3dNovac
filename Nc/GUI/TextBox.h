@@ -47,13 +47,14 @@ namespace Nc
         {
             public:
                 TextBox(const std::string &label, const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10),
-                        Corner x = Left, Corner y = Top, Widget *parent = NULL, const std::string &ttf = "arial");
-                ~TextBox();
-
+                        Corner x = Left, Corner y = Top, const std::string &ttf = "arial");
                 TextBox(const TextBox &w);
                 TextBox &operator = (const TextBox &w);
-                virtual void    Copy(const TextBox &w);
-                virtual Widget* Clone() const               {return new TextBox(*this);}
+                ~TextBox();
+
+                static const char   *ClassName()                {return "TextBox";}
+                virtual ISceneNode  *Clone() const              {return new TextBox(*this);}
+                virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the text box */
                 void                                Text(const Utils::Unicode::UTF32 &t)        {_font->Text(t);}
@@ -64,17 +65,22 @@ namespace Nc
                 /** update the geometry of the text box */
                 virtual void Update();
                 /** Render the text box */
-                virtual void Draw(Graphic::ISceneGraph *scene);
+                virtual void Draw(Graphic::SceneGraph *scene);
                 /** Fill the string of the text box */
                 void GetData(std::string &data);
 
                 /** the keyboard handler */
                 virtual void KeyboardEvent(const System::Event &event);
 
+            private:
+                /** Copy the widget */
+                void        Copy(const TextBox &w);
+
+            protected:
                 Graphic::String     *_font;         ///< the text in the text box
 
             private:
-                Graphic::Drawable<Graphic::BasicVertexType::Colored2d, false>   _drawable;      ///< the drawable of the text box
+                unsigned int        _indexDrawable;
         };
     }
 }

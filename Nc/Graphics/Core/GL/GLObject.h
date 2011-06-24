@@ -43,12 +43,12 @@ namespace Nc
                 The ressource is shared between two ressources when you use the copy constructor or the copy operator. <br/>
                 So GL::Object, is a reference counter of gl ressources (index) like texture and shader.
                 Release the opengl ressources when no more reference exists <br/>
-                <br/>
-                To create new GL::Object follow these instructions : <br/>
-                    * Use ReleaseRef() in the destructor of the child. <br/>
-                    * Use NewRef() when you are loading new ressource in the child. <br/>
-                    * The shared ressources of a child like GL index needs to be a pointer and malloc at the loading. <br/>
-                    * Redefine the function Release() to destroy the shared ressources. <br/>
+
+                <div class="title"> To create new GL::Object follow these instructions : </div>
+                    - Use ReleaseRef() in the destructor of the child.
+                    - Use NewRef() when you are loading new ressource in the child.
+                    - The shared ressources of a child like GL index needs to be a pointer and malloc at the loading.
+                    - Redefine the function Release() to destroy the shared ressources.
             */
             class LGRAPHICS Object
             {
@@ -57,17 +57,17 @@ namespace Nc
                     Object &operator = (const Object &sp);
                     virtual ~Object();
 
-                    /** Return true if the ressource is unique */
+                    /** \return true if the ressource is unique */
                     inline bool             Unique() const      {return (_nbRef != NULL && *_nbRef == 1);}
-                    /** Return the number of reference on the ressource */
+                    /** \return the number of reference on the ressource */
                     inline unsigned int     NbRef() const       {return (_nbRef != NULL) ? *_nbRef : 0;}
-                    /** Return true if the ressource is valid (loaded) */
+                    /** \return true if the ressource is valid (loaded) */
                     inline bool             IsValid() const     {return (_nbRef != NULL && GetIndex() != 0);}
                     /** Destroy the reference of the ressource */
                     inline void             Destroy()           {ReleaseRef();}
 
                     // redefine these functions
-                    /** Return the index of the GL object (like texture object) */
+                    /** \return the index of the GL object (like texture object) */
                     virtual unsigned int    GetIndex() const    {return 0;}
                     /** Enable the ressource */
                     virtual void            Enable() const      {}

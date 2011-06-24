@@ -38,13 +38,14 @@ namespace Nc
         {
             public:
                 Button(const std::string &text, const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Left, Corner y = Top,
-                        Widget *parent = NULL, const std::string &ttf = "arial", const Utils::FileName& texture = Utils::FileName("Nc:GUI:button.png"));
-                virtual ~Button();
-
+                       const std::string &ttf = "arial", const Utils::FileName& texture = Utils::FileName("Nc:GUI:button.png"));
                 Button(const Button &w);
                 Button &operator = (const Button &w);
-                virtual void    Copy(const Button &w);
-                virtual Widget* Clone() const               {return new Button(*this);}
+                virtual ~Button();
+
+                static const char   *ClassName()                    {return "Button";}
+                virtual ISceneNode  *Clone() const                  {return new Button(*this);}
+                virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the widget */
                 inline void     Text(const std::string &t)  {_font->Text(t);}
@@ -54,7 +55,7 @@ namespace Nc
                 /** Update the geometry of the button */
                 virtual void Update();
                 /** Render the button */
-                virtual void Draw(Graphic::ISceneGraph *scene);
+                virtual void Draw(Graphic::SceneGraph *scene);
 
                 /** The mouse button handler */
                 void MouseButtonEvent(const System::Event &event);
@@ -62,8 +63,11 @@ namespace Nc
                 virtual void execHanle();
 
             private:
-                Graphic::Material<Graphic::BasicVertexType::Textured2d>             *_material;     ///< the material used to render the button
-                Graphic::Drawable<Graphic::BasicVertexType::Textured2d, false>      _drawable;      ///< the drawable used to render the button
+                /** Copy the widget */
+                void    Copy(const Button &w);
+
+            private:
+                unsigned int            _indexDrawable;         ///< An index of the drawable used to render the button
 
                 Graphic::String         *_font;                 ///< The text of the button
                 int                     _textWidth;             ///< The width of the text

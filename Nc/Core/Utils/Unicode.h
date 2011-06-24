@@ -36,10 +36,10 @@ namespace Nc
 {
     namespace Utils
     {
-        /// this namespace provide classes to manipulate any Unicode strings
+        /// This namespace provide classes to manipulate any Unicode strings
         namespace Unicode
         {
-            /// manipulate UTF32 string
+            /// Manipulate UTF32 string
             class LCORE UTF32 : public std::basic_string<Nc::UInt32>
             {
                 public:
@@ -51,7 +51,7 @@ namespace Nc
                     UTF32(const std::wstring &str);
                     virtual ~UTF32()    {}
 
-                    /** Return the number of occurence of the caractere 'c' in the unicode string */
+                    /** \return the number of occurence of the caractere 'c' in the unicode string */
                     unsigned int    CharCount(Nc::UInt32 c) const;
 
                     /** Convert and return the unicode string in standard std::string */

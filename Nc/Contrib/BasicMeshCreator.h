@@ -27,7 +27,7 @@
 #ifndef NC_CONTRIB_BASICMESHCREATOR_H_
 #define NC_CONTRIB_BASICMESHCREATOR_H_
 
-#include <Nc/Graphics/Object/3D/Mesh.h>
+#include <Nc/Graphics/Object/Object.h>
 #include "Define.h"
 
 namespace Nc
@@ -36,55 +36,21 @@ namespace Nc
     {
         namespace BasicMeshCreator
         {
-            // cree un Pave Texture
-            //Object3d *Pave(const Vector3f& center, const Vector3f &size, const Color& color, const GL::Texture &texture);
-
             /**
                 Create a plan
                 \param size : the 2d dimension size
-                \param texture : and the texture
-                \return the Mesh using the given MaterialPolitic and MaterialConfigPolitic
+                \param texture : the texture of the plan
+                \return the resulting Object3d
             */
-			// VC 2010: template par default autorisé uniquement sur une classes. Une fois de plus windows a frapé.
-            template<typename MaterialPolitic /*= DefaultMaterialPolitics<BasicVertexType::Textured>*/, typename MaterialConfigPolitic /*= DefaultMaterialConfigPolitics<BasicVertexType::Textured>*/ >
-            Object3d *Plan(const Vector2f &size, const GL::Texture &texture);
+            LCONTRIB Object     *Plan(const Vector2f &size, const GL::Texture &texture);
 
             /**
                 Create a grid
                 \param size to specified the 2d size of the whole grid. A case has the size 1*1. The z coord is to specified the height of the grid
                 \param c the color of the grid lines
-                \return the resulting Mesh
+                \return the resulting Object3d
             */
-            LCONTRIB Object3d *Grid(const Vector3f &size, const Color &c);
-        }
-
-
-        namespace BasicMeshCreator
-        {
-            template<typename MaterialPolitic, typename MaterialConfigPolitic>
-            Object3d    *Plan(const Vector2f &size, const GL::Texture &texture)
-            {
-                Array<BasicVertexType::Textured, 4>     vertices;
-                Color color(1, 1, 1);
-
-            // creation des vertex en fontion de la taille de la map
-                vertices[0].Fill(0, 0, 0, 0, 0, 0, 0, 1, color);
-                vertices[1].Fill(size[0], 0, 0, size[0], 0, 0, 0, 1, color);
-                vertices[2].Fill(0, size[1], 0, 0, size[1], 0, 0, 1, color);
-                vertices[3].Fill(size[0], size[1], 0, size[0], size[1], 0, 0, 1, color);
-
-            // creation de la box
-                Box3f box(Vector3f(0.f, 0.f, -0.1f), Vector3f(size[0], size[1], 0.1f));
-
-            // creation du mesh
-                Mesh<BasicVertexType::Textured, false, MaterialPolitic, MaterialConfigPolitic>  *mesh = new Mesh<BasicVertexType::Textured, false, MaterialPolitic, MaterialConfigPolitic>(box);
-                Drawable<BasicVertexType::Textured, false, MaterialConfigPolitic> *drawable = mesh->NewDrawable();
-                drawable->GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
-                drawable->SetPrimitiveType(GL_TRIANGLE_STRIP);
-                drawable->texture = texture;
-                mesh->ConfigureDrawables();
-                return mesh;
-            }
+            LCONTRIB Object     *Grid(const Vector3f &size, const Color &c);
         }
     }
 }

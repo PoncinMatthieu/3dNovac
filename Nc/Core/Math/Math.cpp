@@ -29,36 +29,36 @@
 
 namespace Nc
 {
-namespace Math
-{
-Vector3f Normal(const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, bool normalize)
-{
-    Vector3f v1(p2.Data[0] - p1.Data[0], p2.Data[1] - p1.Data[1], p2.Data[2] - p1.Data[2]);
-    Vector3f v2(p3.Data[0] - p1.Data[0], p3.Data[1] - p1.Data[1], p3.Data[2] - p1.Data[2]);
-    Vector3f v3;
-    v1.Cross(v2, v3);
-    if (normalize)
-        v3.Normalize();
-    return (v3);
-}
+    namespace Math
+    {
+        Vector3f Normal(const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, bool normalize)
+        {
+            Vector3f v1(p2.Data[0] - p1.Data[0], p2.Data[1] - p1.Data[1], p2.Data[2] - p1.Data[2]);
+            Vector3f v2(p3.Data[0] - p1.Data[0], p3.Data[1] - p1.Data[1], p3.Data[2] - p1.Data[2]);
+            Vector3f v3;
+            v1.Cross(v2, v3);
+            if (normalize)
+                v3.Normalize();
+            return (v3);
+        }
 
-void Normalize(float p[3])
-{
-    float len = sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
-    p[0] /= len;
-    p[1] /= len;
-    p[2] /= len;
-}
+        void Normalize(float p[3])
+        {
+            float len = sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
+            p[0] /= len;
+            p[1] /= len;
+            p[2] /= len;
+        }
 
-bool InRect(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &pointTest)
-{
-    Vector2f posRectSize = RectPos + RectSize;
-    if ((pointTest.Data[0] > RectPos.Data[0] && pointTest.Data[0] < posRectSize.Data[0] && posRectSize.Data[0] > RectPos.Data[0]) ||
-        (pointTest.Data[0] < RectPos.Data[0] && pointTest.Data[0] > posRectSize.Data[0] && posRectSize.Data[0] < RectPos.Data[0]))
-        if ((pointTest.Data[1] > RectPos.Data[1] && pointTest.Data[1] < posRectSize.Data[1] && posRectSize.Data[1] > RectPos.Data[1]) ||
-            (pointTest.Data[1] < RectPos.Data[1] && pointTest.Data[1] > posRectSize.Data[1] && posRectSize.Data[1] < RectPos.Data[1]))
-                return true;
-    return false;
-}
-}
+        bool InRect(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &pointTest)
+        {
+            Vector2f posRectSize = RectPos + RectSize;
+            if ((pointTest.Data[0] > RectPos.Data[0] && pointTest.Data[0] < posRectSize.Data[0] && posRectSize.Data[0] > RectPos.Data[0]) ||
+                (pointTest.Data[0] < RectPos.Data[0] && pointTest.Data[0] > posRectSize.Data[0] && posRectSize.Data[0] < RectPos.Data[0]))
+                if ((pointTest.Data[1] > RectPos.Data[1] && pointTest.Data[1] < posRectSize.Data[1] && posRectSize.Data[1] > RectPos.Data[1]) ||
+                    (pointTest.Data[1] < RectPos.Data[1] && pointTest.Data[1] > posRectSize.Data[1] && posRectSize.Data[1] < RectPos.Data[1]))
+                        return true;
+            return false;
+        }
+    }
 }

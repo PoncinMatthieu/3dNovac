@@ -54,8 +54,20 @@
             {
                 std::size_t len = 0;
                 while (*str++)
-                    len++;
+                    ++len;
                 return len;
+            }
+
+            /**
+                Copy an array of objects \p src of size \p size into the \p dest array.
+                \p dest and \p src needs to be properly allocated accoding to the \p size.
+                Memcpy do not a simple memcpy C like, it call the operator = of the objects.
+            */
+            template<typename T>
+            void    Memcpy(T *dest, const T *src, unsigned int size)
+            {
+                for (unsigned int i = 0; i < size; ++i)
+                    dest[i] = src[i];
             }
 
             /** Delete a container like std::list */
@@ -70,6 +82,5 @@
             }
         }
     }
-
 
 #endif

@@ -42,7 +42,8 @@ namespace Nc
     {
         /// Implementation of GLContext for an X11 system
         /**
-            For more detail please show the class GLContext
+            \sa
+                - GLContext
         */
         class LCORE GLXContext : public GLContext
         {

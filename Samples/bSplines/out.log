@@ -1,0 +1,53 @@
+Creation of Graphic Engine				DONE
+Creation of Game Engine					DONE
+-----------GameManager-ENGINES-CREATION-SUCESS--------------
+---------------Graphic Engine-:-Create-Context-------------------
+Direct Rendering : 					Ok
+GL_VERSION = `3.3.10750 Compatibility Profile Context FireGL`	OK
+GL_VENDOR = `ATI Technologies Inc.`
+GL_RENDERER = `ATI Mobility Radeon HD 3650`
+GL_SHADING_LANGUAGE_VERSION = `3.30`
+---------------Graphic Engine-:-Create-Context-done--------------
+------------------Graphic Engine-:-Loading-----------------------
+------------------Graphic Engine-:-Loading-done------------------
+---------------Game Engine-:-Create-Context-------------------
+create shared context
+activate context
+Create new context instance
+Create new context
+Create new pbuffer
+Disable
+create shared context DONE
+---------------Game Engine-:-Create-Context-done--------------
+------------------Game Engine-:-Loading-----------------------
+Data Buffer 1 CREATED
+Compile `BasicColored2dShader`...			DONE
+Compile `BasicColored2dShader`...			DONE
+Link program shader 3					DONE
+Warning: To increse performance, please use a texture size of power of 2. :200/165
+LOAD TEXTURE n = 1 `../Ressources/Font/arial.ttf`
+Data Buffer 2 CREATED
+Compile `BasicTextured2dShader`...			DONE
+Compile `BasicTextured2dShader`...			DONE
+Link program shader 6					DONE
+Data Buffer 3 CREATED
+Data Buffer 4 CREATED
+Data Buffer 5 CREATED
+Data Buffer 6 CREATED
+Data Buffer 7 CREATED
+Data Buffer 8 CREATED
+Data Buffer 9 CREATED
+Data Buffer 10 CREATED
+------------------Game Engine-:-Loading-done------------------
+Data Buffer 2 DELETED
+Data Buffer 1 DELETED
+Data Buffer 3 DELETED
+Data Buffer 4 DELETED
+Data Buffer 5 DELETED
+Data Buffer 6 DELETED
+Data Buffer 7 DELETED
+Data Buffer 8 DELETED
+Data Buffer 9 DELETED
+Data Buffer 10 DELETED
+Program Shader 6 Released
+Program Shader 3 Released

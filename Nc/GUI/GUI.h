@@ -42,4 +42,4 @@
 #include "ProgressBar.h"
 #include "FPSWidget.h"
 
-#endif // NC_GUI_GUI_H_
+#endif

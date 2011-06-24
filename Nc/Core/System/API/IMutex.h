@@ -34,14 +34,16 @@ namespace Nc
     namespace System
     {
         /// Interface to help to use and create a mutex
-        class LCORE IMutex : Utils::NonCopyable
+        class LCORE IMutex
         {
             public:
                 IMutex()             {}
                 virtual ~IMutex()    {}
 
-                virtual void Lock()  = 0;       ///< Lock the mutex
-                virtual void Unlock() = 0;      ///< Unlock the mutex
+                /** Lock the mutex */
+                virtual void Lock()  = 0;
+                /** Unlock the mutex */
+                virtual void Unlock() = 0;
         };
     }
 }

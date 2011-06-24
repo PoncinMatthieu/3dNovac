@@ -36,6 +36,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="../../../" />
 		</Compiler>
 		<Unit filename="../../../Nc/Audio/Audio.h" />
 		<Unit filename="../../../Nc/Audio/Define.h" />

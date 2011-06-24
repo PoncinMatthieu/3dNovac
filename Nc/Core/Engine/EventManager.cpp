@@ -31,7 +31,7 @@
 using namespace std;
 using namespace Nc::Engine;
 
-EventManager::EventManager(const std::string &name) : Object(name)
+EventManager::EventManager(const char *className, const std::string &name) : Object(className, name)
 {
     _execEvents = true;
     _receiveEvents = true;
@@ -83,7 +83,7 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
                 return;
             }
         }
-        throw Utils::Exception(_name, "Unknown command id:" + id);
+        throw Utils::Exception(_name, "Unknown command id:" + Utils::Convert::ToString(id));
     }
     catch (const std::exception &ex)
     {

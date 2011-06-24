@@ -28,7 +28,7 @@
 
 using namespace Nc::Graphic;
 
-extern "C" LFILEOBJPLUGIN     MeshFormatPlugin *GetPlugin()
+extern "C" LFILEOBJPLUGIN     SceneNodeFormatPlugin *GetPlugin()
 {
     return new Nc::Plugin();
 }

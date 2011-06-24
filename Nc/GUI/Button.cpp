@@ -34,23 +34,24 @@ using namespace Nc::Graphic;
 using namespace Nc::GUI;
 using namespace Nc::System;
 
-Button::Button(const std::string &text, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent, const std::string &ttf, const Utils::FileName& texture)
-    : Widget(pos, size, x, y, NULL), _material(&Material<Graphic::BasicVertexType::Textured2d>::Instance()), _colorDisable(0.2f, 0.2f, 0.2f)
+Button::Button(const std::string &text, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, const std::string &ttf, const Utils::FileName& texture)
+    : Widget(ClassName(), pos, size, x, y), _colorDisable(0.2f, 0.2f, 0.2f)
 {
     _textWidth = 15;
     _textHeight = 15;
     _margin.Data[0] = 4;
     _buttonPressed = false;
-
     _font = new Graphic::String(text, size.Data[1], Color(1, 1, 1), ttf);
-    _parent = parent;
-    if (_parent != NULL)
-        _parent->AddChild(this);
-    _drawable.texture.LoadFromFile(texture);
 
-    _drawable.GetVBO().Init(4, GL_STREAM_DRAW);
-    _material->Configure(_drawable);
-    _drawable.SetPrimitiveType(GL_TRIANGLE_STRIP);
+    // creation du drawable
+    _indexDrawable = _drawables.size();
+    GL::GeometryBuffer<DefaultVertexType::Textured2d, false> *geometry = new GL::GeometryBuffer<DefaultVertexType::Textured2d, false>(GL_TRIANGLE_STRIP);
+    geometry->VBO().Init(4, GL_STREAM_DRAW);
+    Drawable *dr = new Drawable(geometry);
+    dr->Config->Textures.InitSize(1);
+    dr->Config->Textures[0].LoadFromFile(texture);
+    _drawables.push_back(dr);
+    ChooseDefaultMaterial();
 }
 
 Button::~Button()
@@ -59,24 +60,30 @@ Button::~Button()
 }
 
 Button::Button(const Button &w)
+    : Widget(w)
 {
     Copy(w);
 }
 
 Button &Button::operator = (const Button &w)
 {
+    Widget::operator = (w);
     Copy(w);
     return *this;
 }
 
 void    Button::Copy(const Button &w)
 {
-    Widget::Copy(w);
     _font = new Graphic::String(*w._font);
     _textWidth = w._textWidth;
     _textHeight = w._textHeight;
-    _drawable = w._drawable;
     _buttonPressed = w._buttonPressed;
+}
+
+void Button::ToString(std::ostream &os) const
+{
+    Widget::ToString(os);
+    os << " Text: " << _font->Text();
 }
 
 void Button::Update()
@@ -84,7 +91,7 @@ void Button::Update()
     Widget::Update();
     // modifie la couleur en fonction de la selection du bouton
     Color c(1, 1, 1);
-    if (!Enable())
+    if (!EnableRecursive())
     {
         c = _colorDisable;
         _font->SetColor(_colorDisable);
@@ -97,22 +104,22 @@ void Button::Update()
     }
 
 
-    Array<BasicVertexType::Textured2d, 4>   vertices;
+    Array<DefaultVertexType::Textured2d, 4>   vertices;
     vertices[0].Fill(0, 0, 0, 0, c);
     vertices[1].Fill(_size[0], 0, 1, 0, c);
     vertices[2].Fill(0, _size[1], 0, 1, c);
     vertices[3].Fill(_size[0], _size[1], 1, 1, c);
-    _drawable.GetVBO().UpdateData(vertices.Data);
+    static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d, false>*>(_drawables[_indexDrawable]->Geometry)->VBO().UpdateData(vertices.Data);
 
-    // centre la font, puis l'affiche
+    // centre la font
     const Vector2f &fontSize = _font->Size();
     _font->Matrix.Translation((_size.Data[0] / 2.f) - (fontSize.Data[0] / 2.f), (_size.Data[1] / 2.f) - (fontSize.Data[1] / 2.f), 0);
 }
 
-void Button::Draw(Graphic::ISceneGraph *scene)
+void Button::Draw(Graphic::SceneGraph *scene)
 {
     Widget::Draw(scene);
-    _material->Render(scene, _drawable);
+    GetMaterial()->Render(scene, *_drawables[_indexDrawable]);
     _font->Render(scene);
 }
 
@@ -123,31 +130,34 @@ void Button::MouseButtonEvent(const System::Event &event)
     if (event.MouseButton.Button == System::Mouse::Left)
     {
         // test si la souris est sur le bouton
+        Vector2f pos;
+        Vector2f size;
         Vector2f mousePos = WindowInput::MousePositionInGLCoord();
-        Vector2f pos = GetReelPosRecursif();
-        Vector2f size = GetReelSize();
+        GetReelPosRecursif(pos);
+        GetReelSize(size);
         if (Math::InRect(pos, size, mousePos))
             inRect = true;
 
         if (inRect && !_buttonPressed && event.Type == System::Event::MouseButtonPressed)
         {
             _buttonPressed = true;
-            _stateChange = true;
+            _stateChanged = true;
         }
         else if (_buttonPressed && event.Type == System::Event::MouseButtonReleased)
         {
             if (inRect)
                 execHanle();
             _buttonPressed = false;
-            _stateChange = true;
+            _stateChanged = true;
         }
     }
 }
 
 void Button::execHanle()
 {
-    if (Enable())
+    if (EnableRecursive())
     {
+        /*
         string datas;
         list<string> listData;
         GetParentChildData(listData);
@@ -158,6 +168,7 @@ void Button::execHanle()
             if (it != listData.end())
                 datas += ':';
         }
-        SendEvent(datas);
+        */
+        SendEvent(_id);
     }
 }

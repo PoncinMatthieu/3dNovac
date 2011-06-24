@@ -48,7 +48,20 @@ namespace Nc
             template<typename T>
             struct Container    { T   Data; };
 
-            struct Nop;
+            /// Just a struct witch do and store nothing
+            struct Nop {};
+
+            /// A Classic allocator witch allocate and destroy objects
+            template<typename T>
+            struct Allocator
+            {
+                /** Allocate the object with the operator new by using the default constructor  */
+                inline T       *Allocate()                      {return new T();}
+                /** Allocate the object with the operator new by using the copy constructor */
+                inline T       *Allocate(const T &toCopy)       {return new T(toCopy);}
+                /** Deallocate the object with the operator delete */
+                inline void    Deallocate(T *p)                 {delete p;}
+            };
         }
     }
 }

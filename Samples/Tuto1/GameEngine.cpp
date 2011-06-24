@@ -1,6 +1,6 @@
 
-#include <Nc/Graphics/Scene/Basic3dSceneGraph.h>
 #include <Nc/Graphics/Camera/StandardCamera3d.h>
+#include <Nc/Graphics/Object/BasicMeshCreator.h>
 
 #include "GameEngine.h"
 
@@ -14,9 +14,9 @@ GameEngine::GameEngine(Nc::Graphic::Engine *graphic, Nc::Engine::Manager *manage
 
 GameEngine::~GameEngine()
 {
-  // delete the objects of the scene, and delete it
-  _scene3d->Clear(true);
+  // delete the scene and it's childs node
   delete _scene3d;
+  delete _context;
 }
 
 void	GameEngine::CreateWindow(Window *win)
@@ -31,12 +31,13 @@ void	GameEngine::CreateWindow(Window *win)
 void	GameEngine::LoadContent()
 {
   // create the camera, scene and set it to the SceneGraphManager of the Graphic engine
+  _scene3d = new SceneGraph();
   _camera = new StandardCamera3d(_graphic->GetWindow());
-  _scene3d = new Basic3dSceneGraph(_camera);
-  _graphic->GetSceneManager().Set3dSceneGraph(_scene3d);
+  _scene3d->AddChild(_camera);
+  _graphic->GetSceneManager().AddScene(_scene3d);
 
   // create a new repere to display at the center of the scene
-  _scene3d->AddObject(BasicMeshCreator::Repere(1));
+  _scene3d->AddChild(BasicMeshCreator::Repere(1));
 }
 
 void	GameEngine::Update(float runningTime)

@@ -40,12 +40,10 @@ namespace Nc
             {
                 public:
                     IndexBuffer();
-                    IndexBuffer(const Array<unsigned int> &tabIndices, unsigned int stride);
                     template<unsigned int D>
                     IndexBuffer(const Array<unsigned int, D> &tabIndices, unsigned int stride)
                         : DataBuffer<unsigned int>(GL_ELEMENT_ARRAY_BUFFER, tabIndices.Size() / stride, stride, GL_STATIC_DRAW, tabIndices.Data), _nbElements(tabIndices.Size())
-                    {
-                    }
+                    {}
                     virtual ~IndexBuffer();
 
                     /** Update the data */

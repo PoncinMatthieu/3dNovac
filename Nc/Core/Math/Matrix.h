@@ -73,14 +73,15 @@ namespace Nc
                     return os;
                 }
 
+                /** \return the elements array of the matrix */
                 inline const T *Elements() const        {return _data;}
 
-                // functions
-                void    Transpose(Matrix<T, D2, D1> &t) const;  // set the transpose in t
+                /** Transpose the matrix into \p t */
+                void    Transpose(Matrix<T, D2, D1> &t) const;
 
             protected:
-                unsigned char   _sizeMax;
-                T               _data[D1 * D2];
+                unsigned char   _sizeMax;           ///< size of the matrix
+                T               _data[D1 * D2];     ///< array with store the elements of the matrix (lines are D1 and columns are D2)
         };
 
         template<typename T, unsigned int D1, unsigned int D2>

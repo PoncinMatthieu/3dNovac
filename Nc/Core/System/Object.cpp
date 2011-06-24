@@ -33,27 +33,63 @@ using namespace Nc::System;
 unsigned int Object::_nbObject = 0;
 
 Object::Object()
+    : _className(ClassName())
 {
     _id = _nbObject++;
 }
 
-Object::Object(const std::string &name) : _name(name)
+Object::Object(const char *className)
+    : _className(className)
 {
     _id = _nbObject++;
+}
+
+Object::Object(const char *className, const std::string &name)
+    : _name(name), _className(className)
+{
+    _id = _nbObject++;
+}
+
+Object::Object(const Object &obj)
+    : _name(obj._name), _className(obj._className)
+{
+    _id = _nbObject++;
+}
+
+Object &Object::operator = (const Object &obj)
+{
+    _id = _nbObject++;
+    _name = obj._name;
+    return *this;
 }
 
 Object::~Object()
 {
 }
 
+void    Object::ToString(std::ostream& oss) const
+{
+    oss << "'" << _className << "' id: " << _id;
+    if (!_name.empty())
+        oss << "  name: `" << _name << "`";
+}
+
+void    Object::ToString(std::string &str) const
+{
+    std::ostringstream oss;
+    ToString(oss);
+    str = oss.str();
+}
+
+
 namespace Nc
 {
     namespace System
     {
-        std::ostream& operator << (std::ostream& Out, const Object& o)
+        std::ostream& operator << (std::ostream &oss, const Object& o)
         {
-            Out << "id: " << o._id << "  name:" << o._name << "\n";
-            return Out;
+            o.ToString(oss);
+            return oss;
         }
     }
 }

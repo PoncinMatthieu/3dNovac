@@ -40,36 +40,43 @@ namespace Nc
         {
             public:
                 WidgetLabeled(const Utils::Unicode::UTF32 &label, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(10, 10), Corner x = Left, Corner y = Top,
-                              Widget *parent = NULL, const std::string &ttf = "arial", Graphic::String::Style s = Graphic::String::Regular);
-                virtual ~WidgetLabeled();
-
+                              const std::string &ttf = "arial", Graphic::String::Style s = Graphic::String::Regular);
+                WidgetLabeled(const char *className, const Utils::Unicode::UTF32 &label, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(10, 10), Corner x = Left, Corner y = Top,
+                              const std::string &ttf = "arial", Graphic::String::Style s = Graphic::String::Regular);
                 WidgetLabeled(const WidgetLabeled &w);
                 WidgetLabeled &operator = (const WidgetLabeled &w);
-                virtual void    Copy(const WidgetLabeled &w);
-                virtual Widget* Clone() const               {return new WidgetLabeled(*this);}
+                virtual ~WidgetLabeled();
 
-                /** Set the size if the widget */
-                virtual void            Size(const Vector2f &size);
+                static const char   *ClassName()                    {return "WidgetLabeled";}
+                virtual ISceneNode  *Clone() const                  {return new WidgetLabeled(*this);}
+                virtual void        ToString(std::ostream &os) const;
+
+                /** Set the size of the widget */
+                virtual void        Size(const Vector2f &size);
                 /** Return the reel size of the widget (including the label) */
-                virtual Vector2f        GetReelSize() const;
+                virtual void        GetReelSize(Vector2f &size) const;
 
                 /** Create the label with a text, a font and a style */
                 virtual void                    CreateLabel(const Utils::Unicode::UTF32 &l, const std::string &ttf, Graphic::String::Style s);
                 /** Return the label size */
                 inline const Vector2f           &LabelSize()                        {return _label->Size();}
                 /** Set the label text */
-                inline void                     Label(const Utils::Unicode::UTF32 &text)      {_label->Text(text); _stateChange = true;}
+                inline void                     Label(const Utils::Unicode::UTF32 &text)      {_label->Text(text); _stateChanged = true;}
                 /** Set the label color */
-                inline void                     LabelColor(const Color &color)  {_label->SetColor(color); _stateChange = true;}
+                inline void                     LabelColor(const Color &color)  {_label->SetColor(color); _stateChanged = true;}
                 /** Return the label */
                 inline const Graphic::String    *GetLabel() const          {return _label;}
 
             protected:
                 /** Render the widget labeled */
-                virtual void    Draw(Graphic::ISceneGraph *scene);
+                virtual void        Draw(Graphic::SceneGraph *scene);
+
+            private:
+                /** Copy the widget properties */
+                void                Copy(const WidgetLabeled &w);
 
             protected:
-                Graphic::String *_label;        ///< the label (string)
+                Graphic::String     *_label;        ///< the label (string)
         };
     }
 }

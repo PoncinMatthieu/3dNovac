@@ -41,7 +41,7 @@ namespace Nc
     {
         class Manager;
 
-        enum PATTERN
+        enum Pattern
         {
             Synchronize =                           1 << 0,    ///< define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other
             HasAContext =                           1 << 1,    ///< define if we need to create and call `Active/DisableContext` at each loop
@@ -64,7 +64,7 @@ namespace Nc
         {
             public:
                 // constructeur et destructeur
-                IEngine(const std::string &name, Manager *manager, const Utils::Mask<PATTERN> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority);
+                IEngine(const char *className, const std::string &name, Manager *manager, const Utils::Mask<Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority);
                 virtual ~IEngine();
 
                 /** Call the methods `Loading` and `MainLoop` of the engine */
@@ -79,15 +79,15 @@ namespace Nc
                 /** Execute the engine, to be redefine */
                 virtual void            Execute(float runningTime) = 0;
 
-                /** return true if the context is loaded or if there are no context */
+                /** \return true if the context is loaded or if there are no context */
                 inline bool             ContextLoaded()                 {return (_pattern.Disabled(HasAContext) || _pattern.Enabled(ContextIsLoaded));}
-                /** return true if the engine is loaded */
+                /** \return true if the engine is loaded */
                 inline bool             Loaded() const                  {return _loaded;}
-                /** return the priority delet */
+                /** \return the priority delet */
                 unsigned char           DeletePriority()                {return _deletePriority;}
-                /** return the context priority loading */
+                /** \return the context priority loading */
                 unsigned char           LoadingContextPriority()        {return _loadingContextPriority;}
-                /** return the priority loading */
+                /** \return the priority loading */
                 unsigned char           LoadingPriority()               {return _loadingPriority;}
 
             protected:
@@ -108,7 +108,7 @@ namespace Nc
                 Manager*                _manager;                   ///< The instance of the engine Manager
                 bool                    _loaded;                    ///< true if the engine is loaded
 
-                Utils::Mask<PATTERN>    _pattern;                   ///< To detemine the pattern (comportement) of the engine
+                Utils::Mask<Pattern>    _pattern;                   ///< To detemine the pattern (comportement) of the engine
                 unsigned char           _deletePriority;            ///< if the priority is null, the manager will not delete the Engine
                 unsigned char           _loadingContextPriority;    ///< if the priority is null, no context loading
                 unsigned char           _loadingPriority;           ///< if the priority is null, no content loading

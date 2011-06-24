@@ -26,10 +26,11 @@
 
 #include "SceneGraphManager.h"
 #include "../Window/Context/GLContext.h"
+#include "SceneGraph.h"
 
 using namespace Nc::Graphic;
 
-SceneGraphManager::SceneGraphManager() : _3dSceneGraph(NULL), _2dSceneGraph(NULL)
+SceneGraphManager::SceneGraphManager()
 {
     _clearMask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 }
@@ -58,16 +59,35 @@ void SceneGraphManager::InitGL(bool multisampling)
 
 void SceneGraphManager::Render(GLContext *context)
 {
+    _mutex.Lock();
+
 // vide les tampons
     glClear(_clearMask);
 
 // render les 2 scenes
-    if (_3dSceneGraph)
-        _3dSceneGraph->Render();
-    if (_2dSceneGraph)
-        _2dSceneGraph->Render();
+    for (ListPScene::iterator it = _listScene.begin(); it != _listScene.end(); ++it)
+        (*it)->Render();
 
 // refresh et swap les buffers :
-    glFlush();
+/*  according to gDebugger: Calling glFlush is usually redundant since wglSwapBuffers, glXSwapBuffers, aglSwapBuffers, CGLFlushDrawable and eglSwapBuffers
+                            execute all queued OpenGL calls before the buffer is presented to the user.
+    Consider using glFlush only when rendering directly into the front buffer or when rendering into a non-double-buffered buffer */
+    //glFlush();
     context->SwapBuffers();
+
+    _mutex.Unlock();
+}
+
+void SceneGraphManager::Update(float elapsedTime)
+{
+    for (ListPScene::iterator it = _listScene.begin(); it != _listScene.end(); ++it)
+        (*it)->Update(elapsedTime);
+}
+
+void SceneGraphManager::BringToFront(SceneGraph *scene)
+{
+    _mutex.Lock();
+    _listScene.remove(scene);
+    _listScene.push_back(scene);
+    _mutex.Unlock();
 }

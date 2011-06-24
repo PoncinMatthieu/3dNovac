@@ -55,80 +55,84 @@ namespace Nc
 {
     namespace Utils
     {
-      /// Provide a logging system
-      /**
-        Logger base, redefine the methode write in heritance to have your own logging system
-      */
-      class LCORE Logger : public Singleton<Logger>, NonCopyable
-      {
-      public:
+        /// Provide a logging system
         /**
-            Prototype a function pointer to have a logging function
+            Logger base, redefine the methode write in heritance to have your own logging system
         */
-        typedef void (*LogFunction)(const std::string, bool);
+        class LCORE Logger : public Singleton<Logger>, NonCopyable
+        {
+            public:
+                /** Prototype a function pointer to have a logging function */
+                typedef void (*LogFunction)(const std::string, bool);
 
-        /** Return the instance of the logger, and permit to call operator << to log
-            The Logger is thread safe.
-            By default, status correspond to <br/>
-                0 -> simple log    <br/>
-                1 -> error log     <br/>
-                2 -> debug log
+                /** Return the instance of the logger, and permit to call operator << to log
+                    The Logger is thread safe.
+                    By default, status correspond to <br/>
+                        0 -> simple log    <br/>
+                        1 -> error log     <br/>
+                        2 -> debug log
 
-            <p>exemple:</p>
-                Logger::Log(0) << "plop this is a log" << std::endl;
-            <p>or use a define : </p>
-                #define Logger::Log()   LOG     <br/>
-                LOG << "plop this is a log" << std::endl;
-        */
-        static Logger	&Log(int status);
-        static Logger	&Log(const char* aFile, int aLine, int status);
+                    <p>exemple:</p>
+ \code
+    Logger::Log(0) << "plop this is a log" << std::endl;
+ \endcode
 
-        /**
-            Change the logging filename, the file is open in the write method, to force the reopen, call CloseFile()
-        */
-        inline void SetLogFilename(const FileName &f)   {_filename = f;}
+                    <p>or use a define : </p>
+ \code
+    #define Logger::Log()   LOG     <br/>
+    LOG << "plop this is a log" << std::endl;
+ \endcode
+                */
+                static Logger	&Log(int status);
+                static Logger	&Log(const char* aFile, int aLine, int status);
 
-        /**
-            Set an additionnel Logging function (function pointer)
-            show the typedef LogFunction to see the prototype
-        */
-        inline void SetLoggingFunction(LogFunction f)   {_loggingfunction = f;}
+                /** Change the logging filename, the file is open in the write method, to force the reopen, call CloseFile() */
+                inline void SetLogFilename(const FileName &f)   {_filename = f;}
 
-        /** Close the file, with this you can change the conf file and relog, the function log automatically open the file */
-        inline void CloseFile()                         {_file.close();}
+                /**
+                    Set an additionnel Logging function (function pointer)
+                    show the typedef LogFunction to see the prototype
+                */
+                inline void SetLoggingFunction(LogFunction f)   {_loggingfunction = f;}
 
-        // surcharge de l'operateur << permettant d'appeler la fonction
-        // Write sur n'importe quel objet ayant defini la surcharge <<
-        template<class T>
-        Logger &operator << (const T &ToLog);
-    #ifdef SYSTEM_WINDOWS
-        Logger &operator << (std::ostream &(APIENTRY *f)(std::ostream &)); // permet de gerer le std::endl
-        Logger &operator << (std::ostream &(__cdecl *f)(std::ostream &)); // permet de gerer le std::endl
-    #else
-        Logger &operator << (std::ostream &(*f)(std::ostream &)); // permet de gerer le std::endl
-    #endif
+                /** Close the file, with this you can change the conf file and relog, the function log automatically open the file */
+                inline void CloseFile()                         {_file.close();}
 
-      protected:
-        Logger();
-        virtual ~Logger();
+                // surcharge de l'operateur << permettant d'appeler la fonction
+                // Write sur n'importe quel objet ayant defini la surcharge <<
+                template<class T>
+                Logger &operator << (const T &ToLog);
+                #ifdef SYSTEM_WINDOWS
+                Logger &operator << (std::ostream &(APIENTRY *f)(std::ostream &)); // permet de gerer le std::endl
+                Logger &operator << (std::ostream &(__cdecl *f)(std::ostream &)); // permet de gerer le std::endl
+                #else
+                Logger &operator << (std::ostream &(*f)(std::ostream &)); // permet de gerer le std::endl
+                #endif
 
-        /**
-            To redefine in your own logger class <br/>
-            By default, <br/>
-            Write the msg, and flush the buffer if `flush` == true <br/>
-            Call the CheckFile method to open the file, if it's not open
-        */
-        virtual void Write(const std::string msg, bool flush);
-        virtual void CheckFile();					            /** open the file, if it isn't already yet */
+            protected:
+                Logger();
+                virtual ~Logger();
 
-        LogFunction     _loggingfunction;
-        std::ofstream	_file;
-        FileName		_filename;
-        System::Mutex   _mutex;
-        static int		_status;		// status d'ecriture du logger (default = 0; error = 1; debug = 2)
+                /**
+                    To redefine in your own logger class <br/>
+                    By default, <br/>
+                    Write the msg, and flush the buffer if `flush` == true <br/>
+                    Call the CheckFile method to open the file, if it's not open
+                */
+                virtual void Write(const std::string msg, bool flush);
 
-        friend class Singleton<Logger>; // pour avoir acces a l'instance du singleton
-    };
+                /** Open the file, if it isn't already yet */
+                virtual void CheckFile();
+
+            protected:
+                LogFunction     _loggingfunction;
+                std::ofstream	_file;
+                FileName		_filename;
+                System::Mutex   _mutex;
+                static int		_status;		// status d'ecriture du logger (default = 0; error = 1; debug = 2)
+
+                friend class Singleton<Logger>; // pour avoir acces a l'instance du singleton
+        };
 
         template<class T>
         Logger &Logger::operator << (const T& ToLog)
@@ -143,7 +147,7 @@ namespace Nc
         }
 
         // explicit instanciation
-        //static template class Singleton<Logger>;
+        template class Singleton<Logger>;
     }
 }
 

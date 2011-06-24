@@ -31,8 +31,10 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::GL;
 
-unsigned int Texture::_currentBind = 0;
-int          Texture::_maxSize = -1;
+unsigned int    Texture::_currentBind = 0;
+unsigned int    Texture::_currentActiveTextureUnit = 0;
+int             Texture::_maxSize = -1;
+//System::Mutex   Texture::_mutex;
 
 Texture::Texture() : Object()
 {
@@ -53,10 +55,12 @@ void Texture::Release()
 {
     LOG_DEBUG << "DESTROY Texture n = " << _texture << "  `" << _name << "`" << std::endl;
     glDeleteTextures(1, &_texture);
+    _currentBind = 0;
 }
 
 void  Texture::Enable() const
 {
+//    _mutex.Lock();
     if (_type >= 0)
     {
         if (_currentBind != _texture)
@@ -71,6 +75,16 @@ void  Texture::Disable() const
 {
     // do nothing (maybe we will need to have a method to force the unbind ?)
     //glBindTexture(_type, 0);
+//    _mutex.Unlock();
+}
+
+void Texture::ActiveTexture(unsigned int no)
+{
+    if (_currentActiveTextureUnit != no)
+    {
+        _currentActiveTextureUnit = no;
+        glActiveTexture(GL_TEXTURE0 + no);
+    }
 }
 
 int Texture::MaxSize()
@@ -252,8 +266,8 @@ void Texture::GenereSphereMap(const unsigned int d)
 //	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); // deprecated
 	glTexImage3D(_type, 0, GL_RGB8, d, d, d, 0, GL_RGB, GL_FLOAT, data);
     Disable();
-    delete[] data;
     _currentBind = 0;
+    delete[] data;
 
     _name = "SPHERE MAP";
     LOG_DEBUG << "LOAD TEXTURE n = " << _texture << " `" << _name << "`" << endl;

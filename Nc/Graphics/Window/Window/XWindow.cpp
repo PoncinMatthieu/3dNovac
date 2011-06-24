@@ -223,7 +223,7 @@ bool XWindow::SetIcon(const Utils::FileName &f)
     // X11 wants BGRA pixels : swap red and blue channels
     // Note : this memory will never be freed, but it seems to cause a bug on exit if I do so
     const unsigned char *pix = image.GetPixels();
-    unsigned char *iconPixels = new unsigned char[image.Size().Data[0] * image.Size().Data[1] * 4];
+    unsigned char *iconPixels = (unsigned char*)malloc(sizeof(unsigned char) * (image.Size().Data[0] * image.Size().Data[1] * 4));
     for (std::size_t i = 0; i < image.Size().Data[1] * image.Size().Data[1]; ++i)
     {
         iconPixels[i * 4 + 0] = pix[i * 4 + 2];
@@ -233,9 +233,9 @@ bool XWindow::SetIcon(const Utils::FileName &f)
     }
 
     // Create the icon pixmap
-    Visual*         defVisual = DefaultVisual(_display, _screen);
+    Visual          *defVisual = DefaultVisual(_display, _screen);
     unsigned int    defDepth  = DefaultDepth(_display, _screen);
-    XImage*         iconImage = XCreateImage(_display, defVisual, defDepth, ZPixmap, 0, (char*)iconPixels, image.Size().Data[0], image.Size().Data[1], 32, 0);
+    XImage          *iconImage = XCreateImage(_display, defVisual, defDepth, ZPixmap, 0, (char*)iconPixels, image.Size().Data[0], image.Size().Data[1], 32, 0);
     if (!iconImage)
         throw Utils::Exception("XWindow", "Failed to set the window's icon");
     Pixmap iconPixmap = XCreatePixmap(_display, RootWindow(_display, _screen), image.Size().Data[0], image.Size().Data[1], defDepth);
@@ -356,7 +356,8 @@ void XWindow::SwitchToFullscreen(const Vector2ui &size)
             int nbSizes;
             XRRScreenSize* sizesAvailable = XRRConfigSizes(config, &nbSizes);
             for (int i = 0; i < nbSizes && sizesAvailable && !match; ++i)  // Search a compatible resolution
-                if ((unsigned int)sizesAvailable[i].width == size.Data[0] && sizesAvailable[i].height == size.Data[1]) // the size match, Switch to fullscreen mode
+                if ((unsigned int)sizesAvailable[i].width == size.Data[0] &&
+                    (unsigned int)sizesAvailable[i].height == size.Data[1]) // the size match, Switch to fullscreen mode
                 {
                     XRRSetScreenConfig(_display, config, RootWindow(_display, _screen), i, currentRotation, CurrentTime);
                     match = true;
@@ -430,6 +431,9 @@ void XWindow::Close()
     // Destroy the input context
     if (_input)
         delete _input;
+
+    if (_vInfo != NULL)
+        XFree(_vInfo);
 
     // Destroy the window
     if (_own)

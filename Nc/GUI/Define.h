@@ -59,7 +59,7 @@
         //#define _DEBUG_GUI
         //#define _DEBUG_GUI_BOX
         //#define _DEBUG_GUI_FOCUS
-        //#define _DEBUG_DISABLE_CONSOLE_LOGGING
+        //#define _DEBUG_GUI_DISABLE_CONSOLE_LOGGING
     #endif
 
     namespace Nc

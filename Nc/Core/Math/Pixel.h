@@ -43,20 +43,14 @@ namespace Nc
         template<typename T>
         struct  Pixel
         {
-            Pixel(const T &r = 0, const T &g = 0, const T &b = 0, const T &a = 0) : R(r), G(g), B(b), A(a) {}
+            Pixel(const T &r = 0, const T &g = 0, const T &b = 0, const T &a = 0)
+                : R(r), G(g), B(b), A(a) {}
             ~Pixel() {}
 
             inline void Init(const T &r = 0, const T &g = 0, const T &b = 0, const T &a = 0)    {R = r; G = g; B = b; A = a;}
-
-            inline bool operator == (const Pixel& v)
-            {
-                return !(R != v.R || G != v.G || B != v.B || A != v.A);
-            }
-
-            inline bool operator != (const Pixel& v)
-            {
-                return (R != v.R || G != v.G || B != v.B || A != v.A);
-            }
+            inline bool operator == (const Pixel& v)                                            {return !(R != v.R || G != v.G || B != v.B || A != v.A);}
+            inline bool operator != (const Pixel& v)                                            {return (R != v.R || G != v.G || B != v.B || A != v.A);}
+            inline T &operator [] (const T &i)                                                  {return ((i == 0) ? R : ((i == 1) ? G : ((i == 2) ? B : A)));}
 
             inline Pixel operator + (const Pixel& c) const
             {
@@ -83,22 +77,16 @@ namespace Nc
                 return *this;
             }
 
-            inline T &operator [] (const T &i)
-            {
-                return ((i == 0) ? R : ((i == 1) ? G : ((i == 2) ? B : A)));
-            }
-
             friend std::ostream& operator << (std::ostream& os, const Pixel& v)
             {
                 os<< "R = " << v.R << "\tG = " << v.G << "\tB = " << v.B << "\tA = " << v.A;
                 return os;
             }
 
-            // 0 to 255
-            T   R;
-            T   G;
-            T   B;
-            T   A;    // o for full transparency, 255 for full opacity
+            T   R;      ///< Red componant
+            T   G;      ///< Green componant
+            T   B;      ///< Blue componant
+            T   A;      ///< Alpha componant
         };
     }
 }

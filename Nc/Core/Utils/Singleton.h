@@ -36,20 +36,32 @@ namespace Nc
     {
         /// Implement a template singleton class
         /**
+            The singleton class is thread safe.
+
             <h3>To create a singleton class, create a public heritance like this :  </h3>
-            class MySingleton : public Utils::Singleton<MySingleton>            <br/>
-            {                                                                   <br/>
-                void function() {cout << "hello" << endl;}                      <br/>
-            }                                                                   <br/>
+ \code
+    class MySingleton : public Utils::Singleton<MySingleton>
+    {
+        void function()
+        {
+            cout << "hello" << endl;
+        }
+    }
+ \endcode
 
             <h3>To acces to MySingleton instance anywere in your code :          </h3>
-                MySingleton::Instance()->function();
+ \code
+    MySingleton::Instance()->function();
+ \endcode
         */
         template <typename T>
-        class /*LINK_OPTION_UTILS*/  Singleton
+        class   Singleton
         {
             public:
-            /** Static function wich return the instance of the singleton T */
+            /**
+                Static function wich return the instance of the singleton T.
+                \return the instance of the singleton of type T
+            */
             static T &Instance()
               {
                 if (_instance == NULL)
@@ -80,7 +92,7 @@ namespace Nc
             */
               static void DeleteInstance()  {if (_instance != NULL) delete _instance; _instance = NULL;}
 
-            /** Return true if the instance is already created */
+            /** \return true if the instance is already created */
               static bool Exist()           {return (_instance != NULL);}
 
             protected:

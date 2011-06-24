@@ -27,8 +27,8 @@
 #ifndef NC_GRAPHIC_CAMERA_CAMERA3D_H_
 #define NC_GRAPHIC_CAMERA_CAMERA3D_H_
 
+#include <Nc/Core/Math/Plane.h>
 #include "Camera.h"
-#include "../Object/3D/BasicMeshCreator.h"
 
 namespace Nc
 {
@@ -41,81 +41,87 @@ namespace Nc
 
             \todo Recode gluUnProject witch is deprecated and reimplement the Get3dCoordinateFromProjection method.
         */
-        class LGRAPHICS Camera3d : public Camera, public Object3d
+        class LGRAPHICS Camera3d : public Camera
         {
             public:
-                Camera3d(double ratioAspect, double near, double far, double fielOfView)
-                    : Object3d(false), _center(0, 0, 0), _up(0, 0, 1), _ratioAspect(ratioAspect), _near(near), _far(far), _fieldOfView(fielOfView)
-                {}
+                Camera3d(const char *className, double ratioAspect, double near, double far, double fieldOfView);
                 virtual ~Camera3d() {};
-
-                /** To reception the mouse motion event */
-                virtual void    MouseMotionEvent(const Nc::System::Event &event) = 0;
-                /** To reception the mouse button event */
-                virtual void    MouseButtonEvent(const Nc::System::Event &event) = 0;
-                /** To reception the keybord event */
-                virtual void    KeyboardEvent(const Nc::System::Event &event) = 0;
 
                 /** To update the mouvement of the camera with the keystates of WindowInput */
                 virtual void    Update(float RunningTime) = 0; // Running Time in second
 
+                /** Set the projection parameters */
+                void            SetProjection(double ratioAspect, double near, double far, double fieldOfView);
                 /** Update the projectionMatrix to a perspective projection */
-                inline void     UpdateProjection()          {_projectionMatrix->SetProjection(_ratioAspect, _near, _far, _fieldOfView);}
+                inline void     UpdateProjection(SceneGraph *scene)         {scene->ProjectionMatrix().SetProjection(_ratioAspect, _near, _far, _fieldOfView);}
                 /** Fix the camera */
-                virtual void    Fix()                       {Camera::Fix(); _viewMatrix->SetLookAt(_eye, _center, _up);}
+                virtual void    Fix(SceneGraph *scene)                      {Camera::Fix(scene); scene->ViewMatrix().SetLookAt(_eye, _center, _up);}
 
-//                Vector3f                Get3dCoordinateFromProjection(int x, int y);
+                /** Update the ratio aspect of the projection */
+                virtual void    Resized(const System::Event &event)         {_ratioAspect = (float)event.Size.Width/(float)event.Size.Height;  Camera::Resized(event);}
 
-                // accesseurs
-                /** Return the eye of the camera */
-                inline const    Vector3f &Eye() const           {return _eye;}
-                /** Set the eye of the camera */
-                inline void     Eye(const Vector3f &eye)        {_eye = eye;}
-                /** Return the center of the camera */
-                inline const    Vector3f &Center() const        {return _center;}
-                /** Set the center of the camera */
-                inline void     Center(const Vector3f &pos)     {_center = pos; MajEye();}
+                //Vector3f        Get3dCoordinateFromProjection(int x, int y);
 
-            protected:
+                /** Update the eye of the camera */
                 virtual void    MajEye() = 0;
 
+                // accesseurs
+                /** \return the eye of the camera */
+                inline const Vector3f   &Eye() const                    {return _eye;}
+                /** Set the eye of the camera */
+                inline void             Eye(const Vector3f &eye)        {_eye = eye;}
+                /** \return the center of the camera */
+                inline const Vector3f   &Center() const                 {return _center;}
+                /** Set the center of the camera, maybe you will need to call "MajEye" after */
+                inline void             Center(const Vector3f &pos)     {_center = pos;}
+                /** \return the up vector of the camera */
+                inline const Vector3f   &Up() const                     {return _up;}
+                /** Set the up vector of the camera */
+                inline void             Up(const Vector3f &up)          {_up = up;}
+
+                /** Compute the projection frustum */
+                virtual void            UpdateProjectionFrustum();
+                /** Compute the view frustum */
+                virtual void            UpdateViewFrustum();
+
+                /** \return true if the given \p point is the frustum */
+                virtual bool            PointInFrustum(const Vector3f &point);
+                /** \return true if the given \p box is the frustum */
+                virtual bool            BoxInFrustum(const Vector3f &center, float size);
+
+            protected:
                 // eye properties
-                Vector3f    _eye;               ///< Vector to define the eye of the camera
-                Vector3f    _center;            ///< Vector to define the center of the camera
-                Vector3f    _up;                ///< Vector to define the up of the camera
+                Vector3f        _eye;               ///< Vector to define the eye of the camera
+                Vector3f        _center;            ///< Vector to define the center of the camera
+                Vector3f        _up;                ///< Vector to define the up of the camera
 
                 // projection properties
-                float       _ratioAspect;       ///< define the ratio of the perspective projection
-                float       _near;              ///< define the near value of the perspective projection
-                float       _far;               ///< define the far value of the perspective projection
-                float       _fieldOfView;       ///< define the fieldOfView of the perspective projection
+                float           _ratioAspect;       ///< define the ratio of the perspective projection
+                float           _near;              ///< define the near value of the perspective projection
+                float           _far;               ///< define the far value of the perspective projection
+                float           _fieldOfView;       ///< define the fieldOfView of the perspective projection
+
+                // frustum information
+                float           _hNear;
+                float           _hFar;
+                float           _wNear;
+                float           _wFar;
+                float           _frustumTanFOV;
+                Vector3f        _frustumX;
+                Vector3f        _frustumY;
+                Vector3f        _frustumZ;
+                Vector3f        _frustumNTL;
+                Vector3f        _frustumNTR;
+                Vector3f        _frustumNBR;
+                Vector3f        _frustumNBL;
+                Vector3f        _frustumFTL;
+                Vector3f        _frustumFTR;
+                Vector3f        _frustumFBR;
+                Vector3f        _frustumFBL;
+                Planef          _planes[6];         ///< the six planes of the frustum
         };
     }
 }
-
-/*
-// deprecated, recode gluUnProject
-Vector3f GLContext::Get3dCoordinateFromProjection(int x, int y)
-{
-    int viewport[4];
-//	double modelview[16], projection[16];
-	float winX, winY, winZ;
-	double posX, posY, posZ;
-
-//	glGetDoublev(GL_MODELVIEW_MATRIX, modelview); // deprecated
-//	glGetDoublev(GL_PROJECTION_MATRIX, projection); // deprecated
-
-	glGetIntegerv(GL_VIEWPORT, viewport);
-
-	winX = (float)x;
-	winY = (float)viewport[3] - (float)y; // soustrait directement la taille de la fenetre a la coordonnee y (car l'origine de y est positionne en haut de la fenetre)
-	glReadPixels(x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ); // recupere la coordonnee z de la fenetre
-
-    // transformer les coordonnees de la fenetre en coordonnees
-	gluUnProject(winX, winY, winZ, ModelViewMatrix.Element(), ProjectionMatrix.Element(), viewport, &posX, &posY, &posZ); // deprecated
-	return Vector3f(posX, posY, posZ);
-}
-*/
 
 
 #endif

@@ -27,54 +27,131 @@
 #ifndef NOVAC_GRAPHIC_OBJECT_H_
 #define NOVAC_GRAPHIC_OBJECT_H_
 
-#include "../Define.h"
-#include "Drawable.h"
+#include "../Scene/SceneNode.h"
+#include "../Material/Drawable.h"
+#include "../Material/DefaultMaterials.h"
+#include "../Material/DefaultVertexType.h"
 
 namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to define a Graphical object
-        /**
-            An object has just a TMatrix and boolean statement
-        */
-        class LGRAPHICS Object : public System::Object
+        /// Define a Graphical object entity
+        class LGRAPHICS Object : public Entity
         {
             public:
+            // typedefs
+                typedef Entity                      NodeType;
+                typedef std::vector<Drawable*>      DrawableArray;
+
+                struct SetMaterialFonctor
+                {
+                    SetMaterialFonctor(IMaterial *m) : newMaterial(m)  {}
+
+                    bool operator () (ISceneNode *node)
+                    {
+                        Object *n = node->AsWithoutThrow<Object>();
+                        if (n != NULL)
+                            n->SetMaterial(newMaterial);
+                        return true;
+                    }
+
+                    IMaterial *newMaterial;
+                };
+
+            public:
+            // construct
                 Object();
+                Object(const char *className);
                 Object(const TMatrix &m);
+                Object(const Box3f &box);
+                Object(const Box3f &box, const TMatrix &m);
+                Object(const Object &o);
+                Object &operator = (const Object &o);
                 virtual ~Object();
 
-                /**
-                    To update an object with the running time (in second),
-                    To redefine in your own object
-                */
-                virtual inline void     Update(float)           {}
+                static const char *ClassName()                          {return "Object";}
+                virtual ISceneNode  *Clone() const                      {return new Object(*this);}
 
-                /**
-                    To Render the object,
-                    To redefine in your own object
-                */
-                virtual void            Render(ISceneGraph *scene) = 0;
-
-                // set the display states
                 /** Set the display statement */
-                inline void             DisplayState(bool state)            {_displayState = state;}
-                /** Return the display statement */
-                virtual inline bool     DisplayState() const                {return _displayState;}
-                /** Set the display box statement */
-				inline void             DisplayStateBox(bool state)         {_displayStateBox = state;}
-                /** Return the display box statement */
-                virtual inline bool     DisplayStateBox() const             {return _displayStateBox;}
+                inline virtual void DisplayState(bool state)            {_enabled = state;}
+                /** \return the display statement */
+                inline bool         DisplayState() const                {return _enabled;}
+                /** \return false if the object or one of its parents has the display statement to false */
+                bool                DisplayStateRecursive() const;
 
-                /** The matrix transformation of the object (basic transformation: rotate, translate, scale) */
-                TMatrix                 Matrix;                             // for performance, the matrix object is public
+                /** Set the display box statement */
+				inline void         DisplayStateBox(bool state)         {_displayStateBox = state;}
+                /** Return the display box statement */
+                inline bool         DisplayStateBox() const             {return _displayStateBox;}
+
+                /** Compute the recursive model matrix with the parents matrix. */
+                void                GetRecursiveMatrix(TMatrix &m);
+
+                /** Set the box of the object */
+                inline void         SetBox(const Box3f &box)            {_box = box;}
+                /** \return the box of the object (the box is not modified by the matrix, so if you want the reel box call the methode GetReelBox) */
+                inline const Box3f  &GetBox() const                     {return _box;}
+                /** \param box filled by the box transformed by the model matrix */
+                void                GetReelBox(Box3f &box) const;
+
+                // operations sur la matrice
+                /** Scale the object with the given height */
+                void                HeightScale(float height); // /!\ metre a jour la bounding box avant
+
+                /** Translate the model Matrix to the given vector using the xy center of the box */
+                void                CenterBase(const Vector3f &centerBase);
+
+                void                SetRecursiveMaterial(IMaterial *newMaterial);
+
+                /** Set the material, reconfigure the drawables.
+                    The configuration could failed if the given material is not compatible. In this case the current material don't change and return false.
+                    \return true the material transfer succeed.
+                */
+                bool                SetMaterial(IMaterial *newMaterial);
+
+                void                ChooseDefaultMaterial();
+
+                inline IMaterial    *GetMaterial()                      {return _material;}
+
+
+                /** \return the drawables */
+                DrawableArray       &Drawables()                        {return _drawables;}
+
+                /** Configure the drawables by using the current Material */
+                void                ReconfigureDrawables();
+
+                /** Render the drawables with the material set in the object */
+                virtual void        Render(SceneGraph *scene);
 
             protected:
-                bool            _displayState;                              ///< if true, draw the object
-                bool            _displayStateBox;                           ///< if true, draw the box of the object
+                /**
+                    Transform the scene model matrix before rendering the object.
+                    Could be redefine to set a specific comportement.
+                */
+                virtual void        TransformModelMatrixToRender(SceneGraph *scene)    {scene->ModelMatrix().AddTransformation(Matrix);}
+
+                /**
+                    Render the drawables.
+                    To redefine in your own objects.
+                */
+                virtual void        Draw(SceneGraph *scene);
+
+            // fields
+            protected:
+                bool            _displayStateBox;       ///< if true, draw the box of the object]
+
+                DrawableArray   _drawables;             ///< the array of drawbles
+                Box3f           _box;                   ///< the box of the object
+
+            private:
+                IMaterial       *_material;             ///< pointer to the material used to render the drawables
         };
+
+        // specialization of the method GetNode<> for an IObject
+        //template<>
+        //Object *ISceneNode::GetNode<>();
     }
 }
 
-#endif // Object_H_INCLUDED
+#endif

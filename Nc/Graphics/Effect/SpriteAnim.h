@@ -27,8 +27,8 @@
 #ifndef NC_GRAPHICS_2D_SPRITE_ANIM_H_
 #define NC_GRAPHICS_2D_SPRITE_ANIM_H_
 
-#include "Animation.h"
-#include "../Object/2D/Sprite.h"
+#include "FramesAnimation.h"
+#include "../Object/Sprite.h"
 
 namespace Nc
 {
@@ -38,16 +38,21 @@ namespace Nc
         /**
             It's simpli a container of sprite, a frame is composed of one sprite, so the Animation class will animate his collection of frames
         */
-        struct LGRAPHICS SpriteAnimFrame : public AnimationFrame
+        struct LGRAPHICS SpriteAnimFrame : public FramesAnimation<SpriteAnimFrame>::Frame
         {
-            SpriteAnimFrame(AnimationFrame::Pattern p, double d) : AnimationFrame(p, d), sprite(NULL) {}
-            SpriteAnimFrame(AnimationFrame::Pattern p, double d, Sprite *s) : AnimationFrame(p, d), sprite(s) {}
-            SpriteAnimFrame(const SpriteAnimFrame &f) : AnimationFrame(f), sprite(new Sprite(*f.sprite))   {}
-            virtual ~SpriteAnimFrame()      {delete sprite;}
+            typedef FramesAnimation<SpriteAnimFrame>::Frame     Parent;
+
+            SpriteAnimFrame(Parent::Pattern p, double d)                : Parent(ClassName(), p, d), sprite(NULL)                   {}
+            SpriteAnimFrame(Parent::Pattern p, double d, Sprite *s)     : Parent(ClassName(), p, d), sprite(s)                      {}
+            SpriteAnimFrame(const SpriteAnimFrame &f)                   : Parent(f), sprite(new Sprite(*f.sprite))                  {}
+            virtual ~SpriteAnimFrame()                                  {delete sprite;}
+
+            static const char       *ClassName()                        {return "SpriteAnimFrame";}
+            virtual ISceneNode      *Clone() const                      {return new SpriteAnimFrame(*this);}
 
             SpriteAnimFrame &operator = (const SpriteAnimFrame &f)
             {
-                AnimationFrame::operator=(f);
+                Parent::operator=(f);
                 if (sprite)
                     delete sprite;
                 sprite = new Sprite(*f.sprite);
@@ -57,7 +62,7 @@ namespace Nc
             /** Update the sprite */
             virtual void Update(float runningTime);
             /** Render the sprite */
-            virtual void Render(ISceneGraph *scene);
+            virtual void Render(SceneGraph *scene);
 
             Sprite      *sprite;        ///< the sprite of the frame
         };

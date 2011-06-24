@@ -40,7 +40,8 @@ Console::ListMsg::reverse_iterator  Console::_itCurrentMsg = Console::_listMsg.r
 Mutex                               Console::_mutexMsg;
 std::string							Console::_currentWritingMsg;
 
-Console::Console(Pattern p) : WindowBox("Console", "Prototype"), _pattern(p)
+Console::Console(Pattern p)
+    : WindowBox(ClassName(), "Console", "Prototype"), _pattern(p)
 {
     unsigned short  percent = 15; // hauteur de la console en poucentage
 
@@ -53,16 +54,21 @@ Console::Console(Pattern p) : WindowBox("Console", "Prototype"), _pattern(p)
     _size.Data[1] = ((float)(percent * Window::Height()) / 100.0) + _titleHeight;
     _pos[0] = 1; // pour voir tous les bord de la console, on se decale de 1
 
-    _labelPrompt = new WidgetLabeled(_prompt, Vector2f(0, 0), Vector2f(0, 17), Left, Bottom, this, "Prototype");
+    _labelPrompt = new WidgetLabeled(_prompt, Vector2f(0, 0), Vector2f(0, 17), Left, Bottom, "Prototype");
     _labelPrompt->LabelColor(Color(1, 1, 1));
+    AddChild(_labelPrompt);
 
-    _labelWrite = new WidgetLabeled("", Vector2f(_labelPrompt->GetReelSize().Data[0], 0), Vector2f(0, 17), Left, Bottom, this, "Prototype");
+    Vector2f size;
+    _labelPrompt->GetReelSize(size);
+    _labelWrite = new WidgetLabeled("", Vector2f(size.Data[0], 0), Vector2f(0, 17), Left, Bottom, "Prototype");
     _labelWrite->LabelColor(Color(1, 1, 1));
+    AddChild(_labelWrite);
 
-    _labelCursor = new WidgetLabeled("_", Vector2f(_labelPrompt->GetReelSize().Data[0], 0), Vector2f(0, 17), Left, Bottom, this, "arial");
+    _labelCursor = new WidgetLabeled("_", Vector2f(size.Data[0], 0), Vector2f(0, 17), Left, Bottom, "arial");
     _labelCursor->LabelColor(Color(0, 1, 0));
+    AddChild(_labelCursor);
 
-    #ifndef _DEBUG_DISABLE_CONSOLE_LOGGING
+    #ifndef _DEBUG_GUI_DISABLE_CONSOLE_LOGGING
         LOG.SetLoggingFunction(Write); // set le logger de base dans notre console graphique
     #endif
     _drawTitle = true;
@@ -92,12 +98,11 @@ void Console::Write(const std::string msg, bool flush)
     }
 }
 
-Vector2f Console::GetReelPos() const
+void Console::GetReelPos(Vector2f &pos) const
 {
-    Vector2f p = WindowBox::GetReelPos();
+    WindowBox::GetReelPos(pos);
     if (_pattern == TranslateAtFocus && !_focus)
-        p.Data[1] -= _size.Data[1] - _titleHeight;
-    return p;
+        pos.Data[1] -= _size.Data[1] - _titleHeight;
 }
 
 void Console::Update()
@@ -131,7 +136,7 @@ void Console::Update()
     }
 }
 
-void Console::Render(Graphic::ISceneGraph *scene)
+void Console::Render(Graphic::SceneGraph *scene)
 {
     WindowBox::Render(scene);
 
@@ -161,7 +166,7 @@ void Console::KeyboardEvent(const Event &event)
     static Utils::Unicode::UTF32    cmd;
     char                            c;
 
-    if (_displayState && event.Type == Event::KeyPressed)
+    if (_enabled && event.Type == Event::KeyPressed)
     {
         if (event.Key.Code == Key::Up || event.Key.Code == Key::Down)
         {
@@ -181,7 +186,11 @@ void Console::KeyboardEvent(const Event &event)
                     {
                         cmd = *_itCurrentMsg;
                         _labelWrite->Label(cmd);
-                        _labelCursor->Pos(Vector2f(_labelWrite->GetReelSize().Data[0] + _labelPrompt->GetReelSize().Data[0], 0));
+                        Vector2f sizeLabelWrite;
+                        Vector2f sizeLabelPrompt;
+                        _labelWrite->GetReelSize(sizeLabelWrite);
+                        _labelPrompt->GetReelSize(sizeLabelPrompt);
+                        _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
                     }
                 }
             }
@@ -193,7 +202,11 @@ void Console::KeyboardEvent(const Event &event)
                     {
                         cmd = lastcmd;
                         _labelWrite->Label(cmd);
-                        _labelCursor->Pos(Vector2f(_labelWrite->GetReelSize().Data[0] + _labelPrompt->GetReelSize().Data[0], 0));
+                        Vector2f sizeLabelWrite;
+                        Vector2f sizeLabelPrompt;
+                        _labelWrite->GetReelSize(sizeLabelWrite);
+                        _labelPrompt->GetReelSize(sizeLabelPrompt);
+                        _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
                         lastcmdSet = false;
                     }
                 }
@@ -202,7 +215,11 @@ void Console::KeyboardEvent(const Event &event)
                     --_itCurrentMsg;
                     cmd = *_itCurrentMsg;
                     _labelWrite->Label(cmd);
-                    _labelCursor->Pos(Vector2f(_labelWrite->GetReelSize().Data[0] + _labelPrompt->GetReelSize().Data[0], 0));
+                    Vector2f sizeLabelWrite;
+                    Vector2f sizeLabelPrompt;
+                    _labelWrite->GetReelSize(sizeLabelWrite);
+                    _labelPrompt->GetReelSize(sizeLabelPrompt);
+                    _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
                 }
             }
             _mutexMsg.Unlock();
@@ -218,13 +235,21 @@ void Console::KeyboardEvent(const Event &event)
             cmd.clear();
             _labelWrite->Label("");
             lastcmdSet = false;
-            _labelCursor->Pos(Vector2f(_labelWrite->GetReelSize().Data[0] + _labelPrompt->GetReelSize().Data[0], 0));
+            Vector2f sizeLabelWrite;
+            Vector2f sizeLabelPrompt;
+            _labelWrite->GetReelSize(sizeLabelWrite);
+            _labelPrompt->GetReelSize(sizeLabelPrompt);
+            _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
         }
         else if (event.Key.Code == Key::Back && !cmd.empty()) // suppression du dernier caractere
         {
             cmd.erase(cmd.end() - 1);
             _labelWrite->Label(cmd);
-            _labelCursor->Pos(Vector2f(_labelWrite->GetReelSize().Data[0] + _labelPrompt->GetReelSize().Data[0], 0));
+            Vector2f sizeLabelWrite;
+            Vector2f sizeLabelPrompt;
+            _labelWrite->GetReelSize(sizeLabelWrite);
+            _labelPrompt->GetReelSize(sizeLabelPrompt);
+            _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
             lastcmdSet = false;
         }
         else    // sinon on peut recuperer le caractere et le push dans le label
@@ -234,7 +259,11 @@ void Console::KeyboardEvent(const Event &event)
             {
                 cmd += c;
                 _labelWrite->Label(cmd);
-                _labelCursor->Pos(Vector2f(_labelWrite->GetReelSize().Data[0] + _labelPrompt->GetReelSize().Data[0], 0));
+                Vector2f sizeLabelWrite;
+                Vector2f sizeLabelPrompt;
+                _labelWrite->GetReelSize(sizeLabelWrite);
+                _labelPrompt->GetReelSize(sizeLabelPrompt);
+                _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
             }
             lastcmdSet = false;
         }
@@ -257,13 +286,13 @@ void Console::ExecCmd(const string &cmd)
     size_t pos = cmd.find_first_of(":");
 
 	// npos en commentaire a cause d'un bug VC 2010 a l'export de string::npos (et oui encore ce foutu windows)  ref: http://connect.microsoft.com/VisualStudio/feedback/details/562448/std-string-npos-lnk2001-when-inheriting-a-dll-class-from-std-string
-	if (pos != /*string::npos*/ -1)
+	if (pos != /*string::npos*/ (size_t)-1)
     {
         engineName = cmd.substr(0, pos);
         cmdName = cmdName.substr(pos + 1, cmd.length());
     }
     size_t pos2 = cmdName.find_first_of(" ");
-    if (pos2 != /*string::npos*/ -1)   // execution de la commande avec les arguments
+    if (pos2 != /*string::npos*/ (size_t)-1)   // execution de la commande avec les arguments
         Engine::Manager::PushEvent(engineName, cmdName.substr(0, pos2), cmdName.substr(pos2+1, /*string::npos*/ -1));
     else                        // execution de la commande sans argument
         Engine::Manager::PushEvent(engineName, cmdName.substr(0, pos2));

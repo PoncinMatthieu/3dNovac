@@ -48,13 +48,16 @@ namespace Nc
                 Vector3D    &operator = (const Vector3D<U> &v);
 
                 /** Initialize the values of the vector */
-                void    Init(const T &x = 0, const T &y = 0, const T &z = 0);
+                void        Init(const T &x = 0, const T &y = 0, const T &z = 0);
 
                 /** Compute the crossProduct with `v` in `result` */
-                void    Cross(const Vector3D &v, Vector3D<T> &result) const;
+                void        Cross(const Vector3D &v, Vector3D<T> &result) const;
 
+                /** \return X */
                 const T   &X() const    {return Vector<T,3>::Data[0];}
+                /** \return Y */
                 const T   &Y() const    {return Vector<T,3>::Data[1];}
+                /** \return Z */
                 const T   &Z() const    {return Vector<T,3>::Data[2];}
         };
 

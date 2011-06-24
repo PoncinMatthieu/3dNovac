@@ -29,160 +29,103 @@
 
 #include "../Define.h"
 #include "../Core/GL/Shader.h"
-#include "../Core/GL/GeometryBuffer.h"
-#include "../Scene/ISceneGraph.h"
-#include "BasicSourceShader.h"
-#include "MaterialConfig.h"
+#include "../Scene/SceneGraph.h"
+#include "Drawable.h"
+#include "DefaultSourceShader.h"
+#include "DefaultVertexType.h"
+#include "IMaterial.h"
 
 namespace Nc
 {
     namespace Graphic
     {
-        /// The default template material politics for the basic VertexType that define patterns of Material
-        /**
-            Show the specialisations for more detail, there are one specialisation per VertexType
-        */
-        template<typename VertexType>
-        class DefaultMaterialPolitics   {};
-
-        /// Specialisation of the DefaultMaterialPolitics for a BasicVertexType::Colored
-        template<>
-        class DefaultMaterialPolitics<BasicVertexType::Colored>
+        /// Interface used to define a default material for vertex types
+        class LGRAPHICS IDefaultMaterial : public IMaterial
         {
             public:
-                DefaultMaterialPolitics()
-                {
-                    _shader.LoadFromMemory(BasicSource::ColoredVertexShader, BasicSource::ColoredFragmentShader, "BasicColoredShader");
-                    _shader.Enable();
-                    _uniformMVP = _shader.UniformLocation("MVPMatrix");
-                    _shader.Disable();
-                }
-                ~DefaultMaterialPolitics()     {}
+                IDefaultMaterial(const std::string &name)
+                    : IMaterial(name), _initialized(false)  {}
+                virtual ~IDefaultMaterial()                 {}
+
+                /** Initialize the material */
+                virtual void    Initialize()                {_initialized = true;}
+                /** \return the init statement */
+                bool            Initialized()               {return _initialized;}
+
+            private:
+                bool    _initialized;       ///< the init statement
+        };
+
+        /** Template Base class of a Default Material, this class specialized with the different vertex types */
+        template<typename VertexType>
+        class DefaultMaterial   {};
+
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored
+        template<>
+        class DefaultMaterial<DefaultVertexType::Colored> : public IDefaultMaterial
+        {
+            public:
+                DefaultMaterial()
+                    : IDefaultMaterial("DefaultMaterial<Colored>")      {}
+                ~DefaultMaterial()      {}
+
+                static unsigned int    GetDescriptorPriority()          {return DefaultVertexType::Colored::GetDescriptorPriority();}
+
+                virtual void    Initialize();
 
                 /** configure the goemetry to render it with the good attributes */
-                void    Configure(GL::IGeometryBuffer<BasicVertexType::Colored> &geometry)
-                {
-                    GL::VertexDescriptor  &desc = geometry.GetVBO().Descriptor;
-                    _shader.Enable();
-                    desc[0].IndexAttrib = _shader.AttribLocation("InCoord");
-                    desc[1].IndexAttrib = _shader.AttribLocation("InColor");
-                    _shader.Disable();
-                }
+                virtual bool    Configure(Drawable &drawable);
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<BasicVertexType::Colored, INDEX, ConfigPolitic> &drawable)
-                {
-                    drawable.Enable();
-                    _shader.Enable(); // enable the shader
-
-                    TMatrix mvp =  scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix;
-                    glUniformMatrix4fv(_uniformMVP, 1, GL_TRUE, mvp.Elements());
-
-                    drawable.Render(); // render the object
-
-                    _shader.Disable(); // disable the shader
-                    drawable.Disable();
-                }
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
                 GL::Shader      _shader;            ///< the shader used to render the drawable
                 unsigned int    _uniformMVP;
         };
 
-        /// Specialisation of the DefaultMaterialPolitics for a BasicVertexType::Colored2d
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored2d
         template<>
-        class DefaultMaterialPolitics<BasicVertexType::Colored2d>
+        class DefaultMaterial<DefaultVertexType::Colored2d> : public IDefaultMaterial
         {
             public:
-                DefaultMaterialPolitics()
-                {
-                    _shader.LoadFromMemory(BasicSource::Colored2dVertexShader, BasicSource::Colored2dFragmentShader, "BasicColored2dShader");
-                    _shader.Enable();
-                    _uniformMVP = _shader.UniformLocation("MVPMatrix");
-                    _shader.Disable();
-                }
-                ~DefaultMaterialPolitics()     {}
+                DefaultMaterial()
+                    : IDefaultMaterial("DefaultMaterial<Colored2d>")      {}
+                ~DefaultMaterial()     {}
+
+                static unsigned int    GetDescriptorPriority()         {return DefaultVertexType::Colored2d::GetDescriptorPriority();}
+
+                virtual void    Initialize();
 
                 /** configure the goemetry to render it with the good attributes */
-                void    Configure(GL::IGeometryBuffer<BasicVertexType::Colored2d> &geometry)
-                {
-                    GL::VertexDescriptor  &desc = geometry.GetVBO().Descriptor;
-                    _shader.Enable();
-                    desc[0].IndexAttrib = _shader.AttribLocation("InCoord");
-                    desc[1].IndexAttrib = _shader.AttribLocation("InColor");
-                    _shader.Disable();
-                }
+                virtual bool    Configure(Drawable &drawable);
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<BasicVertexType::Colored2d, INDEX, ConfigPolitic> &drawable)
-                {
-                    drawable.Enable();
-                    _shader.Enable(); // enable the shader
-
-                    TMatrix mvp =  scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix;
-                    glUniformMatrix4fv(_uniformMVP, 1, GL_TRUE, mvp.Elements());
-
-                    drawable.Render(); // render the object
-
-                    _shader.Disable(); // disable the shader
-                    drawable.Disable();
-                }
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
                 GL::Shader      _shader;        ///< the shader used to render the drawable
                 unsigned int    _uniformMVP;
         };
 
-        /// Specialisation of the DefaultMaterialPolitics for a BasicVertexType::Textured
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured
         template<>
-        class DefaultMaterialPolitics<BasicVertexType::Textured>
+        class DefaultMaterial<DefaultVertexType::Textured> : public IDefaultMaterial
         {
             public:
-                DefaultMaterialPolitics()
-                {
-                    _shader.LoadFromMemory(BasicSource::TexturedVertexShader, BasicSource::TexturedFragmentShader, "BasicTexturedShader");
-                    _shader.Enable();
-                    _uniformMVP = _shader.UniformLocation("MVPMatrix");
-                    _uniformTextured = _shader.UniformLocation("Textured");
-                    _uniformTextureId = _shader.UniformLocation("TextureId");
-                    _shader.Disable();
-                }
-                ~DefaultMaterialPolitics()     {}
+                DefaultMaterial()
+                    : IDefaultMaterial("DefaultMaterial<Textured>")      {}
+                ~DefaultMaterial()      {}
+
+                static unsigned int    GetDescriptorPriority()         {return DefaultVertexType::Textured::GetDescriptorPriority();}
+
+                virtual void    Initialize();
 
                 /** configure the goemetry to render it with the good attributes */
-                void    Configure(GL::IGeometryBuffer<BasicVertexType::Textured> &geometry)
-                {
-                    GL::VertexDescriptor  &desc = geometry.GetVBO().Descriptor;
-                    _shader.Enable();
-                    desc[0].IndexAttrib = _shader.AttribLocation("InCoord");
-                    desc[1].IndexAttrib = _shader.AttribLocation("InTexCoord");
-                    desc[2].IndexAttrib = _shader.AttribLocation("InColor");
-                    _shader.Disable();
-                }
+                virtual bool    Configure(Drawable &drawable);
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                template<typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, IDrawable<BasicVertexType::Textured, ConfigPolitic> &drawable)
-                {
-                    drawable.Enable();
-                    _shader.Enable(); // enable the shader
-
-                    TMatrix mvp =  scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix;
-                    glUniformMatrix4fv(_uniformMVP, 1, GL_TRUE, mvp.Elements());
-                    glUniform1i(_uniformTextured, drawable.texture.IsValid());
-                    if (drawable.texture.IsValid())
-                    {
-                        glUniform1i(_uniformTextureId, 0);
-                        glActiveTexture(GL_TEXTURE0);
-                        drawable.texture.Enable();
-                    }
-
-                    drawable.Render(); // render the object
-                    _shader.Disable(); // disable the shader
-                    drawable.Disable();
-                }
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
                 GL::Shader      _shader;                ///< the shader used to render the drawable
@@ -191,53 +134,24 @@ namespace Nc
                 unsigned int    _uniformTextureId;
         };
 
-        /// Specialisation of the DefaultMaterialPolitics for a BasicVertexType::Textured2d
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured2d
         template<>
-        class DefaultMaterialPolitics<BasicVertexType::Textured2d>
+        class DefaultMaterial<DefaultVertexType::Textured2d> : public IDefaultMaterial
         {
             public:
-                DefaultMaterialPolitics()
-                {
-                    _shader.LoadFromMemory(BasicSource::Textured2dVertexShader, BasicSource::Textured2dFragmentShader, "BasicTextured2dShader");
-                    _shader.Enable();
-                    _uniformMVP = _shader.UniformLocation("MVPMatrix");
-                    _uniformTextured = _shader.UniformLocation("Textured");
-                    _uniformTextureId = _shader.UniformLocation("TextureId");
-                    _shader.Disable();
-                }
-                ~DefaultMaterialPolitics()     {}
+                DefaultMaterial()
+                    : IDefaultMaterial("DefaultMaterial<Textured2d>")      {}
+                ~DefaultMaterial()      {}
+
+                static unsigned int    GetDescriptorPriority()         {return DefaultVertexType::Textured2d::GetDescriptorPriority();}
+
+                virtual void    Initialize();
 
                 /** configure the goemetry to render it with the good attributes */
-                void    Configure(GL::IGeometryBuffer<BasicVertexType::Textured2d> &geometry)
-                {
-                    GL::VertexDescriptor  &desc = geometry.GetVBO().Descriptor;
-                    _shader.Enable();
-                    desc[0].IndexAttrib = _shader.AttribLocation("InCoord");
-                    desc[1].IndexAttrib = _shader.AttribLocation("InTexCoord");
-                    desc[2].IndexAttrib = _shader.AttribLocation("InColor");
-                    _shader.Disable();
-                }
+                virtual bool    Configure(Drawable &drawable);
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<BasicVertexType::Textured2d, INDEX, ConfigPolitic> &drawable)
-                {
-                    drawable.Enable();
-                    _shader.Enable(); // enable the shader
-
-                    TMatrix mvp =  scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix;
-                    glUniformMatrix4fv(_uniformMVP, 1, GL_TRUE, mvp.Elements());
-                    glUniform1i(_uniformTextured, drawable.texture.IsValid());
-                    if (drawable.texture.IsValid())
-                    {
-                        glUniform1i(_uniformTextureId, 0);
-                        glActiveTexture(GL_TEXTURE0);
-                        drawable.texture.Enable();
-                    }
-                    drawable.Render(); // render the object
-                    _shader.Disable(); // disable the shader
-                    drawable.Disable();
-                }
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
                 GL::Shader      _shader;                ///< the shader used to render the drawable
@@ -246,53 +160,24 @@ namespace Nc
                 unsigned int    _uniformTextureId;
         };
 
-        /// Specialisation of the DefaultMaterialPolitics for a BasicVertexType::Textured3d
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured3d
         template<>
-        class DefaultMaterialPolitics<BasicVertexType::Textured3d>
+        class DefaultMaterial<DefaultVertexType::Textured3d> : public IDefaultMaterial
         {
             public:
-                DefaultMaterialPolitics()
-                {
-                    _shader.LoadFromMemory(BasicSource::Textured3dVertexShader, BasicSource::Textured3dFragmentShader, "BasicTextured3dShader");
-                    _shader.Enable();
-                    _uniformMVP = _shader.UniformLocation("MVPMatrix");
-                    _uniformTextureId = _shader.UniformLocation("TextureId");
-                    _uniformTextured = _shader.UniformLocation("Textured");
-                    _shader.Disable();
-                }
-                ~DefaultMaterialPolitics()     {}
+                DefaultMaterial()
+                    : IDefaultMaterial("DefaultMaterial<Textured3d>")      {}
+                ~DefaultMaterial()      {}
+
+                static unsigned int    GetDescriptorPriority()         {return DefaultVertexType::Textured3d::GetDescriptorPriority();}
+
+                virtual void    Initialize();
 
                 /** configure the goemetry to render it with the good attributes */
-                void    Configure(GL::IGeometryBuffer<BasicVertexType::Textured3d> &geometry)
-                {
-                    GL::VertexDescriptor  &desc = geometry.GetVBO().Descriptor;
-                    _shader.Enable();
-                    desc[0].IndexAttrib = _shader.AttribLocation("InCoord");
-                    desc[1].IndexAttrib = _shader.AttribLocation("InTexCoord");
-                    desc[2].IndexAttrib = _shader.AttribLocation("InColor");
-                    _shader.Disable();
-                }
+                virtual bool    Configure(Drawable &drawable);
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                template<bool INDEX, typename ConfigPolitic>
-                void    Render(ISceneGraph *scene, const TMatrix &modelMatrix, Drawable<BasicVertexType::Textured3d, INDEX, ConfigPolitic> &drawable)
-                {
-                    drawable.Enable();
-                    _shader.Enable(); // enable the shader
-
-                    TMatrix mvp =  scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix;
-                    glUniformMatrix4fv(_uniformMVP, 1, GL_TRUE, mvp.Elements());
-                    glUniform1i(_uniformTextured, drawable.texture.IsValid());
-                    if (drawable.texture.IsValid())
-                    {
-                        glUniform1i(_uniformTextureId, 0);
-                        glActiveTexture(GL_TEXTURE0);
-                        drawable.texture.Enable();
-                    }
-                    drawable.Render(); // render the object
-                    _shader.Disable(); // disable the shader
-                    drawable.Disable();
-                }
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
                 GL::Shader      _shader;                ///< the shader used to render the drawable

@@ -51,22 +51,29 @@ namespace Nc
                 };
 
             // two default X PixMap cursor
-                static const char *XpmHandOpen[];
-                static const char *XpmHandClose[];
+                static const char   *XpmHandOpen[];
+                static const char   *XpmHandClose[];
 
             public:
+                StandardCamera3d(Window *win, double ratioAspect, double near = 0.1, double far = 1000, double fielOfView = 70, Pattern p = Turntable);
                 StandardCamera3d(Window *win, Pattern p = Turntable);
+                StandardCamera3d(const StandardCamera3d &cam);
+                StandardCamera3d &operator = (const StandardCamera3d &cam);
                 virtual ~StandardCamera3d();
 
-                virtual void Resized(const System::Event &event);
+                static const char   *ClassName()                            {return "StandardCamera3d";}
+                virtual ISceneNode  *Clone() const                          {return new StandardCamera3d(*this);}
 
                 /** \return the pattern used by camera */
-                inline Pattern  GetPattern() const                  {return _pattern;}
+                inline Pattern  GetPattern() const                          {return _pattern;}
                 /** Set the pattern used by the camera */
-                inline void     SetPattern(Pattern p)               {_pattern = p;}
+                inline void     SetPattern(Pattern p)                       {_pattern = p;}
 
                 /** Set the button with active the movement of the camera */
                 void            SetMoveButton(System::Mouse::Button button) {_mouveButton = button;}
+
+                /** Recompute the eye, center and up vector after a modification */
+                void MajEye();
 
                 // Manage events
                 /** Manage the mouse motion event */
@@ -79,16 +86,27 @@ namespace Nc
                 /** to compute the actual position */
                 virtual void    Update(float runningTime);
 
-            private:
-                /** Recompute the eye, center and up vector after a modification */
-                void MajEye();
+                /** Update the geometry witch draw the frustum of the camera */
+                virtual void    UpdateViewFrustum();
+                /** Draw the frustum */
+                void            DrawFrustum(bool state);
 
+                /** \return the Inihibit movement statement of the camera */
+                inline bool     Inibited()                          {return _inhibitMovement;}
+                /** Set the Inihibit movement statement to true */
+                inline void     InibitMovement()                    {_inhibitMovement = true;}
+                /** Set the Inihibit movement statement to false */
+                inline void     UninibitMovement()                  {_inhibitMovement = false;}
+
+            private:
                 /** Recompute the trackball point with the given mouse position */
                 void MajTrackballPoint(int x, int y);
 
                 System::Mouse::Button   _mouveButton;   ///< the button witch active the movement of the camera
 
                 Pattern     _pattern;                   ///< the pattern of the camera
+                bool        _inhibitMovement;           ///< if true, the the camera will no receive the movements events
+                bool        _drawFrustum;               ///< if true, the the camera will draw his frustum
                 float       _moveSpeed;                 ///< the speed of the movement of the camera
                 float       _sensibilityRotate;         ///< the rotation sensibility
                 float       _sensibilityTranslate;      ///< the translation sensibility

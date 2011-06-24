@@ -27,7 +27,7 @@
 #ifndef NC_GRAPHICS_CORE_GL_BLEND_H_
 #define NC_GRAPHICS_CORE_GL_BLEND_H_
 
-#include "../../Define.h"
+#include "GLObject.h"
 
 namespace Nc
 {
@@ -35,7 +35,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// help to manipulate the blending opengl method
+            /// Help to manipulate the blending opengl method
             /**
                 \todo manage the transparency color and rate
             */
@@ -48,37 +48,33 @@ namespace Nc
                         Disabled = 0,
                         Alpha,                  ///< Color Pixel = Src * a + Dest * (1 - a)
                         Add,                    ///< Color Pixel = Src + Dest
-                        Mutiply                 ///< Color Pixel = Src * Dest.
+                        Multiply                ///< Color Pixel = Src * Dest.
                     };
 
                 public:
-                    Blend() : _pattern(Disabled)     {}
-                    Blend(Pattern p) : _pattern(p)  {}
+                    Blend() : _pattern(Disabled)        {}
+                    Blend(Pattern p) : _pattern(p)      {}
                     ~Blend()    {}
 
                     /** Set the blending pattern */
-                    void SetPattern(Pattern p)      {_pattern = p;}
+                    void    SetPattern(Pattern p)      {_pattern = p;}
 
-                    /** Enable the blend func */
-                    inline void Enable() const
-                    {
-                        if (_pattern != Disabled)
-                        {
-                            glEnable(GL_BLEND);
-                            if (_pattern == Alpha)
-                                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                            else if (_pattern == Add)
-                                glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-                            else if (_pattern == Mutiply)
-                                glBlendFunc(GL_DST_COLOR, GL_ZERO);
-                        }
-                    }
+                    /** Enable the blending opengl state */
+                    void    Enable();
 
-                    /** Disable the blending */
-                    inline void Disable() const     {if (_pattern != Disabled) glDisable(GL_BLEND);}
+                    /** Disable the blending opengl state */
+                    void    Disable();
 
                 protected:
-                    Pattern     _pattern;       ///< the blending pattern
+                    Pattern         _pattern;               ///< the blending pattern
+
+                    bool            _lastBlendState;
+                    GLenum          _lastSFactor;           ///< sFactor used by the glBlendFunc
+                    GLenum          _lastDFactor;           ///< dFactor used by the glBlendFunc
+
+                    static bool     _currentBlendState;
+                    static GLenum   _currentSFactor;
+                    static GLenum   _currentDFactor;
             };
         }
     }

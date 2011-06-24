@@ -41,6 +41,10 @@ namespace Nc
         /**
             Manage all the input associated to the window <br/>
             A WindowInput is automatically created with his associated window so to get it call Window::GetInput()
+
+            \sa
+                - Window
+                - GLContext
         */
         class LGRAPHICS WindowInput : public System::Input
         {
@@ -48,8 +52,9 @@ namespace Nc
                 WindowInput(Window *win);
                 virtual ~WindowInput() {};
 
-                /** */
+                /** Create and init the input */
                 virtual void Create() = 0;
+                /** Check the events of the input */
                 virtual void CheckEvents() = 0;
 
                 /** Generate a resize event */
@@ -59,27 +64,27 @@ namespace Nc
                 void GenereEvent(const System::Event &e);
 
                 // return input state
-                /** Return the mouse position with the top/left ref point */
+                /** \return the mouse position with the top/left ref point */
                 static const Math::Vector2i &MousePosition()                                {return _mousePosition;}
 
-                /** return the mouse position with the bottom/left ref point */
+                /** \return the mouse position with the bottom/left ref point */
                 static Math::Vector2i       MousePositionInGLCoord();
 
-                /** Return true if the key is enabled */
+                /** \return true if the key is enabled */
                 static bool                 KeyState(System::Key::Code code)                {return _keyStates[code];}
 
-                /** Return true if the mouse button is enabled */
+                /** \return true if the mouse button is enabled */
                 static bool                 MouseButtonState(System::Mouse::Button code)    {return _mouseButtonStates[code];}
 
-                /** return the corresponding char */
+                /** \return the corresponding char */
                 static char                 ToChar(System::Key::Code key);
 
             protected:
-                static bool             _keyStates[System::Key::Count];
-                static bool             _mouseButtonStates[System::Mouse::Count];
-                static Math::Vector2i   _mousePosition;
-                bool                    _keyRepeat;
-                Window                  *_win;
+                static bool             _keyStates[System::Key::Count];             ///< Store the key states
+                static bool             _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states
+                static Math::Vector2i   _mousePosition;                             ///< Store the current position of the mouse
+                bool                    _keyRepeat;                                 ///< true if the key are repeating
+                Window                  *_win;                                      ///< instance to the attached windows
         };
     }
 }

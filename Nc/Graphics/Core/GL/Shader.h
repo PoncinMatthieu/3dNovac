@@ -57,11 +57,17 @@ namespace Nc
                     void                    LoadFromMemory(const char *vertexSource, const char *fragmentSource, const std::string &name);
 
                     /** Enable the shader */
-                    virtual inline void     Enable() const      {glUseProgram(_program);}
+                    virtual inline void     Enable() const      {if (_currentProgram != _program) {_currentProgram = _program; glUseProgram(_program);}}
                     /** Disable the shader */
-                    virtual inline void     Disable() const     {glUseProgram(0);}
+                    virtual inline void     Disable() const     {_currentProgram = 0; glUseProgram(0);}
                     /** Return the index of the shader */
                     virtual unsigned int    GetIndex() const    {return _program;}
+
+                    /**
+                        Reset the current program id, this could be usefull if you use a shader in a shared opengl context (thread).
+                        Because if you enable a shader in an opengl context, this shader will not be enabled in an other opengl context.
+                    */
+                    static void             ResetCurrentProgram()   {_currentProgram = 0;}
 
                     /** Return the given uniform location */
                     unsigned int            UniformLocation(const char *name);
@@ -89,6 +95,8 @@ namespace Nc
                     unsigned int    _program;           ///< the program shader
                     unsigned int    _vertexShader;      ///< the vertex shader
                     unsigned int    _fragmentShader;    ///< the fragment shader
+
+                    static unsigned int _currentProgram;
             };
         }
     }

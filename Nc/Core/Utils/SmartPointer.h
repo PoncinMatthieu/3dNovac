@@ -69,17 +69,21 @@ namespace Nc
                 }
 
                 // Accesseurs
-                inline T        *Get() const    {return _ptr;}              ///< Return the pointer
-                inline bool     Unique() const  {return ((*_nbRef) == 1);}  ///< Return true if the reference is unique (no another reference on the pointer)
+                /** Return the pointer */
+                inline T        *Get() const                            {return _ptr;}
+                /** Return true if the reference is unique (no another reference on the pointer) */
+                inline bool     Unique() const                          {return ((*_nbRef) == 1);}
 
                 // modificateurs
-                void                    Swap(SmartPointer &sp);             ///< Swap tow smartPointer
-                inline SmartPointer     CloneNoDestroyable() const {return SmartPointer<T,IsArray>(_ptr, false);}   ///< Clone the SmartPointer in no destroyable (the pointer is never deleted)
+                /** Swap tow smartPointer */
+                void                    Swap(SmartPointer &sp);
+                /** Clone the SmartPointer in no destroyable (the pointer is never deleted) */
+                inline SmartPointer     CloneNoDestroyable() const      {return SmartPointer<T,IsArray>(_ptr, false);}
 
             protected:
                 void Release();
-                virtual void AddRefPtr() const  {}
-                virtual void ReleasePtr()       {if (IsArray) delete[] _ptr; else delete _ptr;}
+                virtual void AddRefPtr() const                          {}
+                virtual void ReleasePtr()                               {if (IsArray) delete[] _ptr; else delete _ptr;}
 
                 T               *_ptr;
                 unsigned int    *_nbRef;

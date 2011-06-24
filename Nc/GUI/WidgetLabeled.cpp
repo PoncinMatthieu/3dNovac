@@ -32,13 +32,16 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::GUI;
 
-WidgetLabeled::WidgetLabeled(const Utils::Unicode::UTF32 &label, const Vector2i &pos, const Vector2i &size, Corner x, Corner y, Widget *parent, const std::string &ttf, Graphic::String::Style s)
-    : Widget(pos, size, x, y, NULL), _label(NULL)
+WidgetLabeled::WidgetLabeled(const Utils::Unicode::UTF32 &label, const Vector2i &pos, const Vector2i &size, Corner x, Corner y, const std::string &ttf, Graphic::String::Style s)
+    : Widget(ClassName(), pos, size, x, y), _label(NULL)
 {
-    _parent = parent;
     CreateLabel(label, ttf, s);
-    if (_parent != NULL)
-        _parent->AddChild(this);
+}
+
+WidgetLabeled::WidgetLabeled(const char *className, const Utils::Unicode::UTF32 &label, const Vector2i &pos, const Vector2i &size, Corner x, Corner y, const std::string &ttf, Graphic::String::Style s)
+    : Widget(className, pos, size, x, y), _label(NULL)
+{
+    CreateLabel(label, ttf, s);
 }
 
 WidgetLabeled::~WidgetLabeled()
@@ -48,20 +51,30 @@ WidgetLabeled::~WidgetLabeled()
 }
 
 WidgetLabeled::WidgetLabeled(const WidgetLabeled &w)
+    : Widget(w)
 {
     Copy(w);
 }
 
 WidgetLabeled &WidgetLabeled::operator = (const WidgetLabeled &w)
 {
+    if (_label != NULL)
+        delete _label;
+
+    Widget::operator = (w);
     Copy(w);
     return *this;
 }
 
 void    WidgetLabeled::Copy(const WidgetLabeled &w)
 {
-    Widget::Copy(w);
     _label = new Graphic::String(*w._label);
+}
+
+void WidgetLabeled::ToString(std::ostream &os) const
+{
+    Widget::ToString(os);
+    os << " Label: " << _label->Text();
 }
 
 void WidgetLabeled::Size(const Vector2f &size)
@@ -74,11 +87,11 @@ void WidgetLabeled::CreateLabel(const Utils::Unicode::UTF32 &l, const std::strin
 {
     if (_label)
         delete _label;
-    _label = new Graphic::String(l, _size.Data[1], Color(255, 0, 0), ttf, s);
-    _stateChange = true;
+    _label = new Graphic::String(l, _size.Data[1], Color(1, 0, 0), ttf, s);
+    _stateChanged = true;
 }
 
-void WidgetLabeled::Draw(Graphic::ISceneGraph *scene)
+void WidgetLabeled::Draw(Graphic::SceneGraph *scene)
 {
     // draw le label
     _label->Render(scene);
@@ -87,12 +100,11 @@ void WidgetLabeled::Draw(Graphic::ISceneGraph *scene)
     Widget::Draw(scene);
 }
 
-Vector2f WidgetLabeled::GetReelSize() const
+void WidgetLabeled::GetReelSize(Vector2f &size) const
 {
-    Vector2f v = Widget::GetReelSize();
-    v[0] += _label->Size().Data[0];
+    Widget::GetReelSize(size);
+    size[0] += _label->Size().Data[0];
     float s = _label->Size().Data[1];
-    if (s > v[1])
-        v[1] = s;
-    return v;
+    if (s > size[1])
+        size[1] = s;
 }

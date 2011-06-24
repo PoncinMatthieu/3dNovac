@@ -1,310 +1,319 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="../../../Nc/Graphics/Camera/Camera.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2647" topLine="41" />
+	<File name="../../../Nc/Graphics/Camera/Camera.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2718" topLine="62" />
 	</File>
-	<File name="../../../Nc/Graphics/Camera/Camera2d.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1444" topLine="17" />
+	<File name="../../../Nc/Graphics/Camera/Camera.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2002" topLine="90" />
 	</File>
-	<File name="../../../Nc/Graphics/Camera/Camera3d.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3310" topLine="38" />
+	<File name="../../../Nc/Graphics/Camera/Camera2d.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2055" topLine="22" />
 	</File>
-	<File name="../../../Nc/Graphics/Camera/StandardCamera3d.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2810" topLine="98" />
+	<File name="../../../Nc/Graphics/Camera/Camera2d.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2284" topLine="27" />
 	</File>
-	<File name="../../../Nc/Graphics/Camera/StandardCamera3d.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1337" topLine="23" />
+	<File name="../../../Nc/Graphics/Camera/Camera3d.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="5036" topLine="132" />
+	</File>
+	<File name="../../../Nc/Graphics/Camera/Camera3d.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="4318" topLine="49" />
+	</File>
+	<File name="../../../Nc/Graphics/Camera/StandardCamera3d.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="5646" topLine="382" />
+	</File>
+	<File name="../../../Nc/Graphics/Camera/StandardCamera3d.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="4506" topLine="92" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/Font.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="144" topLine="0" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/Font.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1637" topLine="25" />
+		<Cursor1 position="1637" topLine="52" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/FontLoader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1512" topLine="8" />
+		<Cursor1 position="1512" topLine="11" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/FontLoaderFreeType.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2160" topLine="38" />
+		<Cursor1 position="2160" topLine="53" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/FontLoaderFreeType.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="1894" topLine="19" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1021" topLine="0" />
+		<Cursor1 position="1279" topLine="25" />
+	</File>
+	<File name="../../../Nc/Graphics/Core/GL/Blend.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2810" topLine="57" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/Blend.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1355" topLine="48" />
+		<Cursor1 position="2488" topLine="44" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/DataBuffer.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="9391" topLine="160" />
+		<Cursor1 position="3970" topLine="73" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/Extension.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="8858" topLine="171" />
+		<Cursor1 position="8137" topLine="189" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/Extension.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2087" topLine="42" />
+		<Cursor1 position="2036" topLine="51" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/GLObject.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1246" topLine="37" />
+		<Cursor1 position="1246" topLine="19" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/GLObject.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2968" topLine="47" />
+		<Cursor1 position="4197" topLine="59" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/GeometryBuffer.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3314" topLine="20" />
+		<Cursor1 position="11257" topLine="269" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/IndexBuffer.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="144" topLine="0" />
+		<Cursor1 position="1206" topLine="0" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/IndexBuffer.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2837" topLine="31" />
+		<Cursor1 position="2585" topLine="31" />
+	</File>
+	<File name="../../../Nc/Graphics/Core/GL/RasterMode.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1106" topLine="80" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/RasterMode.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1349" topLine="28" />
+		<Cursor1 position="4415" topLine="85" />
 	</File>
-	<File name="../../../Nc/Graphics/Core/GL/Shader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2784" topLine="62" />
+	<File name="../../../Nc/Graphics/Core/GL/Shader.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1180" topLine="26" />
 	</File>
-	<File name="../../../Nc/Graphics/Core/GL/Shader.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2851" topLine="52" />
+	<File name="../../../Nc/Graphics/Core/GL/Shader.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2321" topLine="48" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/Texture.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1617" topLine="36" />
+		<Cursor1 position="2150" topLine="55" />
 	</File>
-	<File name="../../../Nc/Graphics/Core/GL/Texture.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2771" topLine="55" />
+	<File name="../../../Nc/Graphics/Core/GL/Texture.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2505" topLine="30" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/VertexArray.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="144" topLine="0" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/VertexArray.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2109" topLine="19" />
+		<Cursor1 position="2109" topLine="23" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/GL/VertexBuffer.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="5437" topLine="95" />
+		<Cursor1 position="3348" topLine="26" />
+	</File>
+	<File name="../../../Nc/Graphics/Core/GL/VertexDescriptor.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2204" topLine="34" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/Image.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="1716" topLine="30" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/Image.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1403" topLine="46" />
+		<Cursor1 position="1403" topLine="31" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/ImageLoader.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="1954" topLine="20" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/ImageLoaderPng.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="6566" topLine="126" />
+		<Cursor1 position="6513" topLine="125" />
 	</File>
 	<File name="../../../Nc/Graphics/Core/ImageLoaderPng.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1480" topLine="28" />
+		<Cursor1 position="2288" topLine="28" />
 	</File>
-	<File name="../../../Nc/Graphics/Define.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3926" topLine="75" />
+	<File name="../../../Nc/Graphics/Define.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="4497" topLine="96" />
 	</File>
 	<File name="../../../Nc/Graphics/Effect/Animation.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="6830" topLine="62" />
+		<Cursor1 position="1850" topLine="23" />
 	</File>
-	<File name="../../../Nc/Graphics/Effect/Effect.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1246" topLine="12" />
+	<File name="../../../Nc/Graphics/Effect/DefaultLightingMaterial.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="8501" topLine="175" />
+	</File>
+	<File name="../../../Nc/Graphics/Effect/DefaultLightingMaterial.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2436" topLine="40" />
+	</File>
+	<File name="../../../Nc/Graphics/Effect/Effect.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1568" topLine="18" />
+	</File>
+	<File name="../../../Nc/Graphics/Effect/FramesAnimation.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3280" topLine="58" />
+	</File>
+	<File name="../../../Nc/Graphics/Effect/LightingEffect.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1294" topLine="8" />
+	</File>
+	<File name="../../../Nc/Graphics/Effect/LightingEffect.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3273" topLine="16" />
 	</File>
 	<File name="../../../Nc/Graphics/Effect/MatrixAnimation.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1573" topLine="26" />
+		<Cursor1 position="1387" topLine="26" />
 	</File>
 	<File name="../../../Nc/Graphics/Effect/MatrixAnimation.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2480" topLine="29" />
+		<Cursor1 position="1693" topLine="37" />
 	</File>
 	<File name="../../../Nc/Graphics/Effect/SpriteAnim.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="144" topLine="0" />
+		<Cursor1 position="1179" topLine="0" />
 	</File>
-	<File name="../../../Nc/Graphics/Effect/SpriteAnim.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1311" topLine="28" />
+	<File name="../../../Nc/Graphics/Effect/SpriteAnim.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1656" topLine="33" />
 	</File>
-	<File name="../../../Nc/Graphics/Engine.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1702" topLine="29" />
+	<File name="../../../Nc/Graphics/Engine.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1544" topLine="28" />
 	</File>
-	<File name="../../../Nc/Graphics/Engine.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3349" topLine="51" />
+	<File name="../../../Nc/Graphics/Engine.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="4107" topLine="60" />
 	</File>
 	<File name="../../../Nc/Graphics/Graphics.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="432" topLine="0" />
 	</File>
-	<File name="../../../Nc/Graphics/Graphics.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1141" topLine="13" />
+	<File name="../../../Nc/Graphics/Graphics.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="609" topLine="9" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/BasicSourceShader.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3636" topLine="152" />
+	<File name="../../../Nc/Graphics/Material/DefaultMaterials.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="9759" topLine="249" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/BasicSourceShader.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1593" topLine="18" />
+	<File name="../../../Nc/Graphics/Material/DefaultMaterials.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="7711" topLine="152" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/BasicVertexType.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="144" topLine="0" />
+	<File name="../../../Nc/Graphics/Material/DefaultSourceShader.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3187" topLine="112" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/BasicVertexType.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3640" topLine="57" />
+	<File name="../../../Nc/Graphics/Material/DefaultSourceShader.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1298" topLine="18" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/DefaultLightingMaterial.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1032" topLine="15" />
+	<File name="../../../Nc/Graphics/Material/DefaultVertexType.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2828" topLine="47" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/DefaultLightingMaterial.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2004" topLine="18" />
+	<File name="../../../Nc/Graphics/Material/DefaultVertexType.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3012" topLine="74" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/DefaultMaterials.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="7642" topLine="69" />
+	<File name="../../../Nc/Graphics/Material/Drawable.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1352" topLine="9" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/Material.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1788" topLine="27" />
+	<File name="../../../Nc/Graphics/Material/Drawable.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3401" topLine="68" />
 	</File>
-	<File name="../../../Nc/Graphics/Material/MaterialConfig.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1356" topLine="25" />
+	<File name="../../../Nc/Graphics/Material/FactoryDefaultMaterials.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2153" topLine="30" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/2D/Object2d.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="144" topLine="0" />
+	<File name="../../../Nc/Graphics/Material/FactoryDefaultMaterials.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3022" topLine="38" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/2D/Object2d.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1168" topLine="7" />
+	<File name="../../../Nc/Graphics/Material/IMaterial.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2705" topLine="37" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/2D/Sprite.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2183" topLine="44" />
+	<File name="../../../Nc/Graphics/Material/MaterialConfig.h" open="0" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1982" topLine="37" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/2D/Sprite.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2968" topLine="39" />
+	<File name="../../../Nc/Graphics/Object/BasicMeshCreator.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2152" topLine="19" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/2D/String.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1319" topLine="24" />
+	<File name="../../../Nc/Graphics/Object/BasicMeshCreator.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1061" topLine="15" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/2D/String.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="4619" topLine="60" />
+	<File name="../../../Nc/Graphics/Object/BoundingBox.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3349" topLine="73" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/BasicMeshCreator.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2431" topLine="21" />
+	<File name="../../../Nc/Graphics/Object/BoundingBox.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2750" topLine="43" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/BasicMeshCreator.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1275" topLine="13" />
+	<File name="../../../Nc/Graphics/Object/Object.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="4837" topLine="180" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/BoundingBox.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3285" topLine="68" />
+	<File name="../../../Nc/Graphics/Object/Object.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3045" topLine="41" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/BoundingBox.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2027" topLine="34" />
+	<File name="../../../Nc/Graphics/Object/SkyBox.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2380" topLine="56" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/Light.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1281" topLine="20" />
+	<File name="../../../Nc/Graphics/Object/SkyBox.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1919" topLine="33" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/Light.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1148" topLine="6" />
+	<File name="../../../Nc/Graphics/Object/Sprite.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1802" topLine="29" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/Mesh.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="4699" topLine="43" />
+	<File name="../../../Nc/Graphics/Object/Sprite.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1754" topLine="39" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/MeshFormatManager.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1947" topLine="24" />
+	<File name="../../../Nc/Graphics/Object/String.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2861" topLine="44" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/MeshFormatManager.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1287" topLine="23" />
+	<File name="../../../Nc/Graphics/Object/String.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3850" topLine="80" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/MeshFormatPlugin.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1969" topLine="19" />
+	<File name="../../../Nc/Graphics/Scene/SceneGraph.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1523" topLine="25" />
 	</File>
-	<File name="../../../Nc/Graphics/Object/3D/Object3d.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3561" topLine="132" />
-	</File>
-	<File name="../../../Nc/Graphics/Object/3D/Object3d.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="4322" topLine="51" />
-	</File>
-	<File name="../../../Nc/Graphics/Object/3D/SkyBox.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2129" topLine="44" />
-	</File>
-	<File name="../../../Nc/Graphics/Object/3D/SkyBox.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1349" topLine="25" />
-	</File>
-	<File name="../../../Nc/Graphics/Object/Drawable.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1767" topLine="32" />
-	</File>
-	<File name="../../../Nc/Graphics/Object/Object.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1094" topLine="0" />
-	</File>
-	<File name="../../../Nc/Graphics/Object/Object.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1183" topLine="36" />
-	</File>
-	<File name="../../../Nc/Graphics/Object/ObjectContainer.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="144" topLine="0" />
-	</File>
-	<File name="../../../Nc/Graphics/Object/ObjectContainer.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2135" topLine="23" />
-	</File>
-	<File name="../../../Nc/Graphics/Scene/Basic3dSceneGraph.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="4581" topLine="115" />
-	</File>
-	<File name="../../../Nc/Graphics/Scene/Basic3dSceneGraph.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="4296" topLine="55" />
-	</File>
-	<File name="../../../Nc/Graphics/Scene/I2dSceneGraph.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1306" topLine="10" />
-	</File>
-	<File name="../../../Nc/Graphics/Scene/I2dSceneGraph.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1269" topLine="31" />
-	</File>
-	<File name="../../../Nc/Graphics/Scene/I3dSceneGraph.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1163" topLine="6" />
-	</File>
-	<File name="../../../Nc/Graphics/Scene/I3dSceneGraph.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2239" topLine="24" />
-	</File>
-	<File name="../../../Nc/Graphics/Scene/ISceneGraph.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="4281" topLine="45" />
+	<File name="../../../Nc/Graphics/Scene/SceneGraph.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2177" topLine="40" />
 	</File>
 	<File name="../../../Nc/Graphics/Scene/SceneGraphManager.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1505" topLine="22" />
+		<Cursor1 position="2069" topLine="54" />
 	</File>
-	<File name="../../../Nc/Graphics/Scene/SceneGraphManager.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2049" topLine="38" />
+	<File name="../../../Nc/Graphics/Scene/SceneGraphManager.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3320" topLine="44" />
+	</File>
+	<File name="../../../Nc/Graphics/Scene/SceneNode.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1528" topLine="72" />
+	</File>
+	<File name="../../../Nc/Graphics/Scene/SceneNode.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="4661" topLine="79" />
+	</File>
+	<File name="../../../Nc/Graphics/Scene/SceneNodeFormatManager.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1767" topLine="24" />
+	</File>
+	<File name="../../../Nc/Graphics/Scene/SceneNodeFormatPlugin.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="0" topLine="19" />
+	</File>
+	<File name="../../../Nc/Graphics/SpacePartitioning/Octree.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3079" topLine="80" />
+	</File>
+	<File name="../../../Nc/Graphics/SpacePartitioning/Octree.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="3231" topLine="57" />
+	</File>
+	<File name="../../../Nc/Graphics/SpacePartitioning/SubTree.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1472" topLine="24" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Context/GLContext.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1426" topLine="6" />
+		<Cursor1 position="1396" topLine="0" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Context/GLContext.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1839" topLine="37" />
+		<Cursor1 position="2225" topLine="37" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Context/GLXContext.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="5251" topLine="124" />
+		<Cursor1 position="7590" topLine="178" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Context/GLXContext.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="2382" topLine="29" />
+		<Cursor1 position="1585" topLine="29" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Input/WindowInput.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="144" topLine="0" />
+		<Cursor1 position="2033" topLine="45" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Input/WindowInput.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3196" topLine="48" />
+		<Cursor1 position="3757" topLine="53" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Input/XWindowInput.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor1 position="144" topLine="0" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Input/XWindowInput.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1371" topLine="25" />
+		<Cursor1 position="1331" topLine="25" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Window/ICursor.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="3211" topLine="64" />
+		<Cursor1 position="2586" topLine="37" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Window/Window.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="144" topLine="0" />
+		<Cursor1 position="1193" topLine="0" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Window/Window.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="4043" topLine="66" />
+		<Cursor1 position="3744" topLine="30" />
 	</File>
-	<File name="../../../Nc/Graphics/Window/Window/XCursor.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="10029" topLine="247" />
+	<File name="../../../Nc/Graphics/Window/Window/XCursor.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="1888" topLine="32" />
 	</File>
-	<File name="../../../Nc/Graphics/Window/Window/XCursor.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1913" topLine="23" />
+	<File name="../../../Nc/Graphics/Window/Window/XCursor.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor1 position="2067" topLine="36" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Window/XWindow.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="16455" topLine="337" />
+		<Cursor1 position="19227" topLine="249" />
 	</File>
 	<File name="../../../Nc/Graphics/Window/Window/XWindow.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor1 position="1632" topLine="30" />
+		<Cursor1 position="2029" topLine="33" />
 	</File>
 </CodeBlocks_layout_file>

@@ -28,6 +28,7 @@
 #define NC_GUI_GUISCENEGRAPH_H_
 
 #include <list>
+#include <Nc/Graphics/Camera/Camera2d.h>
 #include "Define.h"
 #include "Widget.h"
 
@@ -36,50 +37,36 @@ namespace Nc
     /// This namespace provide many Widget and a SceneGraph to create and render a 2d Graphical User Interface
     namespace GUI
     {
-        /// Manage a 2d scene graph with the management the interaction of widgets
-        class LGUI  SceneGraph : public Graphic::I2dSceneGraph
+        /// Manage a 2d scene graph with the management of the interaction of widgets and reception of events
+        class LGUI  SceneGraph : public Graphic::SceneGraph
         {
             public:
-                SceneGraph(Graphic::Camera2d *camera);
+                SceneGraph();
+                SceneGraph(const char *className);
+                SceneGraph(const SceneGraph &scene);
+                SceneGraph &operator = (const SceneGraph &scene);
                 virtual ~SceneGraph();
 
-                /** Render the widgets */
-                virtual void RenderIn2D();
-
-                // accessors
-                /** Return the list of widgets */
-                inline const ListPWidget                &Widgets() const        {return _listWidget;}
-                /** Return the list of object */
-                inline const Graphic::ListPObject       &Objects() const        {return _listObject;}
-
-                /** Add an object to the scene */
-                void AddObject(Graphic::Object *object);
-                /** Add a widget to the scene */
-                void AddWidget(Widget *widget);
-                /** Bring to front the given widget */
-                void BringToFront(Widget *widget);
-                /** Remove the given object from the list, if del is true then the delete it */
-                void DeleteObject(Graphic::Object *object, bool del = true);
-                /** clear the list of object and widget, if del is true then the delete it */
-                void Clear(bool del);
+                static const char   *ClassName()        {return "GUI::SceneGraph";}
+                virtual ISceneNode  *Clone() const      {return new SceneGraph(*this);}
 
                 /** Return true if a widget is focused */
-                bool Focused()              {return (_widgetFocused != NULL);}
+                bool Focused()                          {return (_widgetFocused != NULL);}
                 /** Unfocus the current focuse widget */
-                void Unfocus()              {if (_widgetFocused != NULL) _widgetFocused->Focus(false); _widgetFocused = NULL;}
+                void Unfocus()                          {if (_widgetFocused != NULL) _widgetFocused->Focus(false); _widgetFocused = NULL;}
                 /** Unfocus the given widget */
-                void Unfocus(Widget *w)   {w->Focus(false); _widgetFocused = NULL;}
+                void Unfocus(Widget *w)                 {w->Focus(false); _widgetFocused = NULL;}
                 /** Focus the given widget */
-                void Focus(Widget *w)    {_widgetFocused = w; _widgetFocused->Focus(true);}
+                void Focus(Widget *w)                   {_widgetFocused = w; _widgetFocused->Focus(true);}
 
                 /** Manage the window events by dispatching the event to the good widget */
                 void ManageWindowEvent(const Nc::System::Event &event);
 
+                /** Bring to front the given widget */
+                void BringToFront(Widget *w);
+
             private:
-                ListPWidget             _listWidget;        ///< the list of widget
-                Graphic::ListPObject    _listObject;        ///< the list of object
                 Widget                  *_widgetFocused;    ///< the current focused widget
-                System::Mutex           _mutex;             ///< the mutex that protect the lists
         };
     }
 }

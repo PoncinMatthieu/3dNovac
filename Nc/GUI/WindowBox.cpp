@@ -33,6 +33,36 @@ using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
 WindowBox::WindowBox(const std::string &title, const std::string &ttf)
+    : Widget(ClassName())
+{
+    Init(title, ttf);
+}
+
+WindowBox::WindowBox(const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent)
+    : Widget(ClassName(), pos, size, x, y)
+{
+    Init(title, "arial");
+}
+
+WindowBox::WindowBox(const char *className, const std::string &title, const std::string &ttf)
+    : Widget(className)
+{
+    Init(title, ttf);
+}
+
+WindowBox::WindowBox(const char *className, const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent)
+    : Widget(className, pos, size, x, y)
+{
+    Init(title, "arial");
+}
+
+void WindowBox::ToString(std::ostream &os) const
+{
+    Widget::ToString(os);
+    os << " Title: " << _title->Text();
+}
+
+void  WindowBox::Init(const std::string &title, const std::string &ttf)
 {
     _titleHeight = 15;
     _title = NULL;
@@ -43,42 +73,21 @@ WindowBox::WindowBox(const std::string &title, const std::string &ttf)
     _titleColor1 = Color(1.f, 0.788235294f, 0.48627451f);
     _titleColor2 = Color(0, 0, 0);
 
-    _drawableTitle.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_drawableTitle);
-    _drawableTitle.SetPrimitiveType(GL_TRIANGLE_STRIP);
-    _drawableBox.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_drawableBox);
-    _drawableBox.SetPrimitiveType(GL_TRIANGLE_STRIP);
-    _drawableEdge.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_drawableEdge);
-    _drawableEdge.SetPrimitiveType(GL_LINE_LOOP);
-    _stateChange = true;
+    _indexDrawable = _drawables.size();
+    _drawables.reserve(_indexDrawable+3);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_TRIANGLE_STRIP);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_TRIANGLE_STRIP);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_LOOP);
+    geometry1->VBO().Init(4, GL_STREAM_DRAW);
+    geometry2->VBO().Init(4, GL_STREAM_DRAW);
+    geometry3->VBO().Init(4, GL_STREAM_DRAW);
+    _drawables.push_back(new Drawable(geometry1));
+    _drawables.push_back(new Drawable(geometry2));
+    _drawables.push_back(new Drawable(geometry3));
+    ChooseDefaultMaterial();
+    _stateChanged = true;
 }
 
-WindowBox::WindowBox(const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent) : Widget(pos, size, x, y, NULL)
-{
-    _titleHeight = 15;
-    _title = NULL;
-    ChangeTitle(title, "arial");
-    if (_parent != NULL)
-        _parent->AddChild(this);
-
-    //_dragable = true;
-    _drawTitle = true;
-    _titleColor1 = Color(1.f, 0.788235294f, 0.48627451f);
-    _titleColor2 = Color(0, 0, 0);
-
-    _drawableTitle.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_drawableTitle);
-    _drawableTitle.SetPrimitiveType(GL_TRIANGLE_STRIP);
-    _drawableBox.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_drawableBox);
-    _drawableBox.SetPrimitiveType(GL_TRIANGLE_STRIP);
-    _drawableEdge.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_drawableEdge);
-    _drawableEdge.SetPrimitiveType(GL_LINE_LOOP);
-    _stateChange = true;
-}
 
 WindowBox::~WindowBox()
 {
@@ -86,19 +95,23 @@ WindowBox::~WindowBox()
 }
 
 WindowBox::WindowBox(const WindowBox &w)
+    : Widget(w)
 {
     Copy(w);
 }
 
 WindowBox &WindowBox::operator = (const WindowBox &w)
 {
+    if (_title != NULL)
+        delete _title;
+
+    Widget::operator = (w);
     Copy(w);
     return *this;
 }
 
 void    WindowBox::Copy(const WindowBox &w)
 {
-    Widget::Copy(w);
     _color = w._color;
     //_dragable = w._dragable;
     _title = new Graphic::String(*w._title);
@@ -107,9 +120,19 @@ void    WindowBox::Copy(const WindowBox &w)
     _titleHeight = w._titleHeight;
     _drawTitle = w._drawTitle;
 
-    _drawableTitle = w._drawableTitle;
-    _drawableBox = w._drawableBox;
-    _drawableEdge = w._drawableEdge;
+    _indexDrawable = _drawables.size();
+    _drawables.reserve(_indexDrawable+3);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_TRIANGLE_STRIP);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_TRIANGLE_STRIP);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_LOOP);
+    geometry1->VBO().Init(4, GL_STREAM_DRAW);
+    geometry2->VBO().Init(4, GL_STREAM_DRAW);
+    geometry3->VBO().Init(4, GL_STREAM_DRAW);
+    _drawables.push_back(new Drawable(geometry1));
+    _drawables.push_back(new Drawable(geometry2));
+    _drawables.push_back(new Drawable(geometry3));
+    ChooseDefaultMaterial();
+    _stateChanged = true;
 }
 
 void WindowBox::ChangeTitle(const std::string &title, const std::string &ttf)
@@ -117,7 +140,7 @@ void WindowBox::ChangeTitle(const std::string &title, const std::string &ttf)
     if (_title != NULL)
         delete _title;
     _title = new Graphic::String(title.c_str(), _titleHeight, Color(0, 0, 0), ttf);
-    _stateChange = true;
+    _stateChanged = true;
 }
 
 void WindowBox::Update()
@@ -127,24 +150,24 @@ void WindowBox::Update()
 // title
     if (_drawTitle)
     {
-        Array<BasicVertexType::Colored2d, 4>   vertices;
+        Array<DefaultVertexType::Colored2d, 4>   vertices;
         vertices[0].Fill(0, _size.Data[1] - _titleHeight, _titleColor1);
         vertices[1].Fill(_size.Data[0], _size.Data[1] - _titleHeight, _titleColor2);
         vertices[2].Fill(0, _size.Data[1], _titleColor1);
         vertices[3].Fill(_size.Data[0], _size.Data[1], _titleColor2);
-        _drawableTitle.GetVBO().UpdateData(vertices.Data);
+        static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable]->Geometry)->VBO().UpdateData(vertices.Data);
 
         _title->Matrix.Translation(5.f, 3.f, 0.f);
         _title->Matrix.AddTranslation(0, _size.Data[1] - _titleHeight, 0);
     }
 
 // box
-    Array<BasicVertexType::Colored2d, 4>   vertices;
+    Array<DefaultVertexType::Colored2d, 4>   vertices;
     vertices[0].Fill(0, 0, _color);
     vertices[1].Fill(_size.Data[0], 0, _color);
     vertices[2].Fill(0, _size.Data[1] - _titleHeight, _color);
     vertices[3].Fill(_size.Data[0], _size.Data[1] - _titleHeight, _color);
-    _drawableBox.GetVBO().UpdateData(vertices.Data);
+    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable+1]->Geometry)->VBO().UpdateData(vertices.Data);
 
 // edge
     Vector2f size(_size.Data[0], _size.Data[1]);
@@ -155,45 +178,42 @@ void WindowBox::Update()
     if (!_drawTitle)
         size.Data[1] -= _titleHeight;
 
-    Array<BasicVertexType::Colored2d, 4>   verticesEdge;
+    Array<DefaultVertexType::Colored2d, 4>   verticesEdge;
     verticesEdge[0].Fill(0, 0, c);
     verticesEdge[1].Fill(0, size.Data[1], c);
     verticesEdge[2].Fill(size.Data[0], size.Data[1], c);
     verticesEdge[3].Fill(size.Data[0], 0, c);
-    _drawableEdge.GetVBO().UpdateData(verticesEdge.Data);
+    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable+2]->Geometry)->VBO().UpdateData(verticesEdge.Data);
 }
 
-void WindowBox::Draw(Graphic::ISceneGraph *scene)
+void WindowBox::Draw(Graphic::SceneGraph *scene)
 {
     // affichage du titre
     if (_drawTitle)
     {
-        _materialColored2d->Render(scene, _drawableTitle);
+        GetMaterial()->Render(scene, *_drawables[_indexDrawable]);
         _title->Render(scene);
     }
     // affichage de la box
-    _materialColored2d->Render(scene, _drawableBox);
+    GetMaterial()->Render(scene, *_drawables[_indexDrawable+1]);
 
     // affiche le contour de la box
-    _materialColored2d->Render(scene, _drawableEdge);
+    GetMaterial()->Render(scene, *_drawables[_indexDrawable+2]);
 
     Widget::Draw(scene);
 }
 
-Vector2f WindowBox::TranslateChild(const Corner corner[2]) const
+void WindowBox::TranslateChild(const Corner corner[2], Vector2f &v) const
 {
-    Vector2f v;
     if (_drawTitle && (corner[1] == Top || corner[1] == Center))
         v[1] = -_titleHeight;
     else if (!_drawTitle && _corner[1] == Bottom)
         v[1] += _titleHeight;
-    return v;
 }
 
-Vector2f WindowBox::GetReelSize() const
+void WindowBox::GetReelSize(Vector2f &size) const
 {
-    Vector2f    r(_size);
+    Widget::GetReelSize(size);
     if (!_drawTitle)
-        r.Data[1] -= _titleHeight;
-    return r;
+        size.Data[1] -= _titleHeight;
 }

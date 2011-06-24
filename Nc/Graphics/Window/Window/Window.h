@@ -56,7 +56,7 @@ namespace Nc
 
             public:
                 Window() : _isCreate(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)  {}
-                virtual ~Window() {}
+                virtual ~Window();
 
                 /** Return true if the Window is create */
                 virtual bool        IsCreate() const  {return _isCreate;}
@@ -80,11 +80,14 @@ namespace Nc
                 /** Resize the window */
                 virtual void                    Resize(unsigned int width, unsigned int height) = 0;
 
-                /** Return the width of the window */
+                /** \return the width of the window */
                 static inline unsigned int		Width()                 {return _width;}
 
-                /** Return the height of the window */
+                /** \return the height of the window */
                 static inline unsigned int		Height()                {return _height;}
+
+                /** Set the window size */
+                static inline void              ResetSize(unsigned int width, unsigned int height)  {_width = width; _height = height;}
 
                 /** Return the window input associated */
                 inline WindowInput              *GetInput()             {return _input;}                // get a pointer to a Windowinput who manage the inputs of a window

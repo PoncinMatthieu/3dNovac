@@ -31,6 +31,8 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic::GL;
 
+unsigned int Shader::_currentProgram = 0;
+
 Shader::Shader()
 {
     _vertexShader = 0;
@@ -74,6 +76,7 @@ void    Shader::Release()
         glDeleteShader(_fragmentShader);
     if (_program != 0)
         glDeleteProgram(_program);
+    LOG_DEBUG << "Program Shader " << _program << " Released" << std::endl;
 }
 
 unsigned int    Shader::NewShader(const Utils::FileName &filename, GLenum type)
@@ -97,7 +100,7 @@ unsigned int    Shader::CompileShader(const char *source, GLenum type, const std
     glShaderSource(shader, 1, &source, NULL);
 
     //compilation du shader
-    LOG << "Compile `" << name << "`...\t\t\t";
+    LOG_DEBUG << "Compile `" << name << "`...\t\t\t";
     int compile_status = 1;
     glCompileShader(shader);
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_status);
@@ -112,7 +115,7 @@ unsigned int    Shader::CompileShader(const char *source, GLenum type, const std
         delete[] error;
         throw Utils::Exception("Shader", se);
     }
-    LOG << "DONE" << std::endl;
+    LOG_DEBUG << "DONE" << std::endl;
     return shader;
 }
 
@@ -131,7 +134,7 @@ void            Shader::AttachAndLinkProgram(unsigned int program, unsigned int 
         glAttachShader(program, vertexShader);
     if (fragmentShader != 0)
         glAttachShader(program, fragmentShader);
-    LOG << "Link program shader\t\t\t\t\t";
+    LOG_DEBUG << "Link program shader " << program << "\t\t\t\t\t";
     glLinkProgram(program);
     int linkStatus = 0;
     glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
@@ -146,7 +149,7 @@ void            Shader::AttachAndLinkProgram(unsigned int program, unsigned int 
         delete[] error;
         throw Utils::Exception("Shader", s);
     }
-    LOG << "DONE" << std::endl;
+    LOG_DEBUG << "DONE" << std::endl;
 }
 
 unsigned int    Shader::UniformLocation(const char *name)

@@ -55,15 +55,23 @@ namespace Nc
                 template<typename U>    Box operator    +   (const Box<U,D> &b) const;
 
                 // accessor
+                /** \return the minima point of the box */
                 inline const Vector<T,D>    &Min() const               {return _min;}
+                /** \return the maxima point of the box */
                 inline const Vector<T,D>    &Max() const               {return _max;}
+                /** \return the minima coordinate of the given \p dimension */
                 const T                     &Min(unsigned char dimension) const;
+                /** \return the maxima coordinate of the given \p dimension */
                 const T                     &Max(unsigned char dimension) const;
+                /** \return the minima coordinate of the given \p dimension */
                 void                        Min(unsigned char dimension, const T &v);
+                /** \return the maxima coordinate of the given \p dimension */
                 void                        Max(unsigned char dimension, const T &v);
 
                 /** \return the center of the box */
                 Vector<T,D>                 Center() const;
+                /** \return the lenght of the box for each dimensions */
+                Vector<T,D>                 Length() const;
                 /** \return the lenght of the given dimension index */
                 T                           Length(unsigned char dimension) const;
                 /** \return the size of the box for each dimension */
@@ -74,6 +82,8 @@ namespace Nc
                 // modifier
                 /** Initialize the box */
                 void                        Init();
+                /** Initialize the box with the given center and size */
+                void                        Init(const Vector<T,D> &center, const T &size);
                 /** Transform the box with the given matrix */
                 void                        Transform(const TMatrix &m);
 
@@ -204,6 +214,12 @@ namespace Nc
         }
 
         template<typename T, unsigned char D>
+        Vector<T,D>     Box<T,D>::Length() const
+        {
+            return (_max - _min);
+        }
+
+        template<typename T, unsigned char D>
         T   Box<T,D>::Length(unsigned char dimension) const
         {
             if (dimension >= D)
@@ -248,6 +264,16 @@ namespace Nc
         {
             _min = Vector<T,D>::Null;
             _max = Vector<T,D>::Null;
+        }
+
+        template<typename T, unsigned char D>
+        void Box<T,D>::Init(const Vector<T,D> &center, const T &size)
+        {
+            for (unsigned int i = 0; i < D; ++i)
+            {
+                _min.Data[i] = center.Data[i] - size;
+                _max.Data[i] = center.Data[i] + size;
+            }
         }
 
     }

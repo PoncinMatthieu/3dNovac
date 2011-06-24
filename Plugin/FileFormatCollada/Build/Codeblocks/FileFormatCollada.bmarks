@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <BrowseTracker_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="../../Plugin.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="30294" topLine="450" />
+	<File name="../../Plugin.cpp" open="0" top="0" tabpos="29">
+		<Cursor position="15858" topLine="395" />
 	</File>
-	<File name="../../Plugin.h" open="0" top="0" tabpos="0">
-		<Cursor position="1455" topLine="23" />
+	<File name="../../Plugin.h" open="0" top="0" tabpos="28">
+		<Cursor position="1243" topLine="64" />
+	</File>
+	<File name="../../main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1123" topLine="0" />
 	</File>
 </BrowseTracker_layout_file>

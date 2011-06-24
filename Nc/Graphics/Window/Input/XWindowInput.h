@@ -38,7 +38,8 @@ namespace Nc
 
         /// Implementation of a WindowInput for an X11 System
         /**
-            For more detail show WindowInput
+            \sa
+                - WindowInput
         */
         class LCORE XWindowInput : public WindowInput
         {

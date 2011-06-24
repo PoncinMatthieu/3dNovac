@@ -34,10 +34,14 @@
 	    /// This namespace provide some multiarchi function and class
 		namespace System
 		{
-		    LCORE void            Sleep(float second);         ///< sleep in second
-			LCORE double          Time();                      ///< return time in second
-            LCORE char*           Strdup(const char *str);     ///< remalloc a null terminated string
-            LCORE unsigned int    ThreadId();                  ///< return the current thread id
+		    /** Sleep in second */
+		    LCORE void            Sleep(float second);
+		    /** \return time in second */
+			LCORE double          Time();
+			/** remalloc a null terminated string */
+            LCORE char*           Strdup(const char *str);
+            /** \return the current thread id */
+            LCORE unsigned int    ThreadId();
         }
 	}
 

@@ -53,7 +53,7 @@ namespace Nc
                 /** Save the configuration file */
                 void Save();
 
-                /** Return the Content of the configuration in Xml structure */
+                /** \return the Content of the configuration in Xml structure */
                 inline Utils::Xml::Object *operator -> ()
                 {
                     if (_content == NULL)
@@ -63,8 +63,8 @@ namespace Nc
 
                 /**
                     Check the state of the "GlobalConfig/ErrorTreatAsWarning/state" option,
-                    if true, then Write a warning
-                    else, throw an exception
+                    if true, then Write a warning,
+                    otherwise, throw an exception
                 */
                 static inline void Error(const std::string &s1, const std::string &s2)
                 {
@@ -79,15 +79,15 @@ namespace Nc
                 Config()    {_content = NULL;}
                 ~Config();
 
-                Utils::Xml::File        _file;
-                Utils::Xml::Object      *_content;
+                Utils::Xml::File        _file;          ///< xml file used to read and write the configs
+                Utils::Xml::Object      *_content;      ///< xml object witch store the configs
 
                 friend class Utils::Singleton<Config>;
         };
     }
 
     // explicit instantiation
-    //static template class Utils::Singleton<System::Config>;
+    template class Utils::Singleton<System::Config>;
 }
 
 #endif

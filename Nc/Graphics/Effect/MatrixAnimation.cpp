@@ -31,36 +31,39 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 MatrixAnimation::MatrixAnimation()
+    : Animation(ClassName())
+{
+}
+/*
+MatrixAnimation::MatrixAnimation(const TMatrix &transformation)
+    : Animation(ClassName())
 {
     _alive = true;
-    _object = NULL;
+    _transformation = transformation;
 }
-
-MatrixAnimation::MatrixAnimation(Object *o, const TMatrix &transformation)
-{
-    _alive = true;
-    _object = o;
-//    _transformation = transformation;
-    _initialMatrix = _object->Matrix;
-}
-
+*/
 MatrixAnimation::~MatrixAnimation()
 {
 }
 
 void MatrixAnimation::Update(float runningTime)
 {
-    if (_object != NULL)
-    {
 //TODO, trouver un moyen d'appliquer le facteur temp a la matrice
 /*
-        mMatrice m(_transformation);
-        for (int i = 0; i < 16; i++)
-        {
-            m.Element()[i] *= runningTime * 0.1;
-        }
-        _object->Matrice().AddTransformation(m);
-*/
-        _object->Matrix.AddRotation(_rotation, _angle * runningTime);
+    mMatrice m(_transformation);
+    for (int i = 0; i < 16; i++)
+    {
+        m.Element()[i] *= runningTime * 0.1;
     }
+    _object->Matrice().AddTransformation(m);
+*/
+    _currentMatrix.AddRotation(_rotation, _angle * runningTime);
+}
+
+void    MatrixAnimation::Render(SceneGraph *scene)
+{
+    scene->PushModelMatrix();
+    scene->ModelMatrix().AddTransformation(_currentMatrix);
+    RenderChilds(scene);
+    scene->PopModelMatrix();
 }

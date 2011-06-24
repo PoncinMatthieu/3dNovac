@@ -47,14 +47,27 @@ namespace Nc
                     File(const FileName &filename);
                     File(const FileName &filename, Object *content);
 
-                    Object  *Read(const FileName &f);           ///< read the given file
-                    Object  *Read();                            ///< read the file and return content
-                    void    Save() const;                       ///< save the file with the propertie _content
-                    void    Save(Object *content);              ///< save the file with the content passed in param
+                    /**
+                        Read the given file.
+                        \return the content of the file
+                    */
+                    Object  *Read(const FileName &f);
+                    /**
+                        Read the current file.
+                        \return the content of the file
+                    */
+                    Object  *Read();
+
+                    /** Save the file with the propertie _content */
+                    void    Save() const;
+                    /** Save the file with the content passed in param */
+                    void    Save(Object *content);
 
                     // accesseurs
-                    inline const Object *Content() const        {return _content;}  ///< Return the content of the file
-                    inline Object       *Content()              {return _content;}  ///< Return the content of the file
+                    /** \return the content of the file */
+                    inline const Object *Content() const        {return _content;}
+                    /** \return the content of the file */
+                    inline Object       *Content()              {return _content;}
 
                 private:
                     FileName    _filename;      ///< The name of the file to read

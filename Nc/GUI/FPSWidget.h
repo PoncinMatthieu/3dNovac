@@ -39,11 +39,11 @@ namespace Nc
             public:
                 FPSWidget(Corner x = Center, Corner y = Top);
 
-                /** Copy a new WidgetFPS */
-                virtual Widget* Clone() const               {return new FPSWidget(*this);}
+                static const char   *ClassName()                {return "FPSWidget";}
+                virtual ISceneNode  *Clone() const              {return new FPSWidget(*this);}
 
                 /** Render the fps */
-                void Render(Graphic::ISceneGraph *scene);
+                void Draw(Graphic::SceneGraph *scene);
         };
     }
 }

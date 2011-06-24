@@ -29,62 +29,39 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
-/*
-Object3d    *BasicMeshCreator::Pave(const Vector3f& center, const Vector3f &size, const Color& color, const GL::Texture &texture)
+
+Object      *BasicMeshCreator::Plan(const Vector2f &size, const GL::Texture &texture)
 {
-    Array<BasicVertexType::Textured, 12>    vertices;
-    Array<unsigned int, 36>                 indices;
+    Array<DefaultVertexType::Textured, 4>     vertices;
+    Color color(1, 1, 1);
 
-    vertices[0].Fill(center[0], center[1], center[2], 0, 0, color);
-    vertices[1].Fill(center[0] + size[0], center[1], center[2], 1, 0, color);
-    vertices[2].Fill(center[0] + size[0], center[1] + size[1], center[2], 1, 1, color);
-    vertices[3].Fill(center[0], center[1] + size[1], center[2], 0, 1, color);
+// creation des vertex en fontion de la taille de la map
+    vertices[0].Fill(0, 0, 0, 0, 0, 0, 0, 1, color);
+    vertices[1].Fill(size[0], 0, 0, size[0], 0, 0, 0, 1, color);
+    vertices[2].Fill(0, size[1], 0, 0, size[1], 0, 0, 1, color);
+    vertices[3].Fill(size[0], size[1], 0, size[0], size[1], 0, 0, 1, color);
 
-    vertices[4].Fill(center[0] + size[0], center[1] + size[1], center[2] + size[2], 0, 1, color);
-    vertices[5].Fill(center[0] + size[0], center[1], center[2] + size[2], 0, 0, color);
-    vertices[6].Fill(center[0], center[1], center[2] + size[2], 1, 0, color);
-    vertices[7].Fill(center[0], center[1] + size[1], center[2] + size[2], 1, 1, color);
+// creation de la box
+    Box3f box(Vector3f(0.f, 0.f, -0.1f), Vector3f(size[0], size[1], 0.1f));
 
-    vertices[8].Fill(center[0] + size[0], center[1], center[2] + size[2], 1, 1, color);
-    vertices[9].Fill(center[0] + size[0], center[1], center[2], 0, 1, color);
-    vertices[10].Fill(center[0], center[1] + size[1], center[2] + size[2], 0, 0, color);
-    vertices[11].Fill(center[0] + size[0], center[1] + size[1], center[2] + size[2], 1, 0, color);
-
-    indices[0] = 0; indices[1] = 1; indices[2] = 2;
-    indices[3] = 2; indices[4] = 3; indices[5] = 0;
-
-    indices[6] = 5; indices[7] = 1; indices[8] = 4;
-    indices[9] = 2; indices[10] = 4; indices[11] = 1;
-
-    indices[12] = 0; indices[13] = 6; indices[14] = 7;
-    indices[15] = 0; indices[16] = 7; indices[17] = 3;
-
-    indices[18] = 5; indices[19] = 6; indices[20] = 7;
-    indices[21] = 5; indices[22] = 4; indices[23] = 7;
-
-    indices[24] = 0; indices[25] = 6; indices[26] = 8;
-    indices[27] = 0; indices[28] = 8; indices[29] = 9;
-
-    indices[30] = 10; indices[31] = 11; indices[32] = 2;
-    indices[33] = 10; indices[34] = 2; indices[35] = 3;
-
-    // creation du mesh
-    GL::GeometryBuffer<BasicVertexType::Textured> geometry(GL::VertexBuffer<BasicVertexType::Textured>(vertices, GL_STATIC_DRAW),
-                                                          GL::IndexBuffer(indices, 3), GL_TRIANGLES);
-    Mesh<BasicVertexType::Textured>     *mesh = new Mesh<BasicVertexType::Textured>(geometry, Box3f(center, center + size));
-    mesh->GetMaterialConfig().Texture = texture;
+// creation du mesh
+    Object *mesh = new Object(box);
+    mesh->Drawables().resize(1);
+    mesh->Drawables()[0] = new Drawable(vertices, GL_STATIC_DRAW, GL_TRIANGLE_STRIP);
+    mesh->Drawables()[0]->Config->Textures.InitSize(1);
+    mesh->Drawables()[0]->Config->Textures[0] = texture;
+    mesh->ChooseDefaultMaterial();
     return mesh;
 }
-*/
 
-Object3d    *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
+Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
 {
 // creation des vertex en fontion de la taille
     unsigned int    x = size.Data[0], y = size.Data[1];
     unsigned int    nbVertices = (x * 2) + (y * 2) + 4;
     unsigned int    k = 0;
 
-    Array<BasicVertexType::Colored>     vertices(nbVertices);
+    Array<DefaultVertexType::Colored>     vertices(nbVertices);
     for (unsigned int i = 0; i < x + 1; i++)
     {
         vertices[k++].Fill(i, 0, size.Data[2], color);
@@ -101,11 +78,10 @@ Object3d    *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
     Vector3f bmax(size.Data[0], size.Data[1], size.Data[2] + 0.1f);
 
 // creation du mesh
-    Mesh<BasicVertexType::Colored, false>  *mesh = new Mesh<BasicVertexType::Colored, false>(Box3f(bmin, bmax));
-    Drawable<BasicVertexType::Colored, false> *drawable = mesh->NewDrawable();
-    drawable->GetVBO().UpdateData(vertices, GL_STATIC_DRAW);
-    drawable->SetPrimitiveType(GL_LINES);
-    mesh->ConfigureDrawables();
+    Object *mesh = new Object(Box3f(bmin, bmax));
+    mesh->Drawables().resize(1);
+    mesh->Drawables()[0] = new Drawable(vertices, GL_STATIC_DRAW, GL_LINES);
+    mesh->ChooseDefaultMaterial();
     return mesh;
 }
 

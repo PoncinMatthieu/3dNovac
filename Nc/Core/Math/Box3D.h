@@ -48,7 +48,7 @@ namespace Nc
                 template<typename U>
                 Box3D    &operator = (const Box3D<U> &b);
 
-                static const Box3D<T>       EmptyBox;
+                static const Box3D<T>       EmptyBox;       ///< static const empty box
         };
 
         template<typename T>

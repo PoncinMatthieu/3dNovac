@@ -28,99 +28,71 @@
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace Nc;
-using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
-SceneGraph::SceneGraph(Camera2d *camera) : I2dSceneGraph(camera)
+SceneGraph::SceneGraph()
+    : Graphic::SceneGraph(ClassName(), true),
+      _widgetFocused(NULL)
 {
-    _widgetFocused = NULL;
+}
+
+SceneGraph::SceneGraph(const char *className)
+    : Graphic::SceneGraph(className, true),
+      _widgetFocused(NULL)
+{
 }
 
 SceneGraph::~SceneGraph()
 {
 }
 
-void SceneGraph::RenderIn2D()
+SceneGraph::SceneGraph(const SceneGraph &scene)
+    : Graphic::SceneGraph(scene), _widgetFocused(NULL)
 {
-    _mutex.Lock();
-// Draw les object2d
-    for(ListPObject::iterator it = _listObject.begin(); it != _listObject.end(); it++)
-        if ((*it)->DisplayState())
-            (*it)->Render(this);
-// Draw les widget
-    for(ListPWidget::iterator it = _listWidget.begin(); it != _listWidget.end(); it++)
-        if ((*it)->DisplayState())
-            (*it)->Render(this);
-    _mutex.Unlock();
 }
 
-void SceneGraph::Clear(bool del)
+SceneGraph &SceneGraph::operator = (const SceneGraph &scene)
 {
-    if (del)
-    {
-        Utils::DeleteContainer(_listWidget);
-        Utils::DeleteContainer(_listObject);
-    }
-    else
-    {
-        _listWidget.clear();
-        _listObject.clear();
-    }
-}
-
-void SceneGraph::DeleteObject(Graphic::Object *object, bool del)
-{
-    _mutex.Lock();
-    _listObject.remove(object);
-    Widget *widget = dynamic_cast<Widget*>(object);
-    if (widget != NULL)
-        _listWidget.remove(widget);
-    if (widget == _widgetFocused)
-        _widgetFocused = NULL;
-    if (del)
-        delete object;
-    _mutex.Unlock();
-}
-
-void SceneGraph::AddObject(Graphic::Object *object)
-{
-    _mutex.Lock();
-    _listObject.push_back(object);
-    _mutex.Unlock();
-}
-
-void SceneGraph::AddWidget(Widget *widget)
-{
-    _mutex.Lock();
-    if (widget->Parent() != NULL)
-        AddWidget(widget->Parent());
-    else
-        _listWidget.push_back(widget);
-    _mutex.Unlock();
+    Graphic::SceneGraph::operator = (scene);
+    _widgetFocused = NULL;
+    return *this;
 }
 
 void SceneGraph::BringToFront(Widget *w)
 {
     if (w != NULL)
     {
-        _mutex.Lock();
-        std::list<Widget*>::iterator it = find(_listWidget.begin(), _listWidget.end(), w);
-        if (it != _listWidget.end())
-            _listWidget.erase(it);
-        _listWidget.push_back(w);
-        _mutex.Unlock();
+        Lock();
+        AddChild(w);        // add to the end
+        RemoveChild(w);     // remove the first occurence
+        Unlock();
     }
 }
 
+struct FonctorResized
+{
+    bool operator () (Graphic::ISceneNode *node)
+    {
+        Widget *w = node->AsWithoutThrow<Widget>();
+        if (w != NULL)
+        {
+            w->Resized();
+            return false;
+        }
+        return true;
+    }
+};
+
 void SceneGraph::ManageWindowEvent(const System::Event &event)
 {
-    _mutex.Lock();
 // update en cas de resize de la fenetre
     if (event.Type == System::Event::Resized)
     {
-        _camera->Resized(event);
-        for(std::list<Widget*>::iterator it = _listWidget.begin(); it != _listWidget.end(); it++)
-            (*it)->Resized();
+        if (_currentCamera != NULL)
+            _currentCamera->Resized(event);
+        FonctorResized f;
+        for(ContainerType::iterator it = _childs.begin(); it != _childs.end(); it++)
+            (*it)->ForEachChilds<false>(f);
     }
 
 // test de focus
@@ -128,19 +100,34 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
     {
         Widget *lastWidgetToHaveTheFocus = _widgetFocused;
         _widgetFocused = NULL;
-        Vector2i mousePos = WindowInput::MousePositionInGLCoord();
-        for(std::list<Widget*>::iterator it = _listWidget.begin(); it != _listWidget.end(); ++it)
+        Vector2i mousePos = Graphic::WindowInput::MousePositionInGLCoord();
+        for(ContainerType::iterator it = _childs.begin(); _widgetFocused == NULL && it != _childs.end(); it++)
         {
-            #ifdef _DEBUG_GUI_FOCUS
-            LOG_DEBUG << "ReelPos   = " << (*it)->GetReelPos() << std::endl;
-            LOG_DEBUG << "ReelSize  = " << (*it)->GetReelSize() << std::endl;
-            LOG_DEBUG << "Mouse = " << mousePos << std::endl;
-            LOG_DEBUG << std::endl;
-            #endif
-            if ((*it)->DisplayState() && (Math::InRect((*it)->GetReelPos(), (*it)->GetReelSize(), mousePos)))
+            Widget *w = (*it)->AsWithoutThrow<Widget>();
+            if (w != NULL)
             {
-                _widgetFocused = *it;
-                _widgetFocused->Focus(true);
+                //w->Resized();
+                Vector2f    reelPos;
+                Vector2f    reelSize;
+                w->GetReelPos(reelPos);
+                w->GetReelSize(reelSize);
+                #ifdef _DEBUG_GUI_FOCUS
+                LOG_DEBUG << "Widget: " << *w << std::endl;
+                LOG_DEBUG << "ReelPos   = " << reelPos << std::endl;
+                LOG_DEBUG << "ReelSize  = " << reelSize << std::endl;
+                LOG_DEBUG << "Mouse = " << mousePos << std::endl;
+                #endif
+                if (w->DisplayState() && (Math::InRect(reelPos, reelSize, mousePos)))
+                {
+                    _widgetFocused = w;
+                    _widgetFocused->Focus(true);
+                    #ifdef _DEBUG_GUI_FOCUS
+                    LOG_DEBUG << "OK" << std::endl;
+                    #endif
+                }
+                #ifdef _DEBUG_GUI_FOCUS
+                LOG << std::endl;
+                #endif
             }
         }
         if (lastWidgetToHaveTheFocus != NULL && lastWidgetToHaveTheFocus != _widgetFocused)
@@ -149,5 +136,4 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
 // send les event au widget qui a le focus
     if (_widgetFocused != NULL)
         _widgetFocused->ManageWindowEvent(event);
-    _mutex.Unlock();
 }

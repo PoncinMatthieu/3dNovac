@@ -31,8 +31,13 @@
 using namespace std;
 using namespace Nc::Engine;
 
+MainEngine::MainEngine(const char *className, Manager *manager, unsigned int pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
+    : IEngine(className, "Game Engine", manager, pattern, deletePriority, loadingContextPriority, loadingPriority)
+{
+}
+
 MainEngine::MainEngine(Manager *manager, unsigned int pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
-    : IEngine("Game Engine", manager, pattern, deletePriority, loadingContextPriority, loadingPriority)
+    : IEngine(ClassName(), "Game Engine", manager, pattern, deletePriority, loadingContextPriority, loadingPriority)
 {
 }
 

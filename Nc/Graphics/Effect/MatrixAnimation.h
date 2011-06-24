@@ -27,7 +27,7 @@
 #ifndef NOVAC_GRAPHIC_MATRIXANIMATION_H_
 #define NOVAC_GRAPHIC_MATRIXANIMATION_H_
 
-#include "Effect.h"
+#include "Animation.h"
 
 namespace Nc
 {
@@ -37,39 +37,37 @@ namespace Nc
         /**
             \todo this class should be recode
         */
-        class LGRAPHICS   MatrixAnimation : public Effect
+        class LGRAPHICS   MatrixAnimation : public Animation
         {
             public:
                 MatrixAnimation();
-                MatrixAnimation(Object *o, const TMatrix &transformation = TMatrix());
+                //MatrixAnimation(const TMatrix &transformation);
                 ~MatrixAnimation();
 
-                /** Copy the matrix animation */
-                virtual Effect  *Clone() const      {return new MatrixAnimation(*this);}
+                static const char   *ClassName()        {return "MatrixAnimation";}
 
-                virtual void    Start()             {}
-                virtual void    Stop()              {}
-                virtual bool    Started() const     {return true;}
+                /** Copy the matrix animation */
+                virtual ISceneNode  *Clone() const      {return new MatrixAnimation(*this);}
+
+                virtual void        Start()             {}
+                virtual void        Stop()              {}
+                virtual bool        Started() const     {return true;}
 
                 /** Reset the anim with the initial matrix */
-                inline void     Reset()                     {if (_object != NULL) _object->Matrix = _initialMatrix;}
+                inline void         Reset()                     {_currentMatrix = TMatrix::Identity;}
                 /** Update the matrix animation */
-                virtual void    Update(float runningTime);
-                virtual void    Render(ISceneGraph *scene)  {}
-
+                virtual void        Update(float runningTime);
+                virtual void        Render(SceneGraph *scene);
 
                 // accesseurs
-                /** set a pointer object to set it's matrix */
-                inline void     SetObject(Object *o)                            {_object = o; _initialMatrix = _object->Matrix;}
     //            inline void   Transfornation(const mMatrice &m)   {_transformation = m;}    //TODO
                 /** Program a rotatation animation */
                 inline void     Rotation(const Vector3f &axe, float angle)      {_rotation = axe; _angle = angle;}
 
             private:
-                Object          *_object;           ///< instance to an object that should be animated
+                TMatrix         _currentMatrix;
                 float           _angle;             ///< Rotation angle
                 Vector3f        _rotation;          ///< Rotation vector. The matrix transformation is not used. We should find a way to use the time factor
-                TMatrix         _initialMatrix;     ///< the initial matrix of the object
         };
     }
 }

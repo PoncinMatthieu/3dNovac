@@ -28,6 +28,7 @@
 
 #include "Define.h"
 #include "Engine.h"
+#include "Material/FactoryDefaultMaterials.h"
 
 #ifdef SYSTEM_WINDOWS
     #include "Window/Window/WWindow.h"
@@ -44,7 +45,7 @@ using namespace Nc::Graphic;
 double      Graphic::Engine::_elapsedTime = 0;
 
 Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func)
-    : Engine::IEngine("Graphic Engine", manager, Nc::Engine::HasAContext | Nc::Engine::DontWaitOthersContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
+    : Engine::IEngine(ClassName(), "Graphic Engine", manager, Nc::Engine::HasAContext | Nc::Engine::DontWaitOthersContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
       _createWinFunction(func), _context(NULL)
 {
 }
@@ -53,6 +54,8 @@ Graphic::Engine::~Engine()
 {
 // destruction des ressources
 //    ActiveContext();  // create an X error (bad value) with Qt. May be we will need to delete contents in a particular slot before the window is destroyed
+    FactoryDefaultMaterials::DeleteInstance();
+
     if (_win)
         delete _win;
 }
@@ -111,6 +114,15 @@ void Graphic::Engine::CheckGLVersion()
         {LOG << "GL_SHADING_LANGUAGE_VERSION = `" << EXT.GetInfo(GL_SHADING_LANGUAGE_VERSION) << "`" << std::endl;}
     catch (...)
         {System::Config::Error("GraphicEngine", "Failed to fetch GL_SHADING_LANGUAGE_VERSION, Shaders is probably not supported");}
+}
+
+void Graphic::Engine::LoadContent()
+{
+    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Colored2d> >();
+    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Colored> >();
+    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Textured> >();
+    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Textured2d> >();
+    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Textured3d> >();
 }
 
 void Graphic::Engine::Execute(float runningTime)

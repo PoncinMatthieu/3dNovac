@@ -78,16 +78,23 @@ namespace Nc
                 /** \return the mutex witch is used to protect and synchronize the engines */
                 inline System::Mutex &MutexGlobal()                 {return _mutexGlobal;}
 
+                /** Wait until the given \p priority is good for loading the engine context */
                 void                WaitLoadingContextPriority(unsigned char priority);
+                /** Wait until the given \p priority is good for loading the engine */
                 void                WaitLoadingPriority(unsigned char priority);
+                /** Wait until all engine contexts are loaded */
                 void                WaitEnginesContextLoading();
+                /** Wait until all engines are loaded */
                 void                WaitEnginesLoading();
 
                 /** Dispatch events to the corresponding engine */
                 template<typename T>
                 static void         PushEvent(const std::string &engineName, unsigned int id, const T &arg);
+                /** Dispatch events to the corresponding engine */
                 static void         PushEvent(const std::string &engineName, unsigned int id, IEvent *e);
+                /** Dispatch events to the corresponding engine */
                 static void         PushEvent(const std::string &engineName, const std::string &cmdName, const std::string &args);  // from console
+                /** Dispatch events to the corresponding engine */
                 static void         PushEvent(const std::string &engineName, const std::string &cmdName);                           // from console
 
             protected:

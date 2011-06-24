@@ -124,9 +124,14 @@ void Logger::Write(const string Msg, bool flush)
         #endif
         if (_loggingfunction != NULL)
             _loggingfunction(Msg, flush);
+        CheckFile();
         clog << Msg;
+        _file << Msg;
         if (flush)
+        {
             clog << std::flush;
+            _file.flush();
+        }
     }
   // error
     else if (_status == 1)

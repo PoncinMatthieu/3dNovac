@@ -25,6 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include <Nc/Core/Engine/Manager.h>
+#include <Nc/Graphics/Object/BasicMeshCreator.h>
 #include "Widget.h"
 #include "WidgetLabeled.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
@@ -35,8 +36,19 @@ using namespace Nc::System;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-Widget::Widget(const Vector2i &pos, const Vector2i &size, Corner x, Corner y, Widget *parent)
-    : Handler(), _edgeColor(255, 0, 0), _margin(0, 0), _materialColored2d(&Material<BasicVertexType::Colored2d>::Instance())
+Widget::Widget(const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
+    : Object(ClassName()), Handler(), _edgeColor(255, 0, 0), _margin(0, 0)
+{
+    Init(pos, size, x, y);
+}
+
+Widget::Widget(const char *className, const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
+    : Object(className), Handler(), _edgeColor(255, 0, 0), _margin(0, 0)
+{
+    Init(pos, size, x, y);
+}
+
+void Widget::Init(const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
 {
     _childFocused = NULL;
     _enable = true;
@@ -47,35 +59,35 @@ Widget::Widget(const Vector2i &pos, const Vector2i &size, Corner x, Corner y, Wi
     _pos = pos;
     _corner[0] = x;
     _corner[1] = y;
-    _parent = parent;
-    if (_parent != NULL)
-        _parent->AddChild(this); // ajoute this comme child au parent
 
-    _drawableEdgeBox.GetVBO().Init(4, GL_STREAM_DRAW);
-    _materialColored2d->Configure(_drawableEdgeBox);
-    _drawableEdgeBox.SetPrimitiveType(GL_LINE_LOOP);
-    _stateChange = true;
+    // creation du drawable
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_LOOP);
+    geometry->VBO().Init(4, GL_STREAM_DRAW);
+    _drawables.push_back(new Drawable(geometry));
+    ChooseDefaultMaterial();
+    _stateChanged = true;
 }
 
-Widget::Widget(const Widget &w) : Handler(w)
+Widget::Widget(const Widget &w)
+    : Object(w), Handler(w)
 {
     Copy(w);
 }
 
 Widget &Widget::operator = (const Widget &w)
 {
+    Object::operator = (w);
+    Handler::operator = (w);
     Copy(w);
     return *this;
 }
 
 Widget::~Widget()
 {
-    DeleteChilds();
 }
 
 void Widget::Copy(const Widget &w)
 {
-    _parent = w._parent;
     _childFocused = NULL;
     _enable = w._enable;
     _focus = w._focus;
@@ -88,78 +100,81 @@ void Widget::Copy(const Widget &w)
     _edgeColor = w._edgeColor;
     _margin = w._margin;
     _percent = w._percent;
-
-    _materialColored2d = w._materialColored2d;
-    _drawableEdgeBox = w._drawableEdgeBox;
-
-    for (std::list<Widget*>::const_iterator it = w._listChild.begin(); it != w._listChild.end(); ++it)
-        _listChild.push_back((*it)->Clone());
-    _stateChange = true;
+    _stateChanged = true;
 }
 
-void Widget::DeleteChilds()
+struct EnabledFonctor
 {
-    while (!_listChild.empty()) // free la liste de child
+    bool operator () (const ISceneNode *node)
     {
-        delete *(_listChild.begin());
-        _listChild.pop_front();
+        const Widget *n = node->AsWithoutThrow<const Widget>();
+        if (n != NULL)
+            result = (result && n->Enable());
+        return result;
     }
-}
 
-void Widget::AddChild(Widget *child)
+    bool    result;
+};
+
+bool    Widget::EnableRecursive() const
 {
-    _listChild.push_back(child);
-    _stateChange = true;
+    EnabledFonctor f;
+    f.result = true;
+    ForEachParents<false>(f);
+    return f.result;
 }
 
 void Widget::Update()
 {
-    Array<BasicVertexType::Colored2d, 4>   vertices;
-    Vector2f size = GetReelSize();
+    Array<DefaultVertexType::Colored2d, 4>  vertices;
+    Vector2f                                size;
+
+    GetReelSize(size);
     vertices[0].Fill(0, 0, _edgeColor);
     vertices[1].Fill(0, size.Data[1], _edgeColor);
     vertices[2].Fill(size.Data[0], size.Data[1], _edgeColor);
     vertices[3].Fill(size.Data[0], 0, _edgeColor);
-    _drawableEdgeBox.GetVBO().UpdateData(vertices.Data);
+    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d, false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices.Data);
 }
 
-void Widget::Render(Graphic::ISceneGraph *scene)
+void Widget::Render(Graphic::SceneGraph *scene)
 {
-// check les status
+    if (!_enabled)
+        return;
+
     CheckState();
 
 // effectue le rendu
     // definit la position en fonction des corner
-    Vector2f reelPos = GetReelPos();
+    Vector2f reelPos;
+    GetReelPos(reelPos);
     scene->PushModelMatrix();
         scene->ModelMatrix().AddTranslation(reelPos.Data[0], reelPos.Data[1], 0.f); // translation sur la position relative au Corner
 
         Draw(scene);
 
         // affichage des childs
-        for (list<Widget*>::iterator it = _listChild.begin(); it != _listChild.end(); ++it)
-            if ((*it)->_displayState)
-                (*it)->Render(scene);
+        RenderChilds(scene);
 
-        #ifdef _DEBUG_GUI // dessine le coin de reference du widget
+        #ifdef _DEBUG_GUI // to draw the repere of the widget
         static Graphic::Object *repere = NULL;
         if (repere == NULL)
+        {
             repere = Graphic::BasicMeshCreator::Repere(1);
-        Vector2i reelSize = GetReelSize();
-        scene->PushModelMatrix();
-            TMatrix m;
-            m.Scale(reelSize.Data[0], reelSize.Data[1], 0);
-            scene->ModelMatrix() *= m;
-        glLineWidth(2);
-            repere->Render(scene);
-        scene->PopModelMatrix();
-        glLineWidth(1);
+            repere->Drawables()[0]->Config->RasterMode().SetLineWidth(2);
+        }
+        Vector2f reelSize;
+        GetReelSize(reelSize);
+        TMatrix m;
+        m.Scale(reelSize.Data[0], reelSize.Data[1], 0);
+        scene->ModelMatrix() *= m;
+        repere->Render(scene);
         #endif
 
     scene->PopModelMatrix();
 }
 
-void Widget::Draw(Graphic::ISceneGraph *scene)
+void Widget::Draw(Graphic::SceneGraph *scene)
 {
 #ifndef _DEBUG_GUI_BOX
     if (_drawEdge) // dessine la box du widget
@@ -185,48 +200,109 @@ void Widget::ManageWindowEvent(const Event &event)
         _childFocused->ManageWindowEvent(event);
 }
 
+struct CheckFocusFonctor
+{
+    CheckFocusFonctor(const Event &e, Vector2i mouseP)
+        : event(e), mousePos(mouseP), childFocused(NULL) {}
+
+    bool operator () (ISceneNode *node)
+    {
+        Widget *w = node->AsWithoutThrow<Widget>();
+        if (w != NULL)
+        {
+            if (!w->DisplayStateRecursive())
+                return true;
+
+            Vector2f    pos;
+            Vector2f    size;
+
+            w->GetReelPosRecursif(pos);
+            w->GetReelSize(size);
+            #ifdef _DEBUG_GUI_FOCUS
+            LOG_DEBUG << "Widget: " << *w << std::endl;
+            LOG_DEBUG << "ReelPos   = " << pos << std::endl;
+            LOG_DEBUG << "ReelSize  = " << size << std::endl;
+            LOG_DEBUG << "Mouse = " << mousePos << std::endl;
+            #endif
+            if (Math::InRect(pos, size, mousePos))
+            {
+                childFocused = w;
+                childFocused->Focus(true);
+                #ifdef _DEBUG_GUI_FOCUS
+                LOG_DEBUG << "OK" << std::endl;
+                #endif
+            }
+            #ifdef _DEBUG_GUI_FOCUS
+            LOG << std::endl;
+            #endif
+            return false;
+        }
+        return true;
+    }
+
+    const Event     &event;
+    const Vector2i  &mousePos;
+    Widget          *childFocused;
+};
+
 void Widget::CheckFocus(const Event &event)
 {
-    if (event.Type == Event::MouseButtonPressed) // test de focus
+    // testing focus childs
+    if (event.Type == Event::MouseButtonPressed && DisplayStateRecursive())
     {
+        // set the last child to had the focus
         Widget *lastchildToHaveTheFocus = _childFocused;
         _childFocused = NULL;
+
         Vector2i mousePos = WindowInput::MousePositionInGLCoord();
-        for(std::list<Widget*>::iterator it = _listChild.begin(); it != _listChild.end(); it++)
-            if ((*it)->DisplayState())
-            {
-                Vector2f pos = (*it)->GetReelPosRecursif();
-                Vector2f size = (*it)->GetReelSize();
-    #ifdef _DEBUG_GUI_FOCUS
-                LOG_DEBUG << "ReelPos   = " << pos << std::endl;
-                LOG_DEBUG << "ReelSize  = " << size << std::endl;
-                LOG_DEBUG << "Mouse = " << mousePos << std::endl;
-                LOG_DEBUG << std::endl;
-    #endif
-                if (Math::InRect(pos, size, mousePos))
-                {
-                    _childFocused = *it;
-                    _childFocused->Focus(true);
-                }
-            }
+        CheckFocusFonctor f(event, mousePos);
+        for(ContainerType::iterator it = _childs.begin(); f.childFocused == NULL && it != _childs.end(); it++)
+            (*it)->ForEachChilds<false>(f);
+        _childFocused = f.childFocused;
+
+        // unfocus the last child to had the focus
         if (lastchildToHaveTheFocus != NULL && lastchildToHaveTheFocus != _childFocused)
             lastchildToHaveTheFocus->Focus(false);
     }
 }
 
-Vector2f Widget::GetReelPos() const
+struct GetFirstFindWidgetFonctor
 {
-    Vector2f    reelSize = GetReelSize();
-    Vector2f    reelPos(_pos);
+    GetFirstFindWidgetFonctor(const Widget *c)
+        : widget(NULL), current(c)    {}
+
+    bool operator () (const ISceneNode *node)
+    {
+        if (node != current)
+        {
+            const Widget *w = node->AsWithoutThrow<Widget>();
+            if (w != NULL)
+                widget = w;
+        }
+        return (widget == NULL);
+    }
+
+    const Widget *widget;
+    const Widget *current;
+};
+
+
+void Widget::GetReelPos(Vector2f &reelPos) const
+{
+    Vector2f    reelSize;
     Vector2f    parentSize(Window::Width(), Window::Height());
     Vector2f    parentTranslate;
     Vector2i    margin; // margin a 0, on prendra celui du parent s'il y en a un (margin interieur)
 
-    if (_parent != NULL) // recup la size et le margin du parent
+    GetReelSize(reelSize);
+    reelPos = _pos;
+    GetFirstFindWidgetFonctor f(this);
+    ForEachParents<false>(f);
+    if (f.widget != NULL) // recup la size et le margin du parent
     {
-        parentSize = _parent->GetReelSize();
-        margin = _parent->_margin;
-        parentTranslate = _parent->TranslateChild(_corner);
+        f.widget->GetReelSize(parentSize);
+        margin = f.widget->_margin;
+        f.widget->TranslateChild(_corner, parentTranslate);
     }
 
     // check les corner en x
@@ -245,21 +321,23 @@ Vector2f Widget::GetReelPos() const
     else if (_corner[1] == Center)
         reelPos.Data[1] += (parentSize.Data[1] / 2.0) - (reelSize.Data[1] / 2.0) + margin.Data[1];
     reelPos += parentTranslate;
-    return reelPos;
 }
 
-Vector2f Widget::GetReelPosRecursif() const
+void Widget::GetReelPosRecursif(Vector2f &pos) const
 {
-    Vector2f pos;
-    if (_parent != NULL)
-        pos += _parent->GetReelPosRecursif();
-    pos += GetReelPos();
-    return pos;
+    // get back the first parent
+    GetFirstFindWidgetFonctor f(this);
+    ForEachParents<false>(f);
+    if (f.widget != NULL)
+        f.widget->GetReelPosRecursif(pos);
+    Vector2f reelPos;
+    GetReelPos(reelPos);
+    pos += reelPos;
 }
 
-Vector2f Widget::GetReelSize() const
+void Widget::GetReelSize(Vector2f &size) const
 {
-    return _size;
+    size = _size;
 }
 
 void Widget::Focus(bool state)
@@ -267,40 +345,40 @@ void Widget::Focus(bool state)
     if (_focus != state)
     {
         _focus = state;
-        if (_childFocused != NULL)
+        if (!state && _childFocused != NULL)
             _childFocused->Focus(state);
-        if (_focus && _generateHandleAtEnterFocus && _displayState)
+        if (_focus && _generateHandleAtEnterFocus && _enabled)
             SendEvent(_id);
-        _stateChange = true;
+
+        //_stateChanged = true;
+        ChangeChildsStateRecursive();
     }
 }
 
 void Widget::CheckState()
 {
-    for (list<Widget*>::iterator it = _listChild.begin(); it != _listChild.end(); it++)
-        (*it)->CheckState();
-    if (_stateChange)
+    if (_stateChanged)
     {
         Update();
-        if (_parent != NULL)
-            _parent->_stateChange = true;
-        _stateChange = false;
+        _stateChanged = false;
     }
 }
 
-void Widget::GetParentChildData(list<string> &listData)
+struct ChangeChildsStateRecursiveFonctor
 {
-    string s;
-
-    if (_parent != NULL)
+    bool operator () (ISceneNode *node)
     {
-        for (list<Widget*>::iterator it = _parent->_listChild.begin(); it != _parent->_listChild.end(); it++)
-        {
-            (*it)->GetData(s);
-            if (!s.empty())
-                listData.push_back(s);
-        }
+        Widget *p = node->AsWithoutThrow<Widget>();
+        if (p != NULL)
+            p->ChangeState();
+        return true;
     }
+};
+
+void Widget::ChangeChildsStateRecursive()
+{
+    ChangeChildsStateRecursiveFonctor f;
+    ForEachChilds<false>(f);
 }
 
 void Widget::Percent(Vector2f percent)
@@ -309,25 +387,44 @@ void Widget::Percent(Vector2f percent)
     Resized();
 }
 
+struct ResizedFonctor
+{
+    bool operator () (ISceneNode *node)
+    {
+        Widget *n = node->AsWithoutThrow<Widget>();
+        if (n != NULL)
+        {
+            float sParent;
+            if (n->Percent().Data[0] != 0 || n->Percent().Data[1] != 0)
+            {
+                GetFirstFindWidgetFonctor f(n);
+                n->ForEachParents<false>(f); // get back the first widget parent
+                Vector2i newSize = n->Size();
+                if (n->Percent().Data[0] != 0)
+                {
+                    sParent = (f.widget != NULL) ? f.widget->Size()[0] : Window::Width();
+                    newSize[0] = ((float)(n->Percent().Data[0] * sParent) / 100.0);
+                }
+                if (n->Percent().Data[1] != 0)
+                {
+                    sParent = (f.widget != NULL) ? f.widget->Size()[1] : Window::Height();
+                    newSize[1] = ((float)(n->Percent().Data[1] * sParent) / 100.0);
+                }
+                n->Size(newSize);
+            }
+            n->ChangeState();
+        }
+        return true;
+    }
+};
+
 void Widget::Resized()
 {
-    float sParent;
-    if (_percent.Data[0] != 0)
-    {
-        sParent = (_parent == NULL) ? Window::Width() : _parent->_size[0];
-        _size[0] = ((float)(_percent.Data[0] * sParent) / 100.0);
-    }
-    if (_percent.Data[1] != 0)
-    {
-        sParent = (_parent == NULL) ? Window::Height() : _parent->_size[1];
-        _size[1] = ((float)(_percent.Data[1] * sParent) / 100.0);
-    }
-    for (list<Widget*>::iterator it = _listChild.begin(); it != _listChild.end(); it++)
-        (*it)->Resized();
-    _stateChange = true;
+    ResizedFonctor f;
+    ForEachChilds<false>(f);
 }
 
-void Widget::DrawEdgeBox(Graphic::ISceneGraph *scene)
+void Widget::DrawEdgeBox(Graphic::SceneGraph *scene)
 {
-    _materialColored2d->Render(scene, _drawableEdgeBox);
+    GetMaterial()->Render(scene, *_drawables[0]);
 }

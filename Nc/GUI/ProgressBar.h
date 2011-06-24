@@ -37,35 +37,32 @@ namespace Nc
         class LGUI  ProgressBar : public Widget
         {
             public:
-                ProgressBar(const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Top, Corner y = Left,
-                            Widget *parent = NULL, const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
+                ProgressBar(const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Top, Corner y = Left, const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
                 virtual ~ProgressBar();
 
-                /** Return a copy of the progress Bat */
-                virtual Widget* Clone() const                                   {return new ProgressBar(*this);}
+                static const char   *ClassName()                                {return "ProgressBar";}
+                virtual ISceneNode  *Clone() const                              {return new ProgressBar(*this);}
 
                 /** Set the box of the progress bar */
                 void    SetProgressBox(const Box2f &b)                          {_progressBox = b;}
                 /** Set the color left and right of the progress bar */
-                void    SetColor(const Color &c1, const Color &c2)              {_colorLeft = c1; _colorRight = c2; _stateChange = true;}
+                void    SetColor(const Color &c1, const Color &c2)              {_colorLeft = c1; _colorRight = c2; _stateChanged = true;}
 
                 /** Set the percent of the progress bar */
-                void    Percent(float p)                                        {_percent = p; _stateChange = true;}
+                void    Percent(float p)                                        {_percent = p; _stateChanged = true;}
                 /** Set the number of evolution of the progress bar */
                 void    NbEvolution(unsigned int nb)                            {_nbEvolution = nb;}
                 /** Add an evolution to the progress bar */
-                void    Evolution()                                             {_percent += 100.f / (float)_nbEvolution; _stateChange = true;}
+                void    Evolution()                                             {_percent += 100.f / (float)_nbEvolution; _stateChanged = true;}
 
             protected:
                 /** update the geometry of the progress bar */
                 virtual void Update();
 
                 /** Render the progress bar */
-                virtual void Draw(Graphic::ISceneGraph *scene);
+                virtual void Draw(Graphic::SceneGraph *scene);
 
-                Graphic::Material<Graphic::BasicVertexType::Textured2d>             *_materialTexture;  ///< The material used to render the texture of the progress bar
-                Graphic::Drawable<Graphic::BasicVertexType::Colored2d, false>       _drawableProgress;  ///< The drawable used to render the progress bar
-                Graphic::Drawable<Graphic::BasicVertexType::Textured2d, false>      _drawableTexture;   ///< The drawable used to render the texture of the drawable
+                unsigned int            _indexDrawable;
 
                 Box2f                   _progressBox;           ///< The progress box to delimit the progress bar
                 unsigned int            _nbEvolution;           ///< The number of evolution, used to compute the percent of the progress bar

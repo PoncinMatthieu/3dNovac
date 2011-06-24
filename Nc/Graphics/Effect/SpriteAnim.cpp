@@ -32,7 +32,7 @@ void SpriteAnimFrame::Update(float runningTime)
 {
 }
 
-void SpriteAnimFrame::Render(ISceneGraph *scene)
+void SpriteAnimFrame::Render(SceneGraph *scene)
 {
     if (sprite)
         sprite->Render(scene);

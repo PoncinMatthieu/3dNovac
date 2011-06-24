@@ -32,6 +32,7 @@
 
 #include "../../Define.h"
 #include "IndexBuffer.h"
+#include "VertexDescriptor.h"
 
 namespace Nc
 {
@@ -39,75 +40,16 @@ namespace Nc
     {
         namespace GL
         {
-            /// Structure to define a data of a VertexDescriptor that describe a composant of a VertexType
-            struct LGRAPHICS DataVertexDescriptor
-            {
-				DataVertexDescriptor()
-					: Size(0), Type(0), PointerOffset(0), IndexAttrib(-1), Normalized(false) {}
-
-				void Init(int size, GLenum type, unsigned int pointerOffset, bool normalized = false)
-				{
-					Size = size;
-					Type = type;
-					PointerOffset = pointerOffset;
-					Normalized = normalized;
-				}
-
-                int             Size;               ///< the size of the data in the vertex
-                GLenum          Type;               ///< the type of the data in the vertex
-                unsigned int    PointerOffset;      ///< the pointer offset of the data in the vertex
-                unsigned int    IndexAttrib;        ///< the index Attrib (in relation with the Shader::AttribLocation) of the data in the vertex
-                bool            Normalized;         ///< if true, the data will be normalized before enterring in the shader program pipeline
-            };
-            typedef Array<DataVertexDescriptor>     VertexDescriptor;   ///< define the componants of a VertexType
-
-            /// Interface to define a VertexBuffer
-            class LGRAPHICS IVertexBuffer
-            {
-                public:
-                    IVertexBuffer(const VertexDescriptor &descriptor) : Descriptor(descriptor), MaskDescriptor(0xffff)    {}
-                    virtual ~IVertexBuffer()    {}
-
-                    /** Return true if we need to update the geometry */
-                    inline bool         NeedUpdate()                        {return _needUpdate;}
-                    /** Map the buffer (activate it to be rendered) */
-                    virtual void        Map() = 0;
-                    /** Unmap the buffer (Disable it) */
-                    virtual void        Unmap() = 0;
-                    /**
-                        Draw the vertex buffer with the given primitive type <br/>
-                        Primitive type could be :       <br/>
-                            GL_POINTS,                  <br/>
-                            GL_LINE_STRIP,              <br/>
-                            GL_LINE_LOOP,               <br/>
-                            GL_LINES,                   <br/>
-                            GL_LINE_STRIP_ADJACENCY,    <br/>
-                            GL_LINES_ADJACENCY,         <br/>
-                            GL_TRIANGLE_STRIP,          <br/>
-                            GL_TRIANGLE_FAN,            <br/>
-                            GL_TRIANGLES,               <br/>
-                            GL_TRIANGLE_STRIP_ADJACENCY and <br/>
-                            GL_TRIANGLES_ADJACENCY      <br/>
-                     */
-                    virtual void        Draw(GLenum primitiveType) = 0;
-
-                    VertexDescriptor    Descriptor;         ///< used to describe the vertex type structure
-                    unsigned short      MaskDescriptor;     ///< used to render the good componants vertex
-
-                protected:
-                    bool                _needUpdate;        ///< used to mark if we need to update the geometry
-            };
-
             /// Template class which define a buffer of vertex to describe a geometry
             template<typename T>
-            class VertexBuffer : public IVertexBuffer, public DataBuffer<T>
+            class VertexBuffer : public DataBuffer<T>
             {
                 public:
                     VertexBuffer();
                     VertexBuffer(unsigned int flags);
                     template<unsigned int D>
-                    VertexBuffer(const Array<T,D> &tabVertices, unsigned int flags, bool keepContent = false);
-                    virtual ~VertexBuffer();
+                    VertexBuffer(const Array<T,D> &tabVertices, unsigned int flags);
+                    ~VertexBuffer();
 
                     // manage content
                     /** Init the buffer */
@@ -116,31 +58,56 @@ namespace Nc
                     void    Init(unsigned int size, unsigned int flags);
                     /** Update the buffer */
                     template<unsigned int D>
-                    void    UpdateData(const Array<T,D> &tabVertices, unsigned int flags, bool keepContent = false);
+                    void    UpdateData(const Array<T,D> &tabVertices, unsigned int flags);
                     /** Update the buffer */
-                    void    UpdateData(const T *aDataTab, bool conserveData = false);
+                    void    UpdateData(const T *aDataTab);
+
+                    /** \return true if we need to update the geometry */
+                    inline bool         NeedUpdate()                        {return _needUpdate;}
 
                     // affichage
                     /** Map the buffer (Activate it to be rendered) */
-                    virtual void        Map();
+                    void    Map();
                     /** Unmap the buffer (Disable it) */
-                    virtual void        Unmap();
-                    /** Draw the buffer with the given primitive type */
-                    virtual void        Draw(GLenum primitiveType);
+                    void    Unmap();
+
+                    /**
+                        Draw the vertex buffer with the given primitive type <br/>
+                        Primitive type could be :
+                            - GL_POINTS
+                            - GL_LINE_STRIP
+                            - GL_LINE_LOOP
+                            - GL_LINES
+                            - GL_LINE_STRIP_ADJACENCY
+                            - GL_LINES_ADJACENCY
+                            - GL_TRIANGLE_STRIP
+                            - GL_TRIANGLE_FAN
+                            - GL_TRIANGLES
+                            - GL_TRIANGLE_STRIP_ADJACENCY
+                            - GL_TRIANGLES_ADJACENCY
+                     */
+                    void    Draw(GLenum primitiveType);
+
+                public:
+                    VertexDescriptor    Descriptor;         ///< used to describe the vertex type structure
+
+                private:
+                    bool    _needUpdate;        ///< used to mark if we need to update the geometry
             };
 
+            // implementation
             template<typename T>
             VertexBuffer<T>::VertexBuffer()
-                : IVertexBuffer(T::GetDescriptor()), DataBuffer<T>()
+                : DataBuffer<T>(), Descriptor(T::GetDescriptor()), _needUpdate(true)
             {
             }
 
             template<typename T>
             template<unsigned int D>
-            VertexBuffer<T>::VertexBuffer(const Array<T,D> &tabVertices, unsigned int flags, bool keepContent)
-                : IVertexBuffer(T::GetDescriptor()), DataBuffer<T>(GL_ARRAY_BUFFER, tabVertices.Size(), 0, flags, (T*)tabVertices.Data, keepContent)
+            VertexBuffer<T>::VertexBuffer(const Array<T,D> &tabVertices, unsigned int flags)
+                : DataBuffer<T>(GL_ARRAY_BUFFER, tabVertices.Size(), 0, flags, (T*)tabVertices.Data),
+                  Descriptor(T::GetDescriptor()), _needUpdate(true)
             {
-                _needUpdate = true;
             }
 
             template<typename T>
@@ -158,33 +125,33 @@ namespace Nc
             template<typename T>
             void VertexBuffer<T>::Init(unsigned int size, unsigned int flags)
             {
-                DataBuffer<T>::Init(GL_ARRAY_BUFFER, size, 0, flags, (T*)NULL, false);
+                DataBuffer<T>::Init(GL_ARRAY_BUFFER, size, 0, flags, (T*)NULL);
                 _needUpdate = true;
             }
 
             template<typename T>
             template<unsigned int D>
-            void VertexBuffer<T>::UpdateData(const Array<T,D> &tabVertices, unsigned int flags, bool keepContent)
+            void VertexBuffer<T>::UpdateData(const Array<T,D> &tabVertices, unsigned int flags)
             {
                 if (!DataBuffer<T>::IsValid())
-                    DataBuffer<T>::Init(GL_ARRAY_BUFFER, tabVertices.Size(), 0, flags, (T*)tabVertices.Data, keepContent);
+                    DataBuffer<T>::Init(GL_ARRAY_BUFFER, tabVertices.Size(), 0, flags, (T*)tabVertices.Data);
                 else
                 {
                     DataBuffer<T>::Enable();
                     if (tabVertices.Size() == DataBuffer<T>::_size)
-                        DataBuffer<T>::UpdateData((T*)tabVertices.Data, keepContent);
+                        DataBuffer<T>::UpdateData((T*)tabVertices.Data);
                     else
-                        DataBuffer<T>::UpdateData(tabVertices.Size(), 0, flags, (T*)tabVertices.Data, keepContent);
+                        DataBuffer<T>::UpdateData(tabVertices.Size(), 0, flags, (T*)tabVertices.Data);
                     DataBuffer<T>::Disable();
                 }
                 _needUpdate = true;
             }
 
             template<typename T>
-            void    VertexBuffer<T>::UpdateData(const T *aDataTab, bool conserveData)
+            void    VertexBuffer<T>::UpdateData(const T *aDataTab)
             {
                 DataBuffer<T>::Enable();
-                DataBuffer<T>::UpdateData(aDataTab, conserveData);
+                DataBuffer<T>::UpdateData(aDataTab);
                 DataBuffer<T>::Disable();
                 _needUpdate = true;
             }
@@ -197,14 +164,11 @@ namespace Nc
                 // enable client states and set pointer, Draw, and then disable the client states
                 for (unsigned short i = 0; i < Descriptor.Size(); ++i)
                 {
-                    if ((MaskDescriptor >> i) & 1)
+                    DataVertexDescriptor &desc = Descriptor[i];
+                    if (desc.Bind)
                     {
-                        DataVertexDescriptor &desc = Descriptor[i];
-                        //if (desc.IndexAttrib >= 0)
-                        //{
-                            glEnableVertexAttribArray(desc.IndexAttrib);
-                            glVertexAttribPointer(desc.IndexAttrib, desc.Size, desc.Type, desc.Normalized, sizeof(T), BUFFER_OFFSET(desc.PointerOffset));
-                        //}
+                        glEnableVertexAttribArray(desc.IndexAttrib);
+                        glVertexAttribPointer(desc.IndexAttrib, desc.Size, desc.Type, desc.Normalized, sizeof(T), BUFFER_OFFSET(desc.PointerOffset));
                     }
                 }
                 _needUpdate = false;
@@ -217,12 +181,9 @@ namespace Nc
             {
                 for (unsigned short i = 0; i < Descriptor.Size(); ++i)
                 {
-                    if ((MaskDescriptor >> i) | 1)
-                    {
-                        DataVertexDescriptor &desc = Descriptor[i];
-                        //if (desc.IndexAttrib >= 0)
-                            glDisableVertexAttribArray(desc.IndexAttrib);
-                    }
+                    DataVertexDescriptor &desc = Descriptor[i];
+                    if (desc.Bind)
+                        glDisableVertexAttribArray(desc.IndexAttrib);
                 }
             }
 

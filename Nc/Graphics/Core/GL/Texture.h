@@ -50,13 +50,16 @@ namespace Nc
                     /** Return the index of the gl texture */
                     virtual inline unsigned int		GetIndex() const    {return _texture;}
 
-                    /** \todo fonction a Supprimer (a l'origine pour faire des test sur les frame buffer en dur */
-                    void SetIndex(unsigned int i) {_texture = i;}
-
                     /** Bind the texture */
                     virtual void					Enable() const;
                     /** Unbind the texture */
                     virtual void					Disable() const;
+
+                    /**
+                        Specifies which texture unit to make active.
+                        The number of texture units supports is implementation dependent, but must be at least 48.
+                    */
+                    static void                     ActiveTexture(unsigned int no);
 
                     // Loading and auto-generation
                     /** Load the texture from a file */
@@ -65,7 +68,7 @@ namespace Nc
                     void            LoadFromImage(const Image &image, bool useMipMap = true, const std::string &name = "");
                     /** Load a Cube map (to display a SkyBox) */
                     void            LoadCubeMap(const Utils::FileName Names[6]);
-                    /** Generate a 3d sphere map (to create a light map in the DefaultLightingMaterialPolitic class) */
+                    /** Generate a 3d sphere map (to create a light map in the DefaultLightingMaterial class) */
                     void            GenereSphereMap(unsigned int diametre);
 
                     // texture properties
@@ -82,6 +85,15 @@ namespace Nc
                     /** Reset the current bind texture statement */
                     static inline void  ResetCurrentBind()      {_currentBind = 0;}
 
+                    /** \return true if the texture is a texture 2d */
+                    inline bool         Is2d()                  {return (_type == GL_TEXTURE_2D);}
+
+                    /** \return true if the texture is a cube map texture (used to render skyboxs) */
+                    inline bool         IsCubeMap()             {return (_type == GL_TEXTURE_CUBE_MAP);}
+
+                    /** \return true if the texture is a texture 3d */
+                    inline bool         Is3d()                  {return (_type == GL_TEXTURE_3D);}
+
                 private:
                     /** Check if the image is correctly dimensioned */
                     void                CheckImage(const Image &image);
@@ -89,13 +101,15 @@ namespace Nc
                     /** Destroy the gl texture object */
                     virtual  void       Release();
 
-                    unsigned int            _texture;           ///< the gl texture object index
-                    Vector2ui               _size;              ///< the size of the texture
-                    int                     _type;              ///< the texture type
-                    std::string             _name;              ///< the name of the texture
+                    unsigned int            _texture;                   ///< the gl texture object index
+                    Vector2ui               _size;                      ///< the size of the texture
+                    int                     _type;                      ///< the texture type
+                    std::string             _name;                      ///< the name of the texture
 
-                    static unsigned int     _currentBind;       ///< the current bind texture
-                    static int              _maxSize;           ///< the maximum size of a texture
+                    static unsigned int     _currentBind;               ///< the current bind texture
+                    static unsigned int     _currentActiveTextureUnit;  ///< the current active texture unit
+                    static int              _maxSize;                   ///< the maximum size of a texture
+                    //static System::Mutex    _mutex;             ///< a mutex to protect the current bind texture
             };
         }
     }

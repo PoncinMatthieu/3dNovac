@@ -43,7 +43,9 @@ namespace Nc
         /// template class to load a plugin
         /**
             A plugin should have this extern c symbol:
-            T *GetPlugin();
+ \code
+    T   *GetPlugin();
+ \endcode
         */
         template<typename T>
         class PluginLoader
@@ -52,10 +54,10 @@ namespace Nc
                 PluginLoader() : _handle(NULL), _instance(NULL)     {}
                 virtual ~PluginLoader()                             {Close();}
 
-                /** return the instance of the plugin */
+                /** \return the instance of the plugin */
                 T *operator -> ()                                   {return _instance;}
 
-                /** return the instance of the plugin */
+                /** \return the instance of the plugin */
                 T *GetInstance()                                    {return _instance;}
 
                 /** Load the plugin */

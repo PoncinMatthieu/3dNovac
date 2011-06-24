@@ -44,8 +44,11 @@
 			<Add library="X11" />
 			<Add library="Xrandr" />
 		</Linker>
+		<Unit filename="../../../Nc/Graphics/Camera/Camera.cpp" />
 		<Unit filename="../../../Nc/Graphics/Camera/Camera.h" />
+		<Unit filename="../../../Nc/Graphics/Camera/Camera2d.cpp" />
 		<Unit filename="../../../Nc/Graphics/Camera/Camera2d.h" />
+		<Unit filename="../../../Nc/Graphics/Camera/Camera3d.cpp" />
 		<Unit filename="../../../Nc/Graphics/Camera/Camera3d.h" />
 		<Unit filename="../../../Nc/Graphics/Camera/StandardCamera3d.cpp" />
 		<Unit filename="../../../Nc/Graphics/Camera/StandardCamera3d.h" />
@@ -55,6 +58,7 @@
 		<Unit filename="../../../Nc/Graphics/Core/FontLoaderFreeType.cpp" />
 		<Unit filename="../../../Nc/Graphics/Core/FontLoaderFreeType.h" />
 		<Unit filename="../../../Nc/Graphics/Core/GL.h" />
+		<Unit filename="../../../Nc/Graphics/Core/GL/Blend.cpp" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/Blend.h" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/DataBuffer.h" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/Extension.cpp" />
@@ -64,6 +68,7 @@
 		<Unit filename="../../../Nc/Graphics/Core/GL/GeometryBuffer.h" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/IndexBuffer.cpp" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/IndexBuffer.h" />
+		<Unit filename="../../../Nc/Graphics/Core/GL/RasterMode.cpp" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/RasterMode.h" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/Shader.cpp" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/Shader.h" />
@@ -72,6 +77,7 @@
 		<Unit filename="../../../Nc/Graphics/Core/GL/VertexArray.cpp" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/VertexArray.h" />
 		<Unit filename="../../../Nc/Graphics/Core/GL/VertexBuffer.h" />
+		<Unit filename="../../../Nc/Graphics/Core/GL/VertexDescriptor.h" />
 		<Unit filename="../../../Nc/Graphics/Core/Image.cpp" />
 		<Unit filename="../../../Nc/Graphics/Core/Image.h" />
 		<Unit filename="../../../Nc/Graphics/Core/ImageLoader.h" />
@@ -79,7 +85,12 @@
 		<Unit filename="../../../Nc/Graphics/Core/ImageLoaderPng.h" />
 		<Unit filename="../../../Nc/Graphics/Define.h" />
 		<Unit filename="../../../Nc/Graphics/Effect/Animation.h" />
+		<Unit filename="../../../Nc/Graphics/Effect/DefaultLightingMaterial.cpp" />
+		<Unit filename="../../../Nc/Graphics/Effect/DefaultLightingMaterial.h" />
 		<Unit filename="../../../Nc/Graphics/Effect/Effect.h" />
+		<Unit filename="../../../Nc/Graphics/Effect/FramesAnimation.h" />
+		<Unit filename="../../../Nc/Graphics/Effect/LightingEffect.cpp" />
+		<Unit filename="../../../Nc/Graphics/Effect/LightingEffect.h" />
 		<Unit filename="../../../Nc/Graphics/Effect/MatrixAnimation.cpp" />
 		<Unit filename="../../../Nc/Graphics/Effect/MatrixAnimation.h" />
 		<Unit filename="../../../Nc/Graphics/Effect/SpriteAnim.cpp" />
@@ -88,50 +99,42 @@
 		<Unit filename="../../../Nc/Graphics/Engine.h" />
 		<Unit filename="../../../Nc/Graphics/Graphics.cpp" />
 		<Unit filename="../../../Nc/Graphics/Graphics.h" />
-		<Unit filename="../../../Nc/Graphics/Material/BasicSourceShader.cpp" />
-		<Unit filename="../../../Nc/Graphics/Material/BasicSourceShader.h" />
-		<Unit filename="../../../Nc/Graphics/Material/BasicVertexType.cpp" />
-		<Unit filename="../../../Nc/Graphics/Material/BasicVertexType.h" />
-		<Unit filename="../../../Nc/Graphics/Material/DefaultLightingMaterial.cpp" />
-		<Unit filename="../../../Nc/Graphics/Material/DefaultLightingMaterial.h" />
+		<Unit filename="../../../Nc/Graphics/Material/DefaultMaterials.cpp" />
 		<Unit filename="../../../Nc/Graphics/Material/DefaultMaterials.h" />
-		<Unit filename="../../../Nc/Graphics/Material/Material.h" />
+		<Unit filename="../../../Nc/Graphics/Material/DefaultSourceShader.cpp" />
+		<Unit filename="../../../Nc/Graphics/Material/DefaultSourceShader.h" />
+		<Unit filename="../../../Nc/Graphics/Material/DefaultVertexType.cpp" />
+		<Unit filename="../../../Nc/Graphics/Material/DefaultVertexType.h" />
+		<Unit filename="../../../Nc/Graphics/Material/Drawable.cpp" />
+		<Unit filename="../../../Nc/Graphics/Material/Drawable.h" />
+		<Unit filename="../../../Nc/Graphics/Material/FactoryDefaultMaterials.cpp" />
+		<Unit filename="../../../Nc/Graphics/Material/FactoryDefaultMaterials.h" />
+		<Unit filename="../../../Nc/Graphics/Material/IMaterial.h" />
 		<Unit filename="../../../Nc/Graphics/Material/MaterialConfig.h" />
-		<Unit filename="../../../Nc/Graphics/Object/2D/Object2d.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/2D/Object2d.h" />
-		<Unit filename="../../../Nc/Graphics/Object/2D/Sprite.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/2D/Sprite.h" />
-		<Unit filename="../../../Nc/Graphics/Object/2D/String.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/2D/String.h" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/BasicMeshCreator.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/BasicMeshCreator.h" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/BoundingBox.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/BoundingBox.h" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/Light.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/Light.h" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/Mesh.h" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/MeshFormatManager.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/MeshFormatManager.h" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/MeshFormatPlugin.h" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/Object3d.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/Object3d.h" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/SkyBox.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/3D/SkyBox.h" />
-		<Unit filename="../../../Nc/Graphics/Object/Drawable.h" />
+		<Unit filename="../../../Nc/Graphics/Object/BasicMeshCreator.cpp" />
+		<Unit filename="../../../Nc/Graphics/Object/BasicMeshCreator.h" />
+		<Unit filename="../../../Nc/Graphics/Object/BoundingBox.cpp" />
+		<Unit filename="../../../Nc/Graphics/Object/BoundingBox.h" />
 		<Unit filename="../../../Nc/Graphics/Object/Object.cpp" />
 		<Unit filename="../../../Nc/Graphics/Object/Object.h" />
-		<Unit filename="../../../Nc/Graphics/Object/ObjectContainer.cpp" />
-		<Unit filename="../../../Nc/Graphics/Object/ObjectContainer.h" />
-		<Unit filename="../../../Nc/Graphics/Scene/Basic3dSceneGraph.cpp" />
-		<Unit filename="../../../Nc/Graphics/Scene/Basic3dSceneGraph.h" />
-		<Unit filename="../../../Nc/Graphics/Scene/I2dSceneGraph.cpp" />
-		<Unit filename="../../../Nc/Graphics/Scene/I2dSceneGraph.h" />
-		<Unit filename="../../../Nc/Graphics/Scene/I3dSceneGraph.cpp" />
-		<Unit filename="../../../Nc/Graphics/Scene/I3dSceneGraph.h" />
-		<Unit filename="../../../Nc/Graphics/Scene/ISceneGraph.h" />
+		<Unit filename="../../../Nc/Graphics/Object/SkyBox.cpp" />
+		<Unit filename="../../../Nc/Graphics/Object/SkyBox.h" />
+		<Unit filename="../../../Nc/Graphics/Object/Sprite.cpp" />
+		<Unit filename="../../../Nc/Graphics/Object/Sprite.h" />
+		<Unit filename="../../../Nc/Graphics/Object/String.cpp" />
+		<Unit filename="../../../Nc/Graphics/Object/String.h" />
+		<Unit filename="../../../Nc/Graphics/Scene/SceneGraph.cpp" />
+		<Unit filename="../../../Nc/Graphics/Scene/SceneGraph.h" />
 		<Unit filename="../../../Nc/Graphics/Scene/SceneGraphManager.cpp" />
 		<Unit filename="../../../Nc/Graphics/Scene/SceneGraphManager.h" />
+		<Unit filename="../../../Nc/Graphics/Scene/SceneNode.cpp" />
 		<Unit filename="../../../Nc/Graphics/Scene/SceneNode.h" />
+		<Unit filename="../../../Nc/Graphics/Scene/SceneNodeFormatManager.cpp" />
+		<Unit filename="../../../Nc/Graphics/Scene/SceneNodeFormatManager.h" />
+		<Unit filename="../../../Nc/Graphics/Scene/SceneNodeFormatPlugin.h" />
+		<Unit filename="../../../Nc/Graphics/SpacePartitioning/Octree.cpp" />
+		<Unit filename="../../../Nc/Graphics/SpacePartitioning/Octree.h" />
+		<Unit filename="../../../Nc/Graphics/SpacePartitioning/SubTree.h" />
 		<Unit filename="../../../Nc/Graphics/Window/Context/GLContext.cpp" />
 		<Unit filename="../../../Nc/Graphics/Window/Context/GLContext.h" />
 		<Unit filename="../../../Nc/Graphics/Window/Context/GLXContext.cpp" />
@@ -151,6 +154,15 @@
 			<code_completion />
 			<debugger />
 			<envvars />
+			<DoxyBlocks>
+				<comment_style block="0" line="2" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

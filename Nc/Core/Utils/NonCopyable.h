@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Herite to this class to forbide the copy of a class
+        /// Innerite of this class to forbide the copy
         class LCORE NonCopyable
         {
             public:

@@ -36,16 +36,22 @@ namespace Nc
         /// Interface of for using a Thread in a subclass
         /**
             <h3> Herite to the class Thread to create a thread like this : </h3>
-            class Engine : public Utils::System::Thread                         <br/>
-            {                                                                   <br/>
-                void Run() {while(1);}                                          <br/>
-            }                                                                   <br/>
+ \code
+    class Engine : public Utils::System::Thread
+    {
+        void Run() {while(1);}
+    }
+ \endcode
 
             <h3>To Create the thread :  </h3>
-            Engine e;                   <br/>
-            e.Start();                  <br/>
-            // do something             <br/>
-            e.Wait();                   <br/>
+ \code
+    Engine e;
+    e.Start();
+    // ....
+    // do something
+    // ....
+    e.Wait();
+ \endcode
         */
         class LCORE IThread : public Utils::NonCopyable
         {
@@ -53,25 +59,23 @@ namespace Nc
                 IThread()            {}
                 virtual ~IThread()   {};
 
-            /**
-                Create and immediatly start the thread. <br/>
-                The virtual function Run() will be called in the thread after that
-            */
+                /**
+                    Create and immediatly start the thread. <br/>
+                    The virtual function Run() will be called in the thread after that
+                */
                 virtual void Start() = 0;
 
-            /**
-                Wait a thread (pause the current thread until the end of the execution of the thread).
-            */
+                /** Wait a thread (pause the current thread until the end of the execution of the thread). */
                 virtual void Wait() = 0;
 
             protected:
-            /**
-                virtal pure methode, to redefine in a subclass. <br/>
-                After that the Start methode is call, the methode Run will be called in the thread
-            */
+                /**
+                    virtal pure methode, to redefine in a subclass. <br/>
+                    After that the Start methode is call, the methode Run will be called in the thread
+                */
                 virtual void Run() = 0;
 
-            /** Exit the current thread */
+                /** Exit the current thread */
                 virtual void Exit() = 0;
         };
     }

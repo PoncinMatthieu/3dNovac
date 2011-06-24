@@ -51,11 +51,13 @@ namespace Nc
                 Console(Pattern p = TranslateAtFocus);
                 virtual ~Console();
 
+                static const char   *ClassName()            {return "Console";}
+
                 /** Render the console */
-                virtual void        Render(Graphic::ISceneGraph *scene);
+                virtual void        Render(Graphic::SceneGraph *scene);
 
                 /** Return the reel position of the console */
-                virtual Vector2f    GetReelPos() const;
+                virtual void        GetReelPos(Vector2f &pos) const;
 
                 /** Push a message in the message list of the console */
                 static void         PushMsg(const std::string &s);
@@ -74,6 +76,8 @@ namespace Nc
                 /** Execute a command by sending an event the good engine */
                 void ExecCmd(const std::string &cmd);
 
+                /** Update the position of the cursor */
+                void UpdateCursorPosition();
 
                 static ListMsg                      _listMsg;           ///< The message list
                 static System::Mutex                _mutexMsg;          ///< Protect the acces of the message list

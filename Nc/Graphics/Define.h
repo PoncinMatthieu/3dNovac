@@ -72,49 +72,60 @@
         namespace Graphic
         {
             // definition of the classes to typedef the diferrent types
-            // default material definition
+            // material definition
+            class IMaterial;
             template<typename VertexType>
-            class DefaultMaterialPolitics;
-            template<typename VertexType>
-            class DefaultMaterialConfigPolitics;
-            template<typename VertexType, typename MaterialPolitic = DefaultMaterialPolitics<VertexType> >
-            class Material;
+            class DefaultMaterial;
 
             // drawable
-            template<typename VertexType, typename MaterialConfigPolitic = DefaultMaterialConfigPolitics<VertexType> >
-            struct IDrawable;
-            template<typename VertexType, bool INDEX = true, typename MaterialConfigPolitic = DefaultMaterialConfigPolitics<VertexType> >
-            struct Drawable;
+            class IGeometryBuffer;
+            class MaterialConfig;
+            class Drawable;
 
-            // Graphical objects
-            class Basic3dSceneGraph;
-            class Object;
-            class Object2d;
-            class Object3d;
-            template<typename VertexType, bool INDEX = true, typename MaterialPolitic = DefaultMaterialPolitics<VertexType>, typename MaterialConfigPolitic = DefaultMaterialConfigPolitics<VertexType> >
-            class Mesh;
-            class Light;
 
-            // effects
-            class Effect;
-            template<typename FRAME>
-            class Animation;
-            class SpriteAnimFrame;
+            // SceneNodes
+            //------------------------------------------------------------------------------------
+                class ISceneNode;
+
+            // SceneGraph
+                class SceneGraph;
+
+            // space partitioning
+                //... comming soon
 
             // camera
-            class Camera;
-            class Camera2d;
-            class Camera3d;
-            class StandardCamera3d;
+                class Camera;
+                class Camera2d;
+                class Camera3d;
+                class StandardCamera3d;
+
+            // Graphical objects
+                class Object;
+                class String;
+                class Sprite;
+                class BoundingBox;
+                class SkyBox;
+
+            // effects
+                class Effect;
+                class Animation;
+                template<typename Frame>
+                class FramesAnimation;
+                class SpriteAnimFrame;
+                typedef FramesAnimation<SpriteAnimFrame>        SpriteAnim;
+                class LightingEffect;
+                struct Light;
+                class DefaultLightingMaterial;
+            //------------------------------------------------------------------------------------
 
             // typedef
-            typedef Animation<SpriteAnimFrame>      SpriteAnim;
-            typedef std::list<Basic3dSceneGraph*>   ListPBasic3dSceneGraph;
+            typedef std::list<SceneGraph*>          ListPScene;
+            typedef std::list<ISceneNode*>          ListPSceneNode;
             typedef std::list<Object*>              ListPObject;
-            typedef std::list<Object2d*>            ListPObject2d;
-            typedef std::list<Object3d*>            ListPObject3d;
-            typedef std::list<Light*>               ListPLight;
             typedef std::list<Effect*>              ListPEffect;
+            typedef std::list<Animation*>           ListPAnimation;
+            typedef std::list<Light>                ListLight;
+            typedef std::list<Light*>               ListPLight;
         }
     }
 

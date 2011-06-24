@@ -36,27 +36,18 @@ using namespace Nc::Utils;
 using namespace Nc::Utils::Xml;
 
 Object::Object(Object *parent)
+    : _type(INLINE), _parent(parent), _cdata(false)
 {
-    _parent = parent;
-    _type = INLINE;
-    _cdata = false;
 }
 
 Object::Object(const std::string &name, TYPE type, Object *parent)
+    : _name(name), _type(type), _parent(parent), _cdata(false)
 {
-    _parent = parent;
-    _name = name;
-    _type = type;
-    _cdata = false;
 }
 
 Object::Object(const std::string &name, TYPE type, const std::map<std::string, std::string> &params, Object *parent)
+    : _name(name), _type(type), _params(params), _parent(parent), _cdata(false)
 {
-    _parent = parent;
-    _name = name;
-    _type = type;
-    _params = params;
-    _cdata = false;
 }
 
 Object::Object(const Object &o)
@@ -66,6 +57,13 @@ Object::Object(const Object &o)
     _type = o._type;
     _params = o._params;
     _cdata = false;
+    _data = o._data;
+    for (ListObject::const_iterator it = o._content.begin(); it != o._content.end(); ++it)
+    {
+        Object *newObj = new Object(*it);
+        newObj->_parent = this;
+        _content.push_back(newObj);
+    }
 }
 
 Object &Object::operator = (const Object &o)
@@ -75,6 +73,13 @@ Object &Object::operator = (const Object &o)
     _type = o._type;
     _params = o._params;
     _cdata = o._cdata;
+    _data = o._data;
+    for (ListObject::const_iterator it = o._content.begin(); it != o._content.end(); ++it)
+    {
+        Object *newObj = new Object(*it);
+        newObj->_parent = this;
+        _content.push_back(newObj);
+    }
     return *this;
 }
 

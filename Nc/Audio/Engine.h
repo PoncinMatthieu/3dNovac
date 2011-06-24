@@ -70,7 +70,9 @@ namespace Nc
                 Engine(Nc::Engine::Manager *manager);
                 virtual ~Engine();
 
-                virtual inline void Execute(float runningTime) {}
+                static const char   *ClassName()                {return "Audio::Engine";}
+
+                virtual inline void Execute(float runningTime)  {}
 
             protected:
                 virtual inline void ActiveContext() {};

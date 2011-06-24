@@ -24,22 +24,24 @@
 
 -----------------------------------------------------------------------------*/
 /** \file
-    Provide definitions for different event :   <br\>
-        System                                  <br\>
-            namespace Key     enum Code         <br\>
-            namespace Mouse   enum Button       <br\>
-            class Event                         <br\>
-            {                                   <br\>
-                enum EventType                  <br\>
-                union                           <br\>
-                {                               <br\>
-                    struct KeyEvent             <br\>
-                    struct MouseMoveEvent       <br\>
-                    struct MouseButtonEvent     <br\>
-                    struct MouseWheelEvent      <br\>
-                    struct SizeEvent            <br\>
-                }                               <br\>
-            }                                   <br\>
+    Provide definitions for different event :
+ \code
+    namespace Key     enum Code
+    namespace Mouse   enum Button
+
+    class Event
+    {
+        enum EventType
+        union
+        {
+            struct KeyEvent
+            struct MouseMoveEvent
+            struct MouseButtonEvent
+            struct MouseWheelEvent
+            struct SizeEvent
+        }
+    }
+ \endcode
 */
 
 #ifndef NC_CORE_SYSTEM_EVENT_H_

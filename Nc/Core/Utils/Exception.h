@@ -72,7 +72,7 @@ namespace Nc
                 virtual const char *what() const throw()                                    {return _msg.c_str();}
 
             private:
-                std::string	_msg;
+                std::string	_msg;   ///< the message of the exception
         };
     }
 }

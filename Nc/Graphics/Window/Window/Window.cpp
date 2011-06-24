@@ -25,6 +25,15 @@
 -----------------------------------------------------------------------------*/
 
 #include "Window.h"
+#include "ICursor.h"
 
-unsigned int    Nc::Graphic::Window::_width = 0;
-unsigned int    Nc::Graphic::Window::_height = 0;
+using namespace Nc::Graphic;
+
+unsigned int    Window::_width = 0;
+unsigned int    Window::_height = 0;
+
+Window::~Window()
+{
+    if (_defaultCursor != NULL)
+        delete _defaultCursor;
+}

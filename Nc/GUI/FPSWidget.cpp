@@ -29,24 +29,25 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-FPSWidget::FPSWidget(Corner x, Corner y) : WidgetLabeled("000", Vector2i(0,5), Vector2i(0,20), x, y)
+FPSWidget::FPSWidget(Corner x, Corner y)
+    : WidgetLabeled(ClassName(), "000", Vector2i(0,5), Vector2i(0,20), x, y)
 {
     _size.Data[1] = _label->Size().Data[1];
     LabelColor(Color(1,1,1));
 }
 
-void FPSWidget::Render(Graphic::ISceneGraph *scene)
+void FPSWidget::Draw(Graphic::SceneGraph *scene)
 {
-    static unsigned int     frequency = 10; // nous permet d'avoir une frequence de refresh relativement constante
+    //static unsigned int     frequency = 10; // nous permet d'avoir une frequence de refresh relativement constante
     static unsigned int     i = 0;
     static unsigned int     moyFps = 0;
 
     // toutes les 50 frames, on reset, et print la moyenne de fps
-    if (i >= frequency)
+    if (i >= 50/*frequency*/)
     {
         std::ostringstream FPS;
-        frequency = moyFps / frequency;
-        FPS << frequency;
+        //frequency = moyFps / frequency;
+        FPS << (moyFps / i);
         Label(FPS.str());
         moyFps = 0;
         i = 0;
@@ -57,5 +58,5 @@ void FPSWidget::Render(Graphic::ISceneGraph *scene)
         moyFps += fps;
         ++i;
     }
-    WidgetLabeled::Render(scene);
+    WidgetLabeled::Draw(scene);
 }

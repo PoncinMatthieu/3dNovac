@@ -30,7 +30,8 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Plugin::Plugin() : MeshFormatPlugin("dae")
+
+Plugin::Plugin() : SceneNodeFormatPlugin("dae")
 {
 }
 
@@ -38,7 +39,7 @@ Plugin::~Plugin()
 {
 }
 
-Object3d   *Plugin::Load(const Utils::FileName &file)
+ISceneNode   *Plugin::Load(const Utils::FileName &file)
 {
     LOG << "COLLADA_DOM Load Started " << file << std::endl;
 
@@ -109,7 +110,7 @@ Object3d   *Plugin::Load(const Utils::FileName &file)
     if (defaultScene)
         ReadScene((domVisual_scene*)defaultScene);
 
-    Object3d *finalObj = GetFinalObject();
+    ISceneNode *finalNode = GetFinalNode();
 
     _mapTexture.clear();
     _mapNormalMap.clear();
@@ -118,10 +119,10 @@ Object3d   *Plugin::Load(const Utils::FileName &file)
     _mapNode.clear();
     _globalMatrix.SetIdentity();
     delete _dae;
-    return finalObj;
+    return finalNode;
 }
 
-Object3d *Plugin::GetFinalObject()
+ISceneNode *Plugin::GetFinalNode()
 {
     if (_root != NULL)
         return _root;
@@ -130,7 +131,7 @@ Object3d *Plugin::GetFinalObject()
     return NULL;
 }
 
-void        Plugin::Save(const Utils::FileName &file, Object3d *obj)
+void        Plugin::Save(const Utils::FileName &file, ISceneNode *node)
 {
     LOG << "Can't save the object, function not implemented" << std::endl;
 }
@@ -201,7 +202,7 @@ void    Plugin::ReadEffect(domEffectRef lib)
         return;
 
     LOG << "Create new Effect (MaterialConfig) " << lib->getId() << std::endl;
-    MaterialConfig<BasicVertexType::Textured, DefaultLightingMaterialConfigPolitic> *config = &_mapMaterialConfig[lib->getId()];
+    MaterialConfig *config = &_mapMaterialConfig[lib->getId()];
 
     // Get a pointer to the effect element
     domEffect *EffectElement = (domEffect*)(domElement*)lib;
@@ -252,12 +253,12 @@ void    Plugin::ReadEffect(domEffectRef lib)
     }
 }
 
-void Plugin::ReadConstant(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant)
+void Plugin::ReadConstant(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant)
 {
     // TODO
 }
 
-void Plugin::ReadLambert(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert)
+void Plugin::ReadLambert(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert)
 {
     // TODO: take only the texture from diffuse for now
     if (lambert->getDiffuse())
@@ -266,7 +267,7 @@ void Plugin::ReadLambert(DefaultMaterialConfig &config, std::map<std::string, do
     }
 }
 
-void Plugin::ReadPhong(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong)
+void Plugin::ReadPhong(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong)
 {
     // TODO: take only the texture from diffuse for now
     if (phong->getDiffuse())
@@ -275,7 +276,7 @@ void Plugin::ReadPhong(DefaultMaterialConfig &config, std::map<std::string, domC
     }
 }
 
-void Plugin::ReadBlinn(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn)
+void Plugin::ReadBlinn(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn)
 {
     // TODO: take only the texture from diffuse for now
     if (blinn->getDiffuse())
@@ -284,7 +285,7 @@ void Plugin::ReadBlinn(DefaultMaterialConfig &config, std::map<std::string, domC
     }
 }
 
-void Plugin::ReadTextureFromTechniqueEffect(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader)
+void Plugin::ReadTextureFromTechniqueEffect(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader)
 {
     domCommon_color_or_texture_type::domTexture *textureElement = shader->getTexture();
     if (textureElement != NULL)
@@ -298,10 +299,16 @@ void Plugin::ReadTextureFromTechniqueEffect(DefaultMaterialConfig &config, std::
             domImage* image_element = (domImage*)(domElement*)idref.getElement();
             GL::Texture *t = ReadImage(image_element);
             GL::Texture *n = ReadNormalMap(image_element);
+            unsigned int nbTextures = 0;
             if (t != NULL)
-                config.texture = *t;
+                nbTextures++;
             if (n != NULL)
-                config.normalMap = *n;
+                nbTextures++;
+            config.Textures.InitSize(nbTextures);
+            if (t != NULL)
+                config.Textures[0] = *t;
+            if (n != NULL)
+                config.Textures[1] = *n;
         }
         else
         {
@@ -313,10 +320,16 @@ void Plugin::ReadTextureFromTechniqueEffect(DefaultMaterialConfig &config, std::
                 domImage* image_element = (domImage*)(domElement*) idRef.getElement();;
                 GL::Texture *t = ReadImage(image_element);
                 GL::Texture *n = ReadNormalMap(image_element);
+                unsigned int nbTextures = 0;
                 if (t != NULL)
-                    config.texture = *t;
+                    nbTextures++;
                 if (n != NULL)
-                    config.normalMap = *n;
+                    nbTextures++;
+                config.Textures.InitSize(nbTextures);
+                if (t != NULL)
+                config.Textures[0] = *t;
+                if (n != NULL)
+                    config.Textures[1] = *n;
             }
         }
     }
@@ -357,7 +370,7 @@ void Plugin::ReadScene(domVisual_sceneRef scene)
     LOG << "Reading Collada Scene " << scene->getName() << std::endl;
 
     // recurse through the scene, read and add nodes
-    _root = (scene->getNode_array().getCount() > 1) ? new Object3d() : NULL;
+    _root = (scene->getNode_array().getCount() > 1) ? new Object() : NULL;
     for (unsigned int i = 0; i < scene->getNode_array().getCount(); i++)
     {
         ReadNode(scene->getNode_array()[i], _root);
@@ -389,7 +402,7 @@ void Plugin::ReadScene(domVisual_sceneRef scene)
 */
 }
 
-void    Plugin::ReadNode(domNodeRef node, Graphic::Object3d *parentNode)
+void    Plugin::ReadNode(domNodeRef node, ISceneNode *parentNode)
 {
     MapNode::iterator it = _mapNode.find(node->getId());
     if (it != _mapNode.end())
@@ -397,15 +410,13 @@ void    Plugin::ReadNode(domNodeRef node, Graphic::Object3d *parentNode)
 
     LOG << "Reading Scene Node " << node->getId() << std::endl;
 
-    Object3d *newObj = (node->getInstance_geometry_array().getCount() > 0) ?
-                        new DefaultMesh(Box3f(), _globalMatrix) :
-                        new Object3d(Box3f(), _globalMatrix);
+    Object *newNode = new Object(Box3f(), _globalMatrix);
     if (parentNode != NULL)
-        parentNode->AddChild(newObj);
-    _mapNode[node->getId()] = newObj;
+        parentNode->As<Object>()->AddChild(newNode);
+    _mapNode[node->getId()] = newNode;
 
     // get back the matrix tranformation
-    ReadNodeTranforms(newObj, node, parentNode);
+    ReadNodeTranforms(newNode, node, (parentNode != NULL) ? parentNode->As<Object>() : NULL);
 
     // Process Instance Geometries
     for (unsigned int i = 0; i < node->getInstance_geometry_array().getCount(); i++)
@@ -417,10 +428,10 @@ void    Plugin::ReadNode(domNodeRef node, Graphic::Object3d *parentNode)
         if (element == NULL) // this instance geometry is not found skip to the next one
             continue;
 
-        ReadDrawable((domGeometry*)element, static_cast<DefaultMesh*>(newObj));
+        ReadDrawable((domGeometry*)element, newNode);
     }
     if (node->getInstance_geometry_array().getCount() > 0)
-        static_cast<DefaultMesh*>(newObj)->ConfigureDrawables();
+        newNode->ChooseDefaultMaterial();
 
 /*
     // Process Instance Controllers
@@ -439,7 +450,7 @@ void    Plugin::ReadNode(domNodeRef node, Graphic::Object3d *parentNode)
 
     // read childrens
     for (unsigned int i = 0; i < node->getNode_array().getCount(); i++)
-        ReadNode( node->getNode_array()[i], newObj);
+        ReadNode(node->getNode_array()[i], newNode);
 
     // read children <instance_nodes>
     for (unsigned int i = 0; i < node->getInstance_node_array().getCount(); i++)
@@ -447,11 +458,11 @@ void    Plugin::ReadNode(domNodeRef node, Graphic::Object3d *parentNode)
         domInstance_node *instance_node = node->getInstance_node_array()[i];
         domNode *urlnode = (domNode*) (domElement*) instance_node->getUrl().getElement();
         if (urlnode)
-            ReadNode(urlnode, newObj);
+            ReadNode(urlnode, newNode);
     }
 }
 
-void    Plugin::ReadDrawable(domGeometry *lib, DefaultMesh *mesh)
+void    Plugin::ReadDrawable(domGeometry *lib, Object *mesh)
 {
     if (lib->getId() == NULL)
         return;
@@ -477,7 +488,7 @@ void    Plugin::ReadDrawable(domGeometry *lib, DefaultMesh *mesh)
     ParseGeometry(lib, mesh);
 };
 
-void Plugin::ParseGeometry(domGeometry *dom_geometry, DefaultMesh *mesh)
+void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
 {
     domMesh *meshElement = dom_geometry->getMesh();
 /*
@@ -513,14 +524,17 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, DefaultMesh *mesh)
         MapDrawable::iterator it = _mapDrawable.find(domTriangles);
         if (it != _mapDrawable.end())   // drawable is found
         {
-            mesh->AddDrawable(*(it->second));
+            //mesh->AddDrawable(*(it->second));
+            mesh->Drawables()[i] = it->second; // init le nombre de drawable
             continue;
         }
+        LOG << "Create new Triangles Drawable `" << domTriangles->getName() << "`" << std::endl;
 
-        LOG << "Create new Triangles Drawable " << domTriangles->getName() << std::endl;
-        Graphic::Drawable<Graphic::BasicVertexType::Textured, true, DefaultLightingMaterialConfigPolitic> *newDrawable = mesh->NewDrawable();
-        mesh->SetBox(mesh->GetBox() + BuildTriangles(domTriangles, *newDrawable));
-        _mapDrawable[domTriangles] = newDrawable;
+        _mapDrawable[domTriangles];
+        Drawable *newDrawable = _mapDrawable[domTriangles]; // creation du drawable
+        Box3f b = BuildTriangles(domTriangles, newDrawable);
+        mesh->SetBox(mesh->GetBox() + b);
+        mesh->Drawables().push_back(newDrawable);
     }
 
     int numTriStripsGroups = (int)meshElement->getTristrips_array().getCount();
@@ -565,18 +579,21 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, DefaultMesh *mesh)
 */
 }
 
-Box3f Plugin::BuildTriangles(domTriangles *domTriangles, DefaultDrawable &drawable)
+Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Drawable *&drawable)
 {
     LOG << "triangle count: " << domTriangles->getCount() << std::endl;
 
     daeString str_material = domTriangles->getMaterial();
+    MaterialConfig *config;
     if (str_material)
     {
         LOG << "Attaching material " << str_material << " to the drawable" << std::endl;
-        drawable = _mapMaterialConfig[_mapMaterial[str_material]];
+        config = _mapMaterialConfig[_mapMaterial[str_material]].Clone();
     }
+    else
+        config = new MaterialConfig();
 
-    Array<BasicVertexType::Textured>    vertices(domTriangles->getCount() * 3);
+    Array<DefaultVertexType::Textured>  vertices(domTriangles->getCount() * 3);
     Array<unsigned int>                 indices(domTriangles->getCount() * 3);
     Box3f                               box;
 
@@ -675,32 +692,30 @@ Box3f Plugin::BuildTriangles(domTriangles *domTriangles, DefaultDrawable &drawab
         box += Vector3f(vertices[ivertex].coord[0], vertices[ivertex].coord[1], vertices[ivertex].coord[2]);
     }
 
-    drawable.GetVBO().UpdateData(vertices, GL_STREAM_DRAW);
-    drawable.GetIBO().UpdateData(indices, 3);
-
+    drawable = new Drawable(vertices, GL_STREAM_DRAW, indices, 3, GL_TRIANGLES, config);
     return box;
 }
 
-void Plugin::ReadNodeTranforms(Object3d *obj, domNodeRef node, Graphic::Object3d *)
+void Plugin::ReadNodeTranforms(Object *node, domNodeRef domNode, Object *)
 {
     // load the node transformations as they are to be able to
     // handle any matrix stack configurations independant of the tools
-    for (unsigned int i = 0; i < node->getContents().getCount(); i++)
+    for (unsigned int i = 0; i < domNode->getContents().getCount(); i++)
     {
         // get the component type string
-        char *typeName = (char*)node->getContents()[i]->getTypeName();
+        char *typeName = (char*)domNode->getContents()[i]->getTypeName();
 
         // set the matrix transformation with the good attributes
         if (strcmp(typeName, "rotate") == 0)
         {
             // load rotation
-            domRotateRef rotateArray = (domRotate*)(domElement*)node->getContents()[i];
+            domRotateRef rotateArray = (domRotate*)(domElement*)domNode->getContents()[i];
 
             if (rotateArray->getValue().getCount() != 4)
                 LOG << "something wrong when we load the rotation matrix transformation" << std::endl;
             else
             {
-                obj->Matrix.AddRotation(Vector3f((float)rotateArray->getValue()[0], (float)rotateArray->getValue()[1], (float)rotateArray->getValue()[2]),
+                node->Matrix.AddRotation(Vector3f((float)rotateArray->getValue()[0], (float)rotateArray->getValue()[1], (float)rotateArray->getValue()[2]),
                                         (float)rotateArray->getValue()[3]);
 
                 //transform->SetRotate( rot );
@@ -716,40 +731,40 @@ void Plugin::ReadNodeTranforms(Object3d *obj, domNodeRef node, Graphic::Object3d
         else if (strcmp(typeName, "translate") == 0)
         {
             // load translation
-            domTranslateRef translateArray = (domTranslate*)(domElement*)node->getContents()[i];
+            domTranslateRef translateArray = (domTranslate*)(domElement*)domNode->getContents()[i];
 
             if (translateArray->getValue().getCount() != 3)
                 LOG << "something wrong when we load the rotation matrix transformation" << std::endl;
             else
             {
                 // get the transation data
-                obj->Matrix.AddTranslation((float)translateArray->getValue()[0], (float)translateArray->getValue()[1], (float)translateArray->getValue()[2]);
+                node->Matrix.AddTranslation((float)translateArray->getValue()[0], (float)translateArray->getValue()[1], (float)translateArray->getValue()[2]);
                 //crtNode->Transforms.push_back(transform);
             }
         }
         else if (strcmp(typeName, "scale") == 0)
         {
             // load scale
-            domScaleRef scaleArray = (domScale*)(domElement*)node->getContents()[i];
+            domScaleRef scaleArray = (domScale*)(domElement*)domNode->getContents()[i];
 
             if (scaleArray->getValue().getCount() != 3)
                 LOG << "something wrong when we load the rotation matrix transformation" << std::endl;
             else
             {
                 // get the rotation data
-                obj->Matrix.AddScale((float)scaleArray->getValue()[0], (float)scaleArray->getValue()[1], (float)scaleArray->getValue()[2]);
+                node->Matrix.AddScale((float)scaleArray->getValue()[0], (float)scaleArray->getValue()[1], (float)scaleArray->getValue()[2]);
                 //crtNode->Transforms.push_back(transform);
             }
         }
         else if (strcmp(typeName, "matrix") == 0)
         {
-            domMatrixRef matrixArray = (domMatrix*)(domElement*)node->getContents()[i];
+            domMatrixRef matrixArray = (domMatrix*)(domElement*)domNode->getContents()[i];
 
             TMatrix mat;
             for (int j = 0; j < 4; ++j)
                 for (int k = 0; k < 4; ++k)
                     mat[j][k] = (float)matrixArray->getValue()[(j*4) + k];
-            obj->Matrix.AddTransformation(mat);
+            node->Matrix.AddTransformation(mat);
             //crtNode->Transforms.push_back(transform);
         }
 /*

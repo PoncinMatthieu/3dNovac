@@ -160,6 +160,5 @@ void ImageLoaderPng::InitPng(const Utils::FileName &file, std::FILE *fp, unsigne
 
 void    ImageLoaderPng::Save(const Utils::FileName &file, Image &image)
 {
-///\todo implemente the ImageLoaderPng::Save() method
     LOG << "ImageLoaderPng::Save() not implemented" << std::endl;
 }

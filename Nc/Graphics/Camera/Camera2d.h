@@ -28,29 +28,37 @@
 #define NC_CAMERA_CAMERA2D_H_
 
 #include "Camera.h"
-#include "../Object/2D/Object2d.h"
 
 namespace Nc
 {
     namespace Graphic
     {
-        /// Implementation of a 2d Camera to used an orthonormal projection
-        class LGRAPHICS Camera2d : public Camera, public Object2d
+        /// Implementation of a 2d Camera witch used an orthonormal projection
+        class LGRAPHICS Camera2d : public Camera
         {
             public:
+                Camera2d() : Camera(ClassName(), true)                          {}
+
+                static const char   *ClassName()                                {return "Camera2d";}
+                virtual ISceneNode  *Clone() const                              {return new Camera2d(*this);}
+
+                /** To reception the mouse motion event */
+                virtual void    MouseMotionEvent(const Nc::System::Event &)     {}
+                /** To reception the mouse button event */
+                virtual void    MouseButtonEvent(const Nc::System::Event &)     {}
+                /** To reception the keybord event */
+                virtual void    KeyboardEvent(const Nc::System::Event &)        {}
+
                 /** Update the projection Matrix to an orthonormal projection */
-                inline void     UpdateProjection()          {_projectionMatrix->SetOrtho(0.0, Window::Width(), 0.0, Window::Height(), -1, 1);}
+                virtual void    UpdateProjection(SceneGraph *scene);
 
-                virtual void    Fix()
-                {
-                    Camera::Fix();
-                    // init the view matrix
-                    if (!_viewMatrix->IsIdentity())
-                        _viewMatrix->SetIdentity();
-                }
+                /** Fix the camera */
+                virtual void    Fix(SceneGraph *scene);
 
-                /** Do nothing */
-                virtual void    Render(ISceneGraph *)  {}
+                /** \return true if the given \p point is in the frustum */
+                virtual bool    PointInFrustum(const Vector3f &point);
+                /** \return true if the given \p box is in the frustum */
+                virtual bool    BoxInFrustum(const Vector3f &center, float size);
         };
     }
 }

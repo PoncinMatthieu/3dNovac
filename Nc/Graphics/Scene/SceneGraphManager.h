@@ -27,8 +27,7 @@
 #ifndef NC_CORE_SYSTEM_SCENEGRAPHMANAGER_H_
 #define NC_CORE_SYSTEM_SCENEGRAPHMANAGER_H_
 
-#include "I2dSceneGraph.h"
-#include "I3dSceneGraph.h"
+#include "../Core/GL/Extension.h"
 
 namespace Nc
 {
@@ -40,6 +39,8 @@ namespace Nc
             (one for a 3d rendering, and another for the 2d rendering in front of the screen like GUI) <br/>
             The SceneGraphs contained by the SceneGraphManager are not deleted when the SceneGraphManager is destroyed.
             So it's your role to destroy it if they are dynamically allocated.
+
+            \todo manage the redudant state glClearColor
         */
         class LGRAPHICS SceneGraphManager
         {
@@ -48,28 +49,33 @@ namespace Nc
                 ~SceneGraphManager();
 
                 /** Init the OpenGL Lib */
-                void                InitGL(bool multisampling);
+                void            InitGL(bool multisampling);
 
-                /** Set the 3dSceneGraph */
-                inline void         Set3dSceneGraph(I3dSceneGraph *s)       {_3dSceneGraph = s; if (s != NULL) _3dSceneGraph->SetCurrentScene();}
+                /** \return the scenes */
+                inline ListPScene           &Scenes()                       {return _listScene;}
+                /** \return the scenes */
+                inline const ListPScene     &Scenes() const                 {return _listScene;}
 
-                /** Set the 2dSceneGraph */
-                inline void         Set2dSceneGraph(I2dSceneGraph *s)       {_2dSceneGraph = s; if (s != NULL) _2dSceneGraph->SetCurrentScene();}
+                /** Add a scene to the scene manager */
+                inline void         AddScene(SceneGraph *scene)             {_listScene.push_back(scene);}
 
-                /** return the 3dSceneGraph */
-                inline I3dSceneGraph *Get3dSceneGraph()                     {return _3dSceneGraph;}
+                /** Remove the given scene */
+                inline void         RemoveScene(SceneGraph *scene)          {_mutex.Lock(); _listScene.remove(scene); _mutex.Unlock();}
 
-                /** return the 2dSceneGraph */
-                inline I2dSceneGraph *Get2dSceneGraph()                     {return _2dSceneGraph;}
+                /** Bring the given scene to front (these scene would be displayed at the end) */
+                void                BringToFront(SceneGraph *scene);
 
-                /** Render the scene by using the given GLContext */
-                void            Render(GLContext *context);
+                /** Render the scenes by using the given GLContext */
+                void                Render(GLContext *context);
+
+                /** Update the scenes */
+                void                Update(float elapsedTime);
 
             private:
-                I3dSceneGraph   *_3dSceneGraph;     ///< the instance of the 3d scene graph
-                I2dSceneGraph   *_2dSceneGraph;     ///< the instance of the 2d scene graph
+                ListPScene      _listScene;         ///< the list of scene witch will be rendered
                 GLbitfield      _clearMask;         ///< the clear mask (defaul: GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
                 Color           _clearColor;        ///< the clear color of the scene
+                System::Mutex   _mutex;             ///< a mutex used to protect the scene
         };
     }
 }

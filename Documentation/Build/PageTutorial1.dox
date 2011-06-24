@@ -66,7 +66,8 @@ void GameEngine::MouseMotionEvent(Nc::System::Event &event)
 \endcode
 
 
-	<div class="title">Instantiate the Engine:</div>
+
+	<div class="title">Instantiate the Engine: (main.cpp)</div>
 	Ok now we have an engine, but how to use it ?
 
 	Will will need to use the Engine::Manager
@@ -74,36 +75,42 @@ void GameEngine::MouseMotionEvent(Nc::System::Event &event)
 \p Samples/Tuto1/main.cpp
 \code
 #include <Nc/Core/Engine/Manager.h>
+#include "GameEngine.h"
 
 using namespace Nc;
 
 void CreateEngines(Engine::Manager &manager)
 {
-	// create our game engine
-  	GameEngine *game = new GameEngine(&manager);
+  // create our game engine
+  GameEngine *game = new GameEngine(&manager);
 
- 	// limit its frame rate to 60 frame by second to avoid to take 100% of the CPU, and add the engine to the manager
-  	game->LimitFrameRate(60);
-  	manager.AddEngine("Main", game);
-  	LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << std::endl;
+  // limit its frame rate to 60 frame by second to avoid to take 100% of the CPU, and add the engine to the manager
+  game->LimitFrameRate(60);
+  manager.AddEngine("Main", game);
+  LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << std::endl;
 
-  	LOG << "-----------GameManager-ENGINES-CREATION-SUCCESS--------------" << std::endl;
+  LOG << "-----------GameManager-ENGINES-CREATION-SUCCESS--------------" << std::endl;
 }
 
 int main()
 {
-	// create the game engine with the config file name
-  	Engine::Manager game("3dNovac.conf");
+  // create the game engine with the config file name
+  Engine::Manager game("3dNovac.conf");
 
-  	// create the engines
-  	CreateEngines(game);
+  // create the engines
+  CreateEngines(game);
 
-	// start the engines and wait for it
-     	game.Start();
-	game.Wait();
-	return 0;
+  // start the engines and wait it
+  game.Start();
+  game.Wait();
+  return 0;
 }
 \endcode
+
+	Ok for the main, but if you look at the creation of the Manager, you'll see that you need a conf file: "3dNovac.conf"
+
+\p Samples/Tuto1/3dNovac.conf
+\include Tuto1/3dNovac.conf
 
 	Now you could use this engine to do what you want.
 
@@ -112,29 +119,10 @@ int main()
 	Firstly we have to create the engine :
 
 \p Samples/Tuto1/main.cpp
-\code
-#include <Nc/Core/Engine/Manager.h>
-#include <Nc/Graphics/Engine.h>
+\include Tuto1/main.cpp
 
-using namespace Nc;
-
-void CreateEngines(Engine::Manager &manager)
-{
-	// create the graphic engine, by using the CreateWindow member function of our game engine
-  	Graphic::Engine *graphic = new Graphic::Engine(&manager, (Graphic::Engine::CreateWindowFunc)&GameEngine::CreateWindow);
-
-  	// limit its frame rate to 60 frame by second, and add the engine to the manager
-  	graphic->LimitFrameRate(60);
-  	manager.AddEngine("Graphic", graphic);
-  	LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << std::endl;
-
-	// create our game engine
-  	GameEngine *game = new GameEngine(graphic, &manager);
-	...
-\endcode
-
-	Has you could see the graphical engine use a member function pointer to create the window. So we will need to create it.
-	And we will have to create an OpenGL Context shared with the graphic engine, this is used neccessary to call OpenGL functions in our engine thread.
+	As you can see the graphical engine use a member function pointer to create the window. So we have to create it.
+	And we have to create an OpenGL Context shared with the graphic engine, this is neccessary to be able to call any OpenGL functions in our main engine.
 
 \p Samples/Tuto1/GameEngine.h
 \code
@@ -185,7 +173,7 @@ void    GameEngine::CreateWindow(Window *win)
 
 
 	<div class="title">Create a SceneGraph:</div>
-	Now it could be interesting to create a scene 3d with a repere. So, we will need to create a Basic3dSceneGraph with a StandardCamera3d in a redefined methode LoadContent.
+	Now it could be interesting to create a scene with a repere. So, we will need to create a SceneGraph with a StandardCamera3d in a redefined method LoadContent.
 
 \p Samples/Tuto1/GameEngine.h
 \code
@@ -194,23 +182,24 @@ virtual void LoadContent();
 
 \p Samples/Tuto1/GameEngine.h
 \code
-Nc::Graphic::Basic3dSceneGraph        *_scene3d;	// our scene 3d, displayed by the graphic engine
-Nc::Graphic::StandardCamera3d         *_camera;       	// our camera used by our scene. We use it to resize and update it with the window inputs
+Nc::Graphic::SceneGraph		*_scene3d;	// our scene 3d, displayed by the graphic engine
+Nc::Graphic::StandardCamera3d   *_camera;       // our camera used by our scene. We use it to resize and update it with the window inputs
 \endcode
 
 \p Samples/Tuto1/GameEngine.cpp
 \code
-#include <Nc/Graphics/Scene/Basic3dSceneGraph.h>
+#include <Nc/Graphics/Scene/SceneGraph.h>
 #include <Nc/Graphics/Camera/StandardCamera3d.h>
 
 ...
 
 void    GameEngine::LoadContent()
 {
-	// create the camera, scene and set it to the SceneGraphManager of the Graphic engine
+	// create the scene, it's camera, and set it to the SceneGraphManager of the Graphic engine
+  	_scene3d = new SceneGraph();
   	_camera = new StandardCamera3d(_graphic->GetWindow());
-  	_scene3d = new Basic3dSceneGraph(_camera);
-  	_graphic->GetSceneManager().Set3dSceneGraph(_scene3d);
+	_scene3d->AddChild(_camera);
+  	_graphic->GetSceneManager().AddScene(_scene3d);
 
   	// create a new repere to display at the center of the scene
   	_scene3d->AddObject(BasicMeshCreator::Repere(1));

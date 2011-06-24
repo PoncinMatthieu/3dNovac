@@ -51,7 +51,9 @@ namespace Nc
                 /** Initialize the values of the vector */
                 void Init(const T &u = 0, const T &v = 0);
 
+                /** \return X */
                 const T   &X() const    {return Vector<T,2>::Data[0];}
+                /** \return Z */
                 const T   &Y() const    {return Vector<T,2>::Data[1];}
         };
 

@@ -31,7 +31,6 @@
 #include <queue>
 #include "../../Define.h"
 #include "Input.h"
-//#include "InputAction.h"
 
 namespace Nc
 {
@@ -42,7 +41,6 @@ namespace Nc
         {
             private:
                 typedef std::list<Input*>           ListInput;
-                //typedef std::list<InputAction*>     ListAction;
 
             public:
                 InputManager() {};
@@ -50,16 +48,14 @@ namespace Nc
 
                 /** Add the given input and set the eventQueue pointer of the input */
                 inline void    AddInput(Input *input)           {input->SetEventQueue(&_eventQueue, &_mutexQueue); _inputList.push_back(input);}
-                //inline void    AddAction(InputAction *action)   {_inputActionList.push_back(action);}
 
                 /** Fill the given event by the event wich was in the eventQueue */
                 bool    PollEvent(Event &e);
 
             private:
-                ListInput       _inputList;
-                //ListAction      _inputActionList;
-                EventQueue      _eventQueue;
-                Mutex           _mutexQueue;
+                ListInput       _inputList;         ///< the list of inputs
+                EventQueue      _eventQueue;        ///< the event queue witch store the event received by the inputs
+                Mutex           _mutexQueue;        ///< the mutex used to protect the event queue
         };
     }
 }

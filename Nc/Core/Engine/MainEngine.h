@@ -38,9 +38,13 @@ namespace Nc
         class LCORE MainEngine : public IEngine, public System::InputManager
         {
             public:
+                MainEngine(const char *className, Manager *manager, unsigned int pattern = HasAContext | WaitingLoadContentsOfOthersEngines,
+                           unsigned char deletePriority = 2, unsigned char loadingContextPriority = 2, unsigned int loadingPriority = 2);
                 MainEngine(Manager *manager, unsigned int pattern = HasAContext | WaitingLoadContentsOfOthersEngines,
                            unsigned char deletePriority = 2, unsigned char loadingContextPriority = 2, unsigned int loadingPriority = 2);
                 virtual ~MainEngine();
+
+                static const char *ClassName()          {return "MainEngine";}
 
             protected:
                 /**
@@ -54,7 +58,7 @@ namespace Nc
                     Can be redefined, to make something before exiting
                     \return true if we want to stop the engines, else the engines will not be power off
                 */
-                virtual bool    ReleaseContent()    {return true;}
+                virtual bool    ReleaseContent()        {return true;}
 
                 /**
                     Called at each execution of the MainEngine. To redefine

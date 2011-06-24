@@ -28,7 +28,9 @@
 #define NC_CORE_MATH_VECTOR_INCLUDED_H_
 
 #include <math.h>
+#include <sstream>
 #include "../Define.h"
+#include "../Utils/Exception.h"
 
 namespace Nc
 {
@@ -72,6 +74,7 @@ namespace Nc
                 template<typename U> Vector operator    +   (const Vector<U,D> &v) const;
 
                 template<typename U> Vector operator    -   (const Vector<U,D> &v) const;
+                Vector                      operator    -   (void) const;
 
                 template<typename U> Vector operator    *   (const Vector<U,D> &v) const;
                 template<typename U> Vector operator    *   (const U &v) const;
@@ -81,11 +84,16 @@ namespace Nc
 
 
                 // function
+                /** \return the square root length of the vector */
                 T       Length() const;
+                /** Normalize the vector and return itself */
                 Vector  &Normalize();
+                /** \return the dot product of the vector with \p v */
                 template<typename U>
-                T       Dot(const Vector<U,D> &u) const;
-                Vector  Inverse() const;
+                T       Dot(const Vector<U,D> &v) const;
+                /** Fill the inverse vector */
+                void    Inverse(Vector &v) const;
+                /** \return the angle between the vector and \p v */
                 template<typename U>
                 T       Angle(const Vector<U,D> &v) const;
 
@@ -97,11 +105,9 @@ namespace Nc
                     return os;
                 }
 
-                T   Data[D];        // data en public, pour des raison de performance a l'acces en dehos de la class
+                T   Data[D];                                ///< public data, for acces performance reason
 
-                static const Vector<T,D>    Null;// = Vector<T,D>();
-
-            protected:
+                static const Vector<T,D>    Null;           ///< static const vector null
         };
 
         template<typename T, unsigned char D>
@@ -279,6 +285,16 @@ namespace Nc
         }
 
         template<typename T, unsigned char D>
+        Vector<T,D> Vector<T,D>::operator - (void) const
+        {
+            Vector<T,D> r;
+            for (unsigned char i = 0; i < D; ++i)
+                r.Data[i] = -Data[i];
+            return r;
+        }
+
+
+        template<typename T, unsigned char D>
         template<typename U>
         Vector<T,D> Vector<T,D>::operator * (const Vector<U,D> &v) const
         {
@@ -343,12 +359,10 @@ namespace Nc
         }
 
         template<typename T, unsigned char D>
-        Vector<T,D>  Vector<T,D>::Inverse() const
+        void  Vector<T,D>::Inverse(Vector<T,D> &v) const
         {
-            Vector<T,D> v;
             for (unsigned char i = 0; i < D; ++i)
                 v.Data[i] = -Data[i];
-            return v;
         }
 
         template<typename T, unsigned char D>

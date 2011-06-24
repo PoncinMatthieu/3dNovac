@@ -86,7 +86,7 @@ namespace Nc
                 bool    Disabled(T v) const     {return ((_mask & v) == 0);}
 
             private:
-                D       _mask;
+                D       _mask;      ///< the bit mask
         };
     }
 }

@@ -31,34 +31,31 @@
 #include <dom/domCOLLADA.h>
 #include <dom/domProfile_COMMON.h>
 #include <Nc/Graphics/Graphics.h>
-#include <Nc/Graphics/Object/3D/MeshFormatPlugin.h>
-#include <Nc/Graphics/Material/DefaultLightingMaterial.h>
+#include <Nc/Graphics/Scene/SceneNodeFormatPlugin.h>
 #include "Define.h"
 
 namespace Nc
 {
-    class Plugin : public Graphic::MeshFormatPlugin
+    class Plugin : public Graphic::SceneNodeFormatPlugin
     {
         private:
-            typedef Graphic::MaterialConfig<Graphic::BasicVertexType::Textured, Graphic::DefaultLightingMaterialConfigPolitic>                                      DefaultMaterialConfig;
-            typedef Graphic::Drawable<Graphic::BasicVertexType::Textured, true, Graphic::DefaultLightingMaterialConfigPolitic>                                      DefaultDrawable;
-            typedef Graphic::Mesh<Graphic::BasicVertexType::Textured, true, Graphic::DefaultLightingMaterialPolitic, Graphic::DefaultLightingMaterialConfigPolitic> DefaultMesh;
+            typedef Graphic::GL::GeometryBuffer<Graphic::DefaultVertexType::Textured>       DefaultGeometry;
 
             typedef std::map<std::string, Graphic::GL::Texture>         MapTexture;
-            typedef std::map<std::string, DefaultMaterialConfig>        MapMaterialConfig;
-            typedef std::map<void*, DefaultDrawable *>                  MapDrawable;
+            typedef std::map<std::string, Graphic::MaterialConfig>      MapMaterialConfig;
+            typedef std::map<void*, Graphic::Drawable*>                 MapDrawable;
             typedef std::map<std::string, std::string>                  MapMaterial;        // just to link with the material config (effect with collada), weird !
-            typedef std::map<std::string, Graphic::Object3d*>           MapNode;
+            typedef std::map<std::string, Graphic::ISceneNode*>         MapNode;
 
         public:
             Plugin();
             virtual ~Plugin();
 
-            virtual Graphic::Object3d   *Load(const Utils::FileName &file);
-            virtual void                Save(const Utils::FileName &file, Graphic::Object3d *obj);
+            virtual Graphic::ISceneNode     *Load(const Utils::FileName &file);
+            virtual void                    Save(const Utils::FileName &file, Graphic::ISceneNode *node);
 
         private:
-            Graphic::Object3d *GetFinalObject();
+            Graphic::ISceneNode *GetFinalNode();
 
             // images (-> Texture)
             void    ReadImageLibrary(domLibrary_imagesRef lib);
@@ -70,11 +67,11 @@ namespace Nc
             void    ReadEffectLibrary(domLibrary_effectsRef lib);
             void    ReadEffect(domEffectRef lib);
 
-            void    ReadConstant(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant);
-            void    ReadLambert(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert);
-            void    ReadPhong(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong);
-            void    ReadBlinn(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn);
-            void    ReadTextureFromTechniqueEffect(DefaultMaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader);
+            void    ReadConstant(Graphic::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant);
+            void    ReadLambert(Graphic::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert);
+            void    ReadPhong(Graphic::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong);
+            void    ReadBlinn(Graphic::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn);
+            void    ReadTextureFromTechniqueEffect(Graphic::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader);
 
             // materials (-> effects)
             void    ReadMaterialLibrary(domLibrary_materialsRef lib);
@@ -82,24 +79,24 @@ namespace Nc
 
             // scene
             void    ReadScene(domVisual_sceneRef scene);
-            void    ReadNode(domNodeRef node, Graphic::Object3d *parentNode);
-            void    ReadNodeTranforms(Graphic::Object3d *obj, domNodeRef node, Graphic::Object3d *);
+            void    ReadNode(domNodeRef node, Graphic::ISceneNode *parentNode);
+            void    ReadNodeTranforms(Graphic::Object *node, domNodeRef domNode, Graphic::Object *);
 
             // Drawable
-            void    ReadDrawable(domGeometry *lib, DefaultMesh *mesh);
-            void    ParseGeometry(domGeometry *domGeometry, DefaultMesh *mesh);
-            Box3f   BuildTriangles(domTriangles *domTriangles, DefaultDrawable &drawable);
+            void    ReadDrawable(domGeometry *lib, Graphic::Object *mesh);
+            void    ParseGeometry(domGeometry *domGeometry, Graphic::Object *mesh);
+            Box3f   BuildTriangles(domTriangles *domTriangles, Graphic::Drawable *&drawable);
 
 
-            DAE                 *_dae;
-            MapMaterialConfig   _mapMaterialConfig;
-            MapMaterial         _mapMaterial;
-            MapTexture          _mapTexture;
-            MapTexture          _mapNormalMap;
-            MapDrawable         _mapDrawable;
-            MapNode             _mapNode;
-            TMatrix             _globalMatrix;
-            Graphic::Object3d   *_root;
+            DAE                     *_dae;
+            MapMaterialConfig       _mapMaterialConfig;
+            MapMaterial             _mapMaterial;
+            MapTexture              _mapTexture;
+            MapTexture              _mapNormalMap;
+            MapDrawable             _mapDrawable;
+            MapNode                 _mapNode;
+            TMatrix                 _globalMatrix;
+            Graphic::ISceneNode     *_root;
     };
 }
 

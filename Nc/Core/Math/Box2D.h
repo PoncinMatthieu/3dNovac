@@ -48,7 +48,7 @@ namespace Nc
                 template<typename U>
                 Box2D    &operator = (const Box2D<U> &b);
 
-                static const Box2D<T>       EmptyBox;
+                static const Box2D<T>       EmptyBox;       ///< static const empty box
         };
 
         template<typename T>

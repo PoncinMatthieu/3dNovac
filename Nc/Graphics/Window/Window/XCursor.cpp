@@ -40,6 +40,13 @@ Graphic::Cursor::Cursor(XWindow *w)
     CreateHiddenCursor();
 }
 
+Graphic::Cursor::Cursor(const Graphic::Cursor &c)
+    : ICursor(c), _win(c._win), _cursor(c._cursor)
+{
+    CreateHiddenCursor();
+}
+
+
 Graphic::Cursor::~Cursor()
 {
     if (_win->_currentCursor == this)
@@ -47,13 +54,13 @@ Graphic::Cursor::~Cursor()
     _nbCursor--;
     if (_nbCursor == 0 && _hiddenCursor)
     {
-        XFreeCursor(_win->_display, *_hiddenCursor);
+        //XFreeCursor(_win->_display, *_hiddenCursor);  // generate multiple invalid read of size 4 under valgrind
         delete _hiddenCursor;
+        _hiddenCursor = NULL;
     }
-    if (_cursor)
+    if (_cursor.Unique() && _cursor != NULL)
     {
         XFreeCursor(_win->_display, *_cursor);
-        delete _cursor;
     }
 }
 
@@ -61,7 +68,7 @@ void Graphic::Cursor::Enable()
 {
     if (_win->IsOwn())
     {
-        XDefineCursor(_win->_display, _win->_xwin, (_cursor) ? *_cursor : None);
+        XDefineCursor(_win->_display, _win->_xwin, (_cursor != NULL) ? *_cursor : None);
         //XFlush(_win->_display); // genere un XIO error avec Qt
     }
     _win->_currentCursor = this;
@@ -104,7 +111,7 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
     if (!_win->IsOwn())
         return;
 
-    if (_cursor) // delete the last cursor
+    if (_cursor != NULL) // delete the last cursor
         XFreeCursor(_win->_display, *_cursor);
 
     XGCValues   GCvalues;
@@ -154,7 +161,7 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
 	// Create the cursor
     XColor black = {0, 0, 0, 0};
 	XColor white = {0xffff, 0xffff, 0xffff, 0xffff};
-	if (!_cursor)
+	if (_cursor == NULL)
         _cursor = new ::Cursor;
     *_cursor = XCreatePixmapCursor(_win->_display, data_pixmap, mask_pixmap,
                                    &black, &white, posCenter.Data[0], posCenter.Data[1]);
@@ -273,8 +280,8 @@ void Graphic::Cursor::LoadFromXpm(const char *xpm[])
     }
     sscanf(xpm[4+row], "%d,%d", &hot_x, &hot_y);
     LoadFromData(data, mask, Vector2i(width, height), Vector2i(hot_x, hot_y));
-    delete data;
-    delete mask;
+    delete[] data;
+    delete[] mask;
 
 
 /*

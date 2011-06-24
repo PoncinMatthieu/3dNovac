@@ -30,8 +30,8 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-SpriteWidget::SpriteWidget(const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent)
-    : Widget(pos, size, x, y, parent)
+SpriteWidget::SpriteWidget(const Vector2f &pos, const Vector2f &size, Corner x, Corner y)
+    : Widget(ClassName(), pos, size, x, y)
 {
 }
 
@@ -39,28 +39,13 @@ SpriteWidget::~SpriteWidget()
 {
 }
 
-SpriteWidget::SpriteWidget(const SpriteWidget &w)
-{
-    Copy(w);
-}
-
-SpriteWidget &SpriteWidget::operator = (const SpriteWidget &w)
-{
-    Copy(w);
-    return *this;
-}
-
-void SpriteWidget::Copy(const SpriteWidget &w)
-{
-}
-
 void SpriteWidget::AddSprite(Sprite *s, const Vector2f &pos)
 {
     _listSprite.push_back(SpritePos(s, pos));
-    _stateChange = true;
+    _stateChanged = true;
 }
 
-void SpriteWidget::Draw(Graphic::ISceneGraph *scene)
+void SpriteWidget::Draw(Graphic::SceneGraph *scene)
 {
     for (ListSpritePos::iterator it = _listSprite.begin(); it != _listSprite.end(); ++it)
     {

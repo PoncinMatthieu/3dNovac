@@ -41,11 +41,13 @@ namespace Nc
         class Mutex : public IMutex
         {
             public:
-                Mutex()                     {pthread_mutex_init(&_mutexId, NULL);}
-                virtual ~Mutex()            {pthread_mutex_destroy(&_mutexId);}
+                Mutex()                                 {pthread_mutex_init(&_mutexId, NULL);}
+                Mutex(const Mutex &)                    {pthread_mutex_init(&_mutexId, NULL);}
+                Mutex &operator = (const Mutex &)       {return *this;}
+                virtual ~Mutex()                        {pthread_mutex_destroy(&_mutexId);}
 
-                inline void Lock()          {pthread_mutex_lock(&_mutexId);}
-                inline void Unlock()        {pthread_mutex_unlock(&_mutexId);}
+                inline void Lock()                      {pthread_mutex_lock(&_mutexId);}
+                inline void Unlock()                    {pthread_mutex_unlock(&_mutexId);}
 
             private:
                 pthread_mutex_t     _mutexId;

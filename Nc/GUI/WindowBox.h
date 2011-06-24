@@ -38,40 +38,50 @@ namespace Nc
         {
             public:
                 WindowBox(const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x = Top, Corner y = Left, Widget *parent = NULL);
-                virtual ~WindowBox();
-
+                WindowBox(const char *className, const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x = Top, Corner y = Left, Widget *parent = NULL);
                 WindowBox(const WindowBox &w);
                 WindowBox &operator = (const WindowBox &w);
-                virtual void    Copy(const WindowBox &w);
-                virtual Widget* Clone() const               {return new WindowBox(*this);}
+                virtual ~WindowBox();
+
+                static const char   *ClassName()                {return "WindowBox";}
+                virtual ISceneNode  *Clone() const              {return new WindowBox(*this);}
+                virtual void        ToString(std::ostream &os) const;
 
                 /** Change the title statement */
-                inline void DrawTitleState(bool state)                      {_drawTitle = state; _stateChange = true;}
+                inline void     DrawTitleState(bool state)                      {_drawTitle = state; _stateChanged = true;}
                 /** Change the title of the window */
-                void ChangeTitle(const std::string &title, const std::string &ttf);
+                void            ChangeTitle(const std::string &title, const std::string &ttf);
                 /** Set the title height */
-                inline int  TitleHeight() const                             {return _titleHeight;}
+                inline int      TitleHeight() const                             {return _titleHeight;}
 
                 /** Set tje colors of the window */
-                inline void SetColor(const Color &cInside, const Color &cTitle1, const Color &cTitle2, const Color &cBorder)
-                                                                            {_color = cInside; _titleColor1 = cTitle1; _titleColor2 = cTitle2; _edgeColor = cBorder; _stateChange = false;}
+                inline void     SetColor(const Color &cInside, const Color &cTitle1, const Color &cTitle2, const Color &cBorder)
+                                                                            {_color = cInside; _titleColor1 = cTitle1; _titleColor2 = cTitle2; _edgeColor = cBorder; _stateChanged = false;}
                 /** Set the filling color */
-                inline void FillColor(const Color &color)               {_color = color; _stateChange = false;}
+                inline void     FillColor(const Color &color)               {_color = color; _stateChanged = false;}
 
                 /** Return the reel size */
-                virtual Vector2f    GetReelSize() const;
+                virtual void    GetReelSize(Vector2f &size) const;
 
             protected:
-                WindowBox(const std::string &title, const std::string &ttf = "arial"); // constructeur par defaut protected
+                WindowBox(const std::string &title, const std::string &ttf = "arial");
+                WindowBox(const char *className, const std::string &title, const std::string &ttf = "arial");
 
                 /** Update the geometry of the window */
-                virtual void        Update();
+                virtual void    Update();
                 /** Render the window */
-                virtual void        Draw(Graphic::ISceneGraph *scene);
+                virtual void    Draw(Graphic::SceneGraph *scene);
                 /** Translate the childs of the window */
-                virtual Vector2f    TranslateChild(const Corner corner[2]) const;
+                virtual void    TranslateChild(const Corner corner[2], Vector2f &v) const;
 
+            private:
+                /** Initialize the widget */
+                void            Init(const std::string &title, const std::string &ttf);
 
+                /** Copy the widget properties */
+                void            Copy(const WindowBox &w);
+
+            protected:
                 Color               _color;             ///< the filling color
                 //bool                _dragable;
 
@@ -82,9 +92,7 @@ namespace Nc
                 bool                _drawTitle;         ///< Mark if we need to draw the title
 
             private:
-                Graphic::Drawable<Graphic::BasicVertexType::Colored2d, false>     _drawableTitle;       ///< the drawable of the title
-                Graphic::Drawable<Graphic::BasicVertexType::Colored2d, false>     _drawableBox;         ///< the drawable of the box
-                Graphic::Drawable<Graphic::BasicVertexType::Colored2d, false>     _drawableEdge;        ///< the drawable of the edge
+                unsigned int        _indexDrawable;
         };
     }
 }

@@ -147,7 +147,6 @@ namespace Nc
     }
 
     // explicit instantiation
-    //static template class Utils::Singleton<Graphic::GL::Extension>;         ///< explicit instanciation of the extention singleton
 	template class Utils::Singleton<Graphic::GL::Extension>;         ///< explicit instanciation of the extention singleton
 }
 

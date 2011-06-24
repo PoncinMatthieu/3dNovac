@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------
 
-                    define all constants of 3DNovac System
+                    define all constants of 3DNovac Core
 
 -----------------------------------------------------------------------------*/
 
@@ -35,6 +35,9 @@
 
     #include <climits>
     #include <queue>
+    #include <map>
+    #include <list>
+    #include <string>
     #include <Nc/Define.h>
 
     //#define DYNAMIC_LINK
@@ -117,6 +120,22 @@
             #error No 32 bits integer type for this platform
         #endif
 
+        namespace Utils
+        {
+            namespace Metaprog
+            {
+                class Nop;
+            }
+
+            namespace Xml
+            {
+                class   Object;
+
+                typedef std::list<Object*>                  ListObject;
+                typedef std::map<std::string, std::string>  MapParam;
+            }
+        }
+
         namespace Math
         {
             // define the classes to typedef basics type
@@ -126,6 +145,7 @@
             template<typename T>                    class Vector2D;
             template<typename T>                    class Vector3D;
             template<typename T>                    class Matrix4x4;
+            template<typename T>                    class Plane;
 
             // Typedefs
             typedef Pixel<float>                Color;  // a pixel could be see as a color rgba ^^ (float for opengl)
@@ -145,6 +165,8 @@
             typedef Vector3D<float>             Vector3f;
             typedef Vector3D<double>            Vector3d;
             typedef Matrix4x4<float>            TMatrix;
+            typedef Plane<float>                Planef;
+            typedef Plane<double>               Planed;
         }
 
         namespace System
@@ -152,6 +174,14 @@
             class Event;
 
             typedef std::queue<Event>    EventQueue;
+        }
+
+        namespace Graph
+        {
+            template<typename T, typename NodeType, class Allocator>
+            class ListNodePolitic;
+            template<typename T>
+            class NodeList;
         }
     }
 

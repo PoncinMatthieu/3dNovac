@@ -33,36 +33,24 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to manage and render effect and animation
-        class LGRAPHICS   Effect : public Object
+        /// Interface to manage and render effects
+        class LGRAPHICS     Effect : public Entity
         {
             public:
-                Effect()                                        {_alive = true;}
-                virtual ~Effect()                               {}
+                Effect(const char *className)
+                    : Entity(className)                     {}
+                virtual ~Effect()                           {}
 
-                /** copy the effect */
-                virtual Effect  *Clone() const = 0;
+                static const char       *ClassName()        {return "Effect";}
+                virtual ISceneNode      *Clone() const = 0;
 
-                /** Start the effect */
-                virtual void    Start() = 0;
-                /** Stop the effect */
-                virtual void    Stop() = 0;
-                /** Return true if the effect is started */
-                virtual bool    Started() const = 0;
-
-                /** To Update the effect */
-                virtual void    Update(float runningTime) = 0;
                 /** To Display the effect */
-                virtual void    Render(ISceneGraph *scene) = 0;
-
-                /** Set alive statement */
-                void                Alive(bool state)           {_alive = state;}
-                /** Return the alive statement */
-                virtual inline bool Alive() const               {return _alive;}
-
-            protected:
-                bool            _alive;                         ///< statement to specifiy if the effect is dead (terminate), in that case we could destroy the animation upstream
+                virtual void            Render(SceneGraph *scene) = 0;
         };
+
+        // specialization of the method GetNode<> for an IObject
+        //template<>
+        //Effect *ISceneNode::GetNode<>();
     }
 }
 

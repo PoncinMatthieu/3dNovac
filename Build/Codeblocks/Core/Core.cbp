@@ -46,6 +46,13 @@
 		<Unit filename="../../../Nc/Core/Engine/MainEngine.h" />
 		<Unit filename="../../../Nc/Core/Engine/Manager.cpp" />
 		<Unit filename="../../../Nc/Core/Engine/Manager.h" />
+		<Unit filename="../../../Nc/Core/Graph/BinaryNode.h" />
+		<Unit filename="../../../Nc/Core/Graph/BinaryTree.h" />
+		<Unit filename="../../../Nc/Core/Graph/DotGraph.h" />
+		<Unit filename="../../../Nc/Core/Graph/INodePolitic.h" />
+		<Unit filename="../../../Nc/Core/Graph/NNodePolitic.h" />
+		<Unit filename="../../../Nc/Core/Graph/Node.h" />
+		<Unit filename="../../../Nc/Core/Graph/Octree.h" />
 		<Unit filename="../../../Nc/Core/Math/Array.h" />
 		<Unit filename="../../../Nc/Core/Math/Box.h" />
 		<Unit filename="../../../Nc/Core/Math/Box2D.h" />
@@ -55,6 +62,7 @@
 		<Unit filename="../../../Nc/Core/Math/Matrix.h" />
 		<Unit filename="../../../Nc/Core/Math/Matrix4x4.h" />
 		<Unit filename="../../../Nc/Core/Math/Pixel.h" />
+		<Unit filename="../../../Nc/Core/Math/Plane.h" />
 		<Unit filename="../../../Nc/Core/Math/Vector.h" />
 		<Unit filename="../../../Nc/Core/Math/Vector2D.h" />
 		<Unit filename="../../../Nc/Core/Math/Vector3D.h" />
@@ -73,10 +81,6 @@
 		<Unit filename="../../../Nc/Core/System/Object.h" />
 		<Unit filename="../../../Nc/Core/System/PluginLoader.h" />
 		<Unit filename="../../../Nc/Core/System/System.h" />
-		<Unit filename="../../../Nc/Core/Tree/BinaryTree.h" />
-		<Unit filename="../../../Nc/Core/Tree/DotGraph.h" />
-		<Unit filename="../../../Nc/Core/Tree/Node.h" />
-		<Unit filename="../../../Nc/Core/Tree/PortalTree.h" />
 		<Unit filename="../../../Nc/Core/Utils/Clock.h" />
 		<Unit filename="../../../Nc/Core/Utils/Convert.h" />
 		<Unit filename="../../../Nc/Core/Utils/Debug/MemoryManager.cpp" />
@@ -92,6 +96,7 @@
 		<Unit filename="../../../Nc/Core/Utils/Mask.h" />
 		<Unit filename="../../../Nc/Core/Utils/Metaprog.h" />
 		<Unit filename="../../../Nc/Core/Utils/NonCopyable.h" />
+		<Unit filename="../../../Nc/Core/Utils/RessourceManager.h" />
 		<Unit filename="../../../Nc/Core/Utils/Singleton.h" />
 		<Unit filename="../../../Nc/Core/Utils/SmartPointer.h" />
 		<Unit filename="../../../Nc/Core/Utils/Unicode.cpp" />

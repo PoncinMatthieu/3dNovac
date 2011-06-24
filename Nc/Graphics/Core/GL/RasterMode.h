@@ -35,54 +35,87 @@ namespace Nc
     {
         namespace GL
         {
-            /// To manipulate the poligon rasterization mode
+            /// To manipulate opengl rasterizations mode
             /**
-                \todo Manage the glLineWidth, glPointSize, glPolygonOffset, glHint (for antialiasing), glFog functions
+                \todo Manage the glHint (for antialiasing), glFog functions
 
-                Abstract the glPolygonMode witch controls the interpretation of polygons for rasterization.
+                <div class="title"> Allow you to manage some opengl state </div>
+                    - Abstract the glPolygonMode witch controls the interpretation of polygons for rasterization.
+                    - Abstract the glDepthTest witch control the depth buffer
+                    - Abstract the glLineWidth and glPointSize
 
-                from the OpenGL documumentation "http://www.opengl.org/sdk/docs/man3/":
+                <div class="title"> Polygon Mode </div>
+                For the glPolygonMode, from the OpenGL documumentation "http://www.opengl.org/sdk/docs/man3/":
 
                 Three modes are defined and can be specified in mode:
-                - GL_POINT
-
-                Polygon vertices that are marked as the start of a boundary edge are drawn as points.
-                Point attributes such as GL_POINT_SIZE and GL_POINT_SMOOTH control the rasterization of the points.
-                Polygon rasterization attributes other than GL_POLYGON_MODE have no effect.
-
-                - GL_LINE
-
-                Boundary edges of the polygon are drawn as line segments.
-                Line attributes such as GL_LINE_WIDTH and GL_LINE_SMOOTH control the rasterization of the lines.
-                Polygon rasterization attributes other than GL_POLYGON_MODE have no effect.
-
-                - GL_FILL
-
-                The interior of the polygon is filled.
-                Polygon attributes such as GL_POLYGON_SMOOTH control the rasterization of the polygon.
+                    - GL_POINT
+                    - GL_LINE
+                    - GL_FILL
             */
             class RasterMode
             {
                 public:
-                    RasterMode()
-                        : _face(GL_FRONT_AND_BACK), _mode(GL_FILL) {}
-                    RasterMode(GLenum face, GLenum mode)
-                        : _face(face), _mode(mode) {}
+                    RasterMode();
+                    RasterMode(GLenum face, GLenum mode);
 
                     /** Enable the given polygon rasterization mode */
-                    inline void Enable()           {glPolygonMode(_face, _mode);}
+                    void            Enable();
                     /** Disable the given polygon rasterization mode by activating the default rasterization mode */
-                    inline void Disable()          {glPolygonMode(_face, GL_FILL);}
+                    void            Disable();
 
+                    /** Inhibit the polygon mode */
+                    inline void     InhibitPolygonMode()                            {_setPolygonMode = false;}
                     /** Set the polygon resterization mode */
-                    inline void SetRasterMode(GLenum face, GLenum mode)    {_face = face; _mode = mode;}
+                    inline void     SetPolygonMode(GLenum face, GLenum mode)        {_face = face; _mode = mode; _setPolygonMode = true;}
+
+                    /** Inhibit the PointSize */
+                    inline void     InhibitPointSize()                              {_setPointSize = false;}
+                    /** Set the point size and line width used to rasterize the points and lines */
+                    inline void     SetPointSize(GLfloat pointSize)                 {_pointSize = pointSize; _setPointSize = true;}
+
+                    /** Inhibit the PointSize */
+                    inline void     InhibitLineWidth()                              {_setLineWidth = false;}
+                    /** Set the point size and line width used to rasterize the points and lines */
+                    inline void     SetLineWidth(GLfloat lineWidth)                 {_lineWidth = lineWidth; _setLineWidth = true;}
+
+                    /** Inhibit the polygon offset */
+                    inline void     InhibitPolygonOffset()                          {_setPolygonOffset = false;}
+                    /** Set the polygon offset parameters */
+                    inline void     SetPolygonOffset(GLfloat factor, GLfloat units) {_polygonOffsetFactor = factor; _polygonOffsetUnits = units; _setPolygonOffset = true;}
+
+                    /** Inhibit the depth test */
+                    inline void     InhibitDepthTest()                              {_setDepthTest = false;}
+                    /** Set the depth test */
+                    inline void     SetDepthTest(bool state)                        {_depthTest = state; _setDepthTest = true;}
 
                 private:
+                    bool            _setPolygonMode;
                     /** Must be GL_FRONT_AND_BACK for front- and back-facing polygons. */
-                    GLenum  _face;  ///< Specifies the polygons that mode applies
-
+                    GLenum          _face;                  ///< SpecifY the polygons that mode applies
                     /** Accepted values are GL_POINT, GL_LINE, and GL_FILL. The initial value is GL_FILL for both front- and back-facing polygons. */
-                    GLenum  _mode;  ///< Specifies how polygons will be rasterized
+                    GLenum          _mode;                  ///< SpecifY how polygons will be rasterized
+
+                    bool            _setPointSize;
+                    GLfloat         _pointSize;             ///< Specify the diameter of rasterized points
+
+                    bool            _setLineWidth;
+                    GLfloat         _lineWidth;             ///< Specify the width of rasterized lines
+
+                    bool            _setPolygonOffset;
+                    GLfloat         _polygonOffsetFactor;   ///< Set the scale and units used to calculate depth values
+                    GLfloat         _polygonOffsetUnits;    ///< Set the scale and units used to calculate depth values
+
+                    bool            _setDepthTest;          ///< If true, then the _depthTest property will affect the current openglContext
+                    bool            _depthTest;             ///< If false, disable the depth test
+                    bool            _lastDepthTestState;    ///< the last state of the depth test before enable it
+
+                    static GLenum   _currentFace;
+                    static GLenum   _currentMode;
+                    static GLfloat  _currentPointSize;
+                    static GLfloat  _currentLineWidth;
+                    static GLfloat  _currentPolygonOffsetFactor;
+                    static GLfloat  _currentPolygonOffsetUnits;
+                    static bool     _currentDepthTest;
             };
         }
     }
