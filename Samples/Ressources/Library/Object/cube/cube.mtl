@@ -1,0 +1,8 @@
+# 
+newmtl glass_jpg
+	 Ka 0.117647 0.117647 0.117647
+	 Kd 0.752941 0.752941 0.752941
+	 Ks 0.752941 0.752941 0.752941
+	 illum 2
+	 Ns 8
+	 map_Kd stainedglass05.png
