@@ -39,38 +39,29 @@ namespace Nc
             /// Template Interface to manage an OpenGL buffer
             /**
                 The openGL buffer is directly allocated in the graphic card.
-                By default no memory is keep on local, but it't possible to save the data in local
-                <br/> <br/>
-                typeBuffer can take : <br/>
-                    GL_ARRAY_BUFFER : for a data tab <br/>
-                    GL_ELEMENT_ARRAY_BUFFER : for an index tab <br/>
-
-                flags peut prendre pour valeur :
-                    GL_STREAM_DRAW : you update your data at each render pass <br/>
-                    GL_DYNAMIC_DRAW : you update your data frequently, more than once in one render pass <br/>
-                    GL_STATIC_DRAW : your data is not frequently update <br/>
+                The memory is not keep in local, but it't possible to retreive it by using the MapBuffer method.
             */
             template <typename T>
             class DataBuffer : public Object
             {
                 public:
                     DataBuffer();
-                    DataBuffer(GLenum typeBuffer, unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab = NULL);
+                    DataBuffer(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab = NULL);
                     virtual ~DataBuffer();
 
                     /** Init the buffer */
-                    void    Init(GLenum typeBuffer);
+                    void    Init(Enum::BufferTarget target);
                     /** Init the buffer */
-                    void    Init(GLenum typeBuffer, unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab);
+                    void    Init(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab);
                     /** Update the buffer */
-                    void    UpdateData(unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab);
+                    void    UpdateData(unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab);
                     /** Update the buffer */
                     void    UpdateData(const T *dataTab);
 
                     /** Enable the buffer */
-                    virtual inline void         Enable() const              {glBindBuffer(_typeBuffer, _index);}
+                    virtual inline void         Enable() const              {glBindBuffer(_target, _index);}
                     // /** Disable the buffer */
-                    //virtual inline void         Disable() const             {glBindBuffer(_typeBuffer, 0);} // since OpenGL version 3.0, unbind a buffer is deprecated
+                    //virtual inline void         Disable() const             {glBindBuffer(_target, 0);} // since OpenGL version 3.0, unbind a buffer is deprecated
                     /** return the gl index of the buffer */
                     virtual inline unsigned int	GetIndex() const            {return _index;}
 
@@ -80,10 +71,9 @@ namespace Nc
                     inline unsigned int         Stride() const              {return _stride;}
 
                     /**
-                        Map the buffer in the local buffer, and return it's pointer. <br/>
-                        The access flag should be GL_READ_ONLY, GL_WRITE_ONLY, or GL_READ_WRITE to specifie the access policy of the buffer
+                        Map the buffer in the local buffer, and return it's pointer.
                      */
-                    T                           *MapBuffer(GLenum access);
+                    T                           *MapBuffer(Enum::BufferAccessType access);
                     /** Unmap the buffer */
                     void                        UnmapBuffer();
 
@@ -94,13 +84,13 @@ namespace Nc
                     /** Release the gl buffer */
                     virtual  void   Release();
 
-                    unsigned int    _index;             ///< the gl buffer index
-                    unsigned int    _size;              ///< the size of the buffer
-                    unsigned int    _stride;            ///< the stride between two data in the buffer
-                    GLenum          _typeBuffer;        ///< the type of the buffer (GL_ARRAY_BUFFER or GL_ELEMENT_ARRAY_BUFFER)
-                    unsigned int    _flags;             ///< the flag of the buffer (GL_STREAM_DRAW, GL_DYNAMIC_DRAW, GL_STATIC_DRAW)
+                    unsigned int        _index;             ///< the gl buffer index
+                    unsigned int        _size;              ///< the size of the buffer
+                    unsigned int        _stride;            ///< the stride between two data in the buffer
+                    Enum::BufferTarget  _target;            ///< the target to which the buffer object is bound
+                    Enum::BufferUsage   _usage;             ///< the type of usage of the buffer
 
-                    T               *_dataTab;          ///< the local data tab (never used by default)
+                    T                   *_dataTab;          ///< the local data tab (never used by default)
             };
 
             template <typename T>
@@ -110,35 +100,35 @@ namespace Nc
             }
 
             template <typename T>
-            DataBuffer<T>::DataBuffer(GLenum typeBuffer, unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab)
+            DataBuffer<T>::DataBuffer(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab)
             {
-                Init(typeBuffer, size, stride, flags, dataTab);
+                Init(target, size, stride, usage, dataTab);
             }
 
             template <typename T>
-            void DataBuffer<T>::Init(GLenum typeBuffer)
+            void DataBuffer<T>::Init(Enum::BufferTarget target)
             {
                 NewRef();
-                _typeBuffer = typeBuffer;
+                _target = target;
                 glGenBuffers(1, &_index);   // création du buffer
                 LOG_DEBUG << "Data Buffer " << _index << " CREATED" << std::endl;
             }
 
             template <typename T>
-            void DataBuffer<T>::Init(GLenum typeBuffer, unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab)
+            void DataBuffer<T>::Init(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab)
             {
                 NewRef();
-                _typeBuffer = typeBuffer;
+                _target = target;
 
                 glGenBuffers(1, &_index);   // création du buffer
                 Enable();
-                UpdateData(size, stride, flags, dataTab);
+                UpdateData(size, stride, usage, dataTab);
                 Disable();
                 LOG_DEBUG << "Data Buffer " << _index << " CREATED" << std::endl;
             }
 
             template<typename T>
-            void DataBuffer<T>::UpdateData(unsigned int size, unsigned int stride, unsigned int flags, const T *dataTab)
+            void DataBuffer<T>::UpdateData(unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab)
             {
                 if (_index == 0)
                     throw Utils::Exception("GL::DataBuffer", "Can't update the data if it wasn't init before !");
@@ -148,10 +138,10 @@ namespace Nc
                     _stride = 1;
                 else
                     _stride = stride;
-                _flags = flags;
+                _usage = usage;
 
                 unsigned int completeSize =  _size * _stride;
-                glBufferData(_typeBuffer, completeSize * sizeof(T), NULL, _flags); // allocation du buffer
+                glBufferData(_target, completeSize * sizeof(T), NULL, _usage); // allocation du buffer
                 if (dataTab != NULL)
                     UpdateData(dataTab);
             }
@@ -164,7 +154,7 @@ namespace Nc
 
                 unsigned int completeSize =  _size * _stride;
                 _dataTab = NULL;
-                glBufferSubData(_typeBuffer, 0, completeSize * sizeof(T), dataTab); // transfert des données a partir du DataTab
+                glBufferSubData(_target, 0, completeSize * sizeof(T), dataTab); // transfert des données a partir du DataTab
             }
 
 
@@ -184,9 +174,9 @@ namespace Nc
             }
 
             template<typename T>
-            T    *DataBuffer<T>::MapBuffer(GLenum access)
+            T    *DataBuffer<T>::MapBuffer(Enum::BufferAccessType access)
             {
-                _dataTab = (T*)glMapBuffer(_typeBuffer, access);
+                _dataTab = (T*)glMapBuffer(_target, access);
                 if (_dataTab == NULL)
                     LOG_ERROR << "DataBuffer::glMapBuffer: " << EXT.GetError() << std::endl;
                 return _dataTab;
@@ -196,7 +186,7 @@ namespace Nc
             void   DataBuffer<T>::UnmapBuffer()
             {
                 _dataTab = NULL;
-                if (glUnmapBuffer(_typeBuffer) == GL_FALSE)
+                if (glUnmapBuffer(_target) == GL_FALSE)
                     LOG_ERROR << "DataBuffer::glUnmapBuffer: " << EXT.GetError() << std::endl;
             }
 

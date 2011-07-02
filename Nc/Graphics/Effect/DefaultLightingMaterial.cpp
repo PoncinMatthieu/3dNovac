@@ -101,7 +101,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &modelMatrix, GL::IGeometryBuff
         // fetch the vertices and normal coords
         Array<float>    coords;
         Array<float>    normals;
-        geometry->MapVertexBuffer(GL_READ_ONLY);
+        geometry->MapVertexBuffer(GL::Enum::ReadOnly);
         geometry->FetchComponent(ComponentsName::Coord, coords);
         geometry->FetchComponent(ComponentsName::Normal, normals);
         geometry->UnmapVertexBuffer();
@@ -120,7 +120,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &modelMatrix, GL::IGeometryBuff
                 verticesNormal[(i*2) + 1].coord[1] += (normals[(i*3) + 1] * normalPercent);
                 verticesNormal[(i*2) + 1].coord[2] += (normals[(i*3) + 2] * normalPercent);
             }
-            normalObject->Drawables().push_back(new Drawable(verticesNormal, GL_STREAM_DRAW, GL_LINES));
+            normalObject->Drawables().push_back(new Drawable(verticesNormal, GL::Enum::StreamDraw, GL::Enum::Lines));
             normalObject->ChooseDefaultMaterial();
         }
     }
@@ -185,7 +185,7 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
     // next pass --> render the lights
     glUniform1i(_uniformLightPass, true);
 
-    glEnable(GL_BLEND); // active blend
+    glEnable(GL::Enum::Blend); // active blend
     glBlendFunc(GL_ONE, GL_ONE);
     glDepthMask(GL_FALSE); // disable the depth mask, no need
 

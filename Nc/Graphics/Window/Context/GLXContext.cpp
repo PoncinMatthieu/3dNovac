@@ -33,15 +33,12 @@ Graphic::GLXContext::GLXContext(XWindow *win) : GLContext(win)
 {
     _context = 0;
     _display = win->_display;
-//    _pbuffer = 0;
 }
 
 Graphic::GLXContext::~GLXContext()
 {
     if (_isCreate)
     {
-        //if (_pbuffer != 0)
-        //    glXDestroyPbuffer(_display, _pbuffer);
         glXDestroyContext(_display, _context);
 
         // Close the connection to the display if it's a shared context
@@ -161,7 +158,7 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
 
             ctxErrorOccurred = false;
 
-            LOG <<  "Failed to create GL 3.0 context... using old-style GLX context" << std::endl;;
+            LOG <<  "Failed to create GL 3.0 context... using old-style GLX context" << std::endl;
             _context = glXCreateContextAttribsARB(_display, *window->_fbConfig, sharedContextPtr, True, context_attribs);
         }
     }
@@ -182,44 +179,30 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
     if (ctxErrorOccurred || !_context)
         throw Utils::Exception("GLXContext", "Failed to create an OpenGL context");
 
-    // Verifying that context is a direct context
+    // Verifying that the context is a direct context
+    LOG_DEBUG << this;
     if (!glXIsDirect(_display, _context))
-        LOG_DEBUG << "Indirect GLX rendering context obtained" << std::endl;
+        LOG_DEBUG << " Indirect GLX rendering context obtained.";
     else
-        LOG_DEBUG << "Direct GLX rendering context obtained." << std::endl;
+        LOG_DEBUG << " Direct GLX rendering context obtained.";
+    if (sharedContext != NULL)
+        LOG_DEBUG << " Shared with " << sharedContext;
+    LOG_DEBUG << std::endl;
     _isCreate = true;
 }
 
 Graphic::GLContext *Graphic::GLXContext::CreateNewSharedContext()
 {
-LOG << "create shared context" << std::endl;
     if (!_isCreate)
         throw Utils::Exception("GLXContext", "Can't create a shared GLXContext if the first is not yet create");
 
-LOG << "activate context" << std::endl;
-    // creer un nouveau renderer et recopie chaque membre (un renderer n'est pas copyable) :
+    // Create a new opengl context for the current thread
+    // Create an other display connection to the Xserver otherwise the glx will crash on Qt with nvidia drivers
     Active();
-
-    XWindow *window = static_cast<XWindow*>(_win);
-
-LOG << "Create new context instance" << std::endl;
-    //GLXContext   *newSharedRenderer = new GLXContext(window);
-    GLXContext   *newSharedRenderer = new GLXContext(window);
-
-    // create an other display connection to the Xserver otherwise the glx will crash on Qt with nvidia drivers
+    GLXContext   *newSharedRenderer = new GLXContext(static_cast<XWindow*>(_win));
     newSharedRenderer->_display = XOpenDisplay(0);
-
-    // recreer un context opengl pour le thread, et un pbuffer pour rendu sur off-screen
-LOG << "Create new context" << std::endl;
     newSharedRenderer->Create(this);
-LOG << "Create new pbuffer" << std::endl;
-
-    //newSharedRenderer->_pbuffer = glXCreatePbuffer(_display, *window->_fbConfig, NULL);
     newSharedRenderer->_isShared = true;
-
-LOG << "Disable" << std::endl;
     Disable();
-
-LOG << "create shared context DONE" << std::endl;
     return newSharedRenderer;
 }

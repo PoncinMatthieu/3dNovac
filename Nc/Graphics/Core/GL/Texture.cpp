@@ -61,12 +61,12 @@ void Texture::Release()
 void  Texture::Enable() const
 {
 //    _mutex.Lock();
-    if (_type >= 0)
+    if (_target >= 0)
     {
         if (_currentBind != _texture)
         {
             _currentBind = _texture;
-            glBindTexture(_type, _texture);
+            glBindTexture(_target, _texture);
         }
     }
 }
@@ -74,7 +74,7 @@ void  Texture::Enable() const
 void  Texture::Disable() const
 {
     // do nothing (maybe we will need to have a method to force the unbind ?)
-    //glBindTexture(_type, 0);
+    //glBindTexture(_target, 0);
 //    _mutex.Unlock();
 }
 
@@ -133,18 +133,18 @@ void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::strin
     const unsigned char *pixels = image.GetPixels();
 
 // Create the OpenGL texture
-    _type = GL_TEXTURE_2D;
+    _target = Enum::Texture2D;
     glGenTextures(1, &_texture);
     Enable();
 
-    glTexParameteri(_type, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(_type, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(_type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(_type, GL_TEXTURE_MIN_FILTER, (useMipMap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
-    glTexImage2D(_type, 0, GL_RGBA8, image.Size().Data[0], image.Size().Data[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, (useMipMap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+    glTexImage2D(_target, 0, GL_RGBA8, image.Size().Data[0], image.Size().Data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
 
     if(useMipMap)
-        glGenerateMipmap(_type);
+        glGenerateMipmap(_target);
 
     Disable();
     _currentBind = 0;
@@ -157,14 +157,14 @@ void Texture::SetSmooth(bool smooth)
 {
     if (IsValid())
         throw Utils::Exception("Texture", "Can't SetSmooth, the texture is not loaded");
-    if (_type != GL_TEXTURE_2D)
+    if (_target != Enum::Texture2D)
         throw Utils::Exception("Texture", "Can't smooth another type of texture that TEXTURE 2D");
     if (_smooth != smooth)
     {
         _smooth = smooth;
         Enable();
-        glTexParameteri(_type, GL_TEXTURE_MAG_FILTER, _smooth ? GL_LINEAR : GL_NEAREST);
-        glTexParameteri(_type, GL_TEXTURE_MIN_FILTER, _smooth ? GL_LINEAR : GL_NEAREST);
+        glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, _smooth ? GL_LINEAR : GL_NEAREST);
+        glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, _smooth ? GL_LINEAR : GL_NEAREST);
     }
 }
 */
@@ -184,18 +184,18 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
     };
 
     // Génération d'une texture CubeMap
-    _type = GL_TEXTURE_CUBE_MAP;
+    _target = Enum::TextureCubeMap;
     glGenTextures(1, &_texture);
     if (_texture == 0)
         throw Utils::Exception("Texture", "Can't load the cube map");
 
     // Configuration de la texture
     Enable();
-    glTexParameteri(_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(_type, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    glTexParameteri(_type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(_type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     for (int i = 0; i < 6; i++)
     {
@@ -204,7 +204,7 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
         image.Reverse(); // and reverse it
         const unsigned char *pixels = image.GetPixels();
 
-        glTexImage2D(target[i], 0, GL_RGBA8, image.Size().Data[0], image.Size().Data[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+        glTexImage2D(target[i], 0, GL_RGBA8, image.Size().Data[0], image.Size().Data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
     }
     Disable();
     _currentBind = 0;
@@ -216,8 +216,8 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
 void Texture::AddNoRepeatMode()
 {
     Enable();
-    glTexParameteri(_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 void Texture::GenereSphereMap(const unsigned int d)
@@ -252,19 +252,19 @@ void Texture::GenereSphereMap(const unsigned int d)
         }
     }
     // creation de la texture
-    _type = GL_TEXTURE_3D;
+    _target = Enum::Texture3D;
     glGenTextures(1, &_texture);
     if (_texture == 0)
         throw Utils::Exception("Texture", "Fail for the generation of a texture");
 
     Enable();
-	glTexParameteri(_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(_type, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	glTexParameteri(_type, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(_type, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(_target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 //	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); // deprecated
-	glTexImage3D(_type, 0, GL_RGB8, d, d, d, 0, GL_RGB, GL_FLOAT, data);
+	glTexImage3D(_target, 0, GL_RGB8, d, d, d, 0, GL_RGB, Enum::Float, data);
     Disable();
     _currentBind = 0;
     delete[] data;
@@ -281,15 +281,15 @@ unsigned int    GLContext::GenereCubeMapNormalize(const unsigned int size)
 	float           vector[3];
 
     // activation et creation de la cube map
-    glEnable(GL_TEXTURE_CUBE_MAP);
+    glEnable(Enum::TextureCubeMap);
 	glGenTextures(1, &textureFinal);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureFinal);
+	glBindTexture(Enum::TextureCubeMap, textureFinal);
 
 	// on configure la texture et utilise un filtrage lineaire pour ne pas avoir a generer les mipmaps.
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(Enum::TextureCubeMap, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(Enum::TextureCubeMap, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(Enum::TextureCubeMap, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	glTexParameteri(Enum::TextureCubeMap, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 
 	for (int i = 0; i < 6; i++)	    // Pour chaque face
 	{
@@ -302,9 +302,9 @@ unsigned int    GLContext::GenereCubeMapNormalize(const unsigned int size)
 				pixels[3*(y*size+x) + 2] = 128 - 127*vector[2];
 			}
 		// on envoi le buffer de texture à OpenGL
-		gluBuild2DMipmaps(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i,GL_RGB8,size,size,GL_RGB,GL_UNSIGNED_BYTE,pixels);
+		gluBuild2DMipmaps(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i,GL_RGB8,size,size,GL_RGB,Enum::UnsignedByte,pixels);
 	}
 
 	delete [] pixels;
-	glDisable(GL_TEXTURE_CUBE_MAP);
+	glDisable(Enum::TextureCubeMap);
 }*/

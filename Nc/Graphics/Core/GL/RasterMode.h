@@ -43,20 +43,12 @@ namespace Nc
                     - Abstract the glPolygonMode witch controls the interpretation of polygons for rasterization.
                     - Abstract the glDepthTest witch control the depth buffer
                     - Abstract the glLineWidth and glPointSize
-
-                <div class="title"> Polygon Mode </div>
-                For the glPolygonMode, from the OpenGL documumentation "http://www.opengl.org/sdk/docs/man3/":
-
-                Three modes are defined and can be specified in mode:
-                    - GL_POINT
-                    - GL_LINE
-                    - GL_FILL
             */
             class RasterMode
             {
                 public:
                     RasterMode();
-                    RasterMode(GLenum face, GLenum mode);
+                    RasterMode(Enum::PolygonFace face, Enum::PolygonMode mode);
 
                     /** Enable the given polygon rasterization mode */
                     void            Enable();
@@ -64,9 +56,9 @@ namespace Nc
                     void            Disable();
 
                     /** Inhibit the polygon mode */
-                    inline void     InhibitPolygonMode()                            {_setPolygonMode = false;}
+                    inline void     InhibitPolygonMode()                                                    {_setPolygonMode = false;}
                     /** Set the polygon resterization mode */
-                    inline void     SetPolygonMode(GLenum face, GLenum mode)        {_face = face; _mode = mode; _setPolygonMode = true;}
+                    inline void     SetPolygonMode(Enum::PolygonFace face, Enum::PolygonMode mode)          {_polygonFace = face; _polygonMode = mode; _setPolygonMode = true;}
 
                     /** Inhibit the PointSize */
                     inline void     InhibitPointSize()                              {_setPointSize = false;}
@@ -89,33 +81,31 @@ namespace Nc
                     inline void     SetDepthTest(bool state)                        {_depthTest = state; _setDepthTest = true;}
 
                 private:
-                    bool            _setPolygonMode;
-                    /** Must be GL_FRONT_AND_BACK for front- and back-facing polygons. */
-                    GLenum          _face;                  ///< SpecifY the polygons that mode applies
-                    /** Accepted values are GL_POINT, GL_LINE, and GL_FILL. The initial value is GL_FILL for both front- and back-facing polygons. */
-                    GLenum          _mode;                  ///< SpecifY how polygons will be rasterized
+                    bool                _setPolygonMode;
+                    Enum::PolygonFace   _polygonFace;               ///< Specify the polygons that mode applies
+                    Enum::PolygonMode   _polygonMode;               ///< Specify how polygons will be rasterized
 
-                    bool            _setPointSize;
-                    GLfloat         _pointSize;             ///< Specify the diameter of rasterized points
+                    bool                _setPointSize;
+                    GLfloat             _pointSize;                 ///< Specify the diameter of rasterized points
 
-                    bool            _setLineWidth;
-                    GLfloat         _lineWidth;             ///< Specify the width of rasterized lines
+                    bool                _setLineWidth;
+                    GLfloat             _lineWidth;                 ///< Specify the width of rasterized lines
 
-                    bool            _setPolygonOffset;
-                    GLfloat         _polygonOffsetFactor;   ///< Set the scale and units used to calculate depth values
-                    GLfloat         _polygonOffsetUnits;    ///< Set the scale and units used to calculate depth values
+                    bool                _setPolygonOffset;
+                    GLfloat             _polygonOffsetFactor;       ///< Set the scale and units used to calculate depth values
+                    GLfloat             _polygonOffsetUnits;        ///< Set the scale and units used to calculate depth values
 
-                    bool            _setDepthTest;          ///< If true, then the _depthTest property will affect the current openglContext
-                    bool            _depthTest;             ///< If false, disable the depth test
-                    bool            _lastDepthTestState;    ///< the last state of the depth test before enable it
+                    bool                _setDepthTest;              ///< If true, then the _depthTest property will affect the current openglContext
+                    bool                _depthTest;                 ///< If false, disable the depth test
+                    bool                _lastDepthTestState;        ///< the last state of the depth test before enable it
 
-                    static GLenum   _currentFace;
-                    static GLenum   _currentMode;
-                    static GLfloat  _currentPointSize;
-                    static GLfloat  _currentLineWidth;
-                    static GLfloat  _currentPolygonOffsetFactor;
-                    static GLfloat  _currentPolygonOffsetUnits;
-                    static bool     _currentDepthTest;
+                    static Enum::PolygonFace    _currentPolygonFace;
+                    static Enum::PolygonMode    _currentPolygonMode;
+                    static GLfloat              _currentPointSize;
+                    static GLfloat              _currentLineWidth;
+                    static GLfloat              _currentPolygonOffsetFactor;
+                    static GLfloat              _currentPolygonOffsetUnits;
+                    static bool                 _currentDepthTest;
             };
         }
     }

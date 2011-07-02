@@ -46,19 +46,19 @@ namespace Nc
             {
                 public:
                     VertexBuffer();
-                    VertexBuffer(unsigned int flags);
+                    VertexBuffer(Enum::BufferUsage usage);
                     template<unsigned int D>
-                    VertexBuffer(const Array<T,D> &tabVertices, unsigned int flags);
+                    VertexBuffer(const Array<T,D> &tabVertices, Enum::BufferUsage usage);
                     ~VertexBuffer();
 
                     // manage content
                     /** Init the buffer */
                     void    Init();
                     /** Init the buffer */
-                    void    Init(unsigned int size, unsigned int flags);
+                    void    Init(unsigned int size, Enum::BufferUsage usage);
                     /** Update the buffer */
                     template<unsigned int D>
-                    void    UpdateData(const Array<T,D> &tabVertices, unsigned int flags);
+                    void    UpdateData(const Array<T,D> &tabVertices, Enum::BufferUsage usage);
                     /** Update the buffer */
                     void    UpdateData(const T *aDataTab);
 
@@ -71,22 +71,8 @@ namespace Nc
                     /** Unmap the buffer (Disable it) */
                     void    Unmap();
 
-                    /**
-                        Draw the vertex buffer with the given primitive type <br/>
-                        Primitive type could be :
-                            - GL_POINTS
-                            - GL_LINE_STRIP
-                            - GL_LINE_LOOP
-                            - GL_LINES
-                            - GL_LINE_STRIP_ADJACENCY
-                            - GL_LINES_ADJACENCY
-                            - GL_TRIANGLE_STRIP
-                            - GL_TRIANGLE_FAN
-                            - GL_TRIANGLES
-                            - GL_TRIANGLE_STRIP_ADJACENCY
-                            - GL_TRIANGLES_ADJACENCY
-                     */
-                    void    Draw(GLenum primitiveType);
+                    /** Draw the vertex buffer with the given primitive type */
+                    void    Draw(Enum::PrimitiveType type);
 
                 public:
                     VertexDescriptor    Descriptor;         ///< used to describe the vertex type structure
@@ -104,8 +90,8 @@ namespace Nc
 
             template<typename T>
             template<unsigned int D>
-            VertexBuffer<T>::VertexBuffer(const Array<T,D> &tabVertices, unsigned int flags)
-                : DataBuffer<T>(GL_ARRAY_BUFFER, tabVertices.Size(), 0, flags, (T*)tabVertices.Data),
+            VertexBuffer<T>::VertexBuffer(const Array<T,D> &tabVertices, Enum::BufferUsage usage)
+                : DataBuffer<T>(Enum::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.Data),
                   Descriptor(T::GetDescriptor()), _needUpdate(true)
             {
             }
@@ -118,30 +104,30 @@ namespace Nc
             template<typename T>
             void VertexBuffer<T>::Init()
             {
-                DataBuffer<T>::Init(GL_ARRAY_BUFFER);
+                DataBuffer<T>::Init(Enum::ArrayBuffer);
                 _needUpdate = true;
             }
 
             template<typename T>
-            void VertexBuffer<T>::Init(unsigned int size, unsigned int flags)
+            void VertexBuffer<T>::Init(unsigned int size, Enum::BufferUsage usage)
             {
-                DataBuffer<T>::Init(GL_ARRAY_BUFFER, size, 0, flags, (T*)NULL);
+                DataBuffer<T>::Init(Enum::ArrayBuffer, size, 0, usage, (T*)NULL);
                 _needUpdate = true;
             }
 
             template<typename T>
             template<unsigned int D>
-            void VertexBuffer<T>::UpdateData(const Array<T,D> &tabVertices, unsigned int flags)
+            void VertexBuffer<T>::UpdateData(const Array<T,D> &tabVertices, Enum::BufferUsage usage)
             {
                 if (!DataBuffer<T>::IsValid())
-                    DataBuffer<T>::Init(GL_ARRAY_BUFFER, tabVertices.Size(), 0, flags, (T*)tabVertices.Data);
+                    DataBuffer<T>::Init(Enum::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.Data);
                 else
                 {
                     DataBuffer<T>::Enable();
                     if (tabVertices.Size() == DataBuffer<T>::_size)
                         DataBuffer<T>::UpdateData((T*)tabVertices.Data);
                     else
-                        DataBuffer<T>::UpdateData(tabVertices.Size(), 0, flags, (T*)tabVertices.Data);
+                        DataBuffer<T>::UpdateData(tabVertices.Size(), 0, usage, (T*)tabVertices.Data);
                     DataBuffer<T>::Disable();
                 }
                 _needUpdate = true;
@@ -188,9 +174,9 @@ namespace Nc
             }
 
             template<typename T>
-            void    VertexBuffer<T>::Draw(GLenum primitiveType)
+            void    VertexBuffer<T>::Draw(Enum::PrimitiveType type)
             {
-                glDrawArrays(primitiveType, 0, DataBuffer<T>::_size);
+                glDrawArrays(type, 0, DataBuffer<T>::_size);
             }
         }
     }

@@ -86,13 +86,13 @@ namespace Nc
                     static inline void  ResetCurrentBind()      {_currentBind = 0;}
 
                     /** \return true if the texture is a texture 2d */
-                    inline bool         Is2d()                  {return (_type == GL_TEXTURE_2D);}
+                    inline bool         Is2d()                  {return (_target == Enum::Texture2D);}
 
                     /** \return true if the texture is a cube map texture (used to render skyboxs) */
-                    inline bool         IsCubeMap()             {return (_type == GL_TEXTURE_CUBE_MAP);}
+                    inline bool         IsCubeMap()             {return (_target == Enum::TextureCubeMap);}
 
                     /** \return true if the texture is a texture 3d */
-                    inline bool         Is3d()                  {return (_type == GL_TEXTURE_3D);}
+                    inline bool         Is3d()                  {return (_target == Enum::Texture3D);}
 
                 private:
                     /** Check if the image is correctly dimensioned */
@@ -103,7 +103,7 @@ namespace Nc
 
                     unsigned int            _texture;                   ///< the gl texture object index
                     Vector2ui               _size;                      ///< the size of the texture
-                    int                     _type;                      ///< the texture type
+                    Enum::TextureTarget     _target;                    ///< the texture target to which the texture is bound
                     std::string             _name;                      ///< the name of the texture
 
                     static unsigned int     _currentBind;               ///< the current bind texture

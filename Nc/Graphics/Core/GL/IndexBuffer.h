@@ -42,7 +42,7 @@ namespace Nc
                     IndexBuffer();
                     template<unsigned int D>
                     IndexBuffer(const Array<unsigned int, D> &tabIndices, unsigned int stride)
-                        : DataBuffer<unsigned int>(GL_ELEMENT_ARRAY_BUFFER, tabIndices.Size() / stride, stride, GL_STATIC_DRAW, tabIndices.Data), _nbElements(tabIndices.Size())
+                        : DataBuffer<unsigned int>(Enum::ElementArrayBuffer, tabIndices.Size() / stride, stride, GL::Enum::StaticDraw, tabIndices.Data), _nbElements(tabIndices.Size())
                     {}
                     virtual ~IndexBuffer();
 
@@ -50,12 +50,12 @@ namespace Nc
                     template<unsigned int D>
                     void    UpdateData(const Array<unsigned int, D> &tabIndices, unsigned int stride, bool keepContent = false)
                     {
-                        DataBuffer<unsigned int>::Init(GL_ELEMENT_ARRAY_BUFFER, tabIndices.Size() / stride, stride, GL_STATIC_DRAW, tabIndices.Data, keepContent);
+                        DataBuffer<unsigned int>::Init(Enum::ElementArrayBuffer, tabIndices.Size() / stride, stride, GL::Enum::StaticDraw, tabIndices.Data, keepContent);
                         _nbElements = tabIndices.Size();
                     }
 
                     /** Draw the elements index */
-                    inline void             Draw(GLenum primitiveType)                  {glDrawElements(primitiveType, _nbElements, GL_UNSIGNED_INT, NULL);}
+                    inline void             Draw(Enum::PrimitiveType type)                  {glDrawElements(type, _nbElements, Enum::UnsignedInt, NULL);}
 
                     /** Return the number of elements */
                     inline unsigned int     NbElements()                                {return _nbElements;}

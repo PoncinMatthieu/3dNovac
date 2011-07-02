@@ -47,7 +47,7 @@ String::String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color
     else
         _font = it->second;
 
-    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo1 = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL_TRIANGLES);
+    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo1 = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL::Enum::Triangles);
     geo1->VBO().Init();// force la creation du buffer, pour eviter que ce soit fait dans l'update geometry
 
     MaterialConfig *conf1 = new MaterialConfig(GL::Blend::Alpha);
@@ -60,7 +60,7 @@ String::String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color
     // geometry pour l'underline
     if (_style.Enabled(Underlined))
     {
-        GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d,false>(GL_TRIANGLES);
+        GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d,false>(GL::Enum::Triangles);
         geo2->VBO().Init();// force la creation du buffer, pour eviter que ce soit fait dans l'update geometry
         _drawables[1] = new Drawable(geo2, new MaterialConfig());
     }
@@ -226,12 +226,12 @@ void String::UpdateGeometry()
 
         underlines.UnderSize(noBackSlashN); // resize the buffer, to be sure that we render the good number of vertices
         GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[1]->Geometry);
-        geo->VBO().UpdateData(underlines, GL_STATIC_DRAW);
+        geo->VBO().UpdateData(underlines, GL::Enum::StaticDraw);
     }
 
     vertices.UnderSize(noVertice); // resize the buffer, to be sure that we render the good number of vertices
     GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d,false>*>(_drawables[0]->Geometry);
-    geo->VBO().UpdateData(vertices, GL_STATIC_DRAW);
+    geo->VBO().UpdateData(vertices, GL::Enum::StaticDraw);
 }
 
 void String::RecomputeSize()

@@ -36,8 +36,8 @@ using namespace Nc::Graphic;
 Sprite::Sprite(const Vector2f &size, const GL::Texture &t, const Box2f &box, const GL::Blend::Pattern &blendPattern)
     : Object(ClassName()), _needUpdate(true), _spriteSize(size), _textureBox(box), _color(1, 1, 1)
 {
-    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL_TRIANGLE_STRIP);
-    geo->VBO().Init(4, GL_STATIC_DRAW);
+    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL::Enum::TriangleStrip);
+    geo->VBO().Init(4, GL::Enum::StaticDraw);
 
     MaterialConfig *conf = new MaterialConfig(blendPattern);
     conf->Textures.InitSize(1);

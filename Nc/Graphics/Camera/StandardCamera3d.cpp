@@ -367,11 +367,11 @@ void StandardCamera3d::DrawFrustum(bool state)
     {
         if (_drawables.size() == 0)
         {
-            GL::GeometryBuffer<DefaultVertexType::Colored, false> *geometry = new GL::GeometryBuffer<DefaultVertexType::Colored, false>(GL_LINES);
-            geometry->VBO().Init(8, GL_STREAM_DRAW);
+            GL::GeometryBuffer<DefaultVertexType::Colored, false> *geometry = new GL::GeometryBuffer<DefaultVertexType::Colored, false>(GL::Enum::Lines);
+            geometry->VBO().Init(8, GL::Enum::StreamDraw);
             _drawables.push_back(new Drawable(geometry));
-            GL::GeometryBuffer<DefaultVertexType::Colored, false> *geometryPlan = new GL::GeometryBuffer<DefaultVertexType::Colored, false>(GL_TRIANGLES);
-            geometryPlan->VBO().Init(12, GL_STREAM_DRAW);
+            GL::GeometryBuffer<DefaultVertexType::Colored, false> *geometryPlan = new GL::GeometryBuffer<DefaultVertexType::Colored, false>(GL::Enum::Triangles);
+            geometryPlan->VBO().Init(12, GL::Enum::StreamDraw);
             Drawable *drawablePlan = new Drawable(geometryPlan);
             drawablePlan->Config->SetBlend(GL::Blend::Multiply);
             _drawables.push_back(drawablePlan);

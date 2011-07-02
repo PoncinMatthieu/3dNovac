@@ -75,12 +75,12 @@ void  WindowBox::Init(const std::string &title, const std::string &ttf)
 
     _indexDrawable = _drawables.size();
     _drawables.reserve(_indexDrawable+3);
-    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_TRIANGLE_STRIP);
-    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_TRIANGLE_STRIP);
-    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_LOOP);
-    geometry1->VBO().Init(4, GL_STREAM_DRAW);
-    geometry2->VBO().Init(4, GL_STREAM_DRAW);
-    geometry3->VBO().Init(4, GL_STREAM_DRAW);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
+    geometry1->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry2->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry3->VBO().Init(4, GL::Enum::StreamDraw);
     _drawables.push_back(new Drawable(geometry1));
     _drawables.push_back(new Drawable(geometry2));
     _drawables.push_back(new Drawable(geometry3));
@@ -122,12 +122,12 @@ void    WindowBox::Copy(const WindowBox &w)
 
     _indexDrawable = _drawables.size();
     _drawables.reserve(_indexDrawable+3);
-    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_TRIANGLE_STRIP);
-    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_TRIANGLE_STRIP);
-    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_LOOP);
-    geometry1->VBO().Init(4, GL_STREAM_DRAW);
-    geometry2->VBO().Init(4, GL_STREAM_DRAW);
-    geometry3->VBO().Init(4, GL_STREAM_DRAW);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
+    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
+    geometry1->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry2->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry3->VBO().Init(4, GL::Enum::StreamDraw);
     _drawables.push_back(new Drawable(geometry1));
     _drawables.push_back(new Drawable(geometry2));
     _drawables.push_back(new Drawable(geometry3));

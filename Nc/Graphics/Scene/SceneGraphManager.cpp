@@ -46,11 +46,11 @@ void SceneGraphManager::InitGL(bool multisampling)
 
 // enable l'antialiasing
     if (multisampling)
-        glEnable(GL_MULTISAMPLE);
+        glEnable(GL::Enum::Multisample);
 
 // enable le Z-buffer
     glDepthFunc(GL_LEQUAL);
-    glEnable(GL_DEPTH_TEST);
+    glEnable(GL::Enum::DepthTest);
 
 // initialistation des extensions
     if(!EXT.Init())

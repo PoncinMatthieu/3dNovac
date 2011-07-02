@@ -45,14 +45,14 @@ namespace Nc
             class LGRAPHICS IGeometryBuffer
             {
                 public:
-                    IGeometryBuffer(GLenum primitiveType)
+                    IGeometryBuffer(Enum::PrimitiveType primitiveType)
                         : _primitiveType(primitiveType)                         {}
                     virtual ~IGeometryBuffer()                                  {}
 
                     virtual IGeometryBuffer         *Clone() const = 0;
 
                     /** Set the primitive type to render the geometry buffer */
-                    inline void                     PrimitiveType(GLenum primitiveType)         {_primitiveType = primitiveType;}
+                    inline void                     PrimitiveType(Enum::PrimitiveType primitiveType)         {_primitiveType = primitiveType;}
 
                     /** Render the geoemtry */
                     virtual void                    Render() = 0;
@@ -60,13 +60,8 @@ namespace Nc
                     /** \return the vertex descriptor of the VBO */
                     virtual GL::VertexDescriptor    &Descriptor() = 0;
 
-                    /**
-                        Map the vertex buffer in memory with the given access enum witch should be:
-                            - GL_READ_ONLY
-                            - GL_WRITE_ONLY
-                            - GL_READ_WRITE
-                    */
-                    virtual void                    MapVertexBuffer(GLenum access) = 0;
+                    /** Map the vertex buffer in memory with the given access enum */
+                    virtual void                    MapVertexBuffer(Enum::BufferAccessType access) = 0;
                     /** Unmap the vertex buffer */
                     virtual void                    UnmapVertexBuffer() = 0;
 
@@ -90,7 +85,7 @@ namespace Nc
                     */
                     virtual void                    *FetchComponents(unsigned int &size) = 0;
 
-                    unsigned int        _primitiveType;     ///< Should be: GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY and GL_TRIANGLES_ADJACENCY
+                    Enum::PrimitiveType     _primitiveType;     ///< the primitive type to draw
             };
 
             /// template class to define a geometry with an index buffer
@@ -98,13 +93,13 @@ namespace Nc
             class GeometryBuffer : public IGeometryBuffer
             {
                 public:
-                    GeometryBuffer(GLenum primitiveType = GL_TRIANGLES)
-                        : IGeometryBuffer(primitiveType), _needUpdate(true) {}
-                    GeometryBuffer(const VertexBuffer<T> &vbo, const IndexBuffer &ibo, GLenum primitiveType)
-                        : IGeometryBuffer(primitiveType), _needUpdate(true), _VBO(vbo), _IBO(ibo)    {}
+                    GeometryBuffer(Enum::PrimitiveType type = Enum::Triangles)
+                        : IGeometryBuffer(type), _needUpdate(true) {}
+                    GeometryBuffer(const VertexBuffer<T> &vbo, const IndexBuffer &ibo, Enum::PrimitiveType type)
+                        : IGeometryBuffer(type), _needUpdate(true), _VBO(vbo), _IBO(ibo)    {}
                     template<unsigned int D1, unsigned int D2>
-                    GeometryBuffer(const Array<T,D1> &tabVertices, unsigned int flags, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GLenum primitiveType)
-                        : IGeometryBuffer(primitiveType), _needUpdate(true), _VBO(tabVertices, flags), _IBO(tabIndices, stride)    {}
+                    GeometryBuffer(const Array<T,D1> &tabVertices, GL::Enum::BufferUsage usage, const Array<unsigned int,D2> &tabIndices, unsigned int stride, Enum::PrimitiveType type)
+                        : IGeometryBuffer(type), _needUpdate(true), _VBO(tabVertices, usage), _IBO(tabIndices, stride)    {}
                     virtual ~GeometryBuffer()   {}
 
                     virtual IGeometryBuffer         *Clone() const                          {return new GeometryBuffer<T,IndexToRender>(*this);}
@@ -135,10 +130,10 @@ namespace Nc
                     }
 
                     /** Map buffer of the VBO */
-                    virtual void                    MapVertexBuffer(GLenum access)
+                    virtual void                    MapVertexBuffer(Enum::BufferAccessType access)
                     {
                         _VBO.Enable();
-                        _VBO.MapBuffer(GL_READ_ONLY);
+                        _VBO.MapBuffer(access);
                     }
 
                     /** Unmap buffer of the VBO */
@@ -184,13 +179,13 @@ namespace Nc
             class GeometryBuffer<T, false> : public IGeometryBuffer
             {
                 public:
-                    GeometryBuffer(GLenum primitiveType = GL_TRIANGLES)
-                        : IGeometryBuffer(primitiveType), _needUpdate(true) {}
-                    GeometryBuffer(const VertexBuffer<T> &vbo, GLenum primitiveType)
-                        : IGeometryBuffer(primitiveType), _needUpdate(true), _VBO(vbo)   {}
+                    GeometryBuffer(Enum::PrimitiveType type = GL_TRIANGLES)
+                        : IGeometryBuffer(type), _needUpdate(true) {}
+                    GeometryBuffer(const VertexBuffer<T> &vbo, Enum::PrimitiveType type)
+                        : IGeometryBuffer(type), _needUpdate(true), _VBO(vbo)   {}
                     template<unsigned int D1>
-                    GeometryBuffer(const Array<T,D1> &tabVertices, unsigned int flags, GLenum primitiveType)
-                        : IGeometryBuffer(primitiveType), _needUpdate(true), _VBO(tabVertices, flags)    {}
+                    GeometryBuffer(const Array<T,D1> &tabVertices, GL::Enum::BufferUsage usage, Enum::PrimitiveType type)
+                        : IGeometryBuffer(type), _needUpdate(true), _VBO(tabVertices, usage)    {}
                     virtual ~GeometryBuffer()   {}
 
                     virtual IGeometryBuffer         *Clone() const                          {return new GeometryBuffer<T,false>(*this);}
@@ -214,7 +209,7 @@ namespace Nc
                     virtual GL::VertexDescriptor    &Descriptor()                           {return _VBO.Descriptor;}
 
                     /** Map buffer of the VBO */
-                    virtual void                    MapVertexBuffer(GLenum access)
+                    virtual void                    MapVertexBuffer(Enum::BufferAccessType access)
                     {
                         _VBO.Enable();
                         _VBO.MapBuffer(access);

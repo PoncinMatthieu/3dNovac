@@ -80,11 +80,10 @@ namespace Nc
                     /** Release the program shader */
                     virtual void    Release();
 
-                    // shader       // type = GL_VERTEX_SHADER ou GL_FRAGMENT_SHADER
                     /** Create a new shader */
-                    unsigned int    NewShader(const Utils::FileName &filename, GLenum type); // renvoie 0 si ca echoue
+                    unsigned int    NewShader(const Utils::FileName &filename, Enum::ShaderType type); // renvoie 0 si ca echoue
                     /** Compile the given shader */
-                    unsigned int    CompileShader(const char *source, GLenum type, const std::string &name);
+                    unsigned int    CompileShader(const char *source, Enum::ShaderType type, const std::string &name);
 
                     // programme shader
                     /** Create a new program shader */

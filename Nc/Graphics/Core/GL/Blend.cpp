@@ -30,9 +30,9 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::GL;
 
-bool        Blend::_currentBlendState = false;
-GLenum      Blend::_currentSFactor = GL_ONE;
-GLenum      Blend::_currentDFactor = GL_ZERO;
+bool                Blend::_currentBlendState = false;
+Enum::BlendFactor   Blend::_currentSFactor = Enum::One;
+Enum::BlendFactor   Blend::_currentDFactor = Enum::Zero;
 
 void Blend::Enable()
 {
@@ -40,29 +40,29 @@ void Blend::Enable()
     {
         if (!_currentBlendState)
         {
-            glEnable(GL_BLEND);
+            glEnable(Enum::Blend);
             _lastBlendState = _currentBlendState;
             _currentBlendState = true;
         }
 
-        GLenum sfactor = GL_ONE, dfactor = GL_ZERO;
+        Enum::BlendFactor sfactor = Enum::One, dfactor = Enum::Zero;
         switch (_pattern)
         {
             case Alpha:
-                sfactor = GL_SRC_ALPHA;
-                dfactor = GL_ONE_MINUS_SRC_ALPHA;
+                sfactor = Enum::SrcAlpha;
+                dfactor = Enum::OneMinusSrcAlpha;
                 break;
             case Add:
-                sfactor = GL_SRC_ALPHA;
-                dfactor = GL_ONE;
+                sfactor = Enum::SrcAlpha;
+                dfactor = Enum::One;
                 break;
             case Multiply:
-                sfactor = GL_DST_COLOR;
-                dfactor = GL_ZERO;
+                sfactor = Enum::DstColor;
+                dfactor = Enum::Zero;
                 break;
             default:
-                sfactor = GL_ONE;
-                dfactor = GL_ZERO;
+                sfactor = Enum::One;
+                dfactor = Enum::Zero;
                 break;
         }
 
@@ -83,7 +83,7 @@ void Blend::Disable()
     {
         if (!_lastBlendState)
         {
-            glDisable(GL_BLEND);
+            glDisable(Enum::Blend);
             _currentBlendState = false;
         }
         if (_currentSFactor != _lastSFactor || _currentDFactor != _lastDFactor)

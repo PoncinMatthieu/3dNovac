@@ -53,8 +53,8 @@ Shader::~Shader()
 void Shader::LoadFromFiles(const std::string &vertexFile, const std::string &fragmentFile)
 {
     NewRef();
-    _vertexShader = (!vertexFile.empty()) ? NewShader(vertexFile, GL_VERTEX_SHADER) : 0;
-    _fragmentShader = (!fragmentFile.empty()) ? NewShader(fragmentFile, GL_FRAGMENT_SHADER) : 0;
+    _vertexShader = (!vertexFile.empty()) ? NewShader(vertexFile, Enum::VertexShader) : 0;
+    _fragmentShader = (!fragmentFile.empty()) ? NewShader(fragmentFile, Enum::FragmentShader) : 0;
     _program = NewProgramShader();
     AttachAndLinkProgram(_program, _vertexShader, _fragmentShader);
 }
@@ -62,8 +62,8 @@ void Shader::LoadFromFiles(const std::string &vertexFile, const std::string &fra
 void Shader::LoadFromMemory(const char *vertexSource, const char *fragmentSource, const std::string &name)
 {
     NewRef();
-    _vertexShader = (vertexSource != NULL) ? CompileShader(vertexSource, GL_VERTEX_SHADER, name) : 0;
-    _fragmentShader = (fragmentSource != NULL) ? CompileShader(fragmentSource, GL_FRAGMENT_SHADER, name) : 0;
+    _vertexShader = (vertexSource != NULL) ? CompileShader(vertexSource, Enum::VertexShader, name) : 0;
+    _fragmentShader = (fragmentSource != NULL) ? CompileShader(fragmentSource, Enum::FragmentShader, name) : 0;
     _program = NewProgramShader();
     AttachAndLinkProgram(_program, _vertexShader, _fragmentShader);
 }
@@ -79,7 +79,7 @@ void    Shader::Release()
     LOG_DEBUG << "Program Shader " << _program << " Released" << std::endl;
 }
 
-unsigned int    Shader::NewShader(const Utils::FileName &filename, GLenum type)
+unsigned int    Shader::NewShader(const Utils::FileName &filename, Enum::ShaderType type)
 {
     //envoie du code source au shader
     ifstream file(filename.c_str(), ios::in);
@@ -100,7 +100,7 @@ unsigned int    Shader::NewShader(const Utils::FileName &filename, GLenum type)
     return CompileShader(source, type, filename.Filename());
 }
 
-unsigned int    Shader::CompileShader(const char *source, GLenum type, const std::string &name)
+unsigned int    Shader::CompileShader(const char *source, Enum::ShaderType type, const std::string &name)
 {
     unsigned int shader;
     if ((shader = glCreateShader(type)) == 0)

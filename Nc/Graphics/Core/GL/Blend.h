@@ -66,15 +66,15 @@ namespace Nc
                     void    Disable();
 
                 protected:
-                    Pattern         _pattern;               ///< the blending pattern
+                    Pattern                     _pattern;               ///< the blending pattern
 
-                    bool            _lastBlendState;
-                    GLenum          _lastSFactor;           ///< sFactor used by the glBlendFunc
-                    GLenum          _lastDFactor;           ///< dFactor used by the glBlendFunc
+                    bool                        _lastBlendState;
+                    Enum::BlendFactor           _lastSFactor;           ///< sFactor used by the glBlendFunc
+                    Enum::BlendFactor           _lastDFactor;           ///< dFactor used by the glBlendFunc
 
-                    static bool     _currentBlendState;
-                    static GLenum   _currentSFactor;
-                    static GLenum   _currentDFactor;
+                    static bool                 _currentBlendState;
+                    static Enum::BlendFactor    _currentSFactor;
+                    static Enum::BlendFactor    _currentDFactor;
             };
         }
     }

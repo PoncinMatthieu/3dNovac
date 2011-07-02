@@ -30,16 +30,16 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::GL;
 
-GLenum      RasterMode::_currentFace = GL_FRONT_AND_BACK;
-GLenum      RasterMode::_currentMode = GL_FILL;
-GLfloat     RasterMode::_currentPointSize = 1.f;
-GLfloat     RasterMode::_currentLineWidth = 1.f;
-GLfloat     RasterMode::_currentPolygonOffsetFactor = 0.f;
-GLfloat     RasterMode::_currentPolygonOffsetUnits = 0.f;
-bool        RasterMode::_currentDepthTest = true;
+Enum::PolygonFace       RasterMode::_currentPolygonFace = Enum::FrontAndBack;
+Enum::PolygonMode       RasterMode::_currentPolygonMode = Enum::Fill;
+GLfloat                 RasterMode::_currentPointSize = 1.f;
+GLfloat                 RasterMode::_currentLineWidth = 1.f;
+GLfloat                 RasterMode::_currentPolygonOffsetFactor = 0.f;
+GLfloat                 RasterMode::_currentPolygonOffsetUnits = 0.f;
+bool                    RasterMode::_currentDepthTest = true;
 
 RasterMode::RasterMode()
-    : _setPolygonMode(false), _face(GL_FRONT_AND_BACK), _mode(GL_FILL),
+    : _setPolygonMode(false), _polygonFace(Enum::FrontAndBack), _polygonMode(Enum::Fill),
       _setPointSize(false), _pointSize(1.f),
       _setLineWidth(false), _lineWidth(1.f),
       _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
@@ -47,8 +47,8 @@ RasterMode::RasterMode()
 {
 }
 
-RasterMode::RasterMode(GLenum face, GLenum mode)
-    : _setPolygonMode(false), _face(face), _mode(mode),
+RasterMode::RasterMode(Enum::PolygonFace face, Enum::PolygonMode mode)
+    : _setPolygonMode(false), _polygonFace(face), _polygonMode(mode),
       _setPointSize(false), _pointSize(1.f),
       _setLineWidth(false), _lineWidth(1.f),
       _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
@@ -58,11 +58,11 @@ RasterMode::RasterMode(GLenum face, GLenum mode)
 
 void    RasterMode::Enable()
 {
-    if (_setPolygonMode && (_face != _currentFace || _mode != _currentMode))
+    if (_setPolygonMode && (_polygonFace != _currentPolygonFace || _polygonMode != _currentPolygonMode))
     {
-        glPolygonMode(_face, _mode);
-        _currentFace = _face;
-        _currentMode = _mode;
+        glPolygonMode(_polygonFace, _polygonMode);
+        _currentPolygonFace = _polygonFace;
+        _currentPolygonMode = _polygonMode;
     }
     if (_setPolygonOffset && (_polygonOffsetFactor != _currentPolygonOffsetFactor || _polygonOffsetUnits != _currentPolygonOffsetUnits))
     {
@@ -83,9 +83,9 @@ void    RasterMode::Enable()
     if (_setDepthTest && _currentDepthTest != _depthTest)
     {
         if (_depthTest)
-            glEnable(GL_DEPTH_TEST);
+            glEnable(Enum::DepthTest);
         else
-            glDisable(GL_DEPTH_TEST);
+            glDisable(Enum::DepthTest);
         _lastDepthTestState = _currentDepthTest;
         _currentDepthTest = _depthTest;
     }
@@ -93,10 +93,10 @@ void    RasterMode::Enable()
 
 void    RasterMode::Disable()
 {
-    if (_setPolygonMode && GL_FILL != _currentMode)
+    if (_setPolygonMode && _currentPolygonMode != Enum::Fill)
     {
-        glPolygonMode(_currentFace, GL_FILL);
-        _currentMode = GL_FILL;
+        glPolygonMode(_currentPolygonFace, Enum::Fill);
+        _currentPolygonMode = Enum::Fill;
     }
     if (_setPolygonOffset && (_currentPolygonOffsetFactor != 0 || _currentPolygonOffsetUnits != 0))
     {
@@ -117,9 +117,9 @@ void    RasterMode::Disable()
     if (_setDepthTest && _currentDepthTest != _lastDepthTestState)
     {
         if (_lastDepthTestState)
-            glEnable(GL_DEPTH_TEST);
+            glEnable(Enum::DepthTest);
         else
-            glDisable(GL_DEPTH_TEST);
+            glDisable(Enum::DepthTest);
         _currentDepthTest = _lastDepthTestState;
     }
 }

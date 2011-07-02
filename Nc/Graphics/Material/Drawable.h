@@ -47,13 +47,13 @@ namespace Nc
             Drawable(GL::IGeometryBuffer *geometry);
             Drawable(GL::IGeometryBuffer *geometry, MaterialConfig *config);
             template<typename VertexType, unsigned int D1, unsigned int D2>
-            Drawable(const Array<VertexType,D1> &tabVertices, unsigned int flags, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GLenum primitiveType);
+            Drawable(const Array<VertexType,D1> &tabVertices, GL::Enum::BufferUsage usage, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GL::Enum::PrimitiveType type);
             template<typename VertexType, unsigned int D1, unsigned int D2>
-            Drawable(const Array<VertexType,D1> &tabVertices, unsigned int flags, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GLenum primitiveType, MaterialConfig *config);
+            Drawable(const Array<VertexType,D1> &tabVertices, GL::Enum::BufferUsage usage, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GL::Enum::PrimitiveType type, MaterialConfig *config);
             template<typename VertexType, unsigned int D1>
-            Drawable(const Array<VertexType,D1> &tabVertices, unsigned int flags, GLenum primitiveType);
+            Drawable(const Array<VertexType,D1> &tabVertices, GL::Enum::BufferUsage usage, GL::Enum::PrimitiveType);
             template<typename VertexType, unsigned int D1>
-            Drawable(const Array<VertexType,D1> &tabVertices, unsigned int flags, GLenum primitiveType, MaterialConfig *config);
+            Drawable(const Array<VertexType,D1> &tabVertices, GL::Enum::BufferUsage usage, GL::Enum::PrimitiveType, MaterialConfig *config);
 
             Drawable(const Drawable &d);
             Drawable &operator = (const Drawable &d);
@@ -75,31 +75,31 @@ namespace Nc
         };
 
         template<typename VertexType, unsigned int D1, unsigned int D2>
-        Drawable::Drawable(const Array<VertexType,D1> &tabVertices, unsigned int flags, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GLenum primitiveType)
+        Drawable::Drawable(const Array<VertexType,D1> &tabVertices, GL::Enum::BufferUsage usage, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GL::Enum::PrimitiveType type)
         {
             Config = new MaterialConfig();
-            Geometry = new GL::GeometryBuffer<VertexType, true>(tabVertices, flags, tabIndices, stride, primitiveType);
+            Geometry = new GL::GeometryBuffer<VertexType, true>(tabVertices, usage, tabIndices, stride, type);
         }
 
         template<typename VertexType, unsigned int D1, unsigned int D2>
-        Drawable::Drawable(const Array<VertexType,D1> &tabVertices, unsigned int flags, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GLenum primitiveType, MaterialConfig *config)
+        Drawable::Drawable(const Array<VertexType,D1> &tabVertices, GL::Enum::BufferUsage usage, const Array<unsigned int,D2> &tabIndices, unsigned int stride, GL::Enum::PrimitiveType type, MaterialConfig *config)
         {
             Config = config;
-            Geometry = new GL::GeometryBuffer<VertexType, true>(tabVertices, flags, tabIndices, stride, primitiveType);
+            Geometry = new GL::GeometryBuffer<VertexType, true>(tabVertices, usage, tabIndices, stride, type);
         }
 
         template<typename VertexType, unsigned int D1>
-        Drawable::Drawable(const Array<VertexType,D1> &tabVertices, unsigned int flags, GLenum primitiveType)
+        Drawable::Drawable(const Array<VertexType,D1> &tabVertices, GL::Enum::BufferUsage usage, GL::Enum::PrimitiveType type)
         {
             Config = new MaterialConfig();
-            Geometry = new GL::GeometryBuffer<VertexType, false>(tabVertices, flags, primitiveType);
+            Geometry = new GL::GeometryBuffer<VertexType, false>(tabVertices, usage, type);
         }
 
         template<typename VertexType, unsigned int D1>
-        Drawable::Drawable(const Array<VertexType,D1> &tabVertices, unsigned int flags, GLenum primitiveType, MaterialConfig *config)
+        Drawable::Drawable(const Array<VertexType,D1> &tabVertices, GL::Enum::BufferUsage usage, GL::Enum::PrimitiveType type, MaterialConfig *config)
         {
             Config = config;
-            Geometry = new GL::GeometryBuffer<VertexType, false>(tabVertices, flags, primitiveType);
+            Geometry = new GL::GeometryBuffer<VertexType, false>(tabVertices, usage, type);
         }
     }
 }

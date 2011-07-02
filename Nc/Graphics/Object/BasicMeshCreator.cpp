@@ -52,7 +52,7 @@ Object *BasicMeshCreator::Repere(const Vector3f &scale, const Vector3f &center)
     // creation du mesh
     Object *obj = new Object(Box3f(center, center + Vector3f(scale.Data[0], scale.Data[1], scale.Data[2])));
     obj->Drawables().resize(1);
-    obj->Drawables()[0] = new Drawable(vertices, GL_STATIC_DRAW, indices, 2, GL_LINES);
+    obj->Drawables()[0] = new Drawable(vertices, GL::Enum::StaticDraw, indices, 2, GL::Enum::Lines);
     obj->ChooseDefaultMaterial();
     return obj;
 }
