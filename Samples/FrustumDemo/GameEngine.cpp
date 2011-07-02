@@ -34,7 +34,7 @@ void GameEngine::CreateWindow(Window *win)
         pattern |= Window::Fullscreen;
         winSize = Vector2i(1680, 1050);
     }
-    win->Create("Procedural Demo", winSize, pattern, "Nc:Image:icone.png", 3);
+    win->Create("Frustum Demo", winSize, pattern, "Nc:Image:icone.png", 3);
     AddInput(win->GetInput());
 }
 
@@ -44,7 +44,7 @@ void GameEngine::LoadContent()
     _scene3d = new SceneGraph();
 
     // creation de la camera
-    _camera = new StandardCamera3d(_graphic->GetWindow(), (Window::Width() / 2.f) / Window::Height(), 0.5, 20);
+    _camera = new StandardCamera3d(_graphic->GetWindow(), (Window::Width() / 2.f) / Window::Height(), 0.5, 40);
     _camera->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
     _scene3d->AddChild(_camera);
 
@@ -73,7 +73,7 @@ void GameEngine::LoadContent()
     _camera2->InibitMovement();
     _scene3d->AddChild(_camera2);
     // creation d'une troisieme camera pour fake la vue de l'octree
-    _camera3 = new StandardCamera3d(_graphic->GetWindow(), (Window::Width() / 2.f) / Window::Height(), 0.5, 20);
+    _camera3 = new StandardCamera3d(_graphic->GetWindow(), (Window::Width() / 2.f) / Window::Height(), 0.5, 40);
     _camera3->InibitMovement();
     _camera3->SetFixState(false);
     _camera3->DrawFrustum(true);
@@ -119,8 +119,8 @@ void GameEngine::ManageWindowEvent(System::Event &event)
 
 void GameEngine::KeyboardEvent(System::Event &event)
 {
-    _camera->KeyboardEvent(event);
-    if (event.Type == System::Event::KeyPressed)
+  _camera->KeyboardEvent(event);
+  if (event.Type == System::Event::KeyPressed)
     {
       if (event.Key.Code == System::Key::Space)
 	{

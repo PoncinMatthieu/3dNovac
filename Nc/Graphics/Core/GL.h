@@ -34,6 +34,7 @@
     //#include <GL/glext.h>
 
 	#include "GL/Extension.h"
+	#include "GL/Enum.h"
 
 // define if we are on windows the extentions
 #ifdef SYSTEM_WINDOWS

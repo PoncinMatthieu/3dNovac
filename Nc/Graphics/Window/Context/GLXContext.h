@@ -51,17 +51,27 @@ namespace Nc
                 GLXContext(XWindow *win);
                 virtual ~GLXContext();
 
-                void            Create(GLContext *sharedContext = NULL);
-                GLContext       *CreateNewSharedContext();
+                virtual void        Create(GLContext *sharedContext = NULL);
+                virtual GLContext   *CreateNewSharedContext();
 
-                void            Active()        {glXMakeCurrent(static_cast<XWindow*>(_win)->_display, (_pbuffer == 0) ? static_cast<XWindow*>(_win)->_xwin : _pbuffer, _context);}
-                void            Disable()       {glXMakeCurrent(static_cast<XWindow*>(_win)->_display, 0, 0);}
+                virtual void        Active()
+                {
+                    if (glXMakeCurrent(_display, /*(_pbuffer == 0) ?*/ static_cast<XWindow*>(_win)->_xwin /*: _pbuffer*/, _context) == 0)
+                        LOG_ERROR << "Make current failed" << std::endl;
+                }
 
-                void            SwapBuffers()   {glXSwapBuffers(static_cast<XWindow*>(_win)->_display, (_pbuffer == 0) ? static_cast<XWindow*>(_win)->_xwin : _pbuffer);}
+                virtual void        Disable()
+                {
+                    if (glXMakeCurrent(_display, 0, 0) == 0)
+                        LOG_ERROR << "Make current failed" << std::endl;
+                }
+
+                virtual void        SwapBuffers()   {glXSwapBuffers(_display, static_cast<XWindow*>(_win)->_xwin);}
 
             private:
+                Display         *_display;      // the display connection to the X server of the context (A shared context recreate a display connection to the Xserver and a context associated to a window use the display connection of the window)
                 ::GLXContext    _context;
-                GLXPbuffer      _pbuffer;  // for any shared context, we draw in a off screen renderer
+                //GLXPbuffer      _pbuffer;  // for any shared context, we draw in a off screen renderer
         };
     }
 }

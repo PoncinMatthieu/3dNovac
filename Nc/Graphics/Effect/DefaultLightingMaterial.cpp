@@ -120,8 +120,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &modelMatrix, GL::IGeometryBuff
                 verticesNormal[(i*2) + 1].coord[1] += (normals[(i*3) + 1] * normalPercent);
                 verticesNormal[(i*2) + 1].coord[2] += (normals[(i*3) + 2] * normalPercent);
             }
-
-            normalObject->Drawables()[0] = new Drawable(verticesNormal, GL_STREAM_DRAW, GL_LINES);
+            normalObject->Drawables().push_back(new Drawable(verticesNormal, GL_STREAM_DRAW, GL_LINES));
             normalObject->ChooseDefaultMaterial();
         }
     }

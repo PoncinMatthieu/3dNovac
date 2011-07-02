@@ -3,13 +3,11 @@ Creation of Game Engine					DONE
 -----------GameManager-ENGINES-CREATION-SUCESS--------------
 ---------------Graphic Engine-:-Create-Context-------------------
 Direct Rendering : 					Ok
-GL_VERSION = `3.3.10750 Compatibility Profile Context FireGL`	OK
-GL_VENDOR = `ATI Technologies Inc.`
-GL_RENDERER = `ATI Mobility Radeon HD 3650`
-GL_SHADING_LANGUAGE_VERSION = `3.30`
+GL_VERSION = `3.3.0 NVIDIA 275.09.07`	OK
+GL_VENDOR = `NVIDIA Corporation`
+GL_RENDERER = `NVS 5100M/PCI/SSE2`
+GL_SHADING_LANGUAGE_VERSION = `3.30 NVIDIA via Cg compiler`
 ---------------Graphic Engine-:-Create-Context-done--------------
-------------------Graphic Engine-:-Loading-----------------------
-------------------Graphic Engine-:-Loading-done------------------
 ---------------Game Engine-:-Create-Context-------------------
 create shared context
 activate context
@@ -19,6 +17,8 @@ Create new pbuffer
 Disable
 create shared context DONE
 ---------------Game Engine-:-Create-Context-done--------------
+------------------Graphic Engine-:-Loading-----------------------
+------------------Graphic Engine-:-Loading-done------------------
 ------------------Game Engine-:-Loading-----------------------
 Data Buffer 1 CREATED
 Compile `BasicColored2dShader`...			DONE

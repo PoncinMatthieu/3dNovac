@@ -64,6 +64,10 @@ static Bool WaitForNotify(Display *dpy, XEvent *event, XPointer arg)
 
 void XWindow::Create(const std::string &title, const Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel)
 {
+    // init XLib support for concurrent thread support
+    if (XInitThreads() == 0)
+        throw Utils::Exception("XWindow", "Can't create a window. Your system does not support threads.");
+
     // Open a connection to the X server
     _display = XOpenDisplay(0);
     if (_display == NULL)
@@ -161,14 +165,7 @@ void XWindow::ChooseBestVisualInfo()
 
             // check that we have the doublebuffer and rbga mode, it's the subsistence level
 //            LOG << renderable << " " << drawableType << " " << renderType << " " << visualType << std::endl;
-//            LOG << True << " " << GLX_WINDOW_BIT << " " << GLX_RGBA_BIT << " " << GLX_TRUE_COLOR << std::endl;
-/*
-            GLX_X_RENDERABLE    , True,
-            GLX_DRAWABLE_TYPE   , GLX_WINDOW_BIT,
-            GLX_RENDER_TYPE     , GLX_RGBA_BIT,
-            GLX_X_VISUAL_TYPE   , GLX_TRUE_COLOR,
-*/
-            if (RGBA != 0 && doubleBuffer != 0 && renderable  && /*drawableType == GLX_WINDOW_BIT &&*/ renderType == GLX_RGBA_BIT && visualType == GLX_TRUE_COLOR)
+            if (RGBA != 0 && doubleBuffer != 0 && renderable && renderType == GLX_RGBA_BIT && visualType == GLX_TRUE_COLOR)
             {
                 // Evaluate the current configuration
                 int score = Math::Abs(static_cast<int>(32 - (red + green + blue + alpha))) +

@@ -45,7 +45,7 @@ using namespace Nc::Graphic;
 double      Graphic::Engine::_elapsedTime = 0;
 
 Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func)
-    : Engine::IEngine(ClassName(), "Graphic Engine", manager, Nc::Engine::HasAContext | Nc::Engine::DontWaitOthersContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
+    : Engine::IEngine(ClassName(), "Graphic Engine", manager, Nc::Engine::HasAContext /*| Nc::Engine::DontWaitOthersContext*/ | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
       _createWinFunction(func), _context(NULL)
 {
 }

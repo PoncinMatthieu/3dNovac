@@ -75,9 +75,7 @@ Logger &Logger::operator << (std::ostream  &(APIENTRY *f)(std::ostream &))
     std::ostringstream oss;
 
     f(oss);
-    _mutex.Lock();
     Write(oss.str(), true);
-    _mutex.Unlock();
     return *this;
 }
 
@@ -86,9 +84,7 @@ Logger &Logger::operator << (std::ostream  &(__cdecl *f)(std::ostream &))
     std::ostringstream oss;
 
     f(oss);
-    _mutex.Lock();
     Write(oss.str(), true);
-    _mutex.Unlock();
     return *this;
 }
 #else
@@ -97,9 +93,7 @@ Logger &Logger::operator << (std::ostream &(*f)(std::ostream &))
     std::ostringstream oss;
 
     f(oss);
-    _mutex.Lock();
     Write(oss.str(), true);
-    _mutex.Unlock();
     return *this;
 }
 #endif
@@ -116,6 +110,8 @@ void Logger::CheckFile()
 
 void Logger::Write(const string Msg, bool flush)
 {
+    _mutex.Lock();
+
   // log
     if (_status == 0)
     {
@@ -167,4 +163,6 @@ void Logger::Write(const string Msg, bool flush)
             _file.flush();
         }
     }
+
+    _mutex.Unlock();
 }

@@ -38,6 +38,9 @@
 namespace Nc
 {
     /// Provide abstraction to create multithreaded engine, like a GraphicalEngine, GameEngine, AudioEngine, and NetworkEngine
+    /**
+        \todo Add an option to do not make threads or to synchronize an engine with an other(s) (for instance it would be very intersting to make some benchmark with and without multithreaded opengl contexts - to see if it's really good to use a dedicated rendering thread with an other shared context)
+    */
     namespace Engine
     {
         class   IEngine;
@@ -90,6 +93,8 @@ namespace Nc
                 /** Dispatch events to the corresponding engine */
                 template<typename T>
                 static void         PushEvent(const std::string &engineName, unsigned int id, const T &arg);
+                /** Dispatch events to the corresponding engine */
+                static void         PushEvent(const std::string &engineName, unsigned int id);
                 /** Dispatch events to the corresponding engine */
                 static void         PushEvent(const std::string &engineName, unsigned int id, IEvent *e);
                 /** Dispatch events to the corresponding engine */

@@ -29,27 +29,27 @@
 using namespace std;
 using namespace Nc;
 
-Graphic::GLXContext::GLXContext(XWindow *win/*, GLXWindow drawable*/) : GLContext(win)//, _drawable(drawable)
+Graphic::GLXContext::GLXContext(XWindow *win) : GLContext(win)
 {
     _context = 0;
-    _pbuffer = 0;
+    _display = win->_display;
+//    _pbuffer = 0;
 }
 
 Graphic::GLXContext::~GLXContext()
 {
     if (_isCreate)
     {
-        if (_pbuffer == 0)
-        {
-//            glXDestroyWindow(static_cast<XWindow*>(_win)->_display, _drawable);
-        }
-        else
-            glXDestroyPbuffer(static_cast<XWindow*>(_win)->_display, _pbuffer);
-        glXDestroyContext(static_cast<XWindow*>(_win)->_display, _context);
+        //if (_pbuffer != 0)
+        //    glXDestroyPbuffer(_display, _pbuffer);
+        glXDestroyContext(_display, _context);
+
+        // Close the connection to the display if it's a shared context
+        if (_isShared)
+            XCloseDisplay(_display);
     }
 }
 
-typedef GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, GLXContext, Bool, const int*);
 /*
 // Helper to check for extension string presence.  Adapted from:
 //   http://www.opengl.org/resources/features/OGLextensions/
@@ -83,14 +83,15 @@ static bool isExtensionSupported(const char *extList, const char *extension)
   }
   return false;
 }
-
+*/
 static bool ctxErrorOccurred = false;
-static int ctxErrorHandler( Display *dpy, XErrorEvent *ev )
+static int ctxErrorHandler(Display *dpy, XErrorEvent *ev)
 {
     ctxErrorOccurred = true;
     return 0;
 }
-*/
+
+
 void Graphic::GLXContext::Create(GLContext *sharedContext)
 {
     XWindow *window = static_cast<XWindow*>(_win);
@@ -101,16 +102,7 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
     if (_isCreate)
         throw Utils::Exception("GLXContext", "The Renderer is already create");
 
-/*
-    // Get the default screen's GLX extension list
-    const char *glxExts = glXQueryExtensionsString(window->_display, window->_screen);
 
-    // NOTE: It is not necessary to create or make current to a context before
-    // calling glXGetProcAddressARB
-    glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
-    glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc)glXGetProcAddressARB((const GLubyte *)"glXCreateContextAttribsARB");
-
-    _context = 0;
     // Install an X error handler so the application won't exit if GL 3.0
     // context allocation fails.
     //
@@ -120,12 +112,24 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
     ctxErrorOccurred = false;
     int (*oldHandler)(Display*, XErrorEvent*) = XSetErrorHandler(&ctxErrorHandler);
 
+
+/* *******************************************************************************************************************
+// gl3.3 context creation
+    // Get the default screen's GLX extension list
+    const char *glxExts = glXQueryExtensionsString(_display, window->_screen);
+
+    // NOTE: It is not necessary to create or make current to a context before
+    // calling glXGetProcAddressARB
+    typedef ::GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, ::GLXContext, Bool, const int*);
+    glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
+    glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc)glXGetProcAddressARB((const GLubyte *)"glXCreateContextAttribsARB");
+
     // Check for the GLX_ARB_create_context extension string and the function.
     // If either is not present, use GLX 1.3 context creation method.
     if ( !isExtensionSupported(glxExts, "GLX_ARB_create_context") || !glXCreateContextAttribsARB)
     {
         LOG << "glXCreateContextAttribsARB() not found... using old-style GLX context" << std::endl;
-        _context = glXCreateNewContext(window->_display, *window->_fbConfig, GLX_RGBA_TYPE, sharedContextPtr, True);
+        _context = glXCreateNewContext(_display, *window->_fbConfig, GLX_RGBA_TYPE, sharedContextPtr, True);
     }
     else // If it does, try to get a GL 3.3 context!
     {
@@ -138,10 +142,10 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
         };
 
         LOG << "Creating context... ";
-        _context = glXCreateContextAttribsARB(window->_display, *window->_fbConfig, sharedContextPtr, True, context_attribs);
+        _context = glXCreateContextAttribsARB(_display, *window->_fbConfig, sharedContextPtr, True, context_attribs);
 
         // Sync to ensure any errors generated are processed.
-        XSync(window->_display, False);
+        XSync(_display, False);
         if (!ctxErrorOccurred && _context)
             LOG << "GL 3.3 context ";
         else
@@ -158,41 +162,31 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
             ctxErrorOccurred = false;
 
             LOG <<  "Failed to create GL 3.0 context... using old-style GLX context" << std::endl;;
-            _context = glXCreateContextAttribsARB(window->_display, *window->_fbConfig, sharedContextPtr, True, context_attribs);
+            _context = glXCreateContextAttribsARB(_display, *window->_fbConfig, sharedContextPtr, True, context_attribs);
         }
     }
-    // Sync to ensure any errors generated are processed.
-    XSync(window->_display, False);
+*******************************************************************************************************************/
+// default context creation
+    // Create a GLX context for OpenGL rendering
+    _context = glXCreateNewContext(_display, *window->_fbConfig, GLX_RGBA_TYPE, sharedContextPtr, True);
+    if (_context == 0)
+        throw Utils::Exception("GLXContext", "Can't create a GLXContext");
+/* *******************************************************************************************************************/
 
-  // Restore the original error handler
+    // Sync to ensure any errors generated are processed.
+    XSync(_display, False);
+
+    // Restore the original error handler
     XSetErrorHandler(oldHandler);
 
     if (ctxErrorOccurred || !_context)
         throw Utils::Exception("GLXContext", "Failed to create an OpenGL context");
 
- // Verifying that context is a direct context
-    if (!glXIsDirect(window->_display, _context))
-        LOG << "Indirect GLX rendering context obtained" << std::endl;
+    // Verifying that context is a direct context
+    if (!glXIsDirect(_display, _context))
+        LOG_DEBUG << "Indirect GLX rendering context obtained" << std::endl;
     else
-        LOG << "Direct GLX rendering context obtained" << std::endl;
-*/
-
-    // Create a GLX context for OpenGL rendering
-    _context = glXCreateNewContext(window->_display, *window->_fbConfig, GLX_RGBA_TYPE, sharedContextPtr, True);
-    if (_context == 0)
-        throw Utils::Exception("GLXContext", "Can't create a GLXContext");
-
-    // Sync to ensure any errors generated are processed.
-    XSync(window->_display, False);
-
-    // if we don't have any drawable
-    //  Create a GLX window to associate the frame buffer configuration with the created X window
-/*    if (_drawable == 0 && _pbuffer == 0)
-    {
-        _drawable = glXCreateWindow(window->_display, *window->_fbConfig, window->_xwin, NULL);
-        if (_drawable == 0)
-            throw Utils::Exception("GLXContext", "Can't create a gl drawable for the window");
-    }*/
+        LOG_DEBUG << "Direct GLX rendering context obtained." << std::endl;
     _isCreate = true;
 }
 
@@ -209,14 +203,18 @@ LOG << "activate context" << std::endl;
     XWindow *window = static_cast<XWindow*>(_win);
 
 LOG << "Create new context instance" << std::endl;
-    GLXContext   *newSharedRenderer = new GLXContext(window/*, _drawable*/);
-//    newSharedRenderer->_isCreate = _isCreate;
+    //GLXContext   *newSharedRenderer = new GLXContext(window);
+    GLXContext   *newSharedRenderer = new GLXContext(window);
+
+    // create an other display connection to the Xserver otherwise the glx will crash on Qt with nvidia drivers
+    newSharedRenderer->_display = XOpenDisplay(0);
+
     // recreer un context opengl pour le thread, et un pbuffer pour rendu sur off-screen
-//    newSharedRenderer->_context = glXCreateNewContext(window->_display, *window->_fbConfig, GLX_RGBA_TYPE, _context, True);
 LOG << "Create new context" << std::endl;
     newSharedRenderer->Create(this);
 LOG << "Create new pbuffer" << std::endl;
-    newSharedRenderer->_pbuffer = glXCreatePbuffer(window->_display, *window->_fbConfig, NULL);
+
+    //newSharedRenderer->_pbuffer = glXCreatePbuffer(_display, *window->_fbConfig, NULL);
     newSharedRenderer->_isShared = true;
 
 LOG << "Disable" << std::endl;

@@ -164,6 +164,18 @@ void Manager::Wait()
         itEngine->second->Wait();
 }
 
+void Manager::PushEvent(const std::string &engineName, unsigned int id)
+{
+    try
+    {
+        GetEngine(engineName)->PushEvent(id);
+    }
+    catch(const std::exception &e)
+    {
+        LOG_ERROR << "Error: " << e.what() << std::endl;
+    }
+}
+
 void Manager::PushEvent(const std::string &engineName, unsigned int id, IEvent *e)
 {
     try

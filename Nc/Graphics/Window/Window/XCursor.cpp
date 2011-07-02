@@ -60,7 +60,9 @@ Graphic::Cursor::~Cursor()
     }
     if (_cursor.Unique() && _cursor != NULL)
     {
+        //XLockDisplay(static_cast<XWindow*>(_win)->_display);
         XFreeCursor(_win->_display, *_cursor);
+        //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
     }
 }
 
@@ -68,7 +70,9 @@ void Graphic::Cursor::Enable()
 {
     if (_win->IsOwn())
     {
+        //XLockDisplay(static_cast<XWindow*>(_win)->_display);
         XDefineCursor(_win->_display, _win->_xwin, (_cursor != NULL) ? *_cursor : None);
+        //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
         //XFlush(_win->_display); // genere un XIO error avec Qt
     }
     _win->_currentCursor = this;
@@ -78,7 +82,9 @@ void Graphic::Cursor::Disable()
 {
     if (_win->IsOwn())
     {
+        //XLockDisplay(static_cast<XWindow*>(_win)->_display);
         XDefineCursor(_win->_display, _win->_xwin, *_hiddenCursor);
+        //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
         //XFlush(_win->_display); // genere un XIO error avec Qt
     }
     _win->_currentCursor = this;
@@ -88,6 +94,7 @@ void Graphic::Cursor::CreateHiddenCursor()
 {
     if (_nbCursor == 0)
     {
+        //XLockDisplay(static_cast<XWindow*>(_win)->_display);
         // Create the cursor's pixmap (1x1 pixels)
         Pixmap cursorPixmap = XCreatePixmap(_win->_display, _win->_xwin, 1, 1, 1);
         GC graphicsContext = XCreateGC(_win->_display, cursorPixmap, 0, NULL);
@@ -102,6 +109,7 @@ void Graphic::Cursor::CreateHiddenCursor()
 
         // We don't need the pixmap any longer, free it
         XFreePixmap(_win->_display, cursorPixmap);
+        //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
     }
     _nbCursor++;
 }
@@ -111,62 +119,73 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
     if (!_win->IsOwn())
         return;
 
-    if (_cursor != NULL) // delete the last cursor
-        XFreeCursor(_win->_display, *_cursor);
+    //XLockDisplay(static_cast<XWindow*>(_win)->_display);
+    try
+    {
+        if (_cursor != NULL) // delete the last cursor
+            XFreeCursor(_win->_display, *_cursor);
 
-    XGCValues   GCvalues;
-	GC          GCcursor;
-	XImage      *data_image, *mask_image;
-	Pixmap      data_pixmap, mask_pixmap;
-	int         clen, i;
-	char        *x_data, *x_mask;
+        XGCValues   GCvalues;
+        GC          GCcursor;
+        XImage      *data_image, *mask_image;
+        Pixmap      data_pixmap, mask_pixmap;
+        int         clen, i;
+        char        *x_data, *x_mask;
 
-	// Mix the mask and the data
-	clen = (size.Data[0]/8)*size.Data[1];
-	x_data = (char *)malloc(clen);
-	x_mask = (char *)malloc(clen);
-	for ( i=0; i<clen; ++i )
-	{
-		x_mask[i] = data[i] | mask[i];
-		x_data[i] = data[i];
-	}
+        // Mix the mask and the data
+        clen = (size.Data[0]/8)*size.Data[1];
+        x_data = (char *)malloc(clen);
+        x_mask = (char *)malloc(clen);
+        for ( i=0; i<clen; ++i )
+        {
+            x_mask[i] = data[i] | mask[i];
+            x_data[i] = data[i];
+        }
 
-	// Create the data image
-	data_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_data, size.Data[0], size.Data[1], 8, size.Data[0]/8);
-	data_image->byte_order = MSBFirst;
-	data_image->bitmap_bit_order = MSBFirst;
-	data_pixmap = XCreatePixmap(_win->_display, _win->_xwin, size.Data[0], size.Data[1], 1);
+        // Create the data image
+        data_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_data, size.Data[0], size.Data[1], 8, size.Data[0]/8);
+        data_image->byte_order = MSBFirst;
+        data_image->bitmap_bit_order = MSBFirst;
+        data_pixmap = XCreatePixmap(_win->_display, _win->_xwin, size.Data[0], size.Data[1], 1);
 
-	// Create the data mask
-	mask_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_mask, size.Data[0], size.Data[1], 8, size.Data[0]/8);
-	mask_image->byte_order = MSBFirst;
-	mask_image->bitmap_bit_order = MSBFirst;
-	mask_pixmap = XCreatePixmap(_win->_display, _win->_xwin, size.Data[0], size.Data[1], 1);
+        // Create the data mask
+        mask_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_mask, size.Data[0], size.Data[1], 8, size.Data[0]/8);
+        mask_image->byte_order = MSBFirst;
+        mask_image->bitmap_bit_order = MSBFirst;
+        mask_pixmap = XCreatePixmap(_win->_display, _win->_xwin, size.Data[0], size.Data[1], 1);
 
-	// Create the graphics context
-	GCvalues.function = GXcopy;
-	GCvalues.foreground = ~0;
-	GCvalues.background =  0;
-	GCvalues.plane_mask = AllPlanes;
-	GCcursor = XCreateGC(_win->_display, data_pixmap, (GCFunction|GCForeground|GCBackground|GCPlaneMask), &GCvalues);
+        // Create the graphics context
+        GCvalues.function = GXcopy;
+        GCvalues.foreground = ~0;
+        GCvalues.background =  0;
+        GCvalues.plane_mask = AllPlanes;
+        GCcursor = XCreateGC(_win->_display, data_pixmap, (GCFunction|GCForeground|GCBackground|GCPlaneMask), &GCvalues);
 
-	// Blit the images to the pixmaps
-	XPutImage(_win->_display, data_pixmap, GCcursor, data_image, 0, 0, 0, 0, size.Data[0], size.Data[1]);
-	XPutImage(_win->_display, mask_pixmap, GCcursor, mask_image, 0, 0, 0, 0, size.Data[0], size.Data[1]);
-	XFreeGC(_win->_display, GCcursor);
-	// These free the x_data and x_mask memory pointers
-	XDestroyImage(data_image);
-	XDestroyImage(mask_image);
+        // Blit the images to the pixmaps
+        XPutImage(_win->_display, data_pixmap, GCcursor, data_image, 0, 0, 0, 0, size.Data[0], size.Data[1]);
+        XPutImage(_win->_display, mask_pixmap, GCcursor, mask_image, 0, 0, 0, 0, size.Data[0], size.Data[1]);
+        XFreeGC(_win->_display, GCcursor);
+        // These free the x_data and x_mask memory pointers
+        XDestroyImage(data_image);
+        XDestroyImage(mask_image);
 
-	// Create the cursor
-    XColor black = {0, 0, 0, 0};
-	XColor white = {0xffff, 0xffff, 0xffff, 0xffff};
-	if (_cursor == NULL)
-        _cursor = new ::Cursor;
-    *_cursor = XCreatePixmapCursor(_win->_display, data_pixmap, mask_pixmap,
-                                   &black, &white, posCenter.Data[0], posCenter.Data[1]);
-	XFreePixmap(_win->_display, data_pixmap);
-	XFreePixmap(_win->_display, mask_pixmap);
+        // Create the cursor
+        XColor black = {0, 0, 0, 0};
+        XColor white = {0xffff, 0xffff, 0xffff, 0xffff};
+        if (_cursor == NULL)
+            _cursor = new ::Cursor;
+        *_cursor = XCreatePixmapCursor(_win->_display, data_pixmap, mask_pixmap,
+                                       &black, &white, posCenter.Data[0], posCenter.Data[1]);
+        XFreePixmap(_win->_display, data_pixmap);
+        XFreePixmap(_win->_display, mask_pixmap);
+    }
+    catch (...)
+    {
+        //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
+        throw;
+    }
+    //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
+
 
 /*
     char *x_data = (char*)malloc(sizeof(char) * size.Data[0] * size.Data[1] / 8);

@@ -85,6 +85,7 @@ void XWindowInput::CheckEvents()
 {
     if (_inputContext)
     {
+        //XLockDisplay(static_cast<XWindow*>(_win)->_display);
         XEvent Event;
         while (XCheckIfEvent(static_cast<XWindow*>(_win)->_display, &Event, &CheckEvent,
                              reinterpret_cast<XPointer>(static_cast<XWindow*>(_win)->_xwin)))
@@ -122,6 +123,7 @@ void XWindowInput::CheckEvents()
                 ProcessEvent(Event); // Process the event
             }
         }
+        //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
     }
 }
 

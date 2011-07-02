@@ -31,6 +31,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-static" />
 			<Add option="-DBOOST_ALL_NO_LIB" />
 			<Add option="-DPCRE_STATIC" />
 			<Add option="-DDOM_INCLUDE_LIBXML" />
@@ -39,6 +40,7 @@
 			<Add directory="/usr/local/include/colladadom/1.4/" />
 		</Compiler>
 		<Linker>
+			<Add option="-static" />
 			<Add library="Nc-Graphics" />
 			<Add library="Nc-Core" />
 			<Add library="collada14dom" />

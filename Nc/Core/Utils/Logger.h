@@ -140,9 +140,7 @@ namespace Nc
             std::ostringstream s;
 
             s << ToLog;
-            _mutex.Lock();
             Write(s.str(), false);
-            _mutex.Unlock();
             return *this;
         }
 

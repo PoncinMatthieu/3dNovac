@@ -85,11 +85,19 @@ unsigned int    Shader::NewShader(const Utils::FileName &filename, GLenum type)
     ifstream file(filename.c_str(), ios::in);
     if(!file)
         throw Utils::Exception("Shader", "Can't open the source file GLSL " + filename);
-    string source;
-    while (!file.eof())
-        source.push_back(file.get());
+
+    // get size file
+    file.seekg(0, ios_base::end);
+    unsigned int size = file.tellg();
+    file.seekg(0, ios_base::beg);
+
+    // read file
+    char *source = new char[size + 1];
+    file.read(source, size);
+    source[size] = '\0';
     file.close();
-    return CompileShader(source.c_str(), type, filename.Filename());
+
+    return CompileShader(source, type, filename.Filename());
 }
 
 unsigned int    Shader::CompileShader(const char *source, GLenum type, const std::string &name)
