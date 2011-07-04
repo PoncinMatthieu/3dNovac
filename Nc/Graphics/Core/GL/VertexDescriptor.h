@@ -50,7 +50,6 @@ namespace Nc
 					Type = type;
 					PointerOffset = pointerOffset;
 					Normalized = normalized;
-					Bind = true;
 				}
 
                 friend std::ostream &operator << (std::ostream &oss, const DataVertexDescriptor &d)
@@ -65,9 +64,8 @@ namespace Nc
                 int             Size;               ///< the size of the data in the vertex
                 GLenum          Type;               ///< the type of the data in the vertex
                 unsigned int    PointerOffset;      ///< the pointer offset of the data in the vertex
-                unsigned int    IndexAttrib;        ///< the index Attrib (in relation with the Shader::AttribLocation) of the data in the vertex
+                int             IndexAttrib;        ///< the index Attrib (in relation with the Shader::AttribLocation) of the data in the vertex
                 bool            Normalized;         ///< if true, the data will be normalized before enterring in the shader program pipeline
-                bool            Bind;               ///< if false, the vertexAttrib will not be bind for rendering
             };
 
             /// Describe all componants of a VertexType

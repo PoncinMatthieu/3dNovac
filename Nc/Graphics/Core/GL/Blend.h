@@ -52,25 +52,28 @@ namespace Nc
                     };
 
                 public:
-                    Blend() : _pattern(Disabled)        {}
-                    Blend(Pattern p) : _pattern(p)      {}
+                    Blend();
+                    Blend(Pattern p);
                     ~Blend()    {}
 
                     /** Set the blending pattern */
-                    void    SetPattern(Pattern p)      {_pattern = p;}
+                    void            SetPattern(Pattern p);
+                    inline void     InhibitBlending()                                           {_blendState = false;}
+                    /** Set the blend factors and active the blending */
+                    inline void     SetFactors(Enum::BlendFactor s, Enum::BlendFactor d)        {_sFactor = s; _dFactor = d; _blendState = true;}
 
                     /** Enable the blending opengl state */
-                    void    Enable();
-
+                    void            Enable();
                     /** Disable the blending opengl state */
-                    void    Disable();
+                    void            Disable();
 
                 protected:
-                    Pattern                     _pattern;               ///< the blending pattern
-
-                    bool                        _lastBlendState;
-                    Enum::BlendFactor           _lastSFactor;           ///< sFactor used by the glBlendFunc
-                    Enum::BlendFactor           _lastDFactor;           ///< dFactor used by the glBlendFunc
+                    bool                        _blendState;            ///< if true, enable the blending
+                    Enum::BlendFactor           _sFactor;               ///< sFactor used by the glBlendFunc
+                    Enum::BlendFactor           _dFactor;               ///< dFactor used by the glBlendFunc
+                    bool                        _lastBlendState;        ///< Last blend state
+                    Enum::BlendFactor           _lastSFactor;           ///< Last sFactor used by the glBlendFunc
+                    Enum::BlendFactor           _lastDFactor;           ///< Last dFactor used by the glBlendFunc
 
                     static bool                 _currentBlendState;
                     static Enum::BlendFactor    _currentSFactor;

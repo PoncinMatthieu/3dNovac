@@ -151,7 +151,7 @@ namespace Nc
                 for (unsigned short i = 0; i < Descriptor.Size(); ++i)
                 {
                     DataVertexDescriptor &desc = Descriptor[i];
-                    if (desc.Bind)
+                    if (desc.IndexAttrib >= 0)
                     {
                         glEnableVertexAttribArray(desc.IndexAttrib);
                         glVertexAttribPointer(desc.IndexAttrib, desc.Size, desc.Type, desc.Normalized, sizeof(T), BUFFER_OFFSET(desc.PointerOffset));
@@ -168,7 +168,7 @@ namespace Nc
                 for (unsigned short i = 0; i < Descriptor.Size(); ++i)
                 {
                     DataVertexDescriptor &desc = Descriptor[i];
-                    if (desc.Bind)
+                    if (desc.IndexAttrib >= 0)
                         glDisableVertexAttribArray(desc.IndexAttrib);
                 }
             }

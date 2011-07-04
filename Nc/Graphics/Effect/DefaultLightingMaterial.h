@@ -28,7 +28,7 @@
 #define NC_GRAPHICS_MATERIAL_DEFAULTLIGHTINGMATERIAL_H_
 
 #include <Nc/Core/Utils/Mask.h>
-#include "../Core/GL/Shader.h"
+#include "../Core/GL/Program.h"
 #include "../Core/GL/Texture.h"
 #include "LightingEffect.h"
 
@@ -67,20 +67,11 @@ namespace Nc
             protected:
                 Utils::Mask<MaterialPattern>    _patternMask;               ///< the pattern mask of the material
 
-                GL::Shader      _shader;                                    ///< the shader of the material
+                GL::Program     _program;                                   ///< the program shader of the material
                 GL::Texture     _lightMap;                                  ///< the light map to used a perpixel lighting method
 
-                unsigned int    _uniformM;
-                unsigned int    _uniformPV;
-                unsigned int    _uniformNormalMatrix;
-                unsigned int    _uniformLight;
-                unsigned int    _uniformLightColor;
-                unsigned int    _uniformLightPass;
-                unsigned int    _uniformTextured;
-                unsigned int    _uniformDiffuse;
-                unsigned int    _uniformLightMap;
-                unsigned int    _uniformBumpMapping;
-                unsigned int    _uniformNormalMap;
+                GL::Blend       _blend;                                     ///< set the blending for the light pass
+                GL::RasterMode  _rasterMode;                                ///< disable the depth mask for the light pass
         };
     }
 }

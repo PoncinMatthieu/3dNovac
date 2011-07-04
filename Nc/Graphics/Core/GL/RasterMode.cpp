@@ -37,13 +37,14 @@ GLfloat                 RasterMode::_currentLineWidth = 1.f;
 GLfloat                 RasterMode::_currentPolygonOffsetFactor = 0.f;
 GLfloat                 RasterMode::_currentPolygonOffsetUnits = 0.f;
 bool                    RasterMode::_currentDepthTest = true;
+bool                    RasterMode::_currentDepthMask = true;
 
 RasterMode::RasterMode()
     : _setPolygonMode(false), _polygonFace(Enum::FrontAndBack), _polygonMode(Enum::Fill),
       _setPointSize(false), _pointSize(1.f),
       _setLineWidth(false), _lineWidth(1.f),
       _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
-      _setDepthTest(false), _depthTest(true), _lastDepthTestState(true)
+      _setDepthTest(true), _depthTest(true), _depthMask(true), _lastDepthTestState(true), _lastDepthMaskState(true)
 {
 }
 
@@ -52,7 +53,7 @@ RasterMode::RasterMode(Enum::PolygonFace face, Enum::PolygonMode mode)
       _setPointSize(false), _pointSize(1.f),
       _setLineWidth(false), _lineWidth(1.f),
       _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
-      _setDepthTest(false), _depthTest(true), _lastDepthTestState(true)
+      _setDepthTest(false), _depthTest(true), _depthMask(true), _lastDepthTestState(true), _lastDepthMaskState(true)
 {
 }
 
@@ -80,14 +81,23 @@ void    RasterMode::Enable()
         glLineWidth(_lineWidth);
         _currentLineWidth = _lineWidth;
     }
-    if (_setDepthTest && _currentDepthTest != _depthTest)
+    if (_setDepthTest)
     {
-        if (_depthTest)
-            glEnable(Enum::DepthTest);
-        else
-            glDisable(Enum::DepthTest);
-        _lastDepthTestState = _currentDepthTest;
-        _currentDepthTest = _depthTest;
+        if (_currentDepthTest != _depthTest)
+        {
+            if (_depthTest)
+                glEnable(Enum::DepthTest);
+            else
+                glDisable(Enum::DepthTest);
+            _lastDepthTestState = _currentDepthTest;
+            _currentDepthTest = _depthTest;
+        }
+        if (_currentDepthMask != _depthMask)
+        {
+            glDepthMask((_depthMask) ? GL_TRUE : GL_FALSE);
+            _lastDepthMaskState = _currentDepthMask;
+            _currentDepthMask = _depthMask;
+        }
     }
 }
 
@@ -114,12 +124,20 @@ void    RasterMode::Disable()
         glLineWidth(1);
         _currentLineWidth = 1;
     }
-    if (_setDepthTest && _currentDepthTest != _lastDepthTestState)
+    if (_setDepthTest)
     {
-        if (_lastDepthTestState)
-            glEnable(Enum::DepthTest);
-        else
-            glDisable(Enum::DepthTest);
-        _currentDepthTest = _lastDepthTestState;
+        if (_currentDepthTest != _lastDepthTestState)
+        {
+            if (_lastDepthTestState)
+                glEnable(Enum::DepthTest);
+            else
+                glDisable(Enum::DepthTest);
+            _currentDepthTest = _lastDepthTestState;
+        }
+        if (_currentDepthMask != _lastDepthMaskState)
+        {
+            glDepthMask((_lastDepthMaskState) ? GL_TRUE : GL_FALSE);
+            _currentDepthMask = _lastDepthMaskState;
+        }
     }
 }

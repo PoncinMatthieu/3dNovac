@@ -53,18 +53,6 @@ void Sprite::Draw(SceneGraph *scene)
     if (_needUpdate)
         UpdateGeometry();
     Object::Draw(scene);
-
-/// \todo recode the debug equivalent in opengl 3.3
-    #ifdef _DEBUG_SPRITES
-    glDisable(GL_TEXTURE_2D);
-    Color::Red();
-    glBegin(GL_LINE_LOOP);
-        glVertex2f(0, 0);
-        glVertex2f(0, _spriteSize.Data[1]);
-        glVertex2f(_spriteSize.Data[0], _spriteSize.Data[1]);
-        glVertex2f(_spriteSize.Data[0], 0);
-    glEnd();
-    #endif
 }
 
 void Sprite::UpdateGeometry()

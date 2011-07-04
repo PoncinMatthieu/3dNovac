@@ -28,7 +28,7 @@
 #define NC_GRAPHICS_MATERIAL_DEFAULTMATERIALS_H_
 
 #include "../Define.h"
-#include "../Core/GL/Shader.h"
+#include "../Core/GL/Program.h"
 #include "../Scene/SceneGraph.h"
 #include "Drawable.h"
 #include "DefaultSourceShader.h"
@@ -80,8 +80,7 @@ namespace Nc
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
-                GL::Shader      _shader;            ///< the shader used to render the drawable
-                unsigned int    _uniformMVP;
+                GL::Program     _program;            ///< the shader used to render the drawable
         };
 
         /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored2d
@@ -104,8 +103,7 @@ namespace Nc
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
-                GL::Shader      _shader;        ///< the shader used to render the drawable
-                unsigned int    _uniformMVP;
+                GL::Program     _program;        ///< the shader used to render the drawable
         };
 
         /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured
@@ -128,10 +126,7 @@ namespace Nc
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
-                GL::Shader      _shader;                ///< the shader used to render the drawable
-                unsigned int    _uniformMVP;
-                unsigned int    _uniformTextured;
-                unsigned int    _uniformTextureId;
+                GL::Program     _program;                ///< the shader used to render the drawable
         };
 
         /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured2d
@@ -154,10 +149,7 @@ namespace Nc
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
-                GL::Shader      _shader;                ///< the shader used to render the drawable
-                unsigned int    _uniformMVP;
-                unsigned int    _uniformTextured;
-                unsigned int    _uniformTextureId;
+                GL::Program     _program;                ///< the shader used to render the drawable
         };
 
         /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured3d
@@ -180,10 +172,7 @@ namespace Nc
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
-                GL::Shader      _shader;                ///< the shader used to render the drawable
-                unsigned int    _uniformMVP;
-                unsigned int    _uniformTextured;
-                unsigned int    _uniformTextureId;
+                GL::Program     _program;                ///< the shader used to render the drawable
         };
     }
 }

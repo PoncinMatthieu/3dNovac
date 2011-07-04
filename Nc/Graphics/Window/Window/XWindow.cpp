@@ -145,14 +145,13 @@ void XWindow::ChooseBestVisualInfo()
         for (int i = 0; i < nbConfigs; ++i)
         {
             // Get the current visual attributes
-            int RGBA, doubleBuffer, red, green, blue, alpha, depth, stencil, multiSampling, samples;
+            int doubleBuffer, red, green, blue, alpha, depth, stencil, multiSampling, samples;
             int renderable, drawableType, renderType, visualType;
 
             glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_X_RENDERABLE,      &renderable);
             glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_DRAWABLE_TYPE,     &drawableType);
             glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_RENDER_TYPE,       &renderType);
             glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_X_VISUAL_TYPE,     &visualType);
-            glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_RGBA,              &RGBA);
             glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_DOUBLEBUFFER,      &doubleBuffer);
             glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_RED_SIZE,          &red);
             glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_GREEN_SIZE,        &green);
@@ -164,8 +163,8 @@ void XWindow::ChooseBestVisualInfo()
             glXGetFBConfigAttrib(_display, fbConfigs[i], GLX_SAMPLES_ARB,       &samples);
 
             // check that we have the doublebuffer and rbga mode, it's the subsistence level
-//            LOG << renderable << " " << drawableType << " " << renderType << " " << visualType << std::endl;
-            if (RGBA != 0 && doubleBuffer != 0 && renderable && renderType == GLX_RGBA_BIT && visualType == GLX_TRUE_COLOR)
+            //LOG << renderable << " " << drawableType << " " << renderType << " " << visualType << std::endl;
+            if (doubleBuffer != 0 && renderable && renderType == GLX_RGBA_BIT && visualType == GLX_TRUE_COLOR)
             {
                 // Evaluate the current configuration
                 int score = Math::Abs(static_cast<int>(32 - (red + green + blue + alpha))) +

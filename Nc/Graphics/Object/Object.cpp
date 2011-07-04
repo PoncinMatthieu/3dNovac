@@ -120,7 +120,7 @@ bool    Object::SetMaterial(IMaterial *newMaterial)
             }
             return false;
         }
-        GL::Shader::ResetCurrentProgram();
+        GL::Program::ResetCurrentProgram();
     }
     _material = newMaterial;
     return true;
@@ -151,7 +151,7 @@ void    Object::ReconfigureDrawables()
                 _material = NULL;
                 throw Utils::Exception("Graphic::Object", "The Configuration of the drawable no " + Utils::Convert::ToString(i) + " failed");
             }
-            GL::Shader::ResetCurrentProgram();
+            GL::Program::ResetCurrentProgram();
         }
     }
 }

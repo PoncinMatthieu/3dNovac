@@ -31,18 +31,21 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic::GL;
 
-unsigned int Shader::_currentProgram = 0;
-
 Shader::Shader()
+    : _shader(0)
 {
-    _vertexShader = 0;
-    _fragmentShader = 0;
-    _program = 0;
 }
 
-Shader::Shader(const std::string &vertexFile, const std::string &fragmentFile)
+Shader::Shader(const Utils::FileName &file, Enum::ShaderType type)
+    : _shader(0)
 {
-    LoadFromFiles(vertexFile, fragmentFile);
+    LoadFromFile(file, type);
+}
+
+Shader::Shader(const char *source, Enum::ShaderType type, const Utils::FileName &name)
+    : _shader(0)
+{
+    LoadFromMemory(source, type, name);
 }
 
 Shader::~Shader()
@@ -50,41 +53,23 @@ Shader::~Shader()
     ReleaseRef();
 }
 
-void Shader::LoadFromFiles(const std::string &vertexFile, const std::string &fragmentFile)
-{
-    NewRef();
-    _vertexShader = (!vertexFile.empty()) ? NewShader(vertexFile, Enum::VertexShader) : 0;
-    _fragmentShader = (!fragmentFile.empty()) ? NewShader(fragmentFile, Enum::FragmentShader) : 0;
-    _program = NewProgramShader();
-    AttachAndLinkProgram(_program, _vertexShader, _fragmentShader);
-}
-
-void Shader::LoadFromMemory(const char *vertexSource, const char *fragmentSource, const std::string &name)
-{
-    NewRef();
-    _vertexShader = (vertexSource != NULL) ? CompileShader(vertexSource, Enum::VertexShader, name) : 0;
-    _fragmentShader = (fragmentSource != NULL) ? CompileShader(fragmentSource, Enum::FragmentShader, name) : 0;
-    _program = NewProgramShader();
-    AttachAndLinkProgram(_program, _vertexShader, _fragmentShader);
-}
-
 void    Shader::Release()
 {
-    if (_vertexShader != 0)
-        glDeleteShader(_vertexShader);
-    if (_fragmentShader != 0)
-        glDeleteShader(_fragmentShader);
-    if (_program != 0)
-        glDeleteProgram(_program);
-    LOG_DEBUG << "Program Shader " << _program << " Released" << std::endl;
+    if (_shader != 0)
+        glDeleteShader(_shader);
+    LOG_DEBUG << "Shader " << _shader << " DELETED" << std::endl;
 }
 
-unsigned int    Shader::NewShader(const Utils::FileName &filename, Enum::ShaderType type)
+void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type)
 {
-    //envoie du code source au shader
-    ifstream file(filename.c_str(), ios::in);
-    if(!file)
+    if (filename.empty() || !filename.IsReadable())
         throw Utils::Exception("Shader", "Can't open the source file GLSL " + filename);
+
+    NewRef();
+    _shader = 0;
+
+    // open the file
+    ifstream file(filename.c_str(), ios::in);
 
     // get size file
     file.seekg(0, ios_base::end);
@@ -97,86 +82,50 @@ unsigned int    Shader::NewShader(const Utils::FileName &filename, Enum::ShaderT
     source[size] = '\0';
     file.close();
 
-    return CompileShader(source, type, filename.Filename());
+    // create the shader
+    if ((_shader = glCreateShader(type)) == 0)
+        throw Utils::Exception("Shader", "Can't create the shader !");
+    glShaderSource(_shader, 1, (const GLchar**)&source, NULL);
+    LOG_DEBUG << "Shader " << _shader << " CREATED" << std::endl;
+
+    // compile the source
+    Compile(source, type, filename);
 }
 
-unsigned int    Shader::CompileShader(const char *source, Enum::ShaderType type, const std::string &name)
+void Shader::LoadFromMemory(const char *source, Enum::ShaderType type, const Utils::FileName &name)
 {
-    unsigned int shader;
-    if ((shader = glCreateShader(type)) == 0)
-        throw Utils::Exception("Shader", "Can't create the shader !");
-    glShaderSource(shader, 1, &source, NULL);
+    NewRef();
+    _shader = 0;
 
-    //compilation du shader
-    LOG_DEBUG << "Compile `" << name << "`...\t\t\t";
-    int compile_status = 1;
-    glCompileShader(shader);
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_status);
-    if (!compile_status)
+    // create the shader
+    if ((_shader = glCreateShader(type)) == 0)
+        throw Utils::Exception("Shader", "Can't create the shader !");
+    glShaderSource(_shader, 1, &source, NULL);
+    LOG_DEBUG << "Shader " << _shader << " CREATED" << std::endl;
+
+    // compile the source
+    Compile(source, type, name);
+}
+
+void    Shader::Compile(const char *source, Enum::ShaderType type, const Utils::FileName &name)
+{
+    // compilation
+    LOG_DEBUG << "Compile `" << name.c_str() << "`...\t\t\t";
+    glCompileShader(_shader);
+
+    // check compilation errors
+    int compileStatus = 1;
+    glGetShaderiv(_shader, GL_COMPILE_STATUS, &compileStatus);
+    if (!compileStatus)
     {
-        int error_size;
-        char *error;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &error_size);
-        error = new char[error_size];
-        glGetShaderInfoLog(shader, error_size, &error_size, error);
+        int     errorSize;
+        char    *error;
+        glGetShaderiv(_shader, GL_INFO_LOG_LENGTH, &errorSize);
+        error = new char[errorSize];
+        glGetShaderInfoLog(_shader, errorSize, &errorSize, error);
         std::string se(error);
         delete[] error;
         throw Utils::Exception("Shader", se);
     }
     LOG_DEBUG << "DONE" << std::endl;
-    return shader;
-}
-
-unsigned int    Shader::NewProgramShader()
-{
-    unsigned int program;
-
-    if ((program = glCreateProgram()) == 0)
-        throw Utils::Exception("Shader", "Can't create the program shader");
-    return program;
-}
-
-void            Shader::AttachAndLinkProgram(unsigned int program, unsigned int vertexShader, unsigned int fragmentShader)
-{
-    if (vertexShader != 0)
-        glAttachShader(program, vertexShader);
-    if (fragmentShader != 0)
-        glAttachShader(program, fragmentShader);
-    LOG_DEBUG << "Link program shader " << program << "\t\t\t\t\t";
-    glLinkProgram(program);
-    int linkStatus = 0;
-    glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
-    if (!linkStatus)
-    {
-        int lenght;
-        char *error;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &lenght);
-        error = new char[lenght];
-        glGetProgramInfoLog(program, lenght, &lenght, error);
-        std::string s(error);
-        delete[] error;
-        throw Utils::Exception("Shader", s);
-    }
-    LOG_DEBUG << "DONE" << std::endl;
-}
-
-unsigned int    Shader::UniformLocation(const char *name)
-{
-    int location = glGetUniformLocation(_program, name);
-    if (location == -1)
-        throw Utils::Exception("Shader", "Bad Uniform location `" + std::string(name) + "`");
-    return location;
-}
-
-unsigned int    Shader::AttribLocation(const char *name)
-{
-    int location = glGetAttribLocation(_program, name);
-    if (location == -1)
-        throw Utils::Exception("Shader", "Bad Attrib location `" + std::string(name) + "`");
-    return location;
-}
-
-void Shader::BindAttrib(unsigned int attrib, const char *name)
-{
-	glBindAttribLocation(_program, attrib, name);
 }

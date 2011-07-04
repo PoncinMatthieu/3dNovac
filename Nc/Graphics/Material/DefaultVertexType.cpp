@@ -28,48 +28,49 @@
 
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::DefaultVertexType;
+using namespace Nc::Graphic::GL;
 
 const GL::VertexDescriptor   &Colored::GetDescriptor()
 {
     static GL::VertexDescriptor desc("Colored", sizeof(Colored), 2, GetDescriptorPriority());
-    desc[0].Init<float>(ComponentsName::Coord, 3, GL_FLOAT, 0);
-    desc[1].Init<float>(ComponentsName::Color, 3, GL_FLOAT, 3 * sizeof(float));
+    desc[0].Init<float>(ComponentsName::Coord, 3, Enum::Float, 0);
+    desc[1].Init<float>(ComponentsName::Color, 3, Enum::Float, 3 * sizeof(float));
     return desc;
 }
 
 const GL::VertexDescriptor   &Colored2d::GetDescriptor()
 {
     static GL::VertexDescriptor desc("Colored2d", sizeof(Colored2d), 2, GetDescriptorPriority());
-    desc[0].Init<float>(ComponentsName::Coord, 2, GL_FLOAT, 0);
-    desc[1].Init<float>(ComponentsName::Color, 3, GL_FLOAT, 2 * sizeof(float));
+    desc[0].Init<float>(ComponentsName::Coord, 2, Enum::Float, 0);
+    desc[1].Init<float>(ComponentsName::Color, 3, Enum::Float, 2 * sizeof(float));
     return desc;
 }
 
 const GL::VertexDescriptor   &Textured::GetDescriptor()
 {
     static GL::VertexDescriptor desc("Textured", sizeof(Textured), 4, GetDescriptorPriority());
-    desc[0].Init<float>(ComponentsName::Coord, 3, GL_FLOAT, 0);
-    desc[1].Init<float>(ComponentsName::TexCoord, 2, GL_FLOAT, 3 * sizeof(float));
-    desc[2].Init<float>(ComponentsName::Color, 3, GL_FLOAT, 5 * sizeof(float));
-    desc[3].Init<float>(ComponentsName::Normal, 3, GL_FLOAT, 8 * sizeof(float));
+    desc[0].Init<float>(ComponentsName::Coord, 3, Enum::Float, 0);
+    desc[1].Init<float>(ComponentsName::TexCoord, 2, Enum::Float, 3 * sizeof(float));
+    desc[2].Init<float>(ComponentsName::Color, 3, Enum::Float, 5 * sizeof(float));
+    desc[3].Init<float>(ComponentsName::Normal, 3, Enum::Float, 8 * sizeof(float));
     return desc;
 }
 
 const GL::VertexDescriptor   &Textured2d::GetDescriptor()
 {
     static GL::VertexDescriptor desc("Textured2d", sizeof(Textured2d), 3, GetDescriptorPriority());
-    desc[0].Init<float>(ComponentsName::Coord, 2, GL_FLOAT, 0);
-    desc[1].Init<float>(ComponentsName::TexCoord, 2, GL_FLOAT, 2 * sizeof(float));
-    desc[2].Init<float>(ComponentsName::Color, 3, GL_FLOAT, 4 * sizeof(float));
+    desc[0].Init<float>(ComponentsName::Coord, 2, Enum::Float, 0);
+    desc[1].Init<float>(ComponentsName::TexCoord, 2, Enum::Float, 2 * sizeof(float));
+    desc[2].Init<float>(ComponentsName::Color, 3, Enum::Float, 4 * sizeof(float));
     return desc;
 }
 
 const GL::VertexDescriptor   &Textured3d::GetDescriptor()
 {
     static GL::VertexDescriptor desc("Textured3d", sizeof(Textured3d), 3, GetDescriptorPriority());
-    desc[0].Init<float>(ComponentsName::Coord, 3, GL_FLOAT, 0);
-    desc[1].Init<float>(ComponentsName::TexCoord, 3, GL_FLOAT, 3 * sizeof(float));
-    desc[2].Init<float>(ComponentsName::Color, 3, GL_FLOAT, 6 * sizeof(float));
+    desc[0].Init<float>(ComponentsName::Coord, 3, Enum::Float, 0);
+    desc[1].Init<float>(ComponentsName::TexCoord, 3, Enum::Float, 3 * sizeof(float));
+    desc[2].Init<float>(ComponentsName::Color, 3, Enum::Float, 6 * sizeof(float));
     return desc;
 }
 

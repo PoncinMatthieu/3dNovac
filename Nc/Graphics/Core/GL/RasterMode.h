@@ -41,7 +41,7 @@ namespace Nc
 
                 <div class="title"> Allow you to manage some opengl state </div>
                     - Abstract the glPolygonMode witch controls the interpretation of polygons for rasterization.
-                    - Abstract the glDepthTest witch control the depth buffer
+                    - Abstract the DepthTest and glDepthMask witch control the depth buffer
                     - Abstract the glLineWidth and glPointSize
             */
             class RasterMode
@@ -79,6 +79,12 @@ namespace Nc
                     inline void     InhibitDepthTest()                              {_setDepthTest = false;}
                     /** Set the depth test */
                     inline void     SetDepthTest(bool state)                        {_depthTest = state; _setDepthTest = true;}
+                    /** Set the depth test */
+                    inline void     SetDepthMask(bool state)                        {_depthMask = state; _setDepthTest = true;}
+                    /** \return the current depth test statement */
+                    static bool     CurrentDepthTest()                              {return _currentDepthTest;}
+                    /** \return the current depth mask statement */
+                    static bool     CurrentDepthMask()                              {return _currentDepthMask;}
 
                 private:
                     bool                _setPolygonMode;
@@ -97,7 +103,9 @@ namespace Nc
 
                     bool                _setDepthTest;              ///< If true, then the _depthTest property will affect the current openglContext
                     bool                _depthTest;                 ///< If false, disable the depth test
+                    bool                _depthMask;                 ///< If false, disable the depth mask
                     bool                _lastDepthTestState;        ///< the last state of the depth test before enable it
+                    bool                _lastDepthMaskState;        ///< the last state of the depth mask before enable it
 
                     static Enum::PolygonFace    _currentPolygonFace;
                     static Enum::PolygonMode    _currentPolygonMode;
@@ -106,6 +114,7 @@ namespace Nc
                     static GLfloat              _currentPolygonOffsetFactor;
                     static GLfloat              _currentPolygonOffsetUnits;
                     static bool                 _currentDepthTest;
+                    static bool                 _currentDepthMask;
             };
         }
     }

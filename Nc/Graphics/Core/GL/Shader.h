@@ -37,65 +37,36 @@ namespace Nc
     {
         namespace GL
         {
-            /// Help to compile and use a glsl program shader
+            /// Help to compile and use a glsl shader
             /**
-                Actually manage only Vertex and Fragment shader in glsl
+                \sa
+                    - Program
             */
             class LGRAPHICS Shader : public Object
             {
-                private:
-                    typedef std::map<const char*,unsigned int>      MapIndex;
-
                 public:
                     Shader();
-                    Shader(const std::string &vertexFile, const std::string &fragmentFile);
+                    Shader(const Utils::FileName &file, Enum::ShaderType type);
+                    Shader(const char *source, Enum::ShaderType type, const Utils::FileName &name);
                     virtual ~Shader();
 
-                    /** Load Vertex and Fragment shader from files */
-                    void                    LoadFromFiles(const std::string &vertexFile, const std::string &fragmentFile);
-                    /** Load Vertex and Fragment shader from memory */
-                    void                    LoadFromMemory(const char *vertexSource, const char *fragmentSource, const std::string &name);
-
-                    /** Enable the shader */
-                    virtual inline void     Enable() const      {if (_currentProgram != _program) {_currentProgram = _program; glUseProgram(_program);}}
-                    /** Disable the shader */
-                    virtual inline void     Disable() const     {_currentProgram = 0; glUseProgram(0);}
                     /** Return the index of the shader */
-                    virtual unsigned int    GetIndex() const    {return _program;}
+                    virtual unsigned int    GetIndex() const            {return _shader;}
 
-                    /**
-                        Reset the current program id, this could be usefull if you use a shader in a shared opengl context (thread).
-                        Because if you enable a shader in an opengl context, this shader will not be enabled in an other opengl context.
-                    */
-                    static void             ResetCurrentProgram()   {_currentProgram = 0;}
-
-                    /** Return the given uniform location */
-                    unsigned int            UniformLocation(const char *name);
-                    /** Return the given attribute location */
-                    unsigned int            AttribLocation(const char *name);
-                    /** Bind the attribute */
-                    void                    BindAttrib(unsigned int attrib, const char *name);
+                    /** Load a shader from a file and compile it */
+                    void                    LoadFromFile(const Utils::FileName &file, Enum::ShaderType type);
+                    /** Load a shader from memory and compile it */
+                    void                    LoadFromMemory(const char *source, Enum::ShaderType type, const Utils::FileName &name);
 
                 private:
                     /** Release the program shader */
                     virtual void    Release();
 
-                    /** Create a new shader */
-                    unsigned int    NewShader(const Utils::FileName &filename, Enum::ShaderType type); // renvoie 0 si ca echoue
-                    /** Compile the given shader */
-                    unsigned int    CompileShader(const char *source, Enum::ShaderType type, const std::string &name);
+                    /** Compile the given shader source */
+                    void            Compile(const char *source, Enum::ShaderType type, const Utils::FileName &name);
 
-                    // programme shader
-                    /** Create a new program shader */
-                    unsigned int    NewProgramShader(); // renvoie 0 si ca echoue
-                    /** Attach and link the two shader */
-                    void            AttachAndLinkProgram(unsigned int p, unsigned int vertexShader, unsigned int fragmentShader);
-
-                    unsigned int    _program;           ///< the program shader
-                    unsigned int    _vertexShader;      ///< the vertex shader
-                    unsigned int    _fragmentShader;    ///< the fragment shader
-
-                    static unsigned int _currentProgram;
+                private:
+                    unsigned int    _shader;      ///< the shader id
             };
         }
     }

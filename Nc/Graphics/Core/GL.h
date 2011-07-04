@@ -33,9 +33,6 @@
 	//#include <GL/glu.h>
     //#include <GL/glext.h>
 
-	#include "GL/Extension.h"
-	#include "GL/Enum.h"
-
 // define if we are on windows the extentions
 #ifdef SYSTEM_WINDOWS
 	// buffer
@@ -85,5 +82,9 @@
 	#define glBindAttribLocation	EXT.glBindAttribLocation
 	#define glGetAttribLocation		EXT.glGetAttribLocation
 #endif
+
+    #include "../Define.h"
+	#include "GL/Extension.h"
+	#include "GL/Enum.h"
 
 #endif

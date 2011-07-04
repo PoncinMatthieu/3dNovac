@@ -31,25 +31,51 @@
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::DefaultVertexType;
 
+enum Uniforms
+{
+    UniformM = 0,
+    UniformPV,
+    UniformNormalMatrix,
+    UniformLight,
+    UniformLightPass,
+    UniformLightColor,
+    UniformTextured,
+    UniformDiffuse,
+    UniformLightMap,
+    UniformNormalMap,
+    UniformBumpMapping,
+    NbUniform
+};
+
 DefaultLightingMaterial::DefaultLightingMaterial() : ILightingMaterial("DefaultLightingMaterial")
 {
-    _shader.LoadFromFiles("Nc:Shader:lightShader.vs", "Nc:Shader:lightShader.fs");
-    _shader.Enable();
-    _uniformM = _shader.UniformLocation("MMatrix");
-    _uniformPV = _shader.UniformLocation("VPMatrix");
-    _uniformNormalMatrix = _shader.UniformLocation("NormalMatrix");
-    _uniformLight = _shader.UniformLocation("Light");
-    _uniformLightPass = _shader.UniformLocation("LightPass");
-    _uniformLightColor = _shader.UniformLocation("LightColor");
-    _uniformTextured = _shader.UniformLocation("Textured");
-    _uniformDiffuse = _shader.UniformLocation("Diffuse");
-    _uniformLightMap = _shader.UniformLocation("LightMap");
-    _uniformNormalMap = _shader.UniformLocation("NormalMap");
-    _uniformBumpMapping = _shader.UniformLocation("BumpMapping");
-    //_shader.Disable();
+    _program.Attach("Nc:Shader:lightShader.vs", GL::Enum::VertexShader);
+    _program.Attach("Nc:Shader:lightShader.fs", GL::Enum::FragmentShader);
+    _program.Link();
+    _program.Enable();
+    _program.InitNumberOfUniform(NbUniform);
+    _program.UseUniformLocation("MMatrix");
+    _program.UseUniformLocation("VPMatrix");
+    _program.UseUniformLocation("NormalMatrix");
+    _program.UseUniformLocation("Light");
+    _program.UseUniformLocation("LightPass");
+    _program.UseUniformLocation("LightColor");
+    _program.UseUniformLocation("Textured");
+    _program.UseUniformLocation("Diffuse");
+    _program.UseUniformLocation("LightMap");
+    _program.UseUniformLocation("NormalMap");
+    _program.UseUniformLocation("BumpMapping");
+    _program.InitNumberOfAttrib(4);
+    _program.UseAttribLocation("InCoord");
+    _program.UseAttribLocation("InTexCoord");
+    _program.UseAttribLocation("InColor");
+    _program.UseAttribLocation("InNormal");
 
     _lightMap.GenereSphereMap(64);      // creation d'une light map 3d de 64 float de diametre
     _patternMask.Enable(BumpMapping);   // active par defaut le bump maping
+
+    _rasterMode.SetDepthMask(false);
+    _blend.SetFactors(GL::Enum::One, GL::Enum::One);
 }
 
 DefaultLightingMaterial::~DefaultLightingMaterial()
@@ -59,77 +85,67 @@ DefaultLightingMaterial::~DefaultLightingMaterial()
 bool    DefaultLightingMaterial::Configure(Drawable &drawable)
 {
     GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
-    _shader.Enable();
+    _program.Enable();
     for (unsigned int i = 0; i < desc.Size(); ++i)
     {
         if (desc[i].Name == ComponentsName::Coord)
-            desc[i].IndexAttrib = _shader.AttribLocation("InCoord");
+            desc[i].IndexAttrib = _program.Attrib(0);
         else if (desc[i].Name == ComponentsName::TexCoord)
-            desc[i].IndexAttrib = _shader.AttribLocation("InTexCoord");
+            desc[i].IndexAttrib = _program.Attrib(1);
         else if (desc[i].Name == ComponentsName::Color)
-            desc[i].IndexAttrib = _shader.AttribLocation("InColor");
+            desc[i].IndexAttrib = _program.Attrib(2);
         else if (desc[i].Name == ComponentsName::Normal)
-            desc[i].IndexAttrib = _shader.AttribLocation("InNormal");
+            desc[i].IndexAttrib = _program.Attrib(3);
     }
-    //_shader.Disable();
     return true;
 }
 
 #ifdef _DEBUG
-// Draw the normals of the given geometry
-// for reason of performance we choose to stock the normal drawable with the geometry pointer in a map, and create the drawable only the first time
-void DrawNormal(SceneGraph *scene, const TMatrix &modelMatrix, GL::IGeometryBuffer *geometry)
+// Draw the normals of the given geometry with a geometry shader
+void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Drawable &drawable)
 {
-    //check if the geometry has a Normal default componant
-    GL::VertexDescriptor    &descript = geometry->Descriptor();
-    int                     normalIndex = -1;
-    for (unsigned int i = 0; i < descript.Size(); ++i)
-        if (descript[i].Name == ComponentsName::Normal)
-            normalIndex = i;
-    if (normalIndex == -1)
-        return; // there are no normal informations, so no need to display it :(
+    static GL::Program normalProgram;
 
-    // /!\ here we use a static to stock the drawables witch draw the normals, so if the drawable changes, we are sucked
-    /// \todo recode this ligthing debug with a geometry shader insteed of creating drawables in the wind
-    static std::map<GL::IGeometryBuffer*, Object>   mapObjectNormalDebug;
-    Object      *normalObject = NULL;
-
-    // searching for the drawable associated to the geometry
-    std::map<GL::IGeometryBuffer*, Object>::iterator it = mapObjectNormalDebug.find(geometry);
-    if (it == mapObjectNormalDebug.end()) // if it doesn't exit, we have to create it
+    // create the program only in the first pass
+    if (!normalProgram.IsValid())
     {
-        // fetch the vertices and normal coords
-        Array<float>    coords;
-        Array<float>    normals;
-        geometry->MapVertexBuffer(GL::Enum::ReadOnly);
-        geometry->FetchComponent(ComponentsName::Coord, coords);
-        geometry->FetchComponent(ComponentsName::Normal, normals);
-        geometry->UnmapVertexBuffer();
-
-        normalObject = &mapObjectNormalDebug[geometry];
-        if (coords.Size() > 0)
-        {
-            Color           color(1,0,0);
-            float           normalPercent = 0.1f;
-            Array<Colored>  verticesNormal((coords.Size() / 3) * 2);
-            for (unsigned int i = 0; i < verticesNormal.Size() / 2; ++i)
-            {
-                verticesNormal[i*2].Fill(coords[i*3], coords[(i*3) + 1], coords[(i*3) + 2], color);
-                verticesNormal[(i*2) + 1].Fill(coords[i*3], coords[(i*3) + 1], coords[(i*3) + 2], color);
-                verticesNormal[(i*2) + 1].coord[0] += (normals[i*3] * normalPercent);
-                verticesNormal[(i*2) + 1].coord[1] += (normals[(i*3) + 1] * normalPercent);
-                verticesNormal[(i*2) + 1].coord[2] += (normals[(i*3) + 2] * normalPercent);
-            }
-            normalObject->Drawables().push_back(new Drawable(verticesNormal, GL::Enum::StreamDraw, GL::Enum::Lines));
-            normalObject->ChooseDefaultMaterial();
-        }
+        normalProgram.Attach("Nc:Shader:normalShader.vs", GL::Enum::VertexShader);
+        normalProgram.Attach("Nc:Shader:normalShader.gs", GL::Enum::GeometryShader);
+        normalProgram.Attach("Nc:Shader:normalShader.fs", GL::Enum::FragmentShader);
+        normalProgram.Link();
+        normalProgram.Enable();
+        normalProgram.UseUniformLocation("MVPMatrix");
+        normalProgram.UseAttribLocation("InCoord");
+        normalProgram.UseAttribLocation("InColor");
+        normalProgram.UseAttribLocation("InNormal");
     }
-    else
-        normalObject = &it->second;
 
-    // draw
-    if (normalObject->GetMaterial() != NULL)
-        normalObject->GetMaterial()->Render(scene, modelMatrix, *normalObject->Drawables()[0]);
+    // disable the attrib witch we don't need
+    GL::VertexDescriptor    &desc = drawable.Geometry->Descriptor();
+    Array<unsigned int>     lastAttribs(desc.Size());
+    for (unsigned int i = 0; i < desc.Size(); ++i)
+    {
+        lastAttribs.Data[i] = desc[i].IndexAttrib;
+        if (desc[i].Name == ComponentsName::Coord)
+            desc[i].IndexAttrib = normalProgram.Attrib(0);
+        else if (desc[i].Name == ComponentsName::Color)
+            desc[i].IndexAttrib = normalProgram.Attrib(1);
+        else if (desc[i].Name == ComponentsName::Normal)
+            desc[i].IndexAttrib = normalProgram.Attrib(2);
+        else
+            desc[i].IndexAttrib = -1;
+    }
+
+    normalProgram.Enable();
+
+    // set the model view projection matrix
+    normalProgram.SetUniform(0, mvp);
+    // render the normals
+    drawable.Render();
+
+    // restore the index attrib
+    for (unsigned int i = 0; i < desc.Size(); ++i)
+        desc[i].IndexAttrib = lastAttribs.Data[i];
 }
 #endif
 
@@ -138,41 +154,46 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
     if (_currentLightingEffect == NULL)
         return;
 
-    const ListPLight        &listLight = _currentLightingEffect->Lights();
-    const Color             &ambiantColor = _currentLightingEffect->ColorAmbiant();
-    //GL::VertexDescriptor    descriptor = drawable.Geometry->Descriptor();
-
-    drawable.Enable();
-    _shader.Enable(); // enable the shader
-
-    // set the model project and view matrix
+    // calcul the view/projection, normal matrix
     TMatrix pv = scene->ProjectionMatrix() * scene->ViewMatrix();
-    glUniformMatrix4fv(_uniformM, 1, GL_TRUE, modelMatrix.Elements());
-    glUniformMatrix4fv(_uniformPV, 1, GL_TRUE, pv.Elements());
-    // set the normal matrix
     TMatrix normalMatrix(modelMatrix);
     normalMatrix.Inverse();
-    glUniformMatrix4fv(_uniformNormalMatrix, 1, GL_FALSE, normalMatrix.Elements());
 
+    // only in debug, draw the normals
+    #ifdef _DEBUG
+    if (_patternMask.Enabled(DisplayNormal))
+        DrawNormal(scene, pv * modelMatrix, drawable);
+    #endif
+
+    const ListPLight        &listLight = _currentLightingEffect->Lights();
+    const Color             &ambiantColor = _currentLightingEffect->ColorAmbiant();
+
+    drawable.Enable();
+    _program.Enable(); // enable the shader
+
+    // set the matrix
+    _program.SetUniform(UniformM, modelMatrix);
+    _program.SetUniform(UniformPV, pv);
+    _program.SetUniform(UniformNormalMatrix, normalMatrix, false);
 
     // set the ambiant color light
-    glUniform4f(_uniformLightColor, ambiantColor.R, ambiantColor.G, ambiantColor.B, ambiantColor.A);
+    _program.SetUniform(UniformLightColor, ambiantColor.R, ambiantColor.G, ambiantColor.B, ambiantColor.A);
 
     // Texture unit 0 --> the diffuse
     if (drawable.Config->Textures.Size() > 0 &&
         drawable.Config->Textures[0].IsValid() &&
         drawable.Config->Textures[0].Is2d())
     {
-        glUniform1i(_uniformTextured, true);
-        glUniform1i(_uniformDiffuse, 0);
+        _program.SetUniform(UniformTextured, 1);
+        _program.SetUniform(UniformDiffuse, 0);
         GL::Texture::ActiveTexture(0);
         drawable.Config->Textures[0].Enable();
     }
     else
-        glUniform1i(_uniformTextured, false);
+        _program.SetUniform(UniformTextured, 0);
 
     // First pass --> render the scene with the ambiant color
-    glUniform1i(_uniformLightPass, false);
+    _program.SetUniform(UniformLightPass, 0);
 //    drawable.GetGeometry().GetVBO().MaskDescriptor = 0x07;
 /// \todo in the first pass of the lightingMaterial, no need to bind the normal attrib
     drawable.Render();
@@ -183,14 +204,13 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
         return;
 
     // next pass --> render the lights
-    glUniform1i(_uniformLightPass, true);
+    _program.SetUniform(UniformLightPass, 1);
 
-    glEnable(GL::Enum::Blend); // active blend
-    glBlendFunc(GL_ONE, GL_ONE);
-    glDepthMask(GL_FALSE); // disable the depth mask, no need
+    _blend.Enable();
+    _rasterMode.Enable();    // disable the depth mask write, no need
 
     // active the light map
-    glUniform1i(_uniformLightMap, 1);
+    _program.SetUniform(UniformLightMap, 1);
     GL::Texture::ActiveTexture(1);
     _lightMap.Enable();
 
@@ -199,36 +219,28 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
         drawable.Config->Textures[1].IsValid() &&
         drawable.Config->Textures[1].Is2d())
     {
-        glUniform1i(_uniformBumpMapping, true);
-        glUniform1i(_uniformNormalMap, 2);
+        _program.SetUniform(UniformBumpMapping, 1);
+        _program.SetUniform(UniformNormalMap, 2);
         GL::Texture::ActiveTexture(2);
         drawable.Config->Textures[1].Enable();
     }
     else
-        glUniform1i(_uniformBumpMapping, false);
+        _program.SetUniform(UniformBumpMapping, 0);
 
     TMatrix matrixLight;
     for (ListPLight::const_iterator it = listLight.begin(); it != listLight.end(); it++)
     {
         Vector3f pos;
-        (*it)->GetRecursiveMatrix(matrixLight); /// \todo To obtain the light position, we need to caculate recursively it's matrix, this could decrease the performance
+        (*it)->GetRecursiveMatrix(matrixLight); /// \todo To obtain the light position, we need to caculate recursively it's matrix, this could decrease the perf
         matrixLight.Transform(pos);
-        glUniform4f(_uniformLight, pos.Data[0], pos.Data[1], pos.Data[2], 1.0f / ((*it)->radius));
-        glUniform4f(_uniformLightColor, (*it)->color.R, (*it)->color.G, (*it)->color.B, (*it)->color.A);
+        _program.SetUniform(UniformLight, pos.Data[0], pos.Data[1], pos.Data[2], 1.0f / ((*it)->radius));
+        _program.SetUniform(UniformLightColor, (*it)->color.R, (*it)->color.G, (*it)->color.B, (*it)->color.A);
 
         // rendering pass for the current light
         drawable.Render();
     }
 
-    glDepthMask(GL_TRUE);
-    glDisable(GL_BLEND);
-
-    //_shader.Disable(); // disable the shader
+    _rasterMode.Disable();
+    _blend.Disable();
     drawable.Disable();
-
-    // only in debug, draw the normals
-    #ifdef _DEBUG
-    if (_patternMask.Enabled(DisplayNormal))
-        DrawNormal(scene, modelMatrix, drawable.Geometry);
-    #endif
 }
