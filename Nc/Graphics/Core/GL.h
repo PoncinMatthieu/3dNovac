@@ -27,11 +27,10 @@
 #ifndef NC_GRAPHIC_CORE_GL_H_
 #define NC_GRAPHIC_CORE_GL_H_
 
-    //#define GL3_PROTOTYPES
-    //#include <GL3/gl3.h>
-
 	//#include <GL/glu.h>
     //#include <GL/glext.h>
+
+    #define VERSION_MIN_OPENGL  3.0
 
 // define if we are on windows the extentions
 #ifdef SYSTEM_WINDOWS
@@ -86,5 +85,6 @@
     #include "../Define.h"
 	#include "GL/Extension.h"
 	#include "GL/Enum.h"
+	#include "GL/State.h"
 
 #endif

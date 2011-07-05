@@ -71,49 +71,12 @@ void Graphic::Engine::CreateContext()
     (static_cast<Nc::Engine::MainEngine*>(_manager->GetEngine("Main"))->*_createWinFunction)(_win);
     _context = _win->CreateGLContext();
 
-    // activation du context opengl
+    // initialize opengl context
     _context->Active();
-
-    // initialise opengl
-    CheckGLVersion();
-    _sceneGraphManager.InitGL((_win->AntialiasingLevel() > 0));
-}
-
-void Graphic::Engine::CheckGLVersion()
-{
-    float   nbr;
-
-    // on a linux system, we check if the graphic acceleration is support and enable
-    #ifdef SYSTEM_LINUX
-    LOG << "Direct Rendering : \t\t\t\t\t";
-    char *alwaysIndirect = getenv("LIBGL_ALWAYS_INDIRECT");     // if the `LIBGL_ALWAYS_INDIRECT` is set, no graphic acceleration
-    if (alwaysIndirect != NULL && string(alwaysIndirect) == "1")
-    {
-        LOG << "Bad" << std::endl;
-        System::Config::Error("GraphicEngine", "Graphic acceleration disabled.\nPlease check that. On compiz, you could try to unset LIBGL_ALWAYS_INDIRECT");
-    }
-    else
-        LOG << "Ok" << std::endl;
-    #endif
-
-    // check la version actuel d'opengl
-    std::string version((const char*)(EXT.GetInfo(GL_VERSION)));
-    LOG << "GL_VERSION = `" << version << "`\t";
-    Utils::Convert::StringTo(version, nbr);
-    if (nbr < VERSION_MIN_OPENGL)
-    {
-        LOG << "Bad" << std::endl;
-        System::Config::Error("GraphicEngine", "Bad OpenGl version, minimum is '" + Utils::Convert::ToString(VERSION_MIN_OPENGL) + "'\nPlease upgrade your opengl driver");
-    }
-    else
-        LOG << "OK" << std::endl;
-    LOG << "GL_VENDOR = `" << EXT.GetInfo(GL_VENDOR) << "`" << std::endl;
-    LOG << "GL_RENDERER = `" << EXT.GetInfo(GL_RENDERER) << "`" << std::endl;
-    //LOG << "GL_EXTENSIONS = `" << EXT.GetInfo(GL_EXTENSIONS) << "`" << std::endl;
-    try
-        {LOG << "GL_SHADING_LANGUAGE_VERSION = `" << EXT.GetInfo(GL_SHADING_LANGUAGE_VERSION) << "`" << std::endl;}
-    catch (...)
-        {System::Config::Error("GraphicEngine", "Failed to fetch GL_SHADING_LANGUAGE_VERSION, Shaders is probably not supported");}
+    _renderState.InitContext(_context);
+    _renderState.Enable();
+    _sceneGraphManager.Init((_win->AntialiasingLevel() > 0));
+    _renderState.Disable();
 }
 
 void Graphic::Engine::LoadContent()
@@ -133,5 +96,7 @@ void Graphic::Engine::Execute(float runningTime)
     _win->GetInput()->CheckEvents();
 
     // display the scene graph
+    _renderState.Enable();
     _sceneGraphManager.Render(_context);
+    _renderState.Disable();
 }

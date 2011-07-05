@@ -1,5 +1,7 @@
 #version 330 core
 
+uniform mat4    MVPMatrix;
+
 in Vertice
 {
     vec3        Color;
@@ -18,10 +20,10 @@ void main()
 {
     for (int i = 0; i < gl_in.length(); i++)
     {
-       gl_Position = gl_in[i].gl_Position;
+       gl_Position = MVPMatrix * gl_in[i].gl_Position;
        normal.Color = vertice[i].Color;
        EmitVertex();
-       gl_Position = gl_in[i].gl_Position + vec4(vertice[i].Normal, 0.f);
+       gl_Position = MVPMatrix * (gl_in[i].gl_Position + vec4(vertice[i].Normal, 0.f));
        normal.Color = vertice[i].Color;
        EmitVertex();
        EndPrimitive();

@@ -27,7 +27,7 @@
 #ifndef NC_CORE_SYSTEM_SCENEGRAPHMANAGER_H_
 #define NC_CORE_SYSTEM_SCENEGRAPHMANAGER_H_
 
-#include "../Core/GL/Extension.h"
+#include "../Core/GL.h"
 
 namespace Nc
 {
@@ -48,8 +48,8 @@ namespace Nc
                 SceneGraphManager();
                 ~SceneGraphManager();
 
-                /** Init the OpenGL Lib */
-                void            InitGL(bool multisampling);
+                /** Init some opengl statements */
+                void            Init(bool multisampling);
 
                 /** \return the scenes */
                 inline ListPScene           &Scenes()                       {return _listScene;}
@@ -72,10 +72,10 @@ namespace Nc
                 void                Update(float elapsedTime);
 
             private:
-                ListPScene      _listScene;         ///< the list of scene witch will be rendered
-                GLbitfield      _clearMask;         ///< the clear mask (defaul: GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-                Color           _clearColor;        ///< the clear color of the scene
-                System::Mutex   _mutex;             ///< a mutex used to protect the scene
+                ListPScene                  _listScene;         ///< the list of scene witch will be rendered
+                GL::State::BufferBitMask    _clearMask;         ///< the clear mask (defaul: GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+                Color                       _clearColor;        ///< the clear color of the scene
+                System::Mutex               _mutex;             ///< a mutex used to protect the scene
         };
     }
 }

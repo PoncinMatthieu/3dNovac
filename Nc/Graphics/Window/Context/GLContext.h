@@ -65,6 +65,9 @@ namespace Nc
                 /** swap the buffers, (for a double buffered appli) */
                 virtual void        SwapBuffers() = 0;
 
+                /** \return the attached window to the context */
+                inline Window       *AttachedWindow()                   {return _win;}
+
             protected:
                 Window  *_win;          ///< The instance of the associated window
                 bool    _isCreate;      ///< a boolean to define if the context is create

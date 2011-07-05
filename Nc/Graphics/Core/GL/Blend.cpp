@@ -30,10 +30,6 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::GL;
 
-bool                Blend::_currentBlendState = false;
-Enum::BlendFactor   Blend::_currentSFactor = Enum::One;
-Enum::BlendFactor   Blend::_currentDFactor = Enum::Zero;
-
 Blend::Blend()
     : _blendState(false), _sFactor(Enum::One), _dFactor(Enum::Zero),
       _lastBlendState(false), _lastSFactor(Enum::One), _lastDFactor(Enum::Zero)
@@ -76,39 +72,23 @@ void Blend::SetPattern(Pattern p)
 
 void Blend::Enable()
 {
-    if (_blendState != _currentBlendState)
-    {
-        if (_blendState == true)
-            glEnable(Enum::Blend);
-        else
-            glDisable(Enum::Blend);
-        _lastBlendState = _currentBlendState;
-        _currentBlendState = _blendState;
-    }
-    if (_sFactor != _currentSFactor || _dFactor != _currentDFactor)
-    {
-        glBlendFunc(_sFactor, _dFactor);
-        _lastSFactor = _currentSFactor;
-        _lastDFactor = _currentDFactor;
-        _currentSFactor = _sFactor;
-        _currentDFactor = _dFactor;
-    }
+    State &s = State::Current();
+    _lastBlendState = s.Enabled(Enum::Blend);
+    if (_blendState == true)
+        s.Enable(Enum::Blend);
+    else
+        s.Disable(Enum::Blend);
+    _lastSFactor = s.CurrentBlendSFactor();
+    _lastDFactor = s.CurrentBlendDFactor();
+    s.BlendFunc(_sFactor, _dFactor);
 }
 
 void Blend::Disable()
 {
-    if (_lastBlendState != _currentBlendState)
-    {
-        if (_lastBlendState == true)
-            glEnable(Enum::Blend);
-        else
-            glDisable(Enum::Blend);
-        _currentBlendState = _lastBlendState;
-    }
-    if (_lastSFactor != _currentSFactor || _lastDFactor != _currentDFactor)
-    {
-        glBlendFunc(_lastSFactor, _lastDFactor);
-        _currentSFactor = _lastSFactor;
-        _currentDFactor = _lastDFactor;
-    }
+    State &s = State::Current();
+    if (_lastBlendState == true)
+        s.Enable(Enum::Blend);
+    else
+        s.Disable(Enum::Blend);
+    s.BlendFunc(_lastSFactor, _lastDFactor);
 }

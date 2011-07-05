@@ -15,7 +15,6 @@ out Vertice
 void main ()
 {
     vertice.Color = InColor;
-    vertice.Normal = vec3(MVPMatrix * vec4(InNormal, 0.0));
-    normalize(vertice.Normal);
-    gl_Position = MVPMatrix * vec4(InCoord, 1.0);
+    vertice.Normal = InNormal;
+    gl_Position = vec4(InCoord, 1.0);
 }

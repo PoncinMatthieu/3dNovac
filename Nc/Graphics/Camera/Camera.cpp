@@ -29,11 +29,6 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-unsigned int    Camera::_currentViewportX = 0;
-unsigned int    Camera::_currentViewportY = 0;
-unsigned int    Camera::_currentViewportWidth = 0;
-unsigned int    Camera::_currentViewportHeight = 0;
-
 void    Camera::SetViewport(unsigned int viewportX, unsigned int viewportY, unsigned int viewportWidth, unsigned int viewportHeight)
 {
     _useWindowSizeForViewport = false;
@@ -58,16 +53,7 @@ void    Camera::Fix(SceneGraph *scene)
         _resized = false;
         UpdateProjection(scene);
     }
-
-    if (_viewportX != _currentViewportX || _viewportY != _currentViewportY ||
-        _viewportWidth != _currentViewportWidth || _viewportHeight != _currentViewportHeight)
-    {
-        glViewport(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
-        _currentViewportX = _viewportX;
-        _currentViewportY =_viewportY;
-        _currentViewportWidth = _viewportWidth;
-        _currentViewportHeight = _viewportHeight;
-    }
+    GL::State::Current().Viewport(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
 }
 
 bool    Camera::InViewport(const Vector2ui pos)

@@ -81,40 +81,33 @@ namespace Nc
                     inline void     SetDepthTest(bool state)                        {_depthTest = state; _setDepthTest = true;}
                     /** Set the depth test */
                     inline void     SetDepthMask(bool state)                        {_depthMask = state; _setDepthTest = true;}
-                    /** \return the current depth test statement */
-                    static bool     CurrentDepthTest()                              {return _currentDepthTest;}
-                    /** \return the current depth mask statement */
-                    static bool     CurrentDepthMask()                              {return _currentDepthMask;}
 
                 private:
                     bool                _setPolygonMode;
                     Enum::PolygonFace   _polygonFace;               ///< Specify the polygons that mode applies
                     Enum::PolygonMode   _polygonMode;               ///< Specify how polygons will be rasterized
-
-                    bool                _setPointSize;
-                    GLfloat             _pointSize;                 ///< Specify the diameter of rasterized points
-
-                    bool                _setLineWidth;
-                    GLfloat             _lineWidth;                 ///< Specify the width of rasterized lines
+                    Enum::PolygonFace   _lastPolygonFace;           ///< Specify the last polygons that mode applies
+                    Enum::PolygonMode   _lastPolygonMode;           ///< Specify how last polygons was rasterized
 
                     bool                _setPolygonOffset;
                     GLfloat             _polygonOffsetFactor;       ///< Set the scale and units used to calculate depth values
                     GLfloat             _polygonOffsetUnits;        ///< Set the scale and units used to calculate depth values
+                    GLfloat             _lastPolygonOffsetFactor;   ///< Set the last scale and units used to calculate depth values
+                    GLfloat             _lastPolygonOffsetUnits;    ///< Set the last scale and units used to calculate depth values
+
+                    bool                _setPointSize;
+                    GLfloat             _pointSize;                 ///< Specify the diameter of rasterized points
+                    GLfloat             _lastPointSize;             ///< Specify the last diameter of rasterized points
+
+                    bool                _setLineWidth;
+                    GLfloat             _lineWidth;                 ///< Specify the width of rasterized lines
+                    GLfloat             _lastLineWidth;             ///< Specify the last width of rasterized lines
 
                     bool                _setDepthTest;              ///< If true, then the _depthTest property will affect the current openglContext
                     bool                _depthTest;                 ///< If false, disable the depth test
                     bool                _depthMask;                 ///< If false, disable the depth mask
                     bool                _lastDepthTestState;        ///< the last state of the depth test before enable it
                     bool                _lastDepthMaskState;        ///< the last state of the depth mask before enable it
-
-                    static Enum::PolygonFace    _currentPolygonFace;
-                    static Enum::PolygonMode    _currentPolygonMode;
-                    static GLfloat              _currentPointSize;
-                    static GLfloat              _currentLineWidth;
-                    static GLfloat              _currentPolygonOffsetFactor;
-                    static GLfloat              _currentPolygonOffsetUnits;
-                    static bool                 _currentDepthTest;
-                    static bool                 _currentDepthMask;
             };
         }
     }

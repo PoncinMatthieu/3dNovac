@@ -104,14 +104,14 @@ namespace Nc
 
                     virtual IGeometryBuffer         *Clone() const                          {return new GeometryBuffer<T,IndexToRender>(*this);}
 
-                    /** Return the vertex buffer */
+                    /** \return the vertex buffer */
                     inline VertexBuffer<T>          &VBO()                                  {return _VBO;}
                     /** Set the geometry (vertex buffer) */
                     inline void                     VBO(const VertexBuffer<T> &vbo)         {_VBO = vbo;}
 
-                    /** Return the Index buffer of the geometry */
+                    /** \return the Index buffer of the geometry */
                     inline IndexBuffer              &IBO()                                  {return _IBO;}
-                    /** Return the Index buffer of the geometry */
+                    /** \return the Index buffer of the geometry */
                     inline const IndexBuffer        &IBO() const                            {return _IBO;}
                     /** Set the geometry */
                     inline void                     SetGeometry(const VertexBuffer<T> &vbo, const IndexBuffer &ibo) {_needUpdate = true; _VBO = vbo; _IBO = ibo;}
@@ -179,7 +179,7 @@ namespace Nc
             class GeometryBuffer<T, false> : public IGeometryBuffer
             {
                 public:
-                    GeometryBuffer(Enum::PrimitiveType type = GL_TRIANGLES)
+                    GeometryBuffer(Enum::PrimitiveType type = Enum::Triangles)
                         : IGeometryBuffer(type), _needUpdate(true) {}
                     GeometryBuffer(const VertexBuffer<T> &vbo, Enum::PrimitiveType type)
                         : IGeometryBuffer(type), _needUpdate(true), _VBO(vbo)   {}
@@ -190,7 +190,7 @@ namespace Nc
 
                     virtual IGeometryBuffer         *Clone() const                          {return new GeometryBuffer<T,false>(*this);}
 
-                    /** Return the vertex buffer */
+                    /** \return the vertex buffer */
                     inline VertexBuffer<T>          &VBO()                                  {return _VBO;}
                     /** Set the geometry (vertex buffer) */
                     inline void                     VBO(const VertexBuffer<T> &vbo)         {_VBO = vbo;}

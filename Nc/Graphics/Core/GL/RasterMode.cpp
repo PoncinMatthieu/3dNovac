@@ -30,114 +30,84 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::GL;
 
-Enum::PolygonFace       RasterMode::_currentPolygonFace = Enum::FrontAndBack;
-Enum::PolygonMode       RasterMode::_currentPolygonMode = Enum::Fill;
-GLfloat                 RasterMode::_currentPointSize = 1.f;
-GLfloat                 RasterMode::_currentLineWidth = 1.f;
-GLfloat                 RasterMode::_currentPolygonOffsetFactor = 0.f;
-GLfloat                 RasterMode::_currentPolygonOffsetUnits = 0.f;
-bool                    RasterMode::_currentDepthTest = true;
-bool                    RasterMode::_currentDepthMask = true;
-
 RasterMode::RasterMode()
     : _setPolygonMode(false), _polygonFace(Enum::FrontAndBack), _polygonMode(Enum::Fill),
+      _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
       _setPointSize(false), _pointSize(1.f),
       _setLineWidth(false), _lineWidth(1.f),
-      _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
       _setDepthTest(true), _depthTest(true), _depthMask(true), _lastDepthTestState(true), _lastDepthMaskState(true)
 {
 }
 
 RasterMode::RasterMode(Enum::PolygonFace face, Enum::PolygonMode mode)
     : _setPolygonMode(false), _polygonFace(face), _polygonMode(mode),
+      _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
       _setPointSize(false), _pointSize(1.f),
       _setLineWidth(false), _lineWidth(1.f),
-      _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
       _setDepthTest(false), _depthTest(true), _depthMask(true), _lastDepthTestState(true), _lastDepthMaskState(true)
 {
 }
 
 void    RasterMode::Enable()
 {
-    if (_setPolygonMode && (_polygonFace != _currentPolygonFace || _polygonMode != _currentPolygonMode))
+    State &s = State::Current();
+    if (_setPolygonMode)
     {
-        glPolygonMode(_polygonFace, _polygonMode);
-        _currentPolygonFace = _polygonFace;
-        _currentPolygonMode = _polygonMode;
+        _lastPolygonFace = s.CurrentPolygonFace();
+        _lastPolygonMode = s.CurrentPolygonMode();
+        s.PolygonMode(_polygonFace, _polygonMode);
     }
-    if (_setPolygonOffset && (_polygonOffsetFactor != _currentPolygonOffsetFactor || _polygonOffsetUnits != _currentPolygonOffsetUnits))
+    if (_setPolygonOffset)
     {
-        glPolygonOffset(_polygonOffsetFactor, _polygonOffsetUnits);
-        _currentPolygonOffsetFactor = _polygonOffsetFactor;
-        _currentPolygonOffsetUnits = _polygonOffsetUnits;
+        _lastPolygonOffsetFactor = s.CurrentPolygonOffsetFactor();
+        _lastPolygonOffsetUnits = s.CurrentPolygonOffsetUnits();
+        s.PolygonOffset(_polygonOffsetFactor, _polygonOffsetUnits);
     }
-    if (_setPointSize && _pointSize != _currentPointSize)
+    if (_setPointSize)
     {
-        glPointSize(_pointSize);
-        _currentPointSize = _pointSize;
+        _lastPointSize = s.CurrentPointSize();
+        s.PointSize(_pointSize);
     }
-    if (_setLineWidth && _lineWidth != _currentLineWidth)
+    if (_setLineWidth)
     {
-        glLineWidth(_lineWidth);
-        _currentLineWidth = _lineWidth;
+        _lastLineWidth = s.CurrentLineWidth();
+        s.LineWidth(_lineWidth);
     }
     if (_setDepthTest)
     {
-        if (_currentDepthTest != _depthTest)
+        if (s.Enabled(Enum::DepthTest) != _depthTest)
         {
+            _lastDepthTestState = !_depthTest;
             if (_depthTest)
-                glEnable(Enum::DepthTest);
+                s.Enable(Enum::DepthTest);
             else
-                glDisable(Enum::DepthTest);
-            _lastDepthTestState = _currentDepthTest;
-            _currentDepthTest = _depthTest;
+                s.Disable(Enum::DepthTest);
         }
-        if (_currentDepthMask != _depthMask)
+        if (s.CurrentDepthMask() != _depthMask)
         {
-            glDepthMask((_depthMask) ? GL_TRUE : GL_FALSE);
-            _lastDepthMaskState = _currentDepthMask;
-            _currentDepthMask = _depthMask;
+            _lastDepthMaskState = !_depthMask;
+            s.DepthMask(_depthMask);
         }
     }
 }
 
 void    RasterMode::Disable()
 {
-    if (_setPolygonMode && _currentPolygonMode != Enum::Fill)
-    {
-        glPolygonMode(_currentPolygonFace, Enum::Fill);
-        _currentPolygonMode = Enum::Fill;
-    }
-    if (_setPolygonOffset && (_currentPolygonOffsetFactor != 0 || _currentPolygonOffsetUnits != 0))
-    {
-        glPolygonOffset(0.f, 0.f);
-        _currentPolygonOffsetFactor = 0.f;
-        _currentPolygonOffsetUnits = 0.f;
-    }
-    if (_setPointSize && _currentPointSize != 1.f)
-    {
-        glPointSize(1);
-        _currentPointSize = 1;
-    }
-    if (_setLineWidth && _currentLineWidth != 1.f)
-    {
-        glLineWidth(1);
-        _currentLineWidth = 1;
-    }
+    State &s = State::Current();
+    if (_setPolygonMode)
+        s.PolygonMode(_lastPolygonFace, _lastPolygonMode);
+    if (_setPolygonOffset)
+        s.PolygonOffset(_lastPolygonOffsetFactor, _lastPolygonOffsetUnits);
+    if (_setPointSize)
+        s.PointSize(_lastPointSize);
+    if (_setLineWidth)
+        s.LineWidth(_lastLineWidth);
     if (_setDepthTest)
     {
-        if (_currentDepthTest != _lastDepthTestState)
-        {
-            if (_lastDepthTestState)
-                glEnable(Enum::DepthTest);
-            else
-                glDisable(Enum::DepthTest);
-            _currentDepthTest = _lastDepthTestState;
-        }
-        if (_currentDepthMask != _lastDepthMaskState)
-        {
-            glDepthMask((_lastDepthMaskState) ? GL_TRUE : GL_FALSE);
-            _currentDepthMask = _lastDepthMaskState;
-        }
+        if (_lastDepthTestState)
+            s.Enable(Enum::DepthTest);
+        else
+            s.Disable(Enum::DepthTest);
+        s.DepthMask(_lastDepthMaskState);
     }
 }

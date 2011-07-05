@@ -29,32 +29,30 @@
 #include "SceneGraph.h"
 
 using namespace Nc::Graphic;
+using namespace Nc::Graphic::GL;
 
 SceneGraphManager::SceneGraphManager()
+    : _clearMask(Enum::ColorBufferBit | Enum::DepthBufferBit)
 {
-    _clearMask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 }
 
 SceneGraphManager::~SceneGraphManager()
 {
 }
 
-void SceneGraphManager::InitGL(bool multisampling)
+void SceneGraphManager::Init(bool multisampling)
 {
 // defini les valeur des tompon a vider
-    glClearColor(_clearColor.R, _clearColor.G, _clearColor.B, _clearColor.A);
+    State &current = State::Current();
+    current.ClearColor(_clearColor);
 
 // enable l'antialiasing
     if (multisampling)
-        glEnable(GL::Enum::Multisample);
+        current.Enable(Enum::Multisample);
 
 // enable le Z-buffer
-    glDepthFunc(GL_LEQUAL);
-    glEnable(GL::Enum::DepthTest);
-
-// initialistation des extensions
-    if(!EXT.Init())
-        throw Utils::Exception("SceneGraphManager", "Can't initialize gl extensions");
+    current.DepthFunc(Enum::LEqual);
+    current.Enable(Enum::DepthTest);
 }
 
 void SceneGraphManager::Render(GLContext *context)
@@ -62,7 +60,7 @@ void SceneGraphManager::Render(GLContext *context)
     _mutex.Lock();
 
 // vide les tampons
-    glClear(_clearMask);
+    State::Current().Clear(_clearMask);
 
 // render les 2 scenes
     for (ListPScene::iterator it = _listScene.begin(); it != _listScene.end(); ++it)

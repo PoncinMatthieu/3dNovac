@@ -102,6 +102,8 @@ namespace Nc
                 // Write sur n'importe quel objet ayant defini la surcharge <<
                 template<class T>
                 Logger &operator << (const T &ToLog);
+                template<class T>
+                Logger &operator << (T &ToLog);
                 #ifdef SYSTEM_WINDOWS
                 Logger &operator << (std::ostream &(APIENTRY *f)(std::ostream &)); // permet de gerer le std::endl
                 Logger &operator << (std::ostream &(__cdecl *f)(std::ostream &)); // permet de gerer le std::endl
@@ -136,6 +138,16 @@ namespace Nc
 
         template<class T>
         Logger &Logger::operator << (const T& ToLog)
+        {
+            std::ostringstream s;
+
+            s << ToLog;
+            Write(s.str(), false);
+            return *this;
+        }
+
+        template<class T>
+        Logger &Logger::operator << (T& ToLog)
         {
             std::ostringstream s;
 

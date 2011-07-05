@@ -74,10 +74,6 @@ namespace Nc
                     bool                        _lastBlendState;        ///< Last blend state
                     Enum::BlendFactor           _lastSFactor;           ///< Last sFactor used by the glBlendFunc
                     Enum::BlendFactor           _lastDFactor;           ///< Last dFactor used by the glBlendFunc
-
-                    static bool                 _currentBlendState;
-                    static Enum::BlendFactor    _currentSFactor;
-                    static Enum::BlendFactor    _currentDFactor;
             };
         }
     }

@@ -117,11 +117,6 @@ namespace Nc
                 unsigned int            _viewportY;                 ///< the lower left y componant of the viewport rectangle
                 unsigned int            _viewportWidth;             ///< the width of the viewport
                 unsigned int            _viewportHeight;            ///< the height of the viewport
-
-                static unsigned int     _currentViewportX;           ///< the current lower left x componant of the viewport rectangle
-                static unsigned int     _currentViewportY;           ///< the current lower left y componant of the viewport rectangle
-                static unsigned int     _currentViewportWidth;       ///< the current width of the viewport
-                static unsigned int     _currentViewportHeight;      ///< the current height of the viewport
         };
     }
 }

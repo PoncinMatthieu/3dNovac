@@ -27,6 +27,10 @@
 #ifndef NC_GRAPHIC_CORE_GL_GL_ENUM_H_
 #define NC_GRAPHIC_CORE_GL_GL_ENUM_H_
 
+#ifdef Always
+    #undef Always
+#endif
+
 #include "../GL.h"
 
 namespace Nc
@@ -207,6 +211,23 @@ namespace Nc
                     OneMinusConstantAlpha   = GL_ONE_MINUS_CONSTANT_ALPHA
                 };
 
+                /// Define the different depth functions
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glDepthFunc()
+				*/
+                enum DepthFunc
+                {
+                    Never       = GL_NEVER,         ///< Never passes.
+                    Less        = GL_LESS,          ///< Passes if the incoming depth value is less than the stored depth value.
+                    Equal       = GL_EQUAL,         ///< Passes if the incoming depth value is equal to the stored depth value.
+                    LEqual      = GL_LEQUAL,        ///< Passes if the incoming depth value is less than or equal to the stored depth value.
+                    Greater     = GL_GREATER,       ///< Passes if the incoming depth value is greater than the stored depth value.
+                    NotEqual    = GL_NOTEQUAL,      ///< Passes if the incoming depth value is not equal to the stored depth value.
+                    GEqual      = GL_GEQUAL,        ///< Passes if the incoming depth value is greater than or equal to the stored depth value.
+                    Always      = GL_ALWAYS         ///< Always passes.
+                };
+
                 /// Define ogl texture targets
 				/**
                     Sample of ogl functions used with this enum:
@@ -239,6 +260,17 @@ namespace Nc
                     FragmentShader  = GL_FRAGMENT_SHADER
                 };
 
+                /// Define ogl buffer bit types
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glClear()
+				*/
+                enum BufferBitType
+                {
+                    ColorBufferBit      = GL_COLOR_BUFFER_BIT,      ///< Indicates the buffers currently enabled for color writing.
+                    DepthBufferBit      = GL_DEPTH_BUFFER_BIT,      ///< Indicates the depth buffer.
+                    StencilBufferBit    = GL_STENCIL_BUFFER_BIT     ///< Indicates the stencil buffer.
+                };
 			}
 		}
 	}

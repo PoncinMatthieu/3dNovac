@@ -34,6 +34,7 @@
 #include "Define.h"
 #include "Scene/SceneGraphManager.h"
 #include "Window/Context/GLContext.h"
+#include "Core/GL/State.h"
 
 namespace Nc
 {
@@ -83,14 +84,12 @@ namespace Nc
                 /** To Disable the GLContext, this function is called by the IEngine */
                 virtual inline void         DisableContext()                    {if (_context != NULL) _context->Disable();}
 
-                /** Check the opengl version */
-                virtual void CheckGLVersion();
-
                 SceneGraphManager       _sceneGraphManager;     ///< The Scene graph manager that is used to render the scene
 
                 CreateWindowFunc        _createWinFunction;     ///< The member function pointer of the "Main" engine used to create the window
                 Window                  *_win;                  ///< The instance of the window
                 GLContext               *_context;              ///< The GL context used to render the scene with the scene graph manager
+                GL::State               _renderState;           ///< The render state associated to the rendering context
                 static double           _elapsedTime;           ///< Elapsed Time between 2 frame (in second)
         };
     }

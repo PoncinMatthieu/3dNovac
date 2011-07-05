@@ -22,8 +22,6 @@
 #ifndef NC_COMMON_DEFINE_H_
 #define NC_COMMON_DEFINE_H_
 
-    #define VERSION_MIN_OPENGL  3.0
-
     #ifndef LOG
         #if defined(_DEBUG) && defined(_DEBUG_LOG)
             #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
