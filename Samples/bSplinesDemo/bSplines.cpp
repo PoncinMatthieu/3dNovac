@@ -28,11 +28,11 @@ void bSplines::InitOption()
     _resolution = 50;
     _degree = 3;
 
-    _drawables.push_back(new Drawable(new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_POINTS)));
+    _drawables.push_back(new Drawable(new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::Points)));
     _drawables[0]->Config->RasterMode().SetPointSize(5);
-    _drawables.push_back(new Drawable(new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_STRIP)));
-    _drawables.push_back(new Drawable(new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_STRIP)));
-    _drawables.push_back(new Drawable(new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL_LINE_STRIP)));
+    _drawables.push_back(new Drawable(new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineStrip)));
+    _drawables.push_back(new Drawable(new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineStrip)));
+    _drawables.push_back(new Drawable(new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineStrip)));
     ChooseDefaultMaterial();
 }
 
@@ -77,11 +77,11 @@ void bSplines::UpdateControlPoints(const Color &c1, const Color &c2)
 
   for (unsigned int i = 0; i < _controlPoints.Size(); ++i)
       vertices[i].Fill(_controlPoints[i][0], _controlPoints[i][1], c1);
-  static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices, GL_STATIC_DRAW);
+  static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices, GL::Enum::StaticDraw);
 
   for (unsigned int i = 0; i < _controlPoints.Size(); ++i)
       vertices[i].Fill(_controlPoints[i][0], _controlPoints[i][1], c2);
-  static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[1]->Geometry)->VBO().UpdateData(vertices, GL_STATIC_DRAW);
+  static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[1]->Geometry)->VBO().UpdateData(vertices, GL::Enum::StaticDraw);
 }
 
 void bSplines::UpdatebSpline(const Color &c)
@@ -100,7 +100,7 @@ void bSplines::UpdatebSpline(const Color &c)
         interval += increment;
     }
     vertices[_resolution].Fill(_controlPoints[n][0] , _controlPoints[n][1], c);
-    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[2]->Geometry)->VBO().UpdateData(vertices, GL_STATIC_DRAW);
+    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[2]->Geometry)->VBO().UpdateData(vertices, GL::Enum::StaticDraw);
 }
 
 void bSplines::UpdateNurb(const Color &c)
@@ -121,7 +121,7 @@ void bSplines::UpdateNurb(const Color &c)
         interval += increment;
     }
     vertices[_resolution].Fill(_controlPoints[n][0] , _controlPoints[n][1], c);
-    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[3]->Geometry)->VBO().UpdateData(vertices, GL_STATIC_DRAW);
+    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[3]->Geometry)->VBO().UpdateData(vertices, GL::Enum::StaticDraw);
 }
 
 void bSplines::SplinePoint(int n, float v, Vector2f &point)
