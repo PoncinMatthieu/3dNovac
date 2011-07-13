@@ -35,7 +35,7 @@ namespace Nc
     {
         /// Interface of for using a Thread in a subclass
         /**
-            <h3> Herite to the class Thread to create a thread like this : </h3>
+            <div class="title"> Herite to the class Thread to create a thread like this : </div>
  \code
     class Engine : public Utils::System::Thread
     {
@@ -43,7 +43,7 @@ namespace Nc
     }
  \endcode
 
-            <h3>To Create the thread :  </h3>
+            <div class="title"> To Create the thread : </div>
  \code
     Engine e;
     e.Start();

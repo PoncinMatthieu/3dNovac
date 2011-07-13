@@ -56,7 +56,7 @@ namespace Nc
             Abstract class to define a Threaded Engine.
             Inherite of EventManager, so an engine has a set of routine to receive events from another Engine/Thread
             <br/>
-            An engine could have a "Context". A context is load created before to load content
+            An engine could have a "Context". A context is created and load before to load contents.
             An engine has a set of priority in the loading and deleting process.
             So in the loading process and with highest priority, the engine will be loaded at first,
             and in the deleting process and with en highest priority, the engine will be the last one deleted
@@ -84,7 +84,7 @@ namespace Nc
                 inline bool             ContextLoaded()                 {return (_pattern.Disabled(HasAContext) || _pattern.Enabled(ContextIsLoaded));}
                 /** \return true if the engine is loaded */
                 inline bool             Loaded() const                  {return _loaded;}
-                /** \return the priority delet */
+                /** \return the priority delete */
                 unsigned char           DeletePriority()                {return _deletePriority;}
                 /** \return the context priority loading */
                 unsigned char           LoadingContextPriority()        {return _loadingContextPriority;}
@@ -94,9 +94,16 @@ namespace Nc
             protected:
                 /** Before to entering in the main loop, load contents and create context */
                 virtual void            Loading();
-                /** The main loop of the thread witch call the Process method until the Manager will stoped */
+                /** The main loop of the thread witch call the `Process` method until the Manager will stoped */
                 virtual void            MainLoop();
-                /** Process the engine, call functions : Active/DisableContext, ExecuteEvents, Execute, thread synchronisation with mutex */
+                /**
+					Process the engine.
+					Procedure :
+						- Active/DisableContext
+						- ExecuteEvents
+						- Execute
+						- Thread synchronisation with mutex
+				*/
                 virtual void            Process();
 
                 /** Create the context, to redefine */

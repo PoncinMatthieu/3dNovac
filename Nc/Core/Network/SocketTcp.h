@@ -36,6 +36,17 @@ namespace Nc
     namespace Network
     {
         /// Define a Tcp Socket
+		/**
+			To use a socket you will need to `Create` it before doing anything.
+			A created socket need to be closed with `Close`.
+			To create a client, use the method `Connect`,
+			and to create a listening socket to accept connection you'll need to use the `Listen` method to initialize it
+			and `Accept` to accept a new connection.
+			
+			\sa
+				- Network::Ip
+				- Network::Select
+		*/
         class SocketTcp
         {
             public:
@@ -50,6 +61,7 @@ namespace Nc
                 /** \return true if the descriptor of the socket is valid */
                 inline bool     IsValid() const                     {return (_descriptor != _invalidDescriptor);}
 
+				/** \return the descriptor of the socket */
                 #ifdef SYSTEM_WINDOWS
                 inline SOCKET   Descriptor() const                  {return _descriptor;}
                 #else
