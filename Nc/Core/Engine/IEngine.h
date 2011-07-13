@@ -42,12 +42,13 @@ namespace Nc
         class Manager;
 
         enum Pattern
-        {
-            Synchronize =                           1 << 0,    ///< define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other
-            HasAContext =                           1 << 1,    ///< define if we need to create and call `Active/DisableContext` at each loop
-            ContextIsLoaded =                       1 << 2,    ///< informe that the context is loaded, /!\ DON'T USE OUTSIDE OF THE CLASS
-            WaitingLoadContentsOfOthersEngines =    1 << 3,    ///< force the waiting of the others engines afers to have loaded the contents
-            DontWaitOthersContext =                 1 << 4     ///< don't wait the others context (used by the graphic engine for displaying while the loading)
+		{
+			Nop = 									0,			///< do nothing
+			Synchronize =                           1 << 0,     ///< define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other
+			HasAContext =                           1 << 1,     ///< define if we need to create and call `Active/DisableContext` at each loop
+			ContextIsLoaded =                       1 << 2,     ///< informe that the context is loaded, /!\ DON'T USE OUTSIDE OF THE CLASS
+			WaitingLoadContentsOfOthersEngines =    1 << 3,     ///< force the waiting of the others engines afers to have loaded the contents
+			DontWaitOthersContext =                 1 << 4      ///< don't wait the others context (used by the graphic engine for displaying while the loading)
         };
 
         /// Abstract class to define a Threaded Engine

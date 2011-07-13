@@ -31,13 +31,14 @@
 using namespace std;
 using namespace Nc::Utils::Xml;
 
-Object *Parser::Parse(std::istream &in)
+Object *Parser::Parse(std::istream &in, bool parseHeader)
 {
-    Parser p(in);
+    Parser p(in, parseHeader);
     return p._content;
 }
 
-Parser::Parser(std::istream &in) : _in(in)
+Parser::Parser(std::istream &in, bool parseHeader)
+	: _in(in), _parseHeader(parseHeader)
 {
     // creation d'un nouveau header/content, celui ci, stockera l'ensemble du fichier xml
     _lastObject = _content = new Object("CONTENT", Object::BLOCK);
@@ -50,12 +51,15 @@ void Parser::ReadAll()
     Object      *object;
     Token       t;
 
-    // lecture de la premiere ligne, et verification du header
-    GenereToken(t);
-    CreateObject(t, object);
-    if (object->Type() != Object::HEADER || object->Name() != "xml")
-        throw Exception("Xml::Parser", "This is not an XML file");
-    delete object; // pas besoin du header
+	if (_parseHeader)
+	{
+		// lecture de la premiere ligne, et verification du header
+		GenereToken(t);
+		CreateObject(t, object);
+		if (object->Type() != Object::HEADER || object->Name() != "xml")
+			throw Exception("Xml::Parser", "This is not an XML file");
+		delete object; // pas besoin du header
+	}
 
     // lecture du fichier si le header est bien conforme
     Read();

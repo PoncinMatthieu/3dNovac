@@ -53,9 +53,12 @@ double  System::Time()
 
 char* System::Strdup(const char *str)
 {
-    unsigned int len = strlen(str) + 1;
-    char *r = (char*)malloc(sizeof(char) * len);
-    memcpy(r, str, len);
+	unsigned int len = strlen(str) + 1;
+	#ifdef __BORLANDC__
+	#define malloc	std::malloc
+	#endif
+	char *r = (char*)malloc(sizeof(char) * len);
+	memcpy(r, str, len);
     return r;
 }
 

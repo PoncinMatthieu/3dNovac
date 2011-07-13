@@ -43,7 +43,7 @@ namespace Nc
     {
         namespace Xml
         {
-            /// Provide a parsing a the format Xml using a stream std::istream
+            /// Provide a parser for reading an Xml format by using a std::istream
             class LCORE Parser
             {
                 private:
@@ -59,23 +59,23 @@ namespace Nc
 
                 public:
                     /**
-                        Use this function to parse to parse an xml stream <br/>
-                        Return a CONTENT Object witch contain all others object
-                    */
-                    static Object *Parse(std::istream &in);
+						Use this function to parse an xml stream <br/>
+						\return a CONTENT Object witch contain all others object
+					*/
+					static Object *Parse(std::istream &in, bool parseHeader = true);
 
-                private:
-                    Parser(std::istream &in);
+				private:
+					Parser(std::istream &in, bool parseHeader = true);
 
-                    /** read the header and next call the Read function */
-                    void ReadAll();
-                    /** read all the file, call the GenereToken and next the CreateObject method */
-                    void Read();
+					/** read the header and next call the Read function */
+					void ReadAll();
+					/** read all the file, call the GenereToken and next the CreateObject method */
+					void Read();
 
-                    /** Generate a token */
-                    bool GenereToken(Token &newToken);
-                    // avis aux amateur, ne pas regarder le code de ces 2 fonctions, ca pique les yeaux :), elles fonctionnent tres bien et c'est tout ce qu'on lui demande
-                    bool SearchTokenInBuffer(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract); // search and fill a token, in the stream
+					/** Generate a token */
+					bool GenereToken(Token &newToken);
+					// avis aux amateur, ne pas regarder le code de ces 2 fonctions, ca pique les yeaux :), elles fonctionnent tres bien et c'est tout ce qu'on leurs demandent
+					bool SearchTokenInBuffer(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract); // search and fill a token, in the stream
                     unsigned int ChooseTypeToken(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract);
 
                     /** Create an Xml object with the given token */
@@ -83,7 +83,8 @@ namespace Nc
                     /** Return the params of the data of the given token <"name param1=value1 param2=value2"> */
                     void GetParamsAndName(Token &token, std::string &name, std::map<std::string, std::string> &param);
 
-                    std::istream    &_in;                               ///< the input stream to parse
+					std::istream    &_in;                               ///< the input stream to parse
+					bool			_parseHeader;						///< if false, do not check the header
                     Object          *_lastObject;                       ///< the last parsed object
                     Object          *_content;                          ///< the content that has been parsed
                     char            _buffer[NC_UTILS_XML_SIZE_BUFFER];  ///< the buffer used to read the input stream
