@@ -46,6 +46,9 @@ namespace Nc
                     {}
                     virtual ~IndexBuffer();
 
+                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    virtual Object          *Clone() const                              {return new IndexBuffer(*this);}
+
                     /** Update the data */
                     template<unsigned int D>
                     void    UpdateData(const Array<unsigned int, D> &tabIndices, unsigned int stride, bool keepContent = false)
@@ -55,7 +58,7 @@ namespace Nc
                     }
 
                     /** Draw the elements index */
-                    inline void             Draw(Enum::PrimitiveType type)                  {glDrawElements(type, _nbElements, Enum::UnsignedInt, NULL);}
+                    inline void             Draw(Enum::PrimitiveType type)              {glDrawElements(type, _nbElements, Enum::UnsignedInt, NULL);}
 
                     /** Return the number of elements */
                     inline unsigned int     NbElements()                                {return _nbElements;}

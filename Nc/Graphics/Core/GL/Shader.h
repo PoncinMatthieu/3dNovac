@@ -50,6 +50,9 @@ namespace Nc
                     Shader(const char *source, Enum::ShaderType type, const Utils::FileName &name);
                     virtual ~Shader();
 
+                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    virtual Object          *Clone() const              {return new Shader(*this);}
+
                     /** Return the index of the shader */
                     virtual unsigned int    GetIndex() const            {return _shader;}
 

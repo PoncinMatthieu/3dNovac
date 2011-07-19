@@ -57,6 +57,9 @@ namespace Nc
                     Object &operator = (const Object &sp);
                     virtual ~Object();
 
+                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    virtual Object          *Clone() const = 0;
+
                     /** \return true if the ressource is unique */
                     inline bool             Unique() const      {return (_nbRef != NULL && *_nbRef == 1);}
                     /** \return the number of reference on the ressource */

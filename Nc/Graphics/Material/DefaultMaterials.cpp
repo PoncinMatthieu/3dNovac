@@ -162,7 +162,7 @@ void    DefaultMaterial<Textured>::Render(SceneGraph *scene, const TMatrix &mode
     if (textured)
     {
         _program.SetUniform(2, 0);
-        GL::Texture::ActiveTexture(0);
+        GL::State::Current().ActiveTexture(0);
         drawable.Config->Textures[0].Enable();
     }
 
@@ -222,7 +222,7 @@ void    DefaultMaterial<Textured2d>::Render(SceneGraph *scene, const TMatrix &mo
     if (textured)
     {
         _program.SetUniform(2, 0);
-        GL::Texture::ActiveTexture(0);
+        GL::State::Current().ActiveTexture(0);
         drawable.Config->Textures[0].Enable();
     }
 
@@ -281,7 +281,7 @@ void    DefaultMaterial<Textured3d>::Render(SceneGraph *scene, const TMatrix &mo
     if (textured)
     {
         _program.SetUniform(2, 0);
-        GL::Texture::ActiveTexture(0);
+        GL::State::Current().ActiveTexture(0);
         drawable.Config->Textures[0].Enable();
     }
 

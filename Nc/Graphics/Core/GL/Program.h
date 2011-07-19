@@ -48,18 +48,15 @@ namespace Nc
                     Program();
                     ~Program();
 
+                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    virtual Object          *Clone() const              {return new Program(*this);}
+
                     /** Enable the program */
                     virtual void            Enable() const;
                     /** Disable the program */
                     virtual void            Disable() const;
                     /** Return the index of the program */
                     virtual unsigned int    GetIndex() const            {return _program;}
-
-                    /**
-                        Reset the current program id, this could be usefull if you use a shader in a shared opengl context (thread).
-                        Because if you enable a shader in an opengl context, this shader will not be enabled in an other opengl context.
-                    */
-                    static void             ResetCurrentProgram()       {_currentProgram = 0;}
 
                     /** Attach a new shader to the program */
                     void                    Attach(const Shader &shader);
@@ -112,8 +109,6 @@ namespace Nc
 
                     std::vector<unsigned int>   _tabUniform;        ///< a tab of uniform location id set by the method 'UseUniformLocation()'
                     std::vector<unsigned int>   _tabAttrib;         ///< a tab of attrib location id set by the method 'UseAttribLocation()'
-
-                    static unsigned int         _currentProgram;
             };
         }
     }

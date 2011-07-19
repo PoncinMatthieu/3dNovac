@@ -44,6 +44,9 @@ namespace Nc
                     Texture(const Utils::FileName &file, bool useMipMap = true);
                     virtual ~Texture();
 
+                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    virtual Object          *Clone() const              {return new Texture(*this);}
+
                     // Texture Opengl Object manip
                     /** Return the name of the texture */
                     std::string                     &Name()             {return _name;}
@@ -55,12 +58,6 @@ namespace Nc
                     /** Unbind the texture */
                     virtual void					Disable() const;
 
-                    /**
-                        Specifies which texture unit to make active.
-                        The number of texture units supports is implementation dependent, but must be at least 48.
-                    */
-                    static void                     ActiveTexture(unsigned int no);
-
                     // Loading and auto-generation
                     /** Load the texture from a file */
                     void            LoadFromFile(const Utils::FileName &file, bool useMipMap = true);
@@ -70,6 +67,13 @@ namespace Nc
                     void            LoadCubeMap(const Utils::FileName Names[6]);
                     /** Generate a 3d sphere map (to create a light map in the DefaultLightingMaterial class) */
                     void            GenereSphereMap(unsigned int diametre);
+
+                    /** Generate an empty ogl texture object */
+                    void            Create(Enum::TextureTarget target);
+                    /** Initialize the texture 2d */
+                    void            Init2d(unsigned int mipMapLevel, Enum::TextureFormat::Type internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData);
+                    /** Automatically generate the mimaps of the texture */
+                    void            GenerateMipmaps();
 
                     // texture properties
                     /** Return the max size of an opengl texture */
@@ -81,35 +85,27 @@ namespace Nc
 
                     // current binded textures
                     /** Return true if the texture is currently binded */
-                    inline bool         IsBind()                {return _currentBind == _texture;}
-                    /** Reset the current bind texture statement */
-                    static inline void  ResetCurrentBind()      {_currentBind = 0;}
-
+                    inline bool         IsBound()                {return State::Current().CurrentBound(_target) == _texture;}
                     /** \return true if the texture is a texture 2d */
-                    inline bool         Is2d()                  {return (_target == Enum::Texture2D);}
-
+                    inline bool         Is2d()                  {return (_target == Enum::Texture2d);}
                     /** \return true if the texture is a cube map texture (used to render skyboxs) */
                     inline bool         IsCubeMap()             {return (_target == Enum::TextureCubeMap);}
-
                     /** \return true if the texture is a texture 3d */
-                    inline bool         Is3d()                  {return (_target == Enum::Texture3D);}
+                    inline bool         Is3d()                  {return (_target == Enum::Texture3d);}
 
                 private:
                     /** Check if the image is correctly dimensioned */
                     void                CheckImage(const Image &image);
 
                     /** Destroy the gl texture object */
-                    virtual  void       Release();
+                    virtual void        Release();
 
                     unsigned int            _texture;                   ///< the gl texture object index
                     Vector2ui               _size;                      ///< the size of the texture
                     Enum::TextureTarget     _target;                    ///< the texture target to which the texture is bound
                     std::string             _name;                      ///< the name of the texture
 
-                    static unsigned int     _currentBind;               ///< the current bind texture
-                    static unsigned int     _currentActiveTextureUnit;  ///< the current active texture unit
                     static int              _maxSize;                   ///< the maximum size of a texture
-                    //static System::Mutex    _mutex;             ///< a mutex to protect the current bind texture
             };
         }
     }

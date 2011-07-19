@@ -237,16 +237,109 @@ namespace Nc
 				*/
                 enum TextureTarget
                 {
-                    Texture1D                   = GL_TEXTURE_1D,
-                    Texture2D                   = GL_TEXTURE_2D,
-                    Texture3D                   = GL_TEXTURE_3D,
-                    Texture1DArray              = GL_TEXTURE_1D_ARRAY,
-                    Texture2DArray              = GL_TEXTURE_2D_ARRAY,
+                    Texture1d                   = GL_TEXTURE_1D,
+                    Texture2d                   = GL_TEXTURE_2D,
+                    Texture3d                   = GL_TEXTURE_3D,
+                    Texture1dArray              = GL_TEXTURE_1D_ARRAY,
+                    Texture2dArray              = GL_TEXTURE_2D_ARRAY,
                     TextureRectangle            = GL_TEXTURE_RECTANGLE,
                     TextureCubeMap              = GL_TEXTURE_CUBE_MAP,
-                    Texture2DMultiSample        = GL_TEXTURE_2D_MULTISAMPLE,
-                    Texture2DMultisampleArray   = GL_TEXTURE_2D_MULTISAMPLE_ARRAY
+                    Texture2dMultiSample        = GL_TEXTURE_2D_MULTISAMPLE,
+                    Texture2dMultisampleArray   = GL_TEXTURE_2D_MULTISAMPLE_ARRAY
                 };
+
+                /// Define ogl texture internal format
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glTexImage*()
+				*/
+				namespace TextureFormat
+                {
+                    enum Type
+                    {
+                        CompressedRed               = GL_COMPRESSED_RED,
+                        CompressedRG                = GL_COMPRESSED_RG,
+                        CompressedRGB               = GL_COMPRESSED_RGB,
+                        CompressedRGBA              = GL_COMPRESSED_RGBA,
+                        CompressedSRGB              = GL_COMPRESSED_SRGB,
+                        CompressedSRGBAlpha         = GL_COMPRESSED_SRGB_ALPHA,
+                        DepthComponent              = GL_DEPTH_COMPONENT,
+                        DepthComponent16            = GL_DEPTH_COMPONENT16,
+                        DepthComponent24            = GL_DEPTH_COMPONENT24,
+                        DepthComponent32            = GL_DEPTH_COMPONENT32,
+                        R3_G3_B2                    = GL_R3_G3_B2,
+                        Red                         = GL_RED,
+                        RG                          = GL_RG,
+                        RGB                         = GL_RGB,
+                        RGB4                        = GL_RGB4,
+                        RGB5                        = GL_RGB5,
+                        RGB8                        = GL_RGB8,
+                        RGB10                       = GL_RGB10,
+                        RGB12                       = GL_RGB12,
+                        RGB16                       = GL_RGB16,
+                        RGBA                        = GL_RGBA,
+                        RGBA2                       = GL_RGBA2,
+                        RGBA4                       = GL_RGBA4,
+                        RGB5_A1                     = GL_RGB5_A1,
+                        RGBA8                       = GL_RGBA8,
+                        RGB10_A2                    = GL_RGB10_A2,
+                        RGBA12                      = GL_RGBA12,
+                        RGBA16                      = GL_RGBA16,
+                        SRGB                        = GL_SRGB,
+                        SRGB8                       = GL_SRGB8,
+                        SRGBAlpha                   = GL_SRGB_ALPHA,
+                        SRGB8Alpha8                 = GL_SRGB8_ALPHA8
+                    };
+                }
+
+                /// Define ogl pixel format
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glTexImage*()
+				*/
+				namespace PixelFormat
+				{
+                    enum Type
+                    {
+                        Red         = GL_RED,
+                        RG          = GL_RG,
+                        RGB         = GL_RGB,
+                        BGR         = GL_BGR,
+                        RGBA        = GL_RGBA,
+                        BGRA        = GL_BGRA
+                    };
+				}
+
+                /// Define ogl pixel data type
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glTexImage*()
+				*/
+				namespace PixelDataType
+				{
+                    enum Type
+                    {
+                        UnsignedByte                    = GL_UNSIGNED_BYTE,
+                        Byte                            = GL_BYTE,
+                        UnsignedShort                   = GL_UNSIGNED_SHORT,
+                        Short                           = GL_SHORT,
+                        UnsignedInt                     = GL_UNSIGNED_INT,
+                        Int                             = GL_INT,
+                        Float                           = GL_FLOAT,
+                        UnsignedByte332                 = GL_UNSIGNED_BYTE_3_3_2,
+                        UnsignedByte233Rev              = GL_UNSIGNED_BYTE_2_3_3_REV,
+                        UnsignedShort565                = GL_UNSIGNED_SHORT_5_6_5,
+                        UnsignedShort565Rev             = GL_UNSIGNED_SHORT_5_6_5_REV,
+                        UnsignedShort4444               = GL_UNSIGNED_SHORT_4_4_4_4,
+                        UnsignedShort4444Rev            = GL_UNSIGNED_SHORT_4_4_4_4_REV,
+                        UnsignedShort5551               = GL_UNSIGNED_SHORT_5_5_5_1,
+                        UnsignedShort1555Rev            = GL_UNSIGNED_SHORT_1_5_5_5_REV,
+                        UnsignedInt8888                 = GL_UNSIGNED_INT_8_8_8_8,
+                        UnsignedInt8888Rev              = GL_UNSIGNED_INT_8_8_8_8_REV,
+                        UnsignedInt1010102              = GL_UNSIGNED_INT_10_10_10_2,
+                        UnsignedInt2101010Rev           = GL_UNSIGNED_INT_2_10_10_10_REV
+                    };
+				}
 
                 /// Define ogl shader types
 				/**
@@ -271,6 +364,183 @@ namespace Nc
                     DepthBufferBit      = GL_DEPTH_BUFFER_BIT,      ///< Indicates the depth buffer.
                     StencilBufferBit    = GL_STENCIL_BUFFER_BIT     ///< Indicates the stencil buffer.
                 };
+
+                /// Define ogl Frame buffer types
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glBindFrameBuffer()
+                        - glFrameBufferRenderBuffer()
+				*/
+                enum FrameBufferTarget
+                {
+                    FrameBuffer         = GL_FRAMEBUFFER,
+                    DrawFrameBuffer     = GL_DRAW_FRAMEBUFFER,
+                    ReadFrameBuffer     = GL_READ_FRAMEBUFFER
+                };
+
+                /// Define ogl Frame buffer attachment points
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glFrameBufferRenderBuffer()
+                        - glFraneBufferTexture()
+                        - glFraneBufferTexture1D()
+                        - glFraneBufferTexture2D()
+                        - glFraneBufferTexture3D()
+				*/
+                enum FrameBufferAttachementPoint
+                {
+                    ColorAttachment0            = GL_COLOR_ATTACHMENT0,
+                    ColorAttachment1            = GL_COLOR_ATTACHMENT1,
+                    ColorAttachment2            = GL_COLOR_ATTACHMENT2,
+                    ColorAttachment3            = GL_COLOR_ATTACHMENT3,
+                    ColorAttachment4            = GL_COLOR_ATTACHMENT4,
+                    ColorAttachment5            = GL_COLOR_ATTACHMENT5,
+                    ColorAttachment6            = GL_COLOR_ATTACHMENT6,
+                    ColorAttachment7            = GL_COLOR_ATTACHMENT7,
+                    ColorAttachment8            = GL_COLOR_ATTACHMENT8,
+                    ColorAttachment9            = GL_COLOR_ATTACHMENT9,
+                    ColorAttachment10           = GL_COLOR_ATTACHMENT10,
+                    ColorAttachment11           = GL_COLOR_ATTACHMENT11,
+                    ColorAttachment12           = GL_COLOR_ATTACHMENT12,
+                    ColorAttachment13           = GL_COLOR_ATTACHMENT13,
+                    ColorAttachment14           = GL_COLOR_ATTACHMENT14,
+                    ColorAttachment15           = GL_COLOR_ATTACHMENT15,
+                    DepthAttachement            = GL_DEPTH_ATTACHMENT,
+                    StencilAttachement          = GL_STENCIL_ATTACHMENT,
+                    DepthStencilAttachment      = GL_DEPTH_STENCIL_ATTACHMENT
+                };
+
+                /// Define ogl Frame buffer status
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glCheckFramebufferStatus()
+				*/
+                enum FrameBufferStatus
+                {
+                    FrameBufferComplete                     = GL_FRAMEBUFFER_COMPLETE,                      ///< if the framebuffer bound to target is complete.
+                    FrameBufferUndefined                    = GL_FRAMEBUFFER_UNDEFINED,                     ///< is returned if target is the default framebuffer, but the default framebuffer does not exist.
+                    FrameBufferIncompleteAttachment         = GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT,         ///< is returned if any of the framebuffer attachment points are framebuffer incomplete.
+                    FrameBufferIncompleteMissingAttachment  = GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT, ///< is returned if the framebuffer does not have at least one image attached to it.
+                    FrameBufferIncompleteDrawBuffer         = GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER,        ///< is returned if the value of GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE is GL_NONE for any color attachment point(s) named by GL_DRAWBUFFERi.
+                    FrameBufferIncompleteReadBuffer         = GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER,        ///< is returned if GL_READ_BUFFER is not GL_NONE and the value of GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE is GL_NONE for the color attachment point named by GL_READ_BUFFER.
+                    FrameBufferUnsuported                   = GL_FRAMEBUFFER_UNSUPPORTED,                   ///< is returned if the combination of internal formats of the attached images violates an implementation-dependent set of restrictions.
+                    FrameBufferIncompleteMultisample        = GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE,        ///< is returned if the value of GL_RENDERBUFFER_SAMPLES is not the same for all attached renderbuffers; if the value of GL_TEXTURE_SAMPLES is the not same for all attached textures; or, if the attached images are a mix of renderbuffers and textures, the value of GL_RENDERBUFFER_SAMPLES does not match the value of GL_TEXTURE_SAMPLES. GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE is also returned if the value of GL_TEXTURE_FIXED_SAMPLE_LOCATIONS is not the same for all attached textures; or, if the attached images are a mix of renderbuffers and textures, the value of GL_TEXTURE_FIXED_SAMPLE_LOCATIONS is not GL_TRUE for all attached textures.
+                    FrameBufferIncompleteLayerTargets       = GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS,      ///< is returned if any framebuffer attachment is layered, and any populated attachment is not layered, or if all populated color attachments are not from textures of the same target.
+                    FrameBufferError                        = 0                                             ///< Additionally, if an error occurs, zero is returned.
+                };
+
+                /// Define ogl Render buffer types
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glBindRenderBuffer()
+                        - glFrameBufferRenderBuffer()
+				*/
+                enum RenderBufferTarget
+                {
+                    RenderBuffer         = GL_RENDERBUFFER
+                };
+
+                /// Define ogl Color buffer internal formats
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glRenderBufferStorage()
+                        - glRenderBufferStorageMultisample()
+				*/
+                namespace ColorBufferFormat
+                {
+                    enum Type
+                    {
+                        Red             = GL_RED,
+                        RG              = GL_RG,
+                        RGB             = GL_RGB,
+                        RGBA            = GL_RGBA,
+                        R8              = GL_R8,
+                        R16             = GL_R16,
+                        RG8             = GL_RG8,
+                        RG16            = GL_RG16,
+                        RGBA8           = GL_RGBA8,
+                        RGB10_A2        = GL_RGB10_A2,
+                        RGB10_A2UI      = GL_RGB10_A2UI,
+                        RGBA16          = GL_RGBA16,
+                        SRGB8_ALPHA8    = GL_SRGB8_ALPHA8,
+                        R16F            = GL_R16F,
+                        RG16F           = GL_RG16F,
+                        RGBA16F         = GL_RGBA16F,
+                        R32F            = GL_R32F,
+                        RG32F           = GL_RG32F,
+                        RGBA32F         = GL_RGBA32F,
+                        R11F_G11F_B10F  = GL_R11F_G11F_B10F,
+                        R8I             = GL_R8I,
+                        R8UI            = GL_R8UI,
+                        R16I            = GL_R16I,
+                        R16UI           = GL_R16UI,
+                        R32I            = GL_R32I,
+                        R32UI           = GL_R32UI,
+                        RG8I            = GL_RG8I,
+                        RG8UI           = GL_RG8UI,
+                        RG16I           = GL_RG16I,
+                        RG16UI          = GL_RG16UI,
+                        RG32I           = GL_RG32I,
+                        RG32UI          = GL_RG32UI,
+                        RGBA8I          = GL_RGBA8I,
+                        RGBA8UI         = GL_RGBA8UI,
+                        RGBA16I         = GL_RGBA16I,
+                        RGBA16UI        = GL_RGBA16UI,
+                        RGBA32I         = GL_RGBA32I,
+                        RGBA32UI        = GL_RGBA32UI
+                    };
+                }
+
+                /// Define ogl Depth buffer internal formats
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glRenderBufferStorage()
+                        - glRenderBufferStorageMultisample()
+				*/
+				namespace DepthBufferFormat
+                {
+                    enum Type
+                    {
+                        DepthComponent      = GL_DEPTH_COMPONENT,
+                        DepthComponent16    = GL_DEPTH_COMPONENT16,
+                        DepthComponent24    = GL_DEPTH_COMPONENT24,
+                        DepthComponent32    = GL_DEPTH_COMPONENT32,
+                        DepthComponent32f   = GL_DEPTH_COMPONENT32F,
+                    };
+                }
+
+                /// Define ogl Stencil buffer internal formats
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glRenderBufferStorage()
+                        - glRenderBufferStorageMultisample()
+				*/
+				namespace StencilBufferFormat
+                {
+                    enum Type
+                    {
+                        StencilIndex        = GL_STENCIL_INDEX,
+                        StencilIndex4       = GL_STENCIL_INDEX4,
+                        StencilIndex8       = GL_STENCIL_INDEX8,
+                        StencilIndex16      = GL_STENCIL_INDEX16
+                    };
+                }
+
+                /// Define ogl DepthStencil buffer internal formats
+				/**
+                    Sample of ogl functions used with this enum:
+                        - glRenderBufferStorage()
+                        - glRenderBufferStorageMultisample()
+				*/
+				namespace DepthStencilBufferFormat
+                {
+                    enum Type
+                    {
+                        DepthStencil        = GL_DEPTH_STENCIL,
+                        Depth24Stencil8     = GL_DEPTH24_STENCIL8,
+                        Depth32fStencil8    = GL_DEPTH32F_STENCIL8,
+                    };
+                }
 			}
 		}
 	}

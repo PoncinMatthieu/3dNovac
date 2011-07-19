@@ -42,6 +42,9 @@ namespace Nc
                     VertexArray();
                     virtual ~VertexArray();
 
+                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    virtual Object          *Clone() const      {return new VertexArray(*this);}
+
                     /** Return the index of the VAO */
                     virtual unsigned int    GetIndex() const    {return _index;}
                     /** Enable the VAO */

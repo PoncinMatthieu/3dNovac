@@ -51,6 +51,9 @@ namespace Nc
                     VertexBuffer(const Array<T,D> &tabVertices, Enum::BufferUsage usage);
                     ~VertexBuffer();
 
+                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    virtual Object          *Clone() const                  {return new VertexBuffer(*this);}
+
                     // manage content
                     /** Init the buffer */
                     void    Init();

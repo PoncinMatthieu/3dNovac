@@ -35,7 +35,7 @@ RasterMode::RasterMode()
       _setPolygonOffset(false), _polygonOffsetFactor(0.f), _polygonOffsetUnits(0.f),
       _setPointSize(false), _pointSize(1.f),
       _setLineWidth(false), _lineWidth(1.f),
-      _setDepthTest(true), _depthTest(true), _depthMask(true), _lastDepthTestState(true), _lastDepthMaskState(true)
+      _setDepthTest(false), _depthTest(true), _depthMask(true), _lastDepthTestState(true), _lastDepthMaskState(true)
 {
 }
 

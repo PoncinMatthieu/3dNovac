@@ -29,8 +29,6 @@
 using namespace Nc;
 using namespace Nc::Graphic::GL;
 
-unsigned int Program::_currentProgram = 0;
-
 Program::Program()
     : _program(0), _linked(false)
 {
@@ -54,17 +52,18 @@ void     Program::Enable() const
 {
     if (_program == 0 || !_linked)
         throw Utils::Exception("GL::Program", "The program hasn't been linked.");
-    if (_currentProgram != _program)
-    {
-        _currentProgram = _program;
+    if (State::IsSet())
+        State::Current().BindProgram(_program);
+    else
         glUseProgram(_program);
-    }
 }
 
 void     Program::Disable() const
 {
-    _currentProgram = 0;
-    glUseProgram(0);
+    if (State::IsSet())
+        State::Current().UnbindProgram();
+    else
+        glUseProgram(0);
 }
 
 void    Program::Attach(const Shader &shader)

@@ -47,15 +47,18 @@ namespace Nc
             class State : Utils::NonCopyable
             {
                 public:
-                    typedef Utils::Mask<Enum::BufferBitType, GLbitfield>    BufferBitMask;
+                    typedef Utils::Mask<Enum::BufferBitType, GLbitfield>        BufferBitMask;
 
                 private:
-                    typedef std::map<Enum::Capability, bool>                MapCapabilityStatement;
+                    typedef std::map<Enum::Capability, bool>                    MapCapabilityStatement;
+                    typedef std::map<Enum::BufferTarget, unsigned int>          MapBufferBound;
+                    typedef std::map<Enum::TextureTarget, unsigned int>         MapTextureBound;
 
                 public:
                     State();
                     ~State();
 
+                    static inline bool  IsSet()                                 {return (_current != NULL);}
                     /**
                         \return the current render state
                         Throw an exception if the render state has not been set.
@@ -105,6 +108,66 @@ namespace Nc
                             -glDisable()
                     */
                     void                Disable(Enum::Capability cp);
+
+                    /** \return the current id of the current buffer object bound */
+                    inline unsigned int CurrentBound(Enum::BufferTarget target)                     {return _mapCurrentBufferBound[target];}
+                    /** \return the current id of the current texture object bound */
+                    inline unsigned int CurrentBound(Enum::TextureTarget target)                    {return _mapCurrentTextureBound[target];}
+                    /** \return the current id of the current frame buffer object bound */
+                    inline unsigned int CurrentBound(Enum::FrameBufferTarget target)                {return (target == Enum::FrameBuffer || target == Enum::DrawFrameBuffer) ? _currentDrawFrameBufferBound : _currentReadFrameBufferBound;}
+                    /** \return the current id of the current render buffer object bound */
+                    inline unsigned int CurrentBound(Enum::RenderBufferTarget)                      {return _currentRenderBufferBound;}
+                    /** \brief Bind the given object id
+                        Ogl function:
+                            -glBindBuffer()
+                    */
+                    void                Bind(Enum::BufferTarget target, unsigned int id);
+                    /** \brief Bind the given object id
+                        Ogl function:
+                            -glBindTexture()
+                    */
+                    void                Bind(Enum::TextureTarget target, unsigned int id);
+                    /** \brief Bind the given object id
+                        Ogl function:
+                            -glBindFrameBuffer()
+                    */
+                    void                Bind(Enum::FrameBufferTarget target, unsigned int id);
+                    /** \brief Bind the given object id
+                        Ogl function:
+                            -glBindRenderBuffer()
+                    */
+                    void                Bind(Enum::RenderBufferTarget target, unsigned int id);
+                    /** \brief Bind the given program id
+                        Ogl function:
+                            -glUseProgram()
+                    */
+                    void                BindProgram(unsigned int id);
+
+                    /** \brief Unbind the current buffer
+                        Ogl function:
+                            -glBindBuffer()
+                    */
+                    void                Unbind(Enum::BufferTarget target);
+                    /** \brief Unbind the current texture
+                        Ogl function:
+                            -glBindTexture()
+                    */
+                    void                Unbind(Enum::TextureTarget target);
+                    /** \brief Unbind the current frame buffer
+                        Ogl function:
+                            -glBindFrameBuffer()
+                    */
+                    void                Unbind(Enum::FrameBufferTarget target);
+                    /** \brief Unbind the current render buffer
+                        Ogl function:
+                            -glBindRenderBuffer()
+                    */
+                    void                Unbind(Enum::RenderBufferTarget target);
+                    /** \brief Unbind the current program
+                        Ogl function:
+                            -glUseProgram()
+                    */
+                    void                UnbindProgram();
 
                     /** \brief Enable or disable the depth mask statement
                         Ogl function:
@@ -163,6 +226,12 @@ namespace Nc
                     /** \return the current line width */
                     inline float        CurrentLineWidth() const                                    {return _currentLineWidth;}
 
+                    /**
+                        Specifies which texture unit to make active.
+                        The number of texture units supports is implementation dependent, but must be at least 48.
+                    */
+                    void                ActiveTexture(unsigned int no);
+
                 private:
                     /** Check the opengl version of the current context */
                     void            CheckGLVersion();
@@ -172,6 +241,13 @@ namespace Nc
 
                     Color                       _currentClearColor;             ///< the current clear color used to clear the buffers
                     MapCapabilityStatement      _mapCurrentCapabilityStatement; ///< the list of all capability statement
+                    MapBufferBound              _mapCurrentBufferBound;         ///< the currents buffers id bound into the ogl state machine
+                    MapTextureBound             _mapCurrentTextureBound;        ///< the currents textures id bound into the ogl state machine
+                    unsigned int                _currentDrawFrameBufferBound;   ///< the current frame buffer id bound for drawing operations into the ogl state machine
+                    unsigned int                _currentReadFrameBufferBound;   ///< the current frame buffer id bound for readback operations into the ogl state machine
+                    unsigned int                _currentRenderBufferBound;      ///< the current render buffer id bound into the ogl state machine
+                    unsigned int                _currentProgramBound;           ///< the current program id bound into the ogl state machine
+                    unsigned int                _currentActiveTextureUnit;      ///< the current active texture unit
 
                     // viewport
                     int                         _currentViewportX;              ///< the current lower x viewport

@@ -49,6 +49,9 @@ namespace Nc
                     DataBuffer(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab = NULL);
                     virtual ~DataBuffer();
 
+                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    virtual Object          *Clone() const                  {return new DataBuffer<T>(*this);}
+
                     /** Init the buffer */
                     void    Init(Enum::BufferTarget target);
                     /** Init the buffer */
@@ -59,11 +62,11 @@ namespace Nc
                     void    UpdateData(const T *dataTab);
 
                     /** Enable the buffer */
-                    virtual inline void         Enable() const              {glBindBuffer(_target, _index);}
+                    virtual void            Enable() const;
                     // /** Disable the buffer */
-                    //virtual inline void         Disable() const             {glBindBuffer(_target, 0);} // since OpenGL version 3.0, unbind a buffer is deprecated
+                    //virtual inline void         Disable() const             {State::Current().Unbind(_target);} // since OpenGL version 3.3, unbind a buffer is unnecessary
                     /** return the gl index of the buffer */
-                    virtual inline unsigned int	GetIndex() const            {return _index;}
+                    virtual unsigned int	GetIndex() const                {return _index;}
 
                     /** Return the size of the buffer */
                     inline unsigned int         Size() const                {return _size;}
@@ -106,7 +109,17 @@ namespace Nc
             }
 
             template <typename T>
-            void DataBuffer<T>::Init(Enum::BufferTarget target)
+            void    DataBuffer<T>::Enable() const
+            {
+                if (State::IsSet())
+                    State::Current().Bind(_target, _index);
+                else
+                    glBindBuffer(_target, _index);
+            }
+
+
+            template <typename T>
+            void    DataBuffer<T>::Init(Enum::BufferTarget target)
             {
                 NewRef();
                 _target = target;

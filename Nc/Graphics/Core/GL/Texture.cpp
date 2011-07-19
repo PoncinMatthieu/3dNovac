@@ -31,17 +31,15 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::GL;
 
-unsigned int    Texture::_currentBind = 0;
-unsigned int    Texture::_currentActiveTextureUnit = 0;
 int             Texture::_maxSize = -1;
-//System::Mutex   Texture::_mutex;
 
-Texture::Texture() : Object()
+Texture::Texture()
+    : Object(), _texture(0)
 {
-    _texture = 0;
 }
 
-Texture::Texture(const Utils::FileName &file, bool useMipMap) : Object()
+Texture::Texture(const Utils::FileName &file, bool useMipMap)
+    : Object(), _texture(0)
 {
     LoadFromFile(file, useMipMap);
 }
@@ -55,36 +53,25 @@ void Texture::Release()
 {
     LOG_DEBUG << "DESTROY Texture n = " << _texture << "  `" << _name << "`" << std::endl;
     glDeleteTextures(1, &_texture);
-    _currentBind = 0;
+    _texture = 0;
 }
 
 void  Texture::Enable() const
 {
-//    _mutex.Lock();
     if (_target >= 0)
     {
-        if (_currentBind != _texture)
-        {
-            _currentBind = _texture;
+        if (State::IsSet())
+            State::Current().Bind(_target, _texture);
+        else
             glBindTexture(_target, _texture);
-        }
     }
 }
 
 void  Texture::Disable() const
 {
+    // since OpenGL version 3.3, unbind a texture is unnecessary
     // do nothing (maybe we will need to have a method to force the unbind ?)
-    //glBindTexture(_target, 0);
-//    _mutex.Unlock();
-}
-
-void Texture::ActiveTexture(unsigned int no)
-{
-    if (_currentActiveTextureUnit != no)
-    {
-        _currentActiveTextureUnit = no;
-        glActiveTexture(GL_TEXTURE0 + no);
-    }
+    //State::Current().Unbind(_target);
 }
 
 int Texture::MaxSize()
@@ -112,6 +99,27 @@ void Texture::CheckImage(const Image &image)
     }
 }
 
+void    Texture::Create(Enum::TextureTarget target)
+{
+    NewRef();
+    _target = target;
+    glGenTextures(1, &_texture);
+}
+
+void    Texture::Init2d(unsigned int level, Enum::TextureFormat::Type internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
+{
+    if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
+        throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture witch is not enabled.");
+    glTexImage2D(_target, level, internalFormat, size.Data[0], size.Data[1], 0, pixelFormat, pixelType, pixelData);
+}
+
+void    Texture::GenerateMipmaps()
+{
+    if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
+        throw Utils::Exception("Texture::GenerateMipmap", "Can't generate the texture mipmaps if the texture is not enabled.");
+    glGenerateMipmap(_target);
+}
+
 void Texture::LoadFromFile(const Utils::FileName &file, bool useMipMap)
 {
 // Load the image and reverse it
@@ -133,7 +141,7 @@ void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::strin
     const unsigned char *pixels = image.GetPixels();
 
 // Create the OpenGL texture
-    _target = Enum::Texture2D;
+    _target = Enum::Texture2d;
     glGenTextures(1, &_texture);
     Enable();
 
@@ -147,7 +155,6 @@ void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::strin
         glGenerateMipmap(_target);
 
     Disable();
-    _currentBind = 0;
 
     LOG_DEBUG << "LOAD TEXTURE n = " << _texture << " `" << _name << "`" << endl;
 }
@@ -207,7 +214,6 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
         glTexImage2D(target[i], 0, GL_RGBA8, image.Size().Data[0], image.Size().Data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
     }
     Disable();
-    _currentBind = 0;
 
     _name = "CUBE_MAP";
     LOG_DEBUG << "LOAD TEXTURE n = " << _texture << " `" << _name << "`" << endl;
@@ -252,7 +258,7 @@ void Texture::GenereSphereMap(const unsigned int d)
         }
     }
     // creation de la texture
-    _target = Enum::Texture3D;
+    _target = Enum::Texture3d;
     glGenTextures(1, &_texture);
     if (_texture == 0)
         throw Utils::Exception("Texture", "Fail for the generation of a texture");
@@ -266,7 +272,6 @@ void Texture::GenereSphereMap(const unsigned int d)
 //	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); // deprecated
 	glTexImage3D(_target, 0, GL_RGB8, d, d, d, 0, GL_RGB, Enum::Float, data);
     Disable();
-    _currentBind = 0;
     delete[] data;
 
     _name = "SPHERE MAP";
@@ -283,7 +288,7 @@ unsigned int    GLContext::GenereCubeMapNormalize(const unsigned int size)
     // activation et creation de la cube map
     glEnable(Enum::TextureCubeMap);
 	glGenTextures(1, &textureFinal);
-	glBindTexture(Enum::TextureCubeMap, textureFinal);
+	State::Current().Bind(Enum::TextureCubeMap, textureFinal);
 
 	// on configure la texture et utilise un filtrage lineaire pour ne pas avoir a generer les mipmaps.
 	glTexParameteri(Enum::TextureCubeMap, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

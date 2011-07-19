@@ -43,41 +43,63 @@ file(
   ../Nc/Core/Graph/*.h
   ../Nc/Core/Engine/*.cpp
   ../Nc/Core/Engine/*.h
+  ../Nc/Core/Network/*.cpp
+  ../Nc/Core/Network/*.h
 )
 
 file(
   GLOB
   Nc-Graphics-sources
   ../Nc/Graphics/*.cpp
+  ../Nc/Graphics/*.h
   ../Nc/Graphics/Camera/*.cpp
+  ../Nc/Graphics/Camera/*.h
   ../Nc/Graphics/Core/*.cpp
+  ../Nc/Graphics/Core/*.h
   ../Nc/Graphics/Core/GL/*.cpp
+  ../Nc/Graphics/Core/GL/*.h
   ../Nc/Graphics/Effect/*.cpp
+  ../Nc/Graphics/Effect/*.h
   ../Nc/Graphics/Material/*.cpp
+  ../Nc/Graphics/Material/*.h
   ../Nc/Graphics/Object/*.cpp
+  ../Nc/Graphics/Object/*.h
   ../Nc/Graphics/Scene/*.cpp
+  ../Nc/Graphics/Scene/*.h
   ../Nc/Graphics/SpacePartitioning/*.cpp
+  ../Nc/Graphics/SpacePartitioning/*.h
   ../Nc/Graphics/Window/*.cpp
+  ../Nc/Graphics/Window/*.h
   ../Nc/Graphics/Window/Window/*.cpp
+  ../Nc/Graphics/Window/Window/*.h
   ../Nc/Graphics/Window/Context/*.cpp
+  ../Nc/Graphics/Window/Context/*.h
   ../Nc/Graphics/Window/Input/*.cpp
+  ../Nc/Graphics/Window/Input/*.h
 )
 
 file(
   GLOB
   Linux_CPP
   ../Nc/Graphics/Window/Window/X*.cpp
+  ../Nc/Graphics/Window/Window/X*.h
   ../Nc/Graphics/Window/Context/GLX*.cpp
+  ../Nc/Graphics/Window/Context/GLX*.h
   ../Nc/Graphics/Window/Input/XW*.cpp
+  ../Nc/Graphics/Window/Input/XW*.h
 )
 
 file(
   GLOB
   Win32_CPP
   ../Nc/Graphics/Window/Window/WW*.cpp
+  ../Nc/Graphics/Window/Window/WW*.h
   ../Nc/Graphics/Window/Window/WC*.cpp
+  ../Nc/Graphics/Window/Window/WC*.h
   ../Nc/Graphics/Window/Context/WGL*.cpp
+  ../Nc/Graphics/Window/Context/WGL*.h
   ../Nc/Graphics/Window/Input/WW*.cpp
+  ../Nc/Graphics/Window/Input/WW*.h
 )
 
 if(WIN32)
@@ -90,24 +112,28 @@ file(
   GLOB
   Nc-GUI-sources
   ../Nc/GUI/*.cpp
+  ../Nc/GUI/*.h
 )
 
 file(
   GLOB
   Nc-Contrib-sources
   ../Nc/Contrib/*.cpp
+  ../Nc/Contrib/*.h
 )
 
 file(
   GLOB
   Nc-Audio-sources
   ../Nc/Audio/*.cpp
+  ../Nc/Audio/*.h
 )
 
 file(
   GLOB
   PluginFileFormatCollada-sources
   ../Plugin/FileFormatCollada/*.cpp
+  ../Plugin/FileFormatCollada/*.h
 )
 
 add_library(
@@ -152,4 +178,14 @@ target_link_libraries(
   png
   X11
   Xrandr
+)
+
+target_link_libraries(
+  PluginFileFormatCollada
+  collada14dom
+  minizip
+  xml2
+  pcre
+  pcrecpp
+  boost_filesystem
 )

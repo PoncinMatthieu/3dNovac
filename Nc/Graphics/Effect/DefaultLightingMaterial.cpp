@@ -180,13 +180,14 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
     _program.SetUniform(UniformLightColor, ambiantColor.R, ambiantColor.G, ambiantColor.B, ambiantColor.A);
 
     // Texture unit 0 --> the diffuse
+    GL::State &st = GL::State::Current();
     if (drawable.Config->Textures.Size() > 0 &&
         drawable.Config->Textures[0].IsValid() &&
         drawable.Config->Textures[0].Is2d())
     {
         _program.SetUniform(UniformTextured, 1);
         _program.SetUniform(UniformDiffuse, 0);
-        GL::Texture::ActiveTexture(0);
+        st.ActiveTexture(0);
         drawable.Config->Textures[0].Enable();
     }
     else
@@ -211,7 +212,7 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
 
     // active the light map
     _program.SetUniform(UniformLightMap, 1);
-    GL::Texture::ActiveTexture(1);
+    st.ActiveTexture(1);
     _lightMap.Enable();
 
     // active the normal mapping
@@ -221,7 +222,7 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
     {
         _program.SetUniform(UniformBumpMapping, 1);
         _program.SetUniform(UniformNormalMap, 2);
-        GL::Texture::ActiveTexture(2);
+        st.ActiveTexture(2);
         drawable.Config->Textures[1].Enable();
     }
     else
