@@ -99,7 +99,7 @@ void BoundingBox::CreateGeometry()
         indices[20] = 6;    indices[21] = 7;
         indices[22] = 4;    indices[23] = 7;
 
-        _drawable = new Drawable(vertices, GL::Enum::StaticDraw, indices, 2, GL::Enum::Lines);
+        _drawable = new Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines);
     }
 }
 

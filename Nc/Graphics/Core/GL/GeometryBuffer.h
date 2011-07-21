@@ -61,7 +61,7 @@ namespace Nc
                     virtual GL::VertexDescriptor    &Descriptor() = 0;
 
                     /** Map the vertex buffer in memory with the given access enum */
-                    virtual void                    MapVertexBuffer(Enum::BufferAccessType access) = 0;
+                    virtual void                    MapVertexBuffer(Enum::DataBuffer::AccessType access) = 0;
                     /** Unmap the vertex buffer */
                     virtual void                    UnmapVertexBuffer() = 0;
 
@@ -98,7 +98,7 @@ namespace Nc
                     GeometryBuffer(const VertexBuffer<T> &vbo, const IndexBuffer &ibo, Enum::PrimitiveType type)
                         : IGeometryBuffer(type), _needUpdate(true), _VBO(vbo), _IBO(ibo)    {}
                     template<unsigned int D1, unsigned int D2>
-                    GeometryBuffer(const Array<T,D1> &tabVertices, GL::Enum::BufferUsage usage, const Array<unsigned int,D2> &tabIndices, unsigned int stride, Enum::PrimitiveType type)
+                    GeometryBuffer(const Array<T,D1> &tabVertices, GL::Enum::DataBuffer::Usage usage, const Array<unsigned int,D2> &tabIndices, unsigned int stride, Enum::PrimitiveType type)
                         : IGeometryBuffer(type), _needUpdate(true), _VBO(tabVertices, usage), _IBO(tabIndices, stride)    {}
                     virtual ~GeometryBuffer()   {}
 
@@ -130,7 +130,7 @@ namespace Nc
                     }
 
                     /** Map buffer of the VBO */
-                    virtual void                    MapVertexBuffer(Enum::BufferAccessType access)
+                    virtual void                    MapVertexBuffer(Enum::DataBuffer::AccessType access)
                     {
                         _VBO.Enable();
                         _VBO.MapBuffer(access);
@@ -184,7 +184,7 @@ namespace Nc
                     GeometryBuffer(const VertexBuffer<T> &vbo, Enum::PrimitiveType type)
                         : IGeometryBuffer(type), _needUpdate(true), _VBO(vbo)   {}
                     template<unsigned int D1>
-                    GeometryBuffer(const Array<T,D1> &tabVertices, GL::Enum::BufferUsage usage, Enum::PrimitiveType type)
+                    GeometryBuffer(const Array<T,D1> &tabVertices, GL::Enum::DataBuffer::Usage usage, Enum::PrimitiveType type)
                         : IGeometryBuffer(type), _needUpdate(true), _VBO(tabVertices, usage)    {}
                     virtual ~GeometryBuffer()   {}
 
@@ -209,7 +209,7 @@ namespace Nc
                     virtual GL::VertexDescriptor    &Descriptor()                           {return _VBO.Descriptor;}
 
                     /** Map buffer of the VBO */
-                    virtual void                    MapVertexBuffer(Enum::BufferAccessType access)
+                    virtual void                    MapVertexBuffer(Enum::DataBuffer::AccessType access)
                     {
                         _VBO.Enable();
                         _VBO.MapBuffer(access);

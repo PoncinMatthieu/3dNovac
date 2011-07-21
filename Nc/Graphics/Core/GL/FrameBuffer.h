@@ -40,7 +40,7 @@ namespace Nc
             class FrameBuffer : public Object
             {
                 public:
-                    typedef std::map<Enum::FrameBufferAttachementPoint, Object*>        MapAttachedObject;
+                    typedef std::map<Enum::FrameBuffer::AttachementPoint, Object*>      MapAttachedObject;
 
                 public:
                     FrameBuffer();
@@ -49,46 +49,56 @@ namespace Nc
                     ~FrameBuffer();
 
                     /** Create a new copy of the object by without duplicate the ogl ressources */
-                    virtual Object          *Clone() const      {return new FrameBuffer(*this);}
+                    virtual Object          *   Clone() const      {return new FrameBuffer(*this);}
 
                     /** Create the frame buffer object (it would be automatically deleted) */
-                    void                    Create(Enum::FrameBufferTarget target = Enum::FrameBuffer);
+                    void                        Create(Enum::FrameBuffer::Target target = Enum::FrameBuffer::FrameBuffer);
 
                     /** \return the index of the Frame Buffer Object */
-                    virtual unsigned int    GetIndex() const    {return _index;}
+                    virtual unsigned int        GetIndex() const    {return _index;}
                     /** Enable the fbo */
-                    virtual void            Enable() const;
+                    virtual void                Enable() const;
                     /** Disable the fbo */
-                    virtual void            Disable() const;
+                    virtual void                Disable() const;
+
+                    /** Enable the fbo with the given target */
+                    virtual void                Enable(Enum::FrameBuffer::Target target) const;
+                    /** Disable the fbo with the given target */
+                    virtual void                Disable(Enum::FrameBuffer::Target target) const;
 
                     /**
                         Attach the given \p renderBuffer to the frame buffer.
                         The current frame buffer need to be enable before attaching any render buffer.
                         \warning pay attention to attached the fbo in the drawing context (thread). Otherwise the fbo will have no effect.
                     */
-                    void                    Attach(Enum::FrameBufferAttachementPoint attachPoint, const RenderBuffer &renderBuffer);
+                    void                        Attach(Enum::FrameBuffer::AttachementPoint attachPoint, const RenderBuffer &renderBuffer);
                     /**
                         Attach the given \p texture to the frame buffer.
                         \p level specifie the mipmap level of texture to attach.
                         The current frame buffer need to be enable before attaching any render buffer.
                         \warning pay attention to attached the fbo in the drawing context (thread). Otherwise the fbo will have no effect.
                     */
-                    void                    Attach(Enum::FrameBufferAttachementPoint attachPoint, const Texture &texture, unsigned int level);
+                    void                        Attach(Enum::FrameBuffer::AttachementPoint attachPoint, const Texture &texture, unsigned int level);
 
                     /**
                         \return the status of the frame buffer, affter attaching all your buffers, the status should be `FrameBufferComplete`.
                         The current frame buffer need to be enable before checking the status.
                     */
-                    Enum::FrameBufferStatus CheckStatus();
+                    Enum::FrameBuffer::State    CheckStatus();
+
+                    /** \return true if there are at least one buffer attached to the fbo */
+                    inline bool                 IsAttached()            {return (!_attachedBuffers.empty());}
+
+                    static void                 Blit(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, const Utils::Mask<Enum::BufferBitType> &mask, Enum::Blit::Filter filter);
 
                 private:
                     /** Destroy the fbo */
-                    void                    Release();
+                    void                        Release();
 
                 private:
-                    Enum::FrameBufferTarget _target;            ///< the target used to bind the fbo
-                    unsigned int            _index;             ///< The id of the fbo
-                    MapAttachedObject       _attachedBuffers;   ///< The map of attached buffers
+                    Enum::FrameBuffer::Target   _target;            ///< the target used to bind the fbo
+                    unsigned int                _index;             ///< The id of the fbo
+                    MapAttachedObject           _attachedBuffers;   ///< The map of attached buffers
             };
         }
     }

@@ -46,7 +46,7 @@ Button::Button(const std::string &text, const Vector2f &pos, const Vector2f &siz
     // creation du drawable
     _indexDrawable = _drawables.size();
     GL::GeometryBuffer<DefaultVertexType::Textured2d, false> *geometry = new GL::GeometryBuffer<DefaultVertexType::Textured2d, false>(GL::Enum::TriangleStrip);
-    geometry->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     Drawable *dr = new Drawable(geometry);
     dr->Config->Textures.InitSize(1);
     dr->Config->Textures[0].LoadFromFile(texture);

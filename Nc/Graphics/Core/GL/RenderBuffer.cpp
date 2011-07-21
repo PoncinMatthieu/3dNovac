@@ -55,79 +55,79 @@ void    RenderBuffer::Release()
 void    RenderBuffer::Enable() const
 {
     if (State::IsSet())
-        State::Current().Bind(Enum::RenderBuffer, _index);
+        State::Current().Bind(Enum::RenderBuffer::RenderBuffer, _index);
     else
-        glBindRenderbuffer(Enum::RenderBuffer, _index);
+        glBindRenderbuffer(Enum::RenderBuffer::RenderBuffer, _index);
 }
 
 void    RenderBuffer::Disable() const
 {
     if (State::IsSet())
-        State::Current().Unbind(Enum::RenderBuffer);
+        State::Current().Unbind(Enum::RenderBuffer::RenderBuffer);
     else
-        glBindRenderbuffer(Enum::RenderBuffer, 0);
+        glBindRenderbuffer(Enum::RenderBuffer::RenderBuffer, 0);
 }
 
-void    RenderBuffer::Init(Enum::ColorBufferFormat::Type internalFormat, const Vector2ui &size, unsigned int samples)
+void    RenderBuffer::Init(Enum::RenderBuffer::ColorFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
-    if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer) != _index)
+    if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
         throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer witch is not enabled.");
 
     if (samples == 0)
     {
-        glRenderbufferStorage(Enum::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
     }
     else
     {
-        glRenderbufferStorageMultisample(Enum::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
     }
     _type = ColorBuffer;
 }
 
-void    RenderBuffer::Init(Enum::DepthBufferFormat::Type internalFormat, const Vector2ui &size, unsigned int samples)
+void    RenderBuffer::Init(Enum::RenderBuffer::DepthFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
-    if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer) != _index)
+    if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
         throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer witch is not enabled.");
 
     if (samples == 0)
     {
-        glRenderbufferStorage(Enum::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
     }
     else
     {
-        glRenderbufferStorageMultisample(Enum::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
     }
     _type = DepthBuffer;
 }
 
-void    RenderBuffer::Init(Enum::StencilBufferFormat::Type internalFormat, const Vector2ui &size, unsigned int samples)
+void    RenderBuffer::Init(Enum::RenderBuffer::StencilFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
-    if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer) != _index)
+    if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
         throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer witch is not enabled.");
 
     if (samples == 0)
     {
-        glRenderbufferStorage(Enum::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
     }
     else
     {
-        glRenderbufferStorageMultisample(Enum::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
     }
     _type = StencilBuffer;
 }
 
-void    RenderBuffer::Init(Enum::DepthStencilBufferFormat::Type internalFormat, const Vector2ui &size, unsigned int samples)
+void    RenderBuffer::Init(Enum::RenderBuffer::DepthStencilFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
-    if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer) != _index)
+    if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
         throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer witch is not enabled.");
 
     if (samples == 0)
     {
-        glRenderbufferStorage(Enum::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
     }
     else
     {
-        glRenderbufferStorageMultisample(Enum::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
     }
     _type = DepthStencilBuffer;
 }

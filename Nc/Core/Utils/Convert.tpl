@@ -54,7 +54,7 @@ bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest)
 namespace Unicode
 {
 	template<typename In, typename Out>
-	Out UTF32ToANSI(In begin, In end, Out output, char replacement, const std::locale& lc)
+	Out UTF32ToANSI(In begin, In end, Out output, char replacement, const std::locale &lc)
 	{
         // Get the facet of the locale which deals with character conversion
         const std::ctype<wchar_t>& Facet = std::use_facet< std::ctype<wchar_t> >(lc);
@@ -66,7 +66,7 @@ namespace Unicode
 	}
 
 	template<typename In, typename Out>
-   	Out ANSIToUTF32(In begin, In end, Out output, const std::locale& lc)
+   	Out ANSIToUTF32(In begin, In end, Out output, const std::locale &lc)
 	{
 		// Get the facet of the locale which deals with character conversion
 	    const std::ctype<wchar_t>& Facet = std::use_facet< std::ctype<wchar_t> >(lc);

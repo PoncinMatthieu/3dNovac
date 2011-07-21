@@ -60,22 +60,22 @@ namespace Nc
                         Initialize and etablish the data storage, format, dimensions, and sample count of the render object image.
                         The render buffer need to be enable before any initialization.
                     */
-                    void                    Init(Enum::ColorBufferFormat::Type internalFormat, const Vector2ui &size, unsigned int samples = 0);
+                    void                    Init(Enum::RenderBuffer::ColorFormat internalFormat, const Vector2ui &size, unsigned int samples = 0);
                     /**
                         Initialize and etablish the data storage, format, dimensions, and sample count of the render object image.
                         The render buffer need to be enable before any initialization.
                     */
-                    void                    Init(Enum::DepthBufferFormat::Type internalFormat, const Vector2ui &size, unsigned int samples = 0);
+                    void                    Init(Enum::RenderBuffer::DepthFormat internalFormat, const Vector2ui &size, unsigned int samples = 0);
                     /**
                         Initialize and etablish the data storage, format, dimensions, and sample count of the render object image.
                         The render buffer need to be enable before any initialization.
                     */
-                    void                    Init(Enum::StencilBufferFormat::Type internalFormat, const Vector2ui &size, unsigned int samples = 0);
+                    void                    Init(Enum::RenderBuffer::StencilFormat internalFormat, const Vector2ui &size, unsigned int samples = 0);
                     /**
                         Initialize and etablish the data storage, format, dimensions, and sample count of the render object image.
                         The render buffer need to be enable before any initialization.
                     */
-                    void                    Init(Enum::DepthStencilBufferFormat::Type internalFormat, const Vector2ui &size, unsigned int samples = 0);
+                    void                    Init(Enum::RenderBuffer::DepthStencilFormat internalFormat, const Vector2ui &size, unsigned int samples = 0);
 
                     /** \return the type of the render buffer */
                     inline BufferType       Type() const                    {return _type;}

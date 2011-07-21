@@ -226,12 +226,12 @@ void String::UpdateGeometry()
 
         underlines.UnderSize(noBackSlashN); // resize the buffer, to be sure that we render the good number of vertices
         GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[1]->Geometry);
-        geo->VBO().UpdateData(underlines, GL::Enum::StaticDraw);
+        geo->VBO().UpdateData(underlines, GL::Enum::DataBuffer::StaticDraw);
     }
 
     vertices.UnderSize(noVertice); // resize the buffer, to be sure that we render the good number of vertices
     GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d,false>*>(_drawables[0]->Geometry);
-    geo->VBO().UpdateData(vertices, GL::Enum::StaticDraw);
+    geo->VBO().UpdateData(vertices, GL::Enum::DataBuffer::StaticDraw);
 }
 
 void String::RecomputeSize()

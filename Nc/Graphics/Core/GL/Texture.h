@@ -69,9 +69,9 @@ namespace Nc
                     void            GenereSphereMap(unsigned int diametre);
 
                     /** Generate an empty ogl texture object */
-                    void            Create(Enum::TextureTarget target);
+                    void            Create(Enum::Texture::Target target);
                     /** Initialize the texture 2d */
-                    void            Init2d(unsigned int mipMapLevel, Enum::TextureFormat::Type internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData);
+                    void            Init2d(unsigned int mipMapLevel, Enum::Texture::Format internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData);
                     /** Automatically generate the mimaps of the texture */
                     void            GenerateMipmaps();
 
@@ -87,11 +87,11 @@ namespace Nc
                     /** Return true if the texture is currently binded */
                     inline bool         IsBound()                {return State::Current().CurrentBound(_target) == _texture;}
                     /** \return true if the texture is a texture 2d */
-                    inline bool         Is2d()                  {return (_target == Enum::Texture2d);}
+                    inline bool         Is2d()                  {return (_target == Enum::Texture::Texture2d);}
                     /** \return true if the texture is a cube map texture (used to render skyboxs) */
-                    inline bool         IsCubeMap()             {return (_target == Enum::TextureCubeMap);}
+                    inline bool         IsCubeMap()             {return (_target == Enum::Texture::TextureCubeMap);}
                     /** \return true if the texture is a texture 3d */
-                    inline bool         Is3d()                  {return (_target == Enum::Texture3d);}
+                    inline bool         Is3d()                  {return (_target == Enum::Texture::Texture3d);}
 
                 private:
                     /** Check if the image is correctly dimensioned */
@@ -102,7 +102,7 @@ namespace Nc
 
                     unsigned int            _texture;                   ///< the gl texture object index
                     Vector2ui               _size;                      ///< the size of the texture
-                    Enum::TextureTarget     _target;                    ///< the texture target to which the texture is bound
+                    Enum::Texture::Target   _target;                    ///< the texture target to which the texture is bound
                     std::string             _name;                      ///< the name of the texture
 
                     static int              _maxSize;                   ///< the maximum size of a texture

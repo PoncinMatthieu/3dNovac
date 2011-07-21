@@ -62,7 +62,7 @@ void Widget::Init(const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
 
     // creation du drawable
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
-    geometry->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     _drawables.push_back(new Drawable(geometry));
     ChooseDefaultMaterial();
     _stateChanged = true;

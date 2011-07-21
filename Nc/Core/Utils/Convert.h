@@ -93,11 +93,11 @@ namespace Nc
             {
                 /** Generic function to convert an UTF-32 characters range to an ANSI characters range, using the given locale class */
                 template<typename In, typename Out>
-                Out UTF32ToANSI(In begin, In end, Out output, char replacement = '?', const std::locale& lc = std::locale());
+                Out UTF32ToANSI(In begin, In end, Out output, char replacement = '?', const std::locale &lc = std::locale());
 
                 /** Generic function to convert an ANSI characters range to an UTF-32 characters range, using the given locale class */
                 template<typename In, typename Out>
-                Out ANSIToUTF32(In begin, In end, Out output, const std::locale& lc = std::locale());
+                Out ANSIToUTF32(In begin, In end, Out output, const std::locale &lc = std::locale());
 
                 /** Generic function to convert an UTF-16 characters range to an UTF-32 characters range, using the given locale class */
                 template <typename In, typename Out>

@@ -46,9 +46,9 @@ namespace Nc
             {
                 public:
                     VertexBuffer();
-                    VertexBuffer(Enum::BufferUsage usage);
+                    VertexBuffer(Enum::DataBuffer::Usage usage);
                     template<unsigned int D>
-                    VertexBuffer(const Array<T,D> &tabVertices, Enum::BufferUsage usage);
+                    VertexBuffer(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage);
                     ~VertexBuffer();
 
                     /** Create a new copy of the object by without duplicate the ogl ressources */
@@ -58,10 +58,10 @@ namespace Nc
                     /** Init the buffer */
                     void    Init();
                     /** Init the buffer */
-                    void    Init(unsigned int size, Enum::BufferUsage usage);
+                    void    Init(unsigned int size, Enum::DataBuffer::Usage usage);
                     /** Update the buffer */
                     template<unsigned int D>
-                    void    UpdateData(const Array<T,D> &tabVertices, Enum::BufferUsage usage);
+                    void    UpdateData(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage);
                     /** Update the buffer */
                     void    UpdateData(const T *aDataTab);
 
@@ -93,8 +93,8 @@ namespace Nc
 
             template<typename T>
             template<unsigned int D>
-            VertexBuffer<T>::VertexBuffer(const Array<T,D> &tabVertices, Enum::BufferUsage usage)
-                : DataBuffer<T>(Enum::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.Data),
+            VertexBuffer<T>::VertexBuffer(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage)
+                : DataBuffer<T>(Enum::DataBuffer::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.Data),
                   Descriptor(T::GetDescriptor()), _needUpdate(true)
             {
             }
@@ -107,23 +107,23 @@ namespace Nc
             template<typename T>
             void VertexBuffer<T>::Init()
             {
-                DataBuffer<T>::Init(Enum::ArrayBuffer);
+                DataBuffer<T>::Init(Enum::DataBuffer::ArrayBuffer);
                 _needUpdate = true;
             }
 
             template<typename T>
-            void VertexBuffer<T>::Init(unsigned int size, Enum::BufferUsage usage)
+            void VertexBuffer<T>::Init(unsigned int size, Enum::DataBuffer::Usage usage)
             {
-                DataBuffer<T>::Init(Enum::ArrayBuffer, size, 0, usage, (T*)NULL);
+                DataBuffer<T>::Init(Enum::DataBuffer::ArrayBuffer, size, 0, usage, (T*)NULL);
                 _needUpdate = true;
             }
 
             template<typename T>
             template<unsigned int D>
-            void VertexBuffer<T>::UpdateData(const Array<T,D> &tabVertices, Enum::BufferUsage usage)
+            void VertexBuffer<T>::UpdateData(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage)
             {
                 if (!DataBuffer<T>::IsValid())
-                    DataBuffer<T>::Init(Enum::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.Data);
+                    DataBuffer<T>::Init(Enum::DataBuffer::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.Data);
                 else
                 {
                     DataBuffer<T>::Enable();

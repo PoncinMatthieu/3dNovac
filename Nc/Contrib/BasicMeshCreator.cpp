@@ -47,7 +47,7 @@ Object      *BasicMeshCreator::Plan(const Vector2f &size, const GL::Texture &tex
 // creation du mesh
     Object *mesh = new Object(box);
     mesh->Drawables().resize(1);
-    mesh->Drawables()[0] = new Drawable(vertices, GL::Enum::StreamDraw, GL::Enum::TriangleStrip);
+    mesh->Drawables()[0] = new Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::TriangleStrip);
     mesh->Drawables()[0]->Config->Textures.InitSize(1);
     mesh->Drawables()[0]->Config->Textures[0] = texture;
     mesh->ChooseDefaultMaterial();
@@ -80,7 +80,7 @@ Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
 // creation du mesh
     Object *mesh = new Object(Box3f(bmin, bmax));
     mesh->Drawables().resize(1);
-    mesh->Drawables()[0] = new Drawable(vertices, GL::Enum::StreamDraw, GL::Enum::Lines);
+    mesh->Drawables()[0] = new Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::Lines);
     mesh->ChooseDefaultMaterial();
     return mesh;
 }

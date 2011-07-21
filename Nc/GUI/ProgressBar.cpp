@@ -42,11 +42,11 @@ ProgressBar::ProgressBar(const Vector2f &pos, const Vector2f &size, Corner x, Co
     // creation des drawable
     _indexDrawable = _drawables.size();
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
-    geometry1->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry1->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     _drawables.push_back(new Drawable(geometry1));
 
     GL::GeometryBuffer<DefaultVertexType::Textured2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Textured2d, false>(GL::Enum::TriangleStrip);
-    geometry2->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry2->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     Drawable *dr = new Drawable(geometry2);
     dr->Config->Textures.InitSize(1);
     dr->Config->Textures[0].LoadFromFile(file);

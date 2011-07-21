@@ -99,14 +99,14 @@ void Texture::CheckImage(const Image &image)
     }
 }
 
-void    Texture::Create(Enum::TextureTarget target)
+void    Texture::Create(Enum::Texture::Target target)
 {
     NewRef();
     _target = target;
     glGenTextures(1, &_texture);
 }
 
-void    Texture::Init2d(unsigned int level, Enum::TextureFormat::Type internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
+void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
 {
     if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture witch is not enabled.");
@@ -141,7 +141,7 @@ void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::strin
     const unsigned char *pixels = image.GetPixels();
 
 // Create the OpenGL texture
-    _target = Enum::Texture2d;
+    _target = Enum::Texture::Texture2d;
     glGenTextures(1, &_texture);
     Enable();
 
@@ -191,7 +191,7 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
     };
 
     // Génération d'une texture CubeMap
-    _target = Enum::TextureCubeMap;
+    _target = Enum::Texture::TextureCubeMap;
     glGenTextures(1, &_texture);
     if (_texture == 0)
         throw Utils::Exception("Texture", "Can't load the cube map");
@@ -258,7 +258,7 @@ void Texture::GenereSphereMap(const unsigned int d)
         }
     }
     // creation de la texture
-    _target = Enum::Texture3d;
+    _target = Enum::Texture::Texture3d;
     glGenTextures(1, &_texture);
     if (_texture == 0)
         throw Utils::Exception("Texture", "Fail for the generation of a texture");

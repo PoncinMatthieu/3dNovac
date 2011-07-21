@@ -41,7 +41,7 @@ TextBox::TextBox(const std::string &label, const Vector2f &pos, const Vector2f &
     // creation des drawable
     _indexDrawable = _drawables.size();
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
-    geometry1->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry1->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     _drawables.push_back(new Drawable(geometry1));
     ChooseDefaultMaterial();
 }

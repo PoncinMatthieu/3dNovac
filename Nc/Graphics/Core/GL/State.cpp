@@ -104,24 +104,24 @@ void    State::InitContext(GLContext *context)
     _mapCurrentCapabilityStatement[Enum::TextureCubeMapSeamLess] = false;
     _mapCurrentCapabilityStatement[Enum::ProgramPointSize] = false;
 
-    _mapCurrentBufferBound[Enum::ArrayBuffer] = 0;
-    _mapCurrentBufferBound[Enum::CopyReadBuffer] = 0;
-    _mapCurrentBufferBound[Enum::CopyWriteBuffer] = 0;
-    _mapCurrentBufferBound[Enum::ElementArrayBuffer] = 0;
-    _mapCurrentBufferBound[Enum::PixelPackBuffer] = 0;
-    _mapCurrentBufferBound[Enum::PixelUnpackBuffer] = 0;
-    _mapCurrentBufferBound[Enum::TextureBuffer] = 0;
-    _mapCurrentBufferBound[Enum::TransformFeedbackBuffer] = 0;
-    _mapCurrentBufferBound[Enum::UniformBuffer] = 0;
-    _mapCurrentTextureBound[Enum::Texture1d] = 0;
-    _mapCurrentTextureBound[Enum::Texture2d] = 0;
-    _mapCurrentTextureBound[Enum::Texture3d] = 0;
-    _mapCurrentTextureBound[Enum::Texture1dArray] = 0;
-    _mapCurrentTextureBound[Enum::Texture2dArray] = 0;
-    _mapCurrentTextureBound[Enum::TextureRectangle] = 0;
-    _mapCurrentTextureBound[Enum::TextureCubeMap] = 0;
-    _mapCurrentTextureBound[Enum::Texture2dMultiSample] = 0;
-    _mapCurrentTextureBound[Enum::Texture2dMultisampleArray] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::ArrayBuffer] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::CopyReadBuffer] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::CopyWriteBuffer] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::ElementArrayBuffer] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::PixelPackBuffer] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::PixelUnpackBuffer] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::TextureBuffer] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::TransformFeedbackBuffer] = 0;
+    _mapCurrentBufferBound[Enum::DataBuffer::UniformBuffer] = 0;
+    _mapCurrentTextureBound[Enum::Texture::Texture1d] = 0;
+    _mapCurrentTextureBound[Enum::Texture::Texture2d] = 0;
+    _mapCurrentTextureBound[Enum::Texture::Texture3d] = 0;
+    _mapCurrentTextureBound[Enum::Texture::Texture1dArray] = 0;
+    _mapCurrentTextureBound[Enum::Texture::Texture2dArray] = 0;
+    _mapCurrentTextureBound[Enum::Texture::TextureRectangle] = 0;
+    _mapCurrentTextureBound[Enum::Texture::TextureCubeMap] = 0;
+    _mapCurrentTextureBound[Enum::Texture::Texture2dMultiSample] = 0;
+    _mapCurrentTextureBound[Enum::Texture::Texture2dMultisampleArray] = 0;
 
     _currentDrawFrameBufferBound = 0;
     _currentReadFrameBufferBound = 0;
@@ -140,15 +140,11 @@ namespace Nc {
             std::ostream &operator << (std::ostream &oss, State &s)
             {
                 oss << "GL::State: using context                " << s._context << std::endl;
-                oss << "ViewportX:                              " << s._currentViewportX << std::endl;
-                oss << "ViewportY:                              " << s._currentViewportY << std::endl;
-                oss << "ViewportWidth:                          " << s._currentViewportWidth << std::endl;
-                oss << "ViewportHeight:                         " << s._currentViewportHeight << std::endl;
+                oss << "Viewport:                               " << s._currentViewportX << "\t" << s._currentViewportY << "\t" << s._currentViewportWidth << "\t" << s._currentViewportHeight << std::endl;
                 oss << "ClearColor:                             " << s._currentClearColor << std::endl;
-                oss << "DepthMask:                              " << s._currentDepthMask << std::endl;
+                oss << "DepthMask:                              " << ((s._currentDepthMask) ? "True" : "False") << std::endl;
                 oss << "DepthFunc:                              " << s._currentDepthFunc << std::endl;
-                oss << "BlendSFactor:                           " << s._currentBlendSFactor << std::endl;
-                oss << "BlendDFactor:                           " << s._currentBlendDFactor << std::endl;
+                oss << "BlendFactor:                            S: " << s._currentBlendSFactor << "\tD: " << s._currentBlendDFactor << std::endl;
                 oss << "PolygonFace:                            " << s._currentPolygonFace << std::endl;
                 oss << "PolygonMode:                            " << s._currentPolygonMode << std::endl;
                 oss << "PointSize:                              " << s._currentPointSize << std::endl;
@@ -157,49 +153,49 @@ namespace Nc {
                 oss << "PolygonOffsetUnits:                     " << s._currentPolygonOffsetUnits << std::endl;
                 oss << "_currentActiveTextureUnit:              " << s._currentActiveTextureUnit << std::endl;
 
-                oss << "Capability[Blend]:                      " << s._mapCurrentCapabilityStatement[Enum::Blend] << std::endl;
-                oss << "Capability[ColorLogicOp]:               " << s._mapCurrentCapabilityStatement[Enum::ColorLogicOp] << std::endl;
-                oss << "Capability[CullFace]:                   " << s._mapCurrentCapabilityStatement[Enum::CullFace] << std::endl;
-                oss << "Capability[DepthClamp]:                 " << s._mapCurrentCapabilityStatement[Enum::DepthClamp] << std::endl;
-                oss << "Capability[DepthTest]:                  " << s._mapCurrentCapabilityStatement[Enum::DepthTest] << std::endl;
-                oss << "Capability[Dither]:                     " << s._mapCurrentCapabilityStatement[Enum::Dither] << std::endl;
-                oss << "Capability[LineSmooth]:                 " << s._mapCurrentCapabilityStatement[Enum::LineSmooth] << std::endl;
-                oss << "Capability[Multisample]:                " << s._mapCurrentCapabilityStatement[Enum::Multisample] << std::endl;
-                oss << "Capability[PolygonOffsetFill]:          " << s._mapCurrentCapabilityStatement[Enum::PolygonOffsetFill] << std::endl;
-                oss << "Capability[PolygonOffsetLine]:          " << s._mapCurrentCapabilityStatement[Enum::PolygonOffsetLine] << std::endl;
-                oss << "Capability[PolygonOffsetPoint]:         " << s._mapCurrentCapabilityStatement[Enum::PolygonOffsetPoint] << std::endl;
-                oss << "Capability[PolygonSmooth]:              " << s._mapCurrentCapabilityStatement[Enum::PolygonSmooth] << std::endl;
-                oss << "Capability[PrimitiveRestart]:           " << s._mapCurrentCapabilityStatement[Enum::PrimitiveRestart] << std::endl;
-                oss << "Capability[SampleAlphaCoverage]:        " << s._mapCurrentCapabilityStatement[Enum::SampleAlphaCoverage] << std::endl;
-                oss << "Capability[SampleAlphaToOne]:           " << s._mapCurrentCapabilityStatement[Enum::SampleAlphaToOne] << std::endl;
-                oss << "Capability[SampleCoverage]:             " << s._mapCurrentCapabilityStatement[Enum::SampleCoverage] << std::endl;
-                oss << "Capability[ScissorTest]:                " << s._mapCurrentCapabilityStatement[Enum::ScissorTest] << std::endl;
-                oss << "Capability[StencilTest]:                " << s._mapCurrentCapabilityStatement[Enum::StencilTest] << std::endl;
-                oss << "Capability[TextureCubeMapSeamLess]:     " << s._mapCurrentCapabilityStatement[Enum::TextureCubeMapSeamLess] << std::endl;
-                oss << "Capability[ProgramPointSize]:           " << s._mapCurrentCapabilityStatement[Enum::ProgramPointSize] << std::endl;
+                oss << "Capability[Blend]:                      " << ((s._mapCurrentCapabilityStatement[Enum::Blend]) ? "True" : "False") << std::endl;
+                oss << "Capability[ColorLogicOp]:               " << ((s._mapCurrentCapabilityStatement[Enum::ColorLogicOp]) ? "True" : "False") << std::endl;
+                oss << "Capability[CullFace]:                   " << ((s._mapCurrentCapabilityStatement[Enum::CullFace]) ? "True" : "False") << std::endl;
+                oss << "Capability[DepthClamp]:                 " << ((s._mapCurrentCapabilityStatement[Enum::DepthClamp]) ? "True" : "False") << std::endl;
+                oss << "Capability[DepthTest]:                  " << ((s._mapCurrentCapabilityStatement[Enum::DepthTest]) ? "True" : "False") << std::endl;
+                oss << "Capability[Dither]:                     " << ((s._mapCurrentCapabilityStatement[Enum::Dither]) ? "True" : "False") << std::endl;
+                oss << "Capability[LineSmooth]:                 " << ((s._mapCurrentCapabilityStatement[Enum::LineSmooth]) ? "True" : "False") << std::endl;
+                oss << "Capability[Multisample]:                " << ((s._mapCurrentCapabilityStatement[Enum::Multisample]) ? "True" : "False") << std::endl;
+                oss << "Capability[PolygonOffsetFill]:          " << ((s._mapCurrentCapabilityStatement[Enum::PolygonOffsetFill]) ? "True" : "False") << std::endl;
+                oss << "Capability[PolygonOffsetLine]:          " << ((s._mapCurrentCapabilityStatement[Enum::PolygonOffsetLine]) ? "True" : "False") << std::endl;
+                oss << "Capability[PolygonOffsetPoint]:         " << ((s._mapCurrentCapabilityStatement[Enum::PolygonOffsetPoint]) ? "True" : "False") << std::endl;
+                oss << "Capability[PolygonSmooth]:              " << ((s._mapCurrentCapabilityStatement[Enum::PolygonSmooth]) ? "True" : "False") << std::endl;
+                oss << "Capability[PrimitiveRestart]:           " << ((s._mapCurrentCapabilityStatement[Enum::PrimitiveRestart]) ? "True" : "False") << std::endl;
+                oss << "Capability[SampleAlphaCoverage]:        " << ((s._mapCurrentCapabilityStatement[Enum::SampleAlphaCoverage]) ? "True" : "False") << std::endl;
+                oss << "Capability[SampleAlphaToOne]:           " << ((s._mapCurrentCapabilityStatement[Enum::SampleAlphaToOne]) ? "True" : "False") << std::endl;
+                oss << "Capability[SampleCoverage]:             " << ((s._mapCurrentCapabilityStatement[Enum::SampleCoverage]) ? "True" : "False") << std::endl;
+                oss << "Capability[ScissorTest]:                " << ((s._mapCurrentCapabilityStatement[Enum::ScissorTest]) ? "True" : "False") << std::endl;
+                oss << "Capability[StencilTest]:                " << ((s._mapCurrentCapabilityStatement[Enum::StencilTest]) ? "True" : "False") << std::endl;
+                oss << "Capability[TextureCubeMapSeamLess]:     " << ((s._mapCurrentCapabilityStatement[Enum::TextureCubeMapSeamLess]) ? "True" : "False") << std::endl;
+                oss << "Capability[ProgramPointSize]:           " << ((s._mapCurrentCapabilityStatement[Enum::ProgramPointSize]) ? "True" : "False") << std::endl;
 
-                oss << "Bound[ArrayBuffer]:                     " << s._mapCurrentBufferBound[Enum::ArrayBuffer] << std::endl;
-                oss << "Bound[CopyReadBuffer]:                  " << s._mapCurrentBufferBound[Enum::CopyReadBuffer] << std::endl;
-                oss << "Bound[CopyWriteBuffer]:                 " << s._mapCurrentBufferBound[Enum::CopyWriteBuffer] << std::endl;
-                oss << "Bound[ElementArrayBuffer]:              " << s._mapCurrentBufferBound[Enum::ElementArrayBuffer] << std::endl;
-                oss << "Bound[PixelPackBuffer]:                 " << s._mapCurrentBufferBound[Enum::PixelPackBuffer] << std::endl;
-                oss << "Bound[PixelUnpackBuffer]:               " << s._mapCurrentBufferBound[Enum::PixelUnpackBuffer] << std::endl;
-                oss << "Bound[TextureBuffer]:                   " << s._mapCurrentBufferBound[Enum::TextureBuffer] << std::endl;
-                oss << "Bound[TransformFeedbackBuffer]:         " << s._mapCurrentBufferBound[Enum::TransformFeedbackBuffer] << std::endl;
-                oss << "Bound[UniformBuffer]:                   " << s._mapCurrentBufferBound[Enum::UniformBuffer] << std::endl;
-                oss << "Bound[Texture1D]:                       " << s._mapCurrentTextureBound[Enum::Texture1d] << std::endl;
-                oss << "Bound[Texture2D]:                       " << s._mapCurrentTextureBound[Enum::Texture2d] << std::endl;
-                oss << "Bound[Texture3D]:                       " << s._mapCurrentTextureBound[Enum::Texture3d] << std::endl;
-                oss << "Bound[Texture1DArray]:                  " << s._mapCurrentTextureBound[Enum::Texture1dArray] << std::endl;
-                oss << "Bound[Texture2DArray]:                  " << s._mapCurrentTextureBound[Enum::Texture2dArray] << std::endl;
-                oss << "Bound[TextureRectangle]:                " << s._mapCurrentTextureBound[Enum::TextureRectangle] << std::endl;
-                oss << "Bound[TextureCubeMap]:                  " << s._mapCurrentTextureBound[Enum::TextureCubeMap] << std::endl;
-                oss << "Bound[Texture2DMultiSample]:            " << s._mapCurrentTextureBound[Enum::Texture2dMultiSample] << std::endl;
-                oss << "Bound[Texture2DMultisampleArray]:       " << s._mapCurrentTextureBound[Enum::Texture2dMultisampleArray] << std::endl;
+                oss << "Bound[ArrayBuffer]:                     " << s._mapCurrentBufferBound[Enum::DataBuffer::ArrayBuffer] << std::endl;
+                oss << "Bound[CopyReadBuffer]:                  " << s._mapCurrentBufferBound[Enum::DataBuffer::CopyReadBuffer] << std::endl;
+                oss << "Bound[CopyWriteBuffer]:                 " << s._mapCurrentBufferBound[Enum::DataBuffer::CopyWriteBuffer] << std::endl;
+                oss << "Bound[ElementArrayBuffer]:              " << s._mapCurrentBufferBound[Enum::DataBuffer::ElementArrayBuffer] << std::endl;
+                oss << "Bound[PixelPackBuffer]:                 " << s._mapCurrentBufferBound[Enum::DataBuffer::PixelPackBuffer] << std::endl;
+                oss << "Bound[PixelUnpackBuffer]:               " << s._mapCurrentBufferBound[Enum::DataBuffer::PixelUnpackBuffer] << std::endl;
+                oss << "Bound[TextureBuffer]:                   " << s._mapCurrentBufferBound[Enum::DataBuffer::TextureBuffer] << std::endl;
+                oss << "Bound[TransformFeedbackBuffer]:         " << s._mapCurrentBufferBound[Enum::DataBuffer::TransformFeedbackBuffer] << std::endl;
+                oss << "Bound[UniformBuffer]:                   " << s._mapCurrentBufferBound[Enum::DataBuffer::UniformBuffer] << std::endl;
+                oss << "Bound[Texture1D]:                       " << s._mapCurrentTextureBound[Enum::Texture::Texture1d] << std::endl;
+                oss << "Bound[Texture2D]:                       " << s._mapCurrentTextureBound[Enum::Texture::Texture2d] << std::endl;
+                oss << "Bound[Texture3D]:                       " << s._mapCurrentTextureBound[Enum::Texture::Texture3d] << std::endl;
+                oss << "Bound[Texture1DArray]:                  " << s._mapCurrentTextureBound[Enum::Texture::Texture1dArray] << std::endl;
+                oss << "Bound[Texture2DArray]:                  " << s._mapCurrentTextureBound[Enum::Texture::Texture2dArray] << std::endl;
+                oss << "Bound[TextureRectangle]:                " << s._mapCurrentTextureBound[Enum::Texture::TextureRectangle] << std::endl;
+                oss << "Bound[TextureCubeMap]:                  " << s._mapCurrentTextureBound[Enum::Texture::TextureCubeMap] << std::endl;
+                oss << "Bound[Texture2DMultiSample]:            " << s._mapCurrentTextureBound[Enum::Texture::Texture2dMultiSample] << std::endl;
+                oss << "Bound[Texture2DMultisampleArray]:       " << s._mapCurrentTextureBound[Enum::Texture::Texture2dMultisampleArray] << std::endl;
                 oss << "Bound[DrawFrameBuffer]:                 " << s._currentDrawFrameBufferBound << std::endl;
                 oss << "Bound[ReadFrameBuffer]:                 " << s._currentReadFrameBufferBound << std::endl;
                 oss << "Bound[RenderBuffer]:                    " << s._currentRenderBufferBound << std::endl;
-                oss << "Bound[_currentProgramBound]:            " << s._currentProgramBound << std::endl;
+                oss << "Bound[CurrentProgramBound]:             " << s._currentProgramBound << std::endl;
                 return oss;
             }
         }
@@ -351,7 +347,7 @@ void    State::BlendFunc(Enum::BlendFactor s, Enum::BlendFactor d)
     }
 }
 
-void    State::Bind(Enum::BufferTarget target, unsigned int id)
+void    State::Bind(Enum::DataBuffer::Target target, unsigned int id)
 {
     MapBufferBound::iterator it = _mapCurrentBufferBound.find(target);
     if (it->second != id)
@@ -361,7 +357,7 @@ void    State::Bind(Enum::BufferTarget target, unsigned int id)
     }
 }
 
-void    State::Bind(Enum::TextureTarget target, unsigned int id)
+void    State::Bind(Enum::Texture::Target target, unsigned int id)
 {
     MapTextureBound::iterator it = _mapCurrentTextureBound.find(target);
     if (it->second != id)
@@ -371,9 +367,9 @@ void    State::Bind(Enum::TextureTarget target, unsigned int id)
     }
 }
 
-void    State::Bind(Enum::FrameBufferTarget target, unsigned int id)
+void    State::Bind(Enum::FrameBuffer::Target target, unsigned int id)
 {
-    if (target == Enum::FrameBuffer)
+    if (target == Enum::FrameBuffer::FrameBuffer)
     {
         if (_currentDrawFrameBufferBound != id || _currentReadFrameBufferBound != id)
         {
@@ -382,19 +378,19 @@ void    State::Bind(Enum::FrameBufferTarget target, unsigned int id)
             _currentReadFrameBufferBound = id;
         }
     }
-    else if (target == Enum::DrawFrameBuffer && _currentDrawFrameBufferBound != id)
+    else if (target == Enum::FrameBuffer::DrawFrameBuffer && _currentDrawFrameBufferBound != id)
     {
         glBindFramebuffer(target, id);
         _currentDrawFrameBufferBound = id;
     }
-    else if (target == Enum::ReadFrameBuffer && _currentReadFrameBufferBound != id)
+    else if (target == Enum::FrameBuffer::ReadFrameBuffer && _currentReadFrameBufferBound != id)
     {
         glBindFramebuffer(target, id);
         _currentReadFrameBufferBound = id;
     }
 }
 
-void    State::Bind(Enum::RenderBufferTarget target, unsigned int id)
+void    State::Bind(Enum::RenderBuffer::Target target, unsigned int id)
 {
     if (_currentRenderBufferBound != id)
     {
@@ -412,7 +408,7 @@ void    State::BindProgram(unsigned int id)
     }
 }
 
-void    State::Unbind(Enum::BufferTarget target)
+void    State::Unbind(Enum::DataBuffer::Target target)
 {
     MapBufferBound::iterator it = _mapCurrentBufferBound.find(target);
     if (it->second != 0)
@@ -422,7 +418,7 @@ void    State::Unbind(Enum::BufferTarget target)
     }
 }
 
-void    State::Unbind(Enum::TextureTarget target)
+void    State::Unbind(Enum::Texture::Target target)
 {
     MapTextureBound::iterator it = _mapCurrentTextureBound.find(target);
     if (it->second != 0)
@@ -432,9 +428,9 @@ void    State::Unbind(Enum::TextureTarget target)
     }
 }
 
-void    State::Unbind(Enum::FrameBufferTarget target)
+void    State::Unbind(Enum::FrameBuffer::Target target)
 {
-    if (target == Enum::FrameBuffer)
+    if (target == Enum::FrameBuffer::FrameBuffer)
     {
         if (_currentDrawFrameBufferBound != 0 || _currentReadFrameBufferBound != 0)
         {
@@ -443,19 +439,19 @@ void    State::Unbind(Enum::FrameBufferTarget target)
             _currentReadFrameBufferBound = 0;
         }
     }
-    else if (target == Enum::DrawFrameBuffer && _currentDrawFrameBufferBound != 0)
+    else if (target == Enum::FrameBuffer::DrawFrameBuffer && _currentDrawFrameBufferBound != 0)
     {
         glBindFramebuffer(target, 0);
         _currentDrawFrameBufferBound = 0;
     }
-    else if (target == Enum::ReadFrameBuffer && _currentReadFrameBufferBound != 0)
+    else if (target == Enum::FrameBuffer::ReadFrameBuffer && _currentReadFrameBufferBound != 0)
     {
         glBindFramebuffer(target, 0);
         _currentReadFrameBufferBound = 0;
     }
 }
 
-void    State::Unbind(Enum::RenderBufferTarget target)
+void    State::Unbind(Enum::RenderBuffer::Target target)
 {
     if (_currentRenderBufferBound != 0)
     {

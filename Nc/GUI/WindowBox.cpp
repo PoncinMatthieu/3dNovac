@@ -78,9 +78,9 @@ void  WindowBox::Init(const std::string &title, const std::string &ttf)
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
-    geometry1->VBO().Init(4, GL::Enum::StreamDraw);
-    geometry2->VBO().Init(4, GL::Enum::StreamDraw);
-    geometry3->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry1->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
+    geometry2->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
+    geometry3->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     _drawables.push_back(new Drawable(geometry1));
     _drawables.push_back(new Drawable(geometry2));
     _drawables.push_back(new Drawable(geometry3));
@@ -125,9 +125,9 @@ void    WindowBox::Copy(const WindowBox &w)
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
-    geometry1->VBO().Init(4, GL::Enum::StreamDraw);
-    geometry2->VBO().Init(4, GL::Enum::StreamDraw);
-    geometry3->VBO().Init(4, GL::Enum::StreamDraw);
+    geometry1->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
+    geometry2->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
+    geometry3->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     _drawables.push_back(new Drawable(geometry1));
     _drawables.push_back(new Drawable(geometry2));
     _drawables.push_back(new Drawable(geometry3));

@@ -46,18 +46,18 @@ namespace Nc
             {
                 public:
                     DataBuffer();
-                    DataBuffer(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab = NULL);
+                    DataBuffer(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab = NULL);
                     virtual ~DataBuffer();
 
                     /** Create a new copy of the object by without duplicate the ogl ressources */
                     virtual Object          *Clone() const                  {return new DataBuffer<T>(*this);}
 
                     /** Init the buffer */
-                    void    Init(Enum::BufferTarget target);
+                    void    Init(Enum::DataBuffer::Target target);
                     /** Init the buffer */
-                    void    Init(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab);
+                    void    Init(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab);
                     /** Update the buffer */
-                    void    UpdateData(unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab);
+                    void    UpdateData(unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab);
                     /** Update the buffer */
                     void    UpdateData(const T *dataTab);
 
@@ -76,7 +76,7 @@ namespace Nc
                     /**
                         Map the buffer in the local buffer, and return it's pointer.
                      */
-                    T                           *MapBuffer(Enum::BufferAccessType access);
+                    T                           *MapBuffer(Enum::DataBuffer::AccessType access);
                     /** Unmap the buffer */
                     void                        UnmapBuffer();
 
@@ -87,13 +87,13 @@ namespace Nc
                     /** Release the gl buffer */
                     virtual  void   Release();
 
-                    unsigned int        _index;             ///< the gl buffer index
-                    unsigned int        _size;              ///< the size of the buffer
-                    unsigned int        _stride;            ///< the stride between two data in the buffer
-                    Enum::BufferTarget  _target;            ///< the target to which the buffer object is bound
-                    Enum::BufferUsage   _usage;             ///< the type of usage of the buffer
+                    unsigned int                _index;             ///< the gl buffer index
+                    unsigned int                _size;              ///< the size of the buffer
+                    unsigned int                _stride;            ///< the stride between two data in the buffer
+                    Enum::DataBuffer::Target    _target;            ///< the target to which the buffer object is bound
+                    Enum::DataBuffer::Usage     _usage;             ///< the type of usage of the buffer
 
-                    T                   *_dataTab;          ///< the local data tab (never used by default)
+                    T                           *_dataTab;          ///< the local data tab (never used by default)
             };
 
             template <typename T>
@@ -103,7 +103,7 @@ namespace Nc
             }
 
             template <typename T>
-            DataBuffer<T>::DataBuffer(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab)
+            DataBuffer<T>::DataBuffer(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab)
             {
                 Init(target, size, stride, usage, dataTab);
             }
@@ -119,7 +119,7 @@ namespace Nc
 
 
             template <typename T>
-            void    DataBuffer<T>::Init(Enum::BufferTarget target)
+            void    DataBuffer<T>::Init(Enum::DataBuffer::Target target)
             {
                 NewRef();
                 _target = target;
@@ -128,7 +128,7 @@ namespace Nc
             }
 
             template <typename T>
-            void DataBuffer<T>::Init(Enum::BufferTarget target, unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab)
+            void DataBuffer<T>::Init(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab)
             {
                 NewRef();
                 _target = target;
@@ -141,7 +141,7 @@ namespace Nc
             }
 
             template<typename T>
-            void DataBuffer<T>::UpdateData(unsigned int size, unsigned int stride, Enum::BufferUsage usage, const T *dataTab)
+            void DataBuffer<T>::UpdateData(unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab)
             {
                 if (_index == 0)
                     throw Utils::Exception("GL::DataBuffer", "Can't update the data if it wasn't init before !");
@@ -187,7 +187,7 @@ namespace Nc
             }
 
             template<typename T>
-            T    *DataBuffer<T>::MapBuffer(Enum::BufferAccessType access)
+            T    *DataBuffer<T>::MapBuffer(Enum::DataBuffer::AccessType access)
             {
                 _dataTab = (T*)glMapBuffer(_target, access);
                 if (_dataTab == NULL)

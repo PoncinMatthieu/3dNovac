@@ -25,12 +25,17 @@
 -----------------------------------------------------------------------------*/
 
 #include <iterator>
+#include <iostream>
 #include "Unicode.h"
 #include "Utils.h"
 
 using namespace std;
 using namespace Nc::Utils;
 using namespace Nc::Utils::Unicode;
+
+std::string      UTF32::_globalStdString;
+std::wstring     UTF32::_globalStdWString;
+
 
 UTF32::UTF32(const char *str)
 {
@@ -67,8 +72,6 @@ UTF32::UTF32(const wchar_t *str)
         }
     }
 }
-
-#include <iostream>
 
 UTF32::UTF32(const Nc::UInt32 *str)
 {
@@ -108,32 +111,32 @@ UTF32::UTF32(const std::wstring &str)
     }
 }
 
-std::string     UTF32::ToStdString() const
+const std::string       &UTF32::ToStdString() const
 {
-    std::string o;
-    o.reserve(size() + 1);
-    Convert::Unicode::UTF32ToANSI(begin(), end(), std::back_inserter(o), 0);
-    return o;
+    _globalStdString.clear();
+    _globalStdString.reserve(size() + 1);
+    Convert::Unicode::UTF32ToANSI(begin(), end(), std::back_inserter(_globalStdString), 0);
+    return _globalStdString;
 }
 
-std::wstring    UTF32::ToStdWString() const
+const std::wstring      &UTF32::ToStdWString() const
 {
     // This function assumes that 2-byte large wchar_t are encoded in UTF-16 (Windows), and
     // 4-byte large wchar_t are encoded using UTF-32 (Unix)
     // Is that always true ? (some platforms may use JIS Japanese encoding)
     // The macro __STDC_ISO_10646__ should help identifying UTF-32 compliant implementations
 
-    std::wstring o;
-    o.reserve(size() + 1);
+    _globalStdWString.clear();
+    _globalStdWString.reserve(size() + 1);
 
     // Select the proper function according to the (supposed) wchar_t system encoding
     switch (sizeof(wchar_t))
     {
-        case 2 : Convert::Unicode::UTF32ToUTF16(begin(), end(), std::back_inserter(o), 0);      break;
-        case 4 : std::copy(begin(), end(), std::back_inserter(o));                              break;
+        case 2 : Convert::Unicode::UTF32ToUTF16(begin(), end(), std::back_inserter(_globalStdWString), 0);      break;
+        case 4 : std::copy(begin(), end(), std::back_inserter(_globalStdWString));                              break;
         default : break;
     }
-    return o;
+    return _globalStdWString;
 }
 
 unsigned int    UTF32::CharCount(Nc::UInt32 c) const

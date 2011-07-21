@@ -692,7 +692,7 @@ Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Drawable *&drawable)
         box += Vector3f(vertices[ivertex].coord[0], vertices[ivertex].coord[1], vertices[ivertex].coord[2]);
     }
 
-    drawable = new Drawable(vertices, GL::Enum::StreamDraw, indices, 3, GL::Enum::Triangles, config);
+    drawable = new Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, indices, 3, GL::Enum::Triangles, config);
     return box;
 }
 

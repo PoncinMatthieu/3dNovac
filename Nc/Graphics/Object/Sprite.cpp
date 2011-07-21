@@ -37,7 +37,7 @@ Sprite::Sprite(const Vector2f &size, const GL::Texture &t, const Box2f &box, con
     : Object(ClassName()), _needUpdate(true), _spriteSize(size), _textureBox(box), _color(1, 1, 1)
 {
     GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL::Enum::TriangleStrip);
-    geo->VBO().Init(4, GL::Enum::StaticDraw);
+    geo->VBO().Init(4, GL::Enum::DataBuffer::StaticDraw);
 
     MaterialConfig *conf = new MaterialConfig(blendPattern);
     conf->Textures.InitSize(1);

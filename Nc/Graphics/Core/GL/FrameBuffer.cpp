@@ -61,7 +61,7 @@ FrameBuffer::~FrameBuffer()
     ReleaseRef();
 }
 
-void    FrameBuffer::Create(Enum::FrameBufferTarget target)
+void    FrameBuffer::Create(Enum::FrameBuffer::Target target)
 {
     NewRef();
     glGenFramebuffers(1, &_index);
@@ -78,21 +78,31 @@ void    FrameBuffer::Release()
 
 void    FrameBuffer::Enable() const
 {
-    if (State::IsSet())
-        State::Current().Bind(_target, _index);
-    else
-        glBindFramebuffer(_target, _index);
+    Enable(_target);
 }
 
 void    FrameBuffer::Disable() const
 {
-    if (State::IsSet())
-        State::Current().Unbind(_target);
-    else
-        glBindFramebuffer(_target, 0);
+    Disable(_target);
 }
 
-void    FrameBuffer::Attach(Enum::FrameBufferAttachementPoint attachPoint, const RenderBuffer &renderBuffer)
+void    FrameBuffer::Enable(Enum::FrameBuffer::Target target) const
+{
+    if (State::IsSet())
+        State::Current().Bind(target, _index);
+    else
+        glBindFramebuffer(target, _index);
+}
+
+void    FrameBuffer::Disable(Enum::FrameBuffer::Target target) const
+{
+    if (State::IsSet())
+        State::Current().Unbind(target);
+    else
+        glBindFramebuffer(target, 0);
+}
+
+void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, const RenderBuffer &renderBuffer)
 {
     if (!renderBuffer.IsValid())
         throw Utils::Exception("FrameBuffer::Attach", "The given RenderBuffer is not valid");
@@ -101,11 +111,11 @@ void    FrameBuffer::Attach(Enum::FrameBufferAttachementPoint attachPoint, const
     if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
         throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer witch is not enabled.");
 
-    glFramebufferRenderbuffer(_target, attachPoint, Enum::RenderBuffer, renderBuffer.GetIndex());
+    glFramebufferRenderbuffer(_target, attachPoint, Enum::RenderBuffer::RenderBuffer, renderBuffer.GetIndex());
     _attachedBuffers[attachPoint] = renderBuffer.Clone();
 }
 
-void    FrameBuffer::Attach(Enum::FrameBufferAttachementPoint attachPoint, const Texture &texture, unsigned int level)
+void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, const Texture &texture, unsigned int level)
 {
     if (!texture.IsValid())
         throw Utils::Exception("FrameBuffer::Attach", "The given Texture is not valid");
@@ -118,9 +128,17 @@ void    FrameBuffer::Attach(Enum::FrameBufferAttachementPoint attachPoint, const
     _attachedBuffers[attachPoint] = texture.Clone();
 }
 
-Enum::FrameBufferStatus FrameBuffer::CheckStatus()
+Enum::FrameBuffer::State FrameBuffer::CheckStatus()
 {
     if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
         throw Utils::Exception("FrameBuffer::CheckStatus", "Can't check the status of the framebuffer witch is not enabled.");
-    return static_cast<Enum::FrameBufferStatus>(glCheckFramebufferStatus(_target));
+    return static_cast<Enum::FrameBuffer::State>(glCheckFramebufferStatus(_target));
 }
+
+void    FrameBuffer::Blit(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, const Utils::Mask<Enum::BufferBitType> &mask, Enum::Blit::Filter filter)
+{
+    glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1,
+                      dstX0, dstY0, dstX1, dstY1,
+                      mask.GetMask(), filter);
+}
+

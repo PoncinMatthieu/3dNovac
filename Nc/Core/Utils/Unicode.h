@@ -52,19 +52,23 @@ namespace Nc
                     virtual ~UTF32()    {}
 
                     /** \return the number of occurence of the caractere 'c' in the unicode string */
-                    unsigned int    CharCount(Nc::UInt32 c) const;
+                    unsigned int        CharCount(Nc::UInt32 c) const;
 
                     /** Convert and return the unicode string in standard std::string */
-                    std::string     ToStdString() const;
+                    const std::string   &ToStdString() const;
 
                     /** Convert and return the unicode string in standard std::wstring */
-                    std::wstring    ToStdWString() const;
+                    const std::wstring  &ToStdWString() const;
 
                     friend std::ostream& operator << (std::ostream& os, const UTF32& s)
                     {
                         os << s.ToStdString();
                         return os;
                     }
+
+                private:
+                    static std::string      _globalStdString;       // global std::string to avoid any copy of the returned converted string in `ToStdString`.
+                    static std::wstring     _globalStdWString;      // global std::wstring to avoid any copy of the returned converted string in `ToStdWString`.
             };
         }
     }

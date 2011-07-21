@@ -51,8 +51,8 @@ namespace Nc
 
                 private:
                     typedef std::map<Enum::Capability, bool>                    MapCapabilityStatement;
-                    typedef std::map<Enum::BufferTarget, unsigned int>          MapBufferBound;
-                    typedef std::map<Enum::TextureTarget, unsigned int>         MapTextureBound;
+                    typedef std::map<Enum::DataBuffer::Target, unsigned int>    MapBufferBound;
+                    typedef std::map<Enum::Texture::Target, unsigned int>       MapTextureBound;
 
                 public:
                     State();
@@ -110,33 +110,33 @@ namespace Nc
                     void                Disable(Enum::Capability cp);
 
                     /** \return the current id of the current buffer object bound */
-                    inline unsigned int CurrentBound(Enum::BufferTarget target)                     {return _mapCurrentBufferBound[target];}
+                    inline unsigned int CurrentBound(Enum::DataBuffer::Target target)               {return _mapCurrentBufferBound[target];}
                     /** \return the current id of the current texture object bound */
-                    inline unsigned int CurrentBound(Enum::TextureTarget target)                    {return _mapCurrentTextureBound[target];}
+                    inline unsigned int CurrentBound(Enum::Texture::Target target)                  {return _mapCurrentTextureBound[target];}
                     /** \return the current id of the current frame buffer object bound */
-                    inline unsigned int CurrentBound(Enum::FrameBufferTarget target)                {return (target == Enum::FrameBuffer || target == Enum::DrawFrameBuffer) ? _currentDrawFrameBufferBound : _currentReadFrameBufferBound;}
+                    inline unsigned int CurrentBound(Enum::FrameBuffer::Target target)              {return (target == Enum::FrameBuffer::FrameBuffer || target == Enum::FrameBuffer::DrawFrameBuffer) ? _currentDrawFrameBufferBound : _currentReadFrameBufferBound;}
                     /** \return the current id of the current render buffer object bound */
-                    inline unsigned int CurrentBound(Enum::RenderBufferTarget)                      {return _currentRenderBufferBound;}
+                    inline unsigned int CurrentBound(Enum::RenderBuffer::Target)                    {return _currentRenderBufferBound;}
                     /** \brief Bind the given object id
                         Ogl function:
                             -glBindBuffer()
                     */
-                    void                Bind(Enum::BufferTarget target, unsigned int id);
+                    void                Bind(Enum::DataBuffer::Target target, unsigned int id);
                     /** \brief Bind the given object id
                         Ogl function:
                             -glBindTexture()
                     */
-                    void                Bind(Enum::TextureTarget target, unsigned int id);
+                    void                Bind(Enum::Texture::Target target, unsigned int id);
                     /** \brief Bind the given object id
                         Ogl function:
                             -glBindFrameBuffer()
                     */
-                    void                Bind(Enum::FrameBufferTarget target, unsigned int id);
+                    void                Bind(Enum::FrameBuffer::Target target, unsigned int id);
                     /** \brief Bind the given object id
                         Ogl function:
                             -glBindRenderBuffer()
                     */
-                    void                Bind(Enum::RenderBufferTarget target, unsigned int id);
+                    void                Bind(Enum::RenderBuffer::Target target, unsigned int id);
                     /** \brief Bind the given program id
                         Ogl function:
                             -glUseProgram()
@@ -147,22 +147,22 @@ namespace Nc
                         Ogl function:
                             -glBindBuffer()
                     */
-                    void                Unbind(Enum::BufferTarget target);
+                    void                Unbind(Enum::DataBuffer::Target target);
                     /** \brief Unbind the current texture
                         Ogl function:
                             -glBindTexture()
                     */
-                    void                Unbind(Enum::TextureTarget target);
+                    void                Unbind(Enum::Texture::Target target);
                     /** \brief Unbind the current frame buffer
                         Ogl function:
                             -glBindFrameBuffer()
                     */
-                    void                Unbind(Enum::FrameBufferTarget target);
+                    void                Unbind(Enum::FrameBuffer::Target target);
                     /** \brief Unbind the current render buffer
                         Ogl function:
                             -glBindRenderBuffer()
                     */
-                    void                Unbind(Enum::RenderBufferTarget target);
+                    void                Unbind(Enum::RenderBuffer::Target target);
                     /** \brief Unbind the current program
                         Ogl function:
                             -glUseProgram()
