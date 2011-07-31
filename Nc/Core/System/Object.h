@@ -48,10 +48,10 @@ namespace Nc
                 virtual ~Object();
 
                 /** return a static const char to identify the class name */
-                static const char *ClassName()                  {return "Sys::Object";}
+                static const char *ClassName()                                  {return "Sys::Object";}
 
                 /** \return the class name of the object */
-                inline const char   *GetClassName() const       {return _className;}
+                inline const char   *GetClassName() const                       {return _className;}
                 /** Set the name of the object */
                 inline void                 Name(const std::string &name)       {_name = name;}
                 /** \return the name of the object */
@@ -69,7 +69,7 @@ namespace Nc
                     //if ((void*)T::ClassName() == (void*)_className)
                     //    return static_cast<T*>(this);
                     //return NULL;
-                    return dynamic_cast<T*>(this);
+                    return (this != NULL) ? dynamic_cast<T*>(this) : NULL;
                 }
 
                 /**
@@ -82,7 +82,7 @@ namespace Nc
                     //if ((const void*)T::ClassName() == (const void*)_className)
                     //    return static_cast<const T*>(this);
                     //return NULL;
-                    return dynamic_cast<const T*>(this);
+                    return (this != NULL) ? dynamic_cast<const T*>(this) : NULL;
                 }
 
                 /**
@@ -95,7 +95,7 @@ namespace Nc
                 {
                     //if ((void*)T::ClassName() == (void*)_className)
                     //    return static_cast<T*>(this);
-                    T *o = dynamic_cast<T*>(this);
+                    T *o = (this != NULL) ? dynamic_cast<T*>(this) : NULL;
                     if (o != NULL)
                         return o;
                     throw Utils::Exception("System::Object", "Cannot convert the object `" + std::string(_className) + "` into a `" + std::string(T::ClassName()) + "`");
@@ -111,7 +111,7 @@ namespace Nc
                 {
                     //if ((const void*)T::ClassName() == (const void*)_className)
                     //    return static_cast<const T*>(this);
-                    T *o = dynamic_cast<T*>(this);
+                    T *o = (this != NULL) ? dynamic_cast<T*>(this) : NULL;
                     if (o != NULL)
                         return o;
                     throw Utils::Exception("System::Object", "Cannot convert the object `" + std::string(_className) + "` into a `" + std::string(T::ClassName()) + "`");

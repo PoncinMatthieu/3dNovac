@@ -25,6 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "MatrixAnimation.h"
+#include "../Scene/SceneGraph.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace Nc;
@@ -62,8 +63,18 @@ void MatrixAnimation::Update(float runningTime)
 
 void    MatrixAnimation::Render(SceneGraph *scene)
 {
-    scene->PushModelMatrix();
-    scene->ModelMatrix().AddTransformation(_currentMatrix);
+    if (!_enabled)
+        return;
+
+    bool activated = _activated;
+    if (activated)
+    {
+        scene->PushModelMatrix();
+        scene->ModelMatrix().AddTransformation(_currentMatrix);
+    }
+
     RenderChilds(scene);
-    scene->PopModelMatrix();
+
+    if (activated)
+        scene->PopModelMatrix();
 }

@@ -36,9 +36,10 @@ SceneGraph::SceneGraph(bool for2dRendering)
     _stackProjectionMatrix.push(TMatrix::Identity);
     _stackViewMatrix.push(TMatrix::Identity);
     _stackModelMatrix.push(TMatrix::Identity);
+    _stackMaterials.push(NULL);
 
     if (for2dRendering)
-        _mode.SetDepthTest(false);
+        _rasterEffect.SetDepthTest(false);
 }
 
 SceneGraph::SceneGraph(const char *className, bool for2dRendering)
@@ -47,9 +48,10 @@ SceneGraph::SceneGraph(const char *className, bool for2dRendering)
     _stackProjectionMatrix.push(TMatrix::Identity);
     _stackViewMatrix.push(TMatrix::Identity);
     _stackModelMatrix.push(TMatrix::Identity);
+    _stackMaterials.push(NULL);
 
     if (for2dRendering)
-        _mode.SetDepthTest(false);
+        _rasterEffect.SetDepthTest(false);
 }
 
 
@@ -68,11 +70,11 @@ void    SceneGraph::Render()
     if (!_enabled)
         return;
 
+    _mutex.Lock();
     if (!ModelMatrix().IsIdentity())
         ModelMatrix().SetIdentity();
 
-    // Rendering
-    _mode.Enable();
-    RenderChilds(this);
-    _mode.Disable();
+    // Rendering with the raster effect
+    _rasterEffect.Render(this, this);
+    _mutex.Unlock();
 }

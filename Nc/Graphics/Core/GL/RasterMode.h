@@ -55,6 +55,8 @@ namespace Nc
                     /** Disable the given polygon rasterization mode by activating the default rasterization mode */
                     void            Disable();
 
+                    /** \return return the polygon mode status, if true, the polygon mode will be enable in the mehode `Enable`*/
+                    inline bool     PolygonModeState()                                                      {return _setPolygonMode;}
                     /** Inhibit the polygon mode */
                     inline void     InhibitPolygonMode()                                                    {_setPolygonMode = false;}
                     /** Set the polygon resterization mode */

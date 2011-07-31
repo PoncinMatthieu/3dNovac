@@ -31,54 +31,48 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
-/*
-std::string ISceneNode::NodeTypeToString() const
-{
-    switch (_nodeType)
-    {
-        case ENTITY:        return "Entity";
-        case SCENE:         return "SceneGraph";
-        case OBJECT:        return "IObject";
-        case EFFECT:        return "Effect";
-        case PARTITION:     return "Partition";
-        default:            return "Unknown";
-    }
-}
-*/
-/*
-namespace Nc
-{
-    namespace Graphic
-    {
-        template<>
-        Graphic::Object *ISceneNode::GetNode<>()
-        {
-            if (_nodeType == OBJECT)
-                return static_cast<Graphic::Object*>(this);
-            throw Utils::Exception("ISceneNode", "Cannot convert the scene node into a " + std::string(typeid(Graphic::Object).name()) +
-                                   ". The type of the node is " + NodeTypeToString());
-        }
 
-        template<>
-        SceneGraph *ISceneNode::GetNode<>()
-        {
-            if (_nodeType == SCENE)
-                return static_cast<SceneGraph*>(this);
-            throw Utils::Exception("ISceneNode", "Cannot convert the scene node into a " + std::string(typeid(SceneGraph).name()) +
-                                   ". The type of the node is " + NodeTypeToString());
-        }
-
-        template<>
-        Effect *ISceneNode::GetNode<>()
-        {
-            if (_nodeType == EFFECT)
-                return static_cast<Effect*>(this);
-            throw Utils::Exception("ISceneNode", "Cannot convert the scene node into a " + std::string(typeid(Effect).name()) +
-                                   ". The type of the node is " + NodeTypeToString());
-        }
-    }
+Entity::Entity()
+    : NodePolitic(ClassName())
+{
 }
-*/
+
+Entity::Entity(const char *className)
+    : NodePolitic(className)
+{
+}
+
+Entity::Entity(const char *className, const TMatrix &m)
+    : NodePolitic(className), Matrix(m)
+{}
+
+Entity::Entity(const char *className, ISceneNode *data)
+    : NodePolitic(className, data)
+{
+}
+
+Entity::Entity(const Entity &n)
+    : NodePolitic(n)
+{
+    Matrix = n.Matrix;
+    if (NodePolitic::Data != NULL)
+        NodePolitic::Data = n.Data->Clone();
+}
+
+Entity &Entity::operator = (const Entity &n)
+{
+    NodePolitic::operator = (n);
+    Matrix = n.Matrix;
+    if (NodePolitic::Data != NULL)
+        NodePolitic::Data = n.Data->Clone();
+    return *this;
+}
+
+Entity::~Entity()
+{
+    if (Data != NULL)
+        delete Data;
+}
 
 void    Entity::RenderChilds(SceneGraph *scene)
 {
@@ -108,4 +102,80 @@ void    Entity::UpdateChilds(float elapsedTime)
     {
         LOG_ERROR << "Error in the update pass of the node : " << e.what() << std::endl;
     }
+}
+
+struct EnabledFonctor
+{
+    EnabledFonctor()
+        : result(true)  {}
+
+    bool operator () (const ISceneNode *node)
+    {
+        const Entity *n = node->AsWithoutThrow<const Entity>();
+        if (n != NULL)
+            result = n->Enabled();
+        return result;
+    }
+
+    bool    result;
+};
+
+bool    Entity::EnabledRecursif() const
+{
+    EnabledFonctor f;
+    ForEachParents<false>(f);
+    return f.result;
+}
+
+void    Entity::Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)
+{
+
+    Entity *oldParentEntity = NULL;
+    if (oldParent != NULL)
+    {
+        oldParentEntity = dynamic_cast<Entity*>(oldParent);
+        if (oldParentEntity == NULL)
+            throw Utils::Exception("Entity::Move", "Can't move the node from an incompatible parent type.");
+    }
+
+    // insert
+    Lock();
+    Entity *entity = dynamic_cast<Entity*>(node);
+    if (entity != NULL)
+    {
+        if (at < 0)
+            AddChild(entity);
+        else
+            InsertChild(entity, at);
+    }
+    else
+    {
+        Unlock();
+        throw Utils::Exception("Entity::Move", "Can't move the node. The types are incompatible.");
+    }
+    Unlock();
+
+    // remove
+    if (oldParentEntity != NULL)
+    {
+        oldParent->Lock();
+        oldParentEntity->RemoveChild((oldAt > at && oldParentEntity == this) ? (oldAt + 1) : oldAt);
+        oldParent->Unlock();
+    }
+}
+
+void    Entity::Render(SceneGraph *scene)
+{
+    if (_enabled)
+    {
+        _mutex.Lock();
+        RenderChilds(scene);
+        _mutex.Unlock();
+    }
+}
+
+void    Entity::Update(float elapsedTime)
+{
+    if (_enabled)
+        UpdateChilds(elapsedTime);
 }

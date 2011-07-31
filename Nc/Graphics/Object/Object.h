@@ -73,17 +73,10 @@ namespace Nc
                 static const char *ClassName()                          {return "Object";}
                 virtual ISceneNode  *Clone() const                      {return new Object(*this);}
 
-                /** Set the display statement */
-                inline virtual void DisplayState(bool state)            {_enabled = state;}
-                /** \return the display statement */
-                inline bool         DisplayState() const                {return _enabled;}
-                /** \return false if the object or one of its parents has the display statement to false */
-                bool                DisplayStateRecursive() const;
-
                 /** Set the display box statement */
-				inline void         DisplayStateBox(bool state)         {_displayStateBox = state;}
+				inline void         DisplayBox(bool state)              {_displayBox = state;}
                 /** Return the display box statement */
-                inline bool         DisplayStateBox() const             {return _displayStateBox;}
+                inline bool         DisplayBox() const                  {return _displayBox;}
 
                 /** Compute the recursive model matrix with the parents matrix. */
                 void                GetRecursiveMatrix(TMatrix &m);
@@ -104,24 +97,23 @@ namespace Nc
 
                 void                SetRecursiveMaterial(IMaterial *newMaterial);
 
-                /** Set the material, reconfigure the drawables.
+                /** \return the material used to render the drawables */
+                inline IMaterial    *GetMaterial()                      {return _material;}
+                /**
+                    Set the material, reconfigure the drawables.
                     The configuration could failed if the given material is not compatible. In this case the current material don't change and return false.
                     \return true the material transfer succeed.
                 */
                 bool                SetMaterial(IMaterial *newMaterial);
-
+                /** Choose the best default material to display the drawables */
                 void                ChooseDefaultMaterial();
-
-                inline IMaterial    *GetMaterial()                      {return _material;}
-
 
                 /** \return the drawables */
                 DrawableArray       &Drawables()                        {return _drawables;}
-
                 /** Configure the drawables by using the current Material */
                 void                ReconfigureDrawables();
 
-                /** Render the drawables with the material set in the object */
+                /** Render the drawables with the material and render also the childs of the object */
                 virtual void        Render(SceneGraph *scene);
 
             protected:
@@ -129,7 +121,7 @@ namespace Nc
                     Transform the scene model matrix before rendering the object.
                     Could be redefine to set a specific comportement.
                 */
-                virtual void        TransformModelMatrixToRender(SceneGraph *scene)    {scene->ModelMatrix().AddTransformation(Matrix);}
+                virtual void        TransformModelMatrixToRender(SceneGraph *scene);
 
                 /**
                     Render the drawables.
@@ -137,15 +129,19 @@ namespace Nc
                 */
                 virtual void        Draw(SceneGraph *scene);
 
+                /** Configure the drawables by using the given \p material */
+                void                ConfigureDrawables(IMaterial *material);
+
             // fields
             protected:
-                bool            _displayStateBox;       ///< if true, draw the box of the object]
+                bool            _displayBox;            ///< if true, draw the box of the object]
 
                 DrawableArray   _drawables;             ///< the array of drawbles
                 Box3f           _box;                   ///< the box of the object
 
             private:
-                IMaterial       *_material;             ///< pointer to the material used to render the drawables
+                IMaterial       *_material;                 ///< pointer to the material used to render the drawables
+                IMaterial       *_lastConfiguredMaterial;   ///< pointer to the last configured material
         };
 
         // specialization of the method GetNode<> for an IObject

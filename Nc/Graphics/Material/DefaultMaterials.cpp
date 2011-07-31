@@ -31,6 +31,80 @@ using namespace Nc::Graphic;
 using namespace Nc::Graphic::DefaultVertexType;
 using namespace Nc::Graphic::DefaultSources;
 
+DefaultMaterialColored::DefaultMaterialColored(const std::string &name)
+    : IDefaultMaterial(name)
+{}
+
+bool    DefaultMaterialColored::Configure(Drawable &drawable)
+{
+    GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
+    _program.Enable();
+    for (unsigned int i = 0; i < desc.Size(); ++i)
+    {
+        if (desc[i].Name == ComponentsName::Coord)
+            desc[i].IndexAttrib = _attribCoord;
+        else if (desc[i].Name == ComponentsName::Color)
+            desc[i].IndexAttrib = _attribColor;
+    }
+    return true;
+}
+
+void    DefaultMaterialColored::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
+{
+    drawable.Enable();
+    _program.Enable(); // enable the shader
+
+    _program.SetUniform(_uniformMVP, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
+    drawable.Render(); // render the object
+
+    drawable.Disable();
+}
+
+DefaultMaterialTextured::DefaultMaterialTextured(const std::string &name)
+    : IDefaultMaterial(name)
+{}
+
+bool    DefaultMaterialTextured::Configure(Drawable &drawable)
+{
+    GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
+    _program.Enable();
+    for (unsigned int i = 0; i < desc.Size(); ++i)
+    {
+        if (desc[i].Name == ComponentsName::Coord)
+            desc[i].IndexAttrib = _attribCoord;
+        else if (desc[i].Name == ComponentsName::TexCoord)
+            desc[i].IndexAttrib = _attribTexCoord;
+        else if (desc[i].Name == ComponentsName::Color)
+            desc[i].IndexAttrib = _attribColor;
+    }
+    return true;
+}
+
+void    DefaultMaterialTextured::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
+{
+    drawable.Enable();
+    _program.Enable(); // enable the shader
+
+    _program.SetUniform(_uniformMVP, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
+
+    bool textured = (drawable.Config->Textures.Size() > 0 &&
+                     drawable.Config->Textures[0].IsValid() &&
+                     drawable.Config->Textures[0].Is2d());
+    _program.SetUniform(_uniformTextured, textured);
+    if (textured)
+    {
+        _program.SetUniform(_uniformTexturedId, 0);
+        GL::State::Current().ActiveTexture(0);
+        drawable.Config->Textures[0].Enable();
+    }
+
+    drawable.Render(); // render the object
+    drawable.Disable();
+
+    if (textured)
+        drawable.Config->Textures[0].Disable();
+}
+
 //----------------------
 //       Colored
 //----------------------
@@ -40,36 +114,10 @@ void    DefaultMaterial<Colored>::Initialize()
     _program.Attach(ColoredFragmentShader, GL::Enum::FragmentShader, "BasicColoredFragmentShader");
     _program.Link();
     _program.Enable();
-    _program.UseUniformLocation("MVPMatrix");
-    _program.UseAttribLocation("InCoord");
-    _program.UseAttribLocation("InColor");
+    _uniformMVP = _program.GetUniformLocation("MVPMatrix");
+    _attribCoord = _program.GetAttribLocation("InCoord");
+    _attribColor = _program.GetAttribLocation("InColor");
     IDefaultMaterial::Initialize();
-}
-
-bool    DefaultMaterial<Colored>::Configure(Drawable &drawable)
-{
-    GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
-    _program.Enable();
-    for (unsigned int i = 0; i < desc.Size(); ++i)
-    {
-        if (desc[i].Name == ComponentsName::Coord)
-            desc[i].IndexAttrib = _program.Attrib(0);
-        else if (desc[i].Name == ComponentsName::Color)
-            desc[i].IndexAttrib = _program.Attrib(1);
-    }
-    return true;
-}
-
-void    DefaultMaterial<Colored>::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
-{
-    drawable.Enable();
-    _program.Enable(); // enable the shader
-
-    _program.SetUniform(0, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
-
-    drawable.Render(); // render the object
-
-    drawable.Disable();
 }
 
 //----------------------
@@ -81,38 +129,11 @@ void    DefaultMaterial<Colored2d>::Initialize()
     _program.Attach(Colored2dFragmentShader, GL::Enum::FragmentShader, "BasicColored2dFragmentShader");
     _program.Link();
     _program.Enable();
-    _program.UseUniformLocation("MVPMatrix");
-    _program.UseAttribLocation("InCoord");
-    _program.UseAttribLocation("InColor");
+    _uniformMVP = _program.GetUniformLocation("MVPMatrix");
+    _attribCoord = _program.GetAttribLocation("InCoord");
+    _attribColor = _program.GetAttribLocation("InColor");
     IDefaultMaterial::Initialize();
 }
-
-bool    DefaultMaterial<Colored2d>::Configure(Drawable &drawable)
-{
-    GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
-    _program.Enable();
-    for (unsigned int i = 0; i < desc.Size(); ++i)
-    {
-        if (desc[i].Name == ComponentsName::Coord)
-            desc[i].IndexAttrib = _program.Attrib(0);
-        else if (desc[i].Name == ComponentsName::Color)
-            desc[i].IndexAttrib = _program.Attrib(1);
-    }
-    return true;
-}
-
-void    DefaultMaterial<Colored2d>::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
-{
-    drawable.Enable();
-    _program.Enable(); // enable the shader
-
-    _program.SetUniform(0, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
-
-    drawable.Render(); // render the object
-
-    drawable.Disable();
-}
-
 
 //----------------------
 //       Textured
@@ -123,54 +144,13 @@ void    DefaultMaterial<Textured>::Initialize()
     _program.Attach(TexturedFragmentShader, GL::Enum::FragmentShader, "BasicTexturedFragmentShader");
     _program.Link();
     _program.Enable();
-    _program.UseUniformLocation("MVPMatrix");
-    _program.UseUniformLocation("Textured");
-    _program.UseUniformLocation("TextureId");
-    _program.UseAttribLocation("InCoord");
-    _program.UseAttribLocation("InTexCoord");
-    _program.UseAttribLocation("InColor");
+    _uniformMVP = _program.GetUniformLocation("MVPMatrix");
+    _uniformTextured = _program.GetUniformLocation("Textured");
+    _uniformTexturedId = _program.GetUniformLocation("TextureId");
+    _attribCoord = _program.GetAttribLocation("InCoord");
+    _attribTexCoord = _program.GetAttribLocation("InTexCoord");
+    _attribColor = _program.GetAttribLocation("InColor");
     IDefaultMaterial::Initialize();
-}
-
-bool    DefaultMaterial<Textured>::Configure(Drawable &drawable)
-{
-    GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
-    _program.Enable();
-    for (unsigned int i = 0; i < desc.Size(); ++i)
-    {
-        if (desc[i].Name == ComponentsName::Coord)
-            desc[i].IndexAttrib = _program.Attrib(0);
-        else if (desc[i].Name == ComponentsName::TexCoord)
-            desc[i].IndexAttrib = _program.Attrib(1);
-        else if (desc[i].Name == ComponentsName::Color)
-            desc[i].IndexAttrib = _program.Attrib(2);
-    }
-    return true;
-}
-
-void    DefaultMaterial<Textured>::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
-{
-    drawable.Enable();
-    _program.Enable(); // enable the shader
-
-    _program.SetUniform(0, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
-
-    bool textured = (drawable.Config->Textures.Size() > 0 &&
-                     drawable.Config->Textures[0].IsValid() &&
-                     drawable.Config->Textures[0].Is2d());
-    _program.SetUniform(1, textured);
-    if (textured)
-    {
-        _program.SetUniform(2, 0);
-        GL::State::Current().ActiveTexture(0);
-        drawable.Config->Textures[0].Enable();
-    }
-
-    drawable.Render(); // render the object
-    drawable.Disable();
-
-    if (textured)
-        drawable.Config->Textures[0].Disable();
 }
 
 //----------------------
@@ -182,55 +162,13 @@ void    DefaultMaterial<Textured2d>::Initialize()
     _program.Attach(Textured2dFragmentShader, GL::Enum::FragmentShader, "BasicTextured2dFragmentShader");
     _program.Link();
     _program.Enable();
-    _program.UseUniformLocation("MVPMatrix");
-    _program.UseUniformLocation("Textured");
-    _program.UseUniformLocation("TextureId");
-    _program.UseAttribLocation("InCoord");
-    _program.UseAttribLocation("InTexCoord");
-    _program.UseAttribLocation("InColor");
+    _uniformMVP = _program.GetUniformLocation("MVPMatrix");
+    _uniformTextured = _program.GetUniformLocation("Textured");
+    _uniformTexturedId = _program.GetUniformLocation("TextureId");
+    _attribCoord = _program.GetAttribLocation("InCoord");
+    _attribTexCoord = _program.GetAttribLocation("InTexCoord");
+    _attribColor = _program.GetAttribLocation("InColor");
     IDefaultMaterial::Initialize();
-}
-
-bool    DefaultMaterial<Textured2d>::Configure(Drawable &drawable)
-{
-    GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
-    _program.Enable();
-    for (unsigned int i = 0; i < desc.Size(); ++i)
-    {
-        if (desc[i].Name == ComponentsName::Coord)
-            desc[i].IndexAttrib = _program.Attrib(0);
-        else if (desc[i].Name == ComponentsName::TexCoord)
-            desc[i].IndexAttrib = _program.Attrib(1);
-        else if (desc[i].Name == ComponentsName::Color)
-            desc[i].IndexAttrib = _program.Attrib(2);
-    }
-    return true;
-}
-
-void    DefaultMaterial<Textured2d>::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
-{
-    drawable.Enable();
-    _program.Enable(); // enable the shader
-
-    _program.SetUniform(0, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
-
-    // Attention, on veut une texture 2d
-    bool textured = (drawable.Config->Textures.Size() > 0 &&
-                     drawable.Config->Textures[0].IsValid() &&
-                     drawable.Config->Textures[0].Is2d());
-    _program.SetUniform(1, textured);
-    if (textured)
-    {
-        _program.SetUniform(2, 0);
-        GL::State::Current().ActiveTexture(0);
-        drawable.Config->Textures[0].Enable();
-    }
-
-    drawable.Render(); // render the object
-    drawable.Disable();
-
-    if (textured)
-        drawable.Config->Textures[0].Disable();
 }
 
 //----------------------
@@ -242,29 +180,13 @@ void    DefaultMaterial<Textured3d>::Initialize()
     _program.Attach(Textured3dFragmentShader, GL::Enum::FragmentShader, "BasicTextured3dFragmentShader");
     _program.Link();
     _program.Enable();
-    _program.UseUniformLocation("MVPMatrix");
-    _program.UseUniformLocation("Textured");
-    _program.UseUniformLocation("TextureId");
-    _program.UseAttribLocation("InCoord");
-    _program.UseAttribLocation("InTexCoord");
-    _program.UseAttribLocation("InColor");
+    _uniformMVP = _program.GetUniformLocation("MVPMatrix");
+    _uniformTextured = _program.GetUniformLocation("Textured");
+    _uniformTexturedId = _program.GetUniformLocation("TextureId");
+    _attribCoord = _program.GetAttribLocation("InCoord");
+    _attribTexCoord = _program.GetAttribLocation("InTexCoord");
+    _attribColor = _program.GetAttribLocation("InColor");
     IDefaultMaterial::Initialize();
-}
-
-bool    DefaultMaterial<Textured3d>::Configure(Drawable &drawable)
-{
-    GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
-    _program.Enable();
-    for (unsigned int i = 0; i < desc.Size(); ++i)
-    {
-        if (desc[i].Name == ComponentsName::Coord)
-            desc[i].IndexAttrib = _program.Attrib(0);
-        else if (desc[i].Name == ComponentsName::TexCoord)
-            desc[i].IndexAttrib = _program.Attrib(1);
-        else if (desc[i].Name == ComponentsName::Color)
-            desc[i].IndexAttrib = _program.Attrib(2);
-    }
-    return true;
 }
 
 void    DefaultMaterial<Textured3d>::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
@@ -272,15 +194,15 @@ void    DefaultMaterial<Textured3d>::Render(SceneGraph *scene, const TMatrix &mo
     drawable.Enable();
     _program.Enable(); // enable the shader
 
-    _program.SetUniform(0, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
+    _program.SetUniform(_uniformMVP, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
 
     bool textured = (drawable.Config->Textures.Size() > 0 &&
                      drawable.Config->Textures[0].IsValid() &&
                      drawable.Config->Textures[0].IsCubeMap());
-    _program.SetUniform(1, textured);
+    _program.SetUniform(_uniformTextured, textured);
     if (textured)
     {
-        _program.SetUniform(2, 0);
+        _program.SetUniform(_uniformTexturedId, 0);
         GL::State::Current().ActiveTexture(0);
         drawable.Config->Textures[0].Enable();
     }

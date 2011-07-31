@@ -80,7 +80,12 @@ void GameEngine::LoadContent()
   lightEffect->Lights().push_back(light3);
 
   lightEffect->AddChild(_sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
-  lightEffect->Configure();
+
+    // creation de la gui avec le fps widget
+    _sceneGUI = new GUI::SceneGraph();
+    _sceneGUI->AddChild(new Camera2d());
+    _sceneGUI->AddChild(new GUI::FPSWidget());
+    _graphic->GetSceneManager().AddScene(_sceneGUI);
 }
 
 void GameEngine::Update(float runningTime)

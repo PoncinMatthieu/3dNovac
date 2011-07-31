@@ -56,22 +56,14 @@ namespace Nc
                 bool    _initialized;       ///< the init statement
         };
 
-        /** Template Base class of a Default Material, this class specialized with the different vertex types */
-        template<typename VertexType>
-        class DefaultMaterial   {};
-
-        /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored
-        template<>
-        class DefaultMaterial<DefaultVertexType::Colored> : public IDefaultMaterial
+        /// Interface to define a default colored material
+        class DefaultMaterialColored : public IDefaultMaterial
         {
             public:
-                DefaultMaterial()
-                    : IDefaultMaterial("DefaultMaterial<Colored>")      {}
-                ~DefaultMaterial()      {}
+                DefaultMaterialColored(const std::string &name);
 
-                static unsigned int    GetDescriptorPriority()          {return DefaultVertexType::Colored::GetDescriptorPriority();}
-
-                virtual void    Initialize();
+                /** Initialize the material */
+                virtual void    Initialize() = 0;
 
                 /** configure the goemetry to render it with the good attributes */
                 virtual bool    Configure(Drawable &drawable);
@@ -81,98 +73,116 @@ namespace Nc
 
             protected:
                 GL::Program     _program;            ///< the shader used to render the drawable
+                unsigned int    _uniformMVP;
+                unsigned int    _attribCoord;
+                unsigned int    _attribColor;
+        };
+
+        /// Interface to define a default textured material
+        class DefaultMaterialTextured : public IDefaultMaterial
+        {
+            public:
+                DefaultMaterialTextured(const std::string &name);
+
+                /** Initialize the material */
+                virtual void    Initialize() = 0;
+
+                /** configure the goemetry to render it with the good attributes */
+                virtual bool    Configure(Drawable &drawable);
+
+                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
+
+            protected:
+                GL::Program     _program;            ///< the shader used to render the drawable
+                unsigned int    _uniformMVP;
+                unsigned int    _uniformTextured;
+                unsigned int    _uniformTexturedId;
+                unsigned int    _attribCoord;
+                unsigned int    _attribTexCoord;
+                unsigned int    _attribColor;
+        };
+
+        /** Template Base class of a Default Material, this class specialized with the different vertex types */
+        template<typename VertexType>
+        class DefaultMaterial   {};
+
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored
+        template<>
+        class DefaultMaterial<DefaultVertexType::Colored> : public DefaultMaterialColored
+        {
+            public:
+                DefaultMaterial()
+                    : DefaultMaterialColored("DefaultMaterial<Colored>")      {}
+
+                /** \return the descriptor priority used to determine the best default material */
+                static unsigned int    GetDescriptorPriority()          {return DefaultVertexType::Colored::GetDescriptorPriority();}
+
+                /** Initialize the material */
+                virtual void    Initialize();
         };
 
         /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored2d
         template<>
-        class DefaultMaterial<DefaultVertexType::Colored2d> : public IDefaultMaterial
+        class DefaultMaterial<DefaultVertexType::Colored2d> : public DefaultMaterialColored
         {
             public:
                 DefaultMaterial()
-                    : IDefaultMaterial("DefaultMaterial<Colored2d>")      {}
-                ~DefaultMaterial()     {}
+                    : DefaultMaterialColored("DefaultMaterial<Colored2d>")      {}
 
+                /** \return the descriptor priority used to determine the best default material */
                 static unsigned int    GetDescriptorPriority()         {return DefaultVertexType::Colored2d::GetDescriptorPriority();}
 
+                /** Initialize the material */
                 virtual void    Initialize();
-
-                /** configure the goemetry to render it with the good attributes */
-                virtual bool    Configure(Drawable &drawable);
-
-                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
-
-            protected:
-                GL::Program     _program;        ///< the shader used to render the drawable
         };
 
         /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured
         template<>
-        class DefaultMaterial<DefaultVertexType::Textured> : public IDefaultMaterial
+        class DefaultMaterial<DefaultVertexType::Textured> : public DefaultMaterialTextured
         {
             public:
                 DefaultMaterial()
-                    : IDefaultMaterial("DefaultMaterial<Textured>")      {}
-                ~DefaultMaterial()      {}
+                    : DefaultMaterialTextured("DefaultMaterial<Textured>")      {}
 
+                /** \return the descriptor priority used to determine the best default material */
                 static unsigned int    GetDescriptorPriority()         {return DefaultVertexType::Textured::GetDescriptorPriority();}
 
+                /** Initialize the material */
                 virtual void    Initialize();
-
-                /** configure the goemetry to render it with the good attributes */
-                virtual bool    Configure(Drawable &drawable);
-
-                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
-
-            protected:
-                GL::Program     _program;                ///< the shader used to render the drawable
         };
 
         /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured2d
         template<>
-        class DefaultMaterial<DefaultVertexType::Textured2d> : public IDefaultMaterial
+        class DefaultMaterial<DefaultVertexType::Textured2d> : public DefaultMaterialTextured
         {
             public:
                 DefaultMaterial()
-                    : IDefaultMaterial("DefaultMaterial<Textured2d>")      {}
-                ~DefaultMaterial()      {}
+                    : DefaultMaterialTextured("DefaultMaterial<Textured2d>")      {}
 
+                /** \return the descriptor priority used to determine the best default material */
                 static unsigned int    GetDescriptorPriority()         {return DefaultVertexType::Textured2d::GetDescriptorPriority();}
 
+                /** Initialize the material */
                 virtual void    Initialize();
-
-                /** configure the goemetry to render it with the good attributes */
-                virtual bool    Configure(Drawable &drawable);
-
-                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
-                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
-
-            protected:
-                GL::Program     _program;                ///< the shader used to render the drawable
         };
 
         /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured3d
         template<>
-        class DefaultMaterial<DefaultVertexType::Textured3d> : public IDefaultMaterial
+        class DefaultMaterial<DefaultVertexType::Textured3d> : public DefaultMaterialTextured
         {
             public:
                 DefaultMaterial()
-                    : IDefaultMaterial("DefaultMaterial<Textured3d>")      {}
-                ~DefaultMaterial()      {}
+                    : DefaultMaterialTextured("DefaultMaterial<Textured3d>")      {}
 
+                /** \return the descriptor priority used to determine the best default material */
                 static unsigned int    GetDescriptorPriority()         {return DefaultVertexType::Textured3d::GetDescriptorPriority();}
 
+                /** Initialize the material */
                 virtual void    Initialize();
-
-                /** configure the goemetry to render it with the good attributes */
-                virtual bool    Configure(Drawable &drawable);
 
                 /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
-
-            protected:
-                GL::Program     _program;                ///< the shader used to render the drawable
         };
     }
 }

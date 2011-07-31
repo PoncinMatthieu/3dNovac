@@ -55,20 +55,20 @@ namespace Nc
                     unsigned int        CharCount(Nc::UInt32 c) const;
 
                     /** Convert and return the unicode string in standard std::string */
-                    const std::string   &ToStdString() const;
+                    std::string         ToStdString() const;
+                    /** Convert and return the unicode string in standard std::string into the given std::string */
+                    std::string         &ToStdString(std::string &str) const;
 
                     /** Convert and return the unicode string in standard std::wstring */
-                    const std::wstring  &ToStdWString() const;
+                    std::wstring        ToStdWString() const;
+                    /** Convert and return the unicode string in standard std::wstring into the given std::wstring */
+                    std::wstring        &ToStdWString(std::wstring &str) const;
 
                     friend std::ostream& operator << (std::ostream& os, const UTF32& s)
                     {
                         os << s.ToStdString();
                         return os;
                     }
-
-                private:
-                    static std::string      _globalStdString;       // global std::string to avoid any copy of the returned converted string in `ToStdString`.
-                    static std::wstring     _globalStdWString;      // global std::wstring to avoid any copy of the returned converted string in `ToStdWString`.
             };
         }
     }

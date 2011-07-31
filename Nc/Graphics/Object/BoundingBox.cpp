@@ -33,11 +33,62 @@ using namespace Nc::Graphic;
 
 Drawable            *BoundingBox::_drawable = NULL;
 IDefaultMaterial    *BoundingBox::_material = NULL;
+Color               BoundingBox::_color(1,1,1);
 
 BoundingBox::BoundingBox()
-    : Object(ClassName()), _color(1,1,1)
+    : Object(ClassName())
 {
-    CreateGeometry();
+}
+
+BoundingBox::BoundingBox(const Box3f &box)
+    : Object(), Box3f(box)
+{
+}
+
+BoundingBox::BoundingBox(const Vector3f &min, const Vector3f &max)
+    : Object(), Box3f(min, max)
+{
+}
+
+BoundingBox::~BoundingBox()
+{
+}
+
+void BoundingBox::CreateGeometry()
+{
+    Array<DefaultVertexType::Colored, 8>  vertices;
+    Array<unsigned int, 12*2>           indices;
+
+    vertices[0].Fill(0, 0, 0, _color);
+    vertices[1].Fill(1, 0, 0, _color);
+    vertices[2].Fill(1, 1, 0, _color);
+    vertices[3].Fill(0, 1, 0, _color);
+    vertices[4].Fill(0, 0, 1, _color);
+    vertices[5].Fill(1, 0, 1, _color);
+    vertices[6].Fill(1, 1, 1, _color);
+    vertices[7].Fill(0, 1, 1, _color);
+
+    indices[0] = 0;     indices[1] = 1;
+    indices[2] = 1;     indices[3] = 2;
+    indices[4] = 2;     indices[5] = 3;
+    indices[6] = 0;     indices[7] = 3;
+    indices[8] = 4;     indices[9] = 0;
+    indices[10] = 1;    indices[11] = 5;
+    indices[12] = 2;    indices[13] = 6;
+    indices[14] = 3;    indices[15] = 7;
+    indices[16] = 4;    indices[17] = 5;
+    indices[18] = 5;    indices[19] = 6;
+    indices[20] = 6;    indices[21] = 7;
+    indices[22] = 4;    indices[23] = 7;
+
+    _drawable = new Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines);
+}
+
+void BoundingBox::Draw(SceneGraph *scene)
+{
+    // creation de la geometry
+    if (_drawable == NULL)
+        CreateGeometry();
 
     // recup le default material
     if (_material == NULL)
@@ -52,61 +103,35 @@ BoundingBox::BoundingBox()
             throw Utils::Exception("BoundingBox", "Can't find a default Material for the bounding box.");
         }
     }
-}
 
-BoundingBox::BoundingBox(const Box3f &box)
-    : Object(), Box3f(box), _color(1,1,1)
-{
-    CreateGeometry();
-}
-
-BoundingBox::BoundingBox(const Vector3f &min, const Vector3f &max)
-    : Object(), Box3f(min, max), _color(1,1,1)
-{
-    CreateGeometry();
-}
-
-BoundingBox::~BoundingBox()
-{
-}
-
-void BoundingBox::CreateGeometry()
-{
-    if (_drawable == NULL)
-    {
-        Array<DefaultVertexType::Colored, 8>  vertices;
-        Array<unsigned int, 12*2>           indices;
-
-        vertices[0].Fill(0, 0, 0, _color);
-        vertices[1].Fill(1, 0, 0, _color);
-        vertices[2].Fill(1, 1, 0, _color);
-        vertices[3].Fill(0, 1, 0, _color);
-        vertices[4].Fill(0, 0, 1, _color);
-        vertices[5].Fill(1, 0, 1, _color);
-        vertices[6].Fill(1, 1, 1, _color);
-        vertices[7].Fill(0, 1, 1, _color);
-
-        indices[0] = 0;     indices[1] = 1;
-        indices[2] = 1;     indices[3] = 2;
-        indices[4] = 2;     indices[5] = 3;
-        indices[6] = 0;     indices[7] = 3;
-        indices[8] = 4;     indices[9] = 0;
-        indices[10] = 1;    indices[11] = 5;
-        indices[12] = 2;    indices[13] = 6;
-        indices[14] = 3;    indices[15] = 7;
-        indices[16] = 4;    indices[17] = 5;
-        indices[18] = 5;    indices[19] = 6;
-        indices[20] = 6;    indices[21] = 7;
-        indices[22] = 4;    indices[23] = 7;
-
-        _drawable = new Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines);
-    }
-}
-
-void BoundingBox::Draw(SceneGraph *scene)
-{
     Matrix.Scale(_max - _min);
     Matrix.AddTranslation(_min);
     _material->Render(scene, scene->ModelMatrix() * Matrix, *_drawable);
+}
+
+void BoundingBox::Draw(const Box3f &box, SceneGraph *scene)
+{
+    // creation de la geometry
+    if (_drawable == NULL)
+        CreateGeometry();
+
+    // recup le default material
+    if (_material == NULL)
+    {
+        _material = FactoryDefaultMaterials::Instance().GetBestMaterial(_drawable);
+        if (_material != NULL)
+            _material->Configure(*_drawable);
+        else
+        {
+            delete _drawable;
+            _drawable = NULL;
+            throw Utils::Exception("BoundingBox", "Can't find a default Material for the bounding box.");
+        }
+    }
+
+    TMatrix m;
+    m.Scale(box.Max() - box.Min());
+    m.AddTranslation(box.Min());
+    _material->Render(scene, scene->ModelMatrix() * m, *_drawable);
 }
 

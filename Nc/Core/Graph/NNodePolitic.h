@@ -43,13 +43,21 @@ namespace Nc
                 typedef Math::Array<NodeType*, NbChilds>        ContainerType;
 
             public:
-                NNodePolitic()                                      : NodePolitic()                 {_childs.Init(NULL);}
-                NNodePolitic(const T &data)                         : NodePolitic(data)             {_childs.Init(NULL);}
-                NNodePolitic(NodeType *parent)                      : NodePolitic(parent)           {_childs.Init(NULL);}
-                NNodePolitic(const T &data, NodeType *parent)       : NodePolitic(data, parent)     {_childs.Init(NULL);}
+                NNodePolitic()                                      : NodePolitic(), _shouldBeDelete(true)                  {_childs.Init(NULL);}
+                NNodePolitic(const T &data)                         : NodePolitic(data), _shouldBeDelete(true)              {_childs.Init(NULL);}
+                NNodePolitic(NodeType *parent)                      : NodePolitic(parent), _shouldBeDelete(true)            {_childs.Init(NULL);}
+                NNodePolitic(const T &data, NodeType *parent)       : NodePolitic(data, parent), _shouldBeDelete(true)      {_childs.Init(NULL);}
                 NNodePolitic(const NNodePolitic &nn);
                 NNodePolitic &operator = (const NNodePolitic &nn);
                 ~NNodePolitic();
+
+                /**
+                    If the given boolean is set to true, the node will be deleted with it's parents.
+                    The default statement is true.
+                */
+                void                ShouldBeDeleted(bool del)           {_shouldBeDelete = del;}
+                /** \return true if the node will be deleted with it's parents */
+                bool                ShouldBeDeleted() const             {return _shouldBeDelete;}
 
                 /** \return the childs of the node */
                 ContainerType       &Childs()                           {return _childs;}
@@ -71,10 +79,20 @@ namespace Nc
                 /** Remove the childs of the node */
                 void                RemoveChilds();
                 /**
-                    Remove the given child and dealocate it with the allocator.
-                    \return true if the node has been found and removed
+                    Remove the child at the given position and dealocate it with the allocator if the node should be deleted.
+                    \return true if the node has been found and removed.
+                */
+                bool                RemoveChild(unsigned int at);
+                /**
+                    Remove the given child and dealocate it with the allocator if the node should be deleted.
+                    \return true if the node has been found and removed.
                 */
                 bool                RemoveChild(NodeType *n);
+                /**
+                    Remove the given child and dealocate it with the allocator if the node should be deleted. Search the node throuth the childs by recursion.
+                    \return true if the node has been found and removed.
+                */
+                bool                RemoveChildRecursif(NodeType *n);
 
                 /** Extract all data's leafs of the node into the given list */
                 void                ExtractLeaf(std::list<T> &leafs) const;
@@ -82,6 +100,7 @@ namespace Nc
                 void                ExtractChilds(std::list<T> &childs) const;
 
             protected:
+                bool                _shouldBeDelete;    ///< boolean to determine if the node should be deleted at the destruction of it's parents
                 ContainerType       _childs;            ///< the childs Array of the node
                 Allocator           _alloc;             ///< the allocator use to allocate and construct the childs node
         };
@@ -95,13 +114,21 @@ namespace Nc
                 typedef std::list<NodeType*>                ContainerType;
 
             public:
-                NNodePolitic()                                      : NodePolitic()                 {}
-                NNodePolitic(const T &data)                         : NodePolitic(data)             {}
-                NNodePolitic(NodeType *parent)                      : NodePolitic(parent)           {}
-                NNodePolitic(const T &data, NodeType *parent)       : NodePolitic(data, parent)     {}
+                NNodePolitic()                                      : NodePolitic(), _shouldBeDelete(true)                  {}
+                NNodePolitic(const T &data)                         : NodePolitic(data), _shouldBeDelete(true)              {}
+                NNodePolitic(NodeType *parent)                      : NodePolitic(parent), _shouldBeDelete(true)            {}
+                NNodePolitic(const T &data, NodeType *parent)       : NodePolitic(data, parent), _shouldBeDelete(true)      {}
                 NNodePolitic(const NNodePolitic &nn);
                 NNodePolitic &operator = (const NNodePolitic &nn);
                 ~NNodePolitic();
+
+                /**
+                    If the given boolean is set to true, the node will be deleted with it's parents.
+                    The default statement is true.
+                */
+                void                ShouldBeDeleted(bool del)           {_shouldBeDelete = del;}
+                /** \return true if the node will be deleted with it's parents */
+                bool                ShouldBeDeleted() const             {return _shouldBeDelete;}
 
                 /** \return the childs of the node */
                 ContainerType       &Childs()                           {return _childs;}
@@ -121,18 +148,34 @@ namespace Nc
                 const NodeType      *Child(unsigned int i) const;
 
                 /**
-                    Add a child to the node.
+                    Add a child into the node.
                     Automaticaly set the parent of the child.
                 */
                 void                AddChild(NodeType *child)           {child->SetParent(static_cast<NodeType*>(this)); _childs.push_back(child);}
 
+                /**
+                    Insert a child into the node at the given position.
+                    Automaticaly set the parent of the child.
+                */
+                void                InsertChild(NodeType *child, unsigned int at);
+
                 /** Remove the childs of the node */
                 void                RemoveChilds();
                 /**
-                    Remove the given child and dealocate it with the allocator.
-                    \return true if the node has been found and removed
+                    Remove the child at the given position and dealocate it with the allocator if the node should be deleted.
+                    \return true if the node has been found and removed.
+                */
+                bool                RemoveChild(unsigned int at);
+                /**
+                    Remove the given child and dealocate it with the allocator if the node should be deleted.
+                    \return true if the node has been found and removed.
                 */
                 bool                RemoveChild(NodeType *n);
+                /**
+                    Remove the given child and dealocate it with the allocator if the node should be deleted. Search the node throuth the childs by recursion.
+                    \return true if the node has been found and removed.
+                */
+                bool                RemoveChildRecursif(NodeType *n);
 
                 /** Extract all data's leafs of the node into the given list */
                 void                ExtractLeaf(std::list<T> &leafs) const;
@@ -140,8 +183,9 @@ namespace Nc
                 void                ExtractChilds(std::list<T> &childs) const;
 
             protected:
-                ContainerType       _childs;        ///< the child list of the node
-                Allocator           _alloc;         ///< the allocator used to allocate and construct the childs node
+                bool                _shouldBeDelete;    ///< boolean to determine if the node should be deleted at the destruction of it's parents
+                ContainerType       _childs;            ///< the child list of the node
+                Allocator           _alloc;             ///< the allocator used to allocate and construct the childs node
         };
 
         /// Politic to used to define a node with a list of childs
@@ -161,6 +205,7 @@ namespace Nc
         NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::NNodePolitic(const NNodePolitic &nn)
             : NodePolitic(nn)
         {
+            _shouldBeDelete = nn._shouldBeDelete;
             for (unsigned int i = 0; i < NbChilds; ++i)
             {
                 if (nn._childs.Data[i] != NULL)
@@ -176,12 +221,13 @@ namespace Nc
         template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
         NNodePolitic<T,NodeType,NbChilds,Graph,Allocator> &NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::operator = (const NNodePolitic &nn)
         {
+            _shouldBeDelete = nn._shouldBeDelete;
             for (unsigned int i = 0; i < NbChilds; ++i)
             {
                 if (_childs.Data[i] != NULL)
                 {
                     _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                    if (_childs.Data[i]->IsRoot())
+                    if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
                         _alloc.Deallocate(_childs.Data[i]);
                 }
                 if (nn._childs.Data[i] != NULL)
@@ -199,6 +245,7 @@ namespace Nc
         NNodePolitic<T,NodeType,0,Graph,Allocator>::NNodePolitic(const NNodePolitic &nn)
             : NodePolitic(nn)
         {
+            _shouldBeDelete = nn._shouldBeDelete;
             for (typename ContainerType::const_iterator it = nn._childs.begin(); it != nn._childs.end(); ++it)
             {
                 if (*it != NULL)
@@ -213,12 +260,13 @@ namespace Nc
         template<typename T, class NodeType, bool Graph, class Allocator>
         NNodePolitic<T,NodeType,0,Graph,Allocator> &NNodePolitic<T,NodeType,0,Graph,Allocator>::operator = (const NNodePolitic &nn)
         {
+            _shouldBeDelete = nn._shouldBeDelete;
             // free
             for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end(); it = _childs.erase(it))
                 if (*it != NULL)
                 {
                     (*it)->UnParent(static_cast<NodeType*>(this));
-                    if ((*it)->IsRoot())
+                    if ((*it)->_shouldBeDelete && (*it)->IsRoot())
                         _alloc.Deallocate(*it);
                 }
             // copy
@@ -237,12 +285,18 @@ namespace Nc
         template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
         NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::~NNodePolitic()
         {
+            bool lastState = _shouldBeDelete;
+            _shouldBeDelete = false;
+            while (!NodePolitic::_parents.empty())
+                (*NodePolitic::_parents.begin())->RemoveChild(static_cast<NodeType*>(this));
+            _shouldBeDelete = lastState;
+
             for (unsigned int i = 0; i < NbChilds; ++i)
             {
                 if (_childs.Data[i] != NULL)
                 {
                     _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                    if (_childs.Data[i]->IsRoot())
+                    if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
                         _alloc.Deallocate(_childs.Data[i]);
                 }
             }
@@ -251,10 +305,16 @@ namespace Nc
         template<typename T, class NodeType, bool Graph, class Allocator>
         NNodePolitic<T,NodeType,0,Graph,Allocator>::~NNodePolitic()
         {
+            bool lastState = _shouldBeDelete;
+            _shouldBeDelete = false;
+            while (!NodePolitic::_parents.empty())
+                (*NodePolitic::_parents.begin())->RemoveChild(static_cast<NodeType*>(this));
+            _shouldBeDelete = lastState;
+
             for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
             {
                 (*it)->UnParent(static_cast<NodeType*>(this));
-                if ((*it)->IsRoot())
+                if ((*it)->_shouldBeDelete && (*it)->IsRoot())
                     _alloc.Deallocate(*it);
             }
         }
@@ -283,6 +343,20 @@ namespace Nc
             return NULL;
         }
 
+        template<typename T, class NodeType, bool Graph, class Allocator>
+        void    NNodePolitic<T,NodeType,0,Graph,Allocator>::InsertChild(NodeType *child, unsigned int at)
+        {
+            child->SetParent(static_cast<NodeType*>(this));
+            if (_childs.empty())
+                _childs.push_back(child);
+            else
+            {
+                typename ContainerType::iterator it = _childs.begin();
+                for (unsigned int i = 0; (i+1) <= at && it != _childs.end(); ++it, ++i);
+                _childs.insert(it, child);
+            }
+        }
+
         template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
         void    NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::RemoveChilds()
         {
@@ -291,7 +365,7 @@ namespace Nc
                 if (_childs.Data[i] != NULL)
                 {
                     _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                    if (_childs.Data[i]->IsRoot())
+                    if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
                         _alloc.Deallocate(_childs.Data[i]);
                     _childs.Data[i] = NULL;
                 }
@@ -306,7 +380,7 @@ namespace Nc
                 if ((*it) != NULL)
                 {
                     (*it)->UnParent(static_cast<NodeType*>(this));
-                    if ((*it)->IsRoot())
+                    if ((*it)->_shouldBeDelete && (*it)->IsRoot())
                         _alloc.Deallocate(*it);
                 }
                 it = _childs.erase(it);
@@ -314,27 +388,80 @@ namespace Nc
         }
 
         template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
-        bool    NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::RemoveChild(NodeType *n)
+        bool    NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::RemoveChild(unsigned int at)
         {
-            if (n != NULL)
+            if (at < NbChilds)
             {
-                unsigned int i = 0;
-                for (; i < NbChilds; ++i)
+                for (unsigned int i = 0; i < NbChilds; ++i)
                 {
-                    if (_childs.Data[i] == n)
+                    if (i == at)
                     {
                         _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                        if (_childs.Data[i]->IsRoot())
+                        if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
                             _alloc.Deallocate(_childs.Data[i]);
                         _childs.Data[i] = NULL;
                         return true;
                     }
                 }
-                for (i = 0; i < NbChilds; ++i)
+            }
+            return false;
+        }
+
+        template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
+        bool    NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::RemoveChild(NodeType *n)
+        {
+            if (n != NULL)
+            {
+                for (unsigned int i = 0; i < NbChilds; ++i)
+                {
+                    if (_childs.Data[i] == n)
+                    {
+                        _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
+                        if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
+                            _alloc.Deallocate(_childs.Data[i]);
+                        _childs.Data[i] = NULL;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
+        bool    NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::RemoveChildRecursif(NodeType *n)
+        {
+            if (n != NULL)
+            {
+                if (RemoveChild(n))
+                    return true;
+                for (unsigned int i = 0; i < NbChilds; ++i)
                 {
                     if (_childs.Data[i] != NULL)
-                        if (_childs.Data[i]->RemoveChild(n))
+                    {
+                        if (_childs.Data[i]->RemoveChildRecursif(n))
                             return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        template<typename T, class NodeType, bool Graph, class Allocator>
+        bool    NNodePolitic<T,NodeType,0,Graph,Allocator>::RemoveChild(unsigned int at)
+        {
+            if (at < _childs.size())
+            {
+                unsigned int i = 0;
+                for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it, ++i)
+                {
+                    if (i == at)
+                    {
+                        (*it)->UnParent(static_cast<NodeType*>(this));
+                        if ((*it)->_shouldBeDelete && (*it)->IsRoot())
+                            _alloc.Deallocate(*it);
+                        _childs.erase(it);
+                        return true;
+                    }
                 }
             }
             return false;
@@ -345,21 +472,31 @@ namespace Nc
         {
             if (n != NULL)
             {
-                typename ContainerType::iterator it = _childs.begin();
-                for (; it != _childs.end(); ++it)
+                for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
                 {
                     if ((*it) == n)
                     {
                         (*it)->UnParent(static_cast<NodeType*>(this));
-                        if ((*it)->IsRoot())
+                        if ((*it)->_shouldBeDelete && (*it)->IsRoot())
                             _alloc.Deallocate(*it);
                         _childs.erase(it);
                         return true;
                     }
                 }
-                for (it = _childs.begin(); it != _childs.end(); ++it)
+            }
+            return false;
+        }
+
+        template<typename T, class NodeType, bool Graph, class Allocator>
+        bool    NNodePolitic<T,NodeType,0,Graph,Allocator>::RemoveChildRecursif(NodeType *n)
+        {
+            if (n != NULL)
+            {
+                if (RemoveChild(n))
+                    return true;
+                for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
                 {
-                    if ((*it)->RemoveChild(n))
+                    if ((*it)->RemoveChildRecursif(n))
                         return true;
                 }
             }

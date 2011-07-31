@@ -67,6 +67,11 @@ namespace Nc
                 virtual unsigned int        ChildCount() const = 0;
                 /** \return the good child with the given \p index */
                 virtual const ISceneNode    *Child(unsigned int i) const = 0;
+                /**
+                    Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given ]p oldAt.
+                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible)
+                */
+                virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt) = 0;
 
                 /** \return the number of subtree */
                 virtual unsigned int        SubTreeCount() const = 0;
@@ -84,13 +89,13 @@ namespace Nc
                 inline void                 Unlock()                                        {_mutex.Unlock();}
 
                 /** Set the enable statement of the node */
-                inline void                 Enable(bool status)                             {_enabled = status;}
+                virtual void                 Enable(bool status)                             {_enabled = status;}
                 /** Enable the node */
-                inline void                 Enable()                                        {_enabled = true;}
+                virtual void                 Enable()                                        {_enabled = true;}
                 /** Disable the node */
-                inline void                 Disable()                                       {_enabled = false;}
+                virtual void                 Disable()                                       {_enabled = false;}
                 /** \return the enable statement */
-                inline bool                 Enabled() const                                 {return _enabled;}
+                virtual bool                 Enabled() const                                 {return _enabled;}
 
             protected:
                 System::Mutex       _mutex;         ///< a mutex used to protect the node, (this mutex is lock at the render pass)
@@ -148,31 +153,40 @@ namespace Nc
                 typedef AbstractSceneNode<Graph::ListNodePolitic>            NodePolitic;
 
             public:
-                Entity()                                        : NodePolitic(ClassName())      {}
-                Entity(const char *className)                   : NodePolitic(className)        {}
-                Entity(const char *className, const TMatrix &m) : NodePolitic(className), Matrix(m) {}
-                Entity(const char *className, ISceneNode *data) : NodePolitic(className, data)  {}
-                Entity(const Entity &n)                         : NodePolitic(n)                {if (NodePolitic::Data != NULL) NodePolitic::Data = n.Data->Clone();}
-                Entity &operator = (const Entity &n)                                            {if (NodePolitic::Data != NULL) NodePolitic::Data = n.Data->Clone(); return *this;}
-                virtual ~Entity()                                                               {if (Data != NULL) delete Data;}
+                Entity();
+                Entity(const char *className);
+                Entity(const char *className, const TMatrix &m);
+                Entity(const char *className, ISceneNode *data);
+                Entity(const Entity &n);
+                Entity &operator = (const Entity &n);
+                virtual ~Entity();
 
                 static const char           *ClassName()                                        {return "Entity";}
                 virtual ISceneNode          *Clone() const                                      {return new Entity(*this);}
 
                 /** Render the node */
-                virtual void                Render(SceneGraph *scene)                           {_mutex.Lock(); RenderChilds(scene); _mutex.Unlock();}
+                virtual void                Render(SceneGraph *scene);
                 /** Update the node */
-                virtual void                Update(float elapsedTime)                           {UpdateChilds(elapsedTime);}
+                virtual void                Update(float elapsedTime);
 
                 /** \return the number of subtree witch can contain a least one subtree */
                 virtual unsigned int        SubTreeCount() const                                {return ((Data == NULL) ? 0 : 1);}
                 /** \return the subtree */
                 virtual const ISceneNode    *SubTree(unsigned int) const                        {return Data;}
 
+                /**
+                    Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given ]p oldAt.
+                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible)
+                */
+                virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt);
+
                 /** Render the childs and the subtrees */
                 void                        RenderChilds(SceneGraph *scene);
                 /** Update the childs and the subtrees */
                 void                        UpdateChilds(float elapsedTime);
+
+                /** \return false if the object or one of its parents has the enable statement to false */
+                bool                        EnabledRecursif() const;
 
             public:
                 TMatrix                     Matrix;                 ///< the matrix of the entity

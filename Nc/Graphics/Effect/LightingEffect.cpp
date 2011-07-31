@@ -39,9 +39,22 @@ LightingEffect::~LightingEffect()
 {
 }
 
-void        LightingEffect::Configure()
+void    LightingEffect::Render(SceneGraph *scene)
 {
-    Graphic::Object::SetMaterialFonctor f(_material);
-    ForEachChilds<false>(f);
+    if (!_enabled)
+        return;
+
+    bool activated = _activated;
+    if (activated)
+    {
+        scene->PushMaterial();
+        scene->Material() = _material;
+        _material->SetCurrentLightingEffect(this);
+    }
+
+    RenderChilds(scene);
+
+    if (activated)
+        scene->PopMaterial();
 }
 

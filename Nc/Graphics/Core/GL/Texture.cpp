@@ -81,19 +81,19 @@ int Texture::MaxSize()
     return _maxSize;
 }
 
-void Texture::CheckImage(const Image &image)
+void Texture::CheckSize(const Vector2ui &size)
 {
     int maxSize = MaxSize();
-    if ((image.Size().Data[0] > static_cast<unsigned int>(maxSize)) || (image.Size().Data[1] > static_cast<unsigned int>(maxSize)))
+    if ((size.Data[0] > static_cast<unsigned int>(maxSize)) || (size.Data[1] > static_cast<unsigned int>(maxSize)))
         throw Utils::Exception("Texture", "Failed to create texture, internal size too high (" +
-                                Utils::Convert::ToString(image.Size().Data[0]) + "x" + Utils::Convert::ToString(image.Size().Data[1]) +
+                                Utils::Convert::ToString(size.Data[0]) + "x" + Utils::Convert::ToString(size.Data[1]) +
                                 "), maxLargerSize:" + Utils::Convert::ToString(maxSize));
 
-    if (!Math::IsAPowerOf2(image.Size().Data[0]) || !Math::IsAPowerOf2(image.Size().Data[1]))
+    if (!Math::IsAPowerOf2(size.Data[0]) || !Math::IsAPowerOf2(size.Data[1]))
     {
         if (EXT.NonPowerOf2Supported())
             LOG_DEBUG << "Warning: To increse performance, please use a texture size of power of 2. " + _name + ":" +
-                        Utils::Convert::ToString(image.Size().Data[0]) + "/" + Utils::Convert::ToString(image.Size().Data[1]) << std::endl;
+                        Utils::Convert::ToString(size.Data[0]) + "/" + Utils::Convert::ToString(size.Data[1]) << std::endl;
         else
             throw Utils::Exception("Texture", "Can't create the texture: Texturing with a non power of two size is not supported on this plateform.");
     }
@@ -110,7 +110,9 @@ void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat
 {
     if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture witch is not enabled.");
+    CheckSize(size);
     glTexImage2D(_target, level, internalFormat, size.Data[0], size.Data[1], 0, pixelFormat, pixelType, pixelData);
+    _size = size;
 }
 
 void    Texture::GenerateMipmaps()
@@ -135,7 +137,7 @@ void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::strin
     NewRef();
 
 // Load the image and reverse it
-    CheckImage(image);  // check the image
+    CheckSize(image.Size());  // check the image
     _size = image.Size();
     _name = name;
     const unsigned char *pixels = image.GetPixels();
@@ -207,7 +209,7 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
     for (int i = 0; i < 6; i++)
     {
         image.LoadFromFile(names[i]);
-        CheckImage(image);  // check the image
+        CheckSize(image.Size());  // check the image
         image.Reverse(); // and reverse it
         const unsigned char *pixels = image.GetPixels();
 

@@ -68,31 +68,29 @@ namespace Nc
                     /** Link the program */
                     void                    Link();
 
-                    /** Init the size of the uniform location tab, used to initialize the uniforms witch would be used by the program */
-                    inline void             InitNumberOfUniform(unsigned int nb)                                        {_tabUniform.reserve(nb);}
-                    /**
-                        Get the uniform id location with the given name, and store it in the tab of uniform.
-                        \return the index position of the uniform id into the tab
-                    */
-                    unsigned int            UseUniformLocation(const char *name);
-                    /** \return the uniform location by using the \p index position */
-                    inline unsigned int     Uniform(unsigned int index)                                                 {return _tabUniform.at(index);}
+                    /** Fetch the uniform location into the program */
+                    unsigned int            GetUniformLocation(const char *name);
                     /** Set the given uniform \p index */
-                    inline void             SetUniform(unsigned int index, const TMatrix &m, bool transpose = true)     {glUniformMatrix4fv(_tabUniform.at(index), 1, transpose, m.Elements());}
+                    static void             SetUniform(unsigned int location, const TMatrix &m, bool transpose = true)      {glUniformMatrix4fv(location, 1, transpose, m.Elements());}
                     /** Set the given uniform \p index */
-                    inline void             SetUniform(unsigned int index, float f1, float f2, float f3, float f4)      {glUniform4f(_tabUniform.at(index), f1, f2, f3, f4);}
+                    static void             SetUniform(unsigned int location, int v)                                        {glUniform1i(location, v);}
                     /** Set the given uniform \p index */
-                    inline void             SetUniform(unsigned int index, int v)                                       {glUniform1i(_tabUniform.at(index), v);}
+                    static void             SetUniform(unsigned int location, unsigned int v)                               {glUniform1ui(location, v);}
+                    /** Set the given uniform \p index */
+                    static void             SetUniform(unsigned int location, float v)                                      {glUniform1f(location, v);}
+                    /** Set the given uniform \p index */
+                    static void             SetUniform(unsigned int location, float f1, float f2)                           {glUniform2f(location, f1, f2);}
+                    /** Set the given uniform \p index */
+                    static void             SetUniform(unsigned int location, const Vector2f &v)                            {glUniform2f(location, v.Data[0], v.Data[1]);}
+                    /** Set the given uniform \p index */
+                    static void             SetUniform(unsigned int location, float f1, float f2, float f3)                 {glUniform3f(location, f1, f2, f3);}
+                    /** Set the given uniform \p index */
+                    static void             SetUniform(unsigned int location, const Vector3f &v)                            {glUniform3f(location, v.Data[0], v.Data[1], v.Data[2]);}
+                    /** Set the given uniform \p index */
+                    static void             SetUniform(unsigned int location, float f1, float f2, float f3, float f4)       {glUniform4f(location, f1, f2, f3, f4);}
 
-                    /** Init the size of the attrib location tab, used to initialize the attribs witch would be used by the program */
-                    inline void             InitNumberOfAttrib(unsigned int nb)                                         {_tabAttrib.reserve(nb);}
-                    /**
-                        Get the attrib id location with the given name, and store it in the tab of attrib.
-                        \return the index position of the attrib id into the tab
-                    */
-                    unsigned int            UseAttribLocation(const char *name);
-                    /** \return the attrib location by using the \p index position */
-                    inline unsigned int     Attrib(unsigned int index)                                                  {return _tabAttrib.at(index);}
+                    /** Fetch the attrib location */
+                    unsigned int            GetAttribLocation(const char *name);
                     /**
                         Bind the attribute with the given attrib id, and put it into the attrib location tab
                         \return the position of the attrib into the attrib location tab
@@ -106,9 +104,6 @@ namespace Nc
                 private:
                     unsigned int                _program;           ///< the program
                     bool                        _linked;            ///< true if the shader has been linked
-
-                    std::vector<unsigned int>   _tabUniform;        ///< a tab of uniform location id set by the method 'UseUniformLocation()'
-                    std::vector<unsigned int>   _tabAttrib;         ///< a tab of attrib location id set by the method 'UseAttribLocation()'
             };
         }
     }

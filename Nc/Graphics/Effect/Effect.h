@@ -27,25 +27,31 @@
 #ifndef NOVAC_GRAPHIC_EFFECT_EFFECT_H_
 #define NOVAC_GRAPHIC_EFFECT_EFFECT_H_
 
-#include "../Object/Object.h"
+#include "../Scene/SceneNode.h"
 
 namespace Nc
 {
     namespace Graphic
     {
         /// Interface to manage and render effects
-        class LGRAPHICS     Effect : public Entity
+        class LGRAPHICS Effect : public Entity
         {
             public:
                 Effect(const char *className)
-                    : Entity(className)                     {}
-                virtual ~Effect()                           {}
+                    : Entity(className), _activated(true)          {}
+                virtual ~Effect()                                   {}
 
-                static const char       *ClassName()        {return "Effect";}
+                static const char       *ClassName()                {return "Effect";}
                 virtual ISceneNode      *Clone() const = 0;
+
+                inline bool             Activated() const           {return _activated;}
+                inline void             Activated(bool state)       {_activated = state;}
 
                 /** To Display the effect */
                 virtual void            Render(SceneGraph *scene) = 0;
+
+            protected:
+                bool        _activated;
         };
 
         // specialization of the method GetNode<> for an IObject

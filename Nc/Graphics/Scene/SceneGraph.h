@@ -29,7 +29,7 @@
 
 #include <stack>
 #include "../Define.h"
-#include "../Core/GL/RasterMode.h"
+#include "../Effect/RasterEffect.h"
 #include "SceneNode.h"
 
 namespace Nc
@@ -63,29 +63,39 @@ namespace Nc
                 /** Render the scene */
                 virtual void    Render();
 
-                /** Return the current projection matrix */
+                /** \return the current projection matrix */
                 inline TMatrix  &ProjectionMatrix()                 {return _stackProjectionMatrix.top();}
                 /** Push in the stack the projection matrix */
                 inline void     PushProjectionMatrix()              {_stackProjectionMatrix.push(_stackProjectionMatrix.top());}
                 /** Unstack the projection matrix */
                 inline void     PopProjectionMatrix()               {_stackProjectionMatrix.pop();}
 
-                /** Return the current view matrix */
+                /** \return the current view matrix */
                 inline TMatrix  &ViewMatrix()                       {return _stackViewMatrix.top();}
                 /** Push in the stack the view matrix */
                 inline void     PushViewMatrix()                    {_stackViewMatrix.push(_stackViewMatrix.top());}
                 /** Unstack the view matrix */
                 inline void     PopViewMatrix()                     {_stackViewMatrix.pop();}
 
-                /** Return the current model matrix */
+                /** \return the current model matrix */
                 inline TMatrix  &ModelMatrix()                      {return _stackModelMatrix.top();}
                 /** Push in the stack the model matrix */
                 inline void     PushModelMatrix()                   {_stackModelMatrix.push(_stackModelMatrix.top());}
                 /** Unstack the model matrix */
                 inline void     PopModelMatrix()                    {_stackModelMatrix.pop();}
 
+                /**
+                    If there is no material, the object will used their default materials.
+                    \return the current rendering material, if there is no material return null.
+                */
+                inline IMaterial    *&Material()                    {return _stackMaterials.top();}
+                /** Push in the stack the model matrix */
+                inline void         PushMaterial()                  {_stackMaterials.push(NULL);}
+                /** Unstack the model matrix */
+                inline void         PopMaterial()                   {_stackMaterials.pop();}
+
                 /** \return the raster mode of the scene */
-                inline GL::RasterMode   &RasterMode()               {return _mode;}
+                inline RasterEffect &GetRasterEffect()              {return _rasterEffect;}
 
                 /**
                     To update the projection matrix with the camera.
@@ -102,12 +112,13 @@ namespace Nc
 
             protected:
                 Camera                  *_currentCamera;            ///< the current camera of the scene (could be used by some node to produce a specific rendering by using the current camera)
-                GL::RasterMode          _mode;                      ///< the raster mode used to render the scene
+                RasterEffect            _rasterEffect;              ///< the raster effect used to render the scene
 
             private:
                 std::stack<TMatrix>     _stackProjectionMatrix;     ///< the stack of projection matrix
                 std::stack<TMatrix>     _stackViewMatrix;           ///< the stack of view matrix
                 std::stack<TMatrix>     _stackModelMatrix;          ///< the stack of model matrix
+                std::stack<IMaterial*>  _stackMaterials;            ///< the stack of rendering material
         };
 
         // specialization of the method GetNode<> for an IObject

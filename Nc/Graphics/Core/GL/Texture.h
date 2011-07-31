@@ -95,7 +95,7 @@ namespace Nc
 
                 private:
                     /** Check if the image is correctly dimensioned */
-                    void                CheckImage(const Image &image);
+                    void                CheckSize(const Vector2ui &size);
 
                     /** Destroy the gl texture object */
                     virtual void        Release();

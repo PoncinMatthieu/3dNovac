@@ -58,19 +58,19 @@ void GameEngine::KeyboardEvent(System::Event &event)
         else if (event.Key.Code == System::Key::Num1)
         {
             _current = 0;
-            _spline1->DisplayState(true);
-            _spline2->DisplayState(false);
+            _spline1->Enable(true);
+            _spline2->Enable(false);
         }
         else if (event.Key.Code == System::Key::Num2)
         {
             _current = 0;
-            _spline2->DisplayState(true);
-            _spline1->DisplayState(false);
+            _spline2->Enable(true);
+            _spline1->Enable(false);
         }
         else if (event.Key.Code == System::Key::Up)
         {
 
-            if (_spline1->DisplayState())
+            if (_spline1->Enabled())
             {
                 _spline1->Vertex(_current)[1] += 0.01;
                 _spline1->Update();
@@ -83,7 +83,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
         }
         else if (event.Key.Code == System::Key::Down)
         {
-            if (_spline1->DisplayState())
+            if (_spline1->Enabled())
             {
                 _spline1->Vertex(_current)[1] -= 0.01;
                 _spline1->Update();
@@ -96,7 +96,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
         }
         else if (event.Key.Code == System::Key::Right)
         {
-            if (_spline1->DisplayState())
+            if (_spline1->Enabled())
             {
                 _spline1->Vertex(_current)[0] += 0.1;
                 _spline1->Update();
@@ -109,7 +109,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
         }
         else if (event.Key.Code == System::Key::Left)
         {
-            if (_spline1->DisplayState())
+            if (_spline1->Enabled())
             {
                 _spline1->Vertex(_current)[0] -= 0.1;
                 _spline1->Update();
@@ -122,7 +122,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
         }
         else if (event.Key.Code == System::Key::Space)
         {
-            if (_spline1->DisplayState())
+            if (_spline1->Enabled())
                 _current = (_current + 1) % _spline1->NbPoint();
             else
                 _current = (_current + 1) % _spline2->NbPoint();
@@ -202,6 +202,6 @@ void GameEngine::CreateSplines2()
     m.AddTranslation(200, 10, 0);
 
     _spline2 = new bSplines(controlPoints, weight, m);
-    _spline2->DisplayState(false);
+    _spline2->Enable(false);
     _scene2d->AddChild(_spline2);
 }

@@ -91,6 +91,8 @@ namespace Nc
                 inline unsigned int     ViewportWidth()                     {return _viewportWidth;}
                 /** \return the height of the viewport */
                 inline unsigned int     ViewportHeight()                    {return _viewportHeight;}
+                /** \return true if the camera use the window size as viewport */
+                inline bool             UseWindowSizeForViewport()          {return _useWindowSizeForViewport;}
                 /** Reset the viewport (use the size of the attached window) */
                 inline void             ResetViewport()                     {_useWindowSizeForViewport = true; _resized = true;}
 

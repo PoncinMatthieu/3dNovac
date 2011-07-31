@@ -166,7 +166,7 @@ void Console::KeyboardEvent(const Event &event)
     static Utils::Unicode::UTF32    cmd;
     char                            c;
 
-    if (_enabled && event.Type == Event::KeyPressed)
+    if (!_inhibit && event.Type == Event::KeyPressed)
     {
         if (event.Key.Code == Key::Up || event.Key.Code == Key::Down)
         {

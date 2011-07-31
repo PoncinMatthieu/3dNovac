@@ -56,7 +56,6 @@ namespace Nc
 
         /** Init the rand to call srand() function */
         inline void     InitRand()                          {srand((unsigned int)time(0));}
-
         /** \return a random number of the type T */
         template<typename T> T          Rand(const T &min, const T &max)                {return min + ((T)rand() / ((float)RAND_MAX + 1) * max);}
 
@@ -65,10 +64,8 @@ namespace Nc
 
         /** \return true if v1 and v2 are equal with a precision */
         template<typename T> bool       Equal(const T &v1, const T &v2, const T &p)     {return ((v1 >= (v2 - p)) && (v1 <= (v2 + p)));}
-
         /** \return true if v1 is superior of v2 with a precision */
         template<typename T> bool       Sup(const T &v1, const T &v2, const T &p)       {return (v1 > (v2 + p));}
-
         /** \return true if v1 is inferior of v2 with a precision */
         template<typename T> bool       Inf(const T &v1, const T &v2, const T &p)       {return (v1 < (v2 - p));}
 

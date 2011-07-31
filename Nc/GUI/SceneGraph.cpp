@@ -117,7 +117,7 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
                 LOG_DEBUG << "ReelSize  = " << reelSize << std::endl;
                 LOG_DEBUG << "Mouse = " << mousePos << std::endl;
                 #endif
-                if (w->DisplayState() && (Math::InRect(reelPos, reelSize, mousePos)))
+                if (w->Enabled() && (Math::InRect(reelPos, reelSize, mousePos)))
                 {
                     _widgetFocused = w;
                     _widgetFocused->Focus(true);

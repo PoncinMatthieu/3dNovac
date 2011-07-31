@@ -137,7 +137,7 @@ namespace Nc
                     const std::list<NodeType*>  &Parents() const                    {return _parents;}
 
                     /** Add a parent into the list of parents of the graph node */
-                    void                        SetParent(NodeType *parent)     {_parents.push_back(parent);}
+                    void                        SetParent(NodeType *parent)         {_parents.push_back(parent);}
 
                     /** Remove the given parent to the parent list of the graph node */
                     void                        UnParent(NodeType *parent)

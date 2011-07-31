@@ -51,7 +51,7 @@ Widget::Widget(const char *className, const Vector2i &pos, const Vector2i &size,
 void Widget::Init(const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
 {
     _childFocused = NULL;
-    _enable = true;
+    _inhibit = false;
     _focus = false;
     _drawEdge = false;
     _generateHandleAtEnterFocus = false;
@@ -89,7 +89,7 @@ Widget::~Widget()
 void Widget::Copy(const Widget &w)
 {
     _childFocused = NULL;
-    _enable = w._enable;
+    _inhibit = w._inhibit;
     _focus = w._focus;
     _size = w._size;
     _pos = w._pos;
@@ -103,23 +103,23 @@ void Widget::Copy(const Widget &w)
     _stateChanged = true;
 }
 
-struct EnabledFonctor
+struct InhibitFonctor
 {
     bool operator () (const ISceneNode *node)
     {
         const Widget *n = node->AsWithoutThrow<const Widget>();
         if (n != NULL)
-            result = (result && n->Enable());
-        return result;
+            result = (!result && n->Inhibited());
+        return !result;
     }
 
     bool    result;
 };
 
-bool    Widget::EnableRecursive() const
+bool    Widget::InhibitedRecursif() const
 {
-    EnabledFonctor f;
-    f.result = true;
+    InhibitFonctor f;
+    f.result = false;
     ForEachParents<false>(f);
     return f.result;
 }
@@ -210,7 +210,7 @@ struct CheckFocusFonctor
         Widget *w = node->AsWithoutThrow<Widget>();
         if (w != NULL)
         {
-            if (!w->DisplayStateRecursive())
+            if (!w->EnabledRecursif() || w->InhibitedRecursif())
                 return true;
 
             Vector2f    pos;
@@ -248,7 +248,7 @@ struct CheckFocusFonctor
 void Widget::CheckFocus(const Event &event)
 {
     // testing focus childs
-    if (event.Type == Event::MouseButtonPressed && DisplayStateRecursive())
+    if (event.Type == Event::MouseButtonPressed && EnabledRecursif() && !InhibitedRecursif())
     {
         // set the last child to had the focus
         Widget *lastchildToHaveTheFocus = _childFocused;
@@ -347,7 +347,7 @@ void Widget::Focus(bool state)
         _focus = state;
         if (!state && _childFocused != NULL)
             _childFocused->Focus(state);
-        if (_focus && _generateHandleAtEnterFocus && _enabled)
+        if (_focus && _generateHandleAtEnterFocus && !_inhibit)
             SendEvent(_id);
 
         //_stateChanged = true;

@@ -91,7 +91,7 @@ void Button::Update()
     Widget::Update();
     // modifie la couleur en fonction de la selection du bouton
     Color c(1, 1, 1);
-    if (!EnableRecursive())
+    if (InhibitedRecursif())
     {
         c = _colorDisable;
         _font->SetColor(_colorDisable);
@@ -155,7 +155,7 @@ void Button::MouseButtonEvent(const System::Event &event)
 
 void Button::execHanle()
 {
-    if (EnableRecursive())
+    if (!InhibitedRecursif())
     {
         /*
         string datas;

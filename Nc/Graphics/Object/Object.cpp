@@ -26,50 +26,57 @@
 
 #include "Object.h"
 #include "../Material/FactoryDefaultMaterials.h"
+#include "BoundingBox.h"
 
 using namespace Nc;
 using namespace Nc::Graphic;
 
 Object::Object()
     : NodeType(ClassName()),
-      _displayStateBox(false),
-      _material(NULL)
+      _displayBox(false),
+      _material(NULL),
+      _lastConfiguredMaterial(NULL)
 {
 }
 
 Object::Object(const char *className)
     : NodeType(className),
-      _displayStateBox(false),
-      _material(NULL)
+      _displayBox(false),
+      _material(NULL),
+      _lastConfiguredMaterial(NULL)
 {
 }
 
 Object::Object(const TMatrix &m)
     : NodeType(ClassName(), m),
-      _displayStateBox(false),
-      _material(NULL)
+      _displayBox(false),
+      _material(NULL),
+      _lastConfiguredMaterial(NULL)
 {
 }
 
 Object::Object(const Box3f &box)
     : NodeType(ClassName()),
-      _displayStateBox(false),
-      _box(box), _material(NULL)
+      _displayBox(false),
+      _box(box), _material(NULL),
+      _lastConfiguredMaterial(NULL)
 {
 }
 
 Object::Object(const Box3f &box, const TMatrix &m)
     : NodeType(ClassName(), m),
-      _displayStateBox(false),
-      _box(box), _material(NULL)
+      _displayBox(false),
+      _box(box), _material(NULL),
+      _lastConfiguredMaterial(NULL)
 {
 }
 
 Object::Object(const Object &o)
     : NodeType(o),
-      _displayStateBox(o._displayStateBox),
+      _displayBox(o._displayBox),
       _drawables(o._drawables.size()),
-      _box(o._box), _material(o._material)
+      _box(o._box), _material(o._material),
+      _lastConfiguredMaterial(NULL)
 {
     for (unsigned int i = 0; i < _drawables.size(); ++i)
         _drawables[i] = new Drawable(*o._drawables[i]);
@@ -78,9 +85,10 @@ Object::Object(const Object &o)
 Object &Object::operator = (const Object &o)
 {
     NodeType::operator = (o);
-    _displayStateBox = o._displayStateBox;
+    _displayBox = o._displayBox;
     _box = o._box;
     _material = o._material;
+    _lastConfiguredMaterial = NULL;
 
     for (unsigned int i = 0; i < _drawables.size(); ++i)
         delete _drawables[i];
@@ -122,6 +130,7 @@ bool    Object::SetMaterial(IMaterial *newMaterial)
         }
     }
     _material = newMaterial;
+    _lastConfiguredMaterial = _material;
     return true;
 }
 
@@ -141,19 +150,24 @@ void    Object::ChooseDefaultMaterial()
 
 void    Object::ReconfigureDrawables()
 {
-    if (_material != NULL)
+    ConfigureDrawables(_material);
+}
+
+void    Object::ConfigureDrawables(IMaterial *material)
+{
+    if (material != NULL)
     {
         for (unsigned int i = 0; i < _drawables.size(); ++i)
         {
-            if (!_material->Configure(*_drawables[i]))    // config failed ?
+            if (!material->Configure(*_drawables[i]))    // config failed ?
             {
-                _material = NULL;
+                material = NULL;
                 throw Utils::Exception("Graphic::Object", "The Configuration of the drawable no " + Utils::Convert::ToString(i) + " failed");
             }
         }
+        _lastConfiguredMaterial = material;
     }
 }
-
 
 void    Object::Render(SceneGraph *scene)
 {
@@ -168,17 +182,32 @@ void    Object::Render(SceneGraph *scene)
         // rendering childs
         NodeType::RenderChilds(scene);
 
+        // rendering the box
+        if (_displayBox)
+            BoundingBox::Draw(_box, scene);
+
         scene->PopModelMatrix();
     }
 }
 
 void    Object::Draw(SceneGraph *scene)
 {
-    if (_material != NULL)
+    // get back the current material
+    IMaterial *m = scene->Material();
+    if (m == NULL)
+        m = _material;
+
+    if (m != NULL)
     {
-//LOG << this << " Render with: " << *_material << std::endl;
+        // setup the drawables if it's the fisrt render pass with this material
+        if (m != _lastConfiguredMaterial)
+            ConfigureDrawables(m);
+
+        //LOG << this << " Render with: " << *m << std::endl;
+
+        // rendering
         for (unsigned int i = 0; i < _drawables.size(); ++i)
-            _material->Render(scene, *_drawables[i]);
+            m->Render(scene, *_drawables[i]);
     }
 }
 
@@ -228,24 +257,7 @@ void    Object::GetRecursiveMatrix(TMatrix &m)
     ForEachParents<true>(f);
 }
 
-struct DisplayStateFonctor
+void    Object::TransformModelMatrixToRender(SceneGraph *scene)
 {
-    DisplayStateFonctor()   : result(true)  {}
-
-    bool operator () (const ISceneNode *node)
-    {
-        const Object *n = node->AsWithoutThrow<const Object>();
-        if (n != NULL)
-            result = n->DisplayState();
-        return result;
-    }
-
-    bool    result;
-};
-
-bool    Object::DisplayStateRecursive() const
-{
-    DisplayStateFonctor f;
-    ForEachParents<false>(f);
-    return f.result;
+    scene->ModelMatrix().AddTransformation(Matrix);
 }

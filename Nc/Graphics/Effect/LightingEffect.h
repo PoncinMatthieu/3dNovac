@@ -74,10 +74,7 @@ namespace Nc
                 virtual ISceneNode          *Clone() const              {return new LightingEffect(*this);}
 
                 /** Render the childs */
-                virtual void                Render(SceneGraph *scene)  {_material->SetCurrentLightingEffect(this); RenderChilds(scene);}
-
-                /** Set and configure the materials of the childs to the LightingMaterial */
-                virtual void                Configure();
+                virtual void                Render(SceneGraph *scene);
 
                 /** \return the color ambiant of the lighting */
                 inline const Color          &ColorAmbiant() const       {return _colorAmbiant;}

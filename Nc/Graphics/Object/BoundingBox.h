@@ -61,16 +61,17 @@ namespace Nc
 
                 /** Render the box */
                 void                    Draw(SceneGraph *scene);
+                /** Render the given box */
+                static void             Draw(const Box3f &box, SceneGraph *scene);
 
                 /** \return the height of the box */
                 inline float            Height() const              {return Length(2);}
 
             private:
                 /** Create the geometry of the box */
-                void    CreateGeometry();
+                static void             CreateGeometry();
 
-                Color   _color;         ///< the color of the box
-
+                static Color            _color;         ///< the color of the box
                 static Drawable         *_drawable;     ///< the static drawable in static because it's the same for all boxs
                 static IDefaultMaterial *_material;     ///< the static material instance used to render the drawables
         };

@@ -60,10 +60,12 @@ void     Program::Enable() const
 
 void     Program::Disable() const
 {
+/*
     if (State::IsSet())
         State::Current().UnbindProgram();
     else
         glUseProgram(0);
+*/
 }
 
 void    Program::Attach(const Shader &shader)
@@ -114,22 +116,20 @@ void    Program::Link()
     LOG_DEBUG << "DONE" << std::endl;
 }
 
-unsigned int    Program::UseUniformLocation(const char *name)
+unsigned int    Program::GetUniformLocation(const char *name)
 {
     int location = glGetUniformLocation(_program, name);
     if (location == -1)
         throw Utils::Exception("Shader", "Bad Uniform location `" + std::string(name) + "`");
-    _tabUniform.push_back(location);
-    return (_tabUniform.size() - 1);
+    return location;
 }
 
-unsigned int    Program::UseAttribLocation(const char *name)
+unsigned int    Program::GetAttribLocation(const char *name)
 {
     int location = glGetAttribLocation(_program, name);
     if (location == -1)
         throw Utils::Exception("Shader", "Bad Attrib location `" + std::string(name) + "`");
-    _tabAttrib.push_back(location);
-    return (_tabAttrib.size() - 1);
+    return location;
 }
 
 void Program::BindAttrib(unsigned int attrib, const char *name)

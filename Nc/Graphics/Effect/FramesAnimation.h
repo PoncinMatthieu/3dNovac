@@ -149,7 +149,15 @@ namespace Nc
             private:
                 static const std::string        _uniqueClassName;     ///< the static class name used to has a unique class name between the diferent templates.
         };
+    }
+}
 
+#include "../Scene/SceneGraph.h"
+
+namespace Nc
+{
+    namespace Graphic
+    {
         template<typename T>
         const std::string       FramesAnimation<T>::_uniqueClassName = std::string("FrameAnimation<") + std::string(T::ClassName()) + std::string(">");
 
@@ -189,6 +197,9 @@ namespace Nc
         template<typename T>
         void FramesAnimation<T>::Update(float runningTime)
         {
+            if (!_activated)
+                return;
+
             if (_isPlaying && _alive && _itCurrentFrame != GetListFrame().end())
             {
                 // if it's time to change the frame, go to the good frame
@@ -223,8 +234,9 @@ namespace Nc
         template<typename T>
         void FramesAnimation<T>::Render(SceneGraph *scene)
         {
-            if (Started() && _itCurrentFrame != GetListFrame().end())
-                RenderFrame(scene);
+            if (!_enabled || Started() && _itCurrentFrame != GetListFrame().end())
+                return;
+            RenderFrame(scene);
         }
 
         template<typename T>

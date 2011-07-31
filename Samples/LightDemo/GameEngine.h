@@ -6,6 +6,7 @@
 #include <Nc/Graphics/Engine.h>
 #include <Nc/Graphics/Scene/SceneNodeFormatManager.h>
 #include <Nc/Graphics/Camera/StandardCamera3d.h>
+#include <Nc/GUI/GUI.h>
 
 class GameEngine : public Nc::Engine::MainEngine
 {
@@ -29,7 +30,8 @@ class GameEngine : public Nc::Engine::MainEngine
 
         Nc::Graphic::Engine                     *_graphic;
         Nc::Graphic::GLContext                  *_context;
-        Nc::Graphic::SceneGraph			*_scene;
+        Nc::Graphic::SceneGraph			        *_scene;
+        Nc::GUI::SceneGraph			            *_sceneGUI;
         Nc::Graphic::StandardCamera3d           *_camera;
         Nc::Graphic::SceneNodeFormatManager     _sceneNodeFormatManager;
 

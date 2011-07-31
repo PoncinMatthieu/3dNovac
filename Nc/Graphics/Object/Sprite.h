@@ -50,6 +50,8 @@ namespace Nc
                 // accessors
                 /** Return the texture */
                 inline const GL::Texture    &GetTexture() const         {return _drawables[0]->Config->Textures[0];}
+                /** Return the texture */
+                inline GL::Texture          &GetTexture()               {return _drawables[0]->Config->Textures[0];}
                 /** Return the box texture */
                 inline const Box2f          &TextureBox() const         {return _textureBox;}
                 /** Set the box texture */

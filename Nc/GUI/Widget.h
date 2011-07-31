@@ -66,19 +66,28 @@ namespace Nc
                 /** Set to true the changed statement */
                 inline void             ChangeState()                           {_stateChanged = true;}
 
+                /** Set the enable statement of the widget */
+                virtual void            Enable(bool status)                {_enabled = status; ChangeChildsStateRecursive();}
+                /** Enable the widget */
+                virtual void            Enable()                           {_enabled = true; ChangeChildsStateRecursive();}
+                /** Disable the widget */
+                virtual void            Disable()                          {_enabled = false; ChangeChildsStateRecursive();}
+                /** \return the enable statement */
+                virtual bool            Enabled() const                    {return _enabled;}
+
+                /** Set the inhibit statement of the widget */
+                virtual void            Inhibit(bool status)              {_inhibit = status; ChangeChildsStateRecursive();}
+                /** inhibit the widget */
+                virtual void            Inhibit()                         {_inhibit = true; ChangeChildsStateRecursive();}
+                /** Uninhibit the widget */
+                virtual void            Unnihibit()                       {_inhibit = false; ChangeChildsStateRecursive();}
+                /** \return the inhibit statement */
+                virtual bool            Inhibited() const                 {return _inhibit;}
                 /**
-                    \return the enable statement (if false, draw it but for expample fill in grey a disabled button).
+                    \return the inhibit statement (if false, draw it but for expample fill in grey a disabled button).
                     Recursif, return false if a parent is set to false
                 */
-                virtual bool            EnableRecursive() const;
-                /** \return the enable statement */
-                virtual bool            Enable() const                          {return _enable;}
-                /** Set the enable statement */
-                virtual void            Enable(bool state)                      {_enable = state; ChangeChildsStateRecursive();}
-                /** \return the display statement */
-                virtual bool            DisplayState() const                    {return _enabled;}
-                /** Set the display statement */
-                virtual void            DisplayState(bool state)                {_enabled = state; ChangeChildsStateRecursive();}
+                virtual bool            InhibitedRecursif() const;
 
                 /** Resize and reposition the widget with their parent size and position */
                 void                    Resized();
@@ -171,8 +180,8 @@ namespace Nc
                 Vector2i                _pos;                       ///< Position if the widget (relative to the parent and the Corner)
                 Corner                  _corner[2];                 ///< The Corner[0]=Top||Botom and Corner[1]=Left||Right
 
-                bool                    _enable;                    ///< eg: if a button or a parent of the button is set false, the button don't exec the handler
-                bool                    _stateChanged;               ///< if true, the widget will be update before to be rendered
+                bool                    _inhibit;                   ///< eg: if a button or a parent of the button is set false, the button don't exec the handler
+                bool                    _stateChanged;              ///< if true, the widget will be update before to be rendered
                 bool                    _drawEdge;                  ///< if true, the edge will be rendered
                 bool                    _generateHandleAtEnterFocus;///< if true, genere an handle when we enter in focus
                 Color                   _edgeColor;                 ///< edge color

@@ -52,6 +52,23 @@ namespace Nc
                     DisplayNormal = 1 << 2      ///< Display the normals (only in debug)
                 };
 
+            private:
+                enum Uniforms
+                {
+                    UniformM = 0,
+                    UniformPV,
+                    UniformNormalMatrix,
+                    UniformLight,
+                    UniformLightPass,
+                    UniformLightColor,
+                    UniformTextured,
+                    UniformDiffuse,
+                    UniformLightMap,
+                    UniformNormalMap,
+                    UniformBumpMapping,
+                    NbUniform
+                };
+
             public:
                 DefaultLightingMaterial();
                 ~DefaultLightingMaterial();
@@ -67,11 +84,13 @@ namespace Nc
             protected:
                 Utils::Mask<MaterialPattern>    _patternMask;               ///< the pattern mask of the material
 
-                GL::Program     _program;                                   ///< the program shader of the material
-                GL::Texture     _lightMap;                                  ///< the light map to used a perpixel lighting method
+                GL::Program                     _program;                   ///< the program shader of the material
+                Array<unsigned int, NbUniform>  _uniforms;                  ///< the tab of uniform locations
+                Array<unsigned int, 4>          _attribs;                   ///< the tab of attrib locations
+                GL::Texture                     _lightMap;                  ///< the light map to used a perpixel lighting method
 
-                GL::Blend       _blend;                                     ///< set the blending for the light pass
-                GL::RasterMode  _rasterMode;                                ///< disable the depth mask for the light pass
+                GL::Blend                       _blend;                     ///< set the blending for the light pass
+                GL::RasterMode                  _rasterMode;                ///< disable the depth mask for the light pass
         };
     }
 }
