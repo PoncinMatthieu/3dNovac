@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1233</width>
+    <height>868</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>3dNovac Editor</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="MainWindow.qrc">
+    <normaloff>:/images/Ressources/Image/icone.png</normaloff>:/images/Ressources/Image/icone.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QWidget" name="_WCenter" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="_WConsole" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QTextEdit" name="_TEConsole">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QComboBox" name="_CBConsoleEngine"/>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="_LEConsolePrompt"/>
+          </item>
+          <item>
+           <widget class="QToolButton" name="_TBConsolePromptOk">
+            <property name="text">
+             <string>Ok</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1233</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="ActionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuRenderMode">
+     <property name="title">
+      <string>Raster Mode</string>
+     </property>
+     <addaction name="ActionRasterModePoints"/>
+     <addaction name="ActionRasterModeWireframe"/>
+     <addaction name="ActionRasterModeFill"/>
+     <addaction name="ActionRasterModeFillWireframe"/>
+     <addaction name="ActionRasterModeFillWireframeNoDepth"/>
+    </widget>
+    <addaction name="ActionRefreshTree"/>
+    <addaction name="separator"/>
+    <addaction name="menuRenderMode"/>
+   </widget>
+   <widget class="QMenu" name="menuAdd">
+    <property name="title">
+     <string>Add</string>
+    </property>
+    <addaction name="ActionAddScene"/>
+    <addaction name="separator"/>
+    <addaction name="ActionAddObject"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="ActionObjectGeometry"/>
+   </widget>
+   <widget class="QMenu" name="menuPlugins">
+    <property name="title">
+     <string>Plugins</string>
+    </property>
+    <addaction name="ActionDestroy_Current_Sample"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuAdd"/>
+   <addaction name="menuPlugins"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="_DWTree">
+   <property name="windowTitle">
+    <string>Tree Project</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QTreeView" name="_TVProject">
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="_DWModal">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>Modal</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QWidget" name="_DWModalContent" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="ActionRasterModePoints"/>
+   <addaction name="ActionRasterModeWireframe"/>
+   <addaction name="ActionRasterModeFill"/>
+   <addaction name="ActionRasterModeFillWireframe"/>
+   <addaction name="ActionRasterModeFillWireframeNoDepth"/>
+   <addaction name="separator"/>
+  </widget>
+  <widget class="QDockWidget" name="_DWProperties">
+   <property name="minimumSize">
+    <size>
+     <width>250</width>
+     <height>53</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QWidget" name="_DWPropertiesContent" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="ActionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="ActionRefreshTree">
+   <property name="text">
+    <string>Refresh Tree</string>
+   </property>
+  </action>
+  <action name="ActionAddObject">
+   <property name="text">
+    <string>Object</string>
+   </property>
+  </action>
+  <action name="ActionAddLight">
+   <property name="text">
+    <string>Light</string>
+   </property>
+  </action>
+  <action name="ActionAddEffect">
+   <property name="text">
+    <string>Effect</string>
+   </property>
+  </action>
+  <action name="ActionAddGUIWidget">
+   <property name="text">
+    <string>Widget</string>
+   </property>
+  </action>
+  <action name="ActionAddGUIObject">
+   <property name="text">
+    <string>Object</string>
+   </property>
+  </action>
+  <action name="ActionObjectGeometry">
+   <property name="text">
+    <string>Object Geometry</string>
+   </property>
+  </action>
+  <action name="ActionAddScene">
+   <property name="text">
+    <string>Scene</string>
+   </property>
+  </action>
+  <action name="ActionRasterModeWireframe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/images/Wireframe.png</normaloff>:/images/Wireframe.png</iconset>
+   </property>
+   <property name="text">
+    <string>Wireframe</string>
+   </property>
+  </action>
+  <action name="ActionRasterModeFill">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/images/Fill.png</normaloff>:/images/Fill.png</iconset>
+   </property>
+   <property name="text">
+    <string>Fill</string>
+   </property>
+  </action>
+  <action name="ActionRasterModePoints">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/images/Points.png</normaloff>:/images/Points.png</iconset>
+   </property>
+   <property name="text">
+    <string>Points</string>
+   </property>
+  </action>
+  <action name="ActionRasterModeFillWireframe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/images/FillWireframe.png</normaloff>:/images/FillWireframe.png</iconset>
+   </property>
+   <property name="text">
+    <string>FillWireframe</string>
+   </property>
+  </action>
+  <action name="ActionRasterModeFillWireframeNoDepth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/images/FillWireframeNoDepth.png</normaloff>:/images/FillWireframeNoDepth.png</iconset>
+   </property>
+   <property name="text">
+    <string>FillWireframeNoDepth</string>
+   </property>
+  </action>
+  <action name="ActionDestroy_Current_Sample">
+   <property name="text">
+    <string>Destroy Current Sample</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="MainWindow.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>_LEConsolePrompt</sender>
+   <signal>returnPressed()</signal>
+   <receiver>_TBConsolePromptOk</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>900</x>
+     <y>800</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>923</x>
+     <y>802</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
