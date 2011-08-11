@@ -396,10 +396,12 @@ h3.version
 
 div.title
 {
-    color: #FF6C47;/*#FF964A;*//*#FFB751;*/
+    color: #FF6C47;
     font-family: Arial;
-    font-size: 18px
+    /*font-size: 18px*/
+    font-size: 110%;
     padding: 3px;
+    padding-top:10px;
     width=100%;
     border-bottom: 2px solid #E0E0E0;
 }
@@ -412,7 +414,68 @@ div.tutorialsTitle
     width=100%;
 }
 
+div.subtutorialsTitle
+{
+    background-color: #FFF6C9;
+    font-size: 120%;
+    padding: 0.5em 3px;
+    width=100%;
+}
+
 div.tutorials
 {
     border: 2px solid #E0E0E0;
 }
+
+.navpath ul
+{
+        font-size: 11px;
+        background-image:url('tab_b.png');
+        background-repeat:repeat-x;
+        height:30px;
+        line-height:30px;
+        color:#8AA0CC;
+        border:solid 1px #C2CDE4;
+        overflow:hidden;
+        margin:0px;
+        padding:0px;
+}
+
+.navpath li
+{
+        list-style-type:none;
+        float:left;
+        padding-left:10px;
+        padding-right: 15px;
+        background-image:url('bc_s.png');
+        background-repeat:no-repeat;
+        background-position:right;
+        color:#364D7C;
+}
+
+.navpath a
+{
+        height:32px;
+        display:block;
+        text-decoration: none;
+        outline: none;
+}
+
+.navpath a:hover
+{
+        color:#6884BD;
+}
+
+div.headertitle
+{
+        padding: 10px 5px 5px 10px;
+}
+
+div.tutorialFooter
+{
+    color           : #606060;
+    padding-top     : 1em;
+    text-align      : center;
+    font-size       : smaller;
+}
+

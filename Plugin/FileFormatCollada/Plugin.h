@@ -31,12 +31,12 @@
 #include <dom/domCOLLADA.h>
 #include <dom/domProfile_COMMON.h>
 #include <Nc/Graphics/Graphics.h>
-#include <Nc/Graphics/Scene/SceneNodeFormatPlugin.h>
+#include <Nc/Graphics/Scene/ISceneNodeFormatPlugin.h>
 #include "Define.h"
 
 namespace Nc
 {
-    class Plugin : public Graphic::SceneNodeFormatPlugin
+    class Plugin : public Graphic::ISceneNodeFormatPlugin
     {
         private:
             typedef Graphic::GL::GeometryBuffer<Graphic::DefaultVertexType::Textured>       DefaultGeometry;

@@ -35,10 +35,12 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::Engine;
 
-MapEngine      Manager::_mapEngine;
+Manager::MapEngine      Manager::_mapEngine;
+System::Mutex           Manager::_mutexGlobal;
 
 Manager::Manager(const Utils::FileName &confFile)
 {
+    _mainThreadId = System::ThreadId();
     _isLaunched = false;
 
     // Open the Config file of 3dNovac
@@ -63,8 +65,8 @@ Manager::~Manager()
 
     // first find the lowest priority
     for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
-        if (it->second->DeletePriority() < lowestPriority && it->second->DeletePriority() > 0)
-            lowestPriority = it->second->DeletePriority();
+        if (it->second.engine->DeletePriority() < lowestPriority && it->second.engine->DeletePriority() > 0)
+            lowestPriority = it->second.engine->DeletePriority();
 
     // and next delete all engines with the priority order
     while (lowestPriority != 0 && _mapEngine.size() > 0)
@@ -75,13 +77,13 @@ Manager::~Manager()
         {
             it2 = it;
             ++it2;
-            if (it->second->DeletePriority() == lowestPriority)
+            if (it->second.engine->DeletePriority() == lowestPriority)
             {
-                delete it->second;
+                delete it->second.engine;
                 _mapEngine.erase(it);
             }
-            else if (it->second->DeletePriority() < nextPriority)
-                nextPriority = it->second->DeletePriority();
+            else if (it->second.engine->DeletePriority() < nextPriority)
+                nextPriority = it->second.engine->DeletePriority();
         }
         lowestPriority = nextPriority;
     }
@@ -109,7 +111,7 @@ void Manager::RecieveSegv(int)
 }
 #endif
 
-void Manager::Terminate()
+void    Manager::Terminate()
 {
 //reference: http://www.ibm.com/developerworks/linux/library/l-cppexcep.html
      try
@@ -127,18 +129,29 @@ void Manager::Terminate()
      // pthread_exit();
 }
 
-void Manager::AddEngine(const std::string &name, IEngine *engine)
+void    Manager::AddEngine(const std::string &name, IEngine *engine, const Permissions &permissions)
 {
-// verifications, si le gameManager n'a pas encore ete lance ou si l'engine existe deja
-    if (_isLaunched)
-        throw Utils::Exception("Engine::Manager", "Can't add new engine, the game manager is already launch");
+// verifications, si l'engine existe deja ou est null
     if (engine == NULL)
         throw Utils::Exception("Engine::Manager", "The engine is null");
     MapEngine::iterator it = _mapEngine.find(name);
     if (it != _mapEngine.end())
         throw Utils::Exception("Engine::Manager", "The engine " + name + "already exist");
 
-    _mapEngine[name] = engine;
+    _mapEngine[name] = AllowedEngine(engine, permissions);
+}
+
+void    Manager::RemoveEngine(const std::string &name, bool del)
+{
+    MapEngine::iterator it = _mapEngine.find(name);
+    if (it != _mapEngine.end())
+    {
+        it->second.engine->Stop();
+        it->second.engine->Wait();
+        if (del && it->second.engine->DeletePriority() > 0)
+            delete it->second.engine;
+        _mapEngine.erase(it);
+    }
 }
 
 IEngine *Manager::GetEngine(const std::string &name)
@@ -146,22 +159,41 @@ IEngine *Manager::GetEngine(const std::string &name)
     MapEngine::iterator it = _mapEngine.find(name);
     if (it == _mapEngine.end())
         throw Utils::Exception("Engine::Manager", "'" + name + "' Don't exist !");
-    return it->second;
+    return it->second.engine;
 }
 
-void Manager::Start()
+void    Manager::Start()
 {
 // lancement des threads
+    for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); ++itEngine)
+        itEngine->second.engine->Start();
     _isLaunched = true;
-    for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); itEngine++)
-        itEngine->second->Start();
 }
 
-void Manager::Wait()
+void    Manager::Wait()
 {
 // on attend que les thread se finisse
-    for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); itEngine++)
-        itEngine->second->Wait();
+    for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); ++itEngine)
+        itEngine->second.engine->Wait();
+}
+
+void    Manager::Stop()
+{
+    // check if the current thread is allowed to exit the thread
+    unsigned int currentThreadId = System::ThreadId();
+    if (_mainThreadId == currentThreadId)
+        _isLaunched = false;
+    else
+    {
+        for (MapEngine::iterator itEngine = _mapEngine.begin(); _isLaunched && itEngine != _mapEngine.end(); ++itEngine)
+        {
+            if (itEngine->second.engine->GetThreadId() == currentThreadId)
+            {
+                if (itEngine->second.permissions.Enabled(Exit))
+                    _isLaunched = false;
+            }
+        }
+    }
 }
 
 void Manager::PushEvent(const std::string &engineName, unsigned int id)
@@ -213,6 +245,11 @@ void Manager::PushEvent(const std::string &engineName, const std::string &cmdNam
     }
 }
 
+void Manager::WaitAllEngineStarted()
+{
+    while (!_isLaunched);
+}
+
 void Manager::WaitLoadingContextPriority(unsigned char priority)
 {
     unsigned char topPriority = 0xff;
@@ -222,8 +259,8 @@ void Manager::WaitLoadingContextPriority(unsigned char priority)
         topPriority = 0;
         _mutexGlobal.Lock();
         for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
-            if (!it->second->ContextLoaded() && it->second->LoadingContextPriority() > topPriority)
-                topPriority = it->second->LoadingContextPriority();
+            if (!it->second.engine->ContextLoaded() && it->second.engine->LoadingContextPriority() > topPriority)
+                topPriority = it->second.engine->LoadingContextPriority();
         _mutexGlobal.Unlock();
     }
 }
@@ -236,8 +273,8 @@ void Manager::WaitLoadingPriority(unsigned char priority)
         topPriority = 0;
         _mutexGlobal.Lock();
         for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
-            if (!it->second->Loaded() && it->second->LoadingPriority() > topPriority)
-                topPriority = it->second->LoadingPriority();
+            if (!it->second.engine->Loaded() && it->second.engine->LoadingPriority() > topPriority)
+                topPriority = it->second.engine->LoadingPriority();
         _mutexGlobal.Unlock();
     }
 }
@@ -250,7 +287,7 @@ void Manager::WaitEnginesContextLoading()
         state = true;
         _mutexGlobal.Lock();
         for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
-            if (!it->second->ContextLoaded())
+            if (!it->second.engine->ContextLoaded())
                 state = false;
         _mutexGlobal.Unlock();
     }
@@ -264,7 +301,7 @@ void Manager::WaitEnginesLoading()
         state = true;
         _mutexGlobal.Lock();
         for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
-            if (!it->second->Loaded())
+            if (!it->second.engine->Loaded())
                 state = false;
         _mutexGlobal.Unlock();
     }

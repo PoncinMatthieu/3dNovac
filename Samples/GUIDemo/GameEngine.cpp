@@ -7,14 +7,14 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-    : MainEngine(manager), _graphic(graphic)
+  : Contrib::GameEngine(graphic, manager)
 {
 }
 
 GameEngine::~GameEngine()
 {
+  _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
   delete _sceneGUI;
-  delete _context;
 }
 
 void GameEngine::CreateWindow(Window *win)
@@ -29,14 +29,15 @@ void GameEngine::CreateWindow(Window *win)
       winSize = Vector2i(1680, 1050);
     }
   win->Create("GUI Tests", winSize, pattern, "Nc:Image:icone.png", 3);
-  AddInput(win->GetInput());
 }
 
 void GameEngine::LoadContent()
 {
+  AddInput(_graphic->GetWindow()->GetInput());
+
   // creation de la scene
   _sceneGUI = new GUI::SceneGraph();
-  _graphic->GetSceneManager().AddScene(_sceneGUI);
+  _graphic->GetSceneManager()->AddScene(_sceneGUI);
   _sceneGUI->AddChild(new Camera2d());
 
   // GUI :

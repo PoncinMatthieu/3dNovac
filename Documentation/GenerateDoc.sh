@@ -1,6 +1,6 @@
 #!/bin/sh
 
-usage='./GenerateDoc [all, Nc-LibName]'
+usage='./GenerateDoc [clean] [all, Nc-LibName]'
 
 if [ $# -eq 0 ]; then
     action='--help'
@@ -8,7 +8,15 @@ else
     action=$1
 fi
 
-cd Build/
+# clean
+case $action in
+    clean)
+	rm -Rf ./html/*;
+	action=$2;
+esac
+
+# execute doxygen
+cd ./Build/
 case $action in
     --help)
 	echo $usage
@@ -20,4 +28,9 @@ case $action in
 esac
 
 cd ../
-firefox html/index.html &
+
+# copy les images
+cp ./Build/Images/* ./html/
+
+# execute firefox
+firefox ./html/index.html &

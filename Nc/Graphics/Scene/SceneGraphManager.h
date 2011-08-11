@@ -57,10 +57,9 @@ namespace Nc
                 inline const ListPScene     &Scenes() const                 {return _listScene;}
 
                 /** Add a scene to the scene manager */
-                inline void         AddScene(SceneGraph *scene)             {_listScene.push_back(scene);}
-
+                virtual void         AddScene(SceneGraph *scene);
                 /** Remove the given scene */
-                inline void         RemoveScene(SceneGraph *scene)          {_mutex.Lock(); _listScene.remove(scene); _mutex.Unlock();}
+                virtual void         RemoveScene(SceneGraph *scene);
 
                 /** Bring the given scene to front (these scene would be displayed at the end) */
                 void                BringToFront(SceneGraph *scene);
@@ -71,7 +70,7 @@ namespace Nc
                 /** Update the scenes */
                 void                Update(float elapsedTime);
 
-            private:
+            protected:
                 ListPScene                  _listScene;         ///< the list of scene witch will be rendered
                 GL::State::BufferBitMask    _clearMask;         ///< the clear mask (defaul: GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
                 Color                       _clearColor;        ///< the clear color of the scene

@@ -1,0 +1,175 @@
+/**
+	\page PageTutorial_NcCore_Utils_XmlLibrary The Xml Library
+
+
+	<div class="title">Introduction</div>
+	This tutorial will show you how to use the Xml library of the package Nc-Utils. 
+	This lib is designed to be very fast and very simple to use.
+
+	This lib is also very light because it's composed of only 3 class :
+	- Xml::Object : To manage an xml object
+	- Xml::Parser : To parse an xml stream
+	- Xml::File : 	To manage an xml file (loading with the parser and writing with the xml object)
+
+	So you will be able to read an xml file or stream, extract the informations you need and save an xml data or send it into a stream.
+
+	The xml lib is actually using the method DOM (witch load all the content of the xml stream).
+	But it would be easy to derivate the method in SAX (witch will parse and call an event for each xml object to take only the information you need from the stream), 
+	so let me know is you'll need such a comportment.
+
+
+	<div class="title">Package used:</div>
+	- Nc-Core
+
+
+	<div class="title">The Xml::Object:</div>
+	The xml object is a tree strucure witch can describ a full xml file.
+
+	So an Xml::Object is associated to different types of object:
+	- Xml::Object::HEADER	To define a header object like this one:  
+ \code <?xml version="1.0" encoding="UTF-8" standalone="yes" ?> \endcode
+	- Xml::Object::INLINE	To define an inline object like this: 
+ \code <Dupon id="1" power="No One" /> \endcode
+	- Xml::Object::BLOCK	To define a block object witch can contain many object childs like this: 
+ \code 
+<Config>
+	<Users>
+		<Ponpon />
+		<Dupon />
+	</Users>
+	<ErrorTreatAsWarning state="0" />
+</Config>
+ \endcode 
+
+
+	To create an Xml Object, you'll need to use one of these prototypes:
+ \code
+	Object(Object *parent = NULL);  // default type INLINE
+	Object(const std::string &name, TYPE type = INLINE, Object *parent = NULL);
+	Object(const std::string &name, TYPE type, const std::map<std::string, std::string> &params, Object *parent = NULL);
+ \endcode
+
+	For instance here the creation of the above corresponding xml object:
+ \code
+#include <Nc/Core/Utils/Xml/Object.h>
+
+using namespace Nc::Utils;
+
+int main()
+{
+  // create the xml object and it's childs
+  Xml::Object *config = new Xml::Object("Config", Xml::Object::BLOCK);
+
+  Xml::Object *users = new Xml::Object("Users", Xml::Object::BLOCK);
+  users->AddChild(new Xml::Object("Ponpon"));
+  users->AddChild(new Xml::Object("Dupon"));
+  config->AddChild(users);
+
+  Xml::Object *errorTreatAsWarning = new Xml::Object("ErrorTreatAsWarning");
+  errorTreatAsWarning->AddParam("state", Convert::ToString(0));
+  config->AddChild(errorTreatAsWarning);
+
+  // print the config xml (directly in xml format)
+  LOG << *config << std::endl;
+  delete config;
+}
+ \endcode
+
+
+	<div class="title">The Xml::File:</div>
+	The class Xml::File is just here to simplify the loading and reading of xml file.
+
+	Let's take the last exemple to see the comportment of the class Xml::File:
+ \code
+#include <Nc/Core/Utils/Xml/File.h>
+
+using namespace Nc::Utils;
+
+int main()
+{
+  // create the xml object and it's childs                                                                       
+  Xml::Object *config = new Xml::Object("Config", Xml::Object::BLOCK);
+
+  Xml::Object *users = new Xml::Object("Users", Xml::Object::BLOCK);
+  users->AddChild(new Xml::Object("Ponpon"));
+  users->AddChild(new Xml::Object("Dupon"));
+  config->AddChild(users);
+
+  Xml::Object *errorTreatAsWarning = new Xml::Object("ErrorTreatAsWarning");
+  errorTreatAsWarning->AddParam("state", Convert::ToString(0));
+  config->AddChild(errorTreatAsWarning);
+
+  // print the config xml (directly in xml format)                                                               
+  LOG << "Config:" << std::endl;
+  LOG << *config << std::endl;
+
+  // save the config into the file config.xml
+  Xml::File file("config.xml", config);
+  file.Save();
+  delete config;
+
+  // read the config.xml
+  Xml::File file2("config.xml");
+  Xml::Object *readObject = file2.Read();
+  LOG << "Read:" << std::endl;
+  LOG << *readObject << std::endl;
+  delete readObject;
+}
+ \endcode
+
+	Output result:
+ \code
+Config:
+<Config>
+	<Users>
+		<Ponpon/>
+		<Dupon/>
+	</Users>
+	<ErrorTreatAsWarning state="0" />
+</Config>
+
+Read: 
+<CONTENT>
+	<Users>
+		<Ponpon/>
+		<Dupon/>
+	</Users>
+	<ErrorTreatAsWarning state="0" />
+</CONTENT>
+ \endcode
+
+	When you save a file you'll need to use an extra Xml::Object to englob the content you want to save, here it's the object config. 
+	And a content witch has been read is automatically store into an xml block CONTENT.
+
+	Pay attention that the Xml::File class use the Xml::Parser class to read a stream (the file).
+
+
+	<div class="title">The Xml::Parser:</div>
+	The xml parser take an input stream to get out an Xml::Object.
+	A direct utilisation of the xml parser could be usefull for instance if you want to read a stream from a network socket. 
+
+ 	With a File:
+ \code
+  Utils::FileName  filename("config.xml");
+  ifstream         file;
+
+  if (filename.IsReadable())
+    file.open(filename.c_str());
+  else
+    throw Exception("Xml::File", "Can't open the file " + filename);
+  Xml::Object *content = Parser::Parse(file);
+  file.close();
+  LOG << content << std::endl;
+  delete content;
+ \endcode
+
+	Actually the parser acept only a strict xml format. 
+	So if there is a little error in the xml stream, the parser will immediatly throw an exception.
+
+	Let me know if you need to parse a non-strict xml format, 
+	I could add a non-strict mode to write a warning error insteed of throwing an exception. 
+
+	<div class="tutorialFooter">Author(s): Ponpon </div>
+*/
+
+

@@ -27,7 +27,7 @@
 #ifndef NC_GRAPHICS_SCENE_SCENENODEFORMATMANAGER_H_
 #define NC_GRAPHICS_SCENE_SCENENODEFORMATMANAGER_H_
 
-#include "SceneNodeFormatPlugin.h"
+#include "ISceneNodeFormatPlugin.h"
 
 namespace Nc
 {
@@ -53,7 +53,7 @@ namespace Nc
         class LGRAPHICS SceneNodeFormatManager
         {
             private:
-                typedef std::list<System::PluginLoader<SceneNodeFormatPlugin> >     ListSceneNodeFormat;
+                typedef std::list<System::PluginLoader<ISceneNodeFormatPlugin> >     ListSceneNodeFormat;
 
             public:
                 SceneNodeFormatManager();
@@ -64,7 +64,7 @@ namespace Nc
 
             private:
                 /** \return the plugin associated to the given \p extension. If no plugin is found, then return */
-                SceneNodeFormatPlugin   *GetSceneNodeFormatByExtension(const std::string &extension);
+                ISceneNodeFormatPlugin  *GetSceneNodeFormatByExtension(const std::string &extension);
 
             private:
                 ListSceneNodeFormat     _listSceneNodeFormat;           ///< list of SceneNodeFormatPlugin

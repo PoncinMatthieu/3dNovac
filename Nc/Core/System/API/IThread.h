@@ -63,20 +63,22 @@ namespace Nc
                     Create and immediatly start the thread. <br/>
                     The virtual function Run() will be called in the thread after that
                 */
-                virtual void Start() = 0;
-
+                virtual void            Start() = 0;
                 /** Wait a thread (pause the current thread until the end of the execution of the thread). */
-                virtual void Wait() = 0;
+                virtual void            Wait() = 0;
+
+                /** \return the system dependant thread id of the thread, this id is fetch just after starting the thread */
+                virtual unsigned int    GetThreadId() const = 0;
 
             protected:
                 /**
                     virtal pure methode, to redefine in a subclass. <br/>
                     After that the Start methode is call, the methode Run will be called in the thread
                 */
-                virtual void Run() = 0;
+                virtual void    Run() = 0;
 
                 /** Exit the current thread */
-                virtual void Exit() = 0;
+                virtual void    Exit() = 0;
         };
     }
 }

@@ -90,7 +90,7 @@ void XWindowInput::CheckEvents()
         while (XCheckIfEvent(static_cast<XWindow*>(_win)->_display, &Event, &CheckEvent,
                              reinterpret_cast<XPointer>(static_cast<XWindow*>(_win)->_xwin)))
         {
-            if (_eventQueueIsSet)
+            if (!ListenerListEmpty())
             {
                 // Detect repeated key events
                 if ((Event.type == KeyPress) || (Event.type == KeyRelease))

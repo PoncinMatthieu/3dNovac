@@ -26,6 +26,7 @@
 
 #include "Config.h"
 
+using namespace std;
 using namespace Nc;
 using namespace Nc::System;
 

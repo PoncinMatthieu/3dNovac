@@ -12,15 +12,16 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-  : MainEngine(manager), _graphic(graphic)
+  : Contrib::GameEngine(graphic, manager)
 {
 }
 
 GameEngine::~GameEngine()
 {
+  _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
+  _graphic->GetSceneManager()->RemoveScene(_scene3d);
   delete _sceneGUI;
   delete _scene3d;
-  delete _context;
 }
 
 void GameEngine::CreateWindow(Window *win)
@@ -35,11 +36,12 @@ void GameEngine::CreateWindow(Window *win)
         winSize = Vector2i(1680, 1050);
     }
     win->Create("Frustum Demo", winSize, pattern, "Nc:Image:icone.png", 3);
-    AddInput(win->GetInput());
 }
 
 void GameEngine::LoadContent()
 {
+  AddInput(_graphic->GetWindow()->GetInput());
+
     // creation de la scene
     _scene3d = new SceneGraph();
 
@@ -79,13 +81,13 @@ void GameEngine::LoadContent()
     _camera3->DrawFrustum(true);
     _scene3d->AddChild(_camera3);
     _scene3d->AddChild(_entity); // ajout d'octree
-    _graphic->GetSceneManager().AddScene(_scene3d);
+    _graphic->GetSceneManager()->AddScene(_scene3d);
 
     // creation de la gui avec le fps widget
     _sceneGUI = new GUI::SceneGraph();
     _sceneGUI->AddChild(new Camera2d());
     _sceneGUI->AddChild(new GUI::FPSWidget());
-    _graphic->GetSceneManager().AddScene(_sceneGUI);
+    _graphic->GetSceneManager()->AddScene(_sceneGUI);
 }
 
 void GameEngine::Update(float runningTime)
@@ -106,6 +108,7 @@ void GameEngine::ManageWindowEvent(System::Event &event)
       {
 	_camera->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
 	_camera2->SetViewport(Window::Width() / 2.f, 0, Window::Width() / 2.f, Window::Height());
+	_camera3->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
       }
     if (event.Type == System::Event::KeyPressed)
     {

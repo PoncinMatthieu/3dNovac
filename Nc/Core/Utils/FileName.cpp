@@ -69,7 +69,7 @@ void   FileName::SetFullname(const char *name)
             string::operator=(name);
         else
         {
-            string str = CONFIG->Block("RessourcesPath")->Line(subn.substr(0, pos))->Param("path");
+            FileName str = CONFIG->Block("RessourcesPath")->Line(subn.substr(0, pos))->Param("path");
             str += subn.substr(pos+1, string::npos);
             string::operator=(str);
         }

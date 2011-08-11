@@ -38,7 +38,7 @@ namespace Nc
         /**
             The singleton class is thread safe.
 
-            <h3>To create a singleton class, create a public heritance like this :  </h3>
+            <div class="title"> To create a singleton class, create a public heritance like this: </div>
  \code
     class MySingleton : public Utils::Singleton<MySingleton>
     {
@@ -49,7 +49,7 @@ namespace Nc
     }
  \endcode
 
-            <h3>To acces to MySingleton instance anywere in your code :          </h3>
+            <div class="title"> To access to MySingleton instance anywere in your code: </div>
  \code
     MySingleton::Instance()->function();
  \endcode

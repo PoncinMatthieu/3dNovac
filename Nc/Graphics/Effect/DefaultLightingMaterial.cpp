@@ -220,14 +220,17 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
     TMatrix matrixLight;
     for (ListPLight::const_iterator it = listLight.begin(); it != listLight.end(); it++)
     {
-        Vector3f pos;
-        (*it)->GetRecursiveMatrix(matrixLight); /// \todo To obtain the light position, we need to caculate recursively it's matrix, this could decrease the perf
-        matrixLight.Transform(pos);
-        _program.SetUniform(_uniforms[UniformLight], pos.Data[0], pos.Data[1], pos.Data[2], 1.0f / ((*it)->radius));
-        _program.SetUniform(_uniforms[UniformLightColor], (*it)->color.R, (*it)->color.G, (*it)->color.B, (*it)->color.A);
+        if ((*it)->Enabled())
+        {
+            Vector3f pos;
+            (*it)->GetRecursiveMatrix(matrixLight); /// \todo To obtain the light position, we need to caculate recursively it's matrix, this could decrease the perf
+            matrixLight.Transform(pos);
+            _program.SetUniform(_uniforms[UniformLight], pos.Data[0], pos.Data[1], pos.Data[2], 1.0f / ((*it)->radius));
+            _program.SetUniform(_uniforms[UniformLightColor], (*it)->color.R, (*it)->color.G, (*it)->color.B, (*it)->color.A);
 
-        // rendering pass for the current light
-        drawable.Render();
+            // rendering pass for the current light
+            drawable.Render();
+        }
     }
 
     _rasterMode.Disable();

@@ -28,14 +28,14 @@
 #define NC_CORE_ENGINE_MAINENGINE_H_
 
 #include "IEngine.h"
-#include "../System/Input/InputManager.h"
+#include "../System/Input/InputListener.h"
 
 namespace Nc
 {
     namespace Engine
     {
-        /// Abstract class to help the implementation of a Main Engine witch receive events from an InputManager
-        class LCORE MainEngine : public IEngine, public System::InputManager
+        /// Abstract class to help the implementation of a Main Engine witch receive events from an InputListener
+        class LCORE MainEngine : public IEngine, public System::InputListener
         {
             public:
                 MainEngine(const char *className, Manager *manager, unsigned int pattern = HasAContext | WaitingLoadContentsOfOthersEngines,

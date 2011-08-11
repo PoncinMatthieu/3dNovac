@@ -54,7 +54,7 @@ namespace Nc
                         CloseHandle(_handle);
                 }
 
-                void Start()
+                virtual void Start()
                 {
                     _handle = CreateThread( NULL,                               // default security attributes
                                             0,                                  // use default stack size
@@ -66,11 +66,17 @@ namespace Nc
                         throw Utils::Exception("The creation of the thread as failed");
                 }
 
-                void Wait()
+                virtual void Wait()
                 {
                     if (_handle != NULL)
                         WaitForSingleObject(_handle, INFINITE);
                 }
+
+		virtual unsigned int GetThreadId() const
+		{
+		  return _id;
+		}
+
 
             protected:
                 inline void Exit()
@@ -82,12 +88,15 @@ namespace Nc
             private:
                 inline static DWORD Launch(void *p)
                 {
-                    reinterpret_cast<Thread*>(p)->Run();
-                    return 0;
+		  Thread *th = reinterpret_cast<Thread*>(t);
+		  th->_id = ThreadId();
+		  th->Run();
+		  return 0;
                 }
 
-                DWORD       _threadId;
-                HANDLE      _handle;
+		unsigned int	_id;
+                DWORD		_threadId;
+                HANDLE		_handle;
         };
     }
 }

@@ -9,13 +9,14 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 GameEngine::GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic)
-  : Nc::Engine::MainEngine(manager), _graphic(graphic)
+  : Contrib::GameEngine(graphic, manager)
 {
 }
 
 GameEngine::~GameEngine()
 {
   // delete the objects of the scene, and delete it
+  _graphic->GetSceneManager()->RemoveScene(_scene2d);
   delete _scene2d;
 }
 
@@ -23,16 +24,16 @@ void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 {
   // create the window
   win->Create("bSpline 2d", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
-
-  // add the window Input to the Inputs of the engine
-  AddInput(win->GetInput());
 }
 
 void GameEngine::LoadContent()
 {
+  // add the window Input to the Inputs of the engine
+  AddInput(_graphic->GetWindow()->GetInput());
+
   _scene2d = new GUI::SceneGraph();
   _scene2d->AddChild(new Camera2d());
-  _graphic->GetSceneManager().AddScene(_scene2d);
+  _graphic->GetSceneManager()->AddScene(_scene2d);
 
   // GUI :
   //    scene2d->AddWidget(new GUI::Console());

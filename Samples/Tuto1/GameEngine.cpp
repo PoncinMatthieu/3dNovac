@@ -34,7 +34,7 @@ void	GameEngine::LoadContent()
   _scene3d = new SceneGraph();
   _camera = new StandardCamera3d(_graphic->GetWindow());
   _scene3d->AddChild(_camera);
-  _graphic->GetSceneManager().AddScene(_scene3d);
+  _graphic->GetSceneManager()->AddScene(_scene3d);
 
   // create a new repere to display at the center of the scene
   _scene3d->AddChild(BasicMeshCreator::Repere(1));

@@ -33,7 +33,7 @@
 #include <list>
 
 #include "../../Define.h"
-#include "XmlObject.h"
+#include "Object.h"
 
 #define NC_UTILS_XML_SIZE_BUFFER 4096        ///< buffer size used to parse an xml file
 

@@ -1,0 +1,132 @@
+/**
+	\page PageTutorial_NcCore_Utils_Logger The Logger
+
+	<div class="title">Introduction</div>
+	This tutorial will explain what is the logger, how to use it and how it works.
+	So you will be able to create your own logging system and manipulate the output produce by the 3dNovac framework and your own program.   
+
+	Pay attention that all the entire 3dNovac framework use the Logger class.
+
+	<div class="title">Package used:</div>
+	- Nc-Core
+
+	<div class="title"> What The Fuck ? </div>
+	The Nc::Utils::Logger is a class witch manipulate how the text will be output using the operators <<. 
+		- Is it output into the stdout ? 
+		- in a file ? 
+		- With a prefix ? 
+
+	The logger is a singleton and you can access to the instance by using the funtion Log().
+
+ Prototype:
+ \code
+	// use an integer status to control the output mode 
+	static Logger	&Log(int status);
+	static Logger	&Log(const char* file, int line, int status); 	// format the string like this: "$(file): line $(line): 	"
+ \endcode
+
+ Use the logger:
+ \code
+	// With the direct function name:
+	Nc::Utils::Logger::Log(0) << "This is a log" << std::endl;
+
+	// With a predefined define:
+	LOG << "This is a log" << std::endl;
+ \endcode
+
+	As you can see there is 2 method to use the logger class, by using the name or a define. This define is already set in the framework and you can redefine it, for exemple to use any prefixed output in your program.
+	Here the definition of the macro:
+
+ \code
+#ifndef LOG
+    #if defined(_DEBUG) && defined(_DEBUG_LOG)
+        #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
+    #else
+        #define _DEBUG_LOG_DEF
+    #endif
+
+    #define LOG             	Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 0)
+    #define LOG_ERROR       	Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 1)
+    #ifdef _DEBUG
+        #define LOG_DEBUG       Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 2)
+    #else
+        #define LOG_DEBUG       Nc::Utils::Logger::Log(_DEBUG_LOG_DEF -1)
+    #endif
+#endif
+ \endcode 
+
+	Like this, if you define the _DEBUG_LOG define, you logger will use the name and the line of the file to log your messages.
+	
+	By default the logger has 3 static mode of output:
+		- 0 LOG (log into clog and into a file)
+		- 1 LOG_ERROR (log into cerr and into a file)
+		- 2 LOG_DEBUG (log into cout and into a file)
+		- -1 LOG_DEBUG (No log if the define _DEBUG is not defined)
+
+	And by default the log file is ./out.log
+
+
+
+	<div class="title"> Create your own logger class </div>
+	You can create your own logging system by derivating the Logger class and reimplementing the protected function Write() and use the method SetLogger().
+
+	Exemple with the logger of the editor witch log the output into a QTextBox:
+ \code
+#ifndef NC_EDITOR_INTERFACE_LOGGER_H
+#define NC_EDITOR_INTERFACE_LOGGER_H
+
+#include <QTextEdit>
+#include "../Define.h"
+#include <Nc/Core/Utils/Logger.h>
+
+namespace Nc
+{
+    namespace Editor
+    {
+        class Logger : public Utils::Logger
+        {
+		public:
+			Logger(QTextEdit *text)
+				: Utils::Logger(), _logIntoTextEdit(true), _text(text) {}
+
+			void LogIntoTextEdit(bool state)    {_mutex.Lock(); _logIntoTextEdit = state; _mutex.Unlock();}
+
+		protected:
+			virtual void Write(const std::string msg, bool flush)
+			{
+				Utils::Logger::Write(msg, flush);
+
+				_mutex.Lock();
+				if (_logIntoTextEdit)
+				{
+					static QString str;
+
+					str += msg.c_str();
+					if (flush)
+					{
+						if (str.size() > 0 && str[str.size() - 1] == '\n')
+							str.remove(str.size() - 1, 1);
+						_text->append(str);
+						QTextCursor c =  _text->textCursor();
+						c.movePosition(QTextCursor::End);
+						_text->setTextCursor(c);
+						str.clear();
+					}
+				}
+				_mutex.Unlock();
+			}
+
+			private:
+			bool        _logIntoTextEdit;
+			QTextEdit   *_text;
+		};
+	}
+}
+
+#endif 
+ \endcode
+
+
+	<div class="tutorialFooter">Author(s): Ponpon </div>
+*/
+

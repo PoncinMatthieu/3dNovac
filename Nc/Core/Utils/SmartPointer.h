@@ -39,7 +39,7 @@ namespace Nc
         /**
             Provide a SmartPointer class with type T, and the bool IsArray to inform if the operator delete[] needs to be called insteed of the delete operator
 
-            <h3>To use the SmartPointer, use a typedef like this :  <h3/>
+            <h3>To use the SmartPointer, use a typedef like this :  </h3>
                 typedef SmartPointer<MyClass>    SPMyClass;     <br/> <br/>
                 And next create the instance like this : <br/>
                 SPMyClass sp = new MyClass();

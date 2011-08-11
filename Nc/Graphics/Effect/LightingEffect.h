@@ -39,9 +39,11 @@ namespace Nc
         struct LGRAPHICS Light : public Object
         {
             Light()
-                : color(0.5f, 0.5f, 0.5f, 0), radius(10)        {}
+                : Object(ClassName()), color(0.5f, 0.5f, 0.5f, 0), radius(10)        {}
             Light(const Color &c, const float r = 10)
-                : color(c), radius(r)                           {}
+                : Object(ClassName()), color(c), radius(r)                           {}
+
+            static const char   *ClassName()                    {return "Light";}
 
             Color       color;              ///< the color of the light
             float       radius;             ///< the raduis of the light

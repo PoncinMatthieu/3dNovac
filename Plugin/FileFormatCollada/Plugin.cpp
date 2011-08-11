@@ -31,7 +31,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 
-Plugin::Plugin() : SceneNodeFormatPlugin("dae")
+Plugin::Plugin() : ISceneNodeFormatPlugin("dae")
 {
 }
 

@@ -89,3 +89,18 @@ void SceneGraphManager::BringToFront(SceneGraph *scene)
     _listScene.push_back(scene);
     _mutex.Unlock();
 }
+
+void SceneGraphManager::AddScene(SceneGraph *scene)
+{
+    _mutex.Lock();
+    _listScene.push_back(scene);
+    _mutex.Unlock();
+}
+
+void SceneGraphManager::RemoveScene(SceneGraph *scene)
+{
+    _mutex.Lock();
+    _listScene.remove(scene);
+    _mutex.Unlock();
+}
+

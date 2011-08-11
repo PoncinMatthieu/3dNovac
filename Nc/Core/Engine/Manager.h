@@ -33,6 +33,7 @@
 
 #include "../Define.h"
 #include "../Utils/FileName.h"
+#include "../Utils/Mask.h"
 #include "../System/API/API.h"
 
 namespace Nc
@@ -45,76 +46,99 @@ namespace Nc
     {
         class   IEngine;
         struct  IEvent;
-        typedef std::map<std::string, IEngine*>  MapEngine;
 
         /// Manage Engines of 3dNovac
         /**
             Manage the launching of the threads (engines) and dispatch events between them
+            Store a map of engine associated to a permission mask.
         */
         class LCORE Manager : public Utils::NonCopyable
         {
             public:
-                /**
-                    \param confFile to load the 3dNovac System::Config file, it will be closed in the destructor. if empty, do not load the confFile
-                */
+                /// Define the engines permissions
+                enum Permission
+                {
+                    Nop,
+                    Exit,       ///< Allow to exit the manager.
+                };
+                typedef Utils::Mask<Permission>             Permissions;
+
+                struct AllowedEngine
+                {
+                    AllowedEngine()                                     {}
+                    AllowedEngine(IEngine *e, const Permissions &p)
+                        : engine(e), permissions(p)                     {}
+
+                    IEngine         *engine;
+                    Permissions     permissions;
+                };
+
+                typedef std::map<std::string, AllowedEngine>        MapEngine;
+
+            public:
+                /** \param confFile to load the 3dNovac System::Config file, it will be closed in the destructor. if empty, do not load the confFile */
                 Manager(const Utils::FileName &confFile = "");
                 virtual ~Manager();
 
                 /** Add an engine with his corresponding name */
-                virtual void        AddEngine(const std::string &name, IEngine *engine);
-
+                virtual void            AddEngine(const std::string &name, IEngine *engine, const Permissions &permissions = Exit);
+                /** Remove the engine with the given name, delete it if del is true */
+                virtual void            RemoveEngine(const std::string &name, bool del = true);
                 /** \return the corresponding engine */
-                static IEngine      *GetEngine(const std::string &name);
+                static IEngine          *GetEngine(const std::string &name);
+                /** \return the engines managed by the Manager */
+                static const MapEngine  &GetEngines()                   {return _mapEngine;}
 
                 /** \return true if the engines is launch */
-                inline bool         IsLaunched()                    {return _isLaunched;}
+                inline bool             IsLaunched()                    {return _isLaunched;}
 
                 /** Start the engines */
-                virtual void        Start();   // demarre les threads (engine)
-
-                /** Stop the engines */
-                inline void         Stop()                          {_isLaunched = false;}    // stop les threads
-
+                virtual void            Start();   // demarre les threads (engine)
+                /** Stop the engines if the current thread has been allowed to did it */
+                void                    Stop();
                 /** Wait the engines until they are stoped */
-                virtual void        Wait();
+                virtual void            Wait();
 
                 /** \return the mutex witch is used to protect and synchronize the engines */
-                inline System::Mutex &MutexGlobal()                 {return _mutexGlobal;}
+                inline System::Mutex    &MutexGlobal()                  {return _mutexGlobal;}
 
+                /** Wait until all the engine as been started */
+                void                    WaitAllEngineStarted();
                 /** Wait until the given \p priority is good for loading the engine context */
-                void                WaitLoadingContextPriority(unsigned char priority);
+                void                    WaitLoadingContextPriority(unsigned char priority);
                 /** Wait until the given \p priority is good for loading the engine */
-                void                WaitLoadingPriority(unsigned char priority);
+                void                    WaitLoadingPriority(unsigned char priority);
                 /** Wait until all engine contexts are loaded */
-                void                WaitEnginesContextLoading();
+                void                    WaitEnginesContextLoading();
                 /** Wait until all engines are loaded */
-                void                WaitEnginesLoading();
+                void                    WaitEnginesLoading();
 
                 /** Dispatch events to the corresponding engine */
                 template<typename T>
-                static void         PushEvent(const std::string &engineName, unsigned int id, const T &arg);
+                static void             PushEvent(const std::string &engineName, unsigned int id, const T &arg);
                 /** Dispatch events to the corresponding engine */
-                static void         PushEvent(const std::string &engineName, unsigned int id);
+                static void             PushEvent(const std::string &engineName, unsigned int id);
                 /** Dispatch events to the corresponding engine */
-                static void         PushEvent(const std::string &engineName, unsigned int id, IEvent *e);
+                static void             PushEvent(const std::string &engineName, unsigned int id, IEvent *e);
                 /** Dispatch events to the corresponding engine */
-                static void         PushEvent(const std::string &engineName, const std::string &cmdName, const std::string &args);  // from console
+                static void             PushEvent(const std::string &engineName, const std::string &cmdName, const std::string &args);  // from console
                 /** Dispatch events to the corresponding engine */
-                static void         PushEvent(const std::string &engineName, const std::string &cmdName);                           // from console
+                static void             PushEvent(const std::string &engineName, const std::string &cmdName);                           // from console
 
             protected:
-                static MapEngine    _mapEngine;             ///< Engine map container
+                static MapEngine        _mapEngine;             ///< Engine map container
 
                 #ifdef SYSTEM_LINUX
                 /** this function is called when a signal SIGSEGV is catch, only in unix system. */
-                static void         RecieveSegv(int);
+                static void             RecieveSegv(int);
                 #endif
-                static void         Terminate();
+                static void             Terminate();
 
-                bool                _isLaunched;            ///< true, if the engines are launched.
-                System::Mutex       _mutexGlobal;           ///< global mutex used to synchronize threads if needed.
+                bool                    _isLaunched;            ///< true, if the engines are launched.
+                static System::Mutex    _mutexGlobal;           ///< global mutex used to synchronize threads if needed.
 
             private:
+                unsigned int        _mainThreadId;
                 bool                _confFileOpened;        ///< true, if the Config file of 3dNovac has been loaded by the Manager, in this case it will be closed be the Manager
         };
     }

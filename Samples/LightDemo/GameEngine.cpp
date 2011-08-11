@@ -11,15 +11,17 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-    : MainEngine(manager), _graphic(graphic)
+  : Contrib::GameEngine(graphic, manager)
 {
 }
 
 GameEngine::~GameEngine()
 {
+    _graphic->GetSceneManager()->RemoveScene(_scene);
+    _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
     delete _lightingMaterial;
     delete _scene;
-    delete _context;
+    delete _sceneGUI;
 }
 
 void GameEngine::CreateWindow(Window *win)
@@ -34,11 +36,12 @@ void GameEngine::CreateWindow(Window *win)
         winSize = Vector2i(1680, 1050);
     }
     win->Create("Light Tests", winSize, pattern, "Nc:Image:icone.png", 3);
-    AddInput(win->GetInput());
 }
 
 void GameEngine::LoadContent()
 {
+  AddInput(_graphic->GetWindow()->GetInput());
+
   // creation de la camera
   _camera = new StandardCamera3d(_graphic->GetWindow());
 
@@ -58,7 +61,7 @@ void GameEngine::LoadContent()
   // creation de la scene
   _scene = new SceneGraph();
   _scene->AddChild(_camera);
-  _graphic->GetSceneManager().AddScene(_scene);
+  _graphic->GetSceneManager()->AddScene(_scene);
 
   // creation du default lighting Material
   _lightingMaterial = new DefaultLightingMaterial();
@@ -81,11 +84,11 @@ void GameEngine::LoadContent()
 
   lightEffect->AddChild(_sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
 
-    // creation de la gui avec le fps widget
-    _sceneGUI = new GUI::SceneGraph();
-    _sceneGUI->AddChild(new Camera2d());
-    _sceneGUI->AddChild(new GUI::FPSWidget());
-    _graphic->GetSceneManager().AddScene(_sceneGUI);
+  // creation de la gui avec le fps widget
+  _sceneGUI = new GUI::SceneGraph();
+  _sceneGUI->AddChild(new Camera2d());
+  _sceneGUI->AddChild(new GUI::FPSWidget());
+  _graphic->GetSceneManager()->AddScene(_sceneGUI);
 }
 
 void GameEngine::Update(float runningTime)

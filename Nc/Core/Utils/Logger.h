@@ -57,7 +57,8 @@ namespace Nc
     {
         /// Provide a logging system
         /**
-            Logger base, redefine the methode write in heritance to have your own logging system
+            Logger base, redefine the methode write by inheritance to have your own logging system.
+            The Logger is thread safe.
         */
         class LCORE Logger : public Singleton<Logger>, NonCopyable
         {
@@ -65,26 +66,29 @@ namespace Nc
                 /** Prototype a function pointer to have a logging function */
                 typedef void (*LogFunction)(const std::string, bool);
 
-                /** Return the instance of the logger, and permit to call operator << to log
-                    The Logger is thread safe.
-                    By default, status correspond to <br/>
-                        0 -> simple log    <br/>
-                        1 -> error log     <br/>
-                        2 -> debug log
+                /** Set the instance of the logger, to redefine and set your own logger */
+                static void SetLogger(Logger *logger);
 
-                    <p>exemple:</p>
+                /** \return the instance of the logger, and allow you to call the operator << to log
+                    By default, status correspond to:
+                        - 0 -> simple log
+                        - 1 -> error log
+                        - 2 -> debug log
+
+ <div class="title"> Exemple: </div>
  \code
     Logger::Log(0) << "plop this is a log" << std::endl;
  \endcode
 
-                    <p>or use a define : </p>
+ <div class="title"> Or use a define: </div>
  \code
-    #define Logger::Log()   LOG     <br/>
+    #define Logger::Log(0)   LOG
+
     LOG << "plop this is a log" << std::endl;
  \endcode
                 */
                 static Logger	&Log(int status);
-                static Logger	&Log(const char* aFile, int aLine, int status);
+                static Logger	&Log(const char* file, int line, int status);
 
                 /** Change the logging filename, the file is open in the write method, to force the reopen, call CloseFile() */
                 inline void SetLogFilename(const FileName &f)   {_filename = f;}
@@ -130,7 +134,6 @@ namespace Nc
                 LogFunction     _loggingfunction;
                 std::ofstream	_file;
                 FileName		_filename;
-                System::Mutex   _mutex;
                 static int		_status;		// status d'ecriture du logger (default = 0; error = 1; debug = 2)
 
                 friend class Singleton<Logger>; // pour avoir acces a l'instance du singleton

@@ -66,7 +66,6 @@ void GameEngine::MouseMotionEvent(Nc::System::Event &event)
 \endcode
 
 
-
 	<div class="title">Instantiate the Engine: (main.cpp)</div>
 	Ok now we have an engine, but how to use it ?
 
@@ -109,8 +108,8 @@ int main()
 
 	Ok for the main, but if you look at the creation of the Manager, you'll see that you need a conf file: "3dNovac.conf"
 
-\p Samples/Tuto1/3dNovac.conf
-\include Tuto1/3dNovac.conf
+\p Samples/bin/3dNovac.conf
+\include bin/3dNovac.conf
 
 	Now you could use this engine to do what you want.
 
@@ -199,7 +198,7 @@ void    GameEngine::LoadContent()
   	_scene3d = new SceneGraph();
   	_camera = new StandardCamera3d(_graphic->GetWindow());
 	_scene3d->AddChild(_camera);
-  	_graphic->GetSceneManager().AddScene(_scene3d);
+  	_graphic->GetSceneManager()->AddScene(_scene3d);
 
   	// create a new repere to display at the center of the scene
   	_scene3d->AddObject(BasicMeshCreator::Repere(1));
@@ -250,4 +249,8 @@ void GameEngine::MouseMotionEvent(Nc::System::Event &event)
 	Voila ! Now you have a window with a repere, and you can move the camera and resize the window.
 
 	Enjoy :)
+
+
+	<div class="tutorialFooter">Author(s): Ponpon </div>
 */
+

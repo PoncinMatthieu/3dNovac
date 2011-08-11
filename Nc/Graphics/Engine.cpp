@@ -44,9 +44,9 @@ using namespace Nc::Graphic;
 
 double      Graphic::Engine::_elapsedTime = 0;
 
-Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func)
+Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager)
     : Engine::IEngine(ClassName(), "Graphic Engine", manager, Nc::Engine::HasAContext /*| Nc::Engine::DontWaitOthersContext*/ | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
-      _createWinFunction(func), _context(NULL)
+      _sceneGraphManager(sceneGraphManager), _createWinFunction(func), _context(NULL)
 {
 }
 
@@ -75,7 +75,9 @@ void Graphic::Engine::CreateContext()
     _context->Active();
     _renderState.InitContext(_context);
     _renderState.Enable();
-    _sceneGraphManager.Init((_win->AntialiasingLevel() > 0));
+    if (_sceneGraphManager == NULL)
+        _sceneGraphManager = new SceneGraphManager();
+    _sceneGraphManager->Init((_win->AntialiasingLevel() > 0));
     _renderState.Disable();
 }
 
@@ -97,6 +99,6 @@ void Graphic::Engine::Execute(float runningTime)
 
     // display the scene graph
     _renderState.Enable();
-    _sceneGraphManager.Render(_context);
+    _sceneGraphManager->Render(_context);
     _renderState.Disable();
 }

@@ -35,7 +35,7 @@ using namespace Nc::Engine;
 IEngine::IEngine(const char *className, const std::string &name, Manager* manager, const Utils::Mask<Nc::Engine::Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
     : EventManager(className, name), _manager(manager), _loaded(false), _pattern(pattern),
       _deletePriority(deletePriority), _loadingContextPriority(loadingContextPriority), _loadingPriority(loadingPriority),
-      _elapsedTime(0), _limitFPS(0)
+      _elapsedTime(0), _limitFPS(0), _stop(false)
 {
 }
 
@@ -61,12 +61,14 @@ void IEngine::Run()
 
 void IEngine::MainLoop()
 {
-    while (_manager->IsLaunched())
+    while (_manager->IsLaunched() && !_stop)
         Process();
 }
 
 void IEngine::Loading()
 {
+    _manager->WaitAllEngineStarted();
+
     // if we have a context
     if (_pattern.Enabled(HasAContext) && _loadingContextPriority > 0)
     {
@@ -116,6 +118,7 @@ void IEngine::Loading()
 
 void IEngine::Process()
 {
+    _sleepMutex.Lock();
     if (_pattern.Enabled(Synchronize))
         _manager->MutexGlobal().Lock();
     if (_pattern.Enabled(HasAContext))
@@ -133,6 +136,7 @@ void IEngine::Process()
         DisableContext();
     if (_pattern.Enabled(Synchronize))
         _manager->MutexGlobal().Unlock();
+    _sleepMutex.Unlock();
     LimitFrameRate();
     _elapsedTime = _clock.ElapsedTime();
     _clock.Reset();
@@ -146,4 +150,19 @@ void IEngine::LimitFrameRate()
         if (n > 0)
             System::Sleep(n);
     }
+}
+
+void    IEngine::Sleep()
+{
+    _sleepMutex.Lock();
+}
+
+void    IEngine::WakeUp()
+{
+    _sleepMutex.Unlock();
+}
+
+void    IEngine::Stop()
+{
+    _stop = true;
 }

@@ -41,12 +41,12 @@ BoundingBox::BoundingBox()
 }
 
 BoundingBox::BoundingBox(const Box3f &box)
-    : Object(), Box3f(box)
+    : Object(ClassName()), Box3f(box)
 {
 }
 
 BoundingBox::BoundingBox(const Vector3f &min, const Vector3f &max)
-    : Object(), Box3f(min, max)
+    : Object(ClassName()), Box3f(min, max)
 {
 }
 

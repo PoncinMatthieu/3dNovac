@@ -31,7 +31,7 @@
 
 	<div class="title">The Nc-Graphics</div>
 	This is probably the bigest package of 3dNovac. It reference the entire Nc::Graphic namespace witch define an engine to create 3d and 2d application using OpenGL and GLSL shader program.
-	It is able to helps you to create and display mesh with their own Material display effect.
+	It is able to helps you to create and display mesh with their own Material and display effect.
 
 	<div class="title">The Nc-GUI</div>
 	This package could be used to render a GUI "in game" associated with the Graphic engine. It reference the Nc::GUI namespace.
@@ -41,4 +41,6 @@
 
 	<div class="title">The Nc-Contrib</div>
 	This is an experimental package used to reference some usefull (but non needy) classes to create samples and help beginners to apprehend more easily 3dNovac.
+
+	<div class="tutorialFooter">Author(s): Ponpon </div>
 */

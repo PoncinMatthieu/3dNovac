@@ -52,21 +52,25 @@ Logger::~Logger()
         CloseFile();
 }
 
+void Logger::SetLogger(Logger *logger)
+{
+    _mutex.Lock();
+    _instance = logger;
+    _mutex.Unlock();
+}
+
 Logger &Logger::Log(int status)
 {
     _status = status;
-    if (_instance == NULL)
-        _instance = new Logger();
-    return *_instance;
+    return Instance();
 }
 
-Logger	&Logger::Log(const char* aFile, int aLine, int status)
+Logger	&Logger::Log(const char* file, int line, int status)
 {
     _status = status;
-    if (_instance == NULL)
-        _instance = new Logger();
-    _instance->Write(aFile + std::string(" line:") + Convert::ToString(aLine) + std::string(":\t"), false);
-    return *_instance;
+    Logger &instance = Instance();
+    instance.Write(file + std::string(" line:") + Convert::ToString(line) + std::string(":\t"), false);
+    return instance;
 }
 
 #ifdef SYSTEM_WINDOWS

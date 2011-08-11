@@ -35,48 +35,45 @@ namespace Nc
 {
     namespace System
     {
+        class InputListener;
+
         /// Provide an interface for Inputs
         /**
-            Provide an interface for Inputs.
-            CheckEvent needs to be redefined,
-            and all the events need to be push into the `_eventQueue` pointer wich should be set with `SetEventQueue`
-            The `_eventQueue` pointer is shared with the InputManager
+            Provide an interface for Inputs. An input as a list Listener.
+            To add a Listener, use the method AddEventQueue.
+            All the events need to be push with the method PushEvent.
+            CheckEvent needs to be redefined.
+
+            \sa
+                - InputListener
         */
         class LCORE Input
         {
-            public:
-                Input() {_eventQueue = NULL; _mutexQueue = NULL; _eventQueueIsSet = false;}
-                virtual ~Input() {}
+            protected:
+                typedef std::list<InputListener*>               ListenerList;
 
-                /** Set the pointer of the eventQueue and the mutex witch protect the queue */
-                void SetEventQueue(EventQueue *eventQueue, Mutex *mutexQueue)
-                {
-                    _eventQueue = eventQueue;
-                    _mutexQueue = mutexQueue;
-                    _eventQueueIsSet = true;
-                }
+            public:
+                Input();
+                virtual ~Input();
+
+                /** Add the given listner to the listener list */
+                inline void         AddListener(InputListener *listener)            {_mutex.Lock(); _listeners.push_back(listener); _mutex.Unlock();}
+                /** Remove he given listner to the listener list */
+                inline void         RemoveListener(InputListener *listener)         {_mutex.Lock(); _listeners.remove(listener); _mutex.Unlock();}
 
                 /** To be redefine, called to check if there is new events */
-                virtual void CheckEvents() = 0;
+                virtual void        CheckEvents() = 0;
+
+                /** \return false if there are a listener */
+                inline bool         ListenerListEmpty()                             {return _listeners.empty();}
 
             protected:
-                /** push a new event in the eventQueue pointer */
-                void PushEvent(const Event &e)
-                {
-                    if (!_eventQueueIsSet || _eventQueue == NULL)
-                        throw Utils::Exception("Input", "The event queue is null");
-                    if (_mutexQueue)
-                        _mutexQueue->Lock();
-                    _eventQueue->push(e); // push l'event dans la queue
-                    if (_mutexQueue)
-                        _mutexQueue->Unlock();
-                }
-
-                bool    _eventQueueIsSet;
+                /** Push a new event in the eventQueue pointer */
+                void                PushEvent(const Event &e);
 
             private:
-                EventQueue      *_eventQueue;
-                Mutex           *_mutexQueue;
+                ListenerList    _listeners;
+                Mutex           _mutex;
         };
     }
 }

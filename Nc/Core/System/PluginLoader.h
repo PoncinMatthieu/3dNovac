@@ -40,12 +40,16 @@ namespace Nc
 {
     namespace System
     {
-        /// template class to load a plugin
+        /// Template class to load a plugin
         /**
+            To load a plugin. Can load only one plugin by PluginLoader instance.
             A plugin should have this extern c symbol:
  \code
     T   *GetPlugin();
  \endcode
+
+            The PluginLoader delete the instance at the next Load or at the destruction of the PluginLoader.
+            If you have already delete the instance yourself, you can call the method `UnsetInstance` to avoid the delete. But the library will be unload in all case.
         */
         template<typename T>
         class PluginLoader
@@ -55,10 +59,14 @@ namespace Nc
                 virtual ~PluginLoader()                             {Close();}
 
                 /** \return the instance of the plugin */
-                T *operator -> ()                                   {return _instance;}
+                T       *operator -> ()                             {return _instance;}
+                /** \return the instance of the plugin */
+                T       *operator * ()                              {return _instance;}
 
                 /** \return the instance of the plugin */
-                T *GetInstance()                                    {return _instance;}
+                T       *GetInstance()                              {return _instance;}
+                /** unset the instance of the plugin, to avoid the delete of the instance. But the library will be unload in all case.*/
+                void    UnsetInstance()                             {_instance = NULL;}
 
                 /** Load the plugin */
                 void    Load(const Utils::FileName &file);
@@ -89,6 +97,7 @@ namespace Nc
         template<typename T>
         void    PluginLoader<T>::Load(const Utils::FileName &file)
         {
+            Close();
             Open(file);
             GetPluginFunc GetPlugin = LoadSymbol<GetPluginFunc>("GetPlugin");
             _instance = GetPlugin();

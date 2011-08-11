@@ -32,7 +32,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 SkyBox::SkyBox(const Utils::FileName filenames[])
-    : Object()
+    : Object(ClassName())
 {
     // construction de la geometry
     UpdateGeometry(filenames);

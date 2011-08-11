@@ -68,8 +68,17 @@ namespace Nc
                 IEngine(const char *className, const std::string &name, Manager *manager, const Utils::Mask<Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority);
                 virtual ~IEngine();
 
+                /** Set the manager */
+                inline void             SetManager(Manager *m)          {_manager = m;}
+
                 /** Call the methods `Loading` and `MainLoop` of the engine */
                 virtual void            Run();
+                /** Sleep the engine */
+                void                    Sleep();
+                /** Wake up the engine */
+                void                    WakeUp();
+                /** Stop the engine without stoping the manager */
+                void                    Stop();
 
                 /** Set the limit frame rate of the thread. If the limit is not null, the thread will be sleeped to have good frame rate */
                 inline void             LimitFrameRate(float limit)     {_limitFPS = limit;}
@@ -113,7 +122,7 @@ namespace Nc
                 /** Disable the context, to redefine */
                 virtual inline void     DisableContext()    {}
 
-                Manager*                _manager;                   ///< The instance of the engine Manager
+                Manager                 *_manager;                  ///< The instance of the engine Manager
                 bool                    _loaded;                    ///< true if the engine is loaded
 
                 Utils::Mask<Pattern>    _pattern;                   ///< To detemine the pattern (comportement) of the engine
@@ -128,6 +137,8 @@ namespace Nc
                 float                   _elapsedTime;               ///< Elapsed time between 2 frame (Execute) in second
                 unsigned int            _limitFPS;                  ///< if > 0, used to sleep the thread with the good values to have the good number of seconds
                 Utils::Clock            _clock;                     ///< the clock used to compute the elapsed time and the fps sleep if the limit is set
+                System::Mutex           _sleepMutex;                ///< mutex used to sleep the engine
+                bool                    _stop;                      ///< a boolean to stop the engine
         };
     }
 }

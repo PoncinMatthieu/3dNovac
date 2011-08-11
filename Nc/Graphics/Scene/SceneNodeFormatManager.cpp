@@ -40,11 +40,12 @@ SceneNodeFormatManager::SceneNodeFormatManager()
         {
             const std::string &name = (*it)->Param("name");
             LOG << "Loading SceneNodeFormatPlugin `" + name + "` \t\t";
-            _listSceneNodeFormat.push_back(System::PluginLoader<SceneNodeFormatPlugin>());
+            _listSceneNodeFormat.push_back(System::PluginLoader<ISceneNodeFormatPlugin>());
             _listSceneNodeFormat.rbegin()->Load(name);
             LOG << "DONE" << std::endl;
         }
     }
+
 }
 
 SceneNodeFormatManager::~SceneNodeFormatManager()
@@ -53,7 +54,7 @@ SceneNodeFormatManager::~SceneNodeFormatManager()
 
 ISceneNode *SceneNodeFormatManager::Load(const FileName &file)
 {
-    SceneNodeFormatPlugin *sceneNodeFormat = GetSceneNodeFormatByExtension(file.Extension());
+    ISceneNodeFormatPlugin *sceneNodeFormat = GetSceneNodeFormatByExtension(file.Extension());
     if (sceneNodeFormat)
         return sceneNodeFormat->Load(file);
     else
@@ -61,7 +62,7 @@ ISceneNode *SceneNodeFormatManager::Load(const FileName &file)
     return NULL;
 }
 
-SceneNodeFormatPlugin    *SceneNodeFormatManager::GetSceneNodeFormatByExtension(const std::string &extension)
+ISceneNodeFormatPlugin    *SceneNodeFormatManager::GetSceneNodeFormatByExtension(const std::string &extension)
 {
     for (ListSceneNodeFormat::iterator it = _listSceneNodeFormat.begin(); it != _listSceneNodeFormat.end(); ++it)
     {
