@@ -64,7 +64,7 @@ namespace Nc
                                             &_threadId);    // returns the thread identifier
                     if (_handle == NULL)
                         throw Utils::Exception("The creation of the thread as failed");
-                }
+				}
 
                 virtual void Wait()
                 {
@@ -88,7 +88,7 @@ namespace Nc
             private:
                 inline static DWORD Launch(void *p)
                 {
-		  Thread *th = reinterpret_cast<Thread*>(t);
+		  Thread *th = reinterpret_cast<Thread*>(p);
 		  th->_id = ThreadId();
 		  th->Run();
 		  return 0;
