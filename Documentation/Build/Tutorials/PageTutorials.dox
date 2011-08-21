@@ -36,7 +36,7 @@
 		     	<td>Namespace Nc::Network</td>
 		</tr></table>
 	     </div>
-		- \subpage PageTutorial_NcCore_Network_Server "Create a tcp server" In construction
+		- \subpage PageTutorial_NcCore_Network_Server "Create a tcp server"
 		- \subpage PageTutorial_NcCore_Network_Client "Create a tcp client"
 
 	     <div class="subtutorialsTitle">
@@ -45,7 +45,7 @@
 		     	<td>Namespace Nc::Engine</td>
 		</tr></table>
 	     </div>
-		- \subpage PageTutorial_NcCore_Engine_CreateEngine "Communications between engines"
+		- \subpage PageTutorial_NcCore_Engine_CreateEngine "Communications between engines" In construction
 		- \subpage PageTutorial_NcCore_Engine_CreateEngine "Create your own engine"
 
 	</div>

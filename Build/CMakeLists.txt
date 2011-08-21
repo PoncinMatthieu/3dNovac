@@ -173,6 +173,11 @@ add_library(
 )
 
 target_link_libraries(
+  Nc-Core
+  pthread
+)
+
+target_link_libraries(
   Nc-Graphics
   freetype
   png

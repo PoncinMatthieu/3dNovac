@@ -1,0 +1,64 @@
+/**
+	\page PageTutorial_NcCore_Network_Server Create a tcp server
+
+	<div class="title">Introduction</div>
+	This tutorial will explain you how to create a minimalist tcp server by using the classes Network::SocketTcp and Network::Select.
+
+
+	<div class="title">Package used:</div>
+	- Nc-Core
+
+
+	<div class="title">Introduction to the sockets</div>
+	In computer science, a Socket is an endpoint of a bidirectional inter-process communication flow.
+	A Socket is usualy used to operate and control a network protocol like TCP.
+
+	Finally the class SocketTcp allow you to create a connection with another socket and send data informations with this inter-process communication flow.
+
+
+	<div class="title">Introduction to the select method</div>
+	A tcp socket lock the running process when you use a read/write method to communicate with an other process. This is due to the network/protocol limitations.
+
+	To avoid to be blocked by a socket, there is 2 main method witch can be combined:
+		- Using a dedicated thread for one or many sockets and call the read/write methods when you want.
+		- Using the system call "select" to examine the status of one or many sockets and call the read/write methods at the good time.
+
+	This tutorial will show you how to use the select method witch will be as often as a good choice for your applications.
+
+
+	<div class="title">The mechanism of a basic TCP server</div>
+	The protocol TCP is a protocol witch need to be connected. This means that the protocol allow a bidirectional communication in connected mode between 2 entity.
+	The entity witch is asking for a connection is called a "Client" and the entity witch accept a connection is called a server.
+
+	So, to create a server, you will need to:
+		- Create a Socket witch will listen a specified port.
+		- Listening to accept new incoming connection. 
+		- At a new incoming connection, create a new socket witch will receive the datas of the new client. 
+		- Dialoguate with the clients
+
+	
+	<div class="title">Concreate sample of a server:</div>
+	Here we use a select to interact with all the sockets (the listening socket and the client sockets).
+
+	There are 3 main functions:
+		- InitSelector: Witch intialize the selector to watch all the sockets you want to receive and send data. 
+		- AcceptNewConnection: Witch create a new clients at a new connection.
+		- ProcessNetwork: Witch will initialize the selector and next wait until any ready socket for reading, writing or new incomming connection.
+
+	The sample use an abstraction of socket: A class "Client" witch inherite to the SocketTCP class and define a pending request of data strings to be send to the client.
+
+	\p Samples/Tuto_NcCore_Server/main.cpp
+	\include Tuto_NcCore_Server/main.cpp
+
+	\p Samples/Tuto_NcCore_Server/Client.h
+	\include Tuto_NcCore_Server/Client.h
+
+
+	The server will send to each connected clients an incremental value at each second.
+	
+	Please go to the next tutorial to see the implementation of the client.
+
+
+	<div class="tutorialFooter">Author(s): Ponpon </div>
+*/
+

@@ -1,0 +1,32 @@
+/**
+	\page PageTutorial_NcCore_Network_Client Create a tcp client
+
+	<div class="title">Introduction</div>
+	This tutorial will explain you how to create a minimalist tcp client by using the classes Network::SocketTcp, Network::Select and Network::Ip.
+
+
+	<div class="title">Package used:</div>
+	- Nc-Core
+
+
+	<div class="title">The mechanism of a basic TCP client</div>
+	The protocol TCP is a protocol witch need to be connected. This means that the protocol allow a bidirectional communication in connected mode between 2 entity.
+	The entity witch is asking for a connection is called a "Client" and the entity witch accept a connection is called a server.
+
+	So, to create a client, you will need to:
+		- Create a Socket.
+		- Try to connect the socket to a specified Ip and Port.  
+		- Dialoguate with the server.
+
+	
+	<div class="title">Concreate sample of a client:</div>
+	Here we use a select to interact with the connected socket. But in this case you could directly use the socket without the selector, in this case the processus would be blocked at each call of the Read method.
+
+	\p Samples/Tuto_NcCore_Client/main.cpp
+	\include Tuto_NcCore_Client/main.cpp
+
+	The client will receive all incoming request from the server and print it into the console.  
+
+	<div class="tutorialFooter">Author(s): Ponpon </div>
+*/
+

@@ -39,6 +39,34 @@ target_link_libraries(Tuto1
 
 
 #------------------------------------------------------------------------------
+#	Tuto_NcCore_Server
+#------------------------------------------------------------------------------
+file(
+  GLOB
+  Tuto_NcCore_Server-sources
+  ../Tuto_NcCore_Server/*.cpp
+)
+
+add_executable(Tuto_NcCore_Server ${Tuto_NcCore_Server-sources})
+
+target_link_libraries(Tuto_NcCore_Server Nc-Core)
+
+
+#------------------------------------------------------------------------------
+#	Tuto_NcCore_Client
+#------------------------------------------------------------------------------
+file(
+  GLOB
+  Tuto_NcCore_Client-sources
+  ../Tuto_NcCore_Client/*.cpp
+)
+
+add_executable(Tuto_NcCore_Client ${Tuto_NcCore_Client-sources})
+
+target_link_libraries(Tuto_NcCore_Client Nc-Core)
+
+
+#------------------------------------------------------------------------------
 #	Frustum Demo
 #------------------------------------------------------------------------------
 file(
