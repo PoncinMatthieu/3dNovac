@@ -56,11 +56,11 @@ Object::Object(const Object &o)
     _name = o._name;
     _type = o._type;
     _params = o._params;
-    _cdata = false;
+    _cdata = o._cdata;
     _data = o._data;
     for (ListObject::const_iterator it = o._content.begin(); it != o._content.end(); ++it)
     {
-        Object *newObj = new Object(*it);
+        Object *newObj = new Object(**it);
         newObj->_parent = this;
         _content.push_back(newObj);
     }
@@ -76,7 +76,7 @@ Object &Object::operator = (const Object &o)
     _data = o._data;
     for (ListObject::const_iterator it = o._content.begin(); it != o._content.end(); ++it)
     {
-        Object *newObj = new Object(*it);
+        Object *newObj = new Object(**it);
         newObj->_parent = this;
         _content.push_back(newObj);
     }
