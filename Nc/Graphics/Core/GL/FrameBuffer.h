@@ -92,6 +92,7 @@ namespace Nc
                     /** Copy a block of pixels from the read framebuffer to the draw framebuffer */
                     static void                 Blit(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, const Utils::Mask<Enum::BufferBitType> &mask, Enum::Blit::Filter filter);
 
+
                 private:
                     /** Destroy the fbo */
                     void                        Release();

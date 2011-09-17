@@ -45,8 +45,14 @@ Octree::Octree(const Box3f &box)
       _drawOutlines(false), _pattern(FrustumCulling)
 {
     Vector3f s = box.Length();
+
+#ifndef WIN32
     unsigned int size = std::max(s.Data[0], s.Data[1]);
     size = std::max(size, (unsigned int)s.Data[2]);
+#else
+	unsigned int size = max(s.Data[0], s.Data[1]);
+    size = max(size, (unsigned int)s.Data[2]);
+#endif
 
     Init(box.Center(), Math::NearestPowerOf2(size));
 }

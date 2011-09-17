@@ -83,7 +83,7 @@ LRESULT CALLBACK WWindowInput::GlobalOnEvent(HWND handle, UINT message, WPARAM W
     // Forward the event to the appropriate function
     if (input)
     {
-        if (handle && input->_eventQueueIsSet) // don't proceed event until window is created
+		if (handle && !input->ListenerListEmpty()) // don't proceed event until window is created
             input->ProcessEvent(message, WParam, LParam);
 
         if (input->_callback)

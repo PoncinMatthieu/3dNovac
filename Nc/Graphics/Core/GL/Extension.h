@@ -33,7 +33,7 @@
 #include <GL3/gl3.h>
 
 #ifdef SYSTEM_WINDOWS
-	#include <GL/wglext.h>
+	#include <GL3/wglext.h>
 #endif
 
 // calling convention
@@ -82,21 +82,34 @@ namespace Nc
                 #ifdef SYSTEM_WINDOWS
 				public:
 					// buffer
-					PFNGLGENVERTEXARRAYSPROC			glGenVertexArrays;
-					PFNGLENABLEVERTEXATTRIBARRAYPROC	glEnableVertexAttribArray;
-					PFNGLDISABLEVERTEXATTRIBARRAYPROC	glDisableVertexAttribArray;
-					PFNGLBINDVERTEXARRAYPROC			glBindVertexArray;
-					PFNGLDELETEVERTEXARRAYSPROC			glDeleteVertexArrays;
-					PFNGLVERTEXATTRIBPOINTERPROC		glVertexAttribPointer;
-					PFNGLDELETEBUFFERSPROC				glDeleteBuffers;
-					PFNGLBUFFERDATAPROC					glBufferData;
-					PFNGLBUFFERSUBDATAPROC				glBufferSubData;
-					PFNGLGENBUFFERSPROC					glGenBuffers;
-					PFNGLMAPBUFFERPROC					glMapBuffer;
-					PFNGLUNMAPBUFFERPROC				glUnmapBuffer;
-					PFNGLBINDBUFFERPROC					glBindBuffer;
-					PFNGLDRAWARRAYSPROC					glDrawArrays;
-					PFNGLDRAWELEMENTSPROC				glDrawElements;
+					PFNGLGENVERTEXARRAYSPROC				glGenVertexArrays;
+					PFNGLENABLEVERTEXATTRIBARRAYPROC		glEnableVertexAttribArray;
+					PFNGLDISABLEVERTEXATTRIBARRAYPROC		glDisableVertexAttribArray;
+					PFNGLBINDVERTEXARRAYPROC				glBindVertexArray;
+					PFNGLDELETEVERTEXARRAYSPROC				glDeleteVertexArrays;
+					PFNGLVERTEXATTRIBPOINTERPROC			glVertexAttribPointer;
+					PFNGLDELETEBUFFERSPROC					glDeleteBuffers;
+					PFNGLBUFFERDATAPROC						glBufferData;
+					PFNGLBUFFERSUBDATAPROC					glBufferSubData;
+					PFNGLGENBUFFERSPROC						glGenBuffers;
+					PFNGLMAPBUFFERPROC						glMapBuffer;
+					PFNGLUNMAPBUFFERPROC					glUnmapBuffer;
+					PFNGLBINDBUFFERPROC						glBindBuffer;
+					PFNGLDRAWARRAYSPROC						glDrawArrays;
+					PFNGLDRAWELEMENTSPROC					glDrawElements;
+					PFNGLGENFRAMEBUFFERSPROC				glGenFramebuffers;
+					PFNGLDELETEFRAMEBUFFERSPROC				glDeleteFramebuffers;
+					PFNGLBINDFRAMEBUFFERPROC				glBindFramebuffer;
+					PFNGLFRAMEBUFFERRENDERBUFFERPROC		glFramebufferRenderbuffer;
+					PFNGLFRAMEBUFFERTEXTUREPROC				glFramebufferTexture;
+					PFNGLCHECKFRAMEBUFFERSTATUSPROC			glCheckFramebufferStatus;
+					PFNGLBLITFRAMEBUFFERPROC				glBlitFramebuffer;
+					PFNGLGENRENDERBUFFERSPROC				glGenRenderbuffers;
+					PFNGLDELETERENDERBUFFERSPROC			glDeleteRenderbuffers;
+					PFNGLBINDRENDERBUFFERPROC				glBindRenderbuffer;
+					PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC	glRenderbufferStorageMultisample;
+					PFNGLRENDERBUFFERSTORAGEPROC			glRenderbufferStorage;
+					PFNGLUNIFORM1UIPROC						glUniform1ui;
 
 					// texture
 					PFNGLACTIVETEXTUREPROC		glActiveTexture;

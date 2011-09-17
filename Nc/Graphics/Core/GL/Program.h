@@ -102,6 +102,7 @@ namespace Nc
                     virtual void            Release();
 
                 private:
+					std::list<Shader>			_shaders;
                     unsigned int                _program;           ///< the program
                     bool                        _linked;            ///< true if the shader has been linked
             };

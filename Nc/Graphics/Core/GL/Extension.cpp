@@ -27,7 +27,7 @@
 #include "Extension.h"
 
 #ifdef SYSTEM_WINDOWS
-    #include <GL/wglext.h>
+    #include <GL3/wglext.h>
 #else
     #include <GL/glx.h>
 #endif

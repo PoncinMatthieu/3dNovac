@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 /*
-** Copyright (c) 2007-2010 The Khronos Group Inc.
+** Copyright (c) 2007-2011 The Khronos Group Inc.
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and/or associated documentation files (the
@@ -36,9 +36,9 @@ extern "C" {
  * will probably change slightly as we make sure exactly the right set
  * of interfaces is included.
  *
- * gl3.h last updated on $Date: 2010-08-03 01:30:25 -0700 (Tue, 03 Aug 2010) $
+ * gl3.h last updated on $Date: 2011-07-06 02:49:14 -0700 (Wed, 06 Jul 2011) $
  *
- * RELEASE NOTES - 2010/03/11
+ * RELEASE NOTES - 2011/07/06
  *
  * gl3.h should be placed under a directory 'GL3' and included as
  * '<GL3/gl3.h>'.

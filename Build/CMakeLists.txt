@@ -14,6 +14,12 @@ endif()
 
 include_directories(
   ../
+  ../extlibs/
+  ../extlibs/freetype/
+  ../extlibs/GL3/
+  ../extlibs/libpng/
+  ../extlibs/zlib/
+  ../extlibs/SFML/include/
   /usr/include/freetype2/
   /usr/local/include/colladadom/
   /usr/local/include/colladadom/1.4/
@@ -143,8 +149,20 @@ add_library(
 )
 
 add_library(
+  Nc-Core-s
+  STATIC
+  ${Nc-Core-sources}
+)
+
+add_library(
   Nc-Graphics
   SHARED
+  ${Nc-Graphics-sources}
+)
+
+add_library(
+  Nc-Graphics-s
+  STATIC
   ${Nc-Graphics-sources}
 )
 
@@ -155,8 +173,20 @@ add_library(
 )
 
 add_library(
+  Nc-GUI-s
+  STATIC
+  ${Nc-GUI-sources}
+)
+
+add_library(
   Nc-Contrib
   SHARED
+  ${Nc-Contrib-sources}
+)
+
+add_library(
+  Nc-Contrib-s
+  STATIC
   ${Nc-Contrib-sources}
 )
 
@@ -167,22 +197,72 @@ add_library(
 )
 
 add_library(
+  Nc-Audio-s
+  STATIC
+  ${Nc-Audio-sources}
+)
+
+add_library(
   PluginFileFormatCollada
   SHARED
   ${PluginFileFormatCollada-sources}
 )
 
+IF(UNIX)
+	target_link_libraries(
+	  Nc-Graphics
+	  freetype
+	  png
+	  X11
+	  Xrandr
+	  Nc-Core
+	  pthread
+	)
+ELSE()
+	target_link_libraries(
+	  Nc-Graphics
+	  ../lib/Debug/Nc-Core-s
+	  ../extlibs/freetype
+	  ../extlibs/libpng
+	  opengl32
+	  glew32
+	  glut32
+	  ../extlibs/GLFW
+	  ../extlibs/freeglut
+	)
+ENDIF()
+
 target_link_libraries(
-  Nc-Core
-  pthread
+  Nc-Audio
+  ../extlibs/SFML/lib/sfml-audio
+  ../lib/Debug/Nc-Core-s
 )
 
 target_link_libraries(
-  Nc-Graphics
-  freetype
-  png
-  X11
-  Xrandr
+  Nc-Contrib
+  ../lib/Debug/Nc-Graphics-s
+  ../lib/Debug/Nc-Graphics-s
+  ../lib/Debug/Nc-Core-s
+  ../extlibs/freetype
+  ../extlibs/libpng
+  opengl32
+  glew32
+  glut32
+  ../extlibs/GLFW
+  ../extlibs/freeglut
+)
+
+target_link_libraries(
+  Nc-GUI
+  ../lib/Debug/Nc-Graphics-s
+  ../lib/Debug/Nc-Core-s
+  ../extlibs/freetype
+  ../extlibs/libpng
+  opengl32
+  glew32
+  glut32
+  ../extlibs/GLFW
+  ../extlibs/freeglut
 )
 
 target_link_libraries(

@@ -31,7 +31,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 LightingEffect::LightingEffect(ILightingMaterial *material)
-    : Effect(ClassName()), _material(material), _colorAmbiant(0.2,0.2,0.2)
+    : Effect(ClassName()), _material(material), _colorAmbiant(0.2f,0.2f,0.2f)
 {
 }
 

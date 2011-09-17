@@ -61,14 +61,15 @@ Vector3f GLContext::Get3dCoordinateFromProjection(int x, int y)
 }
 */
 
-void Camera3d::SetProjection(double ratioAspect, double near, double far, double fieldOfView)
+void Camera3d::SetProjection(double ratioAspect, double nearD, double farD, double fieldOfView)
 {
     _ratioAspect = ratioAspect;
-    _near = near;
-    _far = far;
+
     _fieldOfView = fieldOfView;
     UpdateProjectionFrustum();
     _resized = true;
+	_near = nearD;
+    _far = nearD;
 }
 
 void Camera3d::UpdateProjectionFrustum()

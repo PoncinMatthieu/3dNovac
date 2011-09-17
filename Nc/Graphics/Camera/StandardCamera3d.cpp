@@ -96,8 +96,8 @@ const char *StandardCamera3d::XpmHandClose[] =
     "0,0"
 };
 
-StandardCamera3d::StandardCamera3d(Graphic::Window *win, double ratioAspect, double near, double far, double fielOfView, Pattern p)
-    : Camera3d(ClassName(), ratioAspect, near, far, fielOfView),
+StandardCamera3d::StandardCamera3d(Graphic::Window *win, double ratioAspect, double nearD, double farD, double fielOfView, Pattern p)
+    : Camera3d(ClassName(), ratioAspect, nearD, farD, fielOfView),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
       _angles(-90, -15)
@@ -398,7 +398,7 @@ void StandardCamera3d::UpdateViewFrustum()
         vertices[7].Fill(_frustumFBR[0], _frustumFBR[1], _frustumFBR[2], c);
         static_cast<GL::GeometryBuffer<DefaultVertexType::Colored, false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices.Data);
 
-        Color                                   cPlan(0.3,0.3,0.3);
+        Color                                   cPlan(0.3f,0.3f,0.3f);
         Array<DefaultVertexType::Colored, 12>   verticesPlan;
         verticesPlan[0].Fill(_frustumNTL[0], _frustumNTL[1], _frustumNTL[2], cPlan);
         verticesPlan[1].Fill(_frustumNTR[0], _frustumNTR[1], _frustumNTR[2], cPlan);

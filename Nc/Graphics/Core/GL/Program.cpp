@@ -78,7 +78,11 @@ void    Program::Attach(const Shader &shader)
         LOG_DEBUG << "Program " << _program << " CREATED" << std::endl;
     }
     if (shader.IsValid())
+	{
         glAttachShader(_program, shader.GetIndex());
+		_shaders.push_back(shader);
+	}
+
 }
 
 void    Program::Attach(const Utils::FileName &shaderFile, Enum::ShaderType type)

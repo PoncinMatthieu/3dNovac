@@ -94,8 +94,8 @@ void Graphic::Engine::Execute(float runningTime)
 {
     _elapsedTime = runningTime;
 
-    // check the window inputs
-    _win->GetInput()->CheckEvents();
+	WindowInput *input = _win->GetInput();
+	input->CheckEvents();
 
     // display the scene graph
     _renderState.Enable();

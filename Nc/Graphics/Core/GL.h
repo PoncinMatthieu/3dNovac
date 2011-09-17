@@ -33,23 +33,41 @@
     #define VERSION_MIN_OPENGL  3.0
 
 // define if we are on windows the extentions
+
+
+    #include "../Define.h"
+	#include "GL\Extension.h"
+
 #ifdef SYSTEM_WINDOWS
 	// buffer
-	#define glGenVertexArrays				EXT.glGenVertexArrays
-	#define glEnableVertexAttribArray		EXT.glEnableVertexAttribArray
-	#define glDisableVertexAttribArray		EXT.glDisableVertexAttribArray
-	#define glBindVertexArray				EXT.glBindVertexArray
-	#define glDeleteVertexArrays			EXT.glDeleteVertexArrays
-	#define glVertexAttribPointer			EXT.glVertexAttribPointer
-	#define glDeleteBuffers					EXT.glDeleteBuffers
-	#define glBufferData					EXT.glBufferData
-	#define glBufferSubData					EXT.glBufferSubData
-	#define glGenBuffers					EXT.glGenBuffers
-	#define glMapBuffer						EXT.glMapBuffer
-	#define glUnmapBuffer					EXT.glUnmapBuffer
-	#define glBindBuffer					EXT.glBindBuffer
-	#define glDrawArrays					EXT.glDrawArrays
-	#define glDrawElements					EXT.glDrawElements
+	#define glGenVertexArrays					EXT.glGenVertexArrays
+	#define glEnableVertexAttribArray			EXT.glEnableVertexAttribArray
+	#define glDisableVertexAttribArray			EXT.glDisableVertexAttribArray
+	#define glBindVertexArray					EXT.glBindVertexArray
+	#define glDeleteVertexArrays				EXT.glDeleteVertexArrays
+	#define glVertexAttribPointer				EXT.glVertexAttribPointer
+	#define glDeleteBuffers						EXT.glDeleteBuffers
+	#define glBufferData						EXT.glBufferData
+	#define glBufferSubData						EXT.glBufferSubData
+	#define glGenBuffers						EXT.glGenBuffers
+	#define glMapBuffer							EXT.glMapBuffer
+	#define glUnmapBuffer						EXT.glUnmapBuffer
+	#define glBindBuffer						EXT.glBindBuffer
+	#define glDrawArrays						EXT.glDrawArrays
+	#define glDrawElements						EXT.glDrawElements
+	#define glGenFramebuffers					EXT.glGenFramebuffers
+	#define glDeleteFramebuffers				EXT.glDeleteFramebuffers
+	#define glBindFramebuffer					EXT.glBindFramebuffer
+	#define glFramebufferRenderbuffer			EXT.glFramebufferRenderbuffer
+	#define glFramebufferTexture				EXT.glFramebufferTexture
+	#define glCheckFramebufferStatus			EXT.glCheckFramebufferStatus
+	#define glBlitFramebuffer					EXT.glBlitFramebuffer
+	#define glGenRenderbuffers					EXT.glGenRenderbuffers
+	#define glDeleteRenderbuffers				EXT.glDeleteRenderbuffers
+	#define glBindRenderbuffer					EXT.glBindRenderbuffer
+	#define glRenderbufferStorageMultisample	EXT.glRenderbufferStorageMultisample
+	#define glRenderbufferStorage				EXT.glRenderbufferStorage
+	#define glUniform1ui						EXT.glUniform1ui
 
 	// texture
 	#define glActiveTexture			EXT.glActiveTexture
@@ -82,8 +100,6 @@
 	#define glGetAttribLocation		EXT.glGetAttribLocation
 #endif
 
-    #include "../Define.h"
-	#include "GL/Extension.h"
 	#include "GL/Enum.h"
 	#include "GL/State.h"
 

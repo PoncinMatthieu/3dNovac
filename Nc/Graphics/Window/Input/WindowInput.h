@@ -55,7 +55,7 @@ namespace Nc
                 /** Create and init the input */
                 virtual void Create() = 0;
                 /** Check the events of the input */
-                virtual void CheckEvents() = 0;
+				virtual void CheckEvents(){};
 
                 /** Generate a resize event */
                 void GenereResizeEvent(unsigned int x, unsigned int y);

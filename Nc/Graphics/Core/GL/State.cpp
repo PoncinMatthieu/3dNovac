@@ -58,7 +58,7 @@ void    State::Disable()
         _mutex.Unlock();
 }
 
-void    State::InitContext(GLContext *context)
+void    State::InitContext(Graphic::GLContext *context)
 {
     _context = context;
 

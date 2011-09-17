@@ -29,6 +29,7 @@
 
 #include "Window.h"
 #include "WCursor.h"
+#include "../Input/WWindowInput.h"
 
 namespace Nc
 {
