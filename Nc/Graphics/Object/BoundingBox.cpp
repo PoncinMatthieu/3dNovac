@@ -108,30 +108,3 @@ void BoundingBox::Draw(SceneGraph *scene)
     Matrix.AddTranslation(_min);
     _material->Render(scene, scene->ModelMatrix() * Matrix, *_drawable);
 }
-
-void BoundingBox::Draw(const Box3f &box, SceneGraph *scene)
-{
-    // creation de la geometry
-    if (_drawable == NULL)
-        CreateGeometry();
-
-    // recup le default material
-    if (_material == NULL)
-    {
-        _material = FactoryDefaultMaterials::Instance().GetBestMaterial(_drawable);
-        if (_material != NULL)
-            _material->Configure(*_drawable);
-        else
-        {
-            delete _drawable;
-            _drawable = NULL;
-            throw Utils::Exception("BoundingBox", "Can't find a default Material for the bounding box.");
-        }
-    }
-
-    TMatrix m;
-    m.Scale(box.Max() - box.Min());
-    m.AddTranslation(box.Min());
-    _material->Render(scene, scene->ModelMatrix() * m, *_drawable);
-}
-

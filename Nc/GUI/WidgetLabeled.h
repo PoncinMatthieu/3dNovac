@@ -39,6 +39,10 @@ namespace Nc
         class LGUI  WidgetLabeled : public Widget
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 WidgetLabeled(const Utils::Unicode::UTF32 &label, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(10, 10), Corner x = Left, Corner y = Top,
                               const std::string &ttf = "arial", Graphic::String::Style s = Graphic::String::Regular);
                 WidgetLabeled(const char *className, const Utils::Unicode::UTF32 &label, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(10, 10), Corner x = Left, Corner y = Top,

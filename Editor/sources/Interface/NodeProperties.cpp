@@ -135,21 +135,6 @@ ObjectProperties::ObjectProperties(StandardEditorItem *item)
 {
 }
 
-bool	ObjectProperties::DisplayBox() const
-{
-    Graphic::Object *obj = static_cast<Graphic::Object*>(_item->GetData());
-    if (obj != NULL)
-        return obj->DisplayBox();
-    return false;
-}
-
-void	ObjectProperties::DisplayBox(bool state)
-{
-    Graphic::Object *obj = static_cast<Graphic::Object*>(_item->GetData());
-    if (obj != NULL)
-        obj->DisplayBox(state);
-}
-
 EffectProperties::EffectProperties(StandardEditorItem *item)
     : NodeProperties(item)
 {

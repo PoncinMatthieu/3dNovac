@@ -174,7 +174,7 @@ bool    SocketTcp::Write(const char *src, unsigned int size)
     if (size > 0)
     {
         int sent = 0;
-        for (int len = 0; len < size; len += sent)
+        for (unsigned int len = 0; len < size; len += sent)
         {
             sent = send(_descriptor, reinterpret_cast<const char*>(src) + len, size - len, 0);
             if (sent <= 0)

@@ -41,6 +41,10 @@ namespace Nc
         class Octree : public SubTree<Graph::OctreeNodePolitic>
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_UTILS_DEFINE_INVOKABLE(System::Object);
+
                 /** The pattern define the comportement of the octree */
                 enum Pattern
                 {

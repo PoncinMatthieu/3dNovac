@@ -31,14 +31,20 @@
 #include <typeinfo>
 #include "../Define.h"
 #include "../Utils/Exception.h"
+#include "../Graph/INodePolitic.h"
 
 namespace Nc
 {
     namespace System
     {
         /// base class, with an Id and a Name, the Id is unique
-        class LCORE  Object
+        class LCORE  Object : public Utils::VisitableBase<Object>
         {
+            public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Utils::VisitableBase<Object>);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_UTILS_DEFINE_INVOKABLE(System::Object);
+
             public:
                 Object();
                 Object(const char *className);

@@ -46,6 +46,9 @@ namespace Nc
         class LGRAPHICS   String : public Object
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
                 /** Define the style of the text */
                 enum Style
                 {

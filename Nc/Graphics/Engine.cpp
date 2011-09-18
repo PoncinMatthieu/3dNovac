@@ -62,7 +62,7 @@ Graphic::Engine::~Engine()
 
 void Graphic::Engine::CreateContext()
 {
-    // creation de la fenetre et du renderer
+	// creation de la fenetre et du renderer
 #ifdef SYSTEM_WINDOWS
     _win = new WWindow();
 #else

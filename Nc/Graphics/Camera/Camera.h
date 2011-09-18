@@ -46,6 +46,10 @@ namespace Nc
         class LGRAPHICS Camera : public Object
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 Camera(const char *className, bool is2d)
                     : Object(className), _resized(true), _setAsCurrentCamera(true), _fix(true), _is2d(is2d), _useWindowSizeForViewport(true)  {}
                 virtual ~Camera() {}

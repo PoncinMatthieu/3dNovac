@@ -49,6 +49,10 @@ namespace Nc
         class LGRAPHICS BoundingBox : public Object, public Box3f
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 BoundingBox();
                 BoundingBox(const Box3f &box);
                 BoundingBox(const Vector3f &min, const Vector3f &max);
@@ -61,8 +65,6 @@ namespace Nc
 
                 /** Render the box */
                 void                    Draw(SceneGraph *scene);
-                /** Render the given box */
-                static void             Draw(const Box3f &box, SceneGraph *scene);
 
                 /** \return the height of the box */
                 inline float            Height() const              {return Length(2);}
@@ -72,16 +74,10 @@ namespace Nc
                 static void             CreateGeometry();
 
                 static Color            _color;         ///< the color of the box
-                static Drawable         *_drawable;     ///< the static drawable in static because it's the same for all boxs
+                static Drawable         *_drawable;     ///< the static drawable, static because we use the same drawable for all boxs
                 static IDefaultMaterial *_material;     ///< the static material instance used to render the drawables
         };
     }
 }
-
-#ifdef UNDEFINE_INC
-    #undef NC_GRAPHICS_OBJECT_OBJECT_TPP_
-    #undef UNDEFINE_INC
-    #include "Object3d.tpp"
-#endif
 
 #endif

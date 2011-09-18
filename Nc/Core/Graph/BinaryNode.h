@@ -28,6 +28,7 @@
 #define NC_CORE_TREE_BINARYNODE_H_
 
 #include "INodePolitic.h"
+#include "Node.h"
 
 namespace Nc
 {
@@ -143,9 +144,9 @@ namespace Nc
             private:
                 /**
                     Rebalance the node
-                    \return the root tree, that could changed.
+                    \return the root tree, because it could changed after a rebalancing.
                 */
-                NodeType    *Rebalancing();
+                NodeType        *Rebalancing();
         };
 
         /// Template class to define a binary tree structure
@@ -158,6 +159,8 @@ namespace Nc
         template<typename T>
         struct BinaryNodeAVL : public Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
         {
+            typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    Parent;
+            NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
             typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
             typedef BinaryNodeAVL                                       NodeType;
 

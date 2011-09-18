@@ -40,7 +40,8 @@ namespace Nc
         */
         struct LGRAPHICS SpriteAnimFrame : public FramesAnimation<SpriteAnimFrame>::Frame
         {
-            typedef FramesAnimation<SpriteAnimFrame>::Frame     Parent;
+            NC_UTILS_DEFINE_PARENT_CLASS(FramesAnimation<SpriteAnimFrame>::Frame);
+            NC_UTILS_DEFINE_VISITABLE(System::Object);
 
             SpriteAnimFrame(Parent::Pattern p, double d)                : Parent(ClassName(), p, d), sprite(NULL)                   {}
             SpriteAnimFrame(Parent::Pattern p, double d, Sprite *s)     : Parent(ClassName(), p, d), sprite(s)                      {}

@@ -29,10 +29,10 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Camera3d::Camera3d(const char *className, double ratioAspect, double near, double far, double fieldOfView)
+Camera3d::Camera3d(const char *className, float ratioAspect, float nearf, float farf, float fieldOfView)
     : Camera(className, false),
       _center(0, 0, 0), _up(0, 0, 1),
-      _ratioAspect(ratioAspect), _near(near), _far(far), _fieldOfView(fieldOfView)
+      _ratioAspect(ratioAspect), _near(nearf), _far(farf), _fieldOfView(fieldOfView)
 {
     UpdateProjectionFrustum();
 }
@@ -61,15 +61,15 @@ Vector3f GLContext::Get3dCoordinateFromProjection(int x, int y)
 }
 */
 
-void Camera3d::SetProjection(double ratioAspect, double nearD, double farD, double fieldOfView)
+void Camera3d::SetProjection(float ratioAspect, float nearf, float farf, float fieldOfView)
 {
     _ratioAspect = ratioAspect;
 
     _fieldOfView = fieldOfView;
     UpdateProjectionFrustum();
     _resized = true;
-	_near = nearD;
-    _far = nearD;
+	_near = nearf;
+    _far = nearf;
 }
 
 void Camera3d::UpdateProjectionFrustum()

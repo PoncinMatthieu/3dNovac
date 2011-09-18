@@ -41,6 +41,10 @@ namespace Nc
         class LGRAPHICS Sprite : public Object
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 Sprite(const Vector2f &size, const GL::Texture &t, const Box2f &textureBox, const GL::Blend::Pattern &blendPattern = GL::Blend::Alpha);
                 virtual ~Sprite() {};
 

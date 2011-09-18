@@ -55,7 +55,7 @@ void    DefaultMaterialColored::Render(SceneGraph *scene, const TMatrix &modelMa
     _program.Enable(); // enable the shader
 
     _program.SetUniform(_uniformMVP, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
-    drawable.Render(); // render the object
+	drawable.Render(); // render the object
 
     drawable.Disable();
 }

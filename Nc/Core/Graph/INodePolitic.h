@@ -34,6 +34,7 @@
 #include "../Utils/Logger.h"
 #include "../Utils/Exception.h"
 #include "../Utils/Metaprog.h"
+#include "../Utils/VisitorManager.h"
 
 namespace Nc
 {
@@ -42,6 +43,14 @@ namespace Nc
         /// a set of class witch should'nt be used outside of the graph namespace
         namespace Priv
         {
+            /// Base class for each node of the graph namespace
+            struct INodeBasePolitic : public Utils::VisitableBase<INodeBasePolitic>
+            {
+                NC_UTILS_DEFINE_PARENT_CLASS(Utils::VisitableBase<INodeBasePolitic>);
+                NC_UTILS_DEFINE_VISITABLE(INodeBasePolitic);
+                NC_UTILS_DEFINE_INVOKABLE(INodeBasePolitic);
+            };
+
             /// A base class Container to store the data of a node if needed
             template<typename T>
             struct Container
@@ -159,14 +168,14 @@ namespace Nc
 
         /// Interface to define a node politic
         template<typename T, class NodeType, bool Graph>
-        class INodePolitic :    public Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >,
+        class INodePolitic :    public Priv::INodeBasePolitic, public Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >,
                                 public Priv::Container<T>
         {
             public:
-                INodePolitic()                                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>()/*, _parent(NULL)*/         {}
-                INodePolitic(const T &data)                     : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>(data)/*, _parent(NULL)*/     {}
-                INodePolitic(NodeType *parent)                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent), Priv::Container<T>()/*, _parent(parent)*/       {}
-                INodePolitic(const T &data, NodeType *parent)   : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent), Priv::Container<T>(data)/*, _parent(parent)*/   {}
+                INodePolitic()                                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>()            {}
+                INodePolitic(const T &data)                     : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>(data)        {}
+                INodePolitic(NodeType *parent)                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent), Priv::Container<T>()      {}
+                INodePolitic(const T &data, NodeType *parent)   : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent), Priv::Container<T>(data)  {}
 
                 /** \return the string of the contained type */
                 std::string         TypeToString() const                        {return typeid(T).name();}
@@ -183,13 +192,13 @@ namespace Nc
 
         /// Specialization of INodePolitic for a node without data
         template<class NodeType, bool Graph>
-        class INodePolitic<Utils::Metaprog::Nop, NodeType, Graph> : public Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >
+        class INodePolitic<Utils::Metaprog::Nop, NodeType, Graph> : public Priv::INodeBasePolitic, public Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >
         {
             public:
-                INodePolitic()                                                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >() /*_parent(NULL) */    {}
-                INodePolitic(const Utils::Metaprog::Nop &)                      : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >()/*_parent(NULL)    */ {}
-                INodePolitic(NodeType *parent)                                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent)/*_parent(parent) */  {}
-                INodePolitic(const Utils::Metaprog::Nop &, NodeType *parent)    : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent)/*_parent(parent)*/   {}
+                INodePolitic()                                                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >()          {}
+                INodePolitic(const Utils::Metaprog::Nop &)                      : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >()          {}
+                INodePolitic(NodeType *parent)                                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent)    {}
+                INodePolitic(const Utils::Metaprog::Nop &, NodeType *parent)    : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent)    {}
 
                 /** \return the string of the contained type */
                 std::string         TypeToString() const                        {return typeid(Utils::Metaprog::Nop).name();}
@@ -201,6 +210,88 @@ namespace Nc
                 {
                     return oss;
                 }
+        };
+
+        /// Define a visiting method
+        enum VisitMethod
+        {
+            VisitParents,
+            VisitChilds
+        };
+
+        /// Base class to visit a node of the graph namespace
+        /**
+            To use this visitor, you have to implement the VisitNode method and the InvokeChild method in your own visitors.
+        */
+        template<typename VisitorType, typename ReturnType = void, typename Base = Priv::INodeBasePolitic>
+        class AbstractNodeVisitor : public Utils::VisitorManager::InvokableVisitor<VisitorType, Base, ReturnType>
+        {
+            public:
+                NC_UTILS_DEFINE_VISIT_INVOKER(NodeInvoker, InvokeNode);
+                NC_UTILS_DEFINE_VISIT_INVOKER(NodeVisiter, VisitNode);
+
+            public:
+                template<typename ToVisitList, typename VisitableList>
+                AbstractNodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, VisitMethod visitMethod = VisitChilds, bool postVisits = true)
+                    :   Utils::VisitorManager::InvokableVisitor<VisitorType, Base, ReturnType>(postVisits),
+                        _visitMethod(visitMethod)
+                {
+                    InitVTableInvokable(visitableList, NodeInvoker());
+                    InitVTable(toVisitList, NodeVisiter());
+                }
+
+                template<class NodeType>
+                void InvokeNode(NodeType &n)
+                {
+                    switch (_visitMethod)
+                    {
+                        case VisitParents:        static_cast<VisitorType*>(this)->InvokeParents(n);   break;
+                        case VisitChilds:         static_cast<VisitorType*>(this)->InvokeChilds(n);    break;
+                    }
+                }
+
+                template<class NodeType>
+                void InvokeNode(const NodeType &n)
+                {
+                    switch (_visitMethod)
+                    {
+                        case VisitParents:        static_cast<VisitorType*>(this)->InvokeParents(n);   break;
+                        case VisitChilds:         static_cast<VisitorType*>(this)->InvokeChilds(n);    break;
+                    }
+                }
+
+                template<class NodeType>
+                void InvokeParents(Priv::AbstractGraphPolitic<NodeType> &node)
+                {
+                    for (typename Priv::AbstractGraphPolitic<NodeType>::ParentList::iterator it = node.Parents().begin(); it != node.Parents().end(); ++it)
+                        if (*it != NULL)
+                            (*this)(**it);
+                }
+
+                template<class NodeType>
+                void InvokeParents(const Priv::AbstractGraphPolitic<NodeType> &node)
+                {
+                    for (typename Priv::AbstractGraphPolitic<NodeType>::ParentList::const_iterator it = node.Parents().begin(); it != node.Parents().end(); ++it)
+                        if (*it != NULL)
+                            (*this)(**it);
+                }
+
+                template<class NodeType>
+                void InvokeParents(Priv::AbstractTreePolitic<NodeType> &node)
+                {
+                    if (node.Parent() != NULL)
+                        (*this)(*node.Parent());
+                }
+
+                template<class NodeType>
+                void InvokeParents(const Priv::AbstractTreePolitic<NodeType> &node)
+                {
+                    if (node.Parent() != NULL)
+                        (*this)(*node.Parent());
+                }
+
+            protected:
+                VisitMethod     _visitMethod;
         };
     }
 }

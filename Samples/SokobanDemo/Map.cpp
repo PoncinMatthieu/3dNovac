@@ -1,5 +1,6 @@
 
 #include <Nc/Contrib/BasicMeshCreator.h>
+#include <Nc/Graphics/Object/BoundingBox.h>
 #include "Map.h"
 
 using namespace Nc;
@@ -13,7 +14,6 @@ Map::Map(const Utils::FileName &file, Nc::Graphic::SceneNodeFormatManager &scene
   objects[0] = sceneNodeFormatManager.Load("Nc:Mesh:cube/cube.dae")->As<Graphic::Object>();
   objects[1] = BasicMeshCreator::Plan(Vector2f(1,1), GL::Texture());
   objects[2] = sceneNodeFormatManager.Load("Nc:Mesh:Tux/TuxWizard.dae")->As<Graphic::Object>();
-  objects[2]->DisplayBox(true);
 
   // loading des textures de base
   _textureWall.LoadFromFile("Nc:Mesh:cube/brick086.png");
@@ -42,6 +42,7 @@ Map::Map(const Utils::FileName &file, Nc::Graphic::SceneNodeFormatManager &scene
   _player.type = PLAYER;
   _player.object = static_cast<Object*>(objects[2]->Clone());
   _player.identity = objects[2]->Matrix;
+  _player.object->AddChild(new BoundingBox(_player.object->GetBox()));
 
   // ajoute le player
   UpdatePlayerMatrix(Up);

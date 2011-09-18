@@ -8,10 +8,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 endif()
 
-if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-  add_definitions(-D_DEBUG)
-endif()
-
 include_directories(
   ../
   ../extlibs/
@@ -110,7 +106,17 @@ file(
 
 if(WIN32)
   list(REMOVE_ITEM Nc-Graphics-sources ${Linux_CPP})
-else()
+
+	file(
+	  GLOB
+	  libpngzlib-sources
+	  ../extlibs/libpng/*.c
+	  ../extlibs/libpng/*.h
+	  ../extlibs/zlib/*.c
+	  ../extlibs/zlib/*.h
+	)
+  list(APPEND Nc-Graphics-sources ${libpngzlib-sources})
+  else()
   list(REMOVE_ITEM Nc-Graphics-sources ${Win32_CPP})
 endif()
 
@@ -142,71 +148,22 @@ file(
   ../Plugin/FileFormatCollada/*.h
 )
 
-add_library(
-  Nc-Core
-  SHARED
-  ${Nc-Core-sources}
-)
+add_library(Nc-Core SHARED ${Nc-Core-sources})
+add_library(Nc-Graphics SHARED ${Nc-Graphics-sources})
+add_library(Nc-GUI SHARED ${Nc-GUI-sources})
+add_library(Nc-Contrib SHARED ${Nc-Contrib-sources})
+add_library(Nc-Audio SHARED ${Nc-Audio-sources})
+add_library(PluginFileFormatCollada SHARED ${PluginFileFormatCollada-sources})
 
-add_library(
-  Nc-Core-s
-  STATIC
-  ${Nc-Core-sources}
-)
+IF(WIN32)
+  add_library(Nc-Core-s STATIC ${Nc-Core-sources})
+  add_library(Nc-Graphics-s STATIC ${Nc-Graphics-sources})
+  add_library(Nc-GUI-s STATIC ${Nc-GUI-sources})
+  add_library(Nc-Contrib-s STATIC ${Nc-Contrib-sources})
+  add_library(Nc-Audio-s STATIC ${Nc-Audio-sources})
+ENDIF()
 
-add_library(
-  Nc-Graphics
-  SHARED
-  ${Nc-Graphics-sources}
-)
-
-add_library(
-  Nc-Graphics-s
-  STATIC
-  ${Nc-Graphics-sources}
-)
-
-add_library(
-  Nc-GUI
-  SHARED
-  ${Nc-GUI-sources}
-)
-
-add_library(
-  Nc-GUI-s
-  STATIC
-  ${Nc-GUI-sources}
-)
-
-add_library(
-  Nc-Contrib
-  SHARED
-  ${Nc-Contrib-sources}
-)
-
-add_library(
-  Nc-Contrib-s
-  STATIC
-  ${Nc-Contrib-sources}
-)
-
-add_library(
-  Nc-Audio
-  SHARED
-  ${Nc-Audio-sources}
-)
-
-add_library(
-  Nc-Audio-s
-  STATIC
-  ${Nc-Audio-sources}
-)
-
-add_library(
-  PluginFileFormatCollada
-  SHARED
-  ${PluginFileFormatCollada-sources}
-)
+target_link_libraries(Nc-Core pthread)
 
 IF(UNIX)
 	target_link_libraries(
@@ -215,55 +172,43 @@ IF(UNIX)
 	  png
 	  X11
 	  Xrandr
-	  Nc-Core
-	  pthread
 	)
 ELSE()
 	target_link_libraries(
 	  Nc-Graphics
-	  ../lib/Debug/Nc-Core-s
+	  ../lib/Debug/Nc-Core
 	  ../extlibs/freetype
-	  ../extlibs/libpng
+	  ../extlibs/sndfile
+	  ../extlibs/zlib
 	  opengl32
-	  glew32
-	  glut32
-	  ../extlibs/GLFW
-	  ../extlibs/freeglut
 	)
 ENDIF()
 
-target_link_libraries(
-  Nc-Audio
-  ../extlibs/SFML/lib/sfml-audio
-  ../lib/Debug/Nc-Core-s
-)
+IF(WIN32)
+  target_link_libraries(Nc-Audio ../extlibs/SFML/lib/sfml-audio ../lib/Debug/Nc-Core)
+ENDIF()
 
-target_link_libraries(
-  Nc-Contrib
-  ../lib/Debug/Nc-Graphics-s
-  ../lib/Debug/Nc-Graphics-s
-  ../lib/Debug/Nc-Core-s
-  ../extlibs/freetype
-  ../extlibs/libpng
-  opengl32
-  glew32
-  glut32
-  ../extlibs/GLFW
-  ../extlibs/freeglut
-)
+IF(WIN32)
+  target_link_libraries(
+    Nc-Contrib
+    ../lib/Debug/Nc-Graphics
+    ../lib/Debug/Nc-Core
+    ../extlibs/freetype
+    ../extlibs/libpng
+    opengl32
+    )
+ENDIF()
 
-target_link_libraries(
-  Nc-GUI
-  ../lib/Debug/Nc-Graphics-s
-  ../lib/Debug/Nc-Core-s
-  ../extlibs/freetype
-  ../extlibs/libpng
-  opengl32
-  glew32
-  glut32
-  ../extlibs/GLFW
-  ../extlibs/freeglut
-)
+IF(WIN32)
+  target_link_libraries(
+    Nc-GUI
+    ../lib/Debug/Nc-Graphics
+    ../lib/Debug/Nc-Core
+    ../extlibs/freetype
+    ../extlibs/libpng
+    opengl32
+    )
+ENDIF()
 
 target_link_libraries(
   PluginFileFormatCollada
@@ -274,3 +219,15 @@ target_link_libraries(
   pcrecpp
   boost_filesystem
 )
+
+set_target_properties(Nc-Core 					PROPERTIES DEFINE_SYMBOL EXPORT_CORE)
+set_target_properties(Nc-Graphics				PROPERTIES DEFINE_SYMBOL EXPORT_GRAPHICS)
+set_target_properties(Nc-GUI 					PROPERTIES DEFINE_SYMBOL EXPORT_GUI)
+set_target_properties(Nc-Audio 					PROPERTIES DEFINE_SYMBOL EXPORT_AUDIO)
+set_target_properties(Nc-Contrib 				PROPERTIES DEFINE_SYMBOL EXPORT_CONTRIB)
+
+if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
+  add_definitions(-D_DEBUG)
+endif()
+
+#add_definitions(-DDYNAMIC_LINK)

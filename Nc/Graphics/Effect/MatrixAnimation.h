@@ -40,6 +40,10 @@ namespace Nc
         class LGRAPHICS   MatrixAnimation : public Animation
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Animation);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 MatrixAnimation();
                 //MatrixAnimation(const TMatrix &transformation);
                 ~MatrixAnimation();

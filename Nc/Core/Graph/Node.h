@@ -30,6 +30,8 @@
 #include <list>
 #include "../Define.h"
 #include "../Utils/Metaprog.h"
+#include "../Utils/Visitable.h"
+#include "INodePolitic.h"
 
 namespace Nc
 {
@@ -41,6 +43,8 @@ namespace Nc
         class AbstractNode : public P<T,NodeType,Allocator>
         {
             public:
+                typedef P<T,NodeType,Allocator>             Parent;
+                NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
                 typedef P<T,NodeType,Allocator>             NodePolitic;
 
             public:
@@ -91,6 +95,8 @@ namespace Nc
         class Node : public AbstractNode<T,P,NodeType>
         {
             public:
+                typedef AbstractNode<T,P,NodeType>      Parent;
+                NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
                 typedef AbstractNode<T,P,NodeType>      NodePolitic;
 
             public:
@@ -138,6 +144,8 @@ namespace Nc
         class Node<T,P,Utils::Metaprog::Nop> : public AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >
         {
             public:
+                typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >     Parent;
+                NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
                 typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >     NodePolitic;
                 typedef Node                                                    NodeType;
 
@@ -146,6 +154,89 @@ namespace Nc
                 Node(const T &data)                     : NodePolitic(data)           {}
                 Node(NodeType *parent)                  : NodePolitic(parent)         {}
                 Node(const T &data, NodeType *parent)   : NodePolitic(data, parent)   {}
+        };
+    }
+}
+
+#include "NNodePolitic.h"
+#include "BinaryNode.h"
+
+namespace Nc
+{
+    namespace Graph
+    {
+        /// Visitor base class to visit a Node
+        template<class VisitorType, typename ReturnType = void, typename Base = Priv::INodeBasePolitic>
+        class NodeVisitor : public AbstractNodeVisitor<VisitorType, ReturnType, Base>
+        {
+            public:
+                template<typename ToVisitList, typename VisitableList>
+                NodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, VisitMethod visitMethod = VisitChilds, bool postVisits = true, bool direction = true)
+                    : AbstractNodeVisitor<VisitorType, ReturnType, Base>(toVisitList, visitableList, visitMethod, postVisits), _direction(direction)
+                {}
+
+                template<typename VisitedList>
+                NodeVisitor(const VisitedList &visitedList, VisitMethod visitMethod = VisitChilds, bool postVisits = true, bool direction = true)
+                    : AbstractNodeVisitor<VisitorType, ReturnType, Base>(visitedList, visitedList, visitMethod, postVisits), _direction(direction)
+                {}
+
+                template<typename T, class NodeType, bool Graph, class Allocator>
+                void InvokeChilds(NNodePolitic<T,NodeType,0,Graph,Allocator> &n)
+                {
+                    if (_direction)
+                    {
+                        for (typename std::list<NodeType*>::iterator it = n.Childs().begin(); it != n.Childs().end(); ++it)
+                            (*this)(**it);
+                    }
+                    else
+                    {
+                        for (typename std::list<NodeType*>::reverse_iterator it = n.Childs().rbegin(); it != n.Childs().rend(); ++it)
+                            (*this)(**it);
+                    }
+                }
+
+                template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
+                void InvokeChilds(NNodePolitic<T,NodeType,NbChilds,Graph,Allocator> &n)
+                {
+                    if (_direction)
+                    {
+                        for (unsigned int i = 0; i < NbChilds; ++i)
+                        {
+                            if (n.Childs().Data[i] != NULL)
+                                (*this)(n.Childs().Data[i]);
+                        }
+                    }
+                    else
+                    {
+                        for (unsigned int i = NbChilds - 1; i >= 0; --i)
+                        {
+                            if (n.Childs().Data[i] != NULL)
+                                (*this)(*n.Childs().Data[i]);
+                        }
+                    }
+                }
+
+                template<typename T, class NodeType, class Allocator>
+                void InvokeChilds(BinaryNodePolitic<T, NodeType, Allocator> &n)
+                {
+                    if (_direction)
+                    {
+                        if (n.Left() != NULL)
+                            (*this)(*n.Left());
+                        if (n.Right() != NULL)
+                            (*this)(*n.Right());
+                    }
+                    else
+                    {
+                        if (n.Right() != NULL)
+                            (*this)(*n.Right());
+                        if (n.Left() != NULL)
+                            (*this)(*n.Left());
+                    }
+                }
+
+            private:
+                bool        _direction;
         };
     }
 }

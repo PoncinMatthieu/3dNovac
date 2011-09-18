@@ -100,13 +100,10 @@ namespace Nc
       class ObjectProperties : public NodeProperties
       {
           Q_OBJECT;
-          Q_PROPERTY(bool DisplayBox READ DisplayBox WRITE DisplayBox);
 
       public:
           ObjectProperties(StandardEditorItem *item);
 
-          bool	DisplayBox() const;
-          void	DisplayBox(bool state);
       };
 
       class EffectProperties : public NodeProperties

@@ -44,6 +44,7 @@ namespace Nc
         class SubTree : public AbstractSceneNode<P>
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);
                 typedef AbstractSceneNode<P>        MotherType;
 
             public:

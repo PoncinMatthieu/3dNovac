@@ -27,6 +27,7 @@
 #include "DefaultLightingMaterial.h"
 #include "../Material/Drawable.h"
 #include "LightingEffect.h"
+#include "../Scene/Visitors.h"
 
 using namespace Nc::Graphic;
 using namespace Nc::Graphic::DefaultVertexType;
@@ -218,12 +219,14 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
         _program.SetUniform(_uniforms[UniformBumpMapping], 0);
 
     TMatrix matrixLight;
+    Visitor::GetRecursiveMatrix visitor(matrixLight);
     for (ListPLight::const_iterator it = listLight.begin(); it != listLight.end(); it++)
     {
         if ((*it)->Enabled())
         {
             Vector3f pos;
-            (*it)->GetRecursiveMatrix(matrixLight); /// \todo To obtain the light position, we need to caculate recursively it's matrix, this could decrease the perf
+            matrixLight.Init();
+            visitor(**it); /// \todo To obtain the light position, we need to caculate recursively it's matrix, this could decrease the perf
             matrixLight.Transform(pos);
             _program.SetUniform(_uniforms[UniformLight], pos.Data[0], pos.Data[1], pos.Data[2], 1.0f / ((*it)->radius));
             _program.SetUniform(_uniforms[UniformLightColor], (*it)->color.R, (*it)->color.G, (*it)->color.B, (*it)->color.A);

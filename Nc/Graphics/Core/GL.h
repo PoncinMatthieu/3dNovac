@@ -36,7 +36,7 @@
 
 
     #include "../Define.h"
-	#include "GL\Extension.h"
+	#include "GL/Extension.h"
 
 #ifdef SYSTEM_WINDOWS
 	// buffer

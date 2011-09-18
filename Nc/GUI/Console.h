@@ -38,14 +38,19 @@ namespace Nc
         /// To manage a console
         class LGUI  Console : public WindowBox, Utils::NonCopyable
         {
-            /// The pattern of the console
-            enum Pattern
-            {
-                Nop,
-                TranslateAtFocus        ///< if set, then the console will translate itsel when she has the focus
-            };
+            public:
+                NC_UTILS_DEFINE_PARENT_CLASS(WindowBox);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
 
-            typedef std::list<Utils::Unicode::UTF32>    ListMsg;    ///< The list of message in UTF-32
+            private:
+                /// The pattern of the console
+                enum Pattern
+                {
+                    Nop,
+                    TranslateAtFocus        ///< if set, then the console will translate itsel when she has the focus
+                };
+
+                typedef std::list<Utils::Unicode::UTF32>    ListMsg;    ///< The list of message in UTF-32
 
             public:
                 Console(Pattern p = TranslateAtFocus);

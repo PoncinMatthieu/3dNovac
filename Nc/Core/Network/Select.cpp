@@ -65,12 +65,12 @@ void Select::SetForWriting(const SocketTcp &socket)
 
 bool Select::IsReadyForReading(const SocketTcp &socket)
 {
-    return (FD_ISSET(socket.Descriptor(), &_readSet));
+    return (FD_ISSET(socket.Descriptor(), &_readSet) != 0);
 }
 
 bool Select::IsReadyForWriting(const SocketTcp &socket)
 {
-    return (FD_ISSET(socket.Descriptor(), &_writeSet));
+    return (FD_ISSET(socket.Descriptor(), &_writeSet) != 0);
 }
 
 unsigned int Select::Wait(float timeout)

@@ -75,16 +75,11 @@ void EditorEngine::LoadContent()
 {
     AddInput(_graphic->GetWindow()->GetInput());
 
-    // creation du GUI::SceneGraph
     _GUI = new GUI::SceneGraph();
-
-    // creation de la camera 2d
     Camera2d *camera = new Camera2d();
     _GUI->AddChild(camera);
-
     GUI::FPSWidget *fps = new GUI::FPSWidget();         // creation du widget pour afficher les fps
     _GUI->AddChild(fps);
-
     _graphic->GetSceneManager()->AddScene(_GUI);
     _scenes.push_back(_GUI);
 
@@ -283,6 +278,7 @@ void EditorEngine::SelectNodeCmd(Nc::Engine::IEvent *e)
 
     if (_currentNodeSelected != n)
     {
+/*
         Graphic::Object *obj = _currentNodeSelected->AsWithoutThrow<Graphic::Object>();
         if (obj != NULL)
             obj->DisplayBox(false);
@@ -290,6 +286,7 @@ void EditorEngine::SelectNodeCmd(Nc::Engine::IEvent *e)
         obj = n->AsWithoutThrow<Graphic::Object>();
         if (obj != NULL)
             obj->DisplayBox(true);
+*/
         _currentNodeSelected = n;
     }
 }

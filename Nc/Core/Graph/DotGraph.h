@@ -78,7 +78,7 @@ namespace Nc
         template<typename T, bool Subtree>
         void DotGraph<T,Subtree>::LoadFile(const Utils::FileName &, T &)
         {
-            LOG_ERROR << "implement me" << std::endl;
+            LOG_ERROR << "DotGraph<T,Subtree>::LoadFile: This method is not implemented" << std::endl;
         }
 
         template<typename T, bool Subtree>

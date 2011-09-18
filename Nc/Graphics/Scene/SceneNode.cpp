@@ -28,9 +28,17 @@
 #include "SceneGraph.h"
 #include "../Object/Object.h"
 #include "../Effect/Effect.h"
+#include "Visitors.h"
 
 using namespace Nc;
 using namespace Nc::Graphic;
+
+bool    ISceneNode::EnabledRecursif() const
+{
+    Visitor::IsEnableRecursive f;
+    f(*this);
+    return f.result;
+}
 
 Entity::Entity()
     : NodePolitic(ClassName())
@@ -102,29 +110,6 @@ void    Entity::UpdateChilds(float elapsedTime)
     {
         LOG_ERROR << "Error in the update pass of the node : " << e.what() << std::endl;
     }
-}
-
-struct EnabledFonctor
-{
-    EnabledFonctor()
-        : result(true)  {}
-
-    bool operator () (const ISceneNode *node)
-    {
-        const Entity *n = node->AsWithoutThrow<const Entity>();
-        if (n != NULL)
-            result = n->Enabled();
-        return result;
-    }
-
-    bool    result;
-};
-
-bool    Entity::EnabledRecursif() const
-{
-    EnabledFonctor f;
-    ForEachParents<false>(f);
-    return f.result;
 }
 
 void    Entity::Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)

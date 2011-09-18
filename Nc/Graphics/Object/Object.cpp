@@ -26,14 +26,12 @@
 
 #include "Object.h"
 #include "../Material/FactoryDefaultMaterials.h"
-#include "BoundingBox.h"
 
 using namespace Nc;
 using namespace Nc::Graphic;
 
 Object::Object()
     : NodeType(ClassName()),
-      _displayBox(false),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -41,7 +39,6 @@ Object::Object()
 
 Object::Object(const char *className)
     : NodeType(className),
-      _displayBox(false),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -49,7 +46,6 @@ Object::Object(const char *className)
 
 Object::Object(const TMatrix &m)
     : NodeType(ClassName(), m),
-      _displayBox(false),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -57,7 +53,6 @@ Object::Object(const TMatrix &m)
 
 Object::Object(const Box3f &box)
     : NodeType(ClassName()),
-      _displayBox(false),
       _box(box), _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -65,7 +60,6 @@ Object::Object(const Box3f &box)
 
 Object::Object(const Box3f &box, const TMatrix &m)
     : NodeType(ClassName(), m),
-      _displayBox(false),
       _box(box), _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -73,7 +67,6 @@ Object::Object(const Box3f &box, const TMatrix &m)
 
 Object::Object(const Object &o)
     : NodeType(o),
-      _displayBox(o._displayBox),
       _drawables(o._drawables.size()),
       _box(o._box), _material(o._material),
       _lastConfiguredMaterial(NULL)
@@ -85,7 +78,6 @@ Object::Object(const Object &o)
 Object &Object::operator = (const Object &o)
 {
     NodeType::operator = (o);
-    _displayBox = o._displayBox;
     _box = o._box;
     _material = o._material;
     _lastConfiguredMaterial = NULL;
@@ -104,13 +96,6 @@ Object::~Object()
     for (unsigned int i = 0; i < _drawables.size(); ++i)
         if (_drawables[i] != NULL)
             delete _drawables[i];
-}
-
-void    Object::SetRecursiveMaterial(IMaterial *newMaterial)
-{
-    SetMaterial(newMaterial);
-    SetMaterialFonctor f(newMaterial);
-    ForEachChilds<false>(f);
 }
 
 bool    Object::SetMaterial(IMaterial *newMaterial)
@@ -182,10 +167,6 @@ void    Object::Render(SceneGraph *scene)
         // rendering childs
         NodeType::RenderChilds(scene);
 
-        // rendering the box
-        if (_displayBox)
-            BoundingBox::Draw(_box, scene);
-
         scene->PopModelMatrix();
     }
 }
@@ -203,7 +184,7 @@ void    Object::Draw(SceneGraph *scene)
         if (m != _lastConfiguredMaterial)
             ConfigureDrawables(m);
 
-        //LOG << this << " Render with: " << *m << std::endl;
+        //LOG << this << " " << *this << " Rendering with: " << *m << std::endl;
 
         // rendering
         for (unsigned int i = 0; i < _drawables.size(); ++i)
@@ -233,28 +214,6 @@ void    Object::CenterBase(const Vector3f &centerBase)
     Vector3f center = b.Center();
     center.Data[2] = b.Min(2);
     Matrix.AddTranslation(centerBase - center);
-}
-
-struct MatrixFonctor
-{
-    MatrixFonctor(TMatrix &m) : matrix(m) {}
-
-    bool operator () (ISceneNode *node)
-    {
-        Object *n = node->AsWithoutThrow<Object>();
-        if (n != NULL)
-            matrix.AddTransformation(n->Matrix);
-        return true;
-    }
-
-    TMatrix  &matrix;
-};
-
-void    Object::GetRecursiveMatrix(TMatrix &m)
-{
-    m.Init();
-    MatrixFonctor f(m);
-    ForEachParents<true>(f);
 }
 
 void    Object::TransformModelMatrixToRender(SceneGraph *scene)

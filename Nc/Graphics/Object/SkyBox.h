@@ -53,6 +53,10 @@ namespace Nc
         class LGRAPHICS SkyBox : public Object
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 SkyBox(const Utils::FileName filenames[]);
                 virtual ~SkyBox();
 

@@ -47,54 +47,82 @@ namespace Nc
                 typedef T2  Tail;
             };
 
-            #define NC_UTILS_METAPROG_TYPELIST_1(t1)                         TypeList<t1, NullType>
-            #define NC_UTILS_METAPROG_TYPELIST_2(t1, t2)                     TypeList<t1, NC_UTILS_METAPROG_TYPELIST_1(t2) >
-            #define NC_UTILS_METAPROG_TYPELIST_3(t1, t2, t3)                 TypeList<t1, NC_UTILS_METAPROG_TYPELIST_2(t2, t3) >
-            #define NC_UTILS_METAPROG_TYPELIST_4(t1, t2, t3, t4)             TypeList<t1, NC_UTILS_METAPROG_TYPELIST_3(t2, t3, t4) >
-            #define NC_UTILS_METAPROG_TYPELIST_5(t1, t2, t3, t4, t5)         TypeList<t1, NC_UTILS_METAPROG_TYPELIST_4(t2, t3, t4, t5) >
-            #define NC_UTILS_METAPROG_TYPELIST_6(t1, t2, t3, t4, t5, t6)     TypeList<t1, NC_UTILS_METAPROG_TYPELIST_5(t2, t3, t4, t5, t6) >
-            #define NC_UTILS_METAPROG_TYPELIST_7(t1, t2, t3, t4, t5, t6, t7) TypeList<t1, NC_UTILS_METAPROG_TYPELIST_6(t2, t3, t4, t5, t6, t7) >
-
-            template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
-            struct List
+            template<typename TypeList, typename Action>
+            struct TypeListApply
             {
-                typedef NC_UTILS_METAPROG_TYPELIST_7(T1, T2, T3, T4, T5, T6, T7)    Type;
+                void operator () (TypeList, Action &action)
+                {
+                    action.template Call<typename TypeList::Head>();
+                    Apply(typename TypeList::Tail(), action);
+                }
             };
 
-            template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-            struct List<T1, T2, T3, T4, T5, T6, NullType>
+            template<typename Action>
+            struct TypeListApply<NullType, Action>
             {
-                typedef NC_UTILS_METAPROG_TYPELIST_6(T1, T2, T3, T4, T5, T6)    Type;
+                void operator () (NullType, Action &)     {}
             };
 
-            template<typename T1, typename T2, typename T3, typename T4, typename T5>
-            struct List<T1, T2, T3, T4, T5, NullType, NullType>
+            template<typename TypeList, typename Action>
+            void    Apply(TypeList list, Action &action)
             {
-                typedef NC_UTILS_METAPROG_TYPELIST_5(T1, T2, T3, T4, T5)    Type;
-            };
+                TypeListApply<TypeList, Action> app;
+                app(list, action);
+            }
 
-            template<typename T1, typename T2, typename T3, typename T4>
-            struct List<T1, T2, T3, T4, NullType, NullType, NullType>
-            {
-                typedef NC_UTILS_METAPROG_TYPELIST_4(T1, T2, T3, T4)    Type;
-            };
 
-            template<typename T1, typename T2, typename T3>
-            struct List<T1, T2, T3, NullType, NullType, NullType, NullType>
+
+            #define NC_UTILS_METAPROG_TYPELIST_1(t1)                            TypeList<t1, NullType>
+            #define NC_UTILS_METAPROG_TYPELIST_2(t1, t2)                        TypeList<t1, NC_UTILS_METAPROG_TYPELIST_1(t2) >
+            #define NC_UTILS_METAPROG_TYPELIST_3(t1, t2, t3)                    TypeList<t1, NC_UTILS_METAPROG_TYPELIST_2(t2, t3) >
+            #define NC_UTILS_METAPROG_TYPELIST_4(t1, t2, t3, t4)                TypeList<t1, NC_UTILS_METAPROG_TYPELIST_3(t2, t3, t4) >
+            #define NC_UTILS_METAPROG_TYPELIST_5(t1, t2, t3, t4, t5)            TypeList<t1, NC_UTILS_METAPROG_TYPELIST_4(t2, t3, t4, t5) >
+            #define NC_UTILS_METAPROG_TYPELIST_6(t1, t2, t3, t4, t5, t6)        TypeList<t1, NC_UTILS_METAPROG_TYPELIST_5(t2, t3, t4, t5, t6) >
+            #define NC_UTILS_METAPROG_TYPELIST_7(t1, t2, t3, t4, t5, t6, t7)    TypeList<t1, NC_UTILS_METAPROG_TYPELIST_6(t2, t3, t4, t5, t6, t7) >
+
+            template<typename T1, typename T2 = NullType, typename T3 = NullType, typename T4 = NullType, typename T5 = NullType, typename T6 = NullType, typename T7 = NullType>
+            struct Seq;
+
+            template<typename T1>
+            struct Seq<T1, NullType, NullType, NullType, NullType, NullType, NullType>
             {
-                typedef NC_UTILS_METAPROG_TYPELIST_3(T1, T2, T3)    Type;
+                typedef NC_UTILS_METAPROG_TYPELIST_1(T1)    Type;
             };
 
             template<typename T1, typename T2>
-            struct List<T1, T2, NullType, NullType, NullType, NullType, NullType>
+            struct Seq<T1, T2, NullType, NullType, NullType, NullType, NullType>
             {
                 typedef NC_UTILS_METAPROG_TYPELIST_2(T1, T2)    Type;
             };
 
-            template<typename T1>
-            struct List<T1, NullType, NullType, NullType, NullType, NullType, NullType>
+            template<typename T1, typename T2, typename T3>
+            struct Seq<T1, T2, T3, NullType, NullType, NullType, NullType>
             {
-                typedef NC_UTILS_METAPROG_TYPELIST_1(T1)    Type;
+                typedef NC_UTILS_METAPROG_TYPELIST_3(T1, T2, T3)    Type;
+            };
+
+            template<typename T1, typename T2, typename T3, typename T4>
+            struct Seq<T1, T2, T3, T4, NullType, NullType, NullType>
+            {
+                typedef NC_UTILS_METAPROG_TYPELIST_4(T1, T2, T3, T4)    Type;
+            };
+
+            template<typename T1, typename T2, typename T3, typename T4, typename T5>
+            struct Seq<T1, T2, T3, T4, T5, NullType, NullType>
+            {
+                typedef NC_UTILS_METAPROG_TYPELIST_5(T1, T2, T3, T4, T5)    Type;
+            };
+
+            template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+            struct Seq<T1, T2, T3, T4, T5, T6, NullType>
+            {
+                typedef NC_UTILS_METAPROG_TYPELIST_6(T1, T2, T3, T4, T5, T6)    Type;
+            };
+
+            template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+            struct Seq
+            {
+                typedef NC_UTILS_METAPROG_TYPELIST_7(T1, T2, T3, T4, T5, T6, T7)    Type;
             };
 
             #undef NC_UTILS_METAPROG_TYPELIST_1

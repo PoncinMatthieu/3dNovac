@@ -43,6 +43,10 @@ namespace Nc
         class FramesAnimation : public Animation
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Animation);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 typedef std::list<T>                        ListFrame;
 
                 /// Enum to define the comportement of an Animation
@@ -60,6 +64,9 @@ namespace Nc
                 */
                 struct LGRAPHICS Frame : Effect
                 {
+                    NC_UTILS_DEFINE_PARENT_CLASS(Effect);
+                    NC_UTILS_DEFINE_VISITABLE(System::Object);
+
                     /// The pattern of the frame
                     enum Pattern
                     {
@@ -234,7 +241,7 @@ namespace Nc
         template<typename T>
         void FramesAnimation<T>::Render(SceneGraph *scene)
         {
-            if (!_enabled || Started() && _itCurrentFrame != GetListFrame().end())
+            if (!_enabled || (Started() && _itCurrentFrame != GetListFrame().end()))
                 return;
             RenderFrame(scene);
         }

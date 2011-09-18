@@ -41,6 +41,10 @@ namespace Nc
         class LGUI  SceneGraph : public Graphic::SceneGraph
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::SceneGraph);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 SceneGraph();
                 SceneGraph(const char *className);
                 SceneGraph(const SceneGraph &scene);

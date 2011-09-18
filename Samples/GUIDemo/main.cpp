@@ -8,7 +8,7 @@ using namespace std;
 void CreateEngines(Nc::Engine::Manager *manager)
 {
     Nc::Graphic::Engine *graphic = new Nc::Graphic::Engine(manager, (Nc::Graphic::Engine::CreateWindowFunc)&GameEngine::CreateWindow);
-//    graphic->LimitFrameRate(60);
+    graphic->LimitFrameRate(60);
     manager->AddEngine("Graphic", graphic);
     LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << endl;
 

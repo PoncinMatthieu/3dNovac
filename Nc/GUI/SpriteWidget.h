@@ -38,6 +38,9 @@ namespace Nc
         class LGUI  SpriteWidget : public Widget
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
                 /// To define a sprite with his position in the widget
                 struct SpritePos
                 {

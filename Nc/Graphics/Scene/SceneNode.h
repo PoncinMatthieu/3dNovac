@@ -37,9 +37,13 @@ namespace Nc
     namespace Graphic
     {
         /// Interface to define a scene node
-        class ISceneNode : public System::Object
+        class LGRAPHICS ISceneNode : public System::Object
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(System::Object);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_UTILS_DEFINE_INVOKABLE(System::Object);
+
                 struct Allocator
                 {
                     template<class NodeType>
@@ -97,6 +101,9 @@ namespace Nc
                 /** \return the enable statement */
                 virtual bool                 Enabled() const                                 {return _enabled;}
 
+                /** \return false if the object or one of its parents has the enable statement to false */
+                bool                        EnabledRecursif() const;
+
             protected:
                 System::Mutex       _mutex;         ///< a mutex used to protect the node, (this mutex is lock at the render pass)
                 bool                _enabled;       ///< an enable statement
@@ -122,20 +129,6 @@ namespace Nc
                 /** \return the good child with the given \p index */
                 virtual const ISceneNode    *Child(unsigned int i) const    {return NodePolitic::Child(i);}
 
-                /** Recursivelly call a fonctor for itself and it's childs using a postfix or a suffixe traversal */
-                template<bool Postfix, typename Fonctor>
-                bool        ForEachChilds(Fonctor &f);
-                /** Recursivelly call a fonctor for itself and it's childs using a postfix or a suffixe traversal */
-                template<bool Postfix, typename Fonctor>
-                bool        ForEachChilds(Fonctor &f) const;
-
-                /** Recursivelly call a fonctor for itself and it's parents using a postfix or a suffixe traversal */
-                template<bool Postfix, typename Fonctor>
-                bool        ForEachParents(Fonctor &f);
-                /** Recursivelly call a fonctor for itself and it's parents using a postfix or a suffixe traversal */
-                template<bool Postfix, typename Fonctor>
-                bool        ForEachParents(Fonctor &f) const;
-
                 friend std::ostream& operator << (std::ostream& Out, const AbstractSceneNode<P>& o)
                 {
                     Out << static_cast<const ISceneNode&>(o);
@@ -150,6 +143,9 @@ namespace Nc
         class Entity : public AbstractSceneNode<Graph::ListNodePolitic>
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_UTILS_DEFINE_INVOKABLE(System::Object);
                 typedef AbstractSceneNode<Graph::ListNodePolitic>            NodePolitic;
 
             public:
@@ -175,7 +171,7 @@ namespace Nc
                 virtual const ISceneNode    *SubTree(unsigned int) const                        {return Data;}
 
                 /**
-                    Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given ]p oldAt.
+                    Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given \p oldAt.
                     Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible)
                 */
                 virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt);
@@ -185,126 +181,9 @@ namespace Nc
                 /** Update the childs and the subtrees */
                 void                        UpdateChilds(float elapsedTime);
 
-                /** \return false if the object or one of its parents has the enable statement to false */
-                bool                        EnabledRecursif() const;
-
             public:
                 TMatrix                     Matrix;                 ///< the matrix of the entity
         };
-
-        template<template<typename,class,class> class P>
-        template<bool Postfix, typename Fonctor>
-        bool    AbstractSceneNode<P>::ForEachChilds(Fonctor &f)
-        {
-            /// \todo find a way to go through the subtree
-            //if (NodeType::Data != NULL)
-            //    static_cast<Graph::Container<ISceneNode*>*>(this->Data)->ForEachChilds(f);
-
-            typename NodePolitic::ContainerType &childs = NodePolitic::Childs();
-            bool                                state = true;
-            if (Postfix)
-            {
-                for (typename NodePolitic::ContainerType::iterator it = childs.begin(); it != childs.end(); ++it)
-                    if (!(*it)->ForEachChilds<Postfix>(f))
-                        state = false;
-                if (!state)
-                    return false;
-                state = f(this);
-            }
-            else
-            {
-                if (!f(this))
-                    return false;
-                for (typename NodePolitic::ContainerType::iterator it = childs.begin(); it != childs.end(); ++it)
-                    if (!(*it)->ForEachChilds<Postfix>(f))
-                        state = false;
-            }
-            return state;
-        }
-
-        template<template<typename,class,class> class P>
-        template<bool Postfix, typename Fonctor>
-        bool    AbstractSceneNode<P>::ForEachChilds(Fonctor &f) const
-        {
-            /// \todo find a way to go through the subtree
-            //if (NodeType::Data != NULL)
-            //    static_cast<Graph::Container<ISceneNode*>*>(this->Data)->ForEachChilds(f);
-
-            typename NodePolitic::ContainerType &childs = NodePolitic::Childs();
-            bool                                state = true;
-            if (Postfix)
-            {
-                for (typename NodePolitic::ContainerType::const_iterator it = childs.begin(); it != childs.end(); ++it)
-                    if (!(*it)->ForEachChilds<Postfix>(f))
-                        state = false;
-                if (!state)
-                    return false;
-                state = f(this);
-            }
-            else
-            {
-                if (!f(this))
-                    return false;
-                for (typename NodePolitic::ContainerType::const_iterator it = childs.begin(); it != childs.end(); ++it)
-                    if (!(*it)->ForEachChilds<Postfix>(f))
-                        state = false;
-            }
-            return state;
-        }
-
-        template<template<typename,class,class> class P>
-        template<bool Postfix, typename Fonctor>
-        bool    AbstractSceneNode<P>::ForEachParents(Fonctor &f)
-        {
-            /// \todo find a way to go through the subtree
-            //if (NodeType::Data != NULL)
-            //    NodeType::Data->ForEachParents(f);
-
-            if (Postfix)
-            {
-                for (typename NodeType::ParentList::iterator it = NodeType::_parents.begin(); it != NodeType::_parents.end(); ++it)
-                    if (!(*it)->ForEachParents<Postfix>(f))
-                        return false;
-                if (!f(this))
-                    return false;
-            }
-            else
-            {
-                if (!f(this))
-                    return false;
-                for (typename NodeType::ParentList::iterator it = NodeType::_parents.begin(); it != NodeType::_parents.end(); ++it)
-                    if (!(*it)->ForEachParents<Postfix>(f))
-                        return false;
-            }
-            return true;
-        }
-
-        template<template<typename,class,class> class P>
-        template<bool Postfix, typename Fonctor>
-        bool    AbstractSceneNode<P>::ForEachParents(Fonctor &f) const
-        {
-            /// \todo find a way to go through the subtree
-            //if (NodeType::Data != NULL)
-            //    NodeType::Data->ForEachParents(f);
-
-            if (Postfix)
-            {
-                for (typename NodeType::ParentList::const_iterator it = NodeType::_parents.begin(); it != NodeType::_parents.end(); ++it)
-                    if (!(*it)->ForEachParents<Postfix>(f))
-                        return false;
-                if (!f(this))
-                    return false;
-            }
-            else
-            {
-                if (!f(this))
-                    return false;
-                for (typename NodeType::ParentList::const_iterator it = NodeType::_parents.begin(); it != NodeType::_parents.end(); ++it)
-                    if (!(*it)->ForEachParents<Postfix>(f))
-                        return false;
-            }
-            return true;
-        }
     }
 }
 

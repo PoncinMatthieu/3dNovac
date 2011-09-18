@@ -25,6 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "SceneGraph.h"
+#include "Visitors.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace Nc;
@@ -69,20 +70,6 @@ void SceneGraph::BringToFront(Widget *w)
     }
 }
 
-struct FonctorResized
-{
-    bool operator () (Graphic::ISceneNode *node)
-    {
-        Widget *w = node->AsWithoutThrow<Widget>();
-        if (w != NULL)
-        {
-            w->Resized();
-            return false;
-        }
-        return true;
-    }
-};
-
 void SceneGraph::ManageWindowEvent(const System::Event &event)
 {
 // update en cas de resize de la fenetre
@@ -90,9 +77,9 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
     {
         if (_currentCamera != NULL)
             _currentCamera->Resized(event);
-        FonctorResized f;
-        for(ContainerType::iterator it = _childs.begin(); it != _childs.end(); it++)
-            (*it)->ForEachChilds<false>(f);
+
+        Visitor::ResizeAll resizeAll;
+        resizeAll(*this);
     }
 
 // test de focus

@@ -42,7 +42,7 @@ void	GameEngine::LoadContent()
 
 void	GameEngine::Update(float runningTime)
 {
-  // update the scene (will update it's effect and camera)
+  // update the scene (will update it's effects and camera)
   _scene3d->Update(runningTime);
 }
 

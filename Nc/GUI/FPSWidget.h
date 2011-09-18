@@ -37,6 +37,10 @@ namespace Nc
         class LGUI FPSWidget : public WidgetLabeled
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(WidgetLabeled);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 FPSWidget(Corner x = Center, Corner y = Top);
 
                 static const char   *ClassName()                {return "FPSWidget";}

@@ -28,6 +28,7 @@
 #include <Nc/Graphics/Object/BasicMeshCreator.h>
 #include "Widget.h"
 #include "WidgetLabeled.h"
+#include "Visitors.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
@@ -103,25 +104,11 @@ void Widget::Copy(const Widget &w)
     _stateChanged = true;
 }
 
-struct InhibitFonctor
-{
-    bool operator () (const ISceneNode *node)
-    {
-        const Widget *n = node->AsWithoutThrow<const Widget>();
-        if (n != NULL)
-            result = (!result && n->Inhibited());
-        return !result;
-    }
-
-    bool    result;
-};
-
 bool    Widget::InhibitedRecursif() const
 {
-    InhibitFonctor f;
-    f.result = false;
-    ForEachParents<false>(f);
-    return f.result;
+    Visitor::IsInhibited v;
+    v(*this);
+    return v.result;
 }
 
 void Widget::Update()
@@ -200,51 +187,6 @@ void Widget::ManageWindowEvent(const Event &event)
         _childFocused->ManageWindowEvent(event);
 }
 
-struct CheckFocusFonctor
-{
-    CheckFocusFonctor(const Event &e, Vector2i mouseP)
-        : event(e), mousePos(mouseP), childFocused(NULL) {}
-
-    bool operator () (ISceneNode *node)
-    {
-        Widget *w = node->AsWithoutThrow<Widget>();
-        if (w != NULL)
-        {
-            if (!w->EnabledRecursif() || w->InhibitedRecursif())
-                return true;
-
-            Vector2f    pos;
-            Vector2f    size;
-
-            w->GetReelPosRecursif(pos);
-            w->GetReelSize(size);
-            #ifdef _DEBUG_GUI_FOCUS
-            LOG_DEBUG << "Widget: " << *w << std::endl;
-            LOG_DEBUG << "ReelPos   = " << pos << std::endl;
-            LOG_DEBUG << "ReelSize  = " << size << std::endl;
-            LOG_DEBUG << "Mouse = " << mousePos << std::endl;
-            #endif
-            if (Math::InRect(pos, size, mousePos))
-            {
-                childFocused = w;
-                childFocused->Focus(true);
-                #ifdef _DEBUG_GUI_FOCUS
-                LOG_DEBUG << "OK" << std::endl;
-                #endif
-            }
-            #ifdef _DEBUG_GUI_FOCUS
-            LOG << std::endl;
-            #endif
-            return false;
-        }
-        return true;
-    }
-
-    const Event     &event;
-    const Vector2i  &mousePos;
-    Widget          *childFocused;
-};
-
 void Widget::CheckFocus(const Event &event)
 {
     // testing focus childs
@@ -255,37 +197,16 @@ void Widget::CheckFocus(const Event &event)
         _childFocused = NULL;
 
         Vector2i mousePos = WindowInput::MousePositionInGLCoord();
-        CheckFocusFonctor f(event, mousePos);
-        for(ContainerType::iterator it = _childs.begin(); f.childFocused == NULL && it != _childs.end(); it++)
-            (*it)->ForEachChilds<false>(f);
-        _childFocused = f.childFocused;
+        Visitor::CheckFocus v(event, mousePos);
+        for(ContainerType::iterator it = _childs.begin(); v.childFocused == NULL && it != _childs.end(); it++)
+            v(**it);
+        _childFocused = v.childFocused;
 
         // unfocus the last child to had the focus
         if (lastchildToHaveTheFocus != NULL && lastchildToHaveTheFocus != _childFocused)
             lastchildToHaveTheFocus->Focus(false);
     }
 }
-
-struct GetFirstFindWidgetFonctor
-{
-    GetFirstFindWidgetFonctor(const Widget *c)
-        : widget(NULL), current(c)    {}
-
-    bool operator () (const ISceneNode *node)
-    {
-        if (node != current)
-        {
-            const Widget *w = node->AsWithoutThrow<Widget>();
-            if (w != NULL)
-                widget = w;
-        }
-        return (widget == NULL);
-    }
-
-    const Widget *widget;
-    const Widget *current;
-};
-
 
 void Widget::GetReelPos(Vector2f &reelPos) const
 {
@@ -296,13 +217,14 @@ void Widget::GetReelPos(Vector2f &reelPos) const
 
     GetReelSize(reelSize);
     reelPos = _pos;
-    GetFirstFindWidgetFonctor f(this);
-    ForEachParents<false>(f);
-    if (f.widget != NULL) // recup la size et le margin du parent
+
+    Visitor::GetParentWidget v;
+    v(*this);
+    if (v.widget != NULL && v.widget != this) // recup la size et le margin du parent
     {
-        f.widget->GetReelSize(parentSize);
-        margin = f.widget->_margin;
-        f.widget->TranslateChild(_corner, parentTranslate);
+        v.widget->GetReelSize(parentSize);
+        margin = v.widget->_margin;
+        v.widget->TranslateChild(_corner, parentTranslate);
     }
 
     // check les corner en x
@@ -326,10 +248,10 @@ void Widget::GetReelPos(Vector2f &reelPos) const
 void Widget::GetReelPosRecursif(Vector2f &pos) const
 {
     // get back the first parent
-    GetFirstFindWidgetFonctor f(this);
-    ForEachParents<false>(f);
-    if (f.widget != NULL)
-        f.widget->GetReelPosRecursif(pos);
+    Visitor::GetParentWidget v;
+    v(*this);
+    if (v.widget != NULL && v.widget != this)
+        v.widget->GetReelPosRecursif(pos);
     Vector2f reelPos;
     GetReelPos(reelPos);
     pos += reelPos;
@@ -364,64 +286,40 @@ void Widget::CheckState()
     }
 }
 
-struct ChangeChildsStateRecursiveFonctor
-{
-    bool operator () (ISceneNode *node)
-    {
-        Widget *p = node->AsWithoutThrow<Widget>();
-        if (p != NULL)
-            p->ChangeState();
-        return true;
-    }
-};
-
 void Widget::ChangeChildsStateRecursive()
 {
-    ChangeChildsStateRecursiveFonctor f;
-    ForEachChilds<false>(f);
+    Visitor::ChangeStates v;
+    v(*this);
 }
 
-void Widget::Percent(Vector2f percent)
+void Widget::Percent(const Vector2f &percent)
 {
     _percent = percent;
     Resized();
 }
 
-struct ResizedFonctor
-{
-    bool operator () (ISceneNode *node)
-    {
-        Widget *n = node->AsWithoutThrow<Widget>();
-        if (n != NULL)
-        {
-            float sParent;
-            if (n->Percent().Data[0] != 0 || n->Percent().Data[1] != 0)
-            {
-                GetFirstFindWidgetFonctor f(n);
-                n->ForEachParents<false>(f); // get back the first widget parent
-                Vector2i newSize = n->Size();
-                if (n->Percent().Data[0] != 0)
-                {
-                    sParent = (f.widget != NULL) ? f.widget->Size()[0] : Window::Width();
-                    newSize[0] = ((float)(n->Percent().Data[0] * sParent) / 100.0);
-                }
-                if (n->Percent().Data[1] != 0)
-                {
-                    sParent = (f.widget != NULL) ? f.widget->Size()[1] : Window::Height();
-                    newSize[1] = ((float)(n->Percent().Data[1] * sParent) / 100.0);
-                }
-                n->Size(newSize);
-            }
-            n->ChangeState();
-        }
-        return true;
-    }
-};
-
 void Widget::Resized()
 {
-    ResizedFonctor f;
-    ForEachChilds<false>(f);
+    float sParent;
+    if (Percent().Data[0] != 0 || Percent().Data[1] != 0)
+    {
+        Visitor::GetParentWidget v;
+        v(*this);
+
+        Vector2i newSize = Size();
+        if (Percent().Data[0] != 0)
+        {
+            sParent = (v.widget != NULL && v.widget != this) ? v.widget->Size()[0] : Window::Width();
+            newSize[0] = ((float)(Percent().Data[0] * sParent) / 100.0);
+        }
+        if (Percent().Data[1] != 0)
+        {
+            sParent = (v.widget != NULL && v.widget != this) ? v.widget->Size()[1] : Window::Height();
+            newSize[1] = ((float)(Percent().Data[1] * sParent) / 100.0);
+        }
+        Size(newSize);
+    }
+    ChangeState();
 }
 
 void Widget::DrawEdgeBox(Graphic::SceneGraph *scene)

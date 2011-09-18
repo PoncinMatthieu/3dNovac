@@ -38,6 +38,10 @@ namespace Nc
         class LGRAPHICS RasterEffect : public Effect
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Effect);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 enum Pattern
                 {
                     Points,                 ///< draw only the points of primitives

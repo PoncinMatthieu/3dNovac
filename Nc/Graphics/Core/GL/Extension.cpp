@@ -56,6 +56,20 @@ Extension::Extension()
 	glBindBuffer = NULL;
 	glDrawArrays = NULL;
 	glDrawElements = NULL;
+	glGenFramebuffers = NULL;
+	glDeleteFramebuffers = NULL;
+	glBindFramebuffer = NULL;
+	glFramebufferRenderbuffer = NULL;
+	glFramebufferTexture = NULL;
+	glCheckFramebufferStatus = NULL;
+	glBlitFramebuffer = NULL;
+	glGenRenderbuffers = NULL;
+	glDeleteRenderbuffers = NULL;
+	glBindRenderbuffer = NULL;
+	glRenderbufferStorageMultisample = NULL;
+	glRenderbufferStorage = NULL;
+	glUniform1ui = NULL;
+
 
 	// texture
 	glActiveTexture = NULL;
@@ -118,8 +132,21 @@ bool Extension::Init()
 	r = (r && (glMapBuffer = (PFNGLMAPBUFFERPROC)LoadFunc("glMapBuffer")) != NULL);
 	r = (r && (glUnmapBuffer = (PFNGLUNMAPBUFFERPROC)LoadFunc("glUnmapBuffer")) != NULL);
 	r = (r && (glBindBuffer = (PFNGLBINDBUFFERPROC)LoadFunc("glBindBuffer")) != NULL);
-	r = (r && (glDrawArrays = ::glDrawArrays) != NULL);
-	r = (r && (glDrawElements = ::glDrawElements) != NULL);
+	r = (r && (glDrawArrays = (PFNGLDRAWARRAYSPROC)LoadFunc("glDrawArrays")) != NULL);
+	r = (r && (glDrawElements = (PFNGLDRAWELEMENTSPROC)LoadFunc("glDrawElements")) != NULL);
+	r = (r && (glGenFramebuffers = (PFNGLGENFRAMEBUFFERSPROC)LoadFunc("glGenFramebuffers")) != NULL);
+	r = (r && (glDeleteFramebuffers = (PFNGLDELETEFRAMEBUFFERSPROC)LoadFunc("glDeleteFramebuffers")) != NULL);
+	r = (r && (glBindFramebuffer = (PFNGLBINDFRAMEBUFFERPROC)LoadFunc("glBindFramebuffer")) != NULL);
+	r = (r && (glFramebufferRenderbuffer = (PFNGLFRAMEBUFFERRENDERBUFFERPROC)LoadFunc("glFramebufferRenderbuffer")) != NULL);
+	r = (r && (glFramebufferTexture = (PFNGLFRAMEBUFFERTEXTUREPROC)LoadFunc("glFramebufferTexture")) != NULL);
+	r = (r && (glCheckFramebufferStatus = (PFNGLCHECKFRAMEBUFFERSTATUSPROC)LoadFunc("glCheckFramebufferStatus")) != NULL);
+	r = (r && (glBlitFramebuffer = (PFNGLBLITFRAMEBUFFERPROC)LoadFunc("glBlitFramebuffer")) != NULL);
+	r = (r && (glGenRenderbuffers = (PFNGLGENRENDERBUFFERSPROC)LoadFunc("glGenRenderbuffers")) != NULL);
+	r = (r && (glDeleteRenderbuffers = (PFNGLDELETERENDERBUFFERSPROC)LoadFunc("glDeleteRenderbuffers")) != NULL);
+	r = (r && (glBindRenderbuffer = (PFNGLBINDRENDERBUFFERPROC)LoadFunc("glBindRenderbuffer")) != NULL);
+	r = (r && (glRenderbufferStorageMultisample = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC)LoadFunc("glRenderbufferStorageMultisample")) != NULL);
+	r = (r && (glRenderbufferStorage = (PFNGLRENDERBUFFERSTORAGEPROC)LoadFunc("glRenderbufferStorage")) != NULL);
+	r = (r && (glUniform1ui = (PFNGLUNIFORM1UIPROC)LoadFunc("glUniform1ui")) != NULL);
 
 	// texture
 	r = (r && (glActiveTexture = (PFNGLACTIVETEXTUREPROC)LoadFunc("glActiveTexture")) != NULL);

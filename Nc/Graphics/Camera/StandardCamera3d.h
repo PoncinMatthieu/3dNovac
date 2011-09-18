@@ -42,6 +42,9 @@ namespace Nc
         class LGRAPHICS StandardCamera3d : public Camera3d
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Camera3d);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
                 /// To determine the patern of the camera
                 enum Pattern
                 {
@@ -55,7 +58,7 @@ namespace Nc
                 static const char   *XpmHandClose[];
 
             public:
-                StandardCamera3d(Window *win, double ratioAspect, double near = 0.1, double far = 1000, double fielOfView = 70, Pattern p = Turntable);
+                StandardCamera3d(Window *win, float ratioAspect, float near = 0.1, float far = 1000, float fielOfView = 70, Pattern p = Turntable);
                 StandardCamera3d(Window *win, Pattern p = Turntable);
                 StandardCamera3d(const StandardCamera3d &cam);
                 StandardCamera3d &operator = (const StandardCamera3d &cam);

@@ -37,6 +37,10 @@ namespace Nc
         class LGUI  ProgressBar : public Widget
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 ProgressBar(const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Top, Corner y = Left, const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
                 virtual ~ProgressBar();
 

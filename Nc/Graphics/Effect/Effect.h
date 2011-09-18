@@ -37,6 +37,10 @@ namespace Nc
         class LGRAPHICS Effect : public Entity
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Entity);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 Effect(const char *className)
                     : Entity(className), _activated(true)          {}
                 virtual ~Effect()                                   {}

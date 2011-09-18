@@ -38,6 +38,9 @@ namespace Nc
         /// Define a light to use with the LightingEffect
         struct LGRAPHICS Light : public Object
         {
+            NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
+            NC_UTILS_DEFINE_VISITABLE(System::Object);
+
             Light()
                 : Object(ClassName()), color(0.5f, 0.5f, 0.5f, 0), radius(10)        {}
             Light(const Color &c, const float r = 10)
@@ -68,6 +71,10 @@ namespace Nc
         */
         class LGRAPHICS LightingEffect : public Effect
         {
+            public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Entity);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
             public:
                 LightingEffect(ILightingMaterial *material);
                 ~LightingEffect();

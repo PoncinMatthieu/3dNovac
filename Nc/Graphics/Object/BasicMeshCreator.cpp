@@ -37,7 +37,7 @@ Object *BasicMeshCreator::Repere(float scale, const Vector3f &center)
 
 Object *BasicMeshCreator::Repere(const Vector3f &scale, const Vector3f &center)
 {
-    Array<DefaultVertexType::Colored, 4>  vertices;
+	Array<DefaultVertexType::Colored, 4>  vertices;
     Array<unsigned int, 3*2>            indices;
 
     vertices[0].Fill(center.Data[0], center.Data[1], center.Data[2], Color(1, 1, 1));
@@ -51,8 +51,7 @@ Object *BasicMeshCreator::Repere(const Vector3f &scale, const Vector3f &center)
 
     // creation du mesh
     Object *obj = new Object(Box3f(center, center + Vector3f(scale.Data[0], scale.Data[1], scale.Data[2])));
-    obj->Drawables().resize(1);
-    obj->Drawables()[0] = new Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines);
+	obj->Drawables().push_back(new Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines));
     obj->ChooseDefaultMaterial();
-    return obj;
+	return obj;
 }

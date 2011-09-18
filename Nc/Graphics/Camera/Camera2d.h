@@ -37,6 +37,10 @@ namespace Nc
         class LGRAPHICS Camera2d : public Camera
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Camera);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 Camera2d() : Camera(ClassName(), true)                          {}
 
                 static const char   *ClassName()                                {return "Camera2d";}

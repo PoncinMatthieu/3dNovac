@@ -46,6 +46,10 @@ namespace Nc
         class LGUI  Widget : public Graphic::Object, public Engine::Handler
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 Widget(const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(10, 10), Corner x = Top, Corner y = Left);
                 Widget(const char *className, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(10, 10), Corner x = Top, Corner y = Left);
                 Widget(const Widget &w);
@@ -91,8 +95,10 @@ namespace Nc
 
                 /** Resize and reposition the widget with their parent size and position */
                 void                    Resized();
+
+                inline const Vector2f   &Percent() const                        {return _percent;}
                 /** Set the percent size. If the percent value is different of null, the widget will be resized with a proportion of his parent */
-                void                    Percent(Vector2f percent);
+                void                    Percent(const Vector2f &percent);
 
                 /** Return the position of the widget */
                 inline const Vector2i   &Pos() const                            {return _pos;}
@@ -128,9 +134,6 @@ namespace Nc
                 /** Set the Y margin value */
                 inline void             MarginY(int y)                          {_margin.Data[1] = y; _stateChanged = true;}
 
-                inline const Vector2f   &Percent() const                        {return _percent;}
-                inline void             Percent(const Vector2f &p)              {_percent = p;}
-
                 /** Set the draw edge statement */
                 inline void             DrawEdge(bool state)                    {_drawEdge = state; _stateChanged = true;}
                 /** Set the edge color */
@@ -146,7 +149,7 @@ namespace Nc
                  */
                 virtual void            TranslateChild(const Corner[2], Vector2f &) const   {}
 
-                /** Check the focus statement with the given event, compute the focus test */
+                /** Check the focus statement of the childs with the given event, compute the focus test */
                 void                    CheckFocus(const Nc::System::Event &event);
 
                 // handler d'evenement de la fenetre

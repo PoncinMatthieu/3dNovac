@@ -37,6 +37,10 @@ namespace Nc
         class LGUI  WindowBox : public Widget
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 WindowBox(const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x = Top, Corner y = Left, Widget *parent = NULL);
                 WindowBox(const char *className, const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x = Top, Corner y = Left, Widget *parent = NULL);
                 WindowBox(const WindowBox &w);

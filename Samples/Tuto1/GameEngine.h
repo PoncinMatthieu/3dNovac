@@ -32,5 +32,5 @@ class GameEngine : public Nc::Engine::MainEngine
   Nc::Graphic::GLContext		*_context;	///< the OpenGL context, needed to use the graphic engine
 
   Nc::Graphic::SceneGraph		*_scene3d;	///< our scene 3d, displayed by the graphic engine
-  Nc::Graphic::StandardCamera3d		*_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
+  Nc::Graphic::StandardCamera3d	*_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
 };

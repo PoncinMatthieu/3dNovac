@@ -96,7 +96,7 @@ const char *StandardCamera3d::XpmHandClose[] =
     "0,0"
 };
 
-StandardCamera3d::StandardCamera3d(Graphic::Window *win, double ratioAspect, double nearD, double farD, double fielOfView, Pattern p)
+StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, float nearD, float farD, float fielOfView, Pattern p)
     : Camera3d(ClassName(), ratioAspect, nearD, farD, fielOfView),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
@@ -120,12 +120,12 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, double ratioAspect, dou
 }
 
 StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
-    : Camera3d(ClassName(), (float)win->Width()/(float)win->Height(), 0.1, 1000, 70),
+    : Camera3d(ClassName(), (float)win->Width()/(float)win->Height(), 0.1f, 1000.f, 70.f),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
       _angles(-90, -15)
 {
-    // create cursors
+	// create cursors
     _cursorOpen = win->NewCursor();
     _cursorOpen->LoadFromXpm(XpmHandOpen);
     _cursorClose = win->NewCursor();

@@ -40,24 +40,11 @@ namespace Nc
         class LGRAPHICS Object : public Entity
         {
             public:
-            // typedefs
+                NC_UTILS_DEFINE_PARENT_CLASS(Entity);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
                 typedef Entity                      NodeType;
                 typedef std::vector<Drawable*>      DrawableArray;
-
-                struct SetMaterialFonctor
-                {
-                    SetMaterialFonctor(IMaterial *m) : newMaterial(m)  {}
-
-                    bool operator () (ISceneNode *node)
-                    {
-                        Object *n = node->AsWithoutThrow<Object>();
-                        if (n != NULL)
-                            n->SetMaterial(newMaterial);
-                        return true;
-                    }
-
-                    IMaterial *newMaterial;
-                };
 
             public:
             // construct
@@ -73,14 +60,6 @@ namespace Nc
                 static const char *ClassName()                          {return "Object";}
                 virtual ISceneNode  *Clone() const                      {return new Object(*this);}
 
-                /** Set the display box statement */
-				inline void         DisplayBox(bool state)              {_displayBox = state;}
-                /** Return the display box statement */
-                inline bool         DisplayBox() const                  {return _displayBox;}
-
-                /** Compute the recursive model matrix with the parents matrix. */
-                void                GetRecursiveMatrix(TMatrix &m);
-
                 /** Set the box of the object */
                 inline void         SetBox(const Box3f &box)            {_box = box;}
                 /** \return the box of the object (the box is not modified by the matrix, so if you want the reel box call the methode GetReelBox) */
@@ -94,8 +73,6 @@ namespace Nc
 
                 /** Translate the model Matrix to the given vector using the xy center of the box */
                 void                CenterBase(const Vector3f &centerBase);
-
-                void                SetRecursiveMaterial(IMaterial *newMaterial);
 
                 /** \return the material used to render the drawables */
                 inline IMaterial    *GetMaterial()                      {return _material;}
@@ -134,8 +111,6 @@ namespace Nc
 
             // fields
             protected:
-                bool            _displayBox;            ///< if true, draw the box of the object]
-
                 DrawableArray   _drawables;             ///< the array of drawbles
                 Box3f           _box;                   ///< the box of the object
 

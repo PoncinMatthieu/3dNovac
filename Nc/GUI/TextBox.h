@@ -46,6 +46,10 @@ namespace Nc
         class LGUI  TextBox : public WidgetLabeled
         {
             public:
+                NC_UTILS_DEFINE_PARENT_CLASS(WidgetLabeled);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
+
+            public:
                 TextBox(const std::string &label, const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10),
                         Corner x = Left, Corner y = Top, const std::string &ttf = "arial");
                 TextBox(const TextBox &w);

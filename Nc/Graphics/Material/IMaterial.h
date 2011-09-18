@@ -38,7 +38,7 @@ namespace Nc
         /**
             \todo render the drawables in one time not a call of the material for each drawables of the objects, this would improve the number of matrix compute and Ogl call
         */
-        class IMaterial
+        class LGRAPHICS IMaterial
         {
             public:
                 IMaterial(const std::string &name)
