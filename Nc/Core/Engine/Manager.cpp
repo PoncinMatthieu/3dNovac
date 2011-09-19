@@ -306,3 +306,19 @@ void Manager::WaitEnginesLoading()
         _mutexGlobal.Unlock();
     }
 }
+
+void Manager::WaitReleasePriority(unsigned int priority)
+{
+	unsigned char topPriority = 0;
+    while (priority > topPriority)
+    {
+        topPriority = 0xff;
+        _mutexGlobal.Lock();
+        for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
+            if (!it->second.engine->Released() && it->second.engine->DeletePriority() < topPriority)
+                topPriority = it->second.engine->LoadingPriority();
+        _mutexGlobal.Unlock();
+		if (priority > topPriority)
+			System::Sleep(0);
+	}
+}

@@ -13,6 +13,7 @@ class GameEngine : public Nc::Engine::MainEngine
 
  protected:
   virtual void	LoadContent();
+  virtual void	ReleaseContent();
 
   virtual void	Update(float runningTime);
 

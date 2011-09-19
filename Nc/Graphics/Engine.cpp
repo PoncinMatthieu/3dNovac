@@ -52,10 +52,6 @@ Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func, Sce
 
 Graphic::Engine::~Engine()
 {
-// destruction des ressources
-//    ActiveContext();  // create an X error (bad value) with Qt. May be we will need to delete contents in a particular slot before the window is destroyed
-    FactoryDefaultMaterials::DeleteInstance();
-
     if (_win)
         delete _win;
 }
@@ -79,6 +75,13 @@ void Graphic::Engine::CreateContext()
         _sceneGraphManager = new SceneGraphManager();
     _sceneGraphManager->Init((_win->AntialiasingLevel() > 0));
     _renderState.Disable();
+}
+
+void Graphic::Engine::ReleaseContent()
+{
+// destruction des ressources
+//    ActiveContext();  // create an X error on linux (bad value) with Qt. May be we will need to delete contents in a particular slot before the window is destroyed
+    FactoryDefaultMaterials::DeleteInstance();
 }
 
 void Graphic::Engine::LoadContent()

@@ -79,6 +79,6 @@ void MainEngine::ManageWindowEvent(Nc::System::Event &event)
 
 void MainEngine::Quit()
 {
-    if (ReleaseContent())
+    if (ExitEvent())
         _manager->Stop();
 }

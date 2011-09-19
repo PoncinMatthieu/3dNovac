@@ -51,7 +51,7 @@ namespace Nc
 				// /!\ near et far sont des define windows provenant de windef.h, ne pas changer le nom nearf en near !
                 Camera3d(const char *className, float ratioAspect, float nearf, float farf, float fieldOfView);
                 virtual ~Camera3d() {};
-				 
+
                 /** To update the mouvement of the camera with the keystates of WindowInput */
                 virtual void    Update(float RunningTime) = 0; // Running Time in second
 
@@ -61,7 +61,7 @@ namespace Nc
                 inline void     UpdateProjection(SceneGraph *scene)         {scene->ProjectionMatrix().SetProjection(_ratioAspect, _near, _far, _fieldOfView);}
                 /** Fix the camera */
                 virtual void    Fix(SceneGraph *scene)                      {Camera::Fix(scene); scene->ViewMatrix().SetLookAt(_eye, _center, _up);}
-				 
+
                 /** Update the ratio aspect of the projection */
                 virtual void    Resized(const System::Event &event)         {_ratioAspect = (float)event.Size.Width/(float)event.Size.Height;  Camera::Resized(event);}
 

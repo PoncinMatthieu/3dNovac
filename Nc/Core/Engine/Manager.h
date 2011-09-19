@@ -112,6 +112,8 @@ namespace Nc
                 void                    WaitEnginesContextLoading();
                 /** Wait until all engines are loaded */
                 void                    WaitEnginesLoading();
+				/** Wait until the engine as the priority to delete it's contents */
+				void					WaitReleasePriority(unsigned int priority);
 
                 /** Dispatch events to the corresponding engine */
                 template<typename T>

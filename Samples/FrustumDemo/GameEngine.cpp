@@ -18,6 +18,10 @@ GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
 
 GameEngine::~GameEngine()
 {
+}
+
+void GameEngine::ReleaseContent()
+{
   _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
   _graphic->GetSceneManager()->RemoveScene(_scene3d);
   delete _sceneGUI;
@@ -70,7 +74,7 @@ void GameEngine::LoadContent()
 
     // creation de la 2eme camera avec un autre viewport
     _camera2 = static_cast<StandardCamera3d*>(_camera->Clone());
-    _camera2->SetProjection((Window::Width() / 2.f) / Window::Height(), 0.1, 1000, 60);
+    _camera2->SetProjection((Window::Width() / 2.f) / Window::Height(), 0.1, 1000, 70);
     _camera2->SetViewport(Window::Width() / 2.f, 0, Window::Width() / 2.f, Window::Height());
     _camera2->InibitMovement();
     _scene3d->AddChild(_camera2);
@@ -106,9 +110,9 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     bool send = true;
     if (event.Type == System::Event::Resized)
       {
-	_camera->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
-	_camera2->SetViewport(Window::Width() / 2.f, 0, Window::Width() / 2.f, Window::Height());
-	_camera3->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
+        _camera->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
+        _camera2->SetViewport(Window::Width() / 2.f, 0, Window::Width() / 2.f, Window::Height());
+        _camera3->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
       }
     if (event.Type == System::Event::KeyPressed)
     {
@@ -171,12 +175,12 @@ void GameEngine::Generate(Entity *node, Graphic::Object *obj)
   for (unsigned int i = 0; i < size[0]; ++i)
     {
       for (unsigned int j = 0; j < size[1]; ++j)
-	{
-	  Graphic::Object *newObj = obj->Clone()->As<Graphic::Object>();
-	  newObj->Matrix.Translation(i,j,0);
-	  newObj->GetReelBox(box);
-	  listToInsert.push_front(std::pair<Box3f,ISceneNode*>(box, newObj));
-	}
+        {
+          Graphic::Object *newObj = obj->Clone()->As<Graphic::Object>();
+          newObj->Matrix.Translation(i,j,0);
+          newObj->GetReelBox(box);
+          listToInsert.push_front(std::pair<Box3f,ISceneNode*>(box, newObj));
+        }
     }
   obj->Matrix.Translation(42,42,42);
   obj->GetReelBox(box);

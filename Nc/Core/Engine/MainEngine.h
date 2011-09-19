@@ -56,9 +56,9 @@ namespace Nc
 
                 /**
                     Can be redefined, to make something before exiting
-                    \return true if we want to stop the engines, else the engines will not be power off
+                    \return true if we want to stop the engines, otherwise the engines will not be powered off
                 */
-                virtual bool    ReleaseContent()        {return true;}
+                virtual bool    ExitEvent()			{return true;}
 
                 /**
                     Called at each execution of the MainEngine. To redefine

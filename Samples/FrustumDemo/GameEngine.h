@@ -17,6 +17,7 @@ class GameEngine : public Nc::Contrib::GameEngine
 
   void            CreateWindow(Nc::Graphic::Window *win);
   virtual void    LoadContent();
+  virtual void    ReleaseContent();
 
  protected:
   virtual void    Update(float runningTime);

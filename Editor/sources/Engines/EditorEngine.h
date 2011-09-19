@@ -76,6 +76,7 @@ namespace Nc
       virtual ~EditorEngine();
 
       virtual void    LoadContent();
+      virtual void    ReleaseContent();
 
       // accessors:
       inline Graphic::ListPScene      &Scenes()             {return _graphic->GetSceneManager()->Scenes();}
@@ -94,7 +95,7 @@ namespace Nc
       virtual void    DisableContext()        {_context->Disable();}
 
       // manage events from Nc::MainEngine
-      virtual bool    ReleaseContent();      // called when we try to quit the engine
+      virtual bool    ExitEvent();      // called when we try to quit the engine
       virtual void    Update(float runningTime);
       virtual void    ManageWindowEvent(System::Event &event);
       virtual void    KeyboardEvent(System::Event &event);

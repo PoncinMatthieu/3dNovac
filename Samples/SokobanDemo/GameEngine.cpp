@@ -17,6 +17,10 @@ GameEngine::GameEngine(Nc::Engine::Manager *manager, Graphic::Engine *graphic)
 
 GameEngine::~GameEngine()
 {
+}
+
+void GameEngine::ReleaseContent()
+{
   _graphic->GetSceneManager()->RemoveScene(_scene3d);
   delete _scene3d;
   delete _lightingMaterial;

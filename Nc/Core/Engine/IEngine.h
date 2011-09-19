@@ -85,6 +85,8 @@ namespace Nc
 
                 /** Load the contents of the thread before entering in the `MainLoop` */
                 virtual inline void     LoadContent()                   {}
+				/** Release the contents of the thread just after the `MainLoop` */
+                virtual inline void     ReleaseContent()				{}
 
                 /** Execute the engine, to be redefine */
                 virtual void            Execute(float runningTime) = 0;
@@ -93,7 +95,9 @@ namespace Nc
                 inline bool             ContextLoaded()                 {return (_pattern.Disabled(HasAContext) || _pattern.Enabled(ContextIsLoaded));}
                 /** \return true if the engine is loaded */
                 inline bool             Loaded() const                  {return _loaded;}
-                /** \return the priority delete */
+				/** \return true if the content of the engine has been released */
+				inline bool				Released() const				{return _released;}
+				/** \return the priority delete */
                 unsigned char           DeletePriority()                {return _deletePriority;}
                 /** \return the context priority loading */
                 unsigned char           LoadingContextPriority()        {return _loadingContextPriority;}
@@ -101,8 +105,10 @@ namespace Nc
                 unsigned char           LoadingPriority()               {return _loadingPriority;}
 
             protected:
-                /** Before to entering in the main loop, load contents and create context */
+                /** Before to entering in the main loop, load contents and create context by using the engine manager priorities*/
                 virtual void            Loading();
+                /** Just after the main loop, delete the contents by using the engine manager priorities */
+                virtual void            Releasing();
                 /** The main loop of the thread witch call the `Process` method until the Manager will stoped */
                 virtual void            MainLoop();
                 /**
@@ -124,9 +130,10 @@ namespace Nc
 
                 Manager                 *_manager;                  ///< The instance of the engine Manager
                 bool                    _loaded;                    ///< true if the engine is loaded
+				bool					_released;					///< true if the engine has been released
 
                 Utils::Mask<Pattern>    _pattern;                   ///< To detemine the pattern (comportement) of the engine
-                unsigned char           _deletePriority;            ///< if the priority is null, the manager will not delete the Engine
+                unsigned char           _deletePriority;            ///< if the priority is null, the manager will not delete the Engine but the contents will be even deleted at the end of the thread
                 unsigned char           _loadingContextPriority;    ///< if the priority is null, no context loading
                 unsigned char           _loadingPriority;           ///< if the priority is null, no content loading
 

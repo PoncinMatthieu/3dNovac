@@ -33,7 +33,7 @@ using namespace Nc;
 using namespace Nc::Engine;
 
 IEngine::IEngine(const char *className, const std::string &name, Manager* manager, const Utils::Mask<Nc::Engine::Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
-    : EventManager(className, name), _manager(manager), _loaded(false), _pattern(pattern),
+    : EventManager(className, name), _manager(manager), _loaded(false), _released(false), _pattern(pattern),
       _deletePriority(deletePriority), _loadingContextPriority(loadingContextPriority), _loadingPriority(loadingPriority),
       _elapsedTime(0), _limitFPS(0), _stop(false)
 {
@@ -47,9 +47,10 @@ void IEngine::Run()
 {
     try
     {
-        Loading(); // loading ressources and contexts
-        MainLoop(); // main loop of the thread
-    }
+        Loading();			// loading ressources and contexts by using the loading priorities
+        MainLoop();			// main loop of the thread
+		Releasing();		// release the ressources by using the deleting priorities
+	}
     catch (const std::exception &e)
     {
         LOG_ERROR << "FATAL Error on " << *this << ": " << e.what() << endl;
@@ -114,6 +115,13 @@ void IEngine::Loading()
         if (_pattern.Enabled(WaitingLoadContentsOfOthersEngines))
             _manager->WaitEnginesLoading();                     // waiting for others loading content engines
     }
+}
+
+void IEngine::Releasing()
+{
+	_manager->WaitReleasePriority(_deletePriority);
+	ReleaseContent();
+	_released = true;
 }
 
 void IEngine::Process()

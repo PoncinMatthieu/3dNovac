@@ -19,6 +19,7 @@ class GameEngine : public Nc::Contrib::GameEngine
 
  private:
   virtual void LoadContent();
+  virtual void ReleaseContent();
 
   virtual void Update(float)			{}
 

@@ -69,7 +69,7 @@ void Camera3d::SetProjection(float ratioAspect, float nearf, float farf, float f
     UpdateProjectionFrustum();
     _resized = true;
 	_near = nearf;
-    _far = nearf;
+    _far = farf;
 }
 
 void Camera3d::UpdateProjectionFrustum()

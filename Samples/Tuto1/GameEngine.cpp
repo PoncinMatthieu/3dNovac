@@ -14,6 +14,10 @@ GameEngine::GameEngine(Nc::Graphic::Engine *graphic, Nc::Engine::Manager *manage
 
 GameEngine::~GameEngine()
 {
+}
+
+void	GameEngine::ReleaseContent()
+{
   // delete the scene and it's childs node
   delete _scene3d;
   delete _context;

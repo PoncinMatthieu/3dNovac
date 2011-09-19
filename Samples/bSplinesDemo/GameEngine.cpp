@@ -15,6 +15,10 @@ GameEngine::GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphi
 
 GameEngine::~GameEngine()
 {
+}
+
+void GameEngine::ReleaseContent()
+{
   // delete the objects of the scene, and delete it
   _graphic->GetSceneManager()->RemoveScene(_scene2d);
   delete _scene2d;

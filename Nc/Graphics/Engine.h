@@ -61,6 +61,8 @@ namespace Nc
 
                 /** Load default content, like the DefaultMaterials */
                 virtual void            LoadContent();
+				/** Release the contents like the DefaultMaterials */
+                virtual void            ReleaseContent();
 
                 /** Render the scene with the SceneGraphManager, Check the WindowInput Event and update the elapsed time to compute the FPS */
                 virtual void            Execute(float runningTime);

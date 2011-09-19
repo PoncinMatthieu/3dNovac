@@ -13,6 +13,10 @@ GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
 
 GameEngine::~GameEngine()
 {
+}
+
+void GameEngine::ReleaseContent()
+{
   _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
   delete _sceneGUI;
 }

@@ -62,6 +62,10 @@ EditorEngine::EditorEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manage
 
 EditorEngine::~EditorEngine()
 {
+}
+
+void EditorEngine::ReleaseContent()
+{
     delete _lightingEffect->Material();
     delete _lightingEffect;
     // destroy the scenes
@@ -97,7 +101,7 @@ void EditorEngine::LoadContent()
     _lightingEffect->Lights().push_back(new Light(Color(0.1f, 0.1f, 0.1f), 100));   // ajout d'une light
 }
 
-bool EditorEngine::ReleaseContent()
+bool EditorEngine::ExitEvent()
 {
     emit SignalStop();  // send un signal pour indiquer que l'on veut quiter le game engine
     return true;        // confirme l'arret de l'engine
