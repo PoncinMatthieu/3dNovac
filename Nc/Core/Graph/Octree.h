@@ -42,10 +42,8 @@ namespace Nc
                 typedef NNodePolitic<std::list<T>, NodeType, 8, true, Allocator>    NodePolitic;
 
             public:
-                OctreeNodePolitic()                                     : NodePolitic()                 {}
-                OctreeNodePolitic(const T &data)                        : NodePolitic(data)             {}
-                OctreeNodePolitic(NodeType *parent)                     : NodePolitic(parent)           {}
-                OctreeNodePolitic(const T &data, NodeType *parent)      : NodePolitic(data, parent)     {}
+                OctreeNodePolitic()												: NodePolitic()                 {}
+                OctreeNodePolitic(NodeType *parent)								: NodePolitic(parent)           {}
                 ~OctreeNodePolitic()                                    {}
 
             protected:

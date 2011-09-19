@@ -132,7 +132,7 @@ namespace Nc
                 /** Fill the given string */
                 void                        ToString(std::string &str) const;
 
-                friend std::ostream&        operator << (std::ostream &oss, const Object &o);
+                friend LCORE std::ostream	&operator << (std::ostream &oss, const Object &o);
 
             protected:
                 std::string         _name;          ///< the name of the object

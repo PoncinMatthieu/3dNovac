@@ -53,7 +53,7 @@ namespace Nc
                 FileName &operator = (const char *path);
 
                 /** Print the filename */
-                friend std::ostream& operator << (std::ostream& os, const FileName& f)
+                friend LCORE std::ostream& operator << (std::ostream& os, const FileName& f)
                 {
                     os << "Filename : `" << static_cast<std::string>(f) << "`";
                     return os;

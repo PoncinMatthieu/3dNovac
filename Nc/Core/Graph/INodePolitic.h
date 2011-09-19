@@ -79,7 +79,7 @@ namespace Nc
                     AbstractTreePolitic()                                           : _parent(NULL)     {}
                     AbstractTreePolitic(NodeType *parent)                           : _parent(parent)   {}
                     AbstractTreePolitic(const AbstractTreePolitic &)                : _parent(NULL)     {}
-                    AbstractTreePolitic operator = (const AbstractTreePolitic &)    {_parent = NULL;}
+                    AbstractTreePolitic &operator = (const AbstractTreePolitic &)    {_parent = NULL; return (*this);}
 
                     /** \return true if the node is root (has no parent) */
                     bool            IsRoot() const                                  {return (_parent == NULL);}
@@ -136,7 +136,7 @@ namespace Nc
                     AbstractGraphPolitic()                                          {}
                     AbstractGraphPolitic(NodeType *parent)                          {_parents.push_back(parent);}
                     AbstractGraphPolitic(const AbstractGraphPolitic &)              {}
-                    AbstractGraphPolitic operator = (const AbstractGraphPolitic &)  {}
+                    AbstractGraphPolitic operator = (const AbstractGraphPolitic &)  {return (*this);}
 
                     /** \return true if the node is root (has no parent) */
                     bool                        IsRoot() const                      {return _parents.empty();}
@@ -174,8 +174,8 @@ namespace Nc
             public:
                 INodePolitic()                                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>()            {}
                 INodePolitic(const T &data)                     : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>(data)        {}
-                INodePolitic(NodeType *parent)                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent), Priv::Container<T>()      {}
-                INodePolitic(const T &data, NodeType *parent)   : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent), Priv::Container<T>(data)  {}
+                INodePolitic(NodeType *parent)                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>()			{SetParent(parent);}
+                INodePolitic(const T &data, NodeType *parent)   : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>(data)		{SetParent(parent);}
 
                 /** \return the string of the contained type */
                 std::string         TypeToString() const                        {return typeid(T).name();}
@@ -183,7 +183,7 @@ namespace Nc
                 std::string         NodeTypeToString() const                    {return typeid(NodeType).name();}
 
                 /** Print the data of the node to the stream */
-                friend std::ostream     &operator << (std::ostream &os, const INodePolitic &n)
+                friend LCORE std::ostream     &operator << (std::ostream &os, const INodePolitic &n)
                 {
                     os << n.Data;
                     return os;
@@ -206,7 +206,7 @@ namespace Nc
                 std::string         NodeTypeToString() const                    {return typeid(NodeType).name();}
 
                 /** Print the data of the node to the stream */
-                friend std::ostream     &operator << (std::ostream &oss, const INodePolitic &)
+                friend LCORE std::ostream     &operator << (std::ostream &oss, const INodePolitic &)
                 {
                     return oss;
                 }

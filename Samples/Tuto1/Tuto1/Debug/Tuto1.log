@@ -1,30 +1,34 @@
-﻿La génération a démarré 9/19/2011 4:17:04 PM.
-     1>Projet "D:\programmation\projetEnCours\Nc\Samples\Tuto1\Tuto1\Tuto1.vcxproj" sur le nœud 2 (build cible(s)).
-     1>InitializeBuildStatus:
+﻿La génération a démarré 9/19/2011 9:50:48 PM.
+     1>Projet "D:\programmation\projetEnCours\Nc\Samples\Tuto1\Tuto1\Tuto1.vcxproj" sur le nœud 2 (rebuild cible(s)).
+     1>_PrepareForClean:
+         Suppression du fichier "Debug\Tuto1.lastbuildstate".
+       InitializeBuildStatus:
          Création de "Debug\Tuto1.unsuccessfulbuild", car "AlwaysCreate" a été spécifié.
        ClCompile:
          C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ID:\programmation\projetEnCours\Nc\extlibs /ID:\programmation\projetEnCours\Nc /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\GameEngine.cpp ..\main.cpp
+         main.cpp
          GameEngine.cpp
          Génération de code en cours...
-         Ignoré... (aucune modification pertinente détectée)
-         main.cpp
        ManifestResourceCompile:
-         Toutes les sorties sont à jour.
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\Tuto1.exe.embed.manifest.res" Debug\Tuto1_manifest.rc 
        Link:
-         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\programmation\projetEnCours\Nc\extlibs /LIBPATH:D:\programmation\projetEnCours\Nc\lib\Debug "Nc-Core-s.lib" "Nc-Graphics-s.lib" freetype.lib opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Tuto1.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.lib" /MACHINE:X86 Debug\Tuto1.exe.embed.manifest.res
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\programmation\projetEnCours\Nc\extlibs /LIBPATH:D:\programmation\projetEnCours\Nc\lib\Debug "Nc-Core.lib" "Nc-Graphics.lib" freetype.lib opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Tuto1.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.lib" /MACHINE:X86 Debug\Tuto1.exe.embed.manifest.res
          Debug\GameEngine.obj
          Debug\main.obj
        Manifest:
+         Suppression du fichier "Debug\Tuto1.exe.embed.manifest".
          C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\Tuto1.exe.embed.manifest" /manifest Debug\Tuto1.exe.intermediate.manifest
-         Toutes les sorties sont à jour.
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\Tuto1.exe.embed.manifest.res" Debug\Tuto1_manifest.rc 
        LinkEmbedManifest:
-         Toutes les sorties sont à jour.
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\programmation\projetEnCours\Nc\extlibs /LIBPATH:D:\programmation\projetEnCours\Nc\lib\Debug "Nc-Core.lib" "Nc-Graphics.lib" freetype.lib opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Tuto1.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.lib" /MACHINE:X86 Debug\Tuto1.exe.embed.manifest.res
+         Debug\GameEngine.obj
+         Debug\main.obj
          Tuto1.vcxproj -> D:\programmation\projetEnCours\Nc\Samples\Tuto1\Debug\Tuto1.exe
        FinalizeBuildStatus:
          Suppression du fichier "Debug\Tuto1.unsuccessfulbuild".
          Mise à jour de l'horodatage "Debug\Tuto1.lastbuildstate".
-     1>Génération du projet "D:\programmation\projetEnCours\Nc\Samples\Tuto1\Tuto1\Tuto1.vcxproj" terminée (build cible(s)).
+     1>Génération du projet "D:\programmation\projetEnCours\Nc\Samples\Tuto1\Tuto1\Tuto1.vcxproj" terminée (rebuild cible(s)).
 
 La génération a réussi.
 
-Temps écoulé 00:00:02.37
+Temps écoulé 00:00:03.15

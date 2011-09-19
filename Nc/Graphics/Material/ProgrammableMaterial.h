@@ -87,7 +87,7 @@ namespace Nc
                 /** Set the uniform normal matrix location */
                 void                SetNormalMatrixUniform(const char *name);
 
-                friend std::ostream &operator << (std::ostream &oss, const ProgrammableMaterial &m);
+                friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const ProgrammableMaterial &m);
 
             protected:
                 GL::Program                         _program;                       ///< the program used to render the drawables

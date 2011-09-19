@@ -54,11 +54,6 @@ Entity::Entity(const char *className, const TMatrix &m)
     : NodePolitic(className), Matrix(m)
 {}
 
-Entity::Entity(const char *className, ISceneNode *data)
-    : NodePolitic(className, data)
-{
-}
-
 Entity::Entity(const Entity &n)
     : NodePolitic(n)
 {

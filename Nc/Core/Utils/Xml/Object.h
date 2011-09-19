@@ -54,8 +54,8 @@ namespace Nc
                     Object(const Object &o);
                     virtual ~Object();
 
-                    Object                  &operator = (const Object &o);
-                    friend std::ostream     &operator << (std::ostream &out, const Object &o) {o.Write(out, 0); return out;}
+                    Object						&operator = (const Object &o);
+                    friend LCORE std::ostream	&operator << (std::ostream &out, const Object &o) {o.Write(out, 0); return out;}
 
                     virtual void Write(std::ostream &out, unsigned int i) const;
 

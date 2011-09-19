@@ -121,7 +121,6 @@ namespace Nc
 
             public:
                 AbstractSceneNode(const char *className)                    : ISceneNode(className), NodePolitic()              {}
-                AbstractSceneNode(const char *className, ISceneNode *data)  : ISceneNode(className), NodePolitic(data)          {}
                 virtual ~AbstractSceneNode()                                {}
 
                 /** \return the number of childs */
@@ -129,7 +128,7 @@ namespace Nc
                 /** \return the good child with the given \p index */
                 virtual const ISceneNode    *Child(unsigned int i) const    {return NodePolitic::Child(i);}
 
-                friend std::ostream& operator << (std::ostream& Out, const AbstractSceneNode<P>& o)
+                friend LGRAPHICS std::ostream& operator << (std::ostream& Out, const AbstractSceneNode<P>& o)
                 {
                     Out << static_cast<const ISceneNode&>(o);
                     return Out;
@@ -140,7 +139,7 @@ namespace Nc
         /**
             An entity is define by a Matrix and can contain only one subtree and a list of childs
         */
-        class Entity : public AbstractSceneNode<Graph::ListNodePolitic>
+        class LGRAPHICS Entity : public AbstractSceneNode<Graph::ListNodePolitic>
         {
             public:
                 NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);
@@ -152,7 +151,6 @@ namespace Nc
                 Entity();
                 Entity(const char *className);
                 Entity(const char *className, const TMatrix &m);
-                Entity(const char *className, ISceneNode *data);
                 Entity(const Entity &n);
                 Entity &operator = (const Entity &n);
                 virtual ~Entity();

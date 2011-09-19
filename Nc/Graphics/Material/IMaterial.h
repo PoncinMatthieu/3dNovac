@@ -63,7 +63,7 @@ namespace Nc
                 /** Render the given drawable with the given model matrix */
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable) = 0;
 
-                friend std::ostream &operator << (std::ostream &oss, const IMaterial &m)
+                friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const IMaterial &m)
                 {
                     oss << m._name;
                     return oss;

@@ -52,7 +52,7 @@ namespace Nc
 					Normalized = normalized;
 				}
 
-                friend std::ostream &operator << (std::ostream &oss, const DataVertexDescriptor &d)
+                friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const DataVertexDescriptor &d)
                 {
                     oss << "Size: " << d.Size << "\tType: " << d.Type << "\tPointerOffset: " << d.PointerOffset
                         << "\tIndexAttrib: " << d.IndexAttrib << "\tNormalized: " << d.Normalized;
@@ -80,7 +80,7 @@ namespace Nc
                     inline size_t       Sizeof()        {return _sizeof;}
                     inline unsigned int Priority()      {return _priority;}
 
-                    friend std::ostream &operator << (std::ostream &oss, const VertexDescriptor &d)
+                    friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const VertexDescriptor &d)
                     {
                         oss << "Descriptor: " << d._name << std::endl << "Priority = " << d._priority << std::endl;
                         for (unsigned int i = 0; i < d.Size(); ++i)

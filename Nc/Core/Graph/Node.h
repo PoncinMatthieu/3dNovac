@@ -49,9 +49,7 @@ namespace Nc
 
             public:
                 AbstractNode()                                  : NodePolitic()               {}
-                AbstractNode(const T &data)                     : NodePolitic(data)           {}
                 AbstractNode(NodeType *parent)                  : NodePolitic(parent)         {}
-                AbstractNode(const T &data, NodeType *parent)   : NodePolitic(data, parent)   {}
 
                 /** \return true if the node is root (has no parent) */
                 bool            IsRoot() const                  {return NodePolitic::IsRoot();}
@@ -69,11 +67,6 @@ namespace Nc
                 NodeType        *Child(unsigned int i)          {return NodePolitic::Child(i);}
                 /** \return the ieme child */
                 const NodeType  *Child(unsigned int i) const    {return NodePolitic::Child(i);}
-
-                /** Extract all data's leafs of the node into the given list */
-                void            ExtractLeaf(std::list<T> &leafs) const      {NodePolitic::ExtractLeaf(leafs);}
-                /** Extract all data's childs of the node into the given list */
-                void            ExtractChilds(std::list<T> &childs) const   {NodePolitic::ExtractChilds(childs);}
         };
 
         /// Template class Node used to define and manipulate a tree/graph structure using a politic
@@ -101,9 +94,7 @@ namespace Nc
 
             public:
                 Node()                                  : NodePolitic()               {}
-                Node(const T &data)                     : NodePolitic(data)           {}
                 Node(NodeType *parent)                  : NodePolitic(parent)         {}
-                Node(const T &data, NodeType *parent)   : NodePolitic(data, parent)   {}
         };
 
         /// Specialisation of Node
@@ -151,9 +142,7 @@ namespace Nc
 
             public:
                 Node()                                  : NodePolitic()               {}
-                Node(const T &data)                     : NodePolitic(data)           {}
                 Node(NodeType *parent)                  : NodePolitic(parent)         {}
-                Node(const T &data, NodeType *parent)   : NodePolitic(data, parent)   {}
         };
     }
 }

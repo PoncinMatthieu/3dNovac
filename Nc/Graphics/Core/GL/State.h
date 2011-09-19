@@ -44,7 +44,7 @@ namespace Nc
 
                 \warning All opengl functions witch modify the opengl machine state like glEnable() glDisable() should not be direcly call but call with a method of the render state.
             */
-            class State : Utils::NonCopyable
+            class LGRAPHICS State : Utils::NonCopyable
             {
                 public:
                     typedef Utils::Mask<Enum::BufferBitType, GLbitfield>        BufferBitMask;
@@ -66,7 +66,7 @@ namespace Nc
                     static inline State &Current()                              {if (_current == NULL) throw Utils::Exception("GL::State", "The current render state is not set."); return *_current;}
 
                     /** print the states */
-                    friend std::ostream &operator << (std::ostream &oss, State &s);
+                    friend LGRAPHICS std::ostream &operator << (std::ostream &oss, State &s);
 
                     /**
                         Enable the render state (will lock a mutex and affect the current render state)

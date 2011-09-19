@@ -46,7 +46,7 @@ namespace Nc
                     /** Set the value to the current shader program */
                     virtual void    Set() = 0;
 
-                    friend std::ostream &operator << (std::ostream &oss, const IUniform &u)
+                    friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const IUniform &u)
                     {
                         oss << u._location;
                         return oss;

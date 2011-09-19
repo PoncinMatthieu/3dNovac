@@ -529,7 +529,7 @@ namespace Nc
             int     heightTmp;
 
             // get back all child height
-            for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
+            for (typename ContainerType::const_iterator it = _childs.begin(); it != _childs.end(); ++it)
             {
                 heightTmp = 1 + (*it)->Height();
                 if (height < heightTmp)
@@ -562,14 +562,14 @@ namespace Nc
         {
             if (!HasChilds())
                 leafs.push_back(NodePolitic::Data);
-            for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
+            for (typename ContainerType::const_iterator it = _childs.begin(); it != _childs.end(); ++it)
                 (*it)->ExtractLeaf(leafs);
         }
         template<typename T, class NodeType, bool Graph, class Allocator>
         void        NNodePolitic<T,NodeType,0,Graph,Allocator>::ExtractChilds(std::list<T> &childs) const
         {
             childs.push_back(NodePolitic::Data);
-            for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
+            for (typename ContainerType::const_iterator it = _childs.begin(); it != _childs.end(); ++it)
                 (*it)->ExtractChilds(childs);
         }
 

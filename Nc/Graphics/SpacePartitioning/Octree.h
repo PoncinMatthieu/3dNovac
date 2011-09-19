@@ -38,7 +38,7 @@ namespace Nc
         /**
             An octree can have 8 childs and has a list of ISceneNode as subtrees
         */
-        class Octree : public SubTree<Graph::OctreeNodePolitic>
+        class LGRAPHICS Octree : public SubTree<Graph::OctreeNodePolitic>
         {
             public:
                 NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);

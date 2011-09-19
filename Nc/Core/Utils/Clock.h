@@ -45,7 +45,7 @@ namespace Nc
                 Clock()	    {Reset();}
                 ~Clock()	{};
 
-                friend std::ostream &operator << (std::ostream &os, const Clock &cl)
+                friend LCORE std::ostream &operator << (std::ostream &os, const Clock &cl)
                 {
                     os << "time = " << cl.ElapsedTime() << "s";
                     return os;
