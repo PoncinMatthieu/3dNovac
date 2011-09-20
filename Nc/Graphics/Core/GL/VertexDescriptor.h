@@ -69,7 +69,7 @@ namespace Nc
             };
 
             /// Describe all componants of a VertexType
-            class VertexDescriptor : public Array<DataVertexDescriptor,0>
+            class LGRAPHICS VertexDescriptor : public Array<DataVertexDescriptor,0>
             {
                 public:
                     VertexDescriptor(const std::string &name, unsigned int Sizeof, unsigned int nbComponent, unsigned int priority)

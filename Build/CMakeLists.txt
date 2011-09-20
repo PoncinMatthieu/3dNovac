@@ -8,18 +8,32 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 endif()
 
-include_directories(
-  ../
-  ../extlibs/
-  ../extlibs/freetype/
-  ../extlibs/GL3/
-  ../extlibs/libpng/
-  ../extlibs/zlib/
-  ../extlibs/SFML/include/
-  /usr/include/freetype2/
-  /usr/local/include/colladadom/
-  /usr/local/include/colladadom/1.4/
-)
+if(UNIX)
+	include_directories(
+	  ../
+	  ../extlibs/
+	  ../extlibs/freetype/
+	  ../extlibs/GL3/
+	  ../extlibs/libpng/
+	  ../extlibs/zlib/
+	  ../extlibs/SFML/include/
+	  /usr/include/freetype2/
+	  /usr/local/include/colladadom/
+	  /usr/local/include/colladadom/1.4/
+	)
+else()
+	include_directories(
+	  ../
+	  ../extlibs/
+	  ../extlibs/freetype/
+	  ../extlibs/GL3/
+	  ../extlibs/libpng/
+	  ../extlibs/zlib/
+	  ../extlibs/SFML/include/
+	  ../extlibs/Collada/
+	  ../extlibs/boost/
+	)
+endif()
 
 file(
   GLOB
@@ -205,29 +219,46 @@ if(WIN32)
     ../lib/Debug/Nc-Graphics
     ../lib/Debug/Nc-Core
     ../extlibs/freetype
-    ../extlibs/libpng
     opengl32
     )
 endif()
 
-target_link_libraries(
-  PluginFileFormatCollada
-  collada14dom
-  minizip
-  xml2
-  pcre
-  pcrecpp
-  boost_filesystem
-)
-
+if(WIN32)
+	target_link_libraries(
+	  PluginFileFormatCollada
+	  ../extlibs/libcollada14dom22-s
+      ../lib/Debug/Nc-Graphics
+      ../lib/Debug/Nc-Core
+#	  minizip
+#	  xml2
+#	  pcre
+#	  pcrecpp
+#	  boost_filesystem
+	)
+else()
+	target_link_libraries(
+	  PluginFileFormatCollada
+	  collada14dom
+	  minizip
+	  xml2
+	  pcre
+	  pcrecpp
+	  boost_filesystem
+	)
+endif()
+	
 set_target_properties(Nc-Core 					PROPERTIES DEFINE_SYMBOL EXPORT_CORE)
 set_target_properties(Nc-Graphics				PROPERTIES DEFINE_SYMBOL EXPORT_GRAPHICS)
 set_target_properties(Nc-GUI 					PROPERTIES DEFINE_SYMBOL EXPORT_GUI)
 set_target_properties(Nc-Audio 					PROPERTIES DEFINE_SYMBOL EXPORT_AUDIO)
 set_target_properties(Nc-Contrib 				PROPERTIES DEFINE_SYMBOL EXPORT_CONTRIB)
+set_target_properties(PluginFileFormatCollada	PROPERTIES DEFINE_SYMBOL EXPORT_FILEOBJPLUGIN)
 
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
   add_definitions(-D_DEBUG)
 endif()
 
 add_definitions(-DDYNAMIC_LINK)
+
+#for the PluginFileFormatCollada, I didn't find how to set more than one define in a target, so I just put it globaly
+add_definitions(-DBOOST_ALL_NO_LIB -DPCRE_STATIC -DDOM_INCLUDE_LIBXML)
