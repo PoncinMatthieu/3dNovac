@@ -66,7 +66,7 @@
 		#undef WIN32_LEAN_AND_MEAN
 		#endif
 
-		#pragma warning(disable : 4244 4099 4251 4996)
+		#pragma warning(disable : 4244 4099 4251 4996 4275)
 		#include <winsock2.h>
 		#pragma comment(lib, "ws2_32.lib")
 	#endif

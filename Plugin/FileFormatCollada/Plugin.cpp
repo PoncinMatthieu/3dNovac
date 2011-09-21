@@ -41,6 +41,8 @@ Plugin::~Plugin()
 
 ISceneNode   *Plugin::Load(const Utils::FileName &file)
 {
+//	Nc::Graphic::GL::Extension::Instance().Init();
+
     LOG << "COLLADA_DOM Load Started " << file << std::endl;
 
     _dae = new DAE();
@@ -528,7 +530,7 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
             mesh->Drawables()[i] = it->second; // init le nombre de drawable
             continue;
         }
-        LOG << "Create new Triangles Drawable `" << domTriangles->getName() << "`" << std::endl;
+        //LOG << "Create new Triangles Drawable `" << domTriangles->getName() << "`" << std::endl;
 
         _mapDrawable[domTriangles];
         Drawable *newDrawable = _mapDrawable[domTriangles]; // creation du drawable

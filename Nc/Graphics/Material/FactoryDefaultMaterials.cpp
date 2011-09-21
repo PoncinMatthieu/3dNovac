@@ -66,7 +66,7 @@ IDefaultMaterial        *FactoryDefaultMaterials::GetBestMaterial(GL::VertexDesc
 
     // get back the best Material
     PriorityMaterialList::iterator it = _materials.begin();
-    for (; it->first > descriptor->Priority() && it != _materials.end(); ++it);
+    for (; it != _materials.end() && it->first > descriptor->Priority(); ++it);
     for (; result == NULL && it != _materials.end(); ++it)
     {
         if (it->second->IsCompatible(*descriptor))

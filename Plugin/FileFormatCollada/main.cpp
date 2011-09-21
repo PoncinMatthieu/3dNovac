@@ -28,7 +28,7 @@
 
 using namespace Nc::Graphic;
 
-extern "C" LFILEOBJPLUGIN     ISceneNodeFormatPlugin *GetPlugin()
+extern "C" __declspec(dllexport)/*LFILEOBJPLUGIN*/     ISceneNodeFormatPlugin *GetPlugin()
 {
     return new Nc::Plugin();
 }

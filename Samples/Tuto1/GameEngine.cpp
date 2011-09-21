@@ -56,6 +56,8 @@ void	GameEngine::LoadContent()
 
   // create a new repere to display at the center of the scene
   _scene3d->AddChild(BasicMeshCreator::Repere(1));
+
+  _scene3d->AddChild(_sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
 }
 
 void	GameEngine::Update(float runningTime)

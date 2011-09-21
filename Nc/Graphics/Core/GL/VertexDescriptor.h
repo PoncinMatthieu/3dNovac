@@ -38,8 +38,8 @@ namespace Nc
             /// Structure to define a data of a VertexDescriptor that describe a composant of a VertexType
             struct LGRAPHICS DataVertexDescriptor
             {
-				DataVertexDescriptor()
-					: Size(0), Type(0), PointerOffset(0), IndexAttrib(-1), Normalized(false) {}
+				DataVertexDescriptor();
+				~DataVertexDescriptor();
 
                 template<typename T>
 				void Init(const std::string &name, int size, GLenum type, unsigned int pointerOffset, bool normalized = false)
@@ -72,10 +72,8 @@ namespace Nc
             class LGRAPHICS VertexDescriptor : public Array<DataVertexDescriptor,0>
             {
                 public:
-                    VertexDescriptor(const std::string &name, unsigned int Sizeof, unsigned int nbComponent, unsigned int priority)
-                        : Array<DataVertexDescriptor,0>(nbComponent),
-                          _name(name), _sizeof(Sizeof), _priority(priority)
-                    {}
+                    VertexDescriptor(const std::string &name, unsigned int Sizeof, unsigned int nbComponent, unsigned int priority);
+					~VertexDescriptor();
 
                     inline size_t       Sizeof()        {return _sizeof;}
                     inline unsigned int Priority()      {return _priority;}

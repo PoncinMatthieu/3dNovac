@@ -1,6 +1,7 @@
 
 #include <Nc/Core/Engine/MainEngine.h>
 #include <Nc/Graphics/Engine.h>
+#include <Nc/Graphics/Scene/SceneNodeFormatManager.h>
 
 class GameEngine : public Nc::Engine::MainEngine
 {
@@ -29,9 +30,10 @@ class GameEngine : public Nc::Engine::MainEngine
   virtual void	MouseMotionEvent(Nc::System::Event &event);
 
  private:
-  Nc::Graphic::Engine			*_graphic;	///< the graphic engine
-  Nc::Graphic::GLContext		*_context;	///< the OpenGL context, needed to use the graphic engine
+  Nc::Graphic::Engine					*_graphic;	///< the graphic engine
+  Nc::Graphic::GLContext				*_context;	///< the OpenGL context, needed to use the graphic engine
+  Nc::Graphic::SceneNodeFormatManager	_sceneNodeFormatManager;
 
-  Nc::Graphic::SceneGraph		*_scene3d;	///< our scene 3d, displayed by the graphic engine
-  Nc::Graphic::StandardCamera3d	*_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
+  Nc::Graphic::SceneGraph				*_scene3d;	///< our scene 3d, displayed by the graphic engine
+  Nc::Graphic::StandardCamera3d			*_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
 };

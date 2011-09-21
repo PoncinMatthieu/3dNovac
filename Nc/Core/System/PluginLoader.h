@@ -147,7 +147,7 @@ namespace Nc
 			#ifdef SYSTEM_WINDOWS
 				FARPROC symbol = GetProcAddress(_handle, sym.c_str());
 				if(symbol == NULL)
-					throw Utils::Exception("Plugin", "Can't load the symbole.");
+					throw Utils::Exception("Plugin", "Can't load the symbol.");
 				return (SYM)symbol;
 			#else
 				char *error;
