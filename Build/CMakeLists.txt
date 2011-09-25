@@ -125,7 +125,7 @@ if(UNIX)
 	target_link_libraries(PluginFileFormatCollada 			collada14dom minizip xml2 pcre pcrecpp boost_filesystem)
 else()
 	target_link_libraries(Nc-Graphics	general		../extlibs/freetype
-										general 	../extlibs/sndfile opengl32
+										general 	opengl32
 										debug		../lib/Debug/Nc-Core
 										optimized	../lib/Release/Nc-Core
 										)
