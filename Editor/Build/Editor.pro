@@ -7,6 +7,11 @@ TARGET =
 DEPENDPATH += ../form sources
 INCLUDEPATH += ../sources
 INCLUDEPATH += ../../
+
+win32 {
+    LIBS += opengl32
+}
+
 LIBS += -lGL -lX11 -lsfml-system -lsfml-audio -L../../lib/ -lNc-Core -lNc-Graphics -lNc-GUI -lNc-Contrib -lPropertyEditor
 CONFIG += debug
 

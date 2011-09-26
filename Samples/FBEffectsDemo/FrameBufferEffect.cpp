@@ -8,8 +8,18 @@ FrameBufferEffect::FrameBufferEffect()
   : Effect(ClassName()), _postProcessActivated(true)
 {
   _camera2d = new Camera2d();
-  _postProcessMaterial = new ProgrammableMaterial("postProcessEffect", "Nc:Shader:postProcessEffect.vs", "Nc:Shader:postProcessEffect.fs");
+}
 
+FrameBufferEffect::~FrameBufferEffect()
+{
+  delete _camera2d;
+  delete _postProcessMaterial;
+}
+
+void	FrameBufferEffect::InitFbo1()
+{
+
+  _postProcessMaterial = new ProgrammableMaterial("postProcessEffect", "Nc:Shader:postProcessEffect.vs", "Nc:Shader:postProcessEffect.fs");
   _postProcessMaterial->SetMVPMatrixUniform("MVPMatrix");
   _postProcessMaterial->SetDrawableTextureUnitUniform(0, "Frame");
   GL::Uniform<GL::Texture, 1> *t1 = _postProcessMaterial->GetUniform<GL::Texture, 1>("SketchSampler");
@@ -37,17 +47,12 @@ FrameBufferEffect::FrameBufferEffect()
   */
   _timeToNextJitter = 0;
   _sketchJitterSpeed = 10;
-}
 
-FrameBufferEffect::~FrameBufferEffect()
-{
-  delete _camera2d;
-  delete _postProcessMaterial;
-}
-
-void	FrameBufferEffect::InitFbo1()
-{
-  Vector2ui size(Window::Width(), Window::Height());
+	
+	
+	
+	
+	Vector2ui size(Window::Width(), Window::Height());
 
   GL::Texture colorTexture;
   colorTexture.Create(GL::Enum::Texture::Texture2d);

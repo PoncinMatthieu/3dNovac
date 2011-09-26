@@ -36,7 +36,7 @@ namespace Nc
         namespace GL
         {
             /// To manipulate a Render Buffer Object (rbo)
-            class RenderBuffer : public Object
+            class LGRAPHICS RenderBuffer : public Object
             {
                 public:
                     enum BufferType

@@ -21,9 +21,16 @@ void CreateEngines(Nc::Engine::Manager *manager)
 
 int main()
 {
-  Nc::Engine::Manager lightTest("3dNovac.conf");
-  CreateEngines(&lightTest);
-  lightTest.Start();
-  lightTest.Wait();
+	try
+	{
+	  Nc::Engine::Manager lightTest("3dNovac.conf");
+	  CreateEngines(&lightTest);
+	  lightTest.Start();
+	  lightTest.Wait();
+	}
+	catch (const std::exception &e)
+	{
+		LOG << "Fatal error: " << e.what() << std::endl;
+	}
   return 0;
 }

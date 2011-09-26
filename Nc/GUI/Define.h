@@ -35,12 +35,12 @@
     #include <Nc/Define.h>
     #include <Nc/Graphics/Graphics.h>
 
-    //#define DYNAMIC_LINK
+    //#define NC_DYNAMIC_LINK
     //#define EXPORT_MATH
 
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
-        #ifdef DYNAMIC_LINK                                     // dynamic
+        #ifdef NC_DYNAMIC_LINK                                     // dynamic
             #ifdef EXPORT_GUI
                 #define LGUI     __declspec(dllexport)
             #else

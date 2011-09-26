@@ -31,7 +31,7 @@
 
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
-        #ifdef DYNAMIC_LINK                                      // dynamic
+        #ifdef NC_DYNAMIC_LINK                                      // dynamic
             #ifdef EXPORT_FILEOBJPLUGIN
                 #define LFILEOBJPLUGIN       __declspec(dllexport)
             #else

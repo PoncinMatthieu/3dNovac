@@ -5,8 +5,8 @@ project(3dNovac-Samples)
 
 set(EXECUTABLE_OUTPUT_PATH ../bin/)
 set(LIBRARY_OUTPUT_PATH ../../lib/)
-set(CMAKE_FILE_DIRECTORY ../files/)
-set(CMAKE_BINARY_DIR ../files/)
+#set(CMAKE_FILE_DIRECTORY ../files/)
+#set(CMAKE_BINARY_DIR ../files/)
 
 
 
@@ -14,18 +14,17 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 endif()
 
+# add the _DEBUG define
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
   add_definitions(-D_DEBUG)
 endif()
 
+# we want to compile our libs dynamically
+add_definitions(-DNC_DYNAMIC_LINK)
+
 include_directories(../../)
 include_directories(../../extlibs/)
-
-if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-	link_directories(../../lib/Debug/)
-else()
-	link_directories(../../lib/Release/)
-endif()
+link_directories(../../lib/)
 
 
 #------------------------------------------------------------------------------
@@ -38,29 +37,17 @@ file(
   ../Tuto1/*.h
 )
 
-add_executable(Tuto1
-  ${Tuto1-sources}
-)
+add_executable(Tuto1	${Tuto1-sources})
 
 if(UNIX)
-
-	target_link_libraries(
-		Tuto1
-	  Nc-Core
-	  Nc-Graphics
-	  GL
-	)
-	
+	target_link_libraries(Tuto1 	Nc-Core Nc-Graphics GL)
 else()
-
-	target_link_libraries(
-		Tuto1
-	  Nc-Core
-	  Nc-Graphics
-	  ../extlibs/freetype
-	  opengl32
-	)
-	
+	target_link_libraries(Tuto1		debug 		../../lib/Debug/Nc-Core
+									debug 		../../lib/Debug/Nc-Graphics
+									optimized	../../lib/Release/Nc-Core
+									optimized	../../lib/Release/Nc-Graphics
+									general 	../../extlibs/freetype 
+									general		opengl32)
 endif()
 
 
@@ -76,10 +63,12 @@ file(
 
 add_executable(Tuto_NcCore_Server ${Tuto_NcCore_Server-sources})
 
-target_link_libraries(Tuto_NcCore_Server 
-	Nc-Core
-)
-
+if(UNIX)
+	target_link_libraries(Tuto_NcCore_Server	Nc-Core)
+else()
+	target_link_libraries(Tuto_NcCore_Server	debug		../../lib/Debug/Nc-Core
+												optimized	../../lib/Release/Nc-Core)
+endif()
 
 #------------------------------------------------------------------------------
 #	Tuto_NcCore_Client
@@ -93,9 +82,12 @@ file(
 
 add_executable(Tuto_NcCore_Client ${Tuto_NcCore_Client-sources})
 
-target_link_libraries(Tuto_NcCore_Client 
-	Nc-Core
-)
+if(UNIX)
+	target_link_libraries(Tuto_NcCore_Client	Nc-Core)
+else()
+	target_link_libraries(Tuto_NcCore_Client	debug		../../lib/Debug/Nc-Core
+												optimized	../../lib/Release/Nc-Core)
+endif()
 
 
 #------------------------------------------------------------------------------
@@ -108,49 +100,29 @@ file(
   ../FrustumDemo/*.h
 )
 
-add_executable(FrustumDemo
-  ${FrustumDemo-sources}
-)
+add_executable(FrustumDemo		${FrustumDemo-sources})
+add_library(PluginFrustumDemo	SHARED ${FrustumDemo-sources})
 
-add_library(PluginFrustumDemo
-  SHARED
-  ${FrustumDemo-sources}
-)
+if(UNIX)
+	target_link_libraries(FrustumDemo			Nc-Core Nc-Graphics Nc-GUI GL)
+	target_link_libraries(PluginFrustumDemo		Nc-Core Nc-Graphics Nc-GUI GL)
+else()
+	target_link_libraries(FrustumDemo			debug		../../lib/Debug/Nc-Core
+												debug		../../lib/Debug/Nc-Graphics
+												debug		../../lib/Debug/Nc-GUI
+												optimized	../../lib/Release/Nc-Core
+												optimized	../../lib/Release/Nc-Graphics
+												optimized	../../lib/Release/Nc-GUI
+												general		opengl32)
 
-IF(UNIX)
-
-target_link_libraries(FrustumDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-target_link_libraries(PluginFrustumDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-ELSE()
-
-target_link_libraries(FrustumDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  opengl32
-)
-
-target_link_libraries(PluginFrustumDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  opengl32
-)
-
-
-ENDIF()
+	target_link_libraries(PluginFrustumDemo		debug		../../lib/Debug/Nc-Core
+												debug		../../lib/Debug/Nc-Graphics
+												debug		../../lib/Debug/Nc-GUI
+												optimized	../../lib/Release/Nc-Core
+												optimized	../../lib/Release/Nc-Graphics
+												optimized	../../lib/Release/Nc-GUI
+												general		opengl32)
+endif()
 
 
 #------------------------------------------------------------------------------
@@ -163,48 +135,29 @@ file(
   ../GUIDemo/*.h
 )
 
-add_executable(GUIDemo
-  ${GUIDemo-sources}
-)
+add_executable(GUIDemo		${GUIDemo-sources})
+add_library(PluginGUIDemo	SHARED ${GUIDemo-sources})
 
-add_library(PluginGUIDemo
-  SHARED
-  ${GUIDemo-sources}
-)
+if(UNIX)
+	target_link_libraries(GUIDemo			Nc-Core Nc-Graphics Nc-GUI GL)
+	target_link_libraries(PluginGUIDemo		Nc-Core Nc-Graphics Nc-GUI GL)
+else()
+	target_link_libraries(GUIDemo			debug 		../../lib/Debug/Nc-Core
+											debug		../../lib/Debug/Nc-Graphics
+											debug		../../lib/Debug/Nc-GUI
+											optimized	../../lib/Release/Nc-Core
+											optimized	../../lib/Release/Nc-Graphics
+											optimized	../../lib/Release/Nc-GUI
+											general		opengl32)
 
-IF(UNIX)
-
-target_link_libraries(GUIDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-target_link_libraries(PluginGUIDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-ELSE()
-
-target_link_libraries(GUIDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  opengl32
-)
-
-target_link_libraries(PluginGUIDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  opengl32
-)
-
-ENDIF()
+	target_link_libraries(PluginGUIDemo		debug 		../../lib/Debug/Nc-Core
+											debug		../../lib/Debug/Nc-Graphics
+											debug		../../lib/Debug/Nc-GUI
+											optimized	../../lib/Release/Nc-Core
+											optimized	../../lib/Release/Nc-Graphics
+											optimized	../../lib/Release/Nc-GUI
+											general		opengl32)
+endif()
 
 
 #------------------------------------------------------------------------------
@@ -217,48 +170,29 @@ file(
   ../LightDemo/*.h
 )
 
-add_executable(LightDemo
-  ${LightDemo-sources}
-)
+add_executable(LightDemo		${LightDemo-sources})
+add_library(PluginLightDemo		SHARED ${LightDemo-sources})
 
-add_library(PluginLightDemo
-  SHARED
-  ${LightDemo-sources}
-)
+if(UNIX)
+	target_link_libraries(LightDemo			Nc-Core Nc-Graphics Nc-GUI GL)
+	target_link_libraries(PluginLightDemo	Nc-Core Nc-Graphics Nc-GUI GL)
+else()
+	target_link_libraries(LightDemo			debug 		../../lib/Debug/Nc-Core
+											debug		../../lib/Debug/Nc-Graphics
+											debug		../../lib/Debug/Nc-GUI
+											optimized	../../lib/Release/Nc-Core
+											optimized	../../lib/Release/Nc-Graphics
+											optimized	../../lib/Release/Nc-GUI
+											general		opengl32)
 
-IF(UNIX)
-
-target_link_libraries(LightDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-target_link_libraries(PluginLightDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-ELSE()
-
-target_link_libraries(LightDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  opengl32
-)
-
-target_link_libraries(PluginLightDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  opengl32
-)
-
-ENDIF()
+	target_link_libraries(PluginLightDemo	debug 		../../lib/Debug/Nc-Core
+											debug		../../lib/Debug/Nc-Graphics
+											debug		../../lib/Debug/Nc-GUI
+											optimized	../../lib/Release/Nc-Core
+											optimized	../../lib/Release/Nc-Graphics
+											optimized	../../lib/Release/Nc-GUI
+											general		opengl32)
+endif()
 
 
 #------------------------------------------------------------------------------
@@ -271,50 +205,30 @@ file(
   ../bSplinesDemo/*.h
 )
 
-add_executable(bSplinesDemo
-  ${bSplinesDemo-sources}
-)
-
-add_library(PluginbSplinesDemo
-  SHARED
-  ${bSplinesDemo-sources}
-)
+add_executable(bSplinesDemo		${bSplinesDemo-sources})
+add_library(PluginbSplinesDemo	SHARED ${bSplinesDemo-sources})
 
 
 if(UNIX)
-target_link_libraries(bSplinesDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
+	target_link_libraries(bSplinesDemo			Nc-Core Nc-Graphics Nc-GUI GL)
+	target_link_libraries(PluginbSplinesDemo	Nc-Core Nc-Graphics Nc-GUI GL)
+else()
+	target_link_libraries(bSplinesDemo			debug 		../../lib/Debug/Nc-Core
+												debug		../../lib/Debug/Nc-Graphics
+												debug		../../lib/Debug/Nc-GUI
+												optimized	../../lib/Release/Nc-Core
+												optimized	../../lib/Release/Nc-Graphics
+												optimized	../../lib/Release/Nc-GUI
+												general		opengl32)
 
-target_link_libraries(PluginbSplinesDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-ELSE()
-
-target_link_libraries(bSplinesDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  ../extlibs/freetype
-  opengl32
-)
-
-target_link_libraries(PluginbSplinesDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  ../extlibs/freetype
-  opengl32
-)
-
-ENDIF()
+	target_link_libraries(PluginbSplinesDemo	debug 		../../lib/Debug/Nc-Core
+												debug		../../lib/Debug/Nc-Graphics
+												debug		../../lib/Debug/Nc-GUI
+												optimized	../../lib/Release/Nc-Core
+												optimized	../../lib/Release/Nc-Graphics
+												optimized	../../lib/Release/Nc-GUI
+												general		opengl32)
+endif()
 
 
 #------------------------------------------------------------------------------
@@ -327,50 +241,29 @@ file(
   ../FBEffectsDemo/*.h
 )
 
-add_executable(FBEffectsDemo
-  ${FBEffectsDemo-sources}
-)
+add_executable(FBEffectsDemo		${FBEffectsDemo-sources})
+add_library(PluginFBEffectsDemo		SHARED ${FBEffectsDemo-sources})
 
-add_library(PluginFBEffectsDemo
-  SHARED
-  ${FBEffectsDemo-sources}
-)
+if(UNIX)
+	target_link_libraries(FBEffectsDemo			Nc-Core Nc-Graphics Nc-GUI GL)
+	target_link_libraries(PluginFBEffectsDemo	Nc-Core Nc-Graphics Nc-GUI GL)
+else()
+	target_link_libraries(FBEffectsDemo			debug 		../../lib/Debug/Nc-Core
+												debug		../../lib/Debug/Nc-Graphics
+												debug		../../lib/Debug/Nc-GUI
+												optimized	../../lib/Release/Nc-Core
+												optimized	../../lib/Release/Nc-Graphics
+												optimized	../../lib/Release/Nc-GUI
+												general		opengl32)
 
-IF(UNIX)
-
-target_link_libraries(FBEffectsDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-target_link_libraries(PluginFBEffectsDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  GL
-)
-
-ELSE()
-
-target_link_libraries(FBEffectsDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  ../extlibs/freetype
-  opengl32
-)
-
-target_link_libraries(PluginFBEffectsDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  ../extlibs/freetype
-  opengl32
-)
-
-ENDIF()
+	target_link_libraries(PluginFBEffectsDemo	debug 		../../lib/Debug/Nc-Core
+												debug		../../lib/Debug/Nc-Graphics
+												debug		../../lib/Debug/Nc-GUI
+												optimized	../../lib/Release/Nc-Core
+												optimized	../../lib/Release/Nc-Graphics
+												optimized	../../lib/Release/Nc-GUI
+												general		opengl32)
+endif()
 
 #------------------------------------------------------------------------------
 #	Sokoban Demo
@@ -382,52 +275,31 @@ file(
   ../SokobanDemo/*.h
 )
 
-add_executable(SokobanDemo
-  ${SokobanDemo-sources}
-)
+add_executable(SokobanDemo		${SokobanDemo-sources})
+add_library(PluginSokobanDemo	SHARED ${SokobanDemo-sources})
 
-add_library(PluginSokobanDemo
-  SHARED
-  ${SokobanDemo-sources}
-)
+if(UNIX)
+	target_link_libraries(SokobanDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib GL)
+	target_link_libraries(PluginSokobanDemo		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib GL)
+else()
+	target_link_libraries(SokobanDemo			debug 		../../lib/Debug/Nc-Core
+												debug		../../lib/Debug/Nc-Graphics
+												debug		../../lib/Debug/Nc-GUI
+												debug		../../lib/Debug/Nc-Contrib
+												optimized	../../lib/Release/Nc-Core
+												optimized	../../lib/Release/Nc-Graphics
+												optimized	../../lib/Release/Nc-GUI
+												optimized	../../lib/Release/Nc-Contrib
+												general		opengl32)
 
-IF(UNIX)
+	target_link_libraries(PluginSokobanDemo		debug 		../../lib/Debug/Nc-Core
+												debug		../../lib/Debug/Nc-Graphics
+												debug		../../lib/Debug/Nc-GUI
+												debug		../../lib/Debug/Nc-Contrib
+												optimized	../../lib/Release/Nc-Core
+												optimized	../../lib/Release/Nc-Graphics
+												optimized	../../lib/Release/Nc-GUI
+												optimized	../../lib/Release/Nc-Contrib
+												general		opengl32)
+endif()
 
-target_link_libraries(SokobanDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  Nc-Contrib
-  GL
-)
-
-target_link_libraries(PluginSokobanDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  Nc-Contrib
-  GL
-)
-
-ELSE()
-
-target_link_libraries(SokobanDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  Nc-Contrib
-  opengl32
-)
-
-target_link_libraries(PluginSokobanDemo
-  Nc-Core
-  Nc-Graphics
-  Nc-GUI
-  Nc-Contrib
-  opengl32
-)
-
-ENDIF()
-
-# we want to compile our libs dynamically
-add_definitions(-DDYNAMIC_LINK)

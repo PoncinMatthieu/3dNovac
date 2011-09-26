@@ -21,11 +21,18 @@ void CreateEngines(Nc::Engine::Manager &manager)
 
 int main()
 {
-  Nc::Engine::Manager game("3dNovac.conf");
+	try
+	{
+	  Nc::Engine::Manager game("3dNovac.conf");
 
-  CreateEngines(game);
+	  CreateEngines(game);
 
-  game.Start();
-  game.Wait();
+	  game.Start();
+	  game.Wait();
+	}
+	catch (const std::exception &e)
+	{
+		LOG << "Fatal error: " << e.what() << std::endl;
+	}
   return 0;
 }

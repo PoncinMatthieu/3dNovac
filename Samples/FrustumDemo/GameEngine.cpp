@@ -74,7 +74,7 @@ void GameEngine::LoadContent()
 
     // creation de la 2eme camera avec un autre viewport
     _camera2 = static_cast<StandardCamera3d*>(_camera->Clone());
-    _camera2->SetProjection((Window::Width() / 2.f) / Window::Height(), 0.1, 1000, 70);
+    _camera2->SetProjection((Window::Width() / 2.f) / Window::Height(), 0.1f, 1000, 70);
     _camera2->SetViewport(Window::Width() / 2.f, 0, Window::Width() / 2.f, Window::Height());
     _camera2->InibitMovement();
     _scene3d->AddChild(_camera2);

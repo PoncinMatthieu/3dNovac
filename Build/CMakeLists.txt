@@ -171,7 +171,7 @@ else()
 endif()
 
 # we want to compile our libs dynamically
-add_definitions(-DDYNAMIC_LINK)
+add_definitions(-DNC_DYNAMIC_LINK)
 
 # set the export defines to export the symbole in the dll
 # those defines are more likely more usefull for Windows, but it could be interesting to keep these define on the other systems
@@ -190,3 +190,10 @@ endif()
 # for the PluginFileFormatCollada, I didn't find how to set more than one define in a target, so I just put it globaly
 # that sucks I know. If you have a solution, tell me about it !
 add_definitions(-DBOOST_ALL_NO_LIB -DPCRE_STATIC -DDOM_INCLUDE_LIBXML)
+
+# Set les dependances entre projets
+add_dependencies(Nc-Graphics 				Nc-Core)
+add_dependencies(Nc-GUI						Nc-Graphics Nc-Core)
+add_dependencies(Nc-Audio					Nc-Core)
+add_dependencies(Nc-Contrib					Nc-Core Nc-Graphics)
+add_dependencies(PluginFileFormatCollada	Nc-Core Nc-Graphics)

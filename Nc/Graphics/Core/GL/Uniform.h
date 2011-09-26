@@ -37,11 +37,10 @@ namespace Nc
         namespace GL
         {
             /// Define an interface to manage uniforms of a shader program
-            class IUniform
+            class LGRAPHICS IUniform
             {
                 public:
-                    IUniform(unsigned int location)
-                        : activated(true), _location(location)      {}
+                    IUniform(unsigned int location);
 
                     /** Set the value to the current shader program */
                     virtual void    Set() = 0;
@@ -63,7 +62,7 @@ namespace Nc
             class Uniform   {};
 
             template<>
-            class Uniform<TMatrix, 1> : public IUniform
+            class LGRAPHICS Uniform<TMatrix, 1> : public IUniform
             {
                 public:
                     Uniform(unsigned int location)
@@ -79,11 +78,11 @@ namespace Nc
             };
 
             template<>
-            class Uniform<Texture, 1> : public IUniform
+            class LGRAPHICS Uniform<Texture, 1> : public IUniform
             {
                 public:
                     Uniform(unsigned int location)
-                        : IUniform(location)                        {}
+                        : IUniform(location), unit(0)				{}
 
                     inline Uniform &operator = (const Texture &t)   {texture = t; return *this;}
                     inline Uniform &operator = (const int &u)       {unit = u; return *this;}
@@ -165,7 +164,11 @@ namespace Nc
                     T       value3;
                     T       value4;
             };
-        }
+
+		
+			template class Uniform<float, 1>;
+			template class Uniform<float, 2>;
+		}
     }
 }
 

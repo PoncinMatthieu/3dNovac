@@ -41,7 +41,7 @@ namespace Nc
 
             To use this class you should configure it by setting the attributes just after it's creation and setting the uniforms value before the rendering.
         */
-        class ProgrammableMaterial : public IMaterial
+        class LGRAPHICS ProgrammableMaterial : public IMaterial
         {
             private:
                 typedef std::map<std::string, GL::IUniform*>    UniformMap;

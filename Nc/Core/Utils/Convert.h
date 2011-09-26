@@ -28,6 +28,8 @@
 #ifndef NC_CORE_UTILS_CONVERT_H_
 #define NC_CORE_UTILS_CONVERT_H_
 
+#include <string>
+#include <fstream>
 #include <sstream>
 #include <math.h>
 #include <cctype>    // for tolower and toupper
@@ -43,6 +45,14 @@ namespace Nc
 {
     namespace Utils
     {
+		/// Define a string witch inherite of the std::string. This class can be used to avoid the "unresolved symbole on basic_string::npos" in visual studio
+		struct LCORE String : public std::string
+		{
+			static const std::size_t npos;
+		};
+		/// Call the function std::getline, used to avoid the issue "unresolved symbole on basic_string::npos" in visual studio 2010
+		LCORE void Getline(std::ifstream &stream, std::string &line);
+
         /// This namespace provide some fonctor class utility
         namespace Fonctor
         {
@@ -69,10 +79,12 @@ namespace Nc
             template <typename T>
             std::string ToString(const T &data);
 
-            /// Convert the first occurence of the delimitor to T in dest
+            /// Convert the first occurence of the \p delimitor to T in \p dest
             template <typename T>
             bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest);
-            inline bool LCORE SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest)
+
+			/// Return the first occurence of the \p delimitor into the string \p dest
+			inline LCORE bool SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest)
             {
                 std::string::size_type pos = str.find_first_of(delimitor);
                 dest = str.substr(0, pos++);

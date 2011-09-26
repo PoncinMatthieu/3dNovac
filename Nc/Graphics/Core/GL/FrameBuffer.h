@@ -37,7 +37,7 @@ namespace Nc
         namespace GL
         {
             /// To Manipulate a Frame Buffer Object (fbo)
-            class FrameBuffer : public Object
+            class LGRAPHICS FrameBuffer : public Object
             {
                 public:
                     typedef std::map<Enum::FrameBuffer::AttachementPoint, Object*>      MapAttachedObject;

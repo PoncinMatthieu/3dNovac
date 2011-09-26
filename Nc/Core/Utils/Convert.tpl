@@ -44,8 +44,8 @@ bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest)
 {
     std::string::size_type pos = str.find_first_of(delimitor);
     bool b = StringTo(str.substr(0, pos++), dest);
-    if (pos != std::string::npos && pos < str.size())
-       str = str.substr(pos, std::string::npos);
+    if (pos != Utils::String::npos && pos < str.size())
+       str = str.substr(pos, Utils::String::npos);
     else
        str.clear();
     return b;

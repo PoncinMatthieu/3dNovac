@@ -1,7 +1,6 @@
 
 #include <Nc/Graphics/Camera/StandardCamera3d.h>
 #include <Nc/Graphics/Object/BasicMeshCreator.h>
-#include <Nc/Graphics/Object/SkyBox.h>
 
 #include "GameEngine.h"
 
@@ -41,23 +40,8 @@ void	GameEngine::LoadContent()
   _scene3d->AddChild(_camera);
   _graphic->GetSceneManager()->AddScene(_scene3d);
 
-
-  // chargement de la sky box
-  Utils::FileName filenamesSky1[6] =
-    {
-      ("Nc:Image:sky/space_lf.png"),
-      ("Nc:Image:sky/space_rt.png"),
-      ("Nc:Image:sky/space_ft.png"),
-      ("Nc:Image:sky/space_bk.png"),
-      ("Nc:Image:sky/space_dn.png"),
-      ("Nc:Image:sky/space_up.png")
-    };
-  _camera->AddChild(new SkyBox(filenamesSky1));
-
   // create a new repere to display at the center of the scene
   _scene3d->AddChild(BasicMeshCreator::Repere(1));
-
-  _scene3d->AddChild(_sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
 }
 
 void	GameEngine::Update(float runningTime)

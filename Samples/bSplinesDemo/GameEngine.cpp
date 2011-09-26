@@ -77,12 +77,12 @@ void GameEngine::KeyboardEvent(System::Event &event)
 
             if (_spline1->Enabled())
             {
-                _spline1->Vertex(_current)[1] += 0.01;
+                _spline1->Vertex(_current)[1] += 0.01f;
                 _spline1->Update();
             }
             else
             {
-                _spline2->Vertex(_current)[1] += 0.02;
+                _spline2->Vertex(_current)[1] += 0.02f;
                 _spline2->Update();
             }
         }
@@ -90,12 +90,12 @@ void GameEngine::KeyboardEvent(System::Event &event)
         {
             if (_spline1->Enabled())
             {
-                _spline1->Vertex(_current)[1] -= 0.01;
+                _spline1->Vertex(_current)[1] -= 0.01f;
                 _spline1->Update();
             }
             else
             {
-                _spline2->Vertex(_current)[1] -= 0.02;
+                _spline2->Vertex(_current)[1] -= 0.02f;
                 _spline2->Update();
             }
         }
@@ -103,12 +103,12 @@ void GameEngine::KeyboardEvent(System::Event &event)
         {
             if (_spline1->Enabled())
             {
-                _spline1->Vertex(_current)[0] += 0.1;
+                _spline1->Vertex(_current)[0] += 0.1f;
                 _spline1->Update();
             }
             else
             {
-                _spline2->Vertex(_current)[0] += 0.1;
+                _spline2->Vertex(_current)[0] += 0.1f;
                 _spline2->Update();
             }
         }
@@ -116,12 +116,12 @@ void GameEngine::KeyboardEvent(System::Event &event)
         {
             if (_spline1->Enabled())
             {
-                _spline1->Vertex(_current)[0] -= 0.1;
+                _spline1->Vertex(_current)[0] -= 0.1f;
                 _spline1->Update();
             }
             else
             {
-                _spline2->Vertex(_current)[0] -= 0.1;
+                _spline2->Vertex(_current)[0] -= 0.1f;
                 _spline2->Update();
             }
         }
@@ -139,10 +139,10 @@ void GameEngine::CreateSplines1()
 {
     Array<Vector2f> controlPoints(5);
     controlPoints[0].Init(0, 0);
-    controlPoints[1].Init(1., 0.15);
-    controlPoints[2].Init(2., 0.14);
-    controlPoints[3].Init(3., 0.15);
-    controlPoints[4].Init(4, 0);
+    controlPoints[1].Init(1.f, 0.15f);
+    controlPoints[2].Init(2.f, 0.14f);
+    controlPoints[3].Init(3.f, 0.15f);
+    controlPoints[4].Init(4.f, 0.f);
 
     Array<int> weight(5);
     weight[0] = 1;
@@ -175,10 +175,10 @@ void GameEngine::CreateSplines2()
 {
     Array<Vector2f> controlPoints(6);
     controlPoints[0].Init(1, 0);
-    controlPoints[1].Init(0.87, 0.5);
-    controlPoints[2].Init(0.71, 0.71);
-    controlPoints[3].Init(0.5, 0.87);
-    controlPoints[4].Init(0., 0.90);
+    controlPoints[1].Init(0.87f, 0.5f);
+    controlPoints[2].Init(0.71f, 0.71f);
+    controlPoints[3].Init(0.5f, 0.87f);
+    controlPoints[4].Init(0.f, 0.90f);
     controlPoints[5].Init(-1, 0);
 
     Array<int> weight(6);

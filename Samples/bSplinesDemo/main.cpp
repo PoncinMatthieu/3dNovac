@@ -22,11 +22,18 @@ void CreateEngines(Nc::Engine::Manager &manager)
 
 int main()
 {
-  Nc::Engine::Manager bsplines("3dNovac.conf");
+	try
+	{
+	  Nc::Engine::Manager bsplines("3dNovac.conf");
 
-  CreateEngines(bsplines);
+	  CreateEngines(bsplines);
 
-  bsplines.Start();
-  bsplines.Wait();
+	  bsplines.Start();
+	  bsplines.Wait();
+	}
+	catch (const std::exception &e)
+	{
+		LOG << "Fatal error: " << e.what() << std::endl;
+	}
   return 0;
 }

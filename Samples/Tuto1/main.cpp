@@ -26,14 +26,21 @@ void CreateEngines(Engine::Manager &manager)
 
 int main()
 {
-  // create the game engine with the config file name
-  Engine::Manager game("3dNovac.conf");
+	try
+	{
+	  // create the game engine with the config file name
+	  Engine::Manager game("3dNovac.conf");
 
-  // create the engines
-  CreateEngines(game);
+	  // create the engines
+	  CreateEngines(game);
 
-  // start the engines and wait it
-  game.Start();
-  game.Wait();
+	  // start the engines and wait it
+	  game.Start();
+	  game.Wait();
+	}
+	catch (const std::exception &e)
+	{
+		LOG << "Fatal error: " << e.what() << std::endl;
+	}
   return 0;
 }

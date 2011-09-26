@@ -31,3 +31,10 @@
 #include "Convert.h"
 #include "IntrusiveSmartPointer.h"
 #include "NonCopyable.h"
+
+const std::size_t	Nc::Utils::String::npos = std::string::npos;
+
+void Nc::Utils::Getline(std::ifstream &stream, std::string &line)
+{
+	std::getline(stream, line);
+}

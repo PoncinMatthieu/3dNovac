@@ -67,7 +67,6 @@
 	#define glBindRenderbuffer					EXT.glBindRenderbuffer
 	#define glRenderbufferStorageMultisample	EXT.glRenderbufferStorageMultisample
 	#define glRenderbufferStorage				EXT.glRenderbufferStorage
-	#define glUniform1ui						EXT.glUniform1ui
 
 	// texture
 	#define glActiveTexture			EXT.glActiveTexture
@@ -91,6 +90,10 @@
 
 	// uniform
 	#define glUniform1i				EXT.glUniform1i
+	#define glUniform1ui			EXT.glUniform1ui;
+	#define glUniform1f				EXT.glUniform1f;
+	#define glUniform2f				EXT.glUniform2f;
+	#define glUniform3f				EXT.glUniform3f;
 	#define glUniform4f				EXT.glUniform4f
 	#define glUniformMatrix4fv		EXT.glUniformMatrix4fv
 	#define glGetUniformLocation	EXT.glGetUniformLocation

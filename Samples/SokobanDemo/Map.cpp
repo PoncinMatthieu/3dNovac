@@ -56,18 +56,20 @@ Map::~Map()
 
 void Map::ReadFile(const Utils::FileName &file, ArrayObject &objects)
 {
-  std::ifstream	f(file.c_str());
+	std::ifstream	f(file.c_str());
   if(!f)
     throw Utils::Exception("Map", "Can't open the file `" + file + "`");
 
   std::string	line, section;
   while (!f.eof())
     {
-      getline(f, line);
-
+		Utils::Getline(f, line);
       // recupere la position du player
       Utils::Convert::SplitStringTo(line, "=", section);
-      if (section == "PLAYER")
+
+	LOG << Utils::String::npos << std::endl;
+	   
+	  if (section == "PLAYER")
 	{
 	  Utils::Convert::SplitStringTo(line, " ", _posPlayer[0]);
 	  Utils::Convert::SplitStringTo(line, " ", _posPlayer[1]);
@@ -83,7 +85,7 @@ void Map::ReadFile(const Utils::FileName &file, ArrayObject &objects)
       else if (section == "MAP")
 	{
 	  std::list<std::string>	listStringMap;
-	  for (getline(f, line); !f.eof(); getline(f, line))
+	  for (Utils::Getline(f, line); !f.eof(); Utils::Getline(f, line))
 	      listStringMap.push_back(line);
 	  FillMap(listStringMap, objects);
 	}

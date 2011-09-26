@@ -40,7 +40,7 @@
     #include <string>
     #include <Nc/Define.h>
 
-    //#define DYNAMIC_LINK
+    //#define NC_DYNAMIC_LINK
     //#define EXPORT_MATH
 
 // define Operating System
@@ -73,7 +73,7 @@
 
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
-        #ifdef DYNAMIC_LINK                                      // dynamic
+        #ifdef NC_DYNAMIC_LINK                                  // dynamic
             #ifdef EXPORT_CORE
                 #define LCORE       __declspec(dllexport)
             #else

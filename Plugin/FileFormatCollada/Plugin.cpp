@@ -41,8 +41,6 @@ Plugin::~Plugin()
 
 ISceneNode   *Plugin::Load(const Utils::FileName &file)
 {
-//	Nc::Graphic::GL::Extension::Instance().Init();
-
     LOG << "COLLADA_DOM Load Started " << file << std::endl;
 
     _dae = new DAE();

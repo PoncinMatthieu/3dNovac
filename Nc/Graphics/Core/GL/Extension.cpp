@@ -68,8 +68,6 @@ Extension::Extension()
 	glBindRenderbuffer = NULL;
 	glRenderbufferStorageMultisample = NULL;
 	glRenderbufferStorage = NULL;
-	glUniform1ui = NULL;
-
 
 	// texture
 	glActiveTexture = NULL;
@@ -93,6 +91,10 @@ Extension::Extension()
 
 	// uniform
 	glUniform1i = NULL;
+	glUniform1ui = NULL;
+	glUniform1f = NULL;
+	glUniform2f = NULL;
+	glUniform3f = NULL;
 	glUniform4f = NULL;
 	glUniformMatrix4fv = NULL;
 	glGetUniformLocation = NULL;
@@ -146,7 +148,6 @@ bool Extension::Init()
 	r = (r && (glBindRenderbuffer = (PFNGLBINDRENDERBUFFERPROC)LoadFunc("glBindRenderbuffer")) != NULL);
 	r = (r && (glRenderbufferStorageMultisample = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC)LoadFunc("glRenderbufferStorageMultisample")) != NULL);
 	r = (r && (glRenderbufferStorage = (PFNGLRENDERBUFFERSTORAGEPROC)LoadFunc("glRenderbufferStorage")) != NULL);
-	r = (r && (glUniform1ui = (PFNGLUNIFORM1UIPROC)LoadFunc("glUniform1ui")) != NULL);
 
 	// texture
 	r = (r && (glActiveTexture = (PFNGLACTIVETEXTUREPROC)LoadFunc("glActiveTexture")) != NULL);
@@ -170,6 +171,10 @@ bool Extension::Init()
 
 	// uniform
 	r = (r && (glUniform1i = (PFNGLUNIFORM1IPROC)LoadFunc("glUniform1i")) != NULL);
+	r = (r && (glUniform1ui = (PFNGLUNIFORM1UIPROC)LoadFunc("glUniform1ui")) != NULL);
+	r = (r && (glUniform1f = (PFNGLUNIFORM1FPROC)LoadFunc("glUniform1f")) != NULL);
+	r = (r && (glUniform2f = (PFNGLUNIFORM2FPROC)LoadFunc("glUniform2f")) != NULL);
+	r = (r && (glUniform3f = (PFNGLUNIFORM3FPROC)LoadFunc("glUniform3f")) != NULL);
 	r = (r && (glUniform4f = (PFNGLUNIFORM4FPROC)LoadFunc("glUniform4f")) != NULL);
 	r = (r && (glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)LoadFunc("glUniformMatrix4fv")) != NULL);
 	r = (r && (glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)LoadFunc("glGetUniformLocation")) != NULL);

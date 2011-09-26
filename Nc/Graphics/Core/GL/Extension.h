@@ -109,37 +109,40 @@ namespace Nc
 					PFNGLBINDRENDERBUFFERPROC				glBindRenderbuffer;
 					PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC	glRenderbufferStorageMultisample;
 					PFNGLRENDERBUFFERSTORAGEPROC			glRenderbufferStorage;
-					PFNGLUNIFORM1UIPROC						glUniform1ui;
 
 					// texture
-					PFNGLACTIVETEXTUREPROC		glActiveTexture;
-					PFNGLTEXIMAGE3DPROC			glTexImage3D;
-					PFNGLGENERATEMIPMAPPROC		glGenerateMipmap;
+					PFNGLACTIVETEXTUREPROC			glActiveTexture;
+					PFNGLTEXIMAGE3DPROC				glTexImage3D;
+					PFNGLGENERATEMIPMAPPROC			glGenerateMipmap;
 
 					// shader
-					PFNGLATTACHSHADERPROC		glAttachShader;
-					PFNGLLINKPROGRAMPROC		glLinkProgram;
-					PFNGLGETPROGRAMIVPROC		glGetProgramiv;
-					PFNGLGETSHADERIVPROC		glGetShaderiv;
-					PFNGLGETPROGRAMINFOLOGPROC	glGetProgramInfoLog;
-					PFNGLGETSHADERINFOLOGPROC	glGetShaderInfoLog;
-					PFNGLCREATEPROGRAMPROC		glCreateProgram;
-					PFNGLCREATESHADERPROC		glCreateShader;
-					PFNGLCOMPILESHADERPROC		glCompileShader;
-					PFNGLSHADERSOURCEPROC		glShaderSource;
-					PFNGLDELETESHADERPROC		glDeleteShader;
-					PFNGLDELETEPROGRAMPROC		glDeleteProgram;
-					PFNGLUSEPROGRAMPROC			glUseProgram;
+					PFNGLATTACHSHADERPROC			glAttachShader;
+					PFNGLLINKPROGRAMPROC			glLinkProgram;
+					PFNGLGETPROGRAMIVPROC			glGetProgramiv;
+					PFNGLGETSHADERIVPROC			glGetShaderiv;
+					PFNGLGETPROGRAMINFOLOGPROC		glGetProgramInfoLog;
+					PFNGLGETSHADERINFOLOGPROC		glGetShaderInfoLog;
+					PFNGLCREATEPROGRAMPROC			glCreateProgram;
+					PFNGLCREATESHADERPROC			glCreateShader;
+					PFNGLCOMPILESHADERPROC			glCompileShader;
+					PFNGLSHADERSOURCEPROC			glShaderSource;
+					PFNGLDELETESHADERPROC			glDeleteShader;
+					PFNGLDELETEPROGRAMPROC			glDeleteProgram;
+					PFNGLUSEPROGRAMPROC				glUseProgram;
 
 					// uniform
-					PFNGLUNIFORM1IPROC			glUniform1i;
-					PFNGLUNIFORM4FPROC			glUniform4f;
-					PFNGLUNIFORMMATRIX4FVPROC	glUniformMatrix4fv;
-					PFNGLGETUNIFORMLOCATIONPROC	glGetUniformLocation;
+					PFNGLUNIFORM1IPROC				glUniform1i;
+					PFNGLUNIFORM1UIPROC				glUniform1ui;
+					PFNGLUNIFORM1FPROC				glUniform1f;
+					PFNGLUNIFORM2FPROC				glUniform2f;
+					PFNGLUNIFORM3FPROC				glUniform3f;
+					PFNGLUNIFORM4FPROC				glUniform4f;
+					PFNGLUNIFORMMATRIX4FVPROC		glUniformMatrix4fv;
+					PFNGLGETUNIFORMLOCATIONPROC		glGetUniformLocation;
 
 					// attrib
-					PFNGLBINDATTRIBLOCATIONPROC	glBindAttribLocation;
-					PFNGLGETATTRIBLOCATIONPROC	glGetAttribLocation;
+					PFNGLBINDATTRIBLOCATIONPROC		glBindAttribLocation;
+					PFNGLGETATTRIBLOCATIONPROC		glGetAttribLocation;
 
                     DECLARE_HANDLE(HPBUFFERARB);
 
