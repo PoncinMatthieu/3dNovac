@@ -29,7 +29,7 @@
 
 #include <Nc/Graphics/Scene/SceneNodeVisitor.h>
 #include "Define.h"
-
+#include "WindowBox.h"
 namespace Nc
 {
     namespace GUI
@@ -103,15 +103,16 @@ namespace Nc
 
             struct GetParentWidget : public Graphic::SceneNodeVisitor<GetParentWidget, true>
             {
-                GetParentWidget()
+                GetParentWidget(const Widget *w)
                     : Graphic::SceneNodeVisitor<GetParentWidget, true>( Utils::Metaprog::Seq<Widget>::Type(),
                                                                         Utils::Metaprog::Seq<Graphic::Entity, Graphic::Octree>::Type(), Graph::VisitParents),
-                      widget(NULL)
+                      widget(w), parent(NULL)
                     {}
 
-                void VisitNode(const Widget &w)         {if (widget != NULL) widget = &w;}
+                void VisitNode(const Widget &w)         {if (widget != &w && parent == NULL) parent = &w;}
 
                 const Widget    *widget;
+                const Widget    *parent;
             };
 
             struct ChangeStates : public Graphic::SceneNodeVisitor<ChangeStates>

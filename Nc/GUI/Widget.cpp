@@ -218,13 +218,13 @@ void Widget::GetReelPos(Vector2f &reelPos) const
     GetReelSize(reelSize);
     reelPos = _pos;
 
-    Visitor::GetParentWidget v;
+    Visitor::GetParentWidget v(this);
     v(*this);
-    if (v.widget != NULL && v.widget != this) // recup la size et le margin du parent
+    if (v.parent != NULL) // recup la size et le margin du parent
     {
-        v.widget->GetReelSize(parentSize);
-        margin = v.widget->_margin;
-        v.widget->TranslateChild(_corner, parentTranslate);
+        v.parent->GetReelSize(parentSize);
+        margin = v.parent->_margin;
+        v.parent->TranslateChild(_corner, parentTranslate);
     }
 
     // check les corner en x
@@ -248,10 +248,10 @@ void Widget::GetReelPos(Vector2f &reelPos) const
 void Widget::GetReelPosRecursif(Vector2f &pos) const
 {
     // get back the first parent
-    Visitor::GetParentWidget v;
+    Visitor::GetParentWidget v(this);
     v(*this);
-    if (v.widget != NULL && v.widget != this)
-        v.widget->GetReelPosRecursif(pos);
+    if (v.parent != NULL)
+        v.parent->GetReelPosRecursif(pos);
     Vector2f reelPos;
     GetReelPos(reelPos);
     pos += reelPos;
@@ -303,18 +303,18 @@ void Widget::Resized()
     float sParent;
     if (Percent().Data[0] != 0 || Percent().Data[1] != 0)
     {
-        Visitor::GetParentWidget v;
+        Visitor::GetParentWidget v(this);
         v(*this);
 
         Vector2i newSize = Size();
         if (Percent().Data[0] != 0)
         {
-            sParent = (v.widget != NULL && v.widget != this) ? v.widget->Size()[0] : Window::Width();
+            sParent = (v.parent != NULL) ? v.parent->Size()[0] : Window::Width();
             newSize[0] = ((float)(Percent().Data[0] * sParent) / 100.0);
         }
         if (Percent().Data[1] != 0)
         {
-            sParent = (v.widget != NULL && v.widget != this) ? v.widget->Size()[1] : Window::Height();
+            sParent = (v.parent != NULL) ? v.parent->Size()[1] : Window::Height();
             newSize[1] = ((float)(Percent().Data[1] * sParent) / 100.0);
         }
         Size(newSize);

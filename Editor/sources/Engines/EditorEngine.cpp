@@ -71,7 +71,7 @@ void EditorEngine::ReleaseContent()
     // destroy the scenes
     for (ListPScene::iterator it = _scenes.begin(); it != _scenes.end(); ++it)
         delete (*it);
-    String::DestroyFonts();
+    Graphic::String::DestroyFonts();
     delete _context;
 }
 

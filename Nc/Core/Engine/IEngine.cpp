@@ -69,7 +69,6 @@ void IEngine::MainLoop()
 void IEngine::Loading()
 {
     _manager->WaitAllEngineStarted();
-
     // if we have a context
     if (_pattern.Enabled(HasAContext) && _loadingContextPriority > 0)
     {
@@ -77,11 +76,11 @@ void IEngine::Loading()
         _manager->MutexGlobal().Lock();
         try
         {
-                LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-------------------" << endl;
-                CreateContext();
-                DisableContext();
-                _pattern.Enable(ContextIsLoaded);
-                LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-done--------------" << endl;
+            LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-------------------" << endl;
+            CreateContext();
+            DisableContext();
+            _pattern.Enable(ContextIsLoaded);
+            LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-done--------------" << endl;
         }
         catch (const std::exception &e)
         {

@@ -165,9 +165,11 @@ IEngine *Manager::GetEngine(const std::string &name)
 void    Manager::Start()
 {
 // lancement des threads
+    _mutexGlobal.Lock();
     for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); ++itEngine)
         itEngine->second.engine->Start();
     _isLaunched = true;
+    _mutexGlobal.Unlock();
 }
 
 void    Manager::Wait()
@@ -179,6 +181,7 @@ void    Manager::Wait()
 
 void    Manager::Stop()
 {
+    _mutexGlobal.Lock();
     // check if the current thread is allowed to exit the thread
     unsigned int currentThreadId = System::ThreadId();
     if (_mainThreadId == currentThreadId)
@@ -194,6 +197,7 @@ void    Manager::Stop()
             }
         }
     }
+    _mutexGlobal.Unlock();
 }
 
 void Manager::PushEvent(const std::string &engineName, unsigned int id)
@@ -247,7 +251,13 @@ void Manager::PushEvent(const std::string &engineName, const std::string &cmdNam
 
 void Manager::WaitAllEngineStarted()
 {
-    while (!_isLaunched);
+    bool isLaunched = false;
+    while (!isLaunched)
+    {
+        _mutexGlobal.Lock();
+        isLaunched = _isLaunched;
+        _mutexGlobal.Unlock();
+    }
 }
 
 void Manager::WaitLoadingContextPriority(unsigned char priority)

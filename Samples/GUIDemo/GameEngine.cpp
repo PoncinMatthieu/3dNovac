@@ -45,6 +45,7 @@ void GameEngine::LoadContent()
   _sceneGUI->AddChild(new Camera2d());
 
   // GUI :
+  _menu = new MainMenu(_sceneGUI);
   _sceneGUI->AddChild(new GUI::FPSWidget());
   _console = new GUI::Console();
   _sceneGUI->AddChild(_console);

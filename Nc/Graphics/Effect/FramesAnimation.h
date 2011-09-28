@@ -54,7 +54,7 @@ namespace Nc
                 {
                     Loop = 0,       ///< return to the first frame at the end of the animation and continu
                     Infinite,       ///< The anim continu at the end with the last frame
-                    DieAtEnd        ///< kill(_alive = false) the anim at the end of the animation, and display nothing
+                    DieAtEnd        ///< kill (_alive = false) the anim at the end of the animation, and display nothing
                 };
 
                 /// Abstract class used to define a frame in an `Animation` process
@@ -241,7 +241,7 @@ namespace Nc
         template<typename T>
         void FramesAnimation<T>::Render(SceneGraph *scene)
         {
-            if (!_enabled || (Started() && _itCurrentFrame != GetListFrame().end()))
+            if (!_enabled || !_alive || !Started() || _itCurrentFrame == GetListFrame().end())
                 return;
             RenderFrame(scene);
         }

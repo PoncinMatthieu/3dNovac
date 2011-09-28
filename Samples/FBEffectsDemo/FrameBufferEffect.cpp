@@ -8,16 +8,6 @@ FrameBufferEffect::FrameBufferEffect()
   : Effect(ClassName()), _postProcessActivated(true)
 {
   _camera2d = new Camera2d();
-}
-
-FrameBufferEffect::~FrameBufferEffect()
-{
-  delete _camera2d;
-  delete _postProcessMaterial;
-}
-
-void	FrameBufferEffect::InitFbo1()
-{
 
   _postProcessMaterial = new ProgrammableMaterial("postProcessEffect", "Nc:Shader:postProcessEffect.vs", "Nc:Shader:postProcessEffect.fs");
   _postProcessMaterial->SetMVPMatrixUniform("MVPMatrix");
@@ -47,12 +37,17 @@ void	FrameBufferEffect::InitFbo1()
   */
   _timeToNextJitter = 0;
   _sketchJitterSpeed = 10;
+}
 
-	
-	
-	
-	
-	Vector2ui size(Window::Width(), Window::Height());
+FrameBufferEffect::~FrameBufferEffect()
+{
+  delete _camera2d;
+  delete _postProcessMaterial;
+}
+
+void	FrameBufferEffect::InitFbo1()
+{
+  Vector2ui size(Window::Width(), Window::Height());
 
   GL::Texture colorTexture;
   colorTexture.Create(GL::Enum::Texture::Texture2d);

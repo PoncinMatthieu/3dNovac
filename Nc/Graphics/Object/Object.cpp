@@ -154,6 +154,8 @@ void    Object::ConfigureDrawables(IMaterial *material)
     }
 }
 
+#include "BasicMeshCreator.h"
+
 void    Object::Render(SceneGraph *scene)
 {
     if (_enabled)

@@ -145,11 +145,11 @@ namespace Nc
                             unsigned int    i = 0;
                             size_t          index = b.Tag();
                             Func            thunk = _vtable->GetFunc(index);
-                            //std::cout << "tag: " << b.InvokableTag() << " thunk " << thunk << " " << b.GetClassName() << std::endl;
+                            //std::cout << "tag: " << b.Tag() << " thunk " << thunk << " " << b.GetClassName() << std::endl;
 
                             while (thunk == NULL && index != 0)
                             {
-                                index = b.ParentTag(++i);
+                                index = b.ParentTag(i++);
                                 if (index != 0)
                                     thunk = _vtable->GetFunc(index);
                             }
@@ -225,7 +225,7 @@ namespace Nc
 
                             while (thunk == NULL && index != 0)
                             {
-                                index = b.InvokableParentTag(++i);
+                                index = b.InvokableParentTag(i++);
                                 if (index != 0)
                                     thunk = _vTableInvokable->GetFunc(index);
                             }
