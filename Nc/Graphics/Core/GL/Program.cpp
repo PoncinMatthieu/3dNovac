@@ -50,12 +50,12 @@ void    Program::Release()
 
 void     Program::Enable() const
 {
-    if (_program == 0 || !_linked)
-        throw Utils::Exception("GL::Program", "The program hasn't been linked.");
+	if (_program == 0 || !_linked)
+        throw Utils::Exception("GL::Program::Enable", "The program hasn't been linked.");
     if (State::IsSet())
         State::Current().BindProgram(_program);
     else
-        glUseProgram(_program);
+		glUseProgram(_program);
 }
 
 void     Program::Disable() const
@@ -74,7 +74,7 @@ void    Program::Attach(const Shader &shader)
     {
         NewRef();
         if ((_program = glCreateProgram()) == 0)
-            throw Utils::Exception("Shader", "Can't create the program shader");
+            throw Utils::Exception("GL::Program::Attach", "Can't create the program shader");
         LOG_DEBUG << "Program " << _program << " CREATED" << std::endl;
     }
     if (shader.IsValid())
@@ -94,7 +94,7 @@ void    Program::Attach(const char *shaderSource, Enum::ShaderType type, const U
 void    Program::Link()
 {
     if (!IsValid())
-        throw Utils::Exception("GL::Program", "There is no attached shader");
+        throw Utils::Exception("GL::Program::Link", "There is no attached shader");
     LOG_DEBUG << "Link program shader " << _program << "\t\t\t\t\t";
     glLinkProgram(_program);
 
@@ -110,7 +110,7 @@ void    Program::Link()
         glGetProgramInfoLog(_program, lenght, &lenght, error);
         std::string s(error);
         delete[] error;
-        throw Utils::Exception("Shader", s);
+        throw Utils::Exception("GL::Program::Link", s);
     }
     _linked = true;
     LOG_DEBUG << "DONE" << std::endl;
@@ -120,7 +120,7 @@ unsigned int    Program::GetUniformLocation(const char *name)
 {
     int location = glGetUniformLocation(_program, name);
     if (location == -1)
-        throw Utils::Exception("Shader", "Bad Uniform location `" + std::string(name) + "`");
+        LOG_ERROR << "GL::Program: Bad Uniform location `" << name << "`" << std::endl;
     return location;
 }
 
@@ -128,7 +128,7 @@ unsigned int    Program::GetAttribLocation(const char *name)
 {
     int location = glGetAttribLocation(_program, name);
     if (location == -1)
-        throw Utils::Exception("Shader", "Bad Attrib location `" + std::string(name) + "`");
+        LOG_ERROR << "GL::Program: Bad Attrib location `" << name << "`" << std::endl;
     return location;
 }
 

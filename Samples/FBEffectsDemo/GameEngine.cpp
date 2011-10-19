@@ -82,6 +82,8 @@ void GameEngine::LoadContent()
   _sceneGUI->AddChild(new Camera2d());
   _sceneGUI->AddChild(new GUI::FPSWidget());
   _graphic->GetSceneManager()->AddScene(_sceneGUI);
+
+    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)

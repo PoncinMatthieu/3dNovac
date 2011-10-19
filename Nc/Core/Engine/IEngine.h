@@ -44,7 +44,7 @@ namespace Nc
         enum Pattern
 		{
 			Nop = 									0,			///< do nothing
-			Synchronize =                           1 << 0,     ///< define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other
+			Synchronized =                          1 << 0,     ///< define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other
 			HasAContext =                           1 << 1,     ///< define if we need to create and call `Active/DisableContext` at each loop
 			ContextIsLoaded =                       1 << 2,     ///< informe that the context is loaded, /!\ DON'T USE OUTSIDE OF THE CLASS
 			WaitingLoadContentsOfOthersEngines =    1 << 3,     ///< force the waiting of the others engines afers to have loaded the contents
@@ -128,6 +128,7 @@ namespace Nc
                 /** Disable the context, to redefine */
                 virtual inline void     DisableContext()    {}
 
+            protected:
                 Manager                 *_manager;                  ///< The instance of the engine Manager
                 bool                    _loaded;                    ///< true if the engine is loaded
 				bool					_released;					///< true if the engine has been released

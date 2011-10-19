@@ -38,8 +38,8 @@ namespace Nc
 
 	ProgrammableMaterial	*_postProcessMaterial;
 	GL::Uniform<float,2>	*_sketchJitter;
-	float			_sketchJitterSpeed;
-	float			_timeToNextJitter;
+	float					_sketchJitterSpeed;
+	float					_timeToNextJitter;
       };
   }
 }

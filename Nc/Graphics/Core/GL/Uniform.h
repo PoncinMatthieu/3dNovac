@@ -43,7 +43,10 @@ namespace Nc
                     IUniform(unsigned int location);
 
                     /** Set the value to the current shader program */
-                    virtual void    Set() = 0;
+                    virtual void			Set() = 0;
+
+					/** \return the location of the uniform */
+					inline unsigned int		GetLocation()				{return _location;}
 
                     friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const IUniform &u)
                     {
@@ -71,7 +74,7 @@ namespace Nc
                     inline Uniform &operator = (const TMatrix &m)   {matrix = m; return *this;}
 
                     /** Set the value to the current shader program */
-                    virtual void Set()                              {Program::SetUniform(_location, matrix, transpose);}
+                    virtual void Set()                              {if (_location != -1) Program::SetUniform(_location, matrix, transpose);}
 
                     TMatrix     matrix;
                     bool        transpose;
@@ -87,12 +90,18 @@ namespace Nc
                     inline Uniform &operator = (const Texture &t)   {texture = t; return *this;}
                     inline Uniform &operator = (const int &u)       {unit = u; return *this;}
 
+					/** Init the unit and texture value of the uniform */
+					inline void		Init(int unitValue, const Texture &textureValue)	{unit = unitValue; texture = textureValue;}
+
                     /** Set the value to the current shader program */
-                    virtual void Set()
+                    virtual void	Set()
                     {
-                        Program::SetUniform(_location, unit);
-                        GL::State::Current().ActiveTexture(unit);
-                        texture.Enable();
+						if (_location != -1)
+						{
+							Program::SetUniform(_location, unit);
+							GL::State::Current().ActiveTexture(unit);
+							texture.Enable();
+						}
                     }
 
                     int         unit;
@@ -109,7 +118,7 @@ namespace Nc
                     inline Uniform &operator = (const T &v)         {value = v; return *this;}
 
                     /** Set the value to the current shader program */
-                    virtual void Set()                              {Program::SetUniform(_location, value);}
+                    virtual void Set()                              {if (_location != -1) Program::SetUniform(_location, value);}
 
                     T       value;
             };
@@ -124,7 +133,7 @@ namespace Nc
                     inline Uniform &operator = (const Vector2D<T> &v)   {value1 = v.Data[0]; value2 = v.Data[1]; return *this;}
 
                     /** Set the value to the current shader program */
-                    virtual void Set()                                  {Program::SetUniform(_location, value1, value2);}
+                    virtual void Set()                                  {if (_location != -1) Program::SetUniform(_location, value1, value2);}
 
                     T       value1;
                     T       value2;
@@ -140,7 +149,7 @@ namespace Nc
                     inline Uniform &operator = (const Vector3D<T> &v)   {value1 = v.Data[0]; value2 = v.Data[1]; value3 = v.Data[2]; return *this;}
 
                     /** Set the value to the current shader program */
-                    virtual void Set()                                  {Program::SetUniform(_location, value1, value2, value3);}
+                    virtual void Set()                                  {if (_location != -1) Program::SetUniform(_location, value1, value2, value3);}
 
                     T       value1;
                     T       value2;
@@ -157,7 +166,7 @@ namespace Nc
                     inline Uniform &operator = (const Color &c)     {value1 = c.R; value2 = c.G; value3 = c.B; value4 = c.A; return *this;}
 
                     /** Set the value to the current shader program */
-                    virtual void Set()                              {Program::SetUniform(_location, value1, value2, value3, value4);}
+                    virtual void Set()                              {if (_location != -1) Program::SetUniform(_location, value1, value2, value3, value4);}
 
                     T       value1;
                     T       value2;

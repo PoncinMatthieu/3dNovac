@@ -69,28 +69,29 @@ void    ProgrammableMaterial::Render(SceneGraph *scene, const TMatrix &modelMatr
 
     // set the matrix uniforms
     if (_uniformMVPMatrix != -1)
-    {
         _program.SetUniform(_uniformMVPMatrix, scene->ProjectionMatrix() * scene->ViewMatrix() * modelMatrix);
-    }
     else
     {
         if (_uniformMMatrix != -1)
-        {
             _program.SetUniform(_uniformMMatrix, modelMatrix);
-        }
         if (_uniformVPMatrix != -1)
-        {
             _program.SetUniform(_uniformVPMatrix, scene->ProjectionMatrix() * scene->ViewMatrix());
-        }
     }
-    if (_uniformNormalMatrix != -1)
+	// set the normal matrix uniform
+	if (_uniformNormalMatrix != -1)
     {
         TMatrix normalMatrix(modelMatrix);
         normalMatrix.Inverse();
         _program.SetUniform(_uniformNormalMatrix, normalMatrix, false);
     }
 
-    for (UniformDrawablesTextureUnitMap::iterator it = _drawablesTextureUnitUniforms.begin(); it != _drawablesTextureUnitUniforms.end(); ++it)
+	// set the basic uniforms
+	for (UniformMap::iterator it = _uniforms.begin(); it != _uniforms.end(); ++it)
+		if (it->second->activated)
+			it->second->Set();
+
+	// Set the texture unit uniforms and active textures
+	for (UniformDrawablesTextureUnitMap::iterator it = _drawablesTextureUnitUniforms.begin(); it != _drawablesTextureUnitUniforms.end(); ++it)
     {
         if (it->second != -1 && drawable.Config->Textures.Size() > it->first)
         {
@@ -99,10 +100,6 @@ void    ProgrammableMaterial::Render(SceneGraph *scene, const TMatrix &modelMatr
             drawable.Config->Textures[it->first].Enable();
         }
     }
-
-    for (UniformMap::iterator it = _uniforms.begin(); it != _uniforms.end(); ++it)
-        if (it->second->activated)
-            it->second->Set();
 
     drawable.Render(); // render the object
     drawable.Disable();

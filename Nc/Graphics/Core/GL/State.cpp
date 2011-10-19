@@ -134,6 +134,31 @@ void    State::InitContext(Graphic::GLContext *context)
         throw Utils::Exception("SceneGraphManager", "Can't initialize gl extensions");
 }
 
+const GLubyte *State::GetString(Enum::ImplementationDescription type)
+{
+    const GLubyte   *s = glGetString(type);
+
+    if (s == NULL)
+        throw Utils::Exception("GL::State", "glGetString return NULL");
+    return s;
+}
+
+const char	*State::GetError()
+{
+    GLenum e = glGetError();
+    switch (e)
+    {
+        case GL_NO_ERROR:                       return "No error has been recorded";
+        case GL_INVALID_ENUM:                   return "An unacceptable value is specified for an enumerated argument";
+        case GL_INVALID_VALUE:                  return "A numeric argument is out of range";
+        case GL_INVALID_OPERATION:              return "The specified operation is not allowed in the current state";
+        case GL_INVALID_FRAMEBUFFER_OPERATION:  return "The framebuffer object is not complete";
+        case GL_OUT_OF_MEMORY:                  return "There is not enough memory left to execute the command";
+        default:                                return "Unknown error";
+    }
+}
+
+
 namespace Nc {
     namespace Graphic {
         namespace GL {
@@ -220,7 +245,7 @@ void    State::CheckGLVersion()
     #endif
 
     // check la version actuel d'opengl
-    std::string version((const char*)(EXT.GetInfo(GL_VERSION)));
+    std::string version((const char*)(GetString(Enum::Version)));
     LOG << "GL_VERSION = `" << version << "`\t";
     Utils::Convert::StringTo(version, nbr);
     if (nbr < VERSION_MIN_OPENGL)
@@ -230,11 +255,11 @@ void    State::CheckGLVersion()
     }
     else
         LOG << "OK" << std::endl;
-    LOG << "GL_VENDOR = `" << EXT.GetInfo(GL_VENDOR) << "`" << std::endl;
-    LOG << "GL_RENDERER = `" << EXT.GetInfo(GL_RENDERER) << "`" << std::endl;
-    //LOG << "GL_EXTENSIONS = `" << EXT.GetInfo(GL_EXTENSIONS) << "`" << std::endl;
+	LOG << "GL_VENDOR = `" << GetString(Enum::Vendor) << "`" << std::endl;
+    LOG << "GL_RENDERER = `" << GetString(Enum::Renderer) << "`" << std::endl;
+    //LOG << "GL_EXTENSIONS = `" << EXT.GetInfo(Enum::Extentions) << "`" << std::endl;
     try
-        {LOG << "GL_SHADING_LANGUAGE_VERSION = `" << EXT.GetInfo(GL_SHADING_LANGUAGE_VERSION) << "`" << std::endl;}
+        {LOG << "GL_SHADING_LANGUAGE_VERSION = `" << GetString(Enum::ShadingLanguageVersion) << "`" << std::endl;}
     catch (...)
         {System::Config::Error("GraphicEngine", "Failed to fetch GL_SHADING_LANGUAGE_VERSION, Shaders is probably not supported");}
 }

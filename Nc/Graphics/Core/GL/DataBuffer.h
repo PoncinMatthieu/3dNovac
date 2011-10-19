@@ -191,7 +191,7 @@ namespace Nc
             {
                 _dataTab = (T*)glMapBuffer(_target, access);
                 if (_dataTab == NULL)
-                    LOG_ERROR << "DataBuffer::glMapBuffer: " << EXT.GetError() << std::endl;
+                    LOG_ERROR << "DataBuffer::glMapBuffer: " << State::GetError() << std::endl;
                 return _dataTab;
             }
 
@@ -200,7 +200,7 @@ namespace Nc
             {
                 _dataTab = NULL;
                 if (glUnmapBuffer(_target) == GL_FALSE)
-                    LOG_ERROR << "DataBuffer::glUnmapBuffer: " << EXT.GetError() << std::endl;
+                    LOG_ERROR << "DataBuffer::glUnmapBuffer: " << State::GetError() << std::endl;
             }
 
         }

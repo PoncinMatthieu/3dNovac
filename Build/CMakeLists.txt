@@ -183,8 +183,10 @@ set_target_properties(Nc-Contrib 				PROPERTIES DEFINE_SYMBOL EXPORT_CONTRIB)
 set_target_properties(PluginFileFormatCollada	PROPERTIES DEFINE_SYMBOL EXPORT_FILEOBJPLUGIN)
 
 # define _DEBUG
-if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-  add_definitions(-D_DEBUG)
+if(UNIX)
+	if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
+	  add_definitions(-D_DEBUG)
+	endif()
 endif()
 
 # for the PluginFileFormatCollada, I didn't find how to set more than one define in a target, so I just put it globaly

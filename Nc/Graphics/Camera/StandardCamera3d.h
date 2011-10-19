@@ -76,7 +76,7 @@ namespace Nc
                 void            SetMoveButton(System::Mouse::Button button) {_mouveButton = button;}
 
                 /** Recompute the eye, center and up vector after a modification */
-                void MajEye();
+                virtual void    MajEye();
 
                 // Manage events
                 /** Manage the mouse motion event */
@@ -101,7 +101,7 @@ namespace Nc
                 /** Set the Inihibit movement statement to false */
                 inline void     UninibitMovement()                  {_inhibitMovement = false;}
 
-            private:
+            protected:
                 /** Recompute the trackball point with the given mouse position */
                 void MajTrackballPoint(int x, int y);
 

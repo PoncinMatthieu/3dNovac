@@ -58,6 +58,11 @@ namespace Nc
                     State();
                     ~State();
 
+					/** Return the gl sting according to the given type */
+                    static const GLubyte		*GetString(Enum::ImplementationDescription type);
+					/** Return the gl current error, a call to this function reset the current ogl error (call glGetError) */
+					static const char			*GetError();
+
                     static inline bool  IsSet()                                 {return (_current != NULL);}
                     /**
                         \return the current render state

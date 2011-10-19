@@ -134,54 +134,6 @@ namespace Nc
                     return Out;
                 }
         };
-
-        /// Define an entity node
-        /**
-            An entity is define by a Matrix and can contain only one subtree and a list of childs
-        */
-        class LGRAPHICS Entity : public AbstractSceneNode<Graph::ListNodePolitic>
-        {
-            public:
-                NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
-                NC_UTILS_DEFINE_INVOKABLE(System::Object);
-                typedef AbstractSceneNode<Graph::ListNodePolitic>            NodePolitic;
-
-            public:
-                Entity();
-                Entity(const char *className);
-                Entity(const char *className, const TMatrix &m);
-                Entity(const Entity &n);
-                Entity &operator = (const Entity &n);
-                virtual ~Entity();
-
-                static const char           *ClassName()                                        {return "Entity";}
-                virtual ISceneNode          *Clone() const                                      {return new Entity(*this);}
-
-                /** Render the node */
-                virtual void                Render(SceneGraph *scene);
-                /** Update the node */
-                virtual void                Update(float elapsedTime);
-
-                /** \return the number of subtree witch can contain a least one subtree */
-                virtual unsigned int        SubTreeCount() const                                {return ((Data == NULL) ? 0 : 1);}
-                /** \return the subtree */
-                virtual const ISceneNode    *SubTree(unsigned int) const                        {return Data;}
-
-                /**
-                    Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given \p oldAt.
-                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible)
-                */
-                virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt);
-
-                /** Render the childs and the subtrees */
-                void                        RenderChilds(SceneGraph *scene);
-                /** Update the childs and the subtrees */
-                void                        UpdateChilds(float elapsedTime);
-
-            public:
-                TMatrix                     Matrix;                 ///< the matrix of the entity
-        };
     }
 }
 

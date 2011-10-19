@@ -133,7 +133,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Drawable &drawable)
     // render the normals
     drawable.Render();
 
-    // restore the index attrib
+    // restore the index attribs
     for (unsigned int i = 0; i < desc.Size(); ++i)
         desc[i].IndexAttrib = lastAttribs.Data[i];
 }

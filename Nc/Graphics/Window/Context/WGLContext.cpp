@@ -37,7 +37,6 @@ WGLContext::WGLContext(WWindow *win, HDC drawable) : GLContext(win), _drawable(d
     if (_win == NULL)
         throw Utils::Exception("WGLContext", "Can't create any Renderer if the window is null");
     _context = 0;
-//    _pbuffer = 0;
     _antialiasingLevel = 0;
     _depth = 24;
     _stencil = 8;
@@ -48,10 +47,7 @@ WGLContext::~WGLContext()
 {
     if (_isCreate)
     {
-//        if (_pbuffer == 0)
-            ReleaseDC(static_cast<WWindow*>(_win)->_handle, _drawable);
-//        else
-//            ReleaseDC(_win->_handle, _pbuffer);
+        ReleaseDC(static_cast<WWindow*>(_win)->_handle, _drawable);
         wglDeleteContext(_context);
     }
 }
@@ -184,24 +180,6 @@ void WGLContext::Create(GLContext *sharedContext)
     _context = wglCreateContext(_drawable);
     if (_context == NULL)
         throw Utils::Exception("WGLContext", "Can't create the gl context for the window");
-
-    // Activate the context
-//    SetActive(true);
-
-    // Enable multisampling
-//    if (Params.AntialiasingLevel > 0)
-//        glEnable(GL_MULTISAMPLE_ARB);
-
-    // ajout du renderer dans la map d'association avec le PID du thread courant
-/* // n'est plus neccessaire, mais un system similaire pourrai etre utile si on fait du multi-window
-	unsigned int pid = ThreadId();
-    _mapPIDRendererMutex.Lock();
-    MapPIDRenderer::iterator it = _mapPIDRenderer.find(pid);
-    if (it != _mapPIDRenderer.end())
-        throw Utils::Exception("WGLContext", "The Current Thread as already a GLContext !");
-    _mapPIDRenderer[pid] = this;
-    _mapPIDRendererMutex.Unlock();
-*/
 	_isCreate = true;
 }
 
@@ -242,29 +220,18 @@ GLContext *WGLContext::CreateNewSharedContext()
 		LPVOID lpDisplayBuf;
 		DWORD dw = GetLastError();
 
-		FormatMessage(
-			FORMAT_MESSAGE_ALLOCATE_BUFFER |
-			FORMAT_MESSAGE_FROM_SYSTEM |
-			FORMAT_MESSAGE_IGNORE_INSERTS,
-			NULL,
-			dw,
-			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			(LPTSTR) &lpMsgBuf,
-			0, NULL );
-
 		// Display the error message and exit the process
-		// du code windows bien crade...
-		lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
-			(lstrlen((LPCTSTR)lpMsgBuf)+lstrlen((LPCTSTR)TEXT("plopiplop"))+40)*sizeof(TCHAR));
-		StringCchPrintf((LPTSTR)lpDisplayBuf,
-			LocalSize(lpDisplayBuf) / sizeof(TCHAR),
-			TEXT("%s failed with error %d: %s"),
-			TEXT("plopiplop"), dw, lpMsgBuf);
+		// Ugly Windows code...
+		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+					  NULL, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMsgBuf, 0, NULL);
+
+		lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT, (lstrlen((LPCTSTR)lpMsgBuf)+lstrlen((LPCTSTR)TEXT("plopiplop"))+40)*sizeof(TCHAR));
+		StringCchPrintf((LPTSTR)lpDisplayBuf, LocalSize(lpDisplayBuf) / sizeof(TCHAR), TEXT("%s failed with error %d: %s"), TEXT("plopiplop"), dw, lpMsgBuf);
 		MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
 
 		LocalFree(lpMsgBuf);
 		LocalFree(lpDisplayBuf);
-		throw Utils::Exception("WGLContext", "Can't share list with the new context");
+		throw Utils::Exception("WGLContext", "Can't share lists with the new context");
 	}
 
 /*
@@ -280,17 +247,7 @@ GLContext *WGLContext::CreateNewSharedContext()
 
     if (newSharedRenderer->_pbuffer == NULL)
         throw Utils::Exception("WGLContext", "Failed to get PBuffer for shared context");
-    newSharedRenderer->_isShared = true;
 */
-// ajout du renderer dans la map d'association avec le PID du thread courant
-/*
-	unsigned int pid = ThreadId();
-    _mapPIDRendererMutex.Lock();
-    MapPIDRenderer::iterator it = _mapPIDRenderer.find(pid);
-    if (it != _mapPIDRenderer.end())
-        throw Utils::Exception("WGLContext", "The Current Thread as already a GLContext !");
-    _mapPIDRenderer[pid] = this;
-    _mapPIDRendererMutex.Unlock();
-*/
+    newSharedContext->_isShared = true;
 	return newSharedContext;
 }

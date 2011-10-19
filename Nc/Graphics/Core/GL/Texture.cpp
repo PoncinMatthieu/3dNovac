@@ -104,6 +104,9 @@ void    Texture::Create(Enum::Texture::Target target)
     NewRef();
     _target = target;
     glGenTextures(1, &_texture);
+    if (_texture == 0)
+        throw Utils::Exception("Texture", "Failed to generate the texture unit");
+	LOG_DEBUG << "CREATE NEW TEXTURE OBJECT n = " << _texture << std::endl;
 }
 
 void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
@@ -145,6 +148,8 @@ void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::strin
 // Create the OpenGL texture
     _target = Enum::Texture::Texture2d;
     glGenTextures(1, &_texture);
+    if (_texture == 0)
+        throw Utils::Exception("Texture", "Failed to generate the texture unit");
     Enable();
 
     glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -196,7 +201,7 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
     _target = Enum::Texture::TextureCubeMap;
     glGenTextures(1, &_texture);
     if (_texture == 0)
-        throw Utils::Exception("Texture", "Can't load the cube map");
+        throw Utils::Exception("Texture", "Failed to generate the texture unit");
 
     // Configuration de la texture
     Enable();
@@ -263,7 +268,7 @@ void Texture::GenereSphereMap(const unsigned int d)
     _target = Enum::Texture::Texture3d;
     glGenTextures(1, &_texture);
     if (_texture == 0)
-        throw Utils::Exception("Texture", "Fail for the generation of a texture");
+        throw Utils::Exception("Texture", "Failed to generate the texture unit");
 
     Enable();
 	glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

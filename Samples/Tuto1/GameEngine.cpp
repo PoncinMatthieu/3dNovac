@@ -34,14 +34,16 @@ void	GameEngine::CreateWindow(Window *win)
 
 void	GameEngine::LoadContent()
 {
-  // create the camera, scene and set it to the SceneGraphManager of the Graphic engine
-  _scene3d = new SceneGraph();
-  _camera = new StandardCamera3d(_graphic->GetWindow());
-  _scene3d->AddChild(_camera);
-  _graphic->GetSceneManager()->AddScene(_scene3d);
+	// create the camera, scene and set it to the SceneGraphManager of the Graphic engine
+	_scene3d = new SceneGraph();
+	_camera = new StandardCamera3d(_graphic->GetWindow());
+	_scene3d->AddChild(_camera);
+	_graphic->GetSceneManager()->AddScene(_scene3d);
 
-  // create a new repere to display at the center of the scene
-  _scene3d->AddChild(BasicMeshCreator::Repere(1));
+	// create a new repere to display at the center of the scene
+	_scene3d->AddChild(BasicMeshCreator::Repere(1));
+
+//	_pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void	GameEngine::Update(float runningTime)

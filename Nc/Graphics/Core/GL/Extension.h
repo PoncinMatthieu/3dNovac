@@ -33,6 +33,7 @@
 #include <GL3/gl3.h>
 
 #ifdef SYSTEM_WINDOWS
+	#define WGL_WGLEXT_PROTOTYPES
 	#include <GL3/wglext.h>
 #endif
 
@@ -61,10 +62,6 @@ namespace Nc
 
                     /** Init and load the extensions */
                     bool Init();
-
-                    /** Return the gl info */
-                    const GLubyte       *GetInfo(unsigned int type);
-                    std::string         GetError();
 
                     /** Return true if the given extension name is support */
                     bool    IsSupported(const char *extName);
@@ -131,9 +128,11 @@ namespace Nc
 					PFNGLUSEPROGRAMPROC				glUseProgram;
 
 					// uniform
+					PFNGLGETUNIFORMFVPROC			glGetUniformfv;
 					PFNGLUNIFORM1IPROC				glUniform1i;
 					PFNGLUNIFORM1UIPROC				glUniform1ui;
 					PFNGLUNIFORM1FPROC				glUniform1f;
+					PFNGLUNIFORM1FVPROC				glUniform1fv;
 					PFNGLUNIFORM2FPROC				glUniform2f;
 					PFNGLUNIFORM3FPROC				glUniform3f;
 					PFNGLUNIFORM4FPROC				glUniform4f;
@@ -143,6 +142,10 @@ namespace Nc
 					// attrib
 					PFNGLBINDATTRIBLOCATIONPROC		glBindAttribLocation;
 					PFNGLGETATTRIBLOCATIONPROC		glGetAttribLocation;
+
+					// fb output
+					PFNGLBINDFRAGDATALOCATIONPROC	glBindFragDataLocation;
+					PFNGLDRAWBUFFERSPROC			glDrawBuffers;
 
                     DECLARE_HANDLE(HPBUFFERARB);
 

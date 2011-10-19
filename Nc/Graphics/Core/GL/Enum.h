@@ -41,6 +41,15 @@ namespace Nc
 		{
 			namespace Enum
 			{
+				enum ImplementationDescription
+				{
+					Vendor					= GL_VENDOR,					///< Returns the company responsible for this GL implementation.
+					Renderer				= GL_RENDERER,					///< Returns the name of the renderer. This name is typically specific to a particular configuration of a hardware platform.
+                    Version					= GL_VERSION,					///< Returns a version or release number.
+					ShadingLanguageVersion	= GL_SHADING_LANGUAGE_VERSION,	///< Returns a version or release number for the shading language.
+                    Extensions				= GL_EXTENSIONS					///< Return the supported extensions
+				};
+
 			    /// Define the gl capabilities
 				/**
                     Sample of ogl functions used with this enum:

@@ -60,20 +60,6 @@ namespace Nc
                 static const char *ClassName()                          {return "Object";}
                 virtual ISceneNode  *Clone() const                      {return new Object(*this);}
 
-                /** Set the box of the object */
-                inline void         SetBox(const Box3f &box)            {_box = box;}
-                /** \return the box of the object (the box is not modified by the matrix, so if you want the reel box call the methode GetReelBox) */
-                inline const Box3f  &GetBox() const                     {return _box;}
-                /** \param box filled by the box transformed by the model matrix */
-                void                GetReelBox(Box3f &box) const;
-
-                // operations sur la matrice
-                /** Scale the object with the given height */
-                void                HeightScale(float height); // /!\ metre a jour la bounding box avant
-
-                /** Translate the model Matrix to the given vector using the xy center of the box */
-                void                CenterBase(const Vector3f &centerBase);
-
                 /** \return the material used to render the drawables */
                 inline IMaterial    *GetMaterial()                      {return _material;}
                 /**
@@ -112,16 +98,11 @@ namespace Nc
             // fields
             protected:
                 DrawableArray   _drawables;             ///< the array of drawbles
-                Box3f           _box;                   ///< the box of the object
 
             private:
                 IMaterial       *_material;                 ///< pointer to the material used to render the drawables
                 IMaterial       *_lastConfiguredMaterial;   ///< pointer to the last configured material
         };
-
-        // specialization of the method GetNode<> for an IObject
-        //template<>
-        //Object *ISceneNode::GetNode<>();
     }
 }
 

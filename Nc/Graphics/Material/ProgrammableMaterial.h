@@ -52,6 +52,8 @@ namespace Nc
                 ProgrammableMaterial(const std::string materialName, const Utils::FileName &vertexShader, const Utils::FileName &pixelShader);
                 ~ProgrammableMaterial();
 
+				inline const GL::Program	&GetProgram() const		{return _program;}
+
                 /** Configure the given goemetry */
                 virtual bool        Configure(Drawable &drawable);
 

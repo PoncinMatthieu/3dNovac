@@ -27,7 +27,7 @@
 #ifndef NOVAC_GRAPHIC_EFFECT_EFFECT_H_
 #define NOVAC_GRAPHIC_EFFECT_EFFECT_H_
 
-#include "../Scene/SceneNode.h"
+#include "../Scene/Entity.h"
 
 namespace Nc
 {
@@ -57,11 +57,7 @@ namespace Nc
             protected:
                 bool        _activated;
         };
-
-        // specialization of the method GetNode<> for an IObject
-        //template<>
-        //Effect *ISceneNode::GetNode<>();
     }
 }
 
-#endif // Effect_H_INCLUDED
+#endif

@@ -48,9 +48,13 @@ namespace Nc
             ~Pixel() {}
 
             inline void Init(const T &r = 0, const T &g = 0, const T &b = 0, const T &a = 0)    {R = r; G = g; B = b; A = a;}
-            inline bool operator == (const Pixel& v)                                            {return !(R != v.R || G != v.G || B != v.B || A != v.A);}
-            inline bool operator != (const Pixel& v)                                            {return (R != v.R || G != v.G || B != v.B || A != v.A);}
+            inline bool operator == (const Pixel& v) const                                      {return (R == v.R && G == v.G && B == v.B && A == v.A);}
+            inline bool operator != (const Pixel& v) const                                      {return (R != v.R || G != v.G || B != v.B || A != v.A);}
             inline T &operator [] (const T &i)                                                  {return ((i == 0) ? R : ((i == 1) ? G : ((i == 2) ? B : A)));}
+
+            inline void operator = (unsigned int v)                                             {R = (v >> 16) & 0xff; G = (v >> 8) & 0xff; B = v & 0xff; A = (v >> 24) & 0xff;}
+            inline bool operator == (unsigned int v) const                                      {return (R == ((v >> 16) & 0xff) && G == ((v >> 8) & 0xff) && B == (v & 0xff) && A == ((v >> 24) & 0xff));}
+            inline bool operator != (unsigned int v) const                                      {return (R != ((v >> 16) & 0xff) || G != ((v >> 8) & 0xff) || B != (v & 0xff) || A != ((v >> 24) & 0xff));}
 
             inline Pixel operator + (const Pixel& c) const
             {
@@ -79,7 +83,7 @@ namespace Nc
 
             friend LCORE std::ostream& operator << (std::ostream& os, const Pixel& v)
             {
-                os<< "R = " << v.R << "\tG = " << v.G << "\tB = " << v.B << "\tA = " << v.A;
+                os<< "R = " << (unsigned int)v.R << "\tG = " << (unsigned int)v.G << "\tB = " << (unsigned int)v.B << "\tA = " << (unsigned int)v.A;
                 return os;
             }
 

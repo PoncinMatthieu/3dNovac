@@ -61,16 +61,18 @@ namespace Nc
                 /** Swap two componant of the image, usefull to create a BGRA format or other */
                 void            SwapComponants(unsigned char c1, unsigned char c2);
 
-                // accessor
+                // accessors
                 /** Set the pixel at the given position */
-                inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)      {_pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]] = p;}
-                /** Return the pixel from the given position */
+                inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)    {_pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]] = p;}
+                /** \return the pixel from the given position */
                 inline const Pixel<>        &GetPixel(const Vector2ui &pos) const               {return _pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]];}
-                /** Return the pixels in char * */
+                /** \return the pixel from the given position */
+                inline const Pixel<>        &GetPixel(unsigned int x, unsigned int y) const     {return _pixels[(y * _size.Data[0]) + x];}
+                /** \return the pixels in char * */
                 inline const unsigned char  *GetPixels() const                                  {return reinterpret_cast<const unsigned char*>(_pixels.Data);}
-                /** Return the array of pixels */
+                /** \return the array of pixels */
                 inline Pixel<>              *GetPixelsArray()                                   {return _pixels.Data;}
-                /** Return the size of the image */
+                /** \return the size of the image */
                 inline const Vector2ui      &Size() const                                       {return _size;}
 
             private:

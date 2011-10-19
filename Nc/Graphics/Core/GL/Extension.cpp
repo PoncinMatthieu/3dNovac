@@ -32,6 +32,7 @@
     #include <GL/glx.h>
 #endif
 
+#define LOAD_FUNC(r, func, type)					(r = (r && (func = (type)LoadFunc(#func)) != NULL))
 
 using namespace Nc::Graphic::GL;
 
@@ -90,9 +91,11 @@ Extension::Extension()
 	glUseProgram = NULL;
 
 	// uniform
+	glGetUniformfv = NULL;
 	glUniform1i = NULL;
 	glUniform1ui = NULL;
 	glUniform1f = NULL;
+	glUniform1fv = NULL;
 	glUniform2f = NULL;
 	glUniform3f = NULL;
 	glUniform4f = NULL;
@@ -102,6 +105,10 @@ Extension::Extension()
 	// attrib
 	glBindAttribLocation = NULL;
 	glGetAttribLocation = NULL;
+
+	// fb output
+	glBindFragDataLocation = NULL;
+	glDrawBuffers = NULL;
 
     wglChoosePixelFormat = NULL;
     wglCreatePbuffer = NULL;
@@ -121,67 +128,75 @@ bool Extension::Init()
 
 #ifdef SYSTEM_WINDOWS
 	// buffer
-	r = (r && (glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)LoadFunc("glGenVertexArrays")) != NULL);
-	r = (r && (glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)LoadFunc("glEnableVertexAttribArray")) != NULL);
-	r = (r && (glDisableVertexAttribArray = (PFNGLDISABLEVERTEXATTRIBARRAYPROC)LoadFunc("glDisableVertexAttribArray")) != NULL);
-	r = (r && (glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)LoadFunc("glBindVertexArray")) != NULL);
-	r = (r && (glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC)LoadFunc("glDeleteVertexArrays")) != NULL);
-	r = (r && (glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)LoadFunc("glVertexAttribPointer")) != NULL);
-	r = (r && (glDeleteBuffers = (PFNGLDELETEBUFFERSPROC)LoadFunc("glDeleteBuffers")) != NULL);
-	r = (r && (glBufferData = (PFNGLBUFFERDATAPROC)LoadFunc("glBufferData")) != NULL);
-	r = (r && (glBufferSubData = (PFNGLBUFFERSUBDATAPROC)LoadFunc("glBufferSubData")) != NULL);
-	r = (r && (glGenBuffers = (PFNGLGENBUFFERSPROC)LoadFunc("glGenBuffers")) != NULL);
-	r = (r && (glMapBuffer = (PFNGLMAPBUFFERPROC)LoadFunc("glMapBuffer")) != NULL);
-	r = (r && (glUnmapBuffer = (PFNGLUNMAPBUFFERPROC)LoadFunc("glUnmapBuffer")) != NULL);
-	r = (r && (glBindBuffer = (PFNGLBINDBUFFERPROC)LoadFunc("glBindBuffer")) != NULL);
-	r = (r && (glDrawArrays = (PFNGLDRAWARRAYSPROC)LoadFunc("glDrawArrays")) != NULL);
-	r = (r && (glDrawElements = (PFNGLDRAWELEMENTSPROC)LoadFunc("glDrawElements")) != NULL);
-	r = (r && (glGenFramebuffers = (PFNGLGENFRAMEBUFFERSPROC)LoadFunc("glGenFramebuffers")) != NULL);
-	r = (r && (glDeleteFramebuffers = (PFNGLDELETEFRAMEBUFFERSPROC)LoadFunc("glDeleteFramebuffers")) != NULL);
-	r = (r && (glBindFramebuffer = (PFNGLBINDFRAMEBUFFERPROC)LoadFunc("glBindFramebuffer")) != NULL);
-	r = (r && (glFramebufferRenderbuffer = (PFNGLFRAMEBUFFERRENDERBUFFERPROC)LoadFunc("glFramebufferRenderbuffer")) != NULL);
-	r = (r && (glFramebufferTexture = (PFNGLFRAMEBUFFERTEXTUREPROC)LoadFunc("glFramebufferTexture")) != NULL);
-	r = (r && (glCheckFramebufferStatus = (PFNGLCHECKFRAMEBUFFERSTATUSPROC)LoadFunc("glCheckFramebufferStatus")) != NULL);
-	r = (r && (glBlitFramebuffer = (PFNGLBLITFRAMEBUFFERPROC)LoadFunc("glBlitFramebuffer")) != NULL);
-	r = (r && (glGenRenderbuffers = (PFNGLGENRENDERBUFFERSPROC)LoadFunc("glGenRenderbuffers")) != NULL);
-	r = (r && (glDeleteRenderbuffers = (PFNGLDELETERENDERBUFFERSPROC)LoadFunc("glDeleteRenderbuffers")) != NULL);
-	r = (r && (glBindRenderbuffer = (PFNGLBINDRENDERBUFFERPROC)LoadFunc("glBindRenderbuffer")) != NULL);
-	r = (r && (glRenderbufferStorageMultisample = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC)LoadFunc("glRenderbufferStorageMultisample")) != NULL);
-	r = (r && (glRenderbufferStorage = (PFNGLRENDERBUFFERSTORAGEPROC)LoadFunc("glRenderbufferStorage")) != NULL);
+	LOAD_FUNC(r, glGenVertexArrays, PFNGLGENVERTEXARRAYSPROC);
+	LOAD_FUNC(r, glEnableVertexAttribArray, PFNGLENABLEVERTEXATTRIBARRAYPROC);
+	LOAD_FUNC(r, glDisableVertexAttribArray, PFNGLDISABLEVERTEXATTRIBARRAYPROC);
+	LOAD_FUNC(r, glBindVertexArray, PFNGLBINDVERTEXARRAYPROC);
+	LOAD_FUNC(r, glDeleteVertexArrays, PFNGLDELETEVERTEXARRAYSPROC);
+	LOAD_FUNC(r, glVertexAttribPointer, PFNGLVERTEXATTRIBPOINTERPROC);
+	LOAD_FUNC(r, glDeleteBuffers, PFNGLDELETEBUFFERSPROC);
+	LOAD_FUNC(r, glBufferData, PFNGLBUFFERDATAPROC);
+	LOAD_FUNC(r, glBufferSubData, PFNGLBUFFERSUBDATAPROC);
+	LOAD_FUNC(r, glGenBuffers, PFNGLGENBUFFERSPROC);
+	LOAD_FUNC(r, glMapBuffer, PFNGLMAPBUFFERPROC);
+	LOAD_FUNC(r, glUnmapBuffer, PFNGLUNMAPBUFFERPROC);
+	LOAD_FUNC(r, glBindBuffer, PFNGLBINDBUFFERPROC);
+//	LOAD_FUNC(r, glDrawArrays, PFNGLDRAWARRAYSPROC);
+	glDrawArrays = ::glDrawArrays;
+//	LOAD_FUNC(r, glDrawElements, PFNGLDRAWELEMENTSPROC);
+	glDrawElements = ::glDrawElements;
+	LOAD_FUNC(r, glGenFramebuffers, PFNGLGENFRAMEBUFFERSPROC);
+	LOAD_FUNC(r, glDeleteFramebuffers, PFNGLDELETEFRAMEBUFFERSPROC);
+	LOAD_FUNC(r, glBindFramebuffer, PFNGLBINDFRAMEBUFFERPROC);
+	LOAD_FUNC(r, glFramebufferRenderbuffer, PFNGLFRAMEBUFFERRENDERBUFFERPROC);
+	LOAD_FUNC(r, glFramebufferTexture, PFNGLFRAMEBUFFERTEXTUREPROC);
+	LOAD_FUNC(r, glCheckFramebufferStatus, PFNGLCHECKFRAMEBUFFERSTATUSPROC);
+	LOAD_FUNC(r, glBlitFramebuffer, PFNGLBLITFRAMEBUFFERPROC);
+	LOAD_FUNC(r, glGenRenderbuffers, PFNGLGENRENDERBUFFERSPROC);
+	LOAD_FUNC(r, glDeleteRenderbuffers, PFNGLDELETERENDERBUFFERSPROC);
+	LOAD_FUNC(r, glBindRenderbuffer, PFNGLBINDRENDERBUFFERPROC);
+	LOAD_FUNC(r, glRenderbufferStorageMultisample, PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC);
+	LOAD_FUNC(r, glRenderbufferStorage, PFNGLRENDERBUFFERSTORAGEPROC);
 
 	// texture
-	r = (r && (glActiveTexture = (PFNGLACTIVETEXTUREPROC)LoadFunc("glActiveTexture")) != NULL);
-	r = (r && (glTexImage3D = (PFNGLTEXIMAGE3DPROC)LoadFunc("glTexImage3D")) != NULL);
-	r = (r && (glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)LoadFunc("glGenerateMipmap")) != NULL);
+	LOAD_FUNC(r, glActiveTexture, PFNGLACTIVETEXTUREPROC);
+	LOAD_FUNC(r, glTexImage3D, PFNGLTEXIMAGE3DPROC);
+	LOAD_FUNC(r, glGenerateMipmap, PFNGLGENERATEMIPMAPPROC);
 
 	// shader
-	r = (r && (glAttachShader = (PFNGLATTACHSHADERPROC)LoadFunc("glAttachShader")) != NULL);
-	r = (r && (glLinkProgram = (PFNGLLINKPROGRAMPROC)LoadFunc("glLinkProgram")) != NULL);
-	r = (r && (glGetProgramiv = (PFNGLGETPROGRAMIVPROC)LoadFunc("glGetProgramiv")) != NULL);
-	r = (r && (glGetShaderiv = (PFNGLGETSHADERIVPROC)LoadFunc("glGetShaderiv")) != NULL);
-	r = (r && (glGetProgramInfoLog = (PFNGLGETPROGRAMINFOLOGPROC)LoadFunc("glGetProgramInfoLog")) != NULL);
-	r = (r && (glGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC)LoadFunc("glGetShaderInfoLog")) != NULL);
-	r = (r && (glCreateProgram = (PFNGLCREATEPROGRAMPROC)LoadFunc("glCreateProgram")) != NULL);
-	r = (r && (glCreateShader = (PFNGLCREATESHADERPROC)LoadFunc("glCreateShader")) != NULL);
-	r = (r && (glCompileShader = (PFNGLCOMPILESHADERPROC)LoadFunc("glCompileShader")) != NULL);
-	r = (r && (glShaderSource = (PFNGLSHADERSOURCEPROC)LoadFunc("glShaderSource")) != NULL);
-	r = (r && (glDeleteShader = (PFNGLDELETESHADERPROC)LoadFunc("glDeleteShader")) != NULL);
-	r = (r && (glDeleteProgram = (PFNGLDELETEPROGRAMPROC)LoadFunc("glDeleteProgram")) != NULL);
-	r = (r && (glUseProgram = (PFNGLUSEPROGRAMPROC)LoadFunc("glUseProgram")) != NULL);
+	LOAD_FUNC(r, glAttachShader, PFNGLATTACHSHADERPROC);
+	LOAD_FUNC(r, glLinkProgram, PFNGLLINKPROGRAMPROC);
+	LOAD_FUNC(r, glGetProgramiv, PFNGLGETPROGRAMIVPROC);
+	LOAD_FUNC(r, glGetShaderiv, PFNGLGETSHADERIVPROC);
+	LOAD_FUNC(r, glGetProgramInfoLog, PFNGLGETPROGRAMINFOLOGPROC);
+	LOAD_FUNC(r, glGetShaderInfoLog, PFNGLGETSHADERINFOLOGPROC);
+	LOAD_FUNC(r, glCreateProgram, PFNGLCREATEPROGRAMPROC);
+	LOAD_FUNC(r, glCreateShader, PFNGLCREATESHADERPROC);
+	LOAD_FUNC(r, glCompileShader, PFNGLCOMPILESHADERPROC);
+	LOAD_FUNC(r, glShaderSource, PFNGLSHADERSOURCEPROC);
+	LOAD_FUNC(r, glDeleteShader, PFNGLDELETESHADERPROC);
+	LOAD_FUNC(r, glDeleteProgram, PFNGLDELETEPROGRAMPROC);
+	LOAD_FUNC(r, glUseProgram, PFNGLUSEPROGRAMPROC);
 
 	// uniform
-	r = (r && (glUniform1i = (PFNGLUNIFORM1IPROC)LoadFunc("glUniform1i")) != NULL);
-	r = (r && (glUniform1ui = (PFNGLUNIFORM1UIPROC)LoadFunc("glUniform1ui")) != NULL);
-	r = (r && (glUniform1f = (PFNGLUNIFORM1FPROC)LoadFunc("glUniform1f")) != NULL);
-	r = (r && (glUniform2f = (PFNGLUNIFORM2FPROC)LoadFunc("glUniform2f")) != NULL);
-	r = (r && (glUniform3f = (PFNGLUNIFORM3FPROC)LoadFunc("glUniform3f")) != NULL);
-	r = (r && (glUniform4f = (PFNGLUNIFORM4FPROC)LoadFunc("glUniform4f")) != NULL);
-	r = (r && (glUniformMatrix4fv = (PFNGLUNIFORMMATRIX4FVPROC)LoadFunc("glUniformMatrix4fv")) != NULL);
-	r = (r && (glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)LoadFunc("glGetUniformLocation")) != NULL);
+	LOAD_FUNC(r, glGetUniformfv, PFNGLGETUNIFORMFVPROC);
+	LOAD_FUNC(r, glUniform1i, PFNGLUNIFORM1IPROC);
+	LOAD_FUNC(r, glUniform1ui, PFNGLUNIFORM1UIPROC);
+	LOAD_FUNC(r, glUniform1f, PFNGLUNIFORM1FPROC);
+	LOAD_FUNC(r, glUniform1fv, PFNGLUNIFORM1FVPROC);
+	LOAD_FUNC(r, glUniform2f, PFNGLUNIFORM2FPROC);
+	LOAD_FUNC(r, glUniform3f, PFNGLUNIFORM3FPROC);
+	LOAD_FUNC(r, glUniform4f, PFNGLUNIFORM4FPROC);
+	LOAD_FUNC(r, glUniformMatrix4fv, PFNGLUNIFORMMATRIX4FVPROC);
+	LOAD_FUNC(r, glGetUniformLocation, PFNGLGETUNIFORMLOCATIONPROC);
 
 	// attrib
-	r = (r && (glBindAttribLocation = (PFNGLBINDATTRIBLOCATIONPROC)LoadFunc("glBindAttribLocation")) != NULL);
-	r = (r && (glGetAttribLocation = (PFNGLGETATTRIBLOCATIONPROC)LoadFunc("glGetAttribLocation")) != NULL);
+	LOAD_FUNC(r, glBindAttribLocation, PFNGLBINDATTRIBLOCATIONPROC);
+	LOAD_FUNC(r, glGetAttribLocation, PFNGLGETATTRIBLOCATIONPROC);
+
+	// fb output
+	LOAD_FUNC(r, glBindFragDataLocation, PFNGLBINDFRAGDATALOCATIONPROC);
+	LOAD_FUNC(r, glDrawBuffers, PFNGLDRAWBUFFERSPROC);
 
 	/// wgl
     r = (r && (wglChoosePixelFormat = (WGLCHOOSEPIXELFORMAT_PROC)LoadFunc("wglChoosePixelFormatARB")) != NULL);
@@ -193,9 +208,9 @@ bool Extension::Init()
 
 void *Extension::LoadFunc(const char *functionName)
 {
-    void *r;
+    void *r = NULL;
     #ifdef SYSTEM_WINDOWS
-        r = (void*)wglGetProcAddress(functionName);
+        r = (void*)wglGetProcAddress((LPCSTR)functionName);
     #elif defined(SYSTEM_MACOS)
         r = (void*)NSGLGetProcAddress(functionName);
     #else
@@ -206,10 +221,11 @@ void *Extension::LoadFunc(const char *functionName)
     return r;
 }
 
+#include "State.h"
 
 bool    Extension::IsSupported(const char *extName)
 {
-    const char      *exts = (const char*)(GetInfo(GL_EXTENSIONS));
+    const char      *exts = (const char*)(State::GetString(Enum::Extensions));
     bool            r = false;
     unsigned int    j = 0;
 
@@ -232,29 +248,4 @@ bool    Extension::IsSupported(const char *extName)
         for (; exts[i] != ' ' && exts[i] != '\0' && !r; ++i);
     }
     return r;
-}
-
-const GLubyte *Extension::GetInfo(unsigned int type)
-{
-    const GLubyte   *s = glGetString(type);
-
-    if (s == NULL)
-        throw Utils::Exception("GLContext", "glGetString return NULL");
-    return s;
-}
-
-std::string   Extension::GetError()
-{
-    GLenum e = glGetError();
-    switch (e)
-    {
-        case GL_NO_ERROR:                       return "No error has been recorded";
-        case GL_INVALID_ENUM:                   return "An unacceptable value is specified for an enumerated argument";
-        case GL_INVALID_VALUE:                  return "A numeric argument is out of range";
-        case GL_INVALID_OPERATION:              return "The specified operation is not allowed in the current state";
-        case GL_INVALID_FRAMEBUFFER_OPERATION:  return "The framebuffer object is not complete";
-        case GL_OUT_OF_MEMORY:                  return "There is not enough memory left to execute the command";
-        default:                                return "error";
-    }
-    return "";
 }

@@ -246,6 +246,8 @@ void    Plugin::ReadEffect(domEffectRef lib)
                     if(blinn)
                         ReadBlinn(*config, newParams, blinn);
                 }
+                else
+                    LOG << "There are no technique attached to the effect" << std::endl;
             }
             else
                 LOG << typeName << " is not supported" << std::endl;
@@ -256,6 +258,7 @@ void    Plugin::ReadEffect(domEffectRef lib)
 void Plugin::ReadConstant(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant)
 {
     // TODO
+    LOG << "Technique Constant not implemented" << std::endl;
 }
 
 void Plugin::ReadLambert(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert)
@@ -306,9 +309,15 @@ void Plugin::ReadTextureFromTechniqueEffect(MaterialConfig &config, std::map<std
                 nbTextures++;
             config.Textures.InitSize(nbTextures);
             if (t != NULL)
+            {
+                LOG << "attach texture " << sampler2D_SID << " to material config" << std::endl;
                 config.Textures[0] = *t;
+            }
             if (n != NULL)
+            {
+                LOG << "attach normal texture to material config" << std::endl;
                 config.Textures[1] = *n;
+            }
         }
         else
         {
@@ -327,9 +336,15 @@ void Plugin::ReadTextureFromTechniqueEffect(MaterialConfig &config, std::map<std
                     nbTextures++;
                 config.Textures.InitSize(nbTextures);
                 if (t != NULL)
-                config.Textures[0] = *t;
+                {
+                    LOG << "attach texture " << sampler2D_SID << " to material config" << std::endl;
+                    config.Textures[0] = *t;
+                }
                 if (n != NULL)
+                {
+                    LOG << "attach normal texture to material config" << std::endl;
                     config.Textures[1] = *n;
+                }
             }
         }
     }
@@ -656,10 +671,9 @@ Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Drawable *&drawable)
         }
     }
 
-
     // set index, they all have the same index since we process deindexer conditioner
     domListOfUInts P = domTriangles->getP()->getValue();
-    for (unsigned int ivertex=0; ivertex< domTriangles->getCount() * 3; ivertex++)
+    for (unsigned int ivertex = 0; ivertex < domTriangles->getCount() * 3; ++ivertex)
     {
         domUint index;
         index = P[ivertex * max_offset + position_offset];
@@ -691,7 +705,6 @@ Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Drawable *&drawable)
 
         box += Vector3f(vertices[ivertex].coord[0], vertices[ivertex].coord[1], vertices[ivertex].coord[2]);
     }
-
     drawable = new Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, indices, 3, GL::Enum::Triangles, config);
     return box;
 }

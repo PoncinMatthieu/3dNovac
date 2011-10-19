@@ -71,9 +71,16 @@ namespace Nc
             inline double RadToDeg(double rad)           {return (rad*180.0)/M_PI;}
 
             /// Convert an std::string to the type T
-            /** Fill the data passed in parameter, and return true if the translation succeed */
+            /** Fill the data passed in parameter, and return true if the translation succeed. */
             template <typename T>
             bool StringTo(const std::string &s, T &dest);
+            /// Convert an std::string to the type T
+            /**
+                Fill the data passed in parameter, and return true if the translation succeed.
+                The \p modifyer function allow to convert for exemple an hexa representation with std::hex.
+            */
+            template <typename T>
+            bool StringTo(const std::string &s, T &dest, std::ios_base &(*modifyer)(std::ios_base &str));
 
             /// Convert a data T to an std::string
             template <typename T>

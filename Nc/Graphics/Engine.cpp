@@ -45,7 +45,7 @@ using namespace Nc::Graphic;
 double      Graphic::Engine::_elapsedTime = 0;
 
 Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager)
-    : Engine::IEngine(ClassName(), "Graphic Engine", manager, Nc::Engine::HasAContext /*| Nc::Engine::DontWaitOthersContext*/ | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
+	: Engine::IEngine(ClassName(), "Graphic Engine", manager, Nc::Engine::HasAContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
       _sceneGraphManager(sceneGraphManager), _createWinFunction(func), _context(NULL)
 {
 }
@@ -95,13 +95,13 @@ void Graphic::Engine::LoadContent()
 
 void Graphic::Engine::Execute(float runningTime)
 {
-    _elapsedTime = runningTime;
+	_elapsedTime = runningTime;
 
 	WindowInput *input = _win->GetInput();
 	input->CheckEvents();
 
-    // display the scene graph
-    _renderState.Enable();
-    _sceneGraphManager->Render(_context);
-    _renderState.Disable();
+	// display the scene graph
+	_renderState.Enable();
+	_sceneGraphManager->Render(_context);
+	_renderState.Disable();
 }

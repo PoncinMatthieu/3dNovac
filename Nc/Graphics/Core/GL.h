@@ -27,17 +27,12 @@
 #ifndef NC_GRAPHIC_CORE_GL_H_
 #define NC_GRAPHIC_CORE_GL_H_
 
-	//#include <GL/glu.h>
-    //#include <GL/glext.h>
-
     #define VERSION_MIN_OPENGL  3.0
-
-// define if we are on windows the extentions
-
 
     #include "../Define.h"
 	#include "GL/Extension.h"
 
+// define if we are on windows the ogl functions
 #ifdef SYSTEM_WINDOWS
 	// buffer
 	#define glGenVertexArrays					EXT.glGenVertexArrays
@@ -90,10 +85,11 @@
 
 	// uniform
 	#define glUniform1i				EXT.glUniform1i
-	#define glUniform1ui			EXT.glUniform1ui;
-	#define glUniform1f				EXT.glUniform1f;
-	#define glUniform2f				EXT.glUniform2f;
-	#define glUniform3f				EXT.glUniform3f;
+	#define glUniform1ui			EXT.glUniform1ui
+	#define glUniform1f				EXT.glUniform1f
+	#define glUniform1fv			EXT.glUniform1fv
+	#define glUniform2f				EXT.glUniform2f
+	#define glUniform3f				EXT.glUniform3f
 	#define glUniform4f				EXT.glUniform4f
 	#define glUniformMatrix4fv		EXT.glUniformMatrix4fv
 	#define glGetUniformLocation	EXT.glGetUniformLocation
@@ -101,6 +97,10 @@
 	// attrib
 	#define glBindAttribLocation	EXT.glBindAttribLocation
 	#define glGetAttribLocation		EXT.glGetAttribLocation
+
+	// fb output
+	#define glBindFragDataLocation	EXT.glBindFragDataLocation
+	#define glDrawBuffers			EXT.glDrawBuffers
 #endif
 
 	#include "GL/Enum.h"

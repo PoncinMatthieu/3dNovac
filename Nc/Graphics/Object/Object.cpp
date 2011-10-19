@@ -52,15 +52,15 @@ Object::Object(const TMatrix &m)
 }
 
 Object::Object(const Box3f &box)
-    : NodeType(ClassName()),
-      _box(box), _material(NULL),
+    : NodeType(ClassName(), box),
+      _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
 }
 
 Object::Object(const Box3f &box, const TMatrix &m)
-    : NodeType(ClassName(), m),
-      _box(box), _material(NULL),
+    : NodeType(ClassName(), box, m),
+      _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
 }
@@ -68,7 +68,7 @@ Object::Object(const Box3f &box, const TMatrix &m)
 Object::Object(const Object &o)
     : NodeType(o),
       _drawables(o._drawables.size()),
-      _box(o._box), _material(o._material),
+      _material(o._material),
       _lastConfiguredMaterial(NULL)
 {
     for (unsigned int i = 0; i < _drawables.size(); ++i)
@@ -78,7 +78,6 @@ Object::Object(const Object &o)
 Object &Object::operator = (const Object &o)
 {
     NodeType::operator = (o);
-    _box = o._box;
     _material = o._material;
     _lastConfiguredMaterial = NULL;
 
@@ -154,8 +153,6 @@ void    Object::ConfigureDrawables(IMaterial *material)
     }
 }
 
-#include "BasicMeshCreator.h"
-
 void    Object::Render(SceneGraph *scene)
 {
     if (_enabled)
@@ -175,9 +172,11 @@ void    Object::Render(SceneGraph *scene)
 
 void    Object::Draw(SceneGraph *scene)
 {
-    // get back the current material
+    // get back the current material set in the scene
     IMaterial *m = scene->Material();
-    if (m == NULL)
+
+	// if there is no material in the scene, take the material of the object
+	if (m == NULL)
         m = _material;
 
     if (m != NULL)
@@ -186,36 +185,11 @@ void    Object::Draw(SceneGraph *scene)
         if (m != _lastConfiguredMaterial)
             ConfigureDrawables(m);
 
-        //LOG << this << " " << *this << " Rendering with: " << *m << std::endl;
-
         // rendering
+        //LOG_DEBUG << this << " " << *this << " Rendering with: " << *m << std::endl;
         for (unsigned int i = 0; i < _drawables.size(); ++i)
             m->Render(scene, *_drawables[i]);
     }
-}
-
-void    Object::GetReelBox(Box3f &box) const
-{
-    box = _box;
-    box.Transform(Matrix);
-}
-
-void    Object::HeightScale(float height)
-{
-    Box3f b = _box; // create a temporary box to use the current matrix
-    b.Transform(Matrix);
-    // scale the matrix to obtain the good value
-    Matrix.AddScale(height / b.Length(2));
-}
-
-void    Object::CenterBase(const Vector3f &centerBase)
-{
-    Box3f b = _box;
-    b.Transform(Matrix);
-
-    Vector3f center = b.Center();
-    center.Data[2] = b.Min(2);
-    Matrix.AddTranslation(centerBase - center);
 }
 
 void    Object::TransformModelMatrixToRender(SceneGraph *scene)

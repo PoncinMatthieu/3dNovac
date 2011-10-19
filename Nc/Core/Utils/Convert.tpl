@@ -32,6 +32,13 @@ bool StringTo(const std::string &s, T &dest)
 }
 
 template <typename T>
+bool StringTo(const std::string &s, T &dest, std::ios_base &(*modifyer)(std::ios_base &str))
+{
+    std::istringstream iss(s);
+    return (iss >> modifyer >> dest != 0);
+}
+
+template <typename T>
 std::string ToString(const T &data)
 {
     std::ostringstream oss;

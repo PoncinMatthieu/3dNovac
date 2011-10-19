@@ -15,8 +15,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # add the _DEBUG define
-if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-  add_definitions(-D_DEBUG)
+if(UNIX)
+  if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
+    add_definitions(-D_DEBUG)
+  endif()
 endif()
 
 # we want to compile our libs dynamically

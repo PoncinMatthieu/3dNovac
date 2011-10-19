@@ -67,8 +67,6 @@ void Map::ReadFile(const Utils::FileName &file, ArrayObject &objects)
       // recupere la position du player
       Utils::Convert::SplitStringTo(line, "=", section);
 
-	LOG << Utils::String::npos << std::endl;
-	   
 	  if (section == "PLAYER")
 	{
 	  Utils::Convert::SplitStringTo(line, " ", _posPlayer[0]);

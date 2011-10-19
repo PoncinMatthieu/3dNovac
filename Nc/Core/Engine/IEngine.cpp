@@ -63,7 +63,16 @@ void IEngine::Run()
 void IEngine::MainLoop()
 {
     while (_manager->IsLaunched() && !_stop)
-        Process();
+	{
+		try
+		{
+			Process();
+		}
+		catch (const std::exception &e)
+		{
+			LOG_ERROR << "Error on " << *this << ": " << e.what() << std::endl;
+		}
+	}
 }
 
 void IEngine::Loading()
@@ -114,6 +123,9 @@ void IEngine::Loading()
         if (_pattern.Enabled(WaitingLoadContentsOfOthersEngines))
             _manager->WaitEnginesLoading();                     // waiting for others loading content engines
     }
+
+    if (_pattern.Enabled(HasAContext))
+        ActiveContext();
 }
 
 void IEngine::Releasing()
@@ -126,22 +138,18 @@ void IEngine::Releasing()
 void IEngine::Process()
 {
     _sleepMutex.Lock();
-    if (_pattern.Enabled(Synchronize))
+    if (_pattern.Enabled(Synchronized))
         _manager->MutexGlobal().Lock();
-    if (_pattern.Enabled(HasAContext))
-        ActiveContext();
 
 #ifdef _DEBUG_THREAD_ENGINE
-    LOG <<"Execute `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
+    LOG_DEBUG <<"Execute `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
 #endif
     ExecuteEvents();
     Execute(_elapsedTime);
 #ifdef _DEBUG_THREAD_ENGINE
-    LOG <<"Execute END `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
+    LOG_DEBUG <<"Execute END `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
 #endif
-    if (_pattern.Enabled(HasAContext))
-        DisableContext();
-    if (_pattern.Enabled(Synchronize))
+    if (_pattern.Enabled(Synchronized))
         _manager->MutexGlobal().Unlock();
     _sleepMutex.Unlock();
     LimitFrameRate();

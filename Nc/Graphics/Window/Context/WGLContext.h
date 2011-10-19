@@ -48,15 +48,27 @@ namespace Nc
                 void            Create(GLContext *sharedContext = NULL);
                 GLContext		*CreateNewSharedContext();
 
-                virtual inline void            Active()        {wglMakeCurrent(_drawable, _context);}
-                virtual inline void            Disable()       {wglMakeCurrent(0, 0);}
+                virtual void 	Active()
+				{
+					if (wglMakeCurrent(_drawable, _context) == false)
+						throw Utils::Exception("WGLContext::Active", "Make current failed");
+				}
 
-				virtual inline void            SwapBuffers()   {::SwapBuffers(_drawable);}//(_pbuffer == 0) ? _drawable : _pbuffer);}
+                virtual void	Disable()
+				{
+					if (wglMakeCurrent(0, 0) == false)
+						LOG_ERROR << "WGLContext::Disable: Make current failed" << std::endl;
+				}
+
+				virtual void	SwapBuffers()
+				{
+					if (::SwapBuffers(_drawable) == false)
+						LOG_ERROR << "SwapBuffers failed" << std::endl;
+				}
 
             private:
                 HGLRC           _context;
                 HDC             _drawable;
-//                HDC             _pbuffer;  // for any shared context, we draw in a off screen renderer
 
                 int             _antialiasingLevel;
                 int             _depth;

@@ -92,17 +92,22 @@ void GameEngine::LoadContent()
     _sceneGUI->AddChild(new Camera2d());
     _sceneGUI->AddChild(new GUI::FPSWidget());
     _graphic->GetSceneManager()->AddScene(_sceneGUI);
+
+    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)
 {
-  _scene3d->Update(runningTime);
+    _scene3d->Update(runningTime);
 
-  // colle la camera3 sur la premiere
-  _camera3->Eye(_camera->Eye());
-  _camera3->Center(_camera->Center());
-  _camera3->Up(_camera->Up());
-  _camera3->UpdateViewFrustum();
+    // colle la camera3 sur la premiere
+    _camera3->Eye(_camera->Eye());
+    _camera3->Center(_camera->Center());
+    _camera3->Up(_camera->Up());
+
+    ActiveContext();
+    _camera3->UpdateViewFrustum();
+    DisableContext();
 }
 
 void GameEngine::ManageWindowEvent(System::Event &event)
