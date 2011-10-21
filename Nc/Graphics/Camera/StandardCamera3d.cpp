@@ -1,4 +1,3 @@
-
 /*-----------------------------------------------------------------------------
 
 	3dNovac Graphics
@@ -103,11 +102,19 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, floa
       _angles(-90, -15)
 {
     // create cursors
-    _cursorOpen = win->NewCursor();
-    _cursorOpen->LoadFromXpm(XpmHandOpen);
-    _cursorClose = win->NewCursor();
-    _cursorClose->LoadFromXpm(XpmHandClose);
-    _cursorOpen->Enable();
+	if (p != StandardCamera3d::Freefly)
+	{
+		_cursorOpen = win->NewCursor();
+		_cursorOpen->LoadFromXpm(XpmHandOpen);
+		_cursorClose = win->NewCursor();
+		_cursorClose->LoadFromXpm(XpmHandClose);
+		_cursorOpen->Enable();
+	}
+	else 
+	{
+		_cursorOpen = NULL;
+		_cursorClose = NULL;
+	}
 
     _moveSpeed = 1;
     _sensibilityRotate = 1;
@@ -126,11 +133,19 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
       _angles(-90, -15)
 {
 	// create cursors
-    _cursorOpen = win->NewCursor();
-    _cursorOpen->LoadFromXpm(XpmHandOpen);
-    _cursorClose = win->NewCursor();
-    _cursorClose->LoadFromXpm(XpmHandClose);
-    _cursorOpen->Enable();
+	if (p != StandardCamera3d::Freefly)
+	{
+		_cursorOpen = win->NewCursor();
+		_cursorOpen->LoadFromXpm(XpmHandOpen);
+		_cursorClose = win->NewCursor();
+		_cursorClose->LoadFromXpm(XpmHandClose);
+		_cursorOpen->Enable();
+	}
+	else 
+	{
+		_cursorOpen = NULL;
+		_cursorClose = NULL;
+	}
 
     _moveSpeed = 1;
     _sensibilityRotate = 1;
@@ -147,8 +162,17 @@ StandardCamera3d::StandardCamera3d(const StandardCamera3d &cam)
       _mouveButton(cam._mouveButton), _pattern(cam._pattern),
       _inhibitMovement(false), _angles(cam._angles)
 {
-    _cursorOpen = new Graphic::Cursor(*(Cursor*)cam._cursorOpen);
-    _cursorClose = new Graphic::Cursor(*(Cursor*)cam._cursorClose);
+	if (cam._pattern != StandardCamera3d::Freefly)
+	{
+		_cursorOpen = new Graphic::Cursor(*(Cursor*)cam._cursorOpen);
+		_cursorClose = new Graphic::Cursor(*(Cursor*)cam._cursorClose);
+	}
+	else
+	{
+		_cursorOpen = NULL;
+		_cursorClose = NULL;
+	}
+
     _moveSpeed = cam._moveSpeed;
     _sensibilityRotate = cam._sensibilityRotate;
     _sensibilityTranslate = cam._sensibilityTranslate;
@@ -166,8 +190,17 @@ StandardCamera3d &StandardCamera3d::operator = (const StandardCamera3d &cam)
     if (_cursorClose != NULL)
         delete _cursorClose;
 
-    _cursorOpen = new Graphic::Cursor(*(Cursor*)cam._cursorOpen);
-    _cursorClose = new Graphic::Cursor(*(Cursor*)cam._cursorClose);
+	if (cam._pattern != StandardCamera3d::Freefly)
+	{
+		_cursorOpen = new Graphic::Cursor(*(Cursor*)cam._cursorOpen);
+		_cursorClose = new Graphic::Cursor(*(Cursor*)cam._cursorClose);
+	}
+	else
+	{
+		_cursorOpen = NULL;
+		_cursorClose = NULL;
+	}
+
     _inhibitMovement = cam._inhibitMovement;
     _mouveButton = cam._mouveButton;
     _pattern = cam._pattern;
@@ -183,18 +216,17 @@ StandardCamera3d &StandardCamera3d::operator = (const StandardCamera3d &cam)
     return *this;
 }
 
-
 StandardCamera3d::~StandardCamera3d()
 {
-    delete _cursorOpen;
-    delete _cursorClose;
+    if (_cursorOpen != NULL) delete _cursorOpen;
+    if (_cursorClose != NULL) delete _cursorClose;
 }
 
 void StandardCamera3d::MouseMotionEvent(const System::Event &event)
 {
     if (_stateButtonRight && !_inhibitMovement)
     {
-        if (_pattern == Turntable)
+        if (_pattern == Turntable || _pattern == Freefly)
         {
             _angles.Data[0] += (_lastPosMouse.Data[0] - event.MouseMove.X) * _sensibilityRotate;
             _angles.Data[1] -= (_lastPosMouse.Data[1] - event.MouseMove.Y) * _sensibilityRotate;
@@ -213,6 +245,11 @@ void StandardCamera3d::MouseMotionEvent(const System::Event &event)
             _lastPosMouse.Data[0] = event.MouseMove.X;
             _lastPosMouse.Data[1] = event.MouseMove.Y;
         }
+
+		if (_pattern == Freefly)
+		{
+			
+		}
     }
 }
 
@@ -225,12 +262,12 @@ void StandardCamera3d::MouseButtonEvent(const System::Event &event)
         {
             if (!_stateButtonRight && event.Type == System::Event::MouseButtonPressed)
             {
-                _cursorClose->Enable();
+                if (_cursorClose != NULL) _cursorClose->Enable();
                 _stateButtonRight = true;
             }
             else if (_stateButtonRight && event.Type == System::Event::MouseButtonReleased)
             {
-                _cursorOpen->Enable();
+                 if (_cursorOpen != NULL) _cursorOpen->Enable();
                 _stateButtonRight = false;
             }
 
@@ -262,21 +299,35 @@ void StandardCamera3d::Update(float runningTime)
 // et donc parcourir une plus grande distance si on s'eloigne du centre
     if (!_inhibitMovement)
     {
-        if (WindowInput::KeyState(System::Key::W))
+		if (WindowInput::KeyState(System::Key::W) || WindowInput::KeyState(System::Key::Z))
         {
-            _center += ((_center - _eye) * _moveSpeed * runningTime);
+			if (_pattern == Freefly)
+				_center += ((_center - _eye) * 20 * _moveSpeed * runningTime);
+			else
+				_center += ((_center - _eye) * _moveSpeed * runningTime);
             MajEye();
         }
         if (WindowInput::KeyState(System::Key::S))
         {
+			if (_pattern == Freefly)
+				_center -= ((_center - _eye) * 20 * _moveSpeed * runningTime);
+			else
             _center -= ((_center - _eye) * _moveSpeed * runningTime);
             MajEye();
         }
-        if (WindowInput::KeyState(System::Key::A))
+        if (WindowInput::KeyState(System::Key::A) || WindowInput::KeyState(System::Key::Q))
         {
             if (_pattern == Trackball)
             {
             }
+			else if (_pattern == Freefly) // strafe right
+			{
+				Vector3f right;
+				Vector3f(0,0,1).Cross((_center - _eye), right);
+				right.Normalize();
+
+				_center += ((right * 20) * _moveSpeed * runningTime);
+			}
             else
                 _angles.Data[0] +=  _sensibilityRotate * 100 * runningTime;
             MajEye();
@@ -286,6 +337,14 @@ void StandardCamera3d::Update(float runningTime)
             if (_pattern == Trackball)
             {
             }
+			else if (_pattern == Freefly) // strafe left
+			{
+				Vector3f left;
+				Vector3f(0,0,1).Cross((_center - _eye), left);
+				left.Normalize();
+
+				_center -= ((left * 20) * _moveSpeed * runningTime);
+			}
             else
                 _angles.Data[0] -=  _sensibilityRotate * 100 * runningTime;
             MajEye();
@@ -345,7 +404,32 @@ void StandardCamera3d::MajEye()
     }
     else
     {
-        LOG << "The Freefly pattern is not yet implemented." << std::endl;
+        // reglage de l'angle
+        if (_angles.Data[0] > 180)
+            _angles.Data[0] -= 360;
+        if (_angles.Data[0] < -180)
+            _angles.Data[0] += 360;
+
+        if (_angles.Data[1] > 180)
+            _angles.Data[1] -= 360;
+        if (_angles.Data[1] < -180)
+            _angles.Data[1] += 360;
+
+        _eye.Init(); // init l'oeil
+
+        TMatrix matriceEye;
+        matriceEye.TranslationX(_distance);
+		matriceEye.AddTranslation(_center);
+
+		float r_temp = cos((_angles.Data[1] * M_PI)/180);
+		float X = r_temp * cos((_angles.Data[0] * M_PI) / 180);
+		float Y = r_temp * sin((_angles.Data[0] * M_PI) / 180);
+
+		Vector3f forward(X, Y, sin(_angles.Data[1]*M_PI/180));
+
+        _eye = (_center + forward) * _moveSpeed;
+
+        _up.Data[2] = (_angles.Data[1] > -90 && _angles.Data[1] < 90) ? 1 : -1;  // inverse le vecteur up, dans le cas ou l'on retourne la camera
     }
     UpdateViewFrustum();
     Matrix.Translation(_center); // positionne la matrice de la camera sur le centre
@@ -419,3 +503,24 @@ void StandardCamera3d::UpdateViewFrustum()
     }
 }
 
+void     StandardCamera3d::SetPattern(Pattern p)
+{
+	_pattern = p; 
+	
+	if (_pattern == Freefly) 
+	{
+		if (_cursorOpen != NULL)
+		{
+			_cursorOpen->Disable();
+			delete _cursorOpen;
+			_cursorOpen = NULL;
+		}
+
+		if (_cursorClose != NULL)
+		{
+			_cursorClose->Disable();
+			delete _cursorClose;
+			_cursorClose = NULL;
+		}
+	}
+}

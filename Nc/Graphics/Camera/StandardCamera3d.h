@@ -70,7 +70,7 @@ namespace Nc
                 /** \return the pattern used by camera */
                 inline Pattern  GetPattern() const                          {return _pattern;}
                 /** Set the pattern used by the camera */
-                inline void     SetPattern(Pattern p)                       {_pattern = p;}
+                inline void     SetPattern(Pattern p);
 
                 /** Set the button with active the movement of the camera */
                 void            SetMoveButton(System::Mouse::Button button) {_mouveButton = button;}
