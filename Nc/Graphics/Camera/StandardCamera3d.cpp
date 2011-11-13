@@ -110,7 +110,7 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, floa
 		_cursorClose->LoadFromXpm(XpmHandClose);
 		_cursorOpen->Enable();
 	}
-	else 
+	else
 	{
 		_cursorOpen = NULL;
 		_cursorClose = NULL;
@@ -118,10 +118,10 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, floa
 
     _moveSpeed = 1;
     _sensibilityRotate = 1;
-    _sensibilityTranslate = 0.1f;
     _sensibilityZoom = 1;
     _stateButtonRight = false;
     _stateButtonLeft = false;
+    _mouseMotionAlwaysActif = false;
     _distance = 7;
     MajEye();
 }
@@ -141,7 +141,7 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
 		_cursorClose->LoadFromXpm(XpmHandClose);
 		_cursorOpen->Enable();
 	}
-	else 
+	else
 	{
 		_cursorOpen = NULL;
 		_cursorClose = NULL;
@@ -149,10 +149,10 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
 
     _moveSpeed = 1;
     _sensibilityRotate = 1;
-    _sensibilityTranslate = 0.1f;
     _sensibilityZoom = 1;
     _stateButtonRight = false;
     _stateButtonLeft = false;
+    _mouseMotionAlwaysActif = false;
     _distance = 7;
     MajEye();
 }
@@ -175,10 +175,10 @@ StandardCamera3d::StandardCamera3d(const StandardCamera3d &cam)
 
     _moveSpeed = cam._moveSpeed;
     _sensibilityRotate = cam._sensibilityRotate;
-    _sensibilityTranslate = cam._sensibilityTranslate;
     _sensibilityZoom = cam._sensibilityZoom;
     _stateButtonRight = cam._stateButtonRight;
     _stateButtonLeft = cam._stateButtonLeft;
+    _mouseMotionAlwaysActif = cam._mouseMotionAlwaysActif;
     _distance = cam._distance;
     MajEye();
 }
@@ -207,10 +207,10 @@ StandardCamera3d &StandardCamera3d::operator = (const StandardCamera3d &cam)
     _angles = cam._angles;
     _moveSpeed = cam._moveSpeed;
     _sensibilityRotate = cam._sensibilityRotate;
-    _sensibilityTranslate = cam._sensibilityTranslate;
     _sensibilityZoom = cam._sensibilityZoom;
     _stateButtonRight = cam._stateButtonRight;
     _stateButtonLeft = cam._stateButtonLeft;
+    _mouseMotionAlwaysActif = cam._mouseMotionAlwaysActif;
     _distance = cam._distance;
     MajEye();
     return *this;
@@ -224,7 +224,7 @@ StandardCamera3d::~StandardCamera3d()
 
 void StandardCamera3d::MouseMotionEvent(const System::Event &event)
 {
-    if (_stateButtonRight && !_inhibitMovement)
+    if (_mouseMotionAlwaysActif || (_stateButtonRight && !_inhibitMovement))
     {
         if (_pattern == Turntable || _pattern == Freefly)
         {
@@ -248,7 +248,7 @@ void StandardCamera3d::MouseMotionEvent(const System::Event &event)
 
 		if (_pattern == Freefly)
 		{
-			
+
 		}
     }
 }
@@ -299,21 +299,22 @@ void StandardCamera3d::Update(float runningTime)
 // et donc parcourir une plus grande distance si on s'eloigne du centre
     if (!_inhibitMovement)
     {
+        bool updateEye = false;
 		if (WindowInput::KeyState(System::Key::W) || WindowInput::KeyState(System::Key::Z))
         {
 			if (_pattern == Freefly)
-				_center += ((_center - _eye) * 20 * _moveSpeed * runningTime);
+				_center += ((_center - _eye) * _moveSpeed * runningTime);
 			else
 				_center += ((_center - _eye) * _moveSpeed * runningTime);
-            MajEye();
+            updateEye = true;
         }
         if (WindowInput::KeyState(System::Key::S))
         {
 			if (_pattern == Freefly)
-				_center -= ((_center - _eye) * 20 * _moveSpeed * runningTime);
+				_center -= ((_center - _eye) * _moveSpeed * runningTime);
 			else
             _center -= ((_center - _eye) * _moveSpeed * runningTime);
-            MajEye();
+            updateEye = true;
         }
         if (WindowInput::KeyState(System::Key::A) || WindowInput::KeyState(System::Key::Q))
         {
@@ -326,11 +327,11 @@ void StandardCamera3d::Update(float runningTime)
 				Vector3f(0,0,1).Cross((_center - _eye), right);
 				right.Normalize();
 
-				_center += ((right * 20) * _moveSpeed * runningTime);
+				_center += (right * _moveSpeed * runningTime);
 			}
             else
                 _angles.Data[0] +=  _sensibilityRotate * 100 * runningTime;
-            MajEye();
+            updateEye = true;
         }
         if (WindowInput::KeyState(System::Key::D))
         {
@@ -343,12 +344,16 @@ void StandardCamera3d::Update(float runningTime)
 				Vector3f(0,0,1).Cross((_center - _eye), left);
 				left.Normalize();
 
-				_center -= ((left * 20) * _moveSpeed * runningTime);
+				_center -= (left * _moveSpeed * runningTime);
 			}
             else
                 _angles.Data[0] -=  _sensibilityRotate * 100 * runningTime;
-            MajEye();
+            updateEye = true;
         }
+
+        // update l'eye
+        if (updateEye)
+            MajEye();
     }
 }
 
@@ -427,7 +432,7 @@ void StandardCamera3d::MajEye()
 
 		Vector3f forward(X, Y, sin(_angles.Data[1]*M_PI/180));
 
-        _eye = (_center + forward) * _moveSpeed;
+        _eye = (_center + forward);
 
         _up.Data[2] = (_angles.Data[1] > -90 && _angles.Data[1] < 90) ? 1 : -1;  // inverse le vecteur up, dans le cas ou l'on retourne la camera
     }
@@ -505,9 +510,9 @@ void StandardCamera3d::UpdateViewFrustum()
 
 void     StandardCamera3d::SetPattern(Pattern p)
 {
-	_pattern = p; 
-	
-	if (_pattern == Freefly) 
+	_pattern = p;
+
+	if (_pattern == Freefly)
 	{
 		if (_cursorOpen != NULL)
 		{

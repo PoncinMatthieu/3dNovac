@@ -36,8 +36,7 @@ namespace Nc
     {
         /// Implementation of a standard Camera3d
         /**
-            To manage trackball or turntable camera
-            \todo Implemete the freefly system
+            To manage default freefly, trackball or turntable camera
         */
         class LGRAPHICS StandardCamera3d : public Camera3d
         {
@@ -73,7 +72,24 @@ namespace Nc
                 inline void     SetPattern(Pattern p);
 
                 /** Set the button with active the movement of the camera */
-                void            SetMoveButton(System::Mouse::Button button) {_mouveButton = button;}
+                void            MoveButton(System::Mouse::Button button)    {_mouveButton = button;}
+                /** Set the mouse motion status, if true, the movement of the mous will not be stoped by the move buttons */
+                inline void     MouseMotionAlwaysActif(bool state)          {_mouseMotionAlwaysActif = state;}
+                /** \return the mouse motion status */
+                inline bool     MouseMotionAlwaysActif() const              {return _mouseMotionAlwaysActif;}
+
+                /** Set the movement speed */
+                inline void     MoveSpeed(float v)                          {_moveSpeed = v;}
+                /** \return the movement speed */
+                inline float    MoveSpeed() const                           {return _moveSpeed;}
+                /** Set the sensibility of the rotation movements */
+                inline void     SensibilityRotate(float v)                  {_sensibilityRotate = v;}
+                /** \return the sensibility of the translation movements */
+                inline float    SensibilityRotate() const                   {return _sensibilityRotate;}
+                /** Set the sensibility of the zoom movements */
+                inline void     SensibilityZoom(float v)                    {_sensibilityZoom = v;}
+                /** \return the sensibility of the translation movements */
+                inline float    SensibilityZoom() const                     {return _sensibilityZoom;}
 
                 /** Recompute the eye, center and up vector after a modification */
                 virtual void    MajEye();
@@ -108,11 +124,11 @@ namespace Nc
                 System::Mouse::Button   _mouveButton;   ///< the button witch active the movement of the camera
 
                 Pattern     _pattern;                   ///< the pattern of the camera
-                bool        _inhibitMovement;           ///< if true, the the camera will no receive the movements events
-                bool        _drawFrustum;               ///< if true, the the camera will draw his frustum
+                bool        _inhibitMovement;           ///< if true, the camera will no receive the movements events
+                bool        _mouseMotionAlwaysActif;    ///< if true, the movement of the mous will not be stoped by the move buttons
+                bool        _drawFrustum;               ///< if true, the camera will draw his frustum
                 float       _moveSpeed;                 ///< the speed of the movement of the camera
                 float       _sensibilityRotate;         ///< the rotation sensibility
-                float       _sensibilityTranslate;      ///< the translation sensibility
                 float       _sensibilityZoom;           ///< the zoom sensibility
                 bool        _stateButtonRight;          ///< the button right state
                 bool        _stateButtonLeft;           ///< the button left state

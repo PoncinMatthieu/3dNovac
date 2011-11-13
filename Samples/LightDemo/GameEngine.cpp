@@ -47,7 +47,12 @@ void GameEngine::LoadContent()
   AddInput(_graphic->GetWindow()->GetInput());
 
   // creation de la camera
-  _camera = new StandardCamera3d(_graphic->GetWindow());
+  _camera = new StandardCamera3d(_graphic->GetWindow(), StandardCamera3d::Freefly);
+
+  _camera->MouseMotionAlwaysActif(true);
+  _camera->MoveSpeed(10);
+  _camera->SensibilityRotate(0.2);
+
 
   // chargement de la sky box
   Utils::FileName filenamesSky1[6] =
