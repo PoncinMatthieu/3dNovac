@@ -1,6 +1,6 @@
 #!/bin/sh
 
-usage='./GenerateDoc [clean] [all, Nc-LibName]'
+usage='./GenerateDoc [-f, clean] [all, Nc-LibName]'
 
 if [ $# -eq 0 ]; then
     action='--help'
@@ -8,11 +8,16 @@ else
     action=$1
 fi
 
+# firefox
 # clean
+launchFirefox=0;
 case $action in
+    -f)
+	launchFirefox=1;
+	action=$2;;
     clean)
 	rm -Rf ./html/*;
-	action=$2;
+	action=$2;;
 esac
 
 # execute doxygen
@@ -33,4 +38,6 @@ cd ../
 cp ./Build/Images/* ./html/
 
 # execute firefox
-firefox ./html/index.html &
+if [ $launchFirefox -eq 1 ]; then
+    firefox ./html/index.html &
+fi
