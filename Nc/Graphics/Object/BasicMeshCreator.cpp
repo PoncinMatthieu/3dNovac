@@ -25,17 +25,19 @@
 -----------------------------------------------------------------------------*/
 
 #include "BasicMeshCreator.h"
+#include "String.h"
+#include "../Effect/Billboard.h"
 #include "Nc/Core/Utils/Debug/OverloadAlloc.h"
 
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Object *BasicMeshCreator::Repere(float scale, const Vector3f &center)
+Object *BasicMeshCreator::Axis(float scale, bool withLegend, const Vector3f &center)
 {
-    return Repere(Vector3f(scale, scale, scale), center);
+    return Axis(Vector3f(scale, scale, scale), withLegend, center);
 }
 
-Object *BasicMeshCreator::Repere(const Vector3f &scale, const Vector3f &center)
+Object *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, const Vector3f &center)
 {
 	Array<DefaultVertexType::Colored, 4>  vertices;
     Array<unsigned int, 3*2>            indices;
@@ -53,5 +55,34 @@ Object *BasicMeshCreator::Repere(const Vector3f &scale, const Vector3f &center)
     Object *obj = new Object(Box3f(center, center + Vector3f(scale.Data[0], scale.Data[1], scale.Data[2])));
 	obj->Drawables().push_back(new Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines));
     obj->ChooseDefaultMaterial();
+    obj->UseSceneMaterial(false);
+
+    // add the 3 labels with billbord effect
+    if (withLegend)
+    {
+        AddLabel("X", 0.2, Color(1, 0, 0), "arial", true, obj, Vector3f(center[0] + scale[0] + 0.2, center[1], center[2]));
+        AddLabel("Y", 0.2, Color(0, 0, 1), "arial", true, obj, Vector3f(center[0], center[1] + scale[1] + 0.2, center[2]));
+        AddLabel("Z", 0.2, Color(0, 1, 0), "arial", true, obj, Vector3f(center[0], center[1], center[2] + scale[2] + 0.2));
+    }
 	return obj;
+}
+
+String  *BasicMeshCreator::AddLabel(const std::string &text, float caracterSize, const Color &color, const std::string &fontName, bool centerText, Entity *entity, const Vector3f &position)
+{
+    // create the billboard
+    Billboard *billboard = new Billboard();
+    billboard->Matrix.Translation(position);
+
+    // create the label
+    String *label = new String(text, caracterSize, color, fontName);
+    if (centerText)
+    {
+        Vector2f size = label->Size();
+        label->Matrix.Translation(-size[0] / 2, -size[1] / 2, 0);
+    }
+    billboard->AddChild(label);
+    billboard->RotateChilds();
+    if (entity != NULL)
+        entity->AddChild(billboard);
+    return label;
 }

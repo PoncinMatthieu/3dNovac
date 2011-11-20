@@ -62,6 +62,8 @@ namespace Nc
 
                 /** \return the material used to render the drawables */
                 inline IMaterial    *GetMaterial()                      {return _material;}
+                /** \return the material used to render the drawables */
+                inline const IMaterial *GetMaterial() const             {return _material;}
                 /**
                     Set the material, reconfigure the drawables.
                     The configuration could failed if the given material is not compatible. In this case the current material don't change and return false.
@@ -71,6 +73,11 @@ namespace Nc
                 /** Choose the best default material to display the drawables */
                 void                ChooseDefaultMaterial();
 
+                /** \return the useMaterial statement, if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true */
+                inline bool         UseSceneMaterial() const            {return _useSceneMaterial;}
+                /** Set the useMaterial statement, if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true  */
+                inline void         UseSceneMaterial(bool state)        {_useSceneMaterial = state;}
+
                 /** \return the drawables */
                 DrawableArray       &Drawables()                        {return _drawables;}
                 /** Configure the drawables by using the current Material */
@@ -79,6 +86,12 @@ namespace Nc
                 /** Render the drawables with the material and render also the childs of the object */
                 virtual void        Render(SceneGraph *scene);
 
+                /**
+                    Render the drawables.
+                    To redefine in your own objects.
+                */
+                virtual void        Draw(SceneGraph *scene);
+
             protected:
                 /**
                     Transform the scene model matrix before rendering the object.
@@ -86,18 +99,13 @@ namespace Nc
                 */
                 virtual void        TransformModelMatrixToRender(SceneGraph *scene);
 
-                /**
-                    Render the drawables.
-                    To redefine in your own objects.
-                */
-                virtual void        Draw(SceneGraph *scene);
-
                 /** Configure the drawables by using the given \p material */
                 void                ConfigureDrawables(IMaterial *material);
 
             // fields
             protected:
-                DrawableArray   _drawables;             ///< the array of drawbles
+                DrawableArray   _drawables;                 ///< the array of drawbles
+                bool            _useSceneMaterial;          ///< if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true
 
             private:
                 IMaterial       *_material;                 ///< pointer to the material used to render the drawables

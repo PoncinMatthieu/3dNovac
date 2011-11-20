@@ -46,6 +46,9 @@ void GameEngine::LoadContent()
   _current = 0;
   CreateSplines1();  // splines et nurbs 1
   CreateSplines2();  // splines et nurbs 2
+
+    // no need to active/disable the context at each loop
+    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void	GameEngine::ManageWindowEvent(Nc::System::Event &event)

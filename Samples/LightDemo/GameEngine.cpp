@@ -47,12 +47,7 @@ void GameEngine::LoadContent()
   AddInput(_graphic->GetWindow()->GetInput());
 
   // creation de la camera
-  _camera = new StandardCamera3d(_graphic->GetWindow(), StandardCamera3d::Freefly);
-
-  _camera->MouseMotionAlwaysActif(true);
-  _camera->MoveSpeed(10);
-  _camera->SensibilityRotate(0.2);
-
+  _camera = new StandardCamera3d(_graphic->GetWindow());
 
   // chargement de la sky box
   Utils::FileName filenamesSky1[6] =
@@ -65,7 +60,7 @@ void GameEngine::LoadContent()
       ("Nc:Image:sky/space_up.png")
     };
   _camera->AddChild(new SkyBox(filenamesSky1));
-  _camera->AddChild(BasicMeshCreator::Repere(1)); // creation d'un repere
+  _camera->AddChild(BasicMeshCreator::Axis(1)); // creation d'un repere
 
   // creation de la scene
   _scene = new SceneGraph();
@@ -99,7 +94,8 @@ void GameEngine::LoadContent()
   _sceneGUI->AddChild(new GUI::FPSWidget());
   _graphic->GetSceneManager()->AddScene(_sceneGUI);
 
-//	_pattern.Disable(Nc::Engine::HasAContext);
+  // no need to active/disable the context at each loop
+  _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)

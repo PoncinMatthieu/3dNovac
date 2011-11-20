@@ -82,6 +82,8 @@ namespace Nc
                 template<typename U> Vector operator    /   (const Vector<U,D> &a) const;
                 template<typename U> Vector operator    /   (const U &a) const;
 
+                /** \return true if the given vector is equal with the given precision */
+                bool    Equal(const Vector &v, float precision) const;
 
                 // function
                 /** \return the square root length of the vector */
@@ -101,7 +103,7 @@ namespace Nc
                 {
                     char c = 'x';
                     for (unsigned char i = 0; i < D; ++i, ++c)
-                        os << c << " = " << V.Data[i] << "\t";
+                        os << c << " = " << V.Data[i] << "  ";
                     return os;
                 }
 
@@ -328,6 +330,15 @@ namespace Nc
             Vector<T,D> r(*this);
             r /= a;
             return r;
+        }
+
+        template<typename T, unsigned char D>
+        bool    Vector<T,D>::Equal(const Vector &v, float precision) const
+        {
+            for (unsigned char i = 0; i < D; ++i)
+                if (fabs(Data[i] - v.Data[i]) > precision)
+                    return false;
+            return true;
         }
 
         template<typename T, unsigned char D>

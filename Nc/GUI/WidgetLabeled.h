@@ -70,6 +70,8 @@ namespace Nc
                 inline void                     LabelColor(const Color &color)  {_label->SetColor(color); _stateChanged = true;}
                 /** Return the label */
                 inline const Graphic::String    *GetLabel() const          {return _label;}
+                /** Return the label */
+                inline Graphic::String          *GetLabel()                 {return _label;}
 
             protected:
                 /** Render the widget labeled */

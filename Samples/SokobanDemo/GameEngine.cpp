@@ -75,7 +75,11 @@ void GameEngine::LoadContent()
   _camera->AddChild(_light);
 
   // create a new repere to display at the center of the scene
-  _scene3d->AddChild(BasicMeshCreator::Repere(1, _map->Center()));
+  _scene3d->AddChild(BasicMeshCreator::Axis(1, true, _map->Center()));
+
+
+    // no need to active/disable the context at each loop
+    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)

@@ -96,7 +96,7 @@ void    ProgrammableMaterial::Render(SceneGraph *scene, const TMatrix &modelMatr
         if (it->second != -1 && drawable.Config->Textures.Size() > it->first)
         {
             _program.SetUniform(it->second, it->first);
-            GL::State::Current().ActiveTexture(it->first);
+            scene->GLState()->ActiveTexture(it->first);
             drawable.Config->Textures[it->first].Enable();
         }
     }

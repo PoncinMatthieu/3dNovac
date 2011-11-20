@@ -82,6 +82,7 @@ Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
     mesh->Drawables().resize(1);
     mesh->Drawables()[0] = new Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::Lines);
     mesh->ChooseDefaultMaterial();
+    mesh->UseSceneMaterial(false);
     return mesh;
 }
 

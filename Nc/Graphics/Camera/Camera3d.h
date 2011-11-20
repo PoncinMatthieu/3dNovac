@@ -58,12 +58,15 @@ namespace Nc
                 /** Set the projection parameters */
                 void            SetProjection(float ratioAspect, float nearf, float farf, float fieldOfView);
                 /** Update the projectionMatrix to a perspective projection */
-                inline void     UpdateProjection(SceneGraph *scene)         {scene->ProjectionMatrix().SetProjection(_ratioAspect, _near, _far, _fieldOfView);}
-                /** Fix the camera */
-                virtual void    Fix(SceneGraph *scene)                      {Camera::Fix(scene); scene->ViewMatrix().SetLookAt(_eye, _center, _up);}
+                virtual void    UpdateProjection(SceneGraph *scene);
+                /**
+                    Fix the camera. Set the View Matrix of the scene by using the property _viewMatrix.
+                    To avoid any useless compute, this matrix is compute at the call of the method, "UpdateViewMatrix"
+                */
+                virtual void    Fix(SceneGraph *scene);
 
                 /** Update the ratio aspect of the projection */
-                virtual void    Resized(const System::Event &event)         {_ratioAspect = (float)event.Size.Width/(float)event.Size.Height;  Camera::Resized(event);}
+                virtual void    Resized(const System::Event &event);
 
                 //Vector3f        Get3dCoordinateFromProjection(int x, int y);
 
@@ -84,6 +87,8 @@ namespace Nc
                 /** Set the up vector of the camera */
                 inline void             Up(const Vector3f &up)          {_up = up;}
 
+                /** Compute the view matrix used to render a scene */
+                virtual void            UpdateViewMatrix();
                 /** Compute the projection frustum */
                 virtual void            UpdateProjectionFrustum();
                 /** Compute the view frustum */
@@ -124,6 +129,10 @@ namespace Nc
                 Vector3f        _frustumFBR;
                 Vector3f        _frustumFBL;
                 Planef          _planes[6];         ///< the six planes of the frustum
+
+            private:
+                bool            _viewMatrixUpdated; ///< statement to avoid to update the scene View Matrix each time
+                TMatrix         _viewMatrix;        ///< the view matrix witch correspond to the vectors _eye / _center / _up. This matrix is used to set the View Matrix of the scene at the call of the method "Fix".
         };
     }
 }

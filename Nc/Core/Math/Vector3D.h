@@ -54,11 +54,11 @@ namespace Nc
                 void        Cross(const Vector3D &v, Vector3D<T> &result) const;
 
                 /** \return X */
-                const T   &X() const    {return Vector<T,3>::Data[0];}
+                const T     &X() const    {return Vector<T,3>::Data[0];}
                 /** \return Y */
-                const T   &Y() const    {return Vector<T,3>::Data[1];}
+                const T     &Y() const    {return Vector<T,3>::Data[1];}
                 /** \return Z */
-                const T   &Z() const    {return Vector<T,3>::Data[2];}
+                const T     &Z() const    {return Vector<T,3>::Data[2];}
         };
 
         template<typename T>

@@ -46,6 +46,8 @@ Sprite::Sprite(const Vector2f &size, const GL::Texture &t, const Box2f &box, con
     _drawables.resize(1);
     _drawables[0] = new Drawable(geo, conf);
     ChooseDefaultMaterial();
+
+    _useSceneMaterial = false;
 }
 
 void Sprite::Draw(SceneGraph *scene)

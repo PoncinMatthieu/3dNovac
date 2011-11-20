@@ -141,6 +141,9 @@ void IEngine::Process()
     if (_pattern.Enabled(Synchronized))
         _manager->MutexGlobal().Lock();
 
+    if (_pattern.Enabled(HasAContext))
+        ActiveContext();
+
 #ifdef _DEBUG_THREAD_ENGINE
     LOG_DEBUG <<"Execute `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
 #endif
@@ -149,6 +152,10 @@ void IEngine::Process()
 #ifdef _DEBUG_THREAD_ENGINE
     LOG_DEBUG <<"Execute END `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
 #endif
+
+    if (_pattern.Enabled(HasAContext))
+        DisableContext();
+
     if (_pattern.Enabled(Synchronized))
         _manager->MutexGlobal().Unlock();
     _sleepMutex.Unlock();

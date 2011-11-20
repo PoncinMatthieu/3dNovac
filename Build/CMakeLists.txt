@@ -149,11 +149,11 @@ else()
 										optimized	../lib/Release/Nc-Graphics
 										)
 
-	target_link_libraries(PluginFileFormatCollada	general 	opengl32 
-													general		wsock32 
-													general		../extlibs/freetype 
-													general		../extlibs/Collada/extlibs/libxml2_a 
-													general		../extlibs/Collada/extlibs/zlib 
+	target_link_libraries(PluginFileFormatCollada	general 	opengl32
+													general		wsock32
+													general		../extlibs/freetype
+													general		../extlibs/Collada/extlibs/libxml2_a
+													general		../extlibs/Collada/extlibs/zlib
 													general		../extlibs/Collada/extlibs/minizip
 													debug		../lib/Debug/Nc-Core
 													debug		../lib/Debug/Nc-Graphics

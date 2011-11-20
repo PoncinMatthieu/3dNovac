@@ -102,7 +102,7 @@ namespace Nc
                 virtual bool                 Enabled() const                                 {return _enabled;}
 
                 /** \return false if the object or one of its parents has the enable statement to false */
-                bool                        EnabledRecursif() const;
+                bool                         EnabledRecursif() const;
 
             protected:
                 System::Mutex       _mutex;         ///< a mutex used to protect the node, (this mutex is lock at the render pass)

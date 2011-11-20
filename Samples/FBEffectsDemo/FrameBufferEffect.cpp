@@ -78,8 +78,6 @@ void	FrameBufferEffect::InitFbo1()
 
 void	FrameBufferEffect::Render(SceneGraph *scene)
 {
-	GL::State &st = GL::State::Current();
-
 	if (!_fboPass1.IsAttached())
 		InitFbo1();
 
@@ -88,7 +86,7 @@ void	FrameBufferEffect::Render(SceneGraph *scene)
 	if (postProcessActivated)
 	{
 		_fboPass1.Enable();
-		st.Clear(GL::Enum::ColorBufferBit | GL::Enum::DepthBufferBit);
+		scene->CurrentGLState()->Clear(GL::Enum::ColorBufferBit | GL::Enum::DepthBufferBit);
 	}
 
 	RenderChilds(scene);

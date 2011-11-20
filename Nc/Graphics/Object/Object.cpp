@@ -32,6 +32,7 @@ using namespace Nc::Graphic;
 
 Object::Object()
     : NodeType(ClassName()),
+      _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -39,6 +40,7 @@ Object::Object()
 
 Object::Object(const char *className)
     : NodeType(className),
+      _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -46,6 +48,7 @@ Object::Object(const char *className)
 
 Object::Object(const TMatrix &m)
     : NodeType(ClassName(), m),
+      _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -53,6 +56,7 @@ Object::Object(const TMatrix &m)
 
 Object::Object(const Box3f &box)
     : NodeType(ClassName(), box),
+      _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -60,6 +64,7 @@ Object::Object(const Box3f &box)
 
 Object::Object(const Box3f &box, const TMatrix &m)
     : NodeType(ClassName(), box, m),
+      _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
 {
@@ -68,6 +73,7 @@ Object::Object(const Box3f &box, const TMatrix &m)
 Object::Object(const Object &o)
     : NodeType(o),
       _drawables(o._drawables.size()),
+      _useSceneMaterial(o._useSceneMaterial),
       _material(o._material),
       _lastConfiguredMaterial(NULL)
 {
@@ -78,6 +84,7 @@ Object::Object(const Object &o)
 Object &Object::operator = (const Object &o)
 {
     NodeType::operator = (o);
+    _useSceneMaterial = o._useSceneMaterial;
     _material = o._material;
     _lastConfiguredMaterial = NULL;
 
@@ -173,7 +180,7 @@ void    Object::Render(SceneGraph *scene)
 void    Object::Draw(SceneGraph *scene)
 {
     // get back the current material set in the scene
-    IMaterial *m = scene->Material();
+    IMaterial *m = (_useSceneMaterial) ? scene->Material() : NULL;
 
 	// if there is no material in the scene, take the material of the object
 	if (m == NULL)

@@ -182,7 +182,7 @@ void EditorEngine::CreateNewScene(const std::string &name)
 
     // creation de la camera
     StandardCamera3d *camera = new StandardCamera3d(_graphic->GetWindow());
-    camera->SetMoveButton(System::Mouse::Middle);
+    camera->MoveButton(System::Mouse::Middle);
     scene->AddChild(camera);
 
     // ajout du repere

@@ -65,7 +65,7 @@ void GameEngine::LoadContent()
         ("Nc:Image:sky/space_up.png")
     };
     _camera->AddChild(new SkyBox(filenamesSky1));
-    _camera->AddChild(BasicMeshCreator::Repere(1)); // creation d'un repere
+    _camera->AddChild(BasicMeshCreator::Axis(1)); // creation d'un repere
 
     // creation de l'octree et des cubes
     _entity = new Entity();
@@ -93,6 +93,9 @@ void GameEngine::LoadContent()
     _sceneGUI->AddChild(new GUI::FPSWidget());
     _graphic->GetSceneManager()->AddScene(_sceneGUI);
 
+    _pattern.Disable(Nc::Engine::HasAContext);
+
+    // no need to active/disable the context at each loop
     _pattern.Disable(Nc::Engine::HasAContext);
 }
 

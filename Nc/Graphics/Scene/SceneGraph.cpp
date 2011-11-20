@@ -71,10 +71,19 @@ void    SceneGraph::Render()
         return;
 
     _mutex.Lock();
+    _oglState = &GL::State::Current();
+
     if (!ModelMatrix().IsIdentity())
         ModelMatrix().SetIdentity();
 
-    // Rendering with the raster effect
+    // Rendering with the raster effe_currentOglStatect
     _rasterEffect.Render(this, this);
     _mutex.Unlock();
+}
+
+bool    SceneGraph::Project(const Vector3f &objCoords, Vector3f &winCoords) const
+{
+    if (_currentCamera == NULL)
+        return false;
+    return _currentCamera->Project(ModelMatrix(), ViewMatrix(), ProjectionMatrix(), objCoords, winCoords);
 }

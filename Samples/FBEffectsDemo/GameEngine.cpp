@@ -59,7 +59,7 @@ void GameEngine::LoadContent()
       ("Nc:Image:sky/space_up.png")
     };
   _camera->AddChild(new SkyBox(filenamesSky1));
-  _camera->AddChild(BasicMeshCreator::Repere(1));
+  _camera->AddChild(BasicMeshCreator::Axis(1));
   _fbEffect->AddChild(_camera);
 
   // creation du lightingEffect
@@ -83,6 +83,7 @@ void GameEngine::LoadContent()
   _sceneGUI->AddChild(new GUI::FPSWidget());
   _graphic->GetSceneManager()->AddScene(_sceneGUI);
 
+    // no need to active/disable the context at each loop
     _pattern.Disable(Nc::Engine::HasAContext);
 }
 

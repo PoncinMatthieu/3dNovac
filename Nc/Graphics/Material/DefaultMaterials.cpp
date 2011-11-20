@@ -94,7 +94,7 @@ void    DefaultMaterialTextured::Render(SceneGraph *scene, const TMatrix &modelM
     if (textured)
     {
         _program.SetUniform(_uniformTexturedId, 0);
-        GL::State::Current().ActiveTexture(0);
+        scene->GLState()->ActiveTexture(0);
         drawable.Config->Textures[0].Enable();
     }
 
@@ -203,7 +203,7 @@ void    DefaultMaterial<Textured3d>::Render(SceneGraph *scene, const TMatrix &mo
     if (textured)
     {
         _program.SetUniform(_uniformTexturedId, 0);
-        GL::State::Current().ActiveTexture(0);
+        scene->GLState()->ActiveTexture(0);
         drawable.Config->Textures[0].Enable();
     }
 

@@ -167,6 +167,10 @@ namespace Nc
                 void Transform(T &x, T &y, T &z) const;
                 /** Transform the basic type gived in parameter */
                 void Transform(T xyz[3]) const;
+                /** Transform the basic type gived in parameter */
+                void Transform(Vector<T,4> &v) const;
+                /** Transform the basic type gived in parameter */
+                void Transform(T &x, T &y, T &z, T &u) const;
 
             // constantes
                 static const Matrix4x4 Identity;                            ///< static const Identity matrix
@@ -838,20 +842,27 @@ namespace Nc
         }
 
         template<typename T>
+        void Matrix4x4<T>::Transform(Vector<T,4> &v) const
+        {
+            Transform(v.Data[0], v.Data[1], v.Data[2], v.Data[3]);
+        }
+
+        template<typename T>
+        void Matrix4x4<T>::Transform(T xyz[3]) const
+        {
+            Transform(xyz[0], xyz[1], xyz[2]);
+        }
+
+        template<typename T>
         void Matrix4x4<T>::Transform(T &x, T &y, T &z) const
         {
-            float elem[3];
-            float el;
-
+            T elem[3];
             for(unsigned short i = 0; i < 3; ++i)
             {
-                elem[i]=0;
-                for(unsigned short k = 0; k < 3; ++k)
-                {
-                    el = (k == 0) ? x : ((k == 1) ? y : z);
-                    elem[i] += (Matrix<T,4,4>::_data[(i * 4) + k] * el);
-                }
-                elem[i] += Matrix<T,4,4>::_data[(i * 4) + 3];
+                elem[i] =   x * Matrix<T,4,4>::_data[i*4] +
+                            y * Matrix<T,4,4>::_data[(i*4)+1] +
+                            z * Matrix<T,4,4>::_data[(i*4)+2] +
+                            Matrix<T,4,4>::_data[(i*4)+3];
             }
             x = elem[0];
             y = elem[1];
@@ -859,20 +870,20 @@ namespace Nc
         }
 
         template<typename T>
-        void Matrix4x4<T>::Transform(T xyz[3]) const
+        void Matrix4x4<T>::Transform(T &x, T &y, T &z, T &u) const
         {
-            float elem[3];
-
-            for(unsigned short i=0; i<3; i++)
+            T elem[4];
+            for (unsigned int i = 0; i < 4; ++i)
             {
-                elem[i]=0;
-                for(unsigned short k=0; k<3; k++)
-                    elem[i] += (Matrix<T,4,4>::_data[(i * 4) + k] * xyz[k]);
-                elem[i] += Matrix<T,4,4>::_data[(i * 4) + 3];
+                elem[i] =   x * Matrix<T,4,4>::_data[i*4] +
+                            y * Matrix<T,4,4>::_data[(i*4)+1] +
+                            z * Matrix<T,4,4>::_data[(i*4)+2] +
+                            u * Matrix<T,4,4>::_data[(i*4)+3];
             }
-            xyz[0] = elem[0];
-            xyz[1] = elem[1];
-            xyz[2] = elem[2];
+            x = elem[0];
+            y = elem[1];
+            z = elem[2];
+            u = elem[3];
         }
 
         template<typename T>

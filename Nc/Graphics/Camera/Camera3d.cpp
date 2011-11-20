@@ -32,7 +32,8 @@ using namespace Nc::Graphic;
 Camera3d::Camera3d(const char *className, float ratioAspect, float nearf, float farf, float fieldOfView)
     : Camera(className, false),
       _center(0, 0, 0), _up(0, 0, 1),
-      _ratioAspect(ratioAspect), _near(nearf), _far(farf), _fieldOfView(fieldOfView)
+      _ratioAspect(ratioAspect), _near(nearf), _far(farf), _fieldOfView(fieldOfView),
+      _viewMatrixUpdated(true)
 {
     UpdateProjectionFrustum();
 }
@@ -70,6 +71,30 @@ void Camera3d::SetProjection(float ratioAspect, float nearf, float farf, float f
     _resized = true;
 	_near = nearf;
     _far = farf;
+}
+
+void    Camera3d::UpdateProjection(SceneGraph *scene)
+{
+    scene->ProjectionMatrix().SetProjection(_ratioAspect, _near, _far, _fieldOfView);
+}
+
+void    Camera3d::Fix(SceneGraph *scene)
+{
+    Camera::Fix(scene);
+    if (_viewMatrixUpdated)
+        scene->ViewMatrix() = _viewMatrix;
+}
+
+void    Camera3d::Resized(const System::Event &event)
+{
+    _ratioAspect = (float)event.Size.Width/(float)event.Size.Height;
+    Camera::Resized(event);
+}
+
+void Camera3d::UpdateViewMatrix()
+{
+    _viewMatrix.SetLookAt(_eye, _center, _up);
+    _viewMatrixUpdated = true;
 }
 
 void Camera3d::UpdateProjectionFrustum()

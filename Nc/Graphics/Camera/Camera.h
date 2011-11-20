@@ -107,6 +107,11 @@ namespace Nc
                 /** \return true if the given box is in the frustum of the camera */
                 virtual bool            BoxInFrustum(const Vector3f &center, float size) = 0;
 
+                /**
+                    Compute and map object coordinates to window coordinates.
+                    \return return true if succeed. compute and return the window coordinates from the object coordinates.
+                */
+                bool                    Project(const TMatrix &modelMatrix, const TMatrix &viewMatrix, const TMatrix &projectionMatrix, const Vector3f &objCoords, Vector3f &winCoords) const;
 
             protected:
                 /** Fix the camera and and set it as current camera before rendering itselfs and childs */

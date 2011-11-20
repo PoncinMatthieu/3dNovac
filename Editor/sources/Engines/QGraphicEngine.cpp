@@ -154,13 +154,14 @@ bool QGraphicEngine::x11Event(XEvent *event)
             _manager->MutexGlobal().Unlock();
             if (_pattern.Enabled(Nc::Engine::WaitingLoadContentsOfOthersEngines))
                 _manager->WaitEnginesLoading();                     // waiting for others loading content engines
+
+            // active the gl context
+            ActiveContext();
         }
 
     // on active notre context opengl et on send les event a notre windowInput
         _manager->MutexGlobal().Lock();
-        ActiveContext();
         static_cast<Graphic::XWindowInput*>(_win->GetInput())->ProcessEvent(*event);
-        DisableContext();
         _manager->MutexGlobal().Unlock();
     }
     return QWidget::x11Event(event);    // send les event au widget sinon, on a des erreur x11 d'evenement non traite

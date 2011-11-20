@@ -438,6 +438,9 @@ void StandardCamera3d::MajEye()
     }
     UpdateViewFrustum();
     Matrix.Translation(_center); // positionne la matrice de la camera sur le centre
+
+    // update the view matrix of the camera
+    UpdateViewMatrix();
 }
 
 void StandardCamera3d::MajTrackballPoint(int x, int y)

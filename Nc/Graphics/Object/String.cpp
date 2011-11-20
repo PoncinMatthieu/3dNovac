@@ -33,7 +33,7 @@ using namespace Nc;
 String::MapFont         String::_mapFont;
 System::Mutex           String::_mutex;
 
-String::String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color &color, const std::string &ttf, const Utils::Mask<Style> &style)
+String::String(const Utils::Unicode::UTF32 &text, float size, const Color &color, const std::string &ttf, const Utils::Mask<Style> &style)
     : Object(ClassName()), _needUpdate(true), _needUpdateSize(true), _text(text), _style(style), _charSize(size), _color(color)
 {
     // search the font in the map
@@ -65,6 +65,8 @@ String::String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color
         _drawables[1] = new Drawable(geo2, new MaterialConfig());
     }
     ChooseDefaultMaterial();
+
+    _useSceneMaterial = false;
 }
 
 String::~String()
@@ -164,10 +166,11 @@ void String::UpdateGeometry()
         // Handle special characters
         switch (curChar)
         {
-            case L' ' :  X += curGlyph->Add;    break;
-            case L'\n' : Y += baseSize; X = 0;  break;
-            case L'\t' : X += (baseSize  * 4);  break;
-            case L'\v' : Y += (baseSize * 4);   break;
+            case L' ' :  X += curGlyph->Add;        break;
+            case L'\n' : Y += baseSize; X = 0;      break;
+            //case L'\t' : X += (baseSize * 4);     break;
+            case L'\t' : X += (curGlyph->Add * 4);  break;
+            case L'\v' : Y += (baseSize * 4);       break;
         }
 
         // Draw a textured quad for the current character
@@ -267,7 +270,8 @@ void String::RecomputeSize()
         switch (curChar)
         {
             case L' ' :  curWidth += curGlyph->Add * factor;            break;
-            case L'\t' : curWidth += _charSize * 4;                     break;
+            //case L'\t' : curWidth += _charSize * 4;                     break;
+            case L'\t' : curWidth += (curGlyph->Add * factor) * 4;      break;
             case L'\v' : height   += _charSize * 4; curHeight = 0;      break;
             case L'\n' :
                 height += _charSize;

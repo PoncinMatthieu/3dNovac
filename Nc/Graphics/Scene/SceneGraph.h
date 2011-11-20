@@ -64,57 +64,82 @@ namespace Nc
                 virtual void    Render();
 
                 /** \return the current projection matrix */
-                inline TMatrix  &ProjectionMatrix()                 {return _stackProjectionMatrix.top();}
+                inline TMatrix          &ProjectionMatrix()         {return _stackProjectionMatrix.top();}
+                /** \return the current projection matrix */
+                inline const TMatrix    &ProjectionMatrix() const   {return _stackProjectionMatrix.top();}
                 /** Push in the stack the projection matrix */
-                inline void     PushProjectionMatrix()              {_stackProjectionMatrix.push(_stackProjectionMatrix.top());}
+                inline void             PushProjectionMatrix()      {_stackProjectionMatrix.push(_stackProjectionMatrix.top());}
                 /** Unstack the projection matrix */
-                inline void     PopProjectionMatrix()               {_stackProjectionMatrix.pop();}
+                inline void             PopProjectionMatrix()       {_stackProjectionMatrix.pop();}
 
                 /** \return the current view matrix */
-                inline TMatrix  &ViewMatrix()                       {return _stackViewMatrix.top();}
+                inline TMatrix          &ViewMatrix()               {return _stackViewMatrix.top();}
+                /** \return the current view matrix */
+                inline const TMatrix    &ViewMatrix() const         {return _stackViewMatrix.top();}
                 /** Push in the stack the view matrix */
-                inline void     PushViewMatrix()                    {_stackViewMatrix.push(_stackViewMatrix.top());}
+                inline void             PushViewMatrix()            {_stackViewMatrix.push(_stackViewMatrix.top());}
                 /** Unstack the view matrix */
-                inline void     PopViewMatrix()                     {_stackViewMatrix.pop();}
+                inline void             PopViewMatrix()             {_stackViewMatrix.pop();}
 
                 /** \return the current model matrix */
-                inline TMatrix  &ModelMatrix()                      {return _stackModelMatrix.top();}
+                inline TMatrix          &ModelMatrix()              {return _stackModelMatrix.top();}
+                /** \return the current model matrix */
+                inline const TMatrix    &ModelMatrix() const        {return _stackModelMatrix.top();}
                 /** Push in the stack the model matrix */
-                inline void     PushModelMatrix()                   {_stackModelMatrix.push(_stackModelMatrix.top());}
+                inline void             PushModelMatrix()           {_stackModelMatrix.push(_stackModelMatrix.top());}
                 /** Unstack the model matrix */
-                inline void     PopModelMatrix()                    {_stackModelMatrix.pop();}
+                inline void             PopModelMatrix()            {_stackModelMatrix.pop();}
 
                 /**
                     If there is no material, the object will used their default materials.
                     \return the current rendering material, if there is no material return null.
                 */
-                inline IMaterial    *&Material()                    {return _stackMaterials.top();}
+                inline IMaterial            *&Material()                {return _stackMaterials.top();}
+                /**
+                    If there is no material, the object will used their default materials.
+                    \return the current rendering material, if there is no material return null.
+                */
+                inline IMaterial            *const&Material() const     {return _stackMaterials.top();}
                 /** Push in the stack the model matrix */
-                inline void         PushMaterial()                  {_stackMaterials.push(NULL);}
+                inline void                 PushMaterial()              {_stackMaterials.push(NULL);}
                 /** Unstack the model matrix */
-                inline void         PopMaterial()                   {_stackMaterials.pop();}
+                inline void                 PopMaterial()               {_stackMaterials.pop();}
 
                 /** \return the raster mode of the scene */
-                inline RasterEffect &GetRasterEffect()              {return _rasterEffect;}
+                inline const RasterEffect   &GetRasterEffect() const    {return _rasterEffect;}
+                /** \return the raster mode of the scene */
+                inline RasterEffect         &GetRasterEffect()          {return _rasterEffect;}
+
+                /** \return the GL::State of the render thread */
+                inline const GL::State      *GLState() const            {return _oglState;}
+                /** \return the GL::State of the render thread */
+                inline GL::State            *GLState()                  {return _oglState;}
 
                 /**
                     To update the projection matrix with the camera.
                     If the camera is shared between multiple scene, then you will need to Setup the camera at each changement of scene.
                 */
-                void            SetupCamera();
+                void                SetupCamera();
 
                 /** \return the current camera  */
-                inline Camera   *CurrentCamera()                    {return _currentCamera;}
+                inline Camera       *CurrentCamera()                    {return _currentCamera;}
                 /** \return the current camera  */
-                inline Camera   *CurrentCamera() const              {return _currentCamera;}
+                inline Camera       *CurrentCamera() const              {return _currentCamera;}
                 /** Set the current camera  */
-                inline void     CurrentCamera(Camera *cam)          {_currentCamera = cam;}
+                inline void         CurrentCamera(Camera *cam)          {_currentCamera = cam;}
+
+                /**
+                    Compute and map object coordinates to window coordinates.
+                    \return return true if succeed. compute and return the window coordinates from the object coordinates. If the currentCamera is null, the method will return false
+                */
+                bool                    Project(const Vector3f &objCoords, Vector3f &winCoords) const;
 
             protected:
                 Camera                  *_currentCamera;            ///< the current camera of the scene (could be used by some node to produce a specific rendering by using the current camera)
                 RasterEffect            _rasterEffect;              ///< the raster effect used to render the scene
 
             private:
+                GL::State               *_oglState;                 ///< store the current ogl state at the rendering time
                 std::stack<TMatrix>     _stackProjectionMatrix;     ///< the stack of projection matrix
                 std::stack<TMatrix>     _stackViewMatrix;           ///< the stack of view matrix
                 std::stack<TMatrix>     _stackModelMatrix;          ///< the stack of model matrix

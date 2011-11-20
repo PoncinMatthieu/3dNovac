@@ -62,7 +62,7 @@ namespace Nc
                 typedef std::map<std::string, Font*>    MapFont;
 
             public:
-                String(const Utils::Unicode::UTF32 &text, unsigned int size, const Color &color, const std::string &ttf, const Utils::Mask<Style> &s = Regular);
+                String(const Utils::Unicode::UTF32 &text, float size, const Color &color, const std::string &ttf, const Utils::Mask<Style> &s = Regular);
                 virtual ~String();
 
                 static const char               *ClassName()                                    {return "String";}

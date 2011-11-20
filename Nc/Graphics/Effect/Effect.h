@@ -51,7 +51,7 @@ namespace Nc
                 inline bool             Activated() const           {return _activated;}
                 inline void             Activated(bool state)       {_activated = state;}
 
-                /** To Display the effect */
+                /** To render the effect and it's childs */
                 virtual void            Render(SceneGraph *scene) = 0;
 
             protected:

@@ -53,7 +53,7 @@ void    Camera::Fix(SceneGraph *scene)
         _resized = false;
         UpdateProjection(scene);
     }
-    GL::State::Current().Viewport(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
+    scene->GLState()->Viewport(_viewportX, _viewportY, _viewportWidth, _viewportHeight);
 }
 
 bool    Camera::InViewport(const Vector2ui pos)
@@ -82,4 +82,40 @@ void    Camera::Render(SceneGraph *scene)
         Fix(scene);
     }
     Object::Render(scene);
+}
+
+
+bool    Camera::Project(const TMatrix &modelMatrix, const TMatrix &viewMatrix, const TMatrix &projectionMatrix, const Vector3f &objCoords, Vector3f &winCoords) const
+{
+    Vector<float,4>  in;
+    in[0] = objCoords[0];
+    in[1] = objCoords[1];
+    in[2] = objCoords[2];
+    in[3] = 1.0;
+
+    modelMatrix.Transform(in);
+    viewMatrix.Transform(in);
+    projectionMatrix.Transform(in);
+
+
+    if (in[3] == 0.0)
+        return false;
+
+    in[0] /= in[3];
+    in[1] /= in[3];
+    in[2] /= in[3];
+
+    /* Map x, y and z to range 0-1 */
+    in[0] = in[0] * 0.5 + 0.5;
+    in[1] = in[1] * 0.5 + 0.5;
+    in[2] = in[2] * 0.5 + 0.5;
+
+    /* Map x,y to viewport */
+    in[0] = in[0] * _viewportWidth + _viewportX;
+    in[1] = in[1] * _viewportHeight + _viewportY;
+
+    winCoords[0] = in[0];
+    winCoords[1] = in[1];
+    winCoords[2] = in[2];
+    return true;
 }
