@@ -126,9 +126,6 @@ void Widget::Update()
 
 void Widget::Render(Graphic::SceneGraph *scene)
 {
-    if (!_enabled)
-        return;
-
     CheckState();
 
 // effectue le rendu
@@ -147,7 +144,7 @@ void Widget::Render(Graphic::SceneGraph *scene)
         static Graphic::Object *repere = NULL;
         if (repere == NULL)
         {
-            repere = Graphic::BasicMeshCreator::Repere(1);
+            repere = Graphic::BasicMeshCreator::Axis(1);
             repere->Drawables()[0]->Config->RasterMode().SetLineWidth(2);
         }
         Vector2f reelSize;
@@ -155,7 +152,7 @@ void Widget::Render(Graphic::SceneGraph *scene)
         TMatrix m;
         m.Scale(reelSize.Data[0], reelSize.Data[1], 0);
         scene->ModelMatrix() *= m;
-        repere->Render(scene);
+        repere->RenderNode(scene);
         #endif
 
     scene->PopModelMatrix();

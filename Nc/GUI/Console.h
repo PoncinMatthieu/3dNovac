@@ -58,9 +58,6 @@ namespace Nc
 
                 static const char   *ClassName()            {return "Console";}
 
-                /** Render the console */
-                virtual void        Render(Graphic::SceneGraph *scene);
-
                 /** Return the reel position of the console */
                 virtual void        GetReelPos(Vector2f &pos) const;
 
@@ -69,9 +66,11 @@ namespace Nc
                 /** Write a message for the Utils::Logger */
                 static void         Write(const std::string msg, bool flush);
 
-            private:
+            protected:
+                /** Render the console */
+                virtual void        Render(Graphic::SceneGraph *scene);
                 /** Update the geometry of the console */
-                virtual void Update();
+                virtual void        Update();
 
                 /** Keyboadr event Handler */
                 void KeyboardEvent(const System::Event &event); // receptionne les commandes clavier et l'inscrit dans la console
@@ -84,6 +83,7 @@ namespace Nc
                 /** Update the position of the cursor */
                 void UpdateCursorPosition();
 
+            protected:
                 static ListMsg                      _listMsg;           ///< The message list
                 static System::Mutex                _mutexMsg;          ///< Protect the acces of the message list
                 static ListMsg::reverse_iterator    _itCurrentMsg;      ///< the current message, to scroll the messages

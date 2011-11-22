@@ -31,6 +31,7 @@
 #include <Nc/Core/Graph/NNodePolitic.h>
 #include <Nc/Core/Graph/Node.h>
 #include "../Define.h"
+#include "Controller.h"
 
 namespace Nc
 {
@@ -52,8 +53,8 @@ namespace Nc
                 };
 
             public:
-                ISceneNode(const char *className)   : System::Object(className), _enabled(true)     {}
-                virtual ~ISceneNode()               {}
+                ISceneNode(const char *className);
+                virtual ~ISceneNode();
 
                 /**
                     \return a copy of the node
@@ -61,11 +62,16 @@ namespace Nc
                 */
                 virtual ISceneNode          *Clone() const = 0;
 
-                /** Update the node and it's childs */
-                virtual void                Update(float elapsedTime) = 0;
-
-                /** Render the node and it's childs */
-                virtual void                Render(SceneGraph *scene) = 0;
+                /**
+                    If the node is enable, call the current updating controller and the Update metod.
+                    \sa Update
+                 */
+                void                        UpdateNode(float elapsedTime);
+                /**
+                    If the node is enable, call the current rendering controller twice, once before calling the Render metod and once another after.
+                    \sa Render
+                 */
+                void                        RenderNode(SceneGraph *scene);
 
                 /** \return the number of childs */
                 virtual unsigned int        ChildCount() const = 0;
@@ -93,20 +99,49 @@ namespace Nc
                 inline void                 Unlock()                                        {_mutex.Unlock();}
 
                 /** Set the enable statement of the node */
-                virtual void                 Enable(bool status)                             {_enabled = status;}
+                virtual void                Enable(bool status)                             {_enabled = status;}
                 /** Enable the node */
-                virtual void                 Enable()                                        {_enabled = true;}
+                virtual void                Enable()                                        {_enabled = true;}
                 /** Disable the node */
-                virtual void                 Disable()                                       {_enabled = false;}
+                virtual void                Disable()                                       {_enabled = false;}
                 /** \return the enable statement */
-                virtual bool                 Enabled() const                                 {return _enabled;}
+                virtual bool                Enabled() const                                 {return _enabled;}
 
                 /** \return false if the object or one of its parents has the enable statement to false */
-                bool                         EnabledRecursif() const;
+                bool                        EnabledRecursif() const;
 
-            protected:
-                System::Mutex       _mutex;         ///< a mutex used to protect the node, (this mutex is lock at the render pass)
-                bool                _enabled;       ///< an enable statement
+                /** \return the rendering controller */
+                inline const IRenderingController   *GetRenderingController() const                             {return _renderingController;}
+                /** \return the rendering controller */
+                inline IRenderingController         *GetRenderingController()                                   {return _renderingController;}
+                /** Set the rendering controller */
+                inline void                         SetRenderingController(IRenderingController *controller)    {_renderingController = controller;}
+
+                /** \return the rendering controller */
+                inline const IUpdatingController    *GetUpdatingController() const                              {return _updatingController;}
+                /** \return the rendering controller */
+                inline IUpdatingController          *GetUpdatingController()                                    {return _updatingController;}
+                /** Set the rendering controller */
+                inline void                         SetUpdatingController(IUpdatingController *controller)      {_updatingController = controller;}
+
+            private:
+                /**
+                    Update the node and it's childs
+                    \sa UpdateNode
+                 */
+                virtual void                Update(float elapsedTime) = 0;
+                /**
+                    Render the node and it's childs
+                    \sa RenderNode
+                 */
+                virtual void                Render(SceneGraph *scene) = 0;
+
+            private:
+                System::Mutex           _mutex;                 ///< a mutex used to protect the node, (this mutex is lock at the render pass)
+                bool                    _enabled;               ///< an enable statement
+
+                IUpdatingController     *_updatingController;   ///< controller called at the updating time
+                IRenderingController    *_renderingController;  ///< controller called at the rendering time
         };
 
         /// Define an abstract scene node

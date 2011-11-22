@@ -27,6 +27,9 @@
 #include "BasicMeshCreator.h"
 #include "String.h"
 #include "../Effect/Billboard.h"
+#include "../Effect/CameraEffect.h"
+#include "../Scene/RenderingController.h"
+#include "../Camera/Camera3d.h"
 #include "Nc/Core/Utils/Debug/OverloadAlloc.h"
 
 using namespace Nc;
@@ -67,6 +70,80 @@ Object *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, const Vec
 	return obj;
 }
 
+Entity *BasicMeshCreator::Axis(float scale, bool withLegend, bool inCorner)
+{
+    return Axis(Vector3f(scale, scale, scale), withLegend, inCorner);
+}
+
+
+class AxisRenderingController : public RenderingController<AxisRenderingController>
+{
+    public:
+        template<typename ToVisitList>
+        AxisRenderingController(const ToVisitList &toVisitList)
+            : RenderingController<AxisRenderingController>(toVisitList)
+        {
+            _center = Vector3f(0,0,0);
+            _rasterMode.SetDepthTest(false);
+        }
+
+        void VisitNode(const Entity &n)
+        {
+            if (_currentStade == IRenderingController::Begin)
+            {
+                _scene->PushViewMatrix();
+                Camera3d *cam = static_cast<Camera3d*>(_scene->CurrentCamera());
+                _oldEye = cam->Eye();
+                _oldCenter = cam->Center();
+
+                Vector3f eye = _oldEye - _oldCenter;
+                eye.Normalize();
+                eye.Scale(3);
+                _scene->ViewMatrix().SetLookAt(eye, _center, cam->Up());
+
+                cam->Eye(eye);
+                cam->Center(_center);
+                _rasterMode.Enable();
+            }
+            else
+            {
+                Camera3d *cam = static_cast<Camera3d*>(_scene->CurrentCamera());
+                cam->Eye(_oldEye);
+                cam->Center(_oldCenter);
+
+                _rasterMode.Disable();
+                _scene->PopViewMatrix();
+            }
+        }
+
+    private:
+        Vector3f            _center;
+        GL::RasterMode      _rasterMode;
+
+        Vector3f            _oldEye;
+        Vector3f            _oldCenter;
+};
+
+
+Entity *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, bool inCorner)
+{
+    // create the axis
+    Object *obj = Axis(scale, withLegend, Vector3f(0,0,0));
+
+    if (!inCorner)
+        return obj;
+
+    // create the viewport effect and configure it
+    CameraEffect *effect = new CameraEffect();
+    effect->Viewport(0, 0, 150, 150);
+    effect->Projection(1, 0.1, 5, 60);
+
+    effect->SetRenderingController(new AxisRenderingController(Utils::Metaprog::Seq<Graphic::Entity>::Type()));
+
+    effect->AddChild(obj);
+    return effect;
+}
+
 String  *BasicMeshCreator::AddLabel(const std::string &text, float caracterSize, const Color &color, const std::string &fontName, bool centerText, Entity *entity, const Vector3f &position)
 {
     // create the billboard
@@ -80,6 +157,7 @@ String  *BasicMeshCreator::AddLabel(const std::string &text, float caracterSize,
         Vector2f size = label->Size();
         label->Matrix.Translation(-size[0] / 2, -size[1] / 2, 0);
     }
+
     billboard->AddChild(label);
     billboard->RotateChilds();
     if (entity != NULL)

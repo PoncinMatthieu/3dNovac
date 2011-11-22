@@ -61,9 +61,7 @@ namespace Nc
 
                 // update et affichage du widget
                 /** Manage the window event of the widget */
-                void ManageWindowEvent(const Nc::System::Event &event);
-                /** Render the widget */
-                virtual void Render(Graphic::SceneGraph *scene);
+                void                    ManageWindowEvent(const Nc::System::Event &event);
 
                 /** \return true if the state of the widget has changed after the last rendering pass */
                 inline bool             StateChanged() const                    {return _stateChanged;}
@@ -71,13 +69,13 @@ namespace Nc
                 inline void             ChangeState()                           {_stateChanged = true;}
 
                 /** Set the enable statement of the widget */
-                virtual void            Enable(bool status)                {_enabled = status; ChangeChildsStateRecursive();}
+                virtual void            Enable(bool status)                {Object::Enable(status); ChangeChildsStateRecursive();}
                 /** Enable the widget */
-                virtual void            Enable()                           {_enabled = true; ChangeChildsStateRecursive();}
+                virtual void            Enable()                           {Object::Enable(); ChangeChildsStateRecursive();}
                 /** Disable the widget */
-                virtual void            Disable()                          {_enabled = false; ChangeChildsStateRecursive();}
+                virtual void            Disable()                          {Object::Disable(); ChangeChildsStateRecursive();}
                 /** \return the enable statement */
-                virtual bool            Enabled() const                    {return _enabled;}
+                virtual bool            Enabled() const                    {return Object::Enabled();}
 
                 /** Set the inhibit statement of the widget */
                 virtual void            Inhibit(bool status)              {_inhibit = status; ChangeChildsStateRecursive();}
@@ -140,6 +138,8 @@ namespace Nc
                 inline void             EdgeColor(const Color &color)           {_edgeColor = color; _stateChanged = true;}
 
             protected:
+                /** Render the widget */
+                virtual void            Render(Graphic::SceneGraph *scene);
                 /** Draw the widget */
                 virtual void            Draw(Graphic::SceneGraph *scene);
 

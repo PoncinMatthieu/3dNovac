@@ -64,7 +64,7 @@ void SceneGraphManager::Render(GLContext *context)
 
 // render les 2 scenes
     for (ListPScene::iterator it = _listScene.begin(); it != _listScene.end(); ++it)
-        (*it)->Render();
+        (*it)->RenderNode(*it);
 
 // refresh et swap les buffers :
 /*  according to gDebugger: Calling glFlush is usually redundant since wglSwapBuffers, glXSwapBuffers, aglSwapBuffers, CGLFlushDrawable and eglSwapBuffers
@@ -79,7 +79,7 @@ void SceneGraphManager::Render(GLContext *context)
 void SceneGraphManager::Update(float elapsedTime)
 {
     for (ListPScene::iterator it = _listScene.begin(); it != _listScene.end(); ++it)
-        (*it)->Update(elapsedTime);
+        (*it)->UpdateNode(elapsedTime);
 }
 
 void SceneGraphManager::BringToFront(SceneGraph *scene)

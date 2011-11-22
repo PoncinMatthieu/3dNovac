@@ -35,5 +35,5 @@ void SpriteAnimFrame::Update(float runningTime)
 void SpriteAnimFrame::Render(SceneGraph *scene)
 {
     if (sprite)
-        sprite->Render(scene);
+        sprite->RenderNode(scene);
 }

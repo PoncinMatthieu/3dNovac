@@ -51,7 +51,7 @@ void SpriteWidget::Draw(Graphic::SceneGraph *scene)
     {
         scene->PushModelMatrix();
         scene->ModelMatrix().AddTranslation(it->pos.Data[0], it->pos.Data[1], 0.f);
-        it->sprite->Render(scene);
+        it->sprite->RenderNode(scene);
         scene->PopModelMatrix();
     }
 }

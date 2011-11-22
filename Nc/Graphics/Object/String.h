@@ -86,13 +86,13 @@ namespace Nc
 
                 inline Font         *GetFont()                          {return _font;}
 
-                /** Render the text */
-                virtual void        Render(SceneGraph *scene);
-
                 /** Destroy the font, to call at the end of the program to avoid memory leek */
                 static void         DestroyFonts();
 
             protected:
+                /** Render the text */
+                virtual void        Render(SceneGraph *scene);
+
                 virtual void        TransformModelMatrixToRender(SceneGraph *scene);
 
             private:

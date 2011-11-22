@@ -86,7 +86,7 @@ void	FrameBufferEffect::Render(SceneGraph *scene)
 	if (postProcessActivated)
 	{
 		_fboPass1.Enable();
-		scene->CurrentGLState()->Clear(GL::Enum::ColorBufferBit | GL::Enum::DepthBufferBit);
+		scene->GLState()->Clear(GL::Enum::ColorBufferBit | GL::Enum::DepthBufferBit);
 	}
 
 	RenderChilds(scene);
@@ -99,8 +99,8 @@ void	FrameBufferEffect::Render(SceneGraph *scene)
 		scene->Material() = _postProcessMaterial;
 
 		// pass2 : post processing
-		static_cast<Graphic::Object*>(_camera2d)->Render(scene);
-		_sprite->Render(scene);
+		static_cast<Graphic::Object*>(_camera2d)->RenderNode(scene);
+		_sprite->RenderNode(scene);
 
 		scene->PopMaterial();
 	}

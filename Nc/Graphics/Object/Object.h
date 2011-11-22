@@ -83,6 +83,7 @@ namespace Nc
                 /** Configure the drawables by using the current Material */
                 void                ReconfigureDrawables();
 
+            protected:
                 /** Render the drawables with the material and render also the childs of the object */
                 virtual void        Render(SceneGraph *scene);
 
@@ -92,7 +93,6 @@ namespace Nc
                 */
                 virtual void        Draw(SceneGraph *scene);
 
-            protected:
                 /**
                     Transform the scene model matrix before rendering the object.
                     Could be redefine to set a specific comportement.

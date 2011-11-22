@@ -94,7 +94,7 @@ void WidgetLabeled::CreateLabel(const Utils::Unicode::UTF32 &l, const std::strin
 void WidgetLabeled::Draw(Graphic::SceneGraph *scene)
 {
     // draw le label
-    _label->Render(scene);
+    _label->RenderNode(scene);
 
     // draw le widget
     Widget::Draw(scene);

@@ -75,11 +75,13 @@ namespace Nc
 
                 /** Configure the geometry with the suitable attributes according to the shader */
                 virtual bool    Configure(Drawable &drawable);
-                /** Render the given drawable with the given model matrix */
-                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
                 /** \return the pattern */
                 Utils::Mask<MaterialPattern>    &Pattern()      {return _patternMask;}
+
+            protected:
+                /** Render the given drawable with the given model matrix */
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
 
             protected:
                 Utils::Mask<MaterialPattern>    _patternMask;               ///< the pattern mask of the material

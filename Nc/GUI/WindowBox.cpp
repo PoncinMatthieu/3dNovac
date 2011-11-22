@@ -192,7 +192,7 @@ void WindowBox::Draw(Graphic::SceneGraph *scene)
     if (_drawTitle)
     {
         GetMaterial()->Render(scene, *_drawables[_indexDrawable]);
-        _title->Render(scene);
+        _title->RenderNode(scene);
     }
     // affichage de la box
     GetMaterial()->Render(scene, *_drawables[_indexDrawable+1]);

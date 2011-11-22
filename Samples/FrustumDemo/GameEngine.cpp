@@ -101,7 +101,7 @@ void GameEngine::LoadContent()
 
 void GameEngine::Update(float runningTime)
 {
-    _scene3d->Update(runningTime);
+    _scene3d->UpdateNode(runningTime);
 
     // colle la camera3 sur la premiere
     _camera3->Eye(_camera->Eye());

@@ -55,14 +55,6 @@ namespace Nc
                 static const char       *ClassName()                {return "SceneGraph";}
                 virtual ISceneNode      *Clone() const              {return new SceneGraph(*this);}
 
-                /** Update the child nodes of the scene graph */
-                virtual void    Update(float elapsedTime)           {if (_enabled) UpdateChilds(elapsedTime);}
-
-                /** Render the scene */
-                virtual void    Render(SceneGraph *)                {Render();}
-                /** Render the scene */
-                virtual void    Render();
-
                 /** \return the current projection matrix */
                 inline TMatrix          &ProjectionMatrix()         {return _stackProjectionMatrix.top();}
                 /** \return the current projection matrix */
@@ -133,6 +125,12 @@ namespace Nc
                     \return return true if succeed. compute and return the window coordinates from the object coordinates. If the currentCamera is null, the method will return false
                 */
                 bool                    Project(const Vector3f &objCoords, Vector3f &winCoords) const;
+
+            protected:
+                /** Update the child nodes of the scene graph */
+                virtual void    Update(float elapsedTime)           {UpdateChilds(elapsedTime);}
+                /** Render the scene */
+                virtual void    Render(SceneGraph *scene);
 
             protected:
                 Camera                  *_currentCamera;            ///< the current camera of the scene (could be used by some node to produce a specific rendering by using the current camera)

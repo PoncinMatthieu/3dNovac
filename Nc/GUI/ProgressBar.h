@@ -66,6 +66,7 @@ namespace Nc
                 /** Render the progress bar */
                 virtual void Draw(Graphic::SceneGraph *scene);
 
+            protected:
                 unsigned int            _indexDrawable;
 
                 Box2f                   _progressBox;           ///< The progress box to delimit the progress bar

@@ -65,12 +65,8 @@ void     SceneGraph::SetupCamera()
         _currentCamera->UpdateProjection(this);
 }
 
-void    SceneGraph::Render()
+void    SceneGraph::Render(SceneGraph *scene)
 {
-    if (!_enabled)
-        return;
-
-    _mutex.Lock();
     _oglState = &GL::State::Current();
 
     if (!ModelMatrix().IsIdentity())
@@ -78,7 +74,6 @@ void    SceneGraph::Render()
 
     // Rendering with the raster effe_currentOglStatect
     _rasterEffect.Render(this, this);
-    _mutex.Unlock();
 }
 
 bool    SceneGraph::Project(const Vector3f &objCoords, Vector3f &winCoords) const

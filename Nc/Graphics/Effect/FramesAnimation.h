@@ -62,36 +62,39 @@ namespace Nc
                     Inherite of it to create your own animation
                     It's possible to send a signal to a frame, call the function Animation::Signal() to send a signal to the current frame
                 */
-                struct LGRAPHICS Frame : Effect
+                class LGRAPHICS Frame : public Effect
                 {
-                    NC_UTILS_DEFINE_PARENT_CLASS(Effect);
-                    NC_UTILS_DEFINE_VISITABLE(System::Object);
+                    public:
+                        NC_UTILS_DEFINE_PARENT_CLASS(Effect);
+                        NC_UTILS_DEFINE_VISITABLE(System::Object);
 
-                    /// The pattern of the frame
-                    enum Pattern
-                    {
-                        Nop = 0,
-                        WaitSignal              ///< wait a signal or wait the delay to pass the next frame
-                    };
+                        /// The pattern of the frame
+                        enum Pattern
+                        {
+                            Nop = 0,
+                            WaitSignal              ///< wait a signal or wait the delay to pass the next frame
+                        };
 
-                    Frame(const char *className, Pattern p, double d)
-                        : Effect(className), pattern(p), delay(d), signaled(false)          {}
-                    Frame(Pattern p, double d)
-                        : Effect(ClassName()), pattern(p), delay(d), signaled(false)        {}
-                    virtual ~Frame()                           {}
+                    public:
+                        Frame(const char *className, Pattern p, double d)
+                            : Effect(className), pattern(p), delay(d), signaled(false)          {}
+                        Frame(Pattern p, double d)
+                            : Effect(ClassName()), pattern(p), delay(d), signaled(false)        {}
+                        virtual ~Frame()                           {}
 
-                    static const char       *ClassName()        {return "Animation::Frame";}
-                    virtual ISceneNode      *Clone() const = 0;
+                        static const char       *ClassName()        {return "Animation::Frame";}
+                        virtual ISceneNode      *Clone() const = 0;
 
-                    /** Update the frame */
-                    virtual void            Update(float runningTime) = 0;
+                    protected:
+                        /** Update the frame */
+                        virtual void            Update(float runningTime) = 0;
+                        /** Render the frame */
+                        virtual void            Render(SceneGraph *scene) = 0;
 
-                    /** Render the frame */
-                    virtual void            Render(SceneGraph *scene) = 0;
-
-                    Pattern             pattern;        ///< the pattern of the frame
-                    double              delay;          ///< duration of the frame. If it's < 0, the delay is infinite
-                    bool                signaled;       ///< set the signal at true to tell that the animation has received a signal
+                    public:
+                        Pattern             pattern;        ///< the pattern of the frame
+                        double              delay;          ///< duration of the frame. If it's < 0, the delay is infinite
+                        bool                signaled;       ///< set the signal at true to tell that the animation has received a signal
                 };
 
             public:
@@ -131,14 +134,14 @@ namespace Nc
                 /** Send a signal to the current frame */
                 virtual void Signal(unsigned int i = 0);
 
+            protected:
                 /** Update the animation, manage the pattern and call the virtual function `UpdateFrame` */
                 virtual void Update(float runningTime);
                 /** Render the current frame, so call the virtual function `RenderFrame` */
                 virtual void Render(SceneGraph *scene);
 
-            protected:
                 /** Update the current frame */
-                virtual void UpdateFrame(float runningTime)                 {_itCurrentFrame->Update(runningTime);}
+                virtual void UpdateFrame(float runningTime)                 {_itCurrentFrame->UpdateNode(runningTime);}
                 /** Render the current frame */
                 virtual void RenderFrame(SceneGraph *scene);
 
@@ -241,7 +244,7 @@ namespace Nc
         template<typename T>
         void FramesAnimation<T>::Render(SceneGraph *scene)
         {
-            if (!_enabled || !_alive || !Started() || _itCurrentFrame == GetListFrame().end())
+            if (!_alive || !Started() || _itCurrentFrame == GetListFrame().end())
                 return;
             RenderFrame(scene);
         }
@@ -272,7 +275,7 @@ namespace Nc
                 scene->PushModelMatrix();
                 scene->ModelMatrix().AddTransformation(Matrix);
             }
-            _itCurrentFrame->Render(scene);
+            _itCurrentFrame->RenderNode(scene);
             if (pushed)
                 scene->PopModelMatrix();
         }

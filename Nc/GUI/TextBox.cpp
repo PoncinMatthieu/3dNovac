@@ -97,7 +97,7 @@ void TextBox::Draw(Graphic::SceneGraph *scene)
 {
     WidgetLabeled::Draw(scene);
     GetMaterial()->Render(scene, *_drawables[_indexDrawable]);
-    _font->Render(scene);
+    _font->RenderNode(scene);
 }
 
 void TextBox::KeyboardEvent(const System::Event &event)

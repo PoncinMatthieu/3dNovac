@@ -63,10 +63,12 @@ namespace Nc
                 /** Set the effect mode */
                 void                SetPattern(Pattern pattern);
 
-                /** Render the childs with the good effect */
-                virtual void        Render(SceneGraph *scene);
                 /** Render the given \p node with the given \p scene */
                 void                Render(Entity *node, SceneGraph *scene);
+
+            protected:
+                /** Render the childs with the good effect */
+                virtual void        Render(SceneGraph *scene);
 
             private:
                 System::Mutex       _mutex;

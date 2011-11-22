@@ -52,9 +52,6 @@ namespace Nc
                 Camera3d(const char *className, float ratioAspect, float nearf, float farf, float fieldOfView);
                 virtual ~Camera3d() {};
 
-                /** To update the mouvement of the camera with the keystates of WindowInput */
-                virtual void    Update(float RunningTime) = 0; // Running Time in second
-
                 /** Set the projection parameters */
                 void            SetProjection(float ratioAspect, float nearf, float farf, float fieldOfView);
                 /** Update the projectionMatrix to a perspective projection */
@@ -98,6 +95,10 @@ namespace Nc
                 virtual bool            PointInFrustum(const Vector3f &point);
                 /** \return true if the given \p box is the frustum */
                 virtual bool            BoxInFrustum(const Vector3f &center, float size);
+
+            protected:
+                /** To update the mouvement of the camera with the keystates of WindowInput */
+                virtual void    Update(float RunningTime) = 0; // Running Time in second
 
             protected:
                 // eye properties

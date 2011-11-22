@@ -215,6 +215,7 @@ namespace Nc
         /// Define a visiting method
         enum VisitMethod
         {
+            VisitOnlyCurrentNode,
             VisitParents,
             VisitChilds
         };
@@ -245,8 +246,9 @@ namespace Nc
                 {
                     switch (_visitMethod)
                     {
-                        case VisitParents:        static_cast<VisitorType*>(this)->InvokeParents(n);   break;
-                        case VisitChilds:         static_cast<VisitorType*>(this)->InvokeChilds(n);    break;
+                        case VisitOnlyCurrentNode:  break;
+                        case VisitParents:          static_cast<VisitorType*>(this)->InvokeParents(n);   break;
+                        case VisitChilds:           static_cast<VisitorType*>(this)->InvokeChilds(n);    break;
                     }
                 }
 
@@ -255,8 +257,9 @@ namespace Nc
                 {
                     switch (_visitMethod)
                     {
-                        case VisitParents:        static_cast<VisitorType*>(this)->InvokeParents(n);   break;
-                        case VisitChilds:         static_cast<VisitorType*>(this)->InvokeChilds(n);    break;
+                        case VisitOnlyCurrentNode:  break;
+                        case VisitParents:          static_cast<VisitorType*>(this)->InvokeParents(n);   break;
+                        case VisitChilds:           static_cast<VisitorType*>(this)->InvokeChilds(n);    break;
                     }
                 }
 

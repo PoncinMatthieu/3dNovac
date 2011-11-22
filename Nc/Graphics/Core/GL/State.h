@@ -84,6 +84,14 @@ namespace Nc
                     /** Initialize the render state with the given associated \p context */
                     void                InitContext(GLContext *context);
 
+                    /** \return the viewport X */
+                    inline unsigned int ViewportX()                                                 {return _currentViewportX;}
+                    /** \return the viewport Y */
+                    inline unsigned int ViewportY()                                                 {return _currentViewportY;}
+                    /** \return the viewport Width */
+                    inline unsigned int ViewportWidth()                                             {return _currentViewportWidth;}
+                    /** \return the viewport Height */
+                    inline unsigned int ViewportHeight()                                            {return _currentViewportHeight;}
                     /** \brief Set the viewport
                         Ogl function:
                             -glViewport()

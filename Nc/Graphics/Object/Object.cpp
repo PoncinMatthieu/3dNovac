@@ -162,19 +162,16 @@ void    Object::ConfigureDrawables(IMaterial *material)
 
 void    Object::Render(SceneGraph *scene)
 {
-    if (_enabled)
-    {
-        scene->PushModelMatrix();
-        TransformModelMatrixToRender(scene);
+    scene->PushModelMatrix();
+    TransformModelMatrixToRender(scene);
 
-        // rendering
-        Draw(scene);
+    // rendering
+    Draw(scene);
 
-        // rendering childs
-        NodeType::RenderChilds(scene);
+    // rendering childs
+    NodeType::RenderChilds(scene);
 
-        scene->PopModelMatrix();
-    }
+    scene->PopModelMatrix();
 }
 
 void    Object::Draw(SceneGraph *scene)

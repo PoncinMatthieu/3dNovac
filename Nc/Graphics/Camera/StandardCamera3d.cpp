@@ -294,6 +294,8 @@ void StandardCamera3d::MouseButtonEvent(const System::Event &event)
 
 void StandardCamera3d::Update(float runningTime)
 {
+    Lock();
+
 // ici la vitesse de translation sera aussi fonction de la distance entre l'oeil et le centre
 // cela permet d'avoir un deplacement proportionnel a la distance,
 // et donc parcourir une plus grande distance si on s'eloigne du centre
@@ -355,6 +357,8 @@ void StandardCamera3d::Update(float runningTime)
         if (updateEye)
             MajEye();
     }
+
+    Unlock();
 }
 
 void StandardCamera3d::MajEye()

@@ -120,7 +120,7 @@ void Button::Draw(Graphic::SceneGraph *scene)
 {
     Widget::Draw(scene);
     GetMaterial()->Render(scene, *_drawables[_indexDrawable]);
-    _font->Render(scene);
+    _font->RenderNode(scene);
 }
 
 void Button::MouseButtonEvent(const System::Event &event)

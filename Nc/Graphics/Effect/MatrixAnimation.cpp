@@ -63,9 +63,6 @@ void MatrixAnimation::Update(float runningTime)
 
 void    MatrixAnimation::Render(SceneGraph *scene)
 {
-    if (!_enabled)
-        return;
-
     bool activated = _activated;
     if (activated)
     {

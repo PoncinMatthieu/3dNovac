@@ -153,7 +153,7 @@ void Console::Render(Graphic::SceneGraph *scene)
             {
                 if (*itMsg != (*it)->Text())
                     (*it)->Text(*itMsg);
-                (*it)->Render(scene);
+                (*it)->RenderNode(scene);
                 ++itMsg;
             }
         _mutexMsg.Unlock();

@@ -62,12 +62,6 @@ namespace Nc
                 static const char       *ClassName()                        {return "Octree";}
                 virtual ISceneNode      *Clone() const                      {return new Octree(*this);}
 
-                /** Update all children and subtree */
-                virtual void            Update(float elapsedTime)           {UpdateChilds(elapsedTime);}
-
-                /** Render childrens and subtree by using the patten */
-                virtual void            Render(SceneGraph *scene)           {_mutex.Lock(); RenderChilds(scene); _mutex.Unlock();}
-
                 /** \return the number of subtree (ISceneNode) into the node */
                 virtual unsigned int    SubTreeCount() const                {return Data.size();}
                 /** \return the subtree corresponding to the given index */
@@ -89,6 +83,12 @@ namespace Nc
 
                 /** Set the pattern of the octree node */
                 void                    SetPattern(Pattern p)               {_pattern = p;}
+
+            protected:
+                /** Update all children and subtree */
+                virtual void            Update(float elapsedTime)           {UpdateChilds(elapsedTime);}
+                /** Render childrens and subtree by using the patten */
+                virtual void            Render(SceneGraph *scene)           {RenderChilds(scene);}
 
             private:
                 bool                    _drawOutlines;          ///< draw outlines statement

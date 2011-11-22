@@ -52,32 +52,32 @@ namespace Nc
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the widget */
-                inline void     Text(const std::string &t)  {_font->Text(t);}
+                inline void         Text(const std::string &t)  {_font->Text(t);}
 
 
             protected:
                 /** Update the geometry of the button */
-                virtual void Update();
+                virtual void        Update();
                 /** Render the button */
-                virtual void Draw(Graphic::SceneGraph *scene);
+                virtual void        Draw(Graphic::SceneGraph *scene);
 
                 /** The mouse button handler */
-                void MouseButtonEvent(const System::Event &event);
+                void                MouseButtonEvent(const System::Event &event);
                 /** Send an event to the good engine */
-                virtual void execHanle();
+                virtual void        execHanle();
 
             private:
                 /** Copy the widget */
-                void    Copy(const Button &w);
+                void                Copy(const Button &w);
 
             private:
-                unsigned int            _indexDrawable;         ///< An index of the drawable used to render the button
+                unsigned int        _indexDrawable;         ///< An index of the drawable used to render the button
 
-                Graphic::String         *_font;                 ///< The text of the button
-                int                     _textWidth;             ///< The width of the text
-                int                     _textHeight;            ///< The height of the text
-                bool                    _buttonPressed;         ///< Mark if the button is pressed
-                Color                   _colorDisable;          ///< The color of the disabled button
+                Graphic::String     *_font;                 ///< The text of the button
+                int                 _textWidth;             ///< The width of the text
+                int                 _textHeight;            ///< The height of the text
+                bool                _buttonPressed;         ///< Mark if the button is pressed
+                Color               _colorDisable;          ///< The color of the disabled button
         };
     }
 }

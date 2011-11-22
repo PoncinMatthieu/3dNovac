@@ -33,9 +33,55 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
+ISceneNode::ISceneNode(const char *className)
+    :   System::Object(className),
+        _enabled(true),
+        _updatingController(NULL), _renderingController(NULL)
+{
+}
+
+ISceneNode::~ISceneNode()
+{
+}
+
 bool    ISceneNode::EnabledRecursif() const
 {
     Visitor::IsEnableRecursive f;
     f(*this);
     return f.result;
+}
+
+void    ISceneNode::UpdateNode(float elapsedTime)
+{
+    if (_enabled)
+    {
+        if (_updatingController != NULL)
+        {
+            _updatingController->ElapsedTime(elapsedTime);
+            (*_updatingController)(*this);
+        }
+        Update(elapsedTime);
+    }
+}
+
+void    ISceneNode::RenderNode(SceneGraph *scene)
+{
+    Lock();
+    if (_enabled)
+    {
+        if (_renderingController != NULL)
+        {
+            _renderingController->Scene(scene);
+            _renderingController->CurrentStade(IRenderingController::Begin);
+            (*_renderingController)(*this);
+
+            Render(scene);
+
+            _renderingController->CurrentStade(IRenderingController::End);
+            (*_renderingController)(*this);
+        }
+        else
+            Render(scene);
+    }
+    Unlock();
 }

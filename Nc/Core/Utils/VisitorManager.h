@@ -155,7 +155,7 @@ namespace Nc
                             }
 
                             if (thunk != NULL)
-                                return (this->*thunk)(b);
+                                return (static_cast<VisitorType*>(this)->*thunk)(b);
                             return ReturnType();
                         }
 

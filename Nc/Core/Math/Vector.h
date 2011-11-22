@@ -88,6 +88,8 @@ namespace Nc
                 // function
                 /** \return the square root length of the vector */
                 T       Length() const;
+                /** scale the vector */
+                void    Scale(T l);
                 /** Normalize the vector and return itself */
                 Vector  &Normalize();
                 /** \return the dot product of the vector with \p v */
@@ -348,6 +350,12 @@ namespace Nc
             for (unsigned int i = 1; i < D; ++i)
                 r += Data[i] * Data[i];
             return sqrt(r);
+        }
+
+        template<typename T, unsigned char D>
+        void    Vector<T,D>::Scale(T l)
+        {
+            (*this) *= l;
         }
 
         template<typename T, unsigned char D>

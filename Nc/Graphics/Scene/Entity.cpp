@@ -81,9 +81,9 @@ void    Entity::RenderChilds(SceneGraph *scene)
     try
     {
         if (NodeType::Data != NULL)
-            NodeType::Data->Render(scene);
+            NodeType::Data->RenderNode(scene);
         for (ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
-            (*it)->Render(scene);
+            (*it)->RenderNode(scene);
     }
     catch (const std::exception &e)
     {
@@ -96,9 +96,9 @@ void    Entity::UpdateChilds(float elapsedTime)
     try
     {
         if (NodeType::Data != NULL)
-            NodeType::Data->Update(elapsedTime);
+            NodeType::Data->UpdateNode(elapsedTime);
         for (ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
-            (*it)->Update(elapsedTime);
+            (*it)->UpdateNode(elapsedTime);
     }
     catch (const std::exception &e)
     {
@@ -145,18 +145,12 @@ void    Entity::Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)
 
 void    Entity::Render(SceneGraph *scene)
 {
-    if (_enabled)
-    {
-        _mutex.Lock();
-        RenderChilds(scene);
-        _mutex.Unlock();
-    }
+    RenderChilds(scene);
 }
 
 void    Entity::Update(float elapsedTime)
 {
-    if (_enabled)
-        UpdateChilds(elapsedTime);
+    UpdateChilds(elapsedTime);
 }
 
 void    Entity::GetReelBox(Box3f &box) const

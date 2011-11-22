@@ -102,9 +102,6 @@ namespace Nc
                 /** Manage the keyboard event */
                 virtual void    KeyboardEvent(const System::Event &) {};
 
-                /** to compute the actual position */
-                virtual void    Update(float runningTime);
-
                 /** Update the geometry witch draw the frustum of the camera */
                 virtual void    UpdateViewFrustum();
                 /** Draw the frustum */
@@ -118,6 +115,9 @@ namespace Nc
                 inline void     UninibitMovement()                  {_inhibitMovement = false;}
 
             protected:
+                /** to compute the actual position */
+                virtual void    Update(float runningTime);
+
                 /** Recompute the trackball point with the given mouse position */
                 void MajTrackballPoint(int x, int y);
 

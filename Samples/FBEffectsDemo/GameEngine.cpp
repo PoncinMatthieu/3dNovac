@@ -89,7 +89,7 @@ void GameEngine::LoadContent()
 
 void GameEngine::Update(float runningTime)
 {
-  _scene3d->Update(runningTime);
+  _scene3d->UpdateNode(runningTime);
 }
 
 void GameEngine::ManageWindowEvent(System::Event &event)

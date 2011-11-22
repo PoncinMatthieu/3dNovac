@@ -77,6 +77,7 @@ void GameEngine::LoadContent()
   // create a new repere to display at the center of the scene
   _scene3d->AddChild(BasicMeshCreator::Axis(1, true, _map->Center()));
 
+  _scene3d->AddChild(BasicMeshCreator::Axis(1, true, true));
 
     // no need to active/disable the context at each loop
     _pattern.Disable(Nc::Engine::HasAContext);
@@ -85,7 +86,7 @@ void GameEngine::LoadContent()
 void GameEngine::Update(float runningTime)
 {
   // update the scene (will update it's effect and camera)
-  _scene3d->Update(runningTime);
+  _scene3d->UpdateNode(runningTime);
 }
 
 void GameEngine::ManageWindowEvent(System::Event &event)

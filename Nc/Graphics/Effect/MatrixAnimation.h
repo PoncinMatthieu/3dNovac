@@ -59,14 +59,17 @@ namespace Nc
 
                 /** Reset the anim with the initial matrix */
                 inline void         Reset()                     {_currentMatrix = TMatrix::Identity;}
-                /** Update the matrix animation */
-                virtual void        Update(float runningTime);
-                virtual void        Render(SceneGraph *scene);
 
                 // accesseurs
     //            inline void   Transfornation(const mMatrice &m)   {_transformation = m;}    //TODO
                 /** Program a rotatation animation */
                 inline void     Rotation(const Vector3f &axe, float angle)      {_rotation = axe; _angle = angle;}
+
+            protected:
+                /** Update the matrix animation */
+                virtual void        Update(float runningTime);
+                /** Render the matrix animation */
+                virtual void        Render(SceneGraph *scene);
 
             private:
                 TMatrix         _currentMatrix;

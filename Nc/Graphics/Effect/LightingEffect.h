@@ -82,9 +82,6 @@ namespace Nc
                 static const char           *ClassName()                {return "LightingEffect";}
                 virtual ISceneNode          *Clone() const              {return new LightingEffect(*this);}
 
-                /** Render the childs */
-                virtual void                Render(SceneGraph *scene);
-
                 /** \return the color ambiant of the lighting */
                 inline const Color          &ColorAmbiant() const       {return _colorAmbiant;}
                 /** \return the lights */
@@ -93,6 +90,10 @@ namespace Nc
                 inline ListPLight           &Lights()                   {return _listLight;}
                 /** \return the lighting material */
                 inline ILightingMaterial    *Material()                 {return _material;}
+
+            protected:
+                /** Render the childs */
+                virtual void                Render(SceneGraph *scene);
 
             private:
                 ILightingMaterial           *_material;         ///< the lighting material

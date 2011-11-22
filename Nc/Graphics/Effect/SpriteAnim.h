@@ -38,34 +38,38 @@ namespace Nc
         /**
             It's simpli a container of sprite, a frame is composed of one sprite, so the Animation class will animate his collection of frames
         */
-        struct LGRAPHICS SpriteAnimFrame : public FramesAnimation<SpriteAnimFrame>::Frame
+        class LGRAPHICS SpriteAnimFrame : public FramesAnimation<SpriteAnimFrame>::Frame
         {
-            NC_UTILS_DEFINE_PARENT_CLASS(FramesAnimation<SpriteAnimFrame>::Frame);
-            NC_UTILS_DEFINE_VISITABLE(System::Object);
+            public:
+                NC_UTILS_DEFINE_PARENT_CLASS(FramesAnimation<SpriteAnimFrame>::Frame);
+                NC_UTILS_DEFINE_VISITABLE(System::Object);
 
-            SpriteAnimFrame(Parent::Pattern p, double d)                : Parent(ClassName(), p, d), sprite(NULL)                   {}
-            SpriteAnimFrame(Parent::Pattern p, double d, Sprite *s)     : Parent(ClassName(), p, d), sprite(s)                      {}
-            SpriteAnimFrame(const SpriteAnimFrame &f)                   : Parent(f), sprite(new Sprite(*f.sprite))                  {}
-            virtual ~SpriteAnimFrame()                                  {delete sprite;}
+            public:
+                SpriteAnimFrame(Parent::Pattern p, double d)                : Parent(ClassName(), p, d), sprite(NULL)                   {}
+                SpriteAnimFrame(Parent::Pattern p, double d, Sprite *s)     : Parent(ClassName(), p, d), sprite(s)                      {}
+                SpriteAnimFrame(const SpriteAnimFrame &f)                   : Parent(f), sprite(new Sprite(*f.sprite))                  {}
+                virtual ~SpriteAnimFrame()                                  {delete sprite;}
 
-            static const char       *ClassName()                        {return "SpriteAnimFrame";}
-            virtual ISceneNode      *Clone() const                      {return new SpriteAnimFrame(*this);}
+                static const char       *ClassName()                        {return "SpriteAnimFrame";}
+                virtual ISceneNode      *Clone() const                      {return new SpriteAnimFrame(*this);}
 
-            SpriteAnimFrame &operator = (const SpriteAnimFrame &f)
-            {
-                Parent::operator=(f);
-                if (sprite)
-                    delete sprite;
-                sprite = new Sprite(*f.sprite);
-                return *this;
-            }
+                SpriteAnimFrame &operator = (const SpriteAnimFrame &f)
+                {
+                    Parent::operator=(f);
+                    if (sprite)
+                        delete sprite;
+                    sprite = new Sprite(*f.sprite);
+                    return *this;
+                }
 
-            /** Update the sprite */
-            virtual void Update(float runningTime);
-            /** Render the sprite */
-            virtual void Render(SceneGraph *scene);
+            protected:
+                /** Update the sprite */
+                virtual void Update(float runningTime);
+                /** Render the sprite */
+                virtual void Render(SceneGraph *scene);
 
-            Sprite      *sprite;        ///< the sprite of the frame
+            public:
+                Sprite      *sprite;        ///< the sprite of the frame
         };
     }
 }

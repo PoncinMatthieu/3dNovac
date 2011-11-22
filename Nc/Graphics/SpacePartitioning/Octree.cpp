@@ -105,15 +105,15 @@ void        Octree::RenderChilds(SceneGraph *scene)
             if (_boundingBoxObject == NULL)
                 _boundingBoxObject = new BoundingBox();
             _boundingBoxObject->Init(_center, _size);
-            _boundingBoxObject->Render(scene);
+            _boundingBoxObject->RenderNode(scene);
         }
 
         for (std::list<ISceneNode*>::iterator it = Data.begin(); it != Data.end(); ++it)
-            (*it)->Render(scene);
+            (*it)->RenderNode(scene);
         for (unsigned int i = 0; i < 8; ++i)
         {
             if (_childs[i] != NULL)
-                _childs[i]->Render(scene);
+                _childs[i]->RenderNode(scene);
         }
     }
 }
@@ -121,11 +121,11 @@ void        Octree::RenderChilds(SceneGraph *scene)
 void        Octree::UpdateChilds(float elapsedTime)
 {
     for (std::list<ISceneNode*>::iterator it = Data.begin(); it != Data.end(); ++it)
-        (*it)->Update(elapsedTime);
+        (*it)->UpdateNode(elapsedTime);
     for (unsigned int i = 0; i < 8; ++i)
     {
         if (_childs[i] != NULL)
-            _childs[i]->Update(elapsedTime);
+            _childs[i]->UpdateNode(elapsedTime);
     }
 }
 

@@ -78,9 +78,6 @@ void RasterEffect::SetPattern(Pattern pattern)
 
 void RasterEffect::Render(SceneGraph *scene)
 {
-    if (!_enabled)
-        return;
-
     bool activated = _activated;
 
     _mutex.Lock();
@@ -94,9 +91,6 @@ void RasterEffect::Render(SceneGraph *scene)
 
 void RasterEffect::Render(Entity *node, SceneGraph *scene)
 {
-    if (!_enabled)
-        return;
-
     bool activated = _activated;
 
     _mutex.Lock();

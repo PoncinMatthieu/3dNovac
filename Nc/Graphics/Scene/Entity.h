@@ -58,11 +58,6 @@ namespace Nc
                 static const char           *ClassName()                                        {return "Entity";}
                 virtual ISceneNode          *Clone() const                                      {return new Entity(*this);}
 
-                /** Render the node */
-                virtual void                Render(SceneGraph *scene);
-                /** Update the node */
-                virtual void                Update(float elapsedTime);
-
                 /** \return the number of subtree witch can contain a least one subtree */
                 virtual unsigned int        SubTreeCount() const                                {return ((Data == NULL) ? 0 : 1);}
                 /** \return the subtree */
@@ -91,6 +86,12 @@ namespace Nc
                 void                HeightScale(float height); // /!\ metre a jour la bounding box avant
                 /** Translate the model Matrix to the given vector using the xy center of the box */
                 void                CenterBase(const Vector3f &centerBase);
+
+            protected:
+                /** Render the node */
+                virtual void                Render(SceneGraph *scene);
+                /** Update the node */
+                virtual void                Update(float elapsedTime);
 
             public:
                 TMatrix                     Matrix;                 ///< the matrix of the entity
