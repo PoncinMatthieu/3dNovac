@@ -21,9 +21,12 @@ if(UNIX)
 	  ../extlibs/libpng/
 	  ../extlibs/zlib/
 	  ../extlibs/SFML/include/
-#	  /usr/include/freetype2/
-	  /usr/local/include/colladadom/
-	  /usr/local/include/colladadom/1.4/
+	  ../extlibs/Collada/
+	)
+
+      link_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}/../extlibs/Collada/lib/
+	${CMAKE_CURRENT_SOURCE_DIR}/../extlibs/Collada/extlibs/
 	)
 else()
 	include_directories(

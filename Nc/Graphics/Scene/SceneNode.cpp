@@ -53,6 +53,7 @@ bool    ISceneNode::EnabledRecursif() const
 
 void    ISceneNode::UpdateNode(float elapsedTime)
 {
+    //Lock();
     if (_enabled)
     {
         if (_updatingController != NULL)
@@ -62,6 +63,7 @@ void    ISceneNode::UpdateNode(float elapsedTime)
         }
         Update(elapsedTime);
     }
+    //Unlock();
 }
 
 void    ISceneNode::RenderNode(SceneGraph *scene)

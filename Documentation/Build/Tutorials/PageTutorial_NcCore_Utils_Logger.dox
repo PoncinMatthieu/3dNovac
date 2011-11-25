@@ -3,7 +3,7 @@
 
 	<div class="title">Introduction</div>
 	This tutorial will explain what is the logger, how to use it and how it works.
-	So you will be able to create your own logging system and manipulate the output produce by the 3dNovac framework and your own program.   
+	So you will be able to create your own logging system and manipulate the output produce by the 3dNovac framework and your own program.
 
 	Pay attention that all the entire 3dNovac framework use the Logger class.
 

@@ -70,7 +70,7 @@ namespace Nc
                     /** Add a param with the key/value */
                     inline void                 AddParam(const std::string &key, const std::string &value)      {_params[key] = value;}
                     /** \return the param with the given key */
-                    inline const std::string    &Param(const std::string &key)                                  {return _params[key];}
+                    inline std::string          &Param(const std::string &key)                                  {return _params[key];}
                     /** \return true if the given key exist */
                     inline bool                 ParamExist(const std::string &key)                              {return (_params.find(key) != _params.end());}
                     /** \return the map of param key/values */

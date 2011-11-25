@@ -2,7 +2,7 @@
 	\mainpage 3dNovac Reference Documentation
 
 	<center>v0.1</center>
-	<center><a href="http://sites.google.com/site/3dnovac/">http://sites.google.com/site/3dnovac/</a></center>
+	<center><a href="http://3dnovac.eu">3dnovac.eu</a></center>
 
 	\section welcome Welcome
 	Welcome to the official 3dNovac documentation. Here you will find a detailed
@@ -10,7 +10,7 @@
 	as well as <a href="./annotated.html">classes</a>. <br/> <br/>
 
 	<div class="title">Downloads</div>
-	- <a target=_blank href="http://sites.google.com/site/3dnovac/developpeur/history">Change Log</a>
+	- <a target=_blank href="http://3dnovac.eu/ChangeLog">Change Log</a>
 	- <a target=_blank href="http://code.google.com/p/3dnovac/downloads/list">Releases</a>
 	- <a target=_blank href="http://code.google.com/p/3dnovac/source/checkout">Svn</a>
 

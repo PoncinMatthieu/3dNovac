@@ -1,0 +1,55 @@
+/**
+	\page PageTutorial_Install_Linux Installing 3dNovac under Linux (Ubuntu)
+
+	<div class="title">Introduction</div>
+	This tutorial will explain you how to install the framework 3dNovac under Linux with Ubuntu.
+
+	<div class="title">Getting the latest version</div>
+	Actually there is no provided package. So you will need to retreive the source from subversion.
+
+
+	You can checkout the sources from the svn server at this addresse: <a target=_blank href="http://code.google.com/p/3dnovac/source/checkout">Checkout</a>
+
+
+	<div class="title">Compiling 3dNovac</div>
+	Installing dependancies:
+
+	Here is the list of dependancies you will need to install:
+	- libpng - For Nc-Graphics
+	- libfreetype - For Nc-Graphics
+	- libsfml-audio1.6 - For Nc-Audio
+	- libcollada14dom - For the plugin FileFormatCollada
+
+	To install them you can execute this command as root:
+ \code
+	apt-get install libpng12-dev libfreetype6-dev libsfml-dev
+ \endcode
+
+	3dNovac use cmake to build it. So you can generate a makefile or a Codeblocks project with those commands:
+ \code
+	// Generating unix makefile
+	cmake -G"Unix Makefiles"
+
+	// Or Generating Codeblock project
+	cmake -G"CodeBlocks - Unix Makefiles"
+ \endcode
+
+	Finally you can build the project.
+ \code
+	make
+ \endcode
+
+
+	<div class="title">Compiling the 3dNovac samples</div>
+	The 3dNovac samples should be also build by using cmake, so it's easy to build them like the 3dNovac framework.
+
+
+	<div class="title">Compiling your program with 3dNovac</div>
+	To compile your own project with 3dNovac. You will just have to add to the include directories the root directory of the 3dNovac framework.
+	And to the linked library the name of the package you want to use.
+
+ For exemple:
+ \code
+
+ \endcode
+*/

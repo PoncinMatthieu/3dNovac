@@ -35,7 +35,8 @@ namespace Nc
     {
         /// To manage simple animation with matrix like Rotation/Translation
         /**
-            \todo this class should be recode
+            \deprecated this class shouldn't be use, try to create a controller to manipulate the matrix on your node.
+            \todo this class should be recode or just deleted, no longer necessary
         */
         class LGRAPHICS   MatrixAnimation : public Animation
         {

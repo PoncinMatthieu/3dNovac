@@ -9,6 +9,7 @@
 	     	</tr></table>
 	     </div>
 	     	- \subpage PageTutorial0 "Introduction to the 3dNovac Framework"
+		- \subpage PageTutorial_Install_Linux "Installing 3dNovac under Linux (Ubuntu)"
 	     	- \subpage PageTutorial1 "Your first 3dNovac application. (Minimal code to start a project with the Graphical engine)"
 
 

@@ -69,6 +69,7 @@ namespace Nc
                 void                        UpdateNode(float elapsedTime);
                 /**
                     If the node is enable, call the current rendering controller twice, once before calling the Render metod and once another after.
+                    The RenderNode method lock the node with a mutex before rendering.
                     \sa Render
                  */
                 void                        RenderNode(SceneGraph *scene);

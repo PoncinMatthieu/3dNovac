@@ -75,9 +75,6 @@ namespace Nc
                 virtual inline void Execute(float runningTime)  {}
 
             protected:
-                virtual inline void ActiveContext() {};
-                virtual inline void DisableContext() {};
-
                 void LdDescFile(const Utils::FileName &file);
                 void LdMusic(const Utils::FileName &file);
                 void LdSound(const Utils::FileName &file);
