@@ -42,7 +42,7 @@
 #pragma message enable nosimpint
 #endif
 #endif
-#include <GL/gl.h>
+//#include <GL/gl.h>
 
 
 #if defined(USE_MGL_NAMESPACE)
