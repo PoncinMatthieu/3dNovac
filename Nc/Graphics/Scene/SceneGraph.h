@@ -48,11 +48,12 @@ namespace Nc
         class LGRAPHICS SceneGraph : public Entity
         {
             public:
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, Nc::System::Object, Nc::Graphic::SceneGraph);
+
+            public:
                 SceneGraph(bool for2dRendering = false);
-                SceneGraph(const char *className, bool for2dRendering = false);
                 virtual ~SceneGraph();
 
-                static const char       *ClassName()                {return "SceneGraph";}
                 virtual ISceneNode      *Clone() const              {return new SceneGraph(*this);}
 
                 /** \return the current projection matrix */

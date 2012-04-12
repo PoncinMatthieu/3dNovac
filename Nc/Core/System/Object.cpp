@@ -33,25 +33,19 @@ using namespace Nc::System;
 unsigned int Object::_nbObject = 0;
 
 Object::Object()
-    : _className(ClassName())
 {
     _id = _nbObject++;
 }
 
-Object::Object(const char *className)
-    : _className(className)
-{
-    _id = _nbObject++;
-}
 
-Object::Object(const char *className, const std::string &name)
-    : _name(name), _className(className)
+Object::Object(const std::string &name)
+    : _name(name)
 {
     _id = _nbObject++;
 }
 
 Object::Object(const Object &obj)
-    : _name(obj._name), _className(obj._className)
+    : _name(obj._name)
 {
     _id = _nbObject++;
 }
@@ -69,7 +63,7 @@ Object::~Object()
 
 void    Object::ToString(std::ostream& oss) const
 {
-    oss << "'" << _className << "' id: " << _id;
+    oss << "'" << ResolvedClassName() << "' id: " << _id;
     if (!_name.empty())
         oss << "  name: `" << _name << "`";
 }

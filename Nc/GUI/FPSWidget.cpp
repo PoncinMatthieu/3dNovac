@@ -30,7 +30,7 @@ using namespace Nc;
 using namespace Nc::GUI;
 
 FPSWidget::FPSWidget(Corner x, Corner y)
-    : WidgetLabeled(ClassName(), "000", Vector2i(0,5), Vector2i(0,20), x, y)
+    : WidgetLabeled("000", 20, x, y, Vector2i(0,5), Vector2i(0,20))
 {
     _size.Data[1] = _label->Size().Data[1];
     LabelColor(Color(1,1,1));

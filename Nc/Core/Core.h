@@ -36,4 +36,4 @@
     #include "Math/Math.h"
     #include "System/System.h"
 
-#endif // NC_CORE_CORE_H_
+#endif

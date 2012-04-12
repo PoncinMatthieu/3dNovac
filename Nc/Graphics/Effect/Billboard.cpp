@@ -33,12 +33,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 Billboard::Billboard(Pattern p, Entity *target)
-    : Effect(ClassName()), _pattern(p), _targetEntity(target)
-{
-}
-
-Billboard::Billboard(const char *className, Pattern p, Entity *target)
-    : Effect(className), _pattern(p), _targetEntity(target)
+    : Effect(), _pattern(p), _targetEntity(target)
 {
 }
 

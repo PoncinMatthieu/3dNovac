@@ -41,7 +41,7 @@ Mutex                               Console::_mutexMsg;
 std::string							Console::_currentWritingMsg;
 
 Console::Console(Pattern p)
-    : WindowBox(ClassName(), "Console", "Prototype"), _pattern(p)
+    : WindowBox("Console", "Prototype"), _pattern(p)
 {
     unsigned short  percent = 15; // hauteur de la console en poucentage
 
@@ -54,17 +54,17 @@ Console::Console(Pattern p)
     _size.Data[1] = ((float)(percent * Window::Height()) / 100.0) + _titleHeight;
     _pos[0] = 1; // pour voir tous les bord de la console, on se decale de 1
 
-    _labelPrompt = new WidgetLabeled(_prompt, Vector2f(0, 0), Vector2f(0, 17), Left, Bottom, "Prototype");
+    _labelPrompt = new WidgetLabeled(_prompt, 17, Left, Bottom, Vector2f(0, 0), Vector2f(0, 17), "Prototype");
     _labelPrompt->LabelColor(Color(1, 1, 1));
     AddChild(_labelPrompt);
 
-    Vector2f size;
+    Vector2i size;
     _labelPrompt->GetReelSize(size);
-    _labelWrite = new WidgetLabeled("", Vector2f(size.Data[0], 0), Vector2f(0, 17), Left, Bottom, "Prototype");
+    _labelWrite = new WidgetLabeled("", 17, Left, Bottom, Vector2f(size.Data[0], 0), Vector2f(0, 17), "Prototype");
     _labelWrite->LabelColor(Color(1, 1, 1));
     AddChild(_labelWrite);
 
-    _labelCursor = new WidgetLabeled("_", Vector2f(size.Data[0], 0), Vector2f(0, 17), Left, Bottom, "arial");
+    _labelCursor = new WidgetLabeled("_", 17, Left, Bottom, Vector2f(size.Data[0], 0), Vector2f(0, 17), "arial");
     _labelCursor->LabelColor(Color(0, 1, 0));
     AddChild(_labelCursor);
 
@@ -98,7 +98,7 @@ void Console::Write(const std::string msg, bool flush)
     }
 }
 
-void Console::GetReelPos(Vector2f &pos) const
+void Console::GetReelPos(Vector2i &pos) const
 {
     WindowBox::GetReelPos(pos);
     if (_pattern == TranslateAtFocus && !_focus)
@@ -186,8 +186,8 @@ void Console::KeyboardEvent(const Event &event)
                     {
                         cmd = *_itCurrentMsg;
                         _labelWrite->Label(cmd);
-                        Vector2f sizeLabelWrite;
-                        Vector2f sizeLabelPrompt;
+                        Vector2i sizeLabelWrite;
+                        Vector2i sizeLabelPrompt;
                         _labelWrite->GetReelSize(sizeLabelWrite);
                         _labelPrompt->GetReelSize(sizeLabelPrompt);
                         _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
@@ -202,8 +202,8 @@ void Console::KeyboardEvent(const Event &event)
                     {
                         cmd = lastcmd;
                         _labelWrite->Label(cmd);
-                        Vector2f sizeLabelWrite;
-                        Vector2f sizeLabelPrompt;
+                        Vector2i sizeLabelWrite;
+                        Vector2i sizeLabelPrompt;
                         _labelWrite->GetReelSize(sizeLabelWrite);
                         _labelPrompt->GetReelSize(sizeLabelPrompt);
                         _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
@@ -215,8 +215,8 @@ void Console::KeyboardEvent(const Event &event)
                     --_itCurrentMsg;
                     cmd = *_itCurrentMsg;
                     _labelWrite->Label(cmd);
-                    Vector2f sizeLabelWrite;
-                    Vector2f sizeLabelPrompt;
+                    Vector2i sizeLabelWrite;
+                    Vector2i sizeLabelPrompt;
                     _labelWrite->GetReelSize(sizeLabelWrite);
                     _labelPrompt->GetReelSize(sizeLabelPrompt);
                     _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
@@ -235,8 +235,8 @@ void Console::KeyboardEvent(const Event &event)
             cmd.clear();
             _labelWrite->Label("");
             lastcmdSet = false;
-            Vector2f sizeLabelWrite;
-            Vector2f sizeLabelPrompt;
+            Vector2i sizeLabelWrite;
+            Vector2i sizeLabelPrompt;
             _labelWrite->GetReelSize(sizeLabelWrite);
             _labelPrompt->GetReelSize(sizeLabelPrompt);
             _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
@@ -245,8 +245,8 @@ void Console::KeyboardEvent(const Event &event)
         {
             cmd.erase(cmd.end() - 1);
             _labelWrite->Label(cmd);
-            Vector2f sizeLabelWrite;
-            Vector2f sizeLabelPrompt;
+            Vector2i sizeLabelWrite;
+            Vector2i sizeLabelPrompt;
             _labelWrite->GetReelSize(sizeLabelWrite);
             _labelPrompt->GetReelSize(sizeLabelPrompt);
             _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
@@ -259,8 +259,8 @@ void Console::KeyboardEvent(const Event &event)
             {
                 cmd += c;
                 _labelWrite->Label(cmd);
-                Vector2f sizeLabelWrite;
-                Vector2f sizeLabelPrompt;
+                Vector2i sizeLabelWrite;
+                Vector2i sizeLabelPrompt;
                 _labelWrite->GetReelSize(sizeLabelWrite);
                 _labelPrompt->GetReelSize(sizeLabelPrompt);
                 _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));

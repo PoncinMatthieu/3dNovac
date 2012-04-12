@@ -36,7 +36,7 @@ using namespace Nc::Utils;
 using namespace Nc::Audio;
 
 Engine::Engine(Nc::Engine::Manager *manager)
-    : Nc::Engine::IEngine(ClassName(), "Audio Engine", manager, 0, 1, 1, 1)
+    : Nc::Engine::IEngine("Audio Engine", manager, 0, 1, 1, 1)
 {
     _musicOpened = false;
 

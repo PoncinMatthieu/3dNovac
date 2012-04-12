@@ -44,12 +44,11 @@ namespace Nc
         class LGRAPHICS Camera3d : public Camera
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Camera);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Camera, System::Object, Nc::Graphic::Camera3d);
 
             public:
 				// /!\ near et far sont des define windows provenant de windef.h, ne pas changer le nom nearf en near !
-                Camera3d(const char *className, float ratioAspect, float nearf, float farf, float fieldOfView);
+                Camera3d(float ratioAspect, float nearf, float farf, float fieldOfView);
                 virtual ~Camera3d() {};
 
                 /** Set the projection parameters */

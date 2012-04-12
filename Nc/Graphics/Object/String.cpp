@@ -34,7 +34,7 @@ String::MapFont         String::_mapFont;
 System::Mutex           String::_mutex;
 
 String::String(const Utils::Unicode::UTF32 &text, float size, const Color &color, const std::string &ttf, const Utils::Mask<Style> &style)
-    : Object(ClassName()), _needUpdate(true), _needUpdateSize(true), _text(text), _style(style), _charSize(size), _color(color)
+    : Object(), _needUpdate(true), _needUpdateSize(true), _text(text), _style(style), _charSize(size), _color(color)
 {
     // search the font in the map
     MapFont::iterator it = _mapFont.find(ttf);

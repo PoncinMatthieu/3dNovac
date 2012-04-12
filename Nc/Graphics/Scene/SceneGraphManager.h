@@ -39,8 +39,6 @@ namespace Nc
             (one for a 3d rendering, and another for the 2d rendering in front of the screen like GUI) <br/>
             The SceneGraphs contained by the SceneGraphManager are not deleted when the SceneGraphManager is destroyed.
             So it's your role to destroy it if they are dynamically allocated.
-
-            \todo manage the redudant state glClearColor
         */
         class LGRAPHICS SceneGraphManager
         {

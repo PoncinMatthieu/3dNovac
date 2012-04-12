@@ -46,8 +46,7 @@ namespace Nc
         class LGRAPHICS   String : public Object
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::String);
 
                 /** Define the style of the text */
                 enum Style
@@ -65,7 +64,6 @@ namespace Nc
                 String(const Utils::Unicode::UTF32 &text, float size, const Color &color, const std::string &ttf, const Utils::Mask<Style> &s = Regular);
                 virtual ~String();
 
-                static const char               *ClassName()                                    {return "String";}
                 virtual ISceneNode              *Clone() const                                  {return new String(*this);}
 
                 /** Set the UTF32 text */

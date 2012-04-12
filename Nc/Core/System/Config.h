@@ -80,6 +80,7 @@ namespace Nc
                 Config()    {_content = NULL;}
                 ~Config();
 
+            protected:
                 Utils::Xml::File        _file;          ///< xml file used to read and write the configs
                 Utils::Xml::Object      *_content;      ///< xml object witch store the configs
 

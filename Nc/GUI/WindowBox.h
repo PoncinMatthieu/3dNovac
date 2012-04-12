@@ -37,22 +37,21 @@ namespace Nc
         class LGUI  WindowBox : public Widget
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::WindowBox);
 
             public:
-                WindowBox(const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x = Top, Corner y = Left, Widget *parent = NULL);
-                WindowBox(const char *className, const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x = Top, Corner y = Left, Widget *parent = NULL);
+                WindowBox(const std::string &title, Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0,0), const Vector2i &size = Vector2i(0,0));
                 WindowBox(const WindowBox &w);
                 WindowBox &operator = (const WindowBox &w);
                 virtual ~WindowBox();
 
-                static const char   *ClassName()                {return "WindowBox";}
-                virtual ISceneNode  *Clone() const              {return new WindowBox(*this);}
+                virtual ISceneNode  *Clone() const                              {return new WindowBox(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
-                /** Change the title statement */
-                inline void     DrawTitleState(bool state)                      {_drawTitle = state; _stateChanged = true;}
+                /** Set the title statement */
+                inline void     DrawTitle(bool state)                           {_drawTitle = state; _stateChanged = true;}
+                /** \return the title statement */
+                inline bool     DrawTitle() const                               {return _drawTitle;}
                 /** Change the title of the window */
                 void            ChangeTitle(const std::string &title, const std::string &ttf);
                 /** Set the title height */
@@ -65,18 +64,20 @@ namespace Nc
                 inline void     FillColor(const Color &color)               {_color = color; _stateChanged = false;}
 
                 /** Return the reel size */
-                virtual void    GetReelSize(Vector2f &size) const;
+                virtual void    GetReelSize(Vector2i &size) const;
+
+                /** Set the edge color */
+                inline void     EdgeColor(const Color &color)               {_edgeColor = color; _stateChanged = true;}
 
             protected:
                 WindowBox(const std::string &title, const std::string &ttf = "arial");
-                WindowBox(const char *className, const std::string &title, const std::string &ttf = "arial");
 
                 /** Update the geometry of the window */
                 virtual void    Update();
                 /** Render the window */
                 virtual void    Draw(Graphic::SceneGraph *scene);
-                /** Translate the childs of the window */
-                virtual void    TranslateChild(const Corner corner[2], Vector2f &v) const;
+                /** \return the translation information to position childs */
+                virtual void    PosChild(const Widget *child, Vector2i &v) const;
 
             private:
                 /** Initialize the widget */
@@ -94,6 +95,7 @@ namespace Nc
                 Color               _titleColor2;       ///< left color of the window
                 int                 _titleHeight;       ///< height of the title
                 bool                _drawTitle;         ///< Mark if we need to draw the title
+                Color               _edgeColor;         ///< edge color
 
             private:
                 unsigned int        _indexDrawable;

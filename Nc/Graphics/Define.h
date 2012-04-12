@@ -62,6 +62,7 @@
     #ifdef  _DEBUG
         #define     _DEBUG_LIGHT
         #define     _DEBUG_GLOBJECT
+        //#define     _DEBUG_MATERIALS_RENDERING
     #endif
 
 // Singleton

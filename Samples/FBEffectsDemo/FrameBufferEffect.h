@@ -14,32 +14,35 @@ namespace Nc
   {
     class FrameBufferEffect : public Effect
       {
-      public:
-	FrameBufferEffect();
-	~FrameBufferEffect();
+            public:
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::FrameBufferEffect);
 
-	static const char       *ClassName()		{return "FrameBufferEffect";}
-	virtual ISceneNode      *Clone() const		{return new FrameBufferEffect(*this);}
+            public:
+                FrameBufferEffect();
+                ~FrameBufferEffect();
 
-	virtual void            Render(SceneGraph *scene);
-	virtual void		Update(float elapsedTime);
+                virtual ISceneNode      *Clone() const		{return new FrameBufferEffect(*this);}
 
-	void			TriggerPostProcessActivation()	{_postProcessActivated = (_postProcessActivated) ? false : true;}
+                void			        TriggerPostProcessActivation()	{_postProcessActivated = (_postProcessActivated) ? false : true;}
+
+      protected:
+                virtual void            Render(SceneGraph *scene);
+                virtual void		    Update(float elapsedTime);
 
       private:
-	void			InitFbo1();
+                void			InitFbo1();
 
       private:
-	GL::FrameBuffer		_fboPass1;
-	Camera2d		*_camera2d;
-	Sprite			*_sprite;
+                GL::FrameBuffer		_fboPass1;
+                Camera2d		*_camera2d;
+                Sprite			*_sprite;
 
-	bool			_postProcessActivated;
+                bool			_postProcessActivated;
 
-	ProgrammableMaterial	*_postProcessMaterial;
-	GL::Uniform<float,2>	*_sketchJitter;
-	float					_sketchJitterSpeed;
-	float					_timeToNextJitter;
+                ProgrammableMaterial	*_postProcessMaterial;
+                GL::Uniform<float,2>	*_sketchJitter;
+                float					_sketchJitterSpeed;
+                float					_timeToNextJitter;
       };
   }
 }

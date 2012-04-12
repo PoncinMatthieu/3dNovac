@@ -42,7 +42,7 @@ namespace Nc
         class LCORE Clock
         {
             public:
-                Clock()	    {Reset();}
+                Clock()     {Reset();}
                 ~Clock()	{};
 
                 friend LCORE std::ostream &operator << (std::ostream &os, const Clock &cl)
@@ -51,25 +51,27 @@ namespace Nc
                     return os;
                 }
 
-                /// Reset the clock
-                inline void Reset()                     {_pauseTime = 0; _startTime = System::Time();}
+                /** Reset the clock */
+                inline void Reset()                     {_paused = false; _pauseTime = 0; _startTime = System::Time();}
 
-                /// Pause the clock, next call restart to pause it
-                inline void Pause()                     {_startPause = System::Time() - _startTime;}
+                /** Pause the clock, next call restart to pause it */
+                inline void Pause()                     {_paused = true; _startPause = System::Time();}
+                /** Restart the clock after you have pause it */
+                inline void Restart()                   {if (_paused) {_paused = false; _pauseTime += (System::Time() - _startPause);}}
+                /** \return the total paused time */
+                inline double PauseTime() const         {return _pauseTime + ((_paused) ? ((System::Time() - _startPause)) : 0);}
+                /** \return true if the clock is paused */
+                inline bool Paused()                    {return _paused;}
 
-                /// Restart the clock after you have pause it
-                inline void Restart()                   {_pauseTime += System::Time() - _startPause;}
+                /** \return the ElapsedTime in second since the last Reset minus the paused time */
+                inline double ElapsedTime() const       {return System::Time() - _startTime - PauseTime();}
 
-                /// Get ElapsedTime in second since the last Reset
-                inline double ElapsedTime() const       {return System::Time() - _startTime - _pauseTime;}
-
-                /// Get the pause time
-                inline double PauseTime() const         {return _pauseTime;}
 
             private:
                 double  _startTime;         ///< The time when the clock was started
                 double  _startPause;        ///< The time when the clock was paused
-                double  _pauseTime;         ///< The totol of time in pause
+                bool    _paused;            ///< true if the clock is currently paused
+                double  _pauseTime;         ///< The total of time in pause
         };
     }
 }

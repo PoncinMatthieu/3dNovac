@@ -31,7 +31,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 SceneGraph::SceneGraph(bool for2dRendering)
-    : Entity(ClassName()), _currentCamera(NULL)
+    : Entity(), _currentCamera(NULL)
 {
     _stackProjectionMatrix.push(TMatrix::Identity);
     _stackViewMatrix.push(TMatrix::Identity);
@@ -41,19 +41,6 @@ SceneGraph::SceneGraph(bool for2dRendering)
     if (for2dRendering)
         _rasterEffect.SetDepthTest(false);
 }
-
-SceneGraph::SceneGraph(const char *className, bool for2dRendering)
-    : Entity(className), _currentCamera(NULL)
-{
-    _stackProjectionMatrix.push(TMatrix::Identity);
-    _stackViewMatrix.push(TMatrix::Identity);
-    _stackModelMatrix.push(TMatrix::Identity);
-    _stackMaterials.push(NULL);
-
-    if (for2dRendering)
-        _rasterEffect.SetDepthTest(false);
-}
-
 
 SceneGraph::~SceneGraph()
 {
@@ -72,7 +59,7 @@ void    SceneGraph::Render(SceneGraph *scene)
     if (!ModelMatrix().IsIdentity())
         ModelMatrix().SetIdentity();
 
-    // Rendering with the raster effe_currentOglStatect
+    // Rendering with the raster effect _currentOglState
     _rasterEffect.Render(this, this);
 }
 

@@ -45,6 +45,8 @@ namespace Nc
             public:
                 NC_UTILS_DEFINE_PARENT_CLASS(Animation);
                 NC_UTILS_DEFINE_VISITABLE(System::Object);
+                static const char     *ClassName()                  {return _uniqueClassName.c_str();}
+                virtual const char    *ResolvedClassName() const    {return ClassName();}
 
             public:
                 typedef std::list<T>                        ListFrame;
@@ -65,8 +67,7 @@ namespace Nc
                 class LGRAPHICS Frame : public Effect
                 {
                     public:
-                        NC_UTILS_DEFINE_PARENT_CLASS(Effect);
-                        NC_UTILS_DEFINE_VISITABLE(System::Object);
+                        NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::Frame);
 
                         /// The pattern of the frame
                         enum Pattern
@@ -76,13 +77,10 @@ namespace Nc
                         };
 
                     public:
-                        Frame(const char *className, Pattern p, double d)
-                            : Effect(className), pattern(p), delay(d), signaled(false)          {}
                         Frame(Pattern p, double d)
-                            : Effect(ClassName()), pattern(p), delay(d), signaled(false)        {}
+                            : Effect(), pattern(p), delay(d), signaled(false)           {}
                         virtual ~Frame()                           {}
 
-                        static const char       *ClassName()        {return "Animation::Frame";}
                         virtual ISceneNode      *Clone() const = 0;
 
                     protected:
@@ -99,7 +97,7 @@ namespace Nc
 
             public:
                 FramesAnimation(Pattern pattern = Loop)
-                    : Animation(ClassName()), _pattern(pattern), _isPlaying(false), _totalDelay(0), _indexCurrentFrame(0)
+                    : Animation(), _pattern(pattern), _isPlaying(false), _totalDelay(0), _indexCurrentFrame(0)
                     {}
                 virtual ~FramesAnimation()                                  {}
 
@@ -107,7 +105,6 @@ namespace Nc
                 FramesAnimation &operator == (const FramesAnimation &a)     {Copy(a); return *this;}
                 virtual void Copy(const FramesAnimation &a);
 
-                static const char       *ClassName()                        {return _uniqueClassName.c_str();}
                 virtual ISceneNode      *Clone() const                      {return new FramesAnimation(*this);}
 
                 /** \return the frame list */
@@ -169,7 +166,7 @@ namespace Nc
     namespace Graphic
     {
         template<typename T>
-        const std::string       FramesAnimation<T>::_uniqueClassName = std::string("FrameAnimation<") + std::string(T::ClassName()) + std::string(">");
+        const std::string       FramesAnimation<T>::_uniqueClassName = std::string("Nc::Graphic::FramesAnimation<") + std::string(T::ClassName()) + std::string(">");
 
         template<typename T>
         void FramesAnimation<T>::Copy(const FramesAnimation &a)

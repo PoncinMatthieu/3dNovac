@@ -30,25 +30,20 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 Entity::Entity()
-    : NodePolitic(ClassName())
+    : NodePolitic()
 {
 }
 
-Entity::Entity(const char *className)
-    : NodePolitic(className)
-{
-}
-
-Entity::Entity(const char *className, const TMatrix &m)
-    : NodePolitic(className), Matrix(m)
+Entity::Entity(const TMatrix &m)
+    : NodePolitic(), Matrix(m)
 {}
 
-Entity::Entity(const char *className, const Box3f &box)
-    : NodePolitic(className), _box(box)
+Entity::Entity(const Box3f &box)
+    : NodePolitic(), _box(box)
 {}
 
-Entity::Entity(const char *className, const Box3f &box, const TMatrix &m)
-    : NodePolitic(className), _box(box), Matrix(m)
+Entity::Entity(const Box3f &box, const TMatrix &m)
+    : NodePolitic(), _box(box), Matrix(m)
 {}
 
 Entity::Entity(const Entity &n)

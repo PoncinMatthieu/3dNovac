@@ -502,3 +502,16 @@ void    State::ActiveTexture(unsigned int no)
         _currentActiveTextureUnit = no;
     }
 }
+
+void    State::Scissor(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
+{
+    if (_currentScissorX != x || _currentScissorY != y ||
+        _currentScissorWidth != width || _currentScissorHeight != height)
+    {
+        glScissor(x, y, width, height);
+        _currentScissorX = x;
+        _currentScissorY = y;
+        _currentScissorWidth = width;
+        _currentScissorHeight = height;
+    }
+}

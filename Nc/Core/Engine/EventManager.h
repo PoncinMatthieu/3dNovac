@@ -122,6 +122,9 @@ namespace Nc
         /// Base class used to manage events, can receive event and execute it
         class LCORE EventManager : public System::Object
         {
+            public:
+                NC_SYSTEM_DEFINE_OBJECT(Nc::System::Object, Nc::Engine::EventManager);
+
             private:
                 typedef std::queue<std::pair<unsigned int, IEvent*> >       QueueEvent;
                 typedef std::queue<std::pair<std::string, EventString*> >   QueueEventString;
@@ -129,7 +132,7 @@ namespace Nc
                 typedef std::list<CmdString>                                ListCmdString;
 
             public:
-                EventManager(const char *className, const std::string &name);
+                EventManager(const std::string &name);
                 virtual ~EventManager();
 
                 /** Push an EventString (from console) without arg */

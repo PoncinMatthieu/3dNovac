@@ -31,7 +31,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 CameraEffect::CameraEffect()
-    :   Effect(ClassName()),
+    :   Effect(),
         _updateViewport(false), _viewportX(0), _viewportY(0), _viewportWidth(0), _viewportHeight(0),
         _updateProjection(false),
         _updateView(false)

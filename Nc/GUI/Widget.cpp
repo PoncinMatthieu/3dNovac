@@ -26,9 +26,11 @@
 
 #include <Nc/Core/Engine/Manager.h>
 #include <Nc/Graphics/Object/BasicMeshCreator.h>
+#include <Nc/Graphics/Object/Sprite.h>
 #include "Widget.h"
 #include "WidgetLabeled.h"
 #include "Visitors.h"
+#include "WindowStyle.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
@@ -37,14 +39,8 @@ using namespace Nc::System;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-Widget::Widget(const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
-    : Object(ClassName()), Handler(), _edgeColor(255, 0, 0), _margin(0, 0)
-{
-    Init(pos, size, x, y);
-}
-
-Widget::Widget(const char *className, const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
-    : Object(className), Handler(), _edgeColor(255, 0, 0), _margin(0, 0)
+Widget::Widget(Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
+    : Object(), Handler()
 {
     Init(pos, size, x, y);
 }
@@ -54,18 +50,16 @@ void Widget::Init(const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
     _childFocused = NULL;
     _inhibit = false;
     _focus = false;
-    _drawEdge = false;
     _generateHandleAtEnterFocus = false;
+    _resizable = true;
     _size = size;
     _pos = pos;
     _corner[0] = x;
     _corner[1] = y;
-
-    // creation du drawable
-    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
-    geometry->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
-    _drawables.push_back(new Drawable(geometry));
-    ChooseDefaultMaterial();
+    _useStencil = false;
+    _margin = Vector2i(0, 0);
+    _widgetLook = NULL;
+    _owner = NULL;
     _stateChanged = true;
 }
 
@@ -85,23 +79,40 @@ Widget &Widget::operator = (const Widget &w)
 
 Widget::~Widget()
 {
+    if (_widgetLook)
+        delete _widgetLook;
 }
 
 void Widget::Copy(const Widget &w)
 {
     _childFocused = NULL;
     _inhibit = w._inhibit;
+    _resizable = w._resizable;
     _focus = w._focus;
     _size = w._size;
     _pos = w._pos;
     _corner[0] = w._corner[0];
     _corner[1] = w._corner[1];
-    _drawEdge = w._drawEdge;
     _generateHandleAtEnterFocus = w._generateHandleAtEnterFocus;
-    _edgeColor = w._edgeColor;
     _margin = w._margin;
     _percent = w._percent;
+    _useStencil = w._useStencil;
+    _widgetLook = (w._widgetLook) ? new Look(*w._widgetLook) : NULL;
+
+    _owner = NULL;
     _stateChanged = true;
+}
+
+void    Widget::AddComposedWidget(Widget *widget)
+{
+    _composedWidget.push_back(widget);
+    widget->_owner = this;
+}
+
+void    Widget::RemoveComposedWidget(Widget *widget)
+{
+    _composedWidget.remove(widget);
+    widget->_owner = NULL;
 }
 
 bool    Widget::InhibitedRecursif() const
@@ -113,59 +124,73 @@ bool    Widget::InhibitedRecursif() const
 
 void Widget::Update()
 {
-    Array<DefaultVertexType::Colored2d, 4>  vertices;
-    Vector2f                                size;
-
+    Vector2i    size;
     GetReelSize(size);
-    vertices[0].Fill(0, 0, _edgeColor);
-    vertices[1].Fill(0, size.Data[1], _edgeColor);
-    vertices[2].Fill(size.Data[0], size.Data[1], _edgeColor);
-    vertices[3].Fill(size.Data[0], 0, _edgeColor);
-    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d, false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices.Data);
+
+    if (_widgetLook && _widgetLook->activated)
+        _widgetLook->Update(size);
 }
 
-void Widget::Render(Graphic::SceneGraph *scene)
+void Widget::RenderBegin(Graphic::SceneGraph *scene)
 {
     CheckState();
 
-// effectue le rendu
-    // definit la position en fonction des corner
-    Vector2f reelPos;
+    // definit la position en fonction des corners
+    Vector2i reelPos;
     GetReelPos(reelPos);
     scene->PushModelMatrix();
-        scene->ModelMatrix().AddTranslation(reelPos.Data[0], reelPos.Data[1], 0.f); // translation sur la position relative au Corner
+    scene->ModelMatrix().AddTranslation(reelPos.Data[0], reelPos.Data[1], 0.f); // translation sur la position relative au Corner
+}
 
-        Draw(scene);
-
-        // affichage des childs
-        RenderChilds(scene);
-
-        #ifdef _DEBUG_GUI // to draw the repere of the widget
-        static Graphic::Object *repere = NULL;
-        if (repere == NULL)
-        {
-            repere = Graphic::BasicMeshCreator::Axis(1);
-            repere->Drawables()[0]->Config->RasterMode().SetLineWidth(2);
-        }
-        Vector2f reelSize;
-        GetReelSize(reelSize);
-        TMatrix m;
-        m.Scale(reelSize.Data[0], reelSize.Data[1], 0);
-        scene->ModelMatrix() *= m;
-        repere->RenderNode(scene);
-        #endif
+void Widget::RenderEnd(Graphic::SceneGraph *scene)
+{
+    #ifdef _DEBUG_GUI // to draw the repere of the widget
+    static Graphic::Object *repere = NULL;
+    if (repere == NULL)
+    {
+        repere = Graphic::BasicMeshCreator::Axis(1);
+        repere->Drawables()[0]->Config->RasterMode().SetLineWidth(2);
+    }
+    Vector2i reelSize;
+    GetReelSize(reelSize);
+    TMatrix m;
+    m.Scale(reelSize.Data[0], reelSize.Data[1], 0);
+    scene->ModelMatrix() *= m;
+    repere->RenderNode(scene);
+    #endif
 
     scene->PopModelMatrix();
 }
 
+void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
+{
+    if (_useStencil)
+    {
+        scene->GLState()->Enable(GL::Enum::ScissorTest);
+
+        Vector2i pos, size;
+        GetReelPosRecursif(pos);
+        GetReelSize(size);
+
+        pos[0] += _margin[0];
+        pos[1] += _margin[1];
+        size[0] -= (_margin[0] * 2);
+        size[1] -= (_margin[1] * 2);
+        scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
+    }
+}
+
+void Widget::RenderChildsEnd(Graphic::SceneGraph *scene)
+{
+    if (_useStencil)
+        scene->GLState()->Disable(GL::Enum::ScissorTest);
+}
+
 void Widget::Draw(Graphic::SceneGraph *scene)
 {
-#ifndef _DEBUG_GUI_BOX
-    if (_drawEdge) // dessine la box du widget
-#endif
-    {
-        DrawEdgeBox(scene);
-    }
+    // decorate the widget
+    if (_widgetLook && _widgetLook->activated)
+        _widgetLook->Draw(scene);
 }
 
 void Widget::ManageWindowEvent(const Event &event)
@@ -205,11 +230,11 @@ void Widget::CheckFocus(const Event &event)
     }
 }
 
-void Widget::GetReelPos(Vector2f &reelPos) const
+void Widget::GetReelPos(Vector2i &reelPos) const
 {
-    Vector2f    reelSize;
-    Vector2f    parentSize(Window::Width(), Window::Height());
-    Vector2f    parentTranslate;
+    Vector2i    reelSize;
+    Vector2i    parentSize(Window::Width(), Window::Height());
+    Vector2i    parentTranslate;
     Vector2i    margin; // margin a 0, on prendra celui du parent s'il y en a un (margin interieur)
 
     GetReelSize(reelSize);
@@ -221,7 +246,7 @@ void Widget::GetReelPos(Vector2f &reelPos) const
     {
         v.parent->GetReelSize(parentSize);
         margin = v.parent->_margin;
-        v.parent->TranslateChild(_corner, parentTranslate);
+        v.parent->PosChild(this, parentTranslate);
     }
 
     // check les corner en x
@@ -242,19 +267,19 @@ void Widget::GetReelPos(Vector2f &reelPos) const
     reelPos += parentTranslate;
 }
 
-void Widget::GetReelPosRecursif(Vector2f &pos) const
+void Widget::GetReelPosRecursif(Vector2i &pos) const
 {
     // get back the first parent
     Visitor::GetParentWidget v(this);
     v(*this);
     if (v.parent != NULL)
         v.parent->GetReelPosRecursif(pos);
-    Vector2f reelPos;
+    Vector2i reelPos;
     GetReelPos(reelPos);
     pos += reelPos;
 }
 
-void Widget::GetReelSize(Vector2f &size) const
+void Widget::GetReelSize(Vector2i &size) const
 {
     size = _size;
 }
@@ -265,11 +290,9 @@ void Widget::Focus(bool state)
     {
         _focus = state;
         if (!state && _childFocused != NULL)
-            _childFocused->Focus(state);
+            _childFocused->Focus(false);
         if (_focus && _generateHandleAtEnterFocus && !_inhibit)
             SendEvent(_id);
-
-        //_stateChanged = true;
         ChangeChildsStateRecursive();
     }
 }
@@ -281,6 +304,10 @@ void Widget::CheckState()
         Update();
         _stateChanged = false;
     }
+
+    // check composed widget state
+    for (ListPWidget::iterator it = _composedWidget.begin(); it != _composedWidget.end(); ++it)
+        (*it)->CheckState();
 }
 
 void Widget::ChangeChildsStateRecursive()
@@ -292,34 +319,238 @@ void Widget::ChangeChildsStateRecursive()
 void Widget::Percent(const Vector2f &percent)
 {
     _percent = percent;
-    Resized();
+    Visitor::ResizeAll resizeAll;
+    resizeAll(*this);
 }
 
 void Widget::Resized()
 {
-    float sParent;
-    if (Percent().Data[0] != 0 || Percent().Data[1] != 0)
+    if (_resizable && (_percent[0] != 0 || _percent[1] != 0))
     {
         Visitor::GetParentWidget v(this);
         v(*this);
 
         Vector2i newSize = Size();
-        if (Percent().Data[0] != 0)
-        {
-            sParent = (v.parent != NULL) ? v.parent->Size()[0] : Window::Width();
-            newSize[0] = ((float)(Percent().Data[0] * sParent) / 100.0);
-        }
-        if (Percent().Data[1] != 0)
-        {
-            sParent = (v.parent != NULL) ? v.parent->Size()[1] : Window::Height();
-            newSize[1] = ((float)(Percent().Data[1] * sParent) / 100.0);
-        }
+
+        Vector2i sizeParent;
+        if (v.parent != NULL)
+            v.parent->SizeChild(this, sizeParent);
+        else
+            sizeParent.Init(Window::Width(), Window::Height());
+
+        if (_percent[0] != 0)
+            newSize[0] = ((float)(_percent[0] * sizeParent[0]) / 100.0);
+        if (_percent[1] != 0)
+            newSize[1] = ((float)(_percent[1] * sizeParent[1]) / 100.0);
         Size(newSize);
     }
-    ChangeState();
+    _stateChanged = true;
 }
 
-void Widget::DrawEdgeBox(Graphic::SceneGraph *scene)
+Widget::Look::Look(const std::string &name)
 {
-    GetMaterial()->Render(scene, *_drawables[0]);
+    // get the sprites from the window style (sprite name = name + position)
+    _spriteLeftEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetLeftEdge);
+    _spriteTopEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetTopEdge);
+    _spriteRightEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetRightEdge);
+    _spriteBottomEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetBottomEdge);
+    _spriteLeftTop = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetLeftTop);
+    _spriteRightTop = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetRightTop);
+    _spriteLeftBottom = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetLeftBottom);
+    _spriteRightBottom = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetRightBottom);
+    _spriteMiddle = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetMiddle);
+    activated = true;
+}
+
+Widget::Look::Look(const Look &l)
+{
+    Copy(l);
+}
+
+Widget::Look &Widget::Look::operator = (const Look &l)
+{
+    Copy(l);
+    return *this;
+}
+
+Widget::Look::~Look()
+{
+    if (_spriteLeftEdge != NULL)
+        delete _spriteLeftEdge;
+    if (_spriteTopEdge != NULL)
+        delete _spriteTopEdge;
+    if (_spriteRightEdge != NULL)
+        delete _spriteRightEdge;
+    if (_spriteBottomEdge != NULL)
+        delete _spriteBottomEdge;
+    if (_spriteLeftTop != NULL)
+        delete _spriteLeftTop;
+    if (_spriteRightTop != NULL)
+        delete _spriteRightTop;
+    if (_spriteLeftBottom != NULL)
+        delete _spriteLeftBottom;
+    if (_spriteRightBottom != NULL)
+        delete _spriteRightBottom;
+    if (_spriteMiddle != NULL)
+        delete _spriteMiddle;
+}
+
+void    Widget::Look::Copy(const Look &l)
+{
+    activated = l.activated;
+
+    _spriteLeftEdge = l._spriteLeftEdge;
+    _spriteTopEdge = l._spriteTopEdge;
+    _spriteRightEdge = l._spriteRightEdge;
+    _spriteBottomEdge = l._spriteBottomEdge;
+    _spriteLeftTop = l._spriteLeftTop;
+    _spriteRightTop = l._spriteRightTop;
+    _spriteLeftBottom = l._spriteLeftBottom;
+    _spriteRightBottom = l._spriteRightBottom;
+    _spriteMiddle = l._spriteMiddle;
+
+    if (_spriteLeftEdge != NULL)
+        _spriteLeftEdge = (Sprite*)_spriteLeftEdge->Clone();
+    if (_spriteTopEdge != NULL)
+        _spriteTopEdge = (Sprite*)_spriteTopEdge->Clone();
+    if (_spriteRightEdge != NULL)
+        _spriteRightEdge = (Sprite*)_spriteRightEdge->Clone();
+    if (_spriteBottomEdge != NULL)
+        _spriteBottomEdge = (Sprite*)_spriteBottomEdge->Clone();
+    if (_spriteLeftTop != NULL)
+        _spriteLeftTop = (Sprite*)_spriteLeftTop->Clone();
+    if (_spriteRightTop != NULL)
+        _spriteRightTop = (Sprite*)_spriteRightTop->Clone();
+    if (_spriteLeftBottom != NULL)
+        _spriteLeftBottom = (Sprite*)_spriteLeftBottom->Clone();
+    if (_spriteRightBottom != NULL)
+        _spriteRightBottom = (Sprite*)_spriteRightBottom->Clone();
+    if (_spriteMiddle != NULL)
+        _spriteMiddle = (Sprite*)_spriteMiddle->Clone();
+}
+
+void Widget::UseLook(const std::string &name)
+{
+    if (_widgetLook)
+        delete _widgetLook;
+    _widgetLook = new Look(name);
+}
+
+void Widget::Look::Update(const Vector2i &size)
+{
+    int lxLeftBottom = 0, lyLeftBottom = 0, lxLeftTop = 0, lyLeftTop = 0, lxRightBottom = 0, lyRightBottom = 0, lxRightTop = 0, lyRightTop = 0;
+
+    // get the corner size
+    if (_spriteLeftBottom != NULL)
+    {
+        lxLeftBottom = _spriteLeftBottom->TextureBox().Length(0);
+        lyLeftBottom = _spriteLeftBottom->TextureBox().Length(1);
+    }
+    if (_spriteLeftTop != NULL)
+    {
+        lxLeftTop = _spriteLeftTop->TextureBox().Length(0);
+        lyLeftTop = _spriteLeftTop->TextureBox().Length(1);
+    }
+    if (_spriteRightBottom != NULL)
+    {
+        lxRightBottom = _spriteRightBottom->TextureBox().Length(0);
+        lyRightBottom = _spriteRightBottom->TextureBox().Length(1);
+    }
+    if (_spriteRightTop != NULL)
+    {
+        lxRightTop = _spriteRightTop->TextureBox().Length(0);
+        lyRightTop = _spriteRightTop->TextureBox().Length(1);
+    }
+
+    // Set the size and position of the sprites
+    if (_spriteMiddle != NULL)
+    {
+        _spriteMiddle->Size(Vector2f(size[0] - lxLeftBottom - lxLeftTop, size[1] - lyLeftBottom - lyLeftTop));
+        _spriteMiddle->Matrix.Translation(lxLeftBottom, lyLeftBottom, 0);
+    }
+
+    if (_spriteLeftTop != NULL)
+    {
+        _spriteLeftTop->Size(Vector2f(_spriteLeftTop->TextureBox().Length(0), lyLeftTop));
+        _spriteLeftTop->Matrix.Translation(0, size[1] - lyLeftTop, 0);
+    }
+
+    if (_spriteRightTop != NULL)
+    {
+        _spriteRightTop->Size(Vector2f(lxRightTop, lyRightTop));
+        _spriteRightTop->Matrix.Translation(size[0] - lxRightTop, size[1] - lyRightTop, 0);
+    }
+
+    if (_spriteLeftBottom != NULL)
+        _spriteLeftBottom->Size(Vector2f(_spriteLeftBottom->TextureBox().Length(0), _spriteLeftBottom->TextureBox().Length(1)));
+
+    if (_spriteRightBottom)
+    {
+        _spriteRightBottom->Size(Vector2f(lxRightBottom, lyRightBottom));
+        _spriteRightBottom->Matrix.Translation(size[0] - lxRightBottom, 0, 0);
+    }
+
+    if (_spriteLeftEdge != NULL)
+    {
+        _spriteLeftEdge->Size(Vector2f(_spriteLeftEdge->TextureBox().Length(0), size[1] - lyLeftBottom - lyLeftTop));
+        _spriteLeftEdge->Matrix.Translation(0, lyLeftBottom, 0);
+    }
+
+    if (_spriteTopEdge != NULL)
+    {
+        float s = _spriteTopEdge->TextureBox().Length(1);
+        _spriteTopEdge->Size(Vector2f(size[0] - lxLeftTop - lxRightTop, s));
+        _spriteTopEdge->Matrix.Translation(lxLeftTop, size[1] - s, 0);
+    }
+
+    if (_spriteRightEdge != NULL)
+    {
+        float s = _spriteRightEdge->TextureBox().Length(0);
+        _spriteRightEdge->Size(Vector2f(s, size[1] - lyRightBottom - lyRightTop));
+        _spriteRightEdge->Matrix.Translation(size[0] - s, lyRightBottom, 0);
+    }
+
+    if (_spriteBottomEdge != NULL)
+    {
+        _spriteBottomEdge->Size(Vector2f(size[0] - lxLeftBottom - lxRightBottom, _spriteBottomEdge->TextureBox().Length(1)));
+        _spriteBottomEdge->Matrix.Translation(lxLeftBottom, 0, 0);
+    }
+}
+
+void Widget::Look::Draw(Graphic::SceneGraph *scene)
+{
+    scene->PushModelMatrix();
+
+    // render middle sprite
+    if (_spriteMiddle != NULL)
+        _spriteMiddle->RenderNode(scene);
+
+    // render corner sprites
+    if (_spriteLeftTop != NULL)
+        _spriteLeftTop->RenderNode(scene);
+    if (_spriteRightTop != NULL)
+        _spriteRightTop->RenderNode(scene);
+    if (_spriteLeftBottom != NULL)
+        _spriteLeftBottom->RenderNode(scene);
+    if (_spriteRightBottom != NULL)
+        _spriteRightBottom->RenderNode(scene);
+
+    // render edge sprites
+    if (_spriteLeftEdge != NULL)
+        _spriteLeftEdge->RenderNode(scene);
+    if (_spriteTopEdge != NULL)
+        _spriteTopEdge->RenderNode(scene);
+    if (_spriteRightEdge != NULL)
+        _spriteRightEdge->RenderNode(scene);
+    if (_spriteBottomEdge != NULL)
+        _spriteBottomEdge->RenderNode(scene);
+
+    scene->PopModelMatrix();
+}
+
+void    Widget::RemoveWidget(Widget *w)
+{
+    if (_childFocused == w)
+        _childFocused = NULL;
+    RemoveChild(w);
 }

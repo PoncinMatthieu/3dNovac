@@ -32,8 +32,8 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::Engine;
 
-IEngine::IEngine(const char *className, const std::string &name, Manager* manager, const Utils::Mask<Nc::Engine::Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
-    : EventManager(className, name), _manager(manager), _loaded(false), _released(false), _pattern(pattern),
+IEngine::IEngine(const std::string &name, Manager *manager, const Utils::Mask<Nc::Engine::Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
+    : EventManager(name), _manager(manager), _loaded(false), _released(false), _pattern(pattern),
       _deletePriority(deletePriority), _loadingContextPriority(loadingContextPriority), _loadingPriority(loadingPriority),
       _elapsedTime(0), _limitFPS(0), _stop(false)
 {

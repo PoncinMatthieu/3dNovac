@@ -41,9 +41,7 @@ namespace Nc
         class LGRAPHICS ISceneNode : public System::Object
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(System::Object);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
-                NC_UTILS_DEFINE_INVOKABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(System::Object, System::Object, System::Object, Nc::Graphic::ISceneNode);
 
                 struct Allocator
                 {
@@ -53,7 +51,7 @@ namespace Nc
                 };
 
             public:
-                ISceneNode(const char *className);
+                ISceneNode();
                 virtual ~ISceneNode();
 
                 /**
@@ -90,14 +88,14 @@ namespace Nc
                 virtual const ISceneNode    *SubTree(unsigned int i) const = 0;
 
                 /** \return the type of the string */
-                std::string                 NodeTypeToString() const                        {return GetClassName();}
+                std::string                 NodeTypeToString() const                        {return ResolvedClassName();}
                 /** \return Save the scene node hierarchie in a dot file */
                 void                        SaveDot(const Utils::FileName &file) const      {Graph::DotGraph<ISceneNode,true>::Save(file, *this);}
 
                 /** Lock the node, to use for exemple when you want to remove a child, this will protect the node with a mutex for a multithreaded context */
-                inline void                 Lock()                                          {_mutex.Lock();}
+                inline void                 Lock() throw()                                  {_mutex.Lock();}
                 /** Unlock the node */
-                inline void                 Unlock()                                        {_mutex.Unlock();}
+                inline void                 Unlock() throw()                                {_mutex.Unlock();}
 
                 /** Set the enable statement of the node */
                 virtual void                Enable(bool status)                             {_enabled = status;}
@@ -156,7 +154,7 @@ namespace Nc
                 using ISceneNode::NodeTypeToString;
 
             public:
-                AbstractSceneNode(const char *className)                    : ISceneNode(className), NodePolitic()              {}
+                AbstractSceneNode() : ISceneNode(), NodePolitic()           {}
                 virtual ~AbstractSceneNode()                                {}
 
                 /** \return the number of childs */

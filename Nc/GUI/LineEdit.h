@@ -23,15 +23,6 @@
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------
-
-
-                    Implementation de la classe "gTextBox"
-        permet l'affichage d'une text box, possibilite d'ecrire dedans
-
-Herite de gWidgetLabeled
-
------------------------------------------------------------------------------*/
 
 #ifndef NC_GUI_TEXTBOX_H_
 #define NC_GUI_TEXTBOX_H_
@@ -43,21 +34,18 @@ namespace Nc
     namespace GUI
     {
         /// to manage a text box
-        class LGUI  TextBox : public WidgetLabeled
+        class LGUI  LineEdit : public WidgetLabeled
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(WidgetLabeled);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WidgetLabeled, System::Object, Nc::GUI::LineEdit);
 
             public:
-                TextBox(const std::string &label, const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10),
-                        Corner x = Left, Corner y = Top, const std::string &ttf = "arial");
-                TextBox(const TextBox &w);
-                TextBox &operator = (const TextBox &w);
-                ~TextBox();
+                LineEdit(const std::string &label, Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
+                LineEdit(const LineEdit &w);
+                LineEdit &operator = (const LineEdit &w);
+                ~LineEdit();
 
-                static const char   *ClassName()                {return "TextBox";}
-                virtual ISceneNode  *Clone() const              {return new TextBox(*this);}
+                virtual ISceneNode  *Clone() const              {return new LineEdit(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the text box */
@@ -78,7 +66,7 @@ namespace Nc
 
             private:
                 /** Copy the widget */
-                void        Copy(const TextBox &w);
+                void        Copy(const LineEdit &w);
 
             protected:
                 Graphic::String     *_font;         ///< the text in the text box

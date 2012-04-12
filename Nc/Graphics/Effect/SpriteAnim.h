@@ -41,16 +41,14 @@ namespace Nc
         class LGRAPHICS SpriteAnimFrame : public FramesAnimation<SpriteAnimFrame>::Frame
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(FramesAnimation<SpriteAnimFrame>::Frame);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(FramesAnimation<SpriteAnimFrame>::Frame, System::Object, Nc::Graphic::SpriteAnimFrame)
 
             public:
-                SpriteAnimFrame(Parent::Pattern p, double d)                : Parent(ClassName(), p, d), sprite(NULL)                   {}
-                SpriteAnimFrame(Parent::Pattern p, double d, Sprite *s)     : Parent(ClassName(), p, d), sprite(s)                      {}
-                SpriteAnimFrame(const SpriteAnimFrame &f)                   : Parent(f), sprite(new Sprite(*f.sprite))                  {}
+                SpriteAnimFrame(Parent::Pattern p, double d)                : Parent(p, d), sprite(NULL)                    {}
+                SpriteAnimFrame(Parent::Pattern p, double d, Sprite *s)     : Parent(p, d), sprite(s)                       {}
+                SpriteAnimFrame(const SpriteAnimFrame &f)                   : Parent(f), sprite(new Sprite(*f.sprite))      {}
                 virtual ~SpriteAnimFrame()                                  {delete sprite;}
 
-                static const char       *ClassName()                        {return "SpriteAnimFrame";}
                 virtual ISceneNode      *Clone() const                      {return new SpriteAnimFrame(*this);}
 
                 SpriteAnimFrame &operator = (const SpriteAnimFrame &f)

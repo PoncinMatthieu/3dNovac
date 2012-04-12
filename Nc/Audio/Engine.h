@@ -46,6 +46,9 @@ namespace Nc
         class LAUDIO Engine : public Nc::Engine::IEngine
         {
             public:
+                NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::IEngine, Nc::Audio::Engine);
+
+            public:
                 /// The event command for the Audio::Engine
                 enum CmdIndex
                 {
@@ -69,8 +72,6 @@ namespace Nc
             public:
                 Engine(Nc::Engine::Manager *manager);
                 virtual ~Engine();
-
-                static const char   *ClassName()                {return "Audio::Engine";}
 
                 virtual inline void Execute(float runningTime)  {}
 

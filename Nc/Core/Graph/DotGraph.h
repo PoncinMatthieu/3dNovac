@@ -29,6 +29,7 @@
 
 #include <fstream>
 #include "Node.h"
+#include "NodeVisitor.h"
 #include "../Utils/Logger.h"
 #include "../Utils/IFileFormat.h"
 

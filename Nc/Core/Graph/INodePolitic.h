@@ -141,9 +141,9 @@ namespace Nc
                     /** \return true if the node is root (has no parent) */
                     bool                        IsRoot() const                      {return _parents.empty();}
                     /** \return the parent of the node (if there is no parent, return NULL) */
-                    std::list<NodeType*>        &Parents()                          {return _parents;}
+                    ParentList                  &Parents()                          {return _parents;}
                     /** \return the parent of the node (if there is no parent, return NULL) */
-                    const std::list<NodeType*>  &Parents() const                    {return _parents;}
+                    const ParentList            &Parents() const                    {return _parents;}
 
                     /** Add a parent into the list of parents of the graph node */
                     void                        SetParent(NodeType *parent)         {_parents.push_back(parent);}

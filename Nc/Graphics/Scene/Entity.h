@@ -40,22 +40,18 @@ namespace Nc
         class LGRAPHICS Entity : public AbstractSceneNode<Graph::ListNodePolitic>
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
-                NC_UTILS_DEFINE_INVOKABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(ISceneNode, System::Object, System::Object, Nc::Graphic::Entity);
                 typedef AbstractSceneNode<Graph::ListNodePolitic>            NodePolitic;
 
             public:
                 Entity();
-                Entity(const char *className);
-                Entity(const char *className, const TMatrix &m);
-                Entity(const char *className, const Box3f &box);
-                Entity(const char *className, const Box3f &box, const TMatrix &m);
+                Entity(const TMatrix &m);
+                Entity(const Box3f &box);
+                Entity(const Box3f &box, const TMatrix &m);
                 Entity(const Entity &n);
                 Entity &operator = (const Entity &n);
                 virtual ~Entity();
 
-                static const char           *ClassName()                                        {return "Entity";}
                 virtual ISceneNode          *Clone() const                                      {return new Entity(*this);}
 
                 /** \return the number of subtree witch can contain a least one subtree */

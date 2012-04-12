@@ -29,8 +29,8 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Camera3d::Camera3d(const char *className, float ratioAspect, float nearf, float farf, float fieldOfView)
-    : Camera(className, false),
+Camera3d::Camera3d(float ratioAspect, float nearf, float farf, float fieldOfView)
+    : Camera(false),
       _center(0, 0, 0), _up(0, 0, 1),
       _ratioAspect(ratioAspect), _near(nearf), _far(farf), _fieldOfView(fieldOfView),
       _viewMatrixUpdated(true)

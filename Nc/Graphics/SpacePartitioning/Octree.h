@@ -41,9 +41,7 @@ namespace Nc
         class LGRAPHICS Octree : public SubTree<Graph::OctreeNodePolitic>
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
-                NC_UTILS_DEFINE_INVOKABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(ISceneNode, System::Object, System::Object, Nc::Graphic::Octree);
 
                 /** The pattern define the comportement of the octree */
                 enum Pattern
@@ -59,7 +57,6 @@ namespace Nc
                 Octree &operator = (const Octree &oct);
                 ~Octree()                                                   {Utils::DeleteContainer(Data);}
 
-                static const char       *ClassName()                        {return "Octree";}
                 virtual ISceneNode      *Clone() const                      {return new Octree(*this);}
 
                 /** \return the number of subtree (ISceneNode) into the node */

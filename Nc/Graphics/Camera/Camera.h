@@ -46,12 +46,11 @@ namespace Nc
         class LGRAPHICS Camera : public Object
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Camera);
 
             public:
-                Camera(const char *className, bool is2d)
-                    : Object(className), _resized(true), _setAsCurrentCamera(true), _fix(true), _is2d(is2d), _useWindowSizeForViewport(true)  {}
+                Camera(bool is2d)
+                    : Object(), _resized(true), _setAsCurrentCamera(true), _fix(true), _is2d(is2d), _useWindowSizeForViewport(true)  {}
                 virtual ~Camera() {}
 
                 /** Clone the camera */
@@ -115,7 +114,7 @@ namespace Nc
 
             protected:
                 /** Fix the camera and and set it as current camera before rendering itselfs and childs */
-                virtual void    Render(SceneGraph *scene);
+                virtual void            Render(SceneGraph *scene);
 
             protected:
                 bool                    _resized;                   ///< resize statement

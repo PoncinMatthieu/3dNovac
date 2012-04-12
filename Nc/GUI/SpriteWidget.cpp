@@ -30,8 +30,8 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-SpriteWidget::SpriteWidget(const Vector2f &pos, const Vector2f &size, Corner x, Corner y)
-    : Widget(ClassName(), pos, size, x, y)
+SpriteWidget::SpriteWidget(Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
+    : Widget(x, y, pos, size)
 {
 }
 
@@ -39,7 +39,7 @@ SpriteWidget::~SpriteWidget()
 {
 }
 
-void SpriteWidget::AddSprite(Sprite *s, const Vector2f &pos)
+void SpriteWidget::AddSprite(Sprite *s, const Vector2i &pos)
 {
     _listSprite.push_back(SpritePos(s, pos));
     _stateChanged = true;

@@ -66,12 +66,17 @@
     {
         namespace GUI
         {
-            // definition of the classes to typedef the diferrent types
+            // definitions
             class Widget;
+
+            template<typename VisitorType, bool IsConst = false, typename ReturnType = void>
+            class WidgetVisitor;
 
             // typedef
             typedef std::list<Widget*>      ListPWidget;
         }
     }
+
+    #include "Enum.h"
 
 #endif

@@ -32,7 +32,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 MatrixAnimation::MatrixAnimation()
-    : Animation(ClassName())
+    : Animation()
 {
 }
 /*

@@ -41,15 +41,13 @@ namespace Nc
         class LGRAPHICS Effect : public Entity
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Entity);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, System::Object, Nc::Graphic::Effect);
 
             public:
-                Effect(const char *className)
-                    : Entity(className), _activated(true)          {}
+                Effect()
+                    : Entity(), _activated(true)          {}
                 virtual ~Effect()                                   {}
 
-                static const char       *ClassName()                {return "Effect";}
                 virtual ISceneNode      *Clone() const = 0;
 
                 inline bool             Activated() const           {return _activated;}

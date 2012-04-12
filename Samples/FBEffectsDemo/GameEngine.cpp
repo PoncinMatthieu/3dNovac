@@ -84,7 +84,7 @@ void GameEngine::LoadContent()
   _graphic->GetSceneManager()->AddScene(_sceneGUI);
 
     // no need to active/disable the context at each loop
-    _pattern.Disable(Nc::Engine::HasAContext);
+//    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)

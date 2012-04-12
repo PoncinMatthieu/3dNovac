@@ -38,10 +38,10 @@ Texture::Texture()
 {
 }
 
-Texture::Texture(const Utils::FileName &file, bool useMipMap)
+Texture::Texture(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
     : Object(), _texture(0)
 {
-    LoadFromFile(file, useMipMap);
+    LoadFromFile(file, magnifyingFilter, mignifyingFilter, generateMipmap);
 }
 
 Texture::~Texture()
@@ -125,17 +125,17 @@ void    Texture::GenerateMipmaps()
     glGenerateMipmap(_target);
 }
 
-void Texture::LoadFromFile(const Utils::FileName &file, bool useMipMap)
+void Texture::LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
 {
 // Load the image and reverse it
     Image image;
     image.LoadFromFile(file);
     image.Reverse();
 
-    LoadFromImage(image, useMipMap, file);
+    LoadFromImage(image, magnifyingFilter, mignifyingFilter, generateMipmap, file);
 }
 
-void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::string &name)
+void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap, const std::string &name)
 {
     NewRef();
 
@@ -152,13 +152,19 @@ void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::strin
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
     Enable();
 
+
+
     glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, (useMipMap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+
+    glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, magnifyingFilter);
+    glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, mignifyingFilter);
+    //glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, (generateMipmap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+
     glTexImage2D(_target, 0, GL_RGBA8, image.Size().Data[0], image.Size().Data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
 
-    if(useMipMap)
+    if(generateMipmap)
         glGenerateMipmap(_target);
 
     Disable();
@@ -166,22 +172,6 @@ void Texture::LoadFromImage(const Image &image, bool useMipMap, const std::strin
     LOG_DEBUG << "LOAD TEXTURE n = " << _texture << " `" << _name << "`" << endl;
 }
 
-/* // deleted, the smooth is active by default, could be intresting to delete it ?
-void Texture::SetSmooth(bool smooth)
-{
-    if (IsValid())
-        throw Utils::Exception("Texture", "Can't SetSmooth, the texture is not loaded");
-    if (_target != Enum::Texture2D)
-        throw Utils::Exception("Texture", "Can't smooth another type of texture that TEXTURE 2D");
-    if (_smooth != smooth)
-    {
-        _smooth = smooth;
-        Enable();
-        glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, _smooth ? GL_LINEAR : GL_NEAREST);
-        glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, _smooth ? GL_LINEAR : GL_NEAREST);
-    }
-}
-*/
 void Texture::LoadCubeMap(const Utils::FileName names[6])
 {
     NewRef();

@@ -49,8 +49,7 @@ namespace Nc
         class LGRAPHICS BoundingBox : public Object, public Box3f
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::BoundingBox);
 
             public:
                 BoundingBox();
@@ -58,7 +57,6 @@ namespace Nc
                 BoundingBox(const Vector3f &min, const Vector3f &max);
                 virtual ~BoundingBox();
 
-                const char              *ClassName()                {return "BoundingBox";}
                 virtual ISceneNode      *Clone() const              {return new BoundingBox(*this);}
 
                 virtual void            TransformModelMatrixToRender(SceneGraph *scene)    {}

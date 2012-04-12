@@ -26,15 +26,22 @@
 
 #include "Sprite.h"
 
-#ifdef _DEBUG
-    //#define     _DEBUG_SPRITES
-#endif
-
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Sprite::Sprite(const Vector2f &size, const GL::Texture &t, const Box2f &box, const GL::Blend::Pattern &blendPattern)
-    : Object(ClassName()), _needUpdate(true), _spriteSize(size), _textureBox(box), _color(1, 1, 1)
+Sprite::Sprite(const Vector2f &size, const GL::Texture &t, const Box2i &box, const GL::Blend::Pattern &blendPattern)
+    : Object(), _needUpdate(true), _spriteSize(size), _textureBox(box), _color(1, 1, 1)
+{
+    Initialize(t, blendPattern);
+}
+
+Sprite::Sprite(const Vector2f &size, const GL::Texture &t, float percentBox, const GL::Blend::Pattern &blendPattern)
+    : Object(), _needUpdate(true), _spriteSize(size), _textureBox(Box2i(Vector2f(0,0), Vector2f(t.Size()[0] * percentBox / 100, t.Size()[1] * percentBox / 100))), _color(1, 1, 1)
+{
+    Initialize(t, blendPattern);
+}
+
+void Sprite::Initialize(const GL::Texture &t, const GL::Blend::Pattern &blendPattern)
 {
     GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL::Enum::TriangleStrip);
     geo->VBO().Init(4, GL::Enum::DataBuffer::StaticDraw);
@@ -60,10 +67,11 @@ void Sprite::Draw(SceneGraph *scene)
 void Sprite::UpdateGeometry()
 {
     const Vector2i  &size = _drawables[0]->Config->Textures[0].Size();
-    float           xb = _textureBox.Min(0) / (float)size.Data[0];
-    float           yb = _textureBox.Min(1) / (float)size.Data[1];
-    float           xh = _textureBox.Max(0) / (float)size.Data[0];
-    float           yh = _textureBox.Max(1) / (float)size.Data[1];
+
+    float           xb = (float)_textureBox.Min(0) / (float)size.Data[0];
+    float           yb = (float)_textureBox.Min(1) / (float)size.Data[1];
+    float           xh = (float)_textureBox.Max(0) / (float)size.Data[0];
+    float           yh = (float)_textureBox.Max(1) / (float)size.Data[1];
 
     Array<DefaultVertexType::Textured2d, 4>   vertices;
     vertices[0].Fill(0, 0, xb, yb, _color);

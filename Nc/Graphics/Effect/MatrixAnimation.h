@@ -41,15 +41,12 @@ namespace Nc
         class LGRAPHICS   MatrixAnimation : public Animation
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Animation);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Animation, System::Object, Nc::Graphic::MatrixAnimation)
 
             public:
                 MatrixAnimation();
                 //MatrixAnimation(const TMatrix &transformation);
                 ~MatrixAnimation();
-
-                static const char   *ClassName()        {return "MatrixAnimation";}
 
                 /** Copy the matrix animation */
                 virtual ISceneNode  *Clone() const      {return new MatrixAnimation(*this);}

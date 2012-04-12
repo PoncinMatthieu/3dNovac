@@ -38,12 +38,11 @@ namespace Nc
         class LGRAPHICS     Animation : public Effect
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Effect);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::Animation);
 
             public:
-                Animation(const char *className)
-                    : Effect(className), _alive(true)                  {}
+                Animation()
+                    : Effect(), _alive(true)                {}
 
                 /** Start the effect */
                 virtual void            Start()             {}

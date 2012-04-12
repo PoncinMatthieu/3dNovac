@@ -38,15 +38,12 @@ namespace Nc
         /// Define a light to use with the LightingEffect
         struct LGRAPHICS Light : public Object
         {
-            NC_UTILS_DEFINE_PARENT_CLASS(Graphic::Object);
-            NC_UTILS_DEFINE_VISITABLE(System::Object);
+            NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Light)
 
             Light()
-                : Object(ClassName()), color(0.5f, 0.5f, 0.5f, 0), radius(10)        {}
+                : Object(), color(0.5f, 0.5f, 0.5f, 0), radius(10)        {}
             Light(const Color &c, const float r = 10)
-                : Object(ClassName()), color(c), radius(r)                           {}
-
-            static const char   *ClassName()                    {return "Light";}
+                : Object(), color(c), radius(r)                           {}
 
             Color       color;              ///< the color of the light
             float       radius;             ///< the raduis of the light
@@ -72,14 +69,12 @@ namespace Nc
         class LGRAPHICS LightingEffect : public Effect
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Entity);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, System::Object, Nc::Graphic::LightingEffect)
 
             public:
                 LightingEffect(ILightingMaterial *material);
                 ~LightingEffect();
 
-                static const char           *ClassName()                {return "LightingEffect";}
                 virtual ISceneNode          *Clone() const              {return new LightingEffect(*this);}
 
                 /** \return the color ambiant of the lighting */

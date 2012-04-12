@@ -31,8 +31,8 @@
 using namespace std;
 using namespace Nc::Engine;
 
-EventManager::EventManager(const char *className, const std::string &name)
-	: System::Object(className, name)
+EventManager::EventManager(const std::string &name)
+	: System::Object(name)
 {
     _execEvents = true;
     _receiveEvents = true;

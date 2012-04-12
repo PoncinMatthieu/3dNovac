@@ -245,6 +245,12 @@ namespace Nc
                     */
                     void                ActiveTexture(unsigned int no);
 
+                    /** \brief Set the Scissor attributes
+                        Ogl function:
+                            -glScissor()
+                    */
+                    void                Scissor(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
+
                 private:
                     /** Check the opengl version of the current context */
                     void            CheckGLVersion();
@@ -267,6 +273,12 @@ namespace Nc
                     int                         _currentViewportY;              ///< the current lower y viewport
                     int                         _currentViewportWidth;          ///< the current upper x viewport
                     int                         _currentViewportHeight;         ///< the current upper y viewport
+
+                    // scissor
+                    int                         _currentScissorX;               ///< the current lower x scissor
+                    int                         _currentScissorY;               ///< the current lower y scissor
+                    int                         _currentScissorWidth;           ///< the current upper x scissor
+                    int                         _currentScissorHeight;          ///< the current upper y scissor
 
                     // depth test
                     bool                        _currentDepthMask;              ///< the current write depth mask statement

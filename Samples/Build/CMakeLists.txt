@@ -48,7 +48,7 @@ else()
 									debug 		../../lib/Debug/Nc-Graphics
 									optimized	../../lib/Release/Nc-Core
 									optimized	../../lib/Release/Nc-Graphics
-									general 	../../extlibs/freetype 
+									general 	../../extlibs/freetype
 									general		opengl32)
 endif()
 
@@ -91,6 +91,39 @@ else()
 												optimized	../../lib/Release/Nc-Core)
 endif()
 
+#------------------------------------------------------------------------------
+#	Sample Viewer
+#------------------------------------------------------------------------------
+file(
+  GLOB
+  SampleViewer-sources
+  ../SampleViewer/*.cpp
+  ../SampleViewer/*.h
+)
+
+add_executable(SampleViewer	${SampleViewer-sources})
+add_library(PluginSampleViewer	SHARED ${SampleViewer-sources})
+
+if(UNIX)
+	target_link_libraries(SampleViewer			Nc-Core Nc-Graphics Nc-GUI GL)
+	target_link_libraries(PluginSampleViewer		Nc-Core Nc-Graphics Nc-GUI GL)
+else()
+	target_link_libraries(SampleViewer			debug 		../../lib/Debug/Nc-Core
+											debug		../../lib/Debug/Nc-Graphics
+											debug		../../lib/Debug/Nc-GUI
+											optimized	../../lib/Release/Nc-Core
+											optimized	../../lib/Release/Nc-Graphics
+											optimized	../../lib/Release/Nc-GUI
+											general		opengl32)
+
+	target_link_libraries(PluginSampleViewer		debug 		../../lib/Debug/Nc-Core
+											debug		../../lib/Debug/Nc-Graphics
+											debug		../../lib/Debug/Nc-GUI
+											optimized	../../lib/Release/Nc-Core
+											optimized	../../lib/Release/Nc-Graphics
+											optimized	../../lib/Release/Nc-GUI
+											general		opengl32)
+endif()
 
 #------------------------------------------------------------------------------
 #	Frustum Demo
@@ -304,4 +337,39 @@ else()
 												optimized	../../lib/Release/Nc-Contrib
 												general		opengl32)
 endif()
+
+#------------------------------------------------------------------------------
+#	Simple Particle Effect
+#------------------------------------------------------------------------------
+file(
+  GLOB
+  SimpleParticleEffect-sources
+  ../SimpleParticleEffect/*.cpp
+  ../SimpleParticleEffect/*.h
+)
+
+add_executable(SimpleParticleEffect		${SimpleParticleEffect-sources})
+add_library(PluginSimpleParticleEffect		SHARED ${SimpleParticleEffect-sources})
+
+if(UNIX)
+	target_link_libraries(SimpleParticleEffect		Nc-Core Nc-Graphics Nc-GUI GL)
+	target_link_libraries(PluginSimpleParticleEffect	Nc-Core Nc-Graphics Nc-GUI GL)
+else()
+	target_link_libraries(SimpleParticleEffect		debug 		../../lib/Debug/Nc-Core
+								debug		../../lib/Debug/Nc-Graphics
+								debug		../../lib/Debug/Nc-GUI
+								optimized	../../lib/Release/Nc-Core
+								optimized	../../lib/Release/Nc-Graphics
+								optimized	../../lib/Release/Nc-GUI
+								general		opengl32)
+
+	target_link_libraries(PluginSimpleParticleEffect	debug 		../../lib/Debug/Nc-Core
+								debug		../../lib/Debug/Nc-Graphics
+								debug		../../lib/Debug/Nc-GUI
+								optimized	../../lib/Release/Nc-Core
+								optimized	../../lib/Release/Nc-Graphics
+								optimized	../../lib/Release/Nc-GUI
+								general		opengl32)
+endif()
+
 

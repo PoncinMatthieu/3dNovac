@@ -39,39 +39,35 @@ namespace Nc
         class LGUI  WidgetLabeled : public Widget
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::WidgetLabeled);
 
             public:
-                WidgetLabeled(const Utils::Unicode::UTF32 &label, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(10, 10), Corner x = Left, Corner y = Top,
-                              const std::string &ttf = "arial", Graphic::String::Style s = Graphic::String::Regular);
-                WidgetLabeled(const char *className, const Utils::Unicode::UTF32 &label, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(10, 10), Corner x = Left, Corner y = Top,
+                WidgetLabeled(const Utils::Unicode::UTF32 &label, int charSize, Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0,0), const Vector2i &size = Vector2i(0,0),
                               const std::string &ttf = "arial", Graphic::String::Style s = Graphic::String::Regular);
                 WidgetLabeled(const WidgetLabeled &w);
                 WidgetLabeled &operator = (const WidgetLabeled &w);
                 virtual ~WidgetLabeled();
 
-                static const char   *ClassName()                    {return "WidgetLabeled";}
-                virtual ISceneNode  *Clone() const                  {return new WidgetLabeled(*this);}
+                virtual ISceneNode  *Clone() const                                              {return new WidgetLabeled(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
-                /** Set the size of the widget */
-                virtual void        Size(const Vector2f &size);
-                /** Return the reel size of the widget (including the label) */
-                virtual void        GetReelSize(Vector2f &size) const;
+                /** \return the reel size of the widget (including the label) */
+                virtual void        GetReelSize(Vector2i &size) const;
 
                 /** Create the label with a text, a font and a style */
-                virtual void                    CreateLabel(const Utils::Unicode::UTF32 &l, const std::string &ttf, Graphic::String::Style s);
-                /** Return the label size */
-                inline const Vector2f           &LabelSize()                        {return _label->Size();}
+                virtual void                    CreateLabel(const Utils::Unicode::UTF32 &l, int charSize, const std::string &ttf, Graphic::String::Style s);
+                /** Set the char size of the label */
+                inline void                     CharSize(int charSize)                          {_label->CharSize(charSize);}
+                /** \return the label size */
+                inline const Vector2f           &LabelSize()                                    {return _label->Size();}
                 /** Set the label text */
-                inline void                     Label(const Utils::Unicode::UTF32 &text)      {_label->Text(text); _stateChanged = true;}
+                inline void                     Label(const Utils::Unicode::UTF32 &text)        {_label->Text(text); _stateChanged = true;}
                 /** Set the label color */
-                inline void                     LabelColor(const Color &color)  {_label->SetColor(color); _stateChanged = true;}
-                /** Return the label */
-                inline const Graphic::String    *GetLabel() const          {return _label;}
-                /** Return the label */
-                inline Graphic::String          *GetLabel()                 {return _label;}
+                inline void                     LabelColor(const Color &color)                  {_label->SetColor(color); _stateChanged = true;}
+                /** \return the label */
+                inline const Graphic::String    *GetLabel() const                               {return _label;}
+                /** \return the label */
+                inline Graphic::String          *GetLabel()                                     {return _label;}
 
             protected:
                 /** Render the widget labeled */

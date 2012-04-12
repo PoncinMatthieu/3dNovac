@@ -39,8 +39,7 @@ namespace Nc
         class LGUI  Console : public WindowBox, Utils::NonCopyable
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(WindowBox);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WindowBox, System::Object, Nc::GUI::Console);
 
             private:
                 /// The pattern of the console
@@ -56,10 +55,8 @@ namespace Nc
                 Console(Pattern p = TranslateAtFocus);
                 virtual ~Console();
 
-                static const char   *ClassName()            {return "Console";}
-
                 /** Return the reel position of the console */
-                virtual void        GetReelPos(Vector2f &pos) const;
+                virtual void        GetReelPos(Vector2i &pos) const;
 
                 /** Push a message in the message list of the console */
                 static void         PushMsg(const std::string &s);

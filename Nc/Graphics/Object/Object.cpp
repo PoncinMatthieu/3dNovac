@@ -31,15 +31,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 Object::Object()
-    : NodeType(ClassName()),
-      _useSceneMaterial(true),
-      _material(NULL),
-      _lastConfiguredMaterial(NULL)
-{
-}
-
-Object::Object(const char *className)
-    : NodeType(className),
+    : NodeType(),
       _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
@@ -47,7 +39,7 @@ Object::Object(const char *className)
 }
 
 Object::Object(const TMatrix &m)
-    : NodeType(ClassName(), m),
+    : NodeType(m),
       _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
@@ -55,7 +47,7 @@ Object::Object(const TMatrix &m)
 }
 
 Object::Object(const Box3f &box)
-    : NodeType(ClassName(), box),
+    : NodeType(box),
       _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
@@ -63,7 +55,7 @@ Object::Object(const Box3f &box)
 }
 
 Object::Object(const Box3f &box, const TMatrix &m)
-    : NodeType(ClassName(), box, m),
+    : NodeType(box, m),
       _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
@@ -162,15 +154,27 @@ void    Object::ConfigureDrawables(IMaterial *material)
 
 void    Object::Render(SceneGraph *scene)
 {
-    scene->PushModelMatrix();
-    TransformModelMatrixToRender(scene);
+    RenderBegin(scene);
 
     // rendering
     Draw(scene);
 
     // rendering childs
+    RenderChildsBegin(scene);
     NodeType::RenderChilds(scene);
+    RenderChildsEnd(scene);
 
+    RenderEnd(scene);
+}
+
+void    Object::RenderBegin(SceneGraph *scene)
+{
+    scene->PushModelMatrix();
+    TransformModelMatrixToRender(scene);
+}
+
+void    Object::RenderEnd(SceneGraph *scene)
+{
     scene->PopModelMatrix();
 }
 
@@ -190,7 +194,9 @@ void    Object::Draw(SceneGraph *scene)
             ConfigureDrawables(m);
 
         // rendering
-        //LOG_DEBUG << this << " " << *this << " Rendering with: " << *m << std::endl;
+        #ifdef _DEBUG_MATERIALS_RENDERING
+            LOG_DEBUG << this << " " << *this << " Rendering with: " << *m << std::endl;
+        #endif
         for (unsigned int i = 0; i < _drawables.size(); ++i)
             m->Render(scene, *_drawables[i]);
     }

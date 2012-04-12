@@ -30,7 +30,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 RasterEffect::RasterEffect(Pattern pattern)
-    : Effect(ClassName())
+    : Effect()
 {
     SetPattern(pattern);
 }

@@ -41,7 +41,13 @@ namespace Nc
             {
                 public:
                     Texture();
-                    Texture(const Utils::FileName &file, bool useMipMap = true);
+                    /**
+                        - \p file specify the texture filename
+                        - \p magnifyingFilter must be GL_NEAREST or GL_LINEAR
+                        - \p mignifyingFilter can be GL_NEAREST, GL_LINEAR, GL_NEAREST_MIPMAP_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR
+                        - \p generateMipmap, if true, generate the mipmaps of the texture
+                    */
+                    Texture(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true);
                     virtual ~Texture();
 
                     /** Create a new copy of the object by without duplicate the ogl ressources */
@@ -60,9 +66,9 @@ namespace Nc
 
                     // Loading and auto-generation
                     /** Load the texture from a file */
-                    void            LoadFromFile(const Utils::FileName &file, bool useMipMap = true);
+                    void            LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true);
                     /** Load the texture from a given Image */
-                    void            LoadFromImage(const Image &image, bool useMipMap = true, const std::string &name = "");
+                    void            LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true, const std::string &name = "");
                     /** Load a Cube map (to display a SkyBox) */
                     void            LoadCubeMap(const Utils::FileName Names[6]);
                     /** Generate a 3d sphere map (to create a light map in the DefaultLightingMaterial class) */

@@ -5,7 +5,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 FrameBufferEffect::FrameBufferEffect()
-  : Effect(ClassName()), _postProcessActivated(true)
+  : Effect(), _postProcessActivated(true)
 {
 	_camera2d = new Camera2d();
 
@@ -24,16 +24,21 @@ FrameBufferEffect::FrameBufferEffect()
 
 	_timeToNextJitter = 0;
 	_sketchJitterSpeed = 10;
+
 /*
+	_postProcessMaterial->SetMVPMatrixUniform("MVPMatrix");
+	_postProcessMaterial->SetDrawableTextureUnitUniform(0, "Frame");
+	_postProcessMaterial->GetUniform<GL::Texture, 1>("SketchSampler")->Init(1, GL::Texture("Nc:Image:Sketch.png"));
 	_postProcessMaterial->GetUniform<bool,1>("SketchActivated")->value = true;
 	_postProcessMaterial->GetUniform<bool,1>("SketchColored")->value = false;
-	_postProcessMaterial->GetUniform<float,1>("SketchThreshold")->value = 0;//1;
-	_postProcessMaterial->GetUniform<float,1>("SketchBrightness")->value = 0.133f;
+	_postProcessMaterial->GetUniform<float,1>("SketchThreshold")->value = 0.0f;
+	_postProcessMaterial->GetUniform<float,1>("SketchBrightness")->value =	0.1333f;
 	_sketchJitter = _postProcessMaterial->GetUniform<float,2>("SketchJitter");
 	_postProcessMaterial->SetAttrib(DefaultVertexType::ComponentsName::Coord, "InCoord");
 	_postProcessMaterial->SetAttrib(DefaultVertexType::ComponentsName::TexCoord, "InTexCoord");
+
 	_timeToNextJitter = 0;
-	_sketchJitterSpeed = 10;
+	_sketchJitterSpeed = 25;
 */
 }
 
@@ -72,7 +77,8 @@ void	FrameBufferEffect::InitFbo1()
 	_fboPass1.Disable();
 
 	LOG << "create sprite" << std::endl;
-	_sprite = new Sprite(size, colorTexture, Box2f(Vector2f(0,0), colorTexture.Size()), GL::Blend::Disabled);
+	_sprite = new Sprite(size, colorTexture, Box2i(Vector2f(0,0), colorTexture.Size()), GL::Blend::Disabled);
+	_sprite->UseSceneMaterial(true);
 	LOG << "init done" << std::endl;
 }
 
@@ -104,6 +110,7 @@ void	FrameBufferEffect::Render(SceneGraph *scene)
 
 		scene->PopMaterial();
 	}
+
 }
 
 void	FrameBufferEffect::Update(float elapsedTime)

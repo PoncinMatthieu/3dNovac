@@ -34,14 +34,14 @@ using namespace Nc::Graphic;
 BoundingBox      *Octree::_boundingBoxObject = NULL;
 
 Octree::Octree(const Vector3f &center, unsigned int size)
-    : Graphic::SubTree<Graph::OctreeNodePolitic>(ClassName()),
+    : Graphic::SubTree<Graph::OctreeNodePolitic>(),
       _drawOutlines(false), _pattern(FrustumCulling)
 {
     Init(center, size);
 }
 
 Octree::Octree(const Box3f &box)
-    : Graphic::SubTree<Graph::OctreeNodePolitic>(ClassName()),
+    : Graphic::SubTree<Graph::OctreeNodePolitic>(),
       _drawOutlines(false), _pattern(FrustumCulling)
 {
     Vector3f s = box.Length();

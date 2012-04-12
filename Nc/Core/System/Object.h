@@ -33,6 +33,26 @@
 #include "../Utils/Exception.h"
 #include "../Graph/INodePolitic.h"
 
+#define STR_EXPAND(tok) #tok
+
+#define NC_SYSTEM_DEFINE_OBJECT(ParentClass, FullClassObjectName)               \
+    NC_UTILS_DEFINE_PARENT_CLASS(ParentClass);                                  \
+    static const char     *ClassName()    {return #FullClassObjectName;}        \
+    virtual const char    *ResolvedClassName() const    {return ClassName();}
+
+#define NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ParentClass, VisitableObject, FullClassObjectName)    \
+    NC_UTILS_DEFINE_PARENT_CLASS(ParentClass);                                  \
+    NC_UTILS_DEFINE_VISITABLE(VisitableObject);                                 \
+    static const char     *ClassName()    {return #FullClassObjectName;}        \
+    virtual const char    *ResolvedClassName() const    {return ClassName();}
+
+#define NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(ParentClass, VisitableObject, InvokableObject, FullClassObjectName)    \
+    NC_UTILS_DEFINE_PARENT_CLASS(ParentClass);                                  \
+    NC_UTILS_DEFINE_VISITABLE(VisitableObject);                                 \
+    NC_UTILS_DEFINE_INVOKABLE(InvokableObject);                                 \
+    static const char     *ClassName()    {return #FullClassObjectName;}        \
+    virtual const char    *ResolvedClassName() const    {return ClassName();}
+
 namespace Nc
 {
     namespace System
@@ -41,23 +61,15 @@ namespace Nc
         class LCORE  Object : public Utils::VisitableBase<Object>
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Utils::VisitableBase<Object>);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
-                NC_UTILS_DEFINE_INVOKABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Utils::VisitableBase<Object>, Nc::System::Object, Nc::System::Object, Nc::System::Object);
 
             public:
                 Object();
-                Object(const char *className);
-                Object(const char *className, const std::string &name);
+                Object(const std::string &name);
                 Object(const Object &obj);
                 Object &operator = (const Object &obj);
                 virtual ~Object();
 
-                /** return a static const char to identify the class name */
-                static const char *ClassName()                                  {return "Sys::Object";}
-
-                /** \return the class name of the object */
-                inline const char   *GetClassName() const                       {return _className;}
                 /** Set the name of the object */
                 inline void                 Name(const std::string &name)       {_name = name;}
                 /** \return the name of the object */
@@ -104,7 +116,7 @@ namespace Nc
                     T *o = (this != NULL) ? dynamic_cast<T*>(this) : NULL;
                     if (o != NULL)
                         return o;
-                    throw Utils::Exception("System::Object", "Cannot convert the object `" + std::string(_className) + "` into a `" + std::string(T::ClassName()) + "`");
+                    throw Utils::Exception("System::Object", "Cannot convert the object `" + std::string(ResolvedClassName()) + "` into a `" + std::string(T::ClassName()) + "`");
                 }
 
                 /**
@@ -120,7 +132,7 @@ namespace Nc
                     T *o = (this != NULL) ? dynamic_cast<T*>(this) : NULL;
                     if (o != NULL)
                         return o;
-                    throw Utils::Exception("System::Object", "Cannot convert the object `" + std::string(_className) + "` into a `" + std::string(T::ClassName()) + "`");
+                    throw Utils::Exception("System::Object", "Cannot convert the object `" + std::string(ResolvedClassName()) + "` into a `" + std::string(T::ClassName()) + "`");
                 }
 
                 /**
@@ -139,7 +151,6 @@ namespace Nc
                 unsigned int        _id;            ///< the unique id of the object
 
             private:
-                const char          *_className;    ///< the className of the object used to dynamically cast an object
                 static unsigned int _nbObject;      ///< the current number of object
         };
     }

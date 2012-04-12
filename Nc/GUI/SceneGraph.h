@@ -41,17 +41,14 @@ namespace Nc
         class LGUI  SceneGraph : public Graphic::SceneGraph
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Graphic::SceneGraph);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::SceneGraph, Nc::System::Object, Nc::GUI::SceneGraph);
 
             public:
                 SceneGraph();
-                SceneGraph(const char *className);
                 SceneGraph(const SceneGraph &scene);
                 SceneGraph &operator = (const SceneGraph &scene);
                 virtual ~SceneGraph();
 
-                static const char   *ClassName()        {return "GUI::SceneGraph";}
                 virtual ISceneNode  *Clone() const      {return new SceneGraph(*this);}
 
                 /** Return true if a widget is focused */
@@ -68,6 +65,9 @@ namespace Nc
 
                 /** Bring to front the given widget */
                 void BringToFront(Widget *w);
+
+                /** Remove the given widget */
+                void RemoveWidget(Widget *w);
 
             private:
                 Widget                  *_widgetFocused;    ///< the current focused widget

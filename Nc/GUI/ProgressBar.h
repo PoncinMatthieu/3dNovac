@@ -37,14 +37,12 @@ namespace Nc
         class LGUI  ProgressBar : public Widget
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ProgressBar);
 
             public:
-                ProgressBar(const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Top, Corner y = Left, const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
+                ProgressBar(Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
                 virtual ~ProgressBar();
 
-                static const char   *ClassName()                                {return "ProgressBar";}
                 virtual ISceneNode  *Clone() const                              {return new ProgressBar(*this);}
 
                 /** Set the box of the progress bar */

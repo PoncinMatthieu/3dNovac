@@ -44,13 +44,13 @@ namespace Nc
         class SubTree : public AbstractSceneNode<P>
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(ISceneNode);
+                NC_SYSTEM_DEFINE_OBJECT(ISceneNode, Nc::Graphic::SubTree);
                 typedef AbstractSceneNode<P>        MotherType;
 
             public:
-                SubTree(const char *className)
-                    : MotherType(className)             {}
-                virtual ~SubTree()                      {}
+                SubTree()
+                    : MotherType()              {}
+                virtual ~SubTree()              {}
 
                 /** Clone the scene node */
                 virtual ISceneNode      *Clone() const = 0;

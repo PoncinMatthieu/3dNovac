@@ -314,6 +314,16 @@ namespace Nc
                         SRGBAlpha                   = GL_SRGB_ALPHA,
                         SRGB8Alpha8                 = GL_SRGB8_ALPHA8
                     };
+
+                    enum Filter
+                    {
+                        Linear                      = GL_LINEAR,
+                        Nearest                     = GL_NEAREST,
+                        LinearMipmapLinear          = GL_LINEAR_MIPMAP_LINEAR,
+                        LinearMipmapNearest         = GL_LINEAR_MIPMAP_NEAREST,
+                        NearestMipmapNearest        = GL_NEAREST_MIPMAP_NEAREST,
+                        NearestMipmapLinear         = GL_NEAREST_MIPMAP_LINEAR
+                    };
 				}
 
                 /// Define ogl pixel format

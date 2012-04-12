@@ -34,26 +34,26 @@ namespace Nc
     namespace GUI
     {
         /// To manage a button
+        /** Display and manage a button. */
         class LGUI  Button : public Widget
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Button);
 
             public:
-                Button(const std::string &text, const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Left, Corner y = Top,
-                       const std::string &ttf = "arial", const Utils::FileName& texture = Utils::FileName("Nc:GUI:button.png"));
+                Button(const std::string &text, Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0),
+                       const std::string &ttf = "arial", const std::string &lookName = "");
+                Button(const std::string &text, Corner x, Corner y, const Vector2i &pos, int fontSize, int marginX, int marginY,
+                       const std::string &ttf = "arial", const std::string &lookName = "");
                 Button(const Button &w);
                 Button &operator = (const Button &w);
                 virtual ~Button();
 
-                static const char   *ClassName()                    {return "Button";}
                 virtual ISceneNode  *Clone() const                  {return new Button(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the widget */
                 inline void         Text(const std::string &t)  {_font->Text(t);}
-
 
             protected:
                 /** Update the geometry of the button */
@@ -67,15 +67,14 @@ namespace Nc
                 virtual void        execHanle();
 
             private:
+                /** Initialise the widget */
+                void                Initialize(const std::string &text, const Vector2i &size, const std::string &ttf, const std::string &lookName);
                 /** Copy the widget */
                 void                Copy(const Button &w);
 
             private:
-                unsigned int        _indexDrawable;         ///< An index of the drawable used to render the button
-
+                Graphic::Sprite     *_sprite;               ///< the sprite of the button
                 Graphic::String     *_font;                 ///< The text of the button
-                int                 _textWidth;             ///< The width of the text
-                int                 _textHeight;            ///< The height of the text
                 bool                _buttonPressed;         ///< Mark if the button is pressed
                 Color               _colorDisable;          ///< The color of the disabled button
         };

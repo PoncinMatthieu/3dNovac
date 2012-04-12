@@ -32,13 +32,7 @@ using namespace Nc;
 using namespace Nc::GUI;
 
 SceneGraph::SceneGraph()
-    : Graphic::SceneGraph(ClassName(), true),
-      _widgetFocused(NULL)
-{
-}
-
-SceneGraph::SceneGraph(const char *className)
-    : Graphic::SceneGraph(className, true),
+    : Graphic::SceneGraph(true),
       _widgetFocused(NULL)
 {
 }
@@ -88,14 +82,13 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
         Widget *lastWidgetToHaveTheFocus = _widgetFocused;
         _widgetFocused = NULL;
         Vector2i mousePos = Graphic::WindowInput::MousePositionInGLCoord();
-        for(ContainerType::iterator it = _childs.begin(); _widgetFocused == NULL && it != _childs.end(); it++)
+        for(ContainerType::reverse_iterator it = _childs.rbegin(); _widgetFocused == NULL && it != _childs.rend(); it++)
         {
             Widget *w = (*it)->AsWithoutThrow<Widget>();
             if (w != NULL)
             {
-                //w->Resized();
-                Vector2f    reelPos;
-                Vector2f    reelSize;
+                Vector2i    reelPos;
+                Vector2i    reelSize;
                 w->GetReelPos(reelPos);
                 w->GetReelSize(reelSize);
                 #ifdef _DEBUG_GUI_FOCUS
@@ -123,4 +116,11 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
 // send les event au widget qui a le focus
     if (_widgetFocused != NULL)
         _widgetFocused->ManageWindowEvent(event);
+}
+
+void    SceneGraph::RemoveWidget(Widget *w)
+{
+    if (_widgetFocused == w)
+        _widgetFocused = NULL;
+    RemoveChild(w);
 }

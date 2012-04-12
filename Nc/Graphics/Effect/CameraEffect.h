@@ -37,14 +37,12 @@ namespace Nc
         class LGRAPHICS CameraEffect : public Effect
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Effect);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::CameraEffect);
 
             public:
                 CameraEffect();
                 virtual ~CameraEffect();
 
-                static const char       *ClassName()                    {return "CameraEffect";}
                 virtual ISceneNode      *Clone() const                  {return new CameraEffect(*this);}
 
                 /** \return the update viewport statement */
@@ -85,7 +83,7 @@ namespace Nc
                 void                    View(Vector3f eye, Vector3f center, Vector3f up);
 
             protected:
-                virtual void        Render(SceneGraph *scene);
+                virtual void            Render(SceneGraph *scene);
 
             private:
                 bool                _updateViewport;            ///< if true, update the viewport

@@ -36,19 +36,19 @@ IDefaultMaterial    *BoundingBox::_material = NULL;
 Color               BoundingBox::_color(1,1,1);
 
 BoundingBox::BoundingBox()
-    : Object(ClassName())
+    : Object()
 {
     _useSceneMaterial = false;
 }
 
 BoundingBox::BoundingBox(const Box3f &box)
-    : Object(ClassName()), Box3f(box)
+    : Object(), Box3f(box)
 {
     _useSceneMaterial = false;
 }
 
 BoundingBox::BoundingBox(const Vector3f &min, const Vector3f &max)
-    : Object(ClassName()), Box3f(min, max)
+    : Object(), Box3f(min, max)
 {
     _useSceneMaterial = false;
 }

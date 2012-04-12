@@ -37,13 +37,11 @@ namespace Nc
         class LGRAPHICS Camera2d : public Camera
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Camera);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Camera, System::Object, Nc::Graphic::Camera);
 
             public:
-                Camera2d() : Camera(ClassName(), true)                          {}
+                Camera2d() : Camera(true)                          {}
 
-                static const char   *ClassName()                                {return "Camera2d";}
                 virtual ISceneNode  *Clone() const                              {return new Camera2d(*this);}
 
                 /** To reception the mouse motion event */

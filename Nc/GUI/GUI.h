@@ -35,11 +35,12 @@
 #include "SceneGraph.h"
 #include "WidgetLabeled.h"
 #include "Button.h"
-#include "TextBox.h"
+#include "LineEdit.h"
 #include "WindowBox.h"
 #include "Console.h"
 #include "SpriteWidget.h"
 #include "ProgressBar.h"
 #include "FPSWidget.h"
+#include "Layout.h"
 
 #endif

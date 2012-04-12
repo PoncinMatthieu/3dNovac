@@ -50,7 +50,7 @@ namespace Nc
             p[2] /= len;
         }
 
-        bool InRect(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &pointTest)
+        bool InRect(const Vector2i &RectPos, const Vector2i &RectSize, const Vector2i &pointTest)
         {
             Vector2f posRectSize = RectPos + RectSize;
             if ((pointTest.Data[0] > RectPos.Data[0] && pointTest.Data[0] < posRectSize.Data[0] && posRectSize.Data[0] > RectPos.Data[0]) ||

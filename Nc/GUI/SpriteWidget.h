@@ -38,38 +38,33 @@ namespace Nc
         class LGUI  SpriteWidget : public Widget
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Widget);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::SpriteWidget);
 
                 /// To define a sprite with his position in the widget
                 struct SpritePos
                 {
-                    SpritePos(Graphic::Sprite *s, const Vector2f &p) : sprite(s), pos(p)     {}
+                    SpritePos(Graphic::Sprite *s, const Vector2i &p) : sprite(s), pos(p)     {}
 
                     Graphic::Sprite     *sprite;
-                    Vector2f            pos;
+                    Vector2i            pos;
                 };
 
                 typedef std::list<SpritePos>  ListSpritePos;    ///< Define a list of sprite/position
 
             public:
-                SpriteWidget(const Vector2f &pos = Vector2f(0, 0), const Vector2f &size = Vector2f(10, 10), Corner x = Top, Corner y = Left);
+                SpriteWidget(Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0));
                 virtual ~SpriteWidget();
 
-                static const char   *ClassName()                    {return "SpriteWidget";}
                 virtual ISceneNode  *Clone() const                  {return new SpriteWidget(*this);}
 
                 /** clear the list of sprites */
                 inline void             ClearSprites()              {_listSprite.clear(); _stateChanged = true;}
                 /** Add a sprite in the list with his position */
-                void                    AddSprite(Graphic::Sprite *s, const Vector2f &pos);
+                void                    AddSprite(Graphic::Sprite *s, const Vector2i &pos);
                 /** Unstack a sprite and return it */
                 inline SpritePos        PopBackSprite()            {SpritePos s = _listSprite.back(); _listSprite.pop_back(); _stateChanged = true; return s;}
                 /** Unstack a sprite and return it */
                 inline SpritePos        PopFrontSprite()           {SpritePos s = _listSprite.front(); _listSprite.pop_front(); _stateChanged = true; return s;}
-
-//                    virtual Vector2f    GetReelSize() const; /// \todo
-//                    virtual Vector2f    GetReelPos() const; /// \todo
 
             protected:
                 /** Render the sprite list */

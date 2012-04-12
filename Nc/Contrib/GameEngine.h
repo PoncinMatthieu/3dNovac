@@ -39,6 +39,9 @@ namespace Nc
         class GameEngine : public Engine::MainEngine
         {
             public:
+                NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::MainEngine, Nc::Contrib::GameEngine);
+
+            public:
                 GameEngine(Graphic::Engine *graphic, Engine::Manager *manager)
                     : Engine::MainEngine(manager), _graphic(graphic), _context(NULL)    {}
                 virtual ~GameEngine()                                                   {delete _context;}

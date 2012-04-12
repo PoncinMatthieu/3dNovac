@@ -38,13 +38,12 @@ namespace Nc
         class LCORE MainEngine : public IEngine, public System::InputListener
         {
             public:
-                MainEngine(const char *className, Manager *manager, unsigned int pattern = HasAContext | WaitingLoadContentsOfOthersEngines,
-                           unsigned char deletePriority = 2, unsigned char loadingContextPriority = 2, unsigned int loadingPriority = 2);
+                NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::IEngine, Nc::Engine::MainEngine);
+
+            public:
                 MainEngine(Manager *manager, unsigned int pattern = HasAContext | WaitingLoadContentsOfOthersEngines,
                            unsigned char deletePriority = 2, unsigned char loadingContextPriority = 2, unsigned int loadingPriority = 2);
                 virtual ~MainEngine();
-
-                static const char *ClassName()          {return "MainEngine";}
 
             protected:
                 /**

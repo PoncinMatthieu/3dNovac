@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<SpriteSheet path="Nc:Image:GUI/spriteSheet.png">
+  <Sprite name="BackgroundWidgetMiddle"	topX="0" topY="0" bottomX="8" bottomY="8" />
+
+  <Sprite name="ComboBoxLeft"		topX="109" topY="9" bottomX="113" bottomY="33" />
+  <Sprite name="ComboBoxRight"		topX="140" topY="9" bottomX="162" bottomY="33" />
+  <Sprite name="ComboBoxMiddle"		topX="113" topY="9" bottomX="140" bottomY="33" />
+  <Sprite name="ComboBoxList"		topX="113" topY="34" bottomX="140" bottomY="52" />
+
+  <Sprite name="Window2WidgetLeftEdge"		topX="44" topY="57" bottomX="52" bottomY="67" />
+  <Sprite name="Window2WidgetTopEdge"		topX="63" topY="39" bottomX="88" bottomY="47" />
+  <Sprite name="Window2WidgetRightEdge"		topX="91" topY="48" bottomX="99" bottomY="56" />
+  <Sprite name="Window2WidgetBottomEdge"	topX="53" topY="67" bottomX="79" bottomY="75" />
+  <Sprite name="Window2WidgetLeftTop"		topX="44" topY="39" bottomX="62" bottomY="58" />
+  <Sprite name="Window2WidgetRightTop"		topX="88" topY="39" bottomX="99" bottomY="49" />
+  <Sprite name="Window2WidgetLeftBottom"	topX="44" topY="64" bottomX="55" bottomY="75" />
+  <Sprite name="Window2WidgetRightBottom"	topX="66" topY="55" bottomX="99" bottomY="75" />
+  <Sprite name="Window2WidgetMiddle"		topX="67" topY="55" bottomX="77" bottomY="60" />
+
+  <Sprite name="WindowWidgetLeftEdge"		topX="0" topY="49" bottomX="10" bottomY="65" />
+  <Sprite name="WindowWidgetTopEdge"		topX="9" topY="36" bottomX="26" bottomY="46" />
+  <Sprite name="WindowWidgetRightEdge"		topX="28" topY="47" bottomX="39" bottomY="60" />
+  <Sprite name="WindowWidgetBottomEdge"		topX="10" topY="63" bottomX="26" bottomY="74" />
+  <Sprite name="WindowWidgetLeftTop"		topX="0" topY="36" bottomX="10" bottomY="46" />
+  <Sprite name="WindowWidgetRightTop"		topX="28" topY="36" bottomX="39" bottomY="46" />
+  <Sprite name="WindowWidgetLeftBottom"		topX="0" topY="63" bottomX="10" bottomY="74" />
+  <Sprite name="WindowWidgetRightBottom"	topX="28" topY="63" bottomX="39" bottomY="74" />
+  <Sprite name="WindowWidgetMiddle"		topX="10" topY="47" bottomX="26" bottomY="62" />
+
+  <Sprite name="WidgetLeftEdge"		topX="8" topY="2" bottomX="10" bottomY="6" />
+  <Sprite name="WidgetTopEdge"		topX="10" topY="0" bottomX="14" bottomY="2" />
+  <Sprite name="WidgetRightEdge"	topX="14" topY="2" bottomX="16" bottomY="6" />
+  <Sprite name="WidgetBottomEdge"	topX="10" topY="6" bottomX="14" bottomY="8" />
+  <Sprite name="WidgetLeftTop"		topX="8" topY="0" bottomX="10" bottomY="2" />
+  <Sprite name="WidgetRightTop"		topX="14" topY="0" bottomX="16" bottomY="2" />
+  <Sprite name="WidgetLeftBottom"	topX="8" topY="6" bottomX="10" bottomY="8" />
+  <Sprite name="WidgetRightBottom"	topX="14" topY="6" bottomX="16" bottomY="8" />
+
+  <Sprite name="Button"			topX="0" topY="8" bottomX="107" bottomY="36" />
+
+  <Sprite name="ScrollBarLeftButton"		topX="163" topY="9" bottomX="178" bottomY="25" />
+  <Sprite name="ScrollBarSliderLeft"		topX="180" topY="9" bottomX="183" bottomY="25" />
+  <Sprite name="ScrollBarSliderMiddle"		topX="183" topY="9" bottomX="201" bottomY="25" />
+  <Sprite name="ScrollBarSliderRight"		topX="201" topY="9" bottomX="204" bottomY="25" />
+  <Sprite name="ScrollBarSliderExpand"		topX="182" topY="9" bottomX="183" bottomY="25" />
+  <Sprite name="ScrollBarSliderBackground"	topX="205" topY="9" bottomX="211" bottomY="25" />
+  <Sprite name="ScrollBarRightButton"		topX="212" topY="9" bottomX="226" bottomY="25" />
+
+  <Sprite name="ScrollBarLeftButtonPressed"	topX="163" topY="26" bottomX="178" bottomY="41" />
+  <Sprite name="ScrollBarSliderLeftPressed"	topX="180" topY="26" bottomX="183" bottomY="41" />
+  <Sprite name="ScrollBarSliderMiddlePressed"	topX="183" topY="26" bottomX="201" bottomY="41" />
+  <Sprite name="ScrollBarSliderRightPressed"	topX="201" topY="26" bottomX="204" bottomY="41" />
+  <Sprite name="ScrollBarSliderExpandPressed"	topX="182" topY="26" bottomX="183" bottomY="41" />
+  <Sprite name="ScrollBarRightButtonPressed"	topX="212" topY="26" bottomX="226" bottomY="41" />
+</SpriteSheet>
+

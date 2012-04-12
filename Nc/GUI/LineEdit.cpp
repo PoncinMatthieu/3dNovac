@@ -24,7 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "TextBox.h"
+#include "LineEdit.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
@@ -32,11 +32,11 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-TextBox::TextBox(const std::string &label, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, const std::string &ttf)
-    : WidgetLabeled(ClassName(), label, pos, size, x, y, ttf)
+LineEdit::LineEdit(const std::string &label, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const std::string &ttf)
+    : WidgetLabeled(label, size[1], x, y, pos, size, ttf)
 {
-    _margin.Data[0] = 4;
-    _font = new Graphic::String("", size.Data[1], Color(1, 1, 1), ttf);
+    _margin[0] = 4;
+    _font = new Graphic::String("", size[1], Color(1, 1, 1), ttf);
 
     // creation des drawable
     _indexDrawable = _drawables.size();
@@ -46,36 +46,36 @@ TextBox::TextBox(const std::string &label, const Vector2f &pos, const Vector2f &
     ChooseDefaultMaterial();
 }
 
-TextBox::~TextBox()
+LineEdit::~LineEdit()
 {
     delete _font;
 }
 
-TextBox::TextBox(const TextBox &w)
+LineEdit::LineEdit(const LineEdit &w)
     : WidgetLabeled(w)
 {
     Copy(w);
 }
 
-TextBox &TextBox::operator = (const TextBox &w)
+LineEdit &LineEdit::operator = (const LineEdit &w)
 {
     WidgetLabeled::operator = (w);
     Copy(w);
     return *this;
 }
 
-void    TextBox::Copy(const TextBox &w)
+void    LineEdit::Copy(const LineEdit &w)
 {
     _font = new Graphic::String(*w._font);
 }
 
-void    TextBox::ToString(std::ostream &os) const
+void    LineEdit::ToString(std::ostream &os) const
 {
     Widget::ToString(os);
     os << " Text: " << _font->Text();
 }
 
-void    TextBox::Update()
+void    LineEdit::Update()
 {
     WidgetLabeled::Update();
 
@@ -93,14 +93,14 @@ void    TextBox::Update()
     _font->Matrix.Translation(_label->Size().Data[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 }
 
-void TextBox::Draw(Graphic::SceneGraph *scene)
+void LineEdit::Draw(Graphic::SceneGraph *scene)
 {
     WidgetLabeled::Draw(scene);
     GetMaterial()->Render(scene, *_drawables[_indexDrawable]);
     _font->RenderNode(scene);
 }
 
-void TextBox::KeyboardEvent(const System::Event &event)
+void LineEdit::KeyboardEvent(const System::Event &event)
 {
     if (event.Type == System::Event::KeyPressed)
     {
@@ -124,7 +124,7 @@ void TextBox::KeyboardEvent(const System::Event &event)
     }
 }
 
-void TextBox::GetData(std::string &data)
+void LineEdit::GetData(std::string &data)
 {
     data = _font->Text().ToStdString();
 }

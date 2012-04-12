@@ -32,16 +32,10 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::GUI;
 
-WidgetLabeled::WidgetLabeled(const Utils::Unicode::UTF32 &label, const Vector2i &pos, const Vector2i &size, Corner x, Corner y, const std::string &ttf, Graphic::String::Style s)
-    : Widget(ClassName(), pos, size, x, y), _label(NULL)
+WidgetLabeled::WidgetLabeled(const Utils::Unicode::UTF32 &label, int charSize, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const std::string &ttf, Graphic::String::Style s)
+    : Widget(x, y, pos, size), _label(NULL)
 {
-    CreateLabel(label, ttf, s);
-}
-
-WidgetLabeled::WidgetLabeled(const char *className, const Utils::Unicode::UTF32 &label, const Vector2i &pos, const Vector2i &size, Corner x, Corner y, const std::string &ttf, Graphic::String::Style s)
-    : Widget(className, pos, size, x, y), _label(NULL)
-{
-    CreateLabel(label, ttf, s);
+    CreateLabel(label, charSize, ttf, s);
 }
 
 WidgetLabeled::~WidgetLabeled()
@@ -77,17 +71,11 @@ void WidgetLabeled::ToString(std::ostream &os) const
     os << " Label: " << _label->Text();
 }
 
-void WidgetLabeled::Size(const Vector2f &size)
-{
-    Widget::Size(size);
-    _label->CharSize(_size.Data[1]);
-}
-
-void WidgetLabeled::CreateLabel(const Utils::Unicode::UTF32 &l, const std::string &ttf, Graphic::String::Style s)
+void WidgetLabeled::CreateLabel(const Utils::Unicode::UTF32 &l, int charSize, const std::string &ttf, Graphic::String::Style s)
 {
     if (_label)
         delete _label;
-    _label = new Graphic::String(l, _size.Data[1], Color(1, 0, 0), ttf, s);
+    _label = new Graphic::String(l, charSize, Color(1, 0, 0), ttf, s);
     _stateChanged = true;
 }
 
@@ -100,7 +88,7 @@ void WidgetLabeled::Draw(Graphic::SceneGraph *scene)
     Widget::Draw(scene);
 }
 
-void WidgetLabeled::GetReelSize(Vector2f &size) const
+void WidgetLabeled::GetReelSize(Vector2i &size) const
 {
     Widget::GetReelSize(size);
     size[0] += _label->Size().Data[0];

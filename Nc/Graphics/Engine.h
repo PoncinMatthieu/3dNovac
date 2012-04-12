@@ -50,14 +50,14 @@ namespace Nc
         class LGRAPHICS   Engine : public Nc::Engine::IEngine
         {
             public:
+                NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::IEngine, Nc::Graphic::Engine);
+
                 /** the typedef of the member function pointer used to create the window */
                 typedef void (Nc::Engine::MainEngine::*CreateWindowFunc)(Window *win);
 
             public:
                 Engine(Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager = NULL);
                 virtual ~Engine();
-
-                static const char       *ClassName()                        {return "Graphic::Engine";}
 
                 /** Load default content, like the DefaultMaterials */
                 virtual void            LoadContent();

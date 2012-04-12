@@ -33,25 +33,13 @@ using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
 WindowBox::WindowBox(const std::string &title, const std::string &ttf)
-    : Widget(ClassName())
+    : Widget()
 {
     Init(title, ttf);
 }
 
-WindowBox::WindowBox(const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent)
-    : Widget(ClassName(), pos, size, x, y)
-{
-    Init(title, "arial");
-}
-
-WindowBox::WindowBox(const char *className, const std::string &title, const std::string &ttf)
-    : Widget(className)
-{
-    Init(title, ttf);
-}
-
-WindowBox::WindowBox(const char *className, const std::string &title, const Vector2f &pos, const Vector2f &size, Corner x, Corner y, Widget *parent)
-    : Widget(className, pos, size, x, y)
+WindowBox::WindowBox(const std::string &title, Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
+    : Widget(x, y, pos, size)
 {
     Init(title, "arial");
 }
@@ -72,6 +60,7 @@ void  WindowBox::Init(const std::string &title, const std::string &ttf)
     _drawTitle = true;
     _titleColor1 = Color(1.f, 0.788235294f, 0.48627451f);
     _titleColor2 = Color(0, 0, 0);
+    _edgeColor = Color(1,0,0);
 
     _indexDrawable = _drawables.size();
     _drawables.reserve(_indexDrawable+3);
@@ -122,12 +111,15 @@ void    WindowBox::Copy(const WindowBox &w)
 
     _indexDrawable = _drawables.size();
     _drawables.reserve(_indexDrawable+3);
+//    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry0 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
     GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry3 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
+//    geometry0->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     geometry1->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     geometry2->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     geometry3->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
+//    _drawables.push_back(new Drawable(geometry0));
     _drawables.push_back(new Drawable(geometry1));
     _drawables.push_back(new Drawable(geometry2));
     _drawables.push_back(new Drawable(geometry3));
@@ -170,8 +162,8 @@ void WindowBox::Update()
     static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable+1]->Geometry)->VBO().UpdateData(vertices.Data);
 
 // edge
-    Vector2f size(_size.Data[0], _size.Data[1]);
     Color c(1,1,1);
+    Vector2f size(_size.Data[0], _size.Data[1]);
 
     if (!_focus)
         c = _edgeColor;
@@ -203,15 +195,15 @@ void WindowBox::Draw(Graphic::SceneGraph *scene)
     Widget::Draw(scene);
 }
 
-void WindowBox::TranslateChild(const Corner corner[2], Vector2f &v) const
+void WindowBox::PosChild(const Widget *child, Vector2i &v) const
 {
-    if (_drawTitle && (corner[1] == Top || corner[1] == Center))
+    if (_drawTitle && (child->GetCorner(1) == Top || child->GetCorner(1) == Center))
         v[1] = -_titleHeight;
-    else if (!_drawTitle && _corner[1] == Bottom)
+    else if (!_drawTitle && child->GetCorner(1) == Bottom)
         v[1] += _titleHeight;
 }
 
-void WindowBox::GetReelSize(Vector2f &size) const
+void WindowBox::GetReelSize(Vector2i &size) const
 {
     Widget::GetReelSize(size);
     if (!_drawTitle)

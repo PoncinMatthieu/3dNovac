@@ -55,8 +55,7 @@ namespace Nc
         class LGRAPHICS Billboard : public Effect
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Effect);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::Billboard);
 
                 enum Pattern
                 {
@@ -66,9 +65,7 @@ namespace Nc
 
             public:
                 Billboard(Pattern p = HalfBillboard, Entity *target = NULL);
-                Billboard(const char *className, Pattern p = HalfBillboard, Entity *target = NULL);
 
-                static const char       *ClassName()                        {return "Billboard";}
                 virtual ISceneNode      *Clone() const                      {return new Billboard(*this);}
 
                 /** Rotate the matrix of the childs. This function help to set up the matrix of a sprite or a string */

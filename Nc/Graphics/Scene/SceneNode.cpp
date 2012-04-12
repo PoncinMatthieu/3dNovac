@@ -33,8 +33,8 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-ISceneNode::ISceneNode(const char *className)
-    :   System::Object(className),
+ISceneNode::ISceneNode()
+    :   System::Object(),
         _enabled(true),
         _updatingController(NULL), _renderingController(NULL)
 {
@@ -68,22 +68,30 @@ void    ISceneNode::UpdateNode(float elapsedTime)
 
 void    ISceneNode::RenderNode(SceneGraph *scene)
 {
-    Lock();
-    if (_enabled)
+    try
     {
-        if (_renderingController != NULL)
+        Lock();
+        if (_enabled)
         {
-            _renderingController->Scene(scene);
-            _renderingController->CurrentStade(IRenderingController::Begin);
-            (*_renderingController)(*this);
+            if (_renderingController != NULL)
+            {
+                _renderingController->Scene(scene);
+                _renderingController->CurrentStade(IRenderingController::Begin);
+                (*_renderingController)(*this);
 
-            Render(scene);
+                Render(scene);
 
-            _renderingController->CurrentStade(IRenderingController::End);
-            (*_renderingController)(*this);
+                _renderingController->CurrentStade(IRenderingController::End);
+                (*_renderingController)(*this);
+            }
+            else
+                Render(scene);
         }
-        else
-            Render(scene);
+        Unlock();
     }
-    Unlock();
+    catch (...)
+    {
+        Unlock();
+        throw;
+    }
 }

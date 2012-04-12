@@ -67,9 +67,11 @@ void SceneGraphManager::Render(GLContext *context)
         (*it)->RenderNode(*it);
 
 // refresh et swap les buffers :
-/*  according to gDebugger: Calling glFlush is usually redundant since wglSwapBuffers, glXSwapBuffers, aglSwapBuffers, CGLFlushDrawable and eglSwapBuffers
+/*
+    according to gDebugger: Calling glFlush is usually redundant since wglSwapBuffers, glXSwapBuffers, aglSwapBuffers, CGLFlushDrawable and eglSwapBuffers
                             execute all queued OpenGL calls before the buffer is presented to the user.
-    Consider using glFlush only when rendering directly into the front buffer or when rendering into a non-double-buffered buffer */
+    Consider using glFlush only when rendering directly into the front buffer or when rendering into a non-double-buffered buffer
+*/
     //glFlush();
     context->SwapBuffers();
 

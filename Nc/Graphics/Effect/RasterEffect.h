@@ -38,8 +38,7 @@ namespace Nc
         class LGRAPHICS RasterEffect : public Effect
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Effect);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::RasterEffect);
 
             public:
                 enum Pattern
@@ -55,7 +54,6 @@ namespace Nc
                 RasterEffect(Pattern pattern = Fill);
 
                 virtual ISceneNode  *Clone() const                                      {return new RasterEffect(*this);}
-                static const char   *ClassName()                                        {return "RasterEffect";}
 
                 /** Set the depth test statement */
                 inline void         SetDepthTest(bool state)                            {_mode.SetDepthTest(state);}

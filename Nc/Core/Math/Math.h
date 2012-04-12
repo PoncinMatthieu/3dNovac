@@ -52,7 +52,7 @@ namespace Nc
         void     LCORE  Normalize(float p[3]);
 
         // Calculs 2d
-        bool     LCORE  InRect(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &pointTest);
+        bool     LCORE  InRect(const Vector2i &RectPos, const Vector2i &RectSize, const Vector2i &pointTest);
 
         /** Init the rand to call srand() function */
         inline void     InitRand()                          {srand((unsigned int)time(0));}

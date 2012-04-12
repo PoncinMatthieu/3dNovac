@@ -40,8 +40,7 @@ namespace Nc
         class LGRAPHICS Object : public Entity
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Entity);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, System::Object, Nc::Graphic::Object);
 
                 typedef Entity                      NodeType;
                 typedef std::vector<Drawable*>      DrawableArray;
@@ -49,7 +48,6 @@ namespace Nc
             public:
             // construct
                 Object();
-                Object(const char *className);
                 Object(const TMatrix &m);
                 Object(const Box3f &box);
                 Object(const Box3f &box, const TMatrix &m);
@@ -57,7 +55,6 @@ namespace Nc
                 Object &operator = (const Object &o);
                 virtual ~Object();
 
-                static const char *ClassName()                          {return "Object";}
                 virtual ISceneNode  *Clone() const                      {return new Object(*this);}
 
                 /** \return the material used to render the drawables */
@@ -84,8 +81,35 @@ namespace Nc
                 void                ReconfigureDrawables();
 
             protected:
-                /** Render the drawables with the material and render also the childs of the object */
+                /**
+                    Render the drawables with the material and render also the childs of the object.
+                    Call the RenderBegin and RenderEnd method before and after the rendering.
+                */
                 virtual void        Render(SceneGraph *scene);
+
+                /**
+                    Method called just before the Draw method.
+                    Update the model matrix of the scene before drawing.
+                */
+                virtual void        RenderBegin(SceneGraph *scene);
+
+                /**
+                    Method called just after the draw method.
+                    Update the model matric of the scene after drawing.
+                */
+                virtual void        RenderEnd(SceneGraph *scene);
+
+                /**
+                    Method called just before the RenderChilds method.
+                    Do nothing but can be redefined.
+                */
+                virtual void        RenderChildsBegin(SceneGraph *scene)        {}
+
+                /**
+                    Method called just after the RenderChilds method.
+                    Do nothing but can be redefined.
+                */
+                virtual void        RenderChildsEnd(SceneGraph *scene)          {}
 
                 /**
                     Render the drawables.

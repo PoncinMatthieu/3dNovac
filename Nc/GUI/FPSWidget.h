@@ -37,13 +37,11 @@ namespace Nc
         class LGUI FPSWidget : public WidgetLabeled
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(WidgetLabeled);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WidgetLabeled, System::Object, Nc::GUI::FPSWidget);
 
             public:
                 FPSWidget(Corner x = Center, Corner y = Top);
 
-                static const char   *ClassName()                {return "FPSWidget";}
                 virtual ISceneNode  *Clone() const              {return new FPSWidget(*this);}
 
                 /** Render the fps */

@@ -96,7 +96,7 @@ const char *StandardCamera3d::XpmHandClose[] =
 };
 
 StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, float nearD, float farD, float fielOfView, Pattern p)
-    : Camera3d(ClassName(), ratioAspect, nearD, farD, fielOfView),
+    : Camera3d(ratioAspect, nearD, farD, fielOfView),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
       _angles(-90, -15)
@@ -127,7 +127,7 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, floa
 }
 
 StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
-    : Camera3d(ClassName(), (float)win->Width()/(float)win->Height(), 0.1f, 1000.f, 70.f),
+    : Camera3d((float)win->Width()/(float)win->Height(), 0.1f, 1000.f, 70.f),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
       _angles(-90, -15)

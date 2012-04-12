@@ -64,8 +64,11 @@ namespace Nc
         class LCORE IEngine : public EventManager, public System::Thread
         {
             public:
+                NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::EventManager, Nc::Engine::IEngine);
+
+            public:
                 // constructeur et destructeur
-                IEngine(const char *className, const std::string &name, Manager *manager, const Utils::Mask<Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority);
+                IEngine(const std::string &name, Manager *manager, const Utils::Mask<Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority);
                 virtual ~IEngine();
 
                 /** Set the manager */

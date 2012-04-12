@@ -41,8 +41,7 @@ namespace Nc
         class LGRAPHICS StandardCamera3d : public Camera3d
         {
             public:
-                NC_UTILS_DEFINE_PARENT_CLASS(Camera3d);
-                NC_UTILS_DEFINE_VISITABLE(System::Object);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Camera3d, System::Object, Nc::Graphic::StandardCamera3d);
 
                 /// To determine the patern of the camera
                 enum Pattern
@@ -63,7 +62,6 @@ namespace Nc
                 StandardCamera3d &operator = (const StandardCamera3d &cam);
                 virtual ~StandardCamera3d();
 
-                static const char   *ClassName()                            {return "StandardCamera3d";}
                 virtual ISceneNode  *Clone() const                          {return new StandardCamera3d(*this);}
 
                 /** \return the pattern used by camera */
