@@ -27,9 +27,7 @@
 #ifndef NC_CORE_NETWORK_SOCKETTCP_H_
 #define NC_CORE_NETWORK_SOCKETTCP_H_
 
-#include "../Define.h"
-#include "../Math/Array.h"
-#include "Ip.h"
+#include "ISocket.h"
 
 namespace Nc
 {
@@ -42,31 +40,21 @@ namespace Nc
 			To create a client, use the method `Connect`,
 			and to create a listening socket to accept connection you'll need to use the `Listen` method to initialize it
 			and `Accept` to accept a new connection.
-			
+
 			\sa
 				- Network::Ip
 				- Network::Select
 		*/
-        class SocketTcp
+        class SocketTcp : public ISocket
         {
             public:
                 SocketTcp();
                 ~SocketTcp();
 
                 /** Create the socket descriptor */
-                void            Create();
+                virtual void    Create();
                 /** Close the descriptor */
-                void            Close();
-
-                /** \return true if the descriptor of the socket is valid */
-                inline bool     IsValid() const                     {return (_descriptor != _invalidDescriptor);}
-
-				/** \return the descriptor of the socket */
-                #ifdef SYSTEM_WINDOWS
-                inline SOCKET   Descriptor() const                  {return _descriptor;}
-                #else
-                inline int      Descriptor() const                  {return _descriptor;}
-                #endif
+                virtual void    Close();
 
                 /**
                     Connect the socket to the given \p ip and the given \p port
@@ -86,10 +74,16 @@ namespace Nc
                 */
                 bool            Accept(SocketTcp &newClient, Ip &newclientIp);
 
-                /** Write (send) to the descriptor an array of type T */
+                /**
+                    Write (send) to the descriptor an array of type T
+                    \return true if no error
+                */
                 template<typename T, unsigned int D>
                 bool            Write(const Math::Array<T,D> &src);
-                /** Write (send) to the descriptor an array of byte */
+                /**
+                    Write (send) to the descriptor an array of byte
+                    \return true if no error
+                */
                 bool            Write(const char *src, unsigned int size);
 
                 /**
@@ -103,15 +97,6 @@ namespace Nc
                     \return the received size. If the received size is 0 and you send more than 0 byte, it meens that the connection has been disconnected.
                 */
                 unsigned int    Read(char *dst, unsigned int maxSize);
-
-            private:
-                #ifdef SYSTEM_WINDOWS
-                SOCKET                  _descriptor;
-                static const SOCKET     _invalidDescriptor;
-                #else
-                int                     _descriptor;
-                static const int        _invalidDescriptor;
-                #endif
         };
 
         template<typename T, unsigned int D>

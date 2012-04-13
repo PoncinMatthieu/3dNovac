@@ -37,32 +37,7 @@
 using namespace Nc;
 using namespace Nc::Network;
 
-#ifdef SYSTEM_WINDOWS
-const SOCKET     SocketTcp::_invalidDescriptor = INVALID_SOCKET;
-#else
-const int        SocketTcp::_invalidDescriptor = -1;
-#endif
-
-// window need some intitialization
-#ifdef SYSTEM_WINDOWS
-struct GlobalSocketInitializer
-{
-	GlobalSocketInitializer()
-	{
-		WSADATA data;
-		WSAStartup(MAKEWORD(2,2), &data);
-	}
-
-	~GlobalSocketInitializer()
-	{
-		WSACleanup();
-	}
-};
-static GlobalSocketInitializer	_globalSocketInitializer;
-#endif
-
 SocketTcp::SocketTcp()
-    : _descriptor(_invalidDescriptor)
 {
 }
 
@@ -80,7 +55,7 @@ void    SocketTcp::Close()
             if (close(_descriptor) == -1)
         #endif
                 LOG_ERROR << "Failed to close the socket" << std::endl;
-        _descriptor = _invalidDescriptor;
+        _descriptor = InvalidDescriptor();
     }
 }
 

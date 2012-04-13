@@ -43,6 +43,12 @@ Ip::Ip()
 {
 }
 
+Ip::Ip(UInt32 inetaddr)
+    : _addr(inetaddr)
+{
+}
+
+
 Ip::Ip(const std::string &ip)
 {
     Init(ip);

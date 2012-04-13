@@ -44,6 +44,7 @@ namespace Nc
         {
             public:
                 Ip();
+                Ip(UInt32 inetaddr);
                 Ip(const std::string &ip);
                 Ip(unsigned char byte1, unsigned char byte2, unsigned char byte3, unsigned char byte4);
 
