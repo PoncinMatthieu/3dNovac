@@ -294,6 +294,11 @@ void Widget::Focus(bool state)
         if (_focus && _generateHandleAtEnterFocus && !_inhibit)
             SendEvent(_id);
         ChangeChildsStateRecursive();
+
+        if (_focus)
+            EnterFocus();
+        else
+            LeaveFocus();
     }
 }
 

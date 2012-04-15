@@ -28,7 +28,7 @@
 #define NC_CORE_NETWORK_SELECT_H_
 
 #include "../Define.h"
-#include "SocketTcp.h"
+#include "ISocket.h"
 
 namespace Nc
 {
@@ -91,17 +91,17 @@ int main()
                 /** Clear the set of read and write. To call before each `Wait` */
                 void            Clear();
                 /** Set the given \p socket for reading */
-                void            SetForReading(const SocketTcp &socket);
+                void            SetForReading(const ISocket &socket);
                 /** Set the given \p socket for writing */
-                void            SetForWriting(const SocketTcp &socket);
+                void            SetForWriting(const ISocket &socket);
 
                 /** Wait until one of the sockets is ready for reading/writing, or \p timeout is reached */
                 unsigned int    Wait(float timeout = 0.f);
 
                 /** \return true if the given \p socket is ready for reading */
-                bool            IsReadyForReading(const SocketTcp &socket);
+                bool            IsReadyForReading(const ISocket &socket);
                 /** \return true if the given \p socket is ready for writing */
-                bool            IsReadyForWriting(const SocketTcp &socket);
+                bool            IsReadyForWriting(const ISocket &socket);
 
             private:
                 fd_set                  _readSet;           ///< Set of socket to watch

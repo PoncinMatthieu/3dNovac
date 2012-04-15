@@ -91,12 +91,12 @@ namespace Nc
                     \return the received size. If the received size is 0 and you send more than 0 byte, it meens that the connection has been disconnected.
                 */
                 template<typename T, unsigned int D>
-                unsigned int    Read(Math::Array<T,D> &dst);
+                int             Read(Math::Array<T,D> &dst);
                 /**
                     Read (receive) from the descriptor an array of byte into \p dst.
                     \return the received size. If the received size is 0 and you send more than 0 byte, it meens that the connection has been disconnected.
                 */
-                unsigned int    Read(char *dst, unsigned int maxSize);
+                int             Read(char *dst, unsigned int maxSize);
         };
 
         template<typename T, unsigned int D>
@@ -120,11 +120,11 @@ namespace Nc
 		}
 
 		template<typename T, unsigned int D>
-		unsigned int    SocketTcp::Read(Math::Array<T,D> &dst)
+		int             SocketTcp::Read(Math::Array<T,D> &dst)
 		{
 			if (!IsValid())
 				throw Utils::Exception("SocketTcp", "Can't read, The socket is not valid");
-			unsigned int r = 0;
+			int r = 0;
 			if (dst.Size() > 0)
 			{
 				r = recv(_descriptor, static_cast<char*>(dst.Data), static_cast<int>(dst.Size() * sizeof(T)), 0);

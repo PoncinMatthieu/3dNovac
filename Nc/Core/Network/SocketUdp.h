@@ -27,6 +27,14 @@
 #ifndef NC_CORE_NETWORK_SOCKETUDP_H_
 #define NC_CORE_NETWORK_SOCKETUDP_H_
 
+#ifdef SYSTEM_WINDOWS
+#else
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/tcp.h>
+    #include <arpa/inet.h>
+#endif
+
 #include "ISocket.h"
 
 namespace Nc
@@ -73,12 +81,12 @@ namespace Nc
                     \return the received size, and fill the ip/port of the sender
                 */
                 template<typename T, unsigned int D>
-                unsigned int    Read(Math::Array<T,D> &dst, Ip &ip, unsigned int &port);
+                int             Read(Math::Array<T,D> &dst, Ip &ip, unsigned int &port);
                 /**
                     Read (receive) from the descriptor an array of byte into \p dst.
                     \return the received size, and fill the ip/port of the sender
                 */
-                unsigned int    Read(char *dst, unsigned int maxSize, Ip &ip, unsigned int &port);
+                int             Read(char *dst, unsigned int maxSize, Ip &ip, unsigned int &port);
 
             private:
                 unsigned int            _bindedPort;
@@ -113,14 +121,14 @@ namespace Nc
 		}
 
 		template<typename T, unsigned int D>
-		unsigned int    SocketUdp::Read(Math::Array<T,D> &dst, Ip &ip, unsigned int &port)
+		int    SocketUdp::Read(Math::Array<T,D> &dst, Ip &ip, unsigned int &port)
 		{
             if (!IsValid())
                 throw Utils::Exception("SocketUdp", "Can't read, The socket is not valid");
             if (_bindedPort == 0)
                 throw Utils::Exception("SocketUdp", "Can't read, The socket must be bound to a port");
 
-            unsigned int r = 0;
+            int r = 0;
             if (dst.Size() > 0)
             {
                 // Data that will be filled with the other computer's address

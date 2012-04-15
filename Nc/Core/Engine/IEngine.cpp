@@ -63,15 +63,8 @@ void IEngine::Run()
 void IEngine::MainLoop()
 {
     while (_manager->IsLaunched() && !_stop)
-	{
-		try
-		{
-			Process();
-		}
-		catch (const std::exception &e)
-		{
-			LOG_ERROR << "Error on " << *this << ": " << e.what() << std::endl;
-		}
+    {
+        Process();
 	}
 }
 
@@ -144,14 +137,21 @@ void IEngine::Process()
     if (_pattern.Enabled(HasAContext))
         ActiveContext();
 
-#ifdef _DEBUG_THREAD_ENGINE
-    LOG_DEBUG <<"Execute `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
-#endif
-    ExecuteEvents();
-    Execute(_elapsedTime);
-#ifdef _DEBUG_THREAD_ENGINE
-    LOG_DEBUG <<"Execute END `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
-#endif
+    try
+    {
+        #ifdef _DEBUG_THREAD_ENGINE
+            LOG_DEBUG <<"Execute `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
+        #endif
+            ExecuteEvents();
+            Execute(_elapsedTime);
+        #ifdef _DEBUG_THREAD_ENGINE
+            LOG_DEBUG <<"Execute END `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
+        #endif
+    }
+    catch (const std::exception &e)
+    {
+        LOG_ERROR << "Error on " << *this << ": " << e.what() << std::endl;
+    }
 
     if (_pattern.Enabled(HasAContext))
         DisableContext();

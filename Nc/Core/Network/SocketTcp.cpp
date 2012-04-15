@@ -159,11 +159,11 @@ bool    SocketTcp::Write(const char *src, unsigned int size)
     return true;
 }
 
-unsigned int    SocketTcp::Read(char *dst, unsigned int maxSize)
+int    SocketTcp::Read(char *dst, unsigned int maxSize)
 {
     if (!IsValid())
         throw Utils::Exception("SocketTcp", "Can't read, The socket is not valid");
-    unsigned int r = 0;
+    int r = 0;
     if (maxSize > 0)
         r = recv(_descriptor, dst, static_cast<int>(maxSize), 0);
     return r;

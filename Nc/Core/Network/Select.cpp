@@ -41,7 +41,7 @@ void Select::Clear()
     _max = 0;
 }
 
-void Select::SetForReading(const SocketTcp &socket)
+void Select::SetForReading(const ISocket &socket)
 {
     if (socket.IsValid())
     {
@@ -52,7 +52,7 @@ void Select::SetForReading(const SocketTcp &socket)
     }
 }
 
-void Select::SetForWriting(const SocketTcp &socket)
+void Select::SetForWriting(const ISocket &socket)
 {
     if (socket.IsValid())
     {
@@ -63,12 +63,12 @@ void Select::SetForWriting(const SocketTcp &socket)
     }
 }
 
-bool Select::IsReadyForReading(const SocketTcp &socket)
+bool Select::IsReadyForReading(const ISocket &socket)
 {
     return (FD_ISSET(socket.Descriptor(), &_readSet) != 0);
 }
 
-bool Select::IsReadyForWriting(const SocketTcp &socket)
+bool Select::IsReadyForWriting(const ISocket &socket)
 {
     return (FD_ISSET(socket.Descriptor(), &_writeSet) != 0);
 }

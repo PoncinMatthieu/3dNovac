@@ -25,13 +25,6 @@
 -----------------------------------------------------------------------------*/
 
 #include "../Define.h"
-#ifdef SYSTEM_WINDOWS
-#else
-    #include <sys/types.h>
-    #include <sys/socket.h>
-    #include <netinet/tcp.h>
-    #include <arpa/inet.h>
-#endif
 #include "SocketUdp.h"
 
 using namespace Nc;
@@ -154,14 +147,14 @@ bool    SocketUdp::Write(const char *src, unsigned int size, const Ip &ip, unsig
     return true;
 }
 
-unsigned int    SocketUdp::Read(char *dst, unsigned int maxSize, Ip &ip, unsigned int &port)
+int    SocketUdp::Read(char *dst, unsigned int maxSize, Ip &ip, unsigned int &port)
 {
     if (!IsValid())
         throw Utils::Exception("SocketUdp", "Can't read, The socket is not valid");
     if (_bindedPort == 0)
         throw Utils::Exception("SocketUdp", "Can't read, The socket must be bound to a port");
 
-    unsigned int r = 0;
+    int r = 0;
     if (maxSize > 0)
     {
         // Data that will be filled with the other computer's address

@@ -49,9 +49,12 @@ namespace Nc
                         ComboBoxUnfoldList(ComboBox *cb, Corner x, Corner y, const Vector2i &pos, const Vector2i &size);
 
                         /** The mouse button handler to choose an item */
-                        void        MouseButtonEvent(const System::Event &event);
+                        void                MouseButtonEvent(const System::Event &event);
                         /** Render the unfold list */
                         virtual void        Draw(Graphic::SceneGraph *scene);
+
+                        /** Called when the widget loose the focus */
+                        virtual void        LeaveFocus();
 
                     private:
                         ComboBox    *_cb;

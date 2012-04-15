@@ -152,9 +152,11 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
             {
                 pos[0] += _spriteLeft->Size()[0];
                 pos[1] += (_spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2;
+                pos[1] += _spriteList->Size()[1];
 
                 _currentUnfoldList = new ComboBoxUnfoldList(this, Left, Bottom, pos, Vector2i(_spriteList->Size()[0], -_spriteList->Size()[1] * _itemList.size()));
                 _scene->AddChild(_currentUnfoldList);
+                _scene->Focus(_currentUnfoldList);
                 _listUnrolled = true;
             }
         }
@@ -202,6 +204,7 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
 
 void        ComboBox::ComboBoxUnfoldList::Draw(Graphic::SceneGraph *scene)
 {
+    scene->ModelMatrix().AddTranslation(0, -_cb->_spriteList->Size()[1], 0);
     for (ListItem::iterator it = _cb->_itemList.begin(); it != _cb->_itemList.end(); ++it)
     {
         _cb->_spriteList->RenderNode(scene);
@@ -209,3 +212,10 @@ void        ComboBox::ComboBoxUnfoldList::Draw(Graphic::SceneGraph *scene)
         scene->ModelMatrix().AddTranslation(0, -_cb->_spriteList->Size()[1], 0);
     }
 }
+
+void        ComboBox::ComboBoxUnfoldList::LeaveFocus()
+{
+    _cb->_listUnrolled = false;
+    _cb->_stateChanged = true;
+}
+

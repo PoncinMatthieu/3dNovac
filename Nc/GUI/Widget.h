@@ -176,6 +176,11 @@ namespace Nc
                 void                    RemoveWidget(Widget *w);
 
             protected:
+                /** called when the widget gain the focus */
+                virtual void            EnterFocus()                            {}
+                /** called when the widget loose the focus */
+                virtual void            LeaveFocus()                            {}
+
                 /**
                     Add a composed widget.
                     The composed widget are not deleted by the widget itself, so they should be deleted by the class wich added those childs
