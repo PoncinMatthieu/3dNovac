@@ -38,6 +38,13 @@ namespace Nc
         class LGUI WindowStyle : public Utils::Singleton<WindowStyle>
         {
             public:
+                struct LooksSpriteName
+                {
+                    static const std::string    StripLeft;
+                    static const std::string    StripRight;
+                    static const std::string    StripMiddle;
+                };
+
                 struct SpriteName
                 {
                     static const std::string    WidgetLeftEdge;
@@ -51,9 +58,10 @@ namespace Nc
                     static const std::string    WidgetMiddle;
                     static const std::string    Button;
                     static const std::string    ComboBoxLeft;
-                    static const std::string    ComboBoxMiddle;
                     static const std::string    ComboBoxRight;
+                    static const std::string    ComboBoxMiddle;
                     static const std::string    ComboBoxList;
+                    static const std::string    LineEdit;
                     static const std::string    ScrollBarRightButton;
                     static const std::string    ScrollBarLeftButton;
                     static const std::string    ScrollBarSliderBackground;

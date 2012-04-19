@@ -7,13 +7,13 @@ using namespace Nc;
 void CreateEngines(Nc::Engine::Manager &manager)
 {
   // creation du graphicEngine
-  Graphic::Engine *graphicEngine = new Graphic::Engine(&manager, (Graphic::Engine::CreateWindowFunc)&GameEngine::CreateWindow);
+  Graphic::Engine *graphicEngine = new Graphic::Engine(&manager, (Graphic::Engine::CreateWindowFunc)&SokobanDemo::GameEngine::CreateWindow);
   graphicEngine->LimitFrameRate(60);
   manager.AddEngine("Graphic", graphicEngine);
   LOG << "Creation of the " << *graphicEngine << "\t\tDONE" << std::endl;
 
   // creation du gameEngine
-  GameEngine *gameEngine = new GameEngine(&manager, graphicEngine);
+  SokobanDemo::GameEngine *gameEngine = new SokobanDemo::GameEngine(&manager, graphicEngine);
   gameEngine->LimitFrameRate(60);
   manager.AddEngine("Main", gameEngine);
   LOG << "Creation of the " << *gameEngine << "\t\tDONE" << std::endl;

@@ -7,6 +7,7 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
+using namespace bSplinesDemo;
 
 GameEngine::GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic)
   : Contrib::GameEngine(graphic, manager)

@@ -31,6 +31,10 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
+const std::string   WindowStyle::LooksSpriteName::StripLeft = "StripLeft";
+const std::string   WindowStyle::LooksSpriteName::StripRight = "StripRight";
+const std::string   WindowStyle::LooksSpriteName::StripMiddle = "StripMiddle";
+
 const std::string   WindowStyle::SpriteName::WidgetLeftEdge = "WidgetLeftEdge";
 const std::string   WindowStyle::SpriteName::WidgetTopEdge = "WidgetTopEdge";
 const std::string   WindowStyle::SpriteName::WidgetRightEdge = "WidgetRightEdge";
@@ -42,9 +46,10 @@ const std::string   WindowStyle::SpriteName::WidgetRightBottom = "WidgetRightBot
 const std::string   WindowStyle::SpriteName::WidgetMiddle = "WidgetMiddle";
 const std::string   WindowStyle::SpriteName::Button = "Button";
 const std::string   WindowStyle::SpriteName::ComboBoxLeft = "ComboBoxLeft";
-const std::string   WindowStyle::SpriteName::ComboBoxMiddle = "ComboBoxMiddle";
 const std::string   WindowStyle::SpriteName::ComboBoxRight = "ComboBoxRight";
+const std::string   WindowStyle::SpriteName::ComboBoxMiddle = "ComboBoxMiddle";
 const std::string   WindowStyle::SpriteName::ComboBoxList = "ComboBoxList";
+const std::string   WindowStyle::SpriteName::LineEdit = "LineEdit";
 const std::string   WindowStyle::SpriteName::ScrollBarRightButton = "ScrollBarRightButton";
 const std::string   WindowStyle::SpriteName::ScrollBarLeftButton = "ScrollBarLeftButton";
 const std::string   WindowStyle::SpriteName::ScrollBarSliderBackground = "ScrollBarSliderBackground";

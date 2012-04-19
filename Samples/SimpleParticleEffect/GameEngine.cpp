@@ -9,6 +9,7 @@
 using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic;
+using namespace SimpleParticleEffect;
 
 GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(graphic, manager)

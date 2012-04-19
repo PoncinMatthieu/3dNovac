@@ -29,14 +29,22 @@
 
 #include <Nc/GUI/GUI.h>
 
-class MainMenu : Nc::Utils::NonCopyable
+namespace SampleViewer
 {
-    public:
-        MainMenu(Nc::GUI::SceneGraph *gui);
-        ~MainMenu();
+    class MainMenu : Nc::Utils::NonCopyable
+    {
+        public:
+            MainMenu(Nc::GUI::SceneGraph *gui);
+            ~MainMenu();
 
-    private:
-        Nc::GUI::SceneGraph     *_GUI;
-};
+            void                    AddSample(const std::string &name);
+
+            const std::string       *Sample()           {return (_comboBox->CurrentItem()) ? &_comboBox->CurrentItem()->Data() : NULL;}
+
+        private:
+            Nc::GUI::SceneGraph     *_GUI;
+            Nc::GUI::ComboBox       *_comboBox;
+    };
+}
 
 #endif

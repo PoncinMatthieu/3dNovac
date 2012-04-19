@@ -3,6 +3,7 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
+using namespace bSplinesDemo;
 
 bSplines::bSplines(const Array<Vector2f> &controlPoints, const Array<int> &weight, const TMatrix &matrice)
   : Object(matrice), _controlPoints(controlPoints), _weight(weight)

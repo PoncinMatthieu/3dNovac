@@ -2,11 +2,6 @@
 <SpriteSheet path="Nc:Image:GUI/spriteSheet.png">
   <Sprite name="BackgroundWidgetMiddle"	topX="0" topY="0" bottomX="8" bottomY="8" />
 
-  <Sprite name="ComboBoxLeft"		topX="109" topY="9" bottomX="113" bottomY="33" />
-  <Sprite name="ComboBoxRight"		topX="140" topY="9" bottomX="162" bottomY="33" />
-  <Sprite name="ComboBoxMiddle"		topX="113" topY="9" bottomX="140" bottomY="33" />
-  <Sprite name="ComboBoxList"		topX="113" topY="34" bottomX="140" bottomY="52" />
-
   <Sprite name="Window2WidgetLeftEdge"		topX="44" topY="57" bottomX="52" bottomY="67" />
   <Sprite name="Window2WidgetTopEdge"		topX="63" topY="39" bottomX="88" bottomY="47" />
   <Sprite name="Window2WidgetRightEdge"		topX="91" topY="48" bottomX="99" bottomY="56" />
@@ -52,5 +47,15 @@
   <Sprite name="ScrollBarSliderRightPressed"	topX="201" topY="26" bottomX="204" bottomY="41" />
   <Sprite name="ScrollBarSliderExpandPressed"	topX="182" topY="26" bottomX="183" bottomY="41" />
   <Sprite name="ScrollBarRightButtonPressed"	topX="212" topY="26" bottomX="226" bottomY="41" />
+
+  <Sprite name="ComboBoxLeft"		topX="109" topY="9" bottomX="113" bottomY="33" />
+  <Sprite name="ComboBoxRight"		topX="140" topY="9" bottomX="162" bottomY="33" />
+  <Sprite name="ComboBoxMiddle"		topX="113" topY="9" bottomX="140" bottomY="33" />
+  <Sprite name="ComboBoxList"		topX="113" topY="34" bottomX="140" bottomY="52" />
+
+  <Sprite name="LineEditStripLeft"		topX="227" topY="9" bottomX="233" bottomY="33" />
+  <Sprite name="LineEditStripRight"		topX="238" topY="9" bottomX="243" bottomY="33" />
+  <Sprite name="LineEditStripMiddle"		topX="233" topY="9" bottomX="238" bottomY="33" />
+
 </SpriteSheet>
 

@@ -3,7 +3,7 @@
 
 extern "C" Nc::Contrib::GameEngine	*GetPlugin()
 {
-  GameEngine *game = new GameEngine(NULL, NULL);
+  SimpleParticleEffect::GameEngine *game = new SimpleParticleEffect::GameEngine(NULL, NULL);
   game->LimitFrameRate(60);
   return game;
 }

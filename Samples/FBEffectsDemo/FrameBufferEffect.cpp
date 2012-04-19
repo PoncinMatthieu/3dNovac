@@ -3,6 +3,7 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
+using namespace FBEffectsDemo;
 
 FrameBufferEffect::FrameBufferEffect()
   : Effect(), _postProcessActivated(true)

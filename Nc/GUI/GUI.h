@@ -37,6 +37,7 @@
 #include "Button.h"
 #include "LineEdit.h"
 #include "WindowBox.h"
+#include "ComboBox.h"
 #include "Console.h"
 #include "SpriteWidget.h"
 #include "ProgressBar.h"

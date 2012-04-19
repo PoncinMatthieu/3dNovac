@@ -40,7 +40,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WidgetLabeled, System::Object, Nc::GUI::LineEdit);
 
             public:
-                LineEdit(const std::string &label, Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
+                LineEdit(const std::string &label, Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial", const std::string &looksName = "");
                 LineEdit(const LineEdit &w);
                 LineEdit &operator = (const LineEdit &w);
                 ~LineEdit();

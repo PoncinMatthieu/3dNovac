@@ -4,6 +4,7 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
+using namespace SimpleParticleEffect;
 
 const GL::VertexDescriptor   &ParticleEffect::VertexType::GetDescriptor()
 {

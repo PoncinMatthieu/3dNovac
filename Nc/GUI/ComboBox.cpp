@@ -79,7 +79,7 @@ void    ComboBox::Copy(const ComboBox &cb)
 
     for (ListItem::const_iterator it = cb._itemList.begin(); it != cb._itemList.end(); ++it)
         _itemList.push_back(std::pair<Item*, Graphic::String*>(it->first->Clone(), new Graphic::String(*it->second)));
-    _currentItem = &(*_itemList.begin());
+    _currentItem = (!_itemList.empty()) ? &(*_itemList.begin()) : NULL;
     _listUnrolled = false;
     _currentUnfoldList = NULL;
 }
@@ -130,7 +130,8 @@ void    ComboBox::Draw(Graphic::SceneGraph *scene)
     {
         scene->PushModelMatrix();
         scene->ModelMatrix().AddTranslation(_spriteLeft->Size()[0], (_spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2, 0);
-        _currentItem->second->RenderNode(scene);
+        if (_currentItem != NULL)
+            _currentItem->second->RenderNode(scene);
         scene->PopModelMatrix();
     }
 }
@@ -185,7 +186,6 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
         Vector2i pos;
         Vector2i mousePos = WindowInput::MousePositionInGLCoord();
         _cb->GetReelPosRecursif(pos);
-
 
         Vector2i size = _cb->_spriteList->Size();
         pos[0] += _cb->_spriteLeft->Size()[0];

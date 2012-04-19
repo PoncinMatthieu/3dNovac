@@ -25,8 +25,9 @@
 -----------------------------------------------------------------------------*/
 
 #include <Nc/GUI/ScrollArea.h>
-#include <Nc/GUI/ComboBox.h>
 #include <Nc/GUI/ScrollBar.h>
+#include <Nc/GUI/ComboBox.h>
+#include <Nc/GUI/Looks.h>
 
 #include "MainMenu.h"
 #include "GameEngine.h"
@@ -35,85 +36,60 @@ using namespace Nc::Utils;
 using namespace Nc::System;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
+using namespace SampleViewer;
 
 MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     : _GUI(gui)
 {
-    // create a layout to seperate the select list and the sample
-    Layout *layout = new Layout(Layout::Horizontal, Left, Top);
-    layout->UseLook("Background");
+    // create the main layout
+    Layout *layout = new Layout(Layout::Vertical, Center, Center);
+    layout->UseLook(new BoxLook("Background"));
     _GUI->AddChild(layout);
 
-    Layout *layoutChooseSample = new Layout(Layout::Vertical, Center, Center);
-    layout->AddChild(layoutChooseSample);
+    // create the select window with the combobox and the button
+    Widget *windowSelectSample = new Widget(Center, Top, Vector2i(0,10), Vector2i(0,60));
+    windowSelectSample->UseLook(new BoxLook("Window"));
+    layout->AddChild(windowSelectSample);
 
-    WidgetLabeled *labelChooseSample = new WidgetLabeled("Choose a sample", 20, Center, Bottom, Vector2i(0, 5));
-    labelChooseSample->LabelColor(Color(1,1,1));
-    layoutChooseSample->AddChild(labelChooseSample);
+    Layout *selectSampleLayout = new Layout(Layout::Horizontal, Center, Center);
+    windowSelectSample->AddChild(selectSampleLayout);
 
-    Widget *windowSelectSample = new Widget(Center, Top);
-    windowSelectSample->Percent(Vector2f(95, 95));
-    windowSelectSample->UseLook("Window");
-    layoutChooseSample->AddChild(windowSelectSample);
+    _comboBox = new ComboBox(_GUI, Center, Center, Vector2i(0,0), Vector2i(250,0));
+    selectSampleLayout->AddChild(_comboBox);
 
-    windowSelectSample->MarginY(15);
-    Button *button = new Button("Start Sample", Center, Top, Vector2i(0,0), 20, 15, 8, "arial");
-    windowSelectSample->AddChild(button);
+    Button *button = new Button("Start Sample", Center, Center, Vector2i(0,0), 20, 15, 8, "arial");
+    selectSampleLayout->AddChild(button);
+    button->HandlerId(GameEngine::StartSample);
 
-    ComboBox *cb = new ComboBox(_GUI, Center, Top, Vector2i(0,50), Vector2i(250,0));
-    cb->AddItem(new Item("plop"));
-    cb->AddItem(new Item("nop"));
-    cb->AddItem(new Item("top"));
-    cb->AddItem(new Item("bottom"));
-    windowSelectSample->AddChild(cb);
-
-
-    ScrollArea *scrollSelectSample = new ScrollArea(Center, Top, Vector2i(0,90), Vector2i(400,400));
-    scrollSelectSample->UseLook();
-    windowSelectSample->AddChild(scrollSelectSample);
-
-    Vector2i size(1000,1000);
-    Sprite *sp = new Sprite(size, GL::Texture(Nc::Utils::FileName("Nc:Image:sky/space_bk.png")), 100.f);
-    SpriteWidget *spw = new SpriteWidget(Left, Top, Vector2i(0,0), size);
-    spw->AddSprite(sp, Vector2f(0,0));
-    scrollSelectSample->AddChild(spw);
-    scrollSelectSample->SetView(spw);
-
-
-/*
-    ScrollBar *scrollBar = new ScrollBar(Center, Top, Vector2i(0,110), Vector2i(400,400), Vertical);
-    scrollBar->TotalSize(100);
-    scrollBar->PageSize(30);
-    scrollBar->Position(40);
-    windowSelectSample->AddChild(scrollBar);
-*/
-
-
-    Layout *layoutSample = new Layout(Layout::Vertical, Center, Center);
-    layout->AddChild(layoutSample);
-
-
-    WidgetLabeled *labelSample = new WidgetLabeled("Sample", 20, Center, Bottom, Vector2i(0, 5));
-    labelSample->LabelColor(Color(1,1,1));
-    layoutSample->AddChild(labelSample);
-
-
-    WindowBox *sampleWindowBox = new WindowBox("Sample", Center, Top);
+    // create the sample window used to render the samples
+    WindowBox *sampleWindowBox = new WindowBox("Sample", Center, Center);
     sampleWindowBox->DrawTitle(false);
-    layoutSample->AddChild(sampleWindowBox);
+    layout->AddChild(sampleWindowBox);
 
-
-    // set the ratio and percent at the end, when all childs has been added
+    // set the auto resizing
     layout->Percent(Vector2f(100, 100));
-    layoutChooseSample->SetRatio(labelChooseSample, 5);
-    layoutChooseSample->Percent(Vector2f(100, 100));
-    layoutSample->SetRatio(labelSample, 20);
-    layoutSample->Percent(Vector2f(100, 100));
-    windowSelectSample->Percent(Vector2f(90, 95));
-    sampleWindowBox->Percent(Vector2f(95, 75));
+    windowSelectSample->Percent(Vector2f(40, 0));
+    selectSampleLayout->Percent(Vector2f(95, 100));
+    selectSampleLayout->SetRatio(_comboBox, 65);
+    _comboBox->Percent(Vector2f(95, 0));
+    button->Percent(Vector2f(95, 0));
+
+    layout->SetRatio(sampleWindowBox, 90);
+    sampleWindowBox->Percent(Vector2f(80, 100));
+
+    // create the fps widget on top of the main layout
+    _GUI->AddChild(new FPSWidget(Right, Top));
+
+    //_console = new GUI::Console();
+    //_scene->AddChild(_console);
 }
 
 MainMenu::~MainMenu()
 {
+}
+
+void    MainMenu::AddSample(const std::string &name)
+{
+    _comboBox->AddItem(new Item(name));
 }
 

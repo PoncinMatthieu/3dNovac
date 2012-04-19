@@ -5,10 +5,14 @@
 using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic;
+using namespace SampleViewer;
 
 GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(graphic, manager)
 {
+    _sampleFactory = new SampleFactory(graphic, manager);
+
+    AddNewCmd(StartSample,      (Engine::CmdFunction)&GameEngine::StartSampleCmd);
 }
 
 GameEngine::~GameEngine()
@@ -17,8 +21,8 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-  _graphic->GetSceneManager()->RemoveScene(_scene);
-  delete _scene;
+    _graphic->GetSceneManager()->RemoveScene(_scene);
+    delete _scene;
 }
 
 void GameEngine::CreateWindow(Window *win)
@@ -40,12 +44,13 @@ void GameEngine::LoadContent()
 
     // GUI :
     _menu = new MainMenu(_scene);
-    //_scene->AddChild(new GUI::FPSWidget());
-    _console = new GUI::Console();
-    //_scene->AddChild(_console);
 
-    // no need to active/disable the context at each loop
-    //_pattern.Disable(Nc::Engine::HasAContext);
+    for (std::list<std::string>::const_iterator it = _sampleFactory->SampleNames().begin(); it != _sampleFactory->SampleNames().end(); ++it)
+        _menu->AddSample(*it);
+
+
+///    // no need to active/disable the context at each loop
+    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)
@@ -88,3 +93,17 @@ void GameEngine::MouseButtonEvent(System::Event &)
 void GameEngine::MouseMotionEvent(System::Event &)
 {
 }
+
+void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
+{
+    if (!_menu->Sample())
+        throw Utils::Exception("SampleViewer::GameEngine", "No sample selected.");
+
+    LOG << "Start sample: " << *_menu->Sample() << std::endl;
+
+    Contrib::GameEngine *e = _sampleFactory->CreateSample(*menu->Sample());
+
+}
+
+
+

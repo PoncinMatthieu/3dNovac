@@ -7,13 +7,13 @@ using namespace std;
 
 void CreateEngines(Nc::Engine::Manager *manager)
 {
-    Nc::Graphic::Engine *graphic = new Nc::Graphic::Engine(manager, (Nc::Graphic::Engine::CreateWindowFunc)&GameEngine::CreateWindow);
-    graphic->LimitFrameRate(60);
+    Nc::Graphic::Engine *graphic = new Nc::Graphic::Engine(manager, (Nc::Graphic::Engine::CreateWindowFunc)&SampleViewer::GameEngine::CreateWindow);
+    graphic->LimitFrameRate(30);
     manager->AddEngine("Graphic", graphic);
     LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << endl;
 
-    GameEngine *game = new GameEngine(graphic, manager);
-    game->LimitFrameRate(60);
+    SampleViewer::GameEngine *game = new SampleViewer::GameEngine(graphic, manager);
+    game->LimitFrameRate(30);
     manager->AddEngine("Main", game);
     LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << endl;
     LOG << "-----------GameManager-ENGINES-CREATION-SUCCESS--------------" << endl;

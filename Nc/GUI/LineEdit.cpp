@@ -32,10 +32,12 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-LineEdit::LineEdit(const std::string &label, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const std::string &ttf)
+LineEdit::LineEdit(const std::string &label, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const std::string &ttf, const std::string &looksName)
     : WidgetLabeled(label, size[1], x, y, pos, size, ttf)
 {
     _margin[0] = 4;
+    _centerLabelY = true;
+    UpdateLabel();
     _font = new Graphic::String("", size[1], Color(1, 1, 1), ttf);
 
     // creation des drawable

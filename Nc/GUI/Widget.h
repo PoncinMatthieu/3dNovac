@@ -45,35 +45,6 @@ namespace Nc
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Graphic::Object, System::Object, System::Object, Nc::GUI::Widget);
 
-            private:
-                class Look
-                {
-                    public:
-                        Look(const std::string &name);
-                        Look(const Look &l);
-                        Look &operator = (const Look &l);
-                        ~Look();
-
-                        void    Draw(Graphic::SceneGraph *scene);
-                        void    Update(const Vector2i &size);
-
-                        bool                    activated;
-
-                    private:
-                        void    Copy(const Look &l);
-
-                    private:
-                        Graphic::Sprite         *_spriteLeftEdge;
-                        Graphic::Sprite         *_spriteTopEdge;
-                        Graphic::Sprite         *_spriteRightEdge;
-                        Graphic::Sprite         *_spriteBottomEdge;
-                        Graphic::Sprite         *_spriteLeftTop;
-                        Graphic::Sprite         *_spriteRightTop;
-                        Graphic::Sprite         *_spriteLeftBottom;
-                        Graphic::Sprite         *_spriteRightBottom;
-                        Graphic::Sprite         *_spriteMiddle;
-                };
-
             public:
                 Widget(Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0));
                 Widget(const Widget &w);
@@ -170,7 +141,7 @@ namespace Nc
                 /** Set the look name of the widget.
                     If \p name is empty, the widget will be decorate with the default widget sprite name.
                 */
-                virtual void            UseLook(const std::string &name = "");
+                virtual void            UseLook(ILook *look = NULL);
 
                 /** Remove the given widget */
                 void                    RemoveWidget(Widget *w);
@@ -264,7 +235,7 @@ namespace Nc
                 bool                    _useStencil;                ///< if true, use the stencil buffer to be sure that the childs will not be drawn outside of the widget.
 
             private:
-                Look                    *_widgetLook;
+                ILook                   *_widgetLook;
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class WidgetVisitor;

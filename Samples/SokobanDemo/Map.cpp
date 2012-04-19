@@ -5,6 +5,7 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
+using namespace SokobanDemo;
 
 Map::Map(const Utils::FileName &file, Nc::Graphic::SceneNodeFormatManager &sceneNodeFormatManager)
   : Object()

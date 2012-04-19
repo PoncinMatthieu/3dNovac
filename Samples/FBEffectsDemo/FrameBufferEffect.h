@@ -8,14 +8,12 @@
 #include <Nc/Graphics/Object/Sprite.h>
 #include <Nc/Graphics/Material/ProgrammableMaterial.h>
 
-namespace Nc
+namespace FBEffectsDemo
 {
-  namespace Graphic
-  {
-    class FrameBufferEffect : public Effect
+    class FrameBufferEffect : public Nc::Graphic::Effect
       {
             public:
-                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::FrameBufferEffect);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Nc::Graphic::Effect, Nc::System::Object, FBEffectDemo::FrameBufferEffect);
 
             public:
                 FrameBufferEffect();
@@ -25,26 +23,25 @@ namespace Nc
 
                 void			        TriggerPostProcessActivation()	{_postProcessActivated = (_postProcessActivated) ? false : true;}
 
-      protected:
-                virtual void            Render(SceneGraph *scene);
+            protected:
+                virtual void            Render(Nc::Graphic::SceneGraph *scene);
                 virtual void		    Update(float elapsedTime);
 
-      private:
+            private:
                 void			InitFbo1();
 
-      private:
-                GL::FrameBuffer		_fboPass1;
-                Camera2d		*_camera2d;
-                Sprite			*_sprite;
+            private:
+                Nc::Graphic::GL::FrameBuffer		_fboPass1;
+                Nc::Graphic::Camera2d		*_camera2d;
+                Nc::Graphic::Sprite			*_sprite;
 
                 bool			_postProcessActivated;
 
-                ProgrammableMaterial	*_postProcessMaterial;
-                GL::Uniform<float,2>	*_sketchJitter;
+                Nc::Graphic::ProgrammableMaterial	*_postProcessMaterial;
+                Nc::Graphic::GL::Uniform<float,2>	*_sketchJitter;
                 float					_sketchJitterSpeed;
                 float					_timeToNextJitter;
       };
-  }
 }
 
 #endif

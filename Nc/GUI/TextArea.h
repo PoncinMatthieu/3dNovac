@@ -1,7 +1,7 @@
 
 /*-----------------------------------------------------------------------------
 
-	3dNovac GUIDemo
+	3dNovac Graphics
 	Copyright (C) 2010-2011, The 3dNovac Team
 
     This file is part of 3dNovac.
@@ -19,45 +19,35 @@
     You should have received a copy of the GNU Lesser General Public License
     along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
 
-    File Created At:        27/09/2011
+    File Created At:        18/12/2011
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
 
-#ifndef GUIDEMO_MAINMENU_H_
-#define GUIDEMO_MAINMENU_H_
+#ifndef NC_GUI_TEXTAREA_H_
+#define NC_GUI_TEXTAREA_H_
 
-#include <Nc/GUI/GUI.h>
+#include "ScrollArea.h"
 
-namespace GUIDemo
+namespace Nc
 {
-    class MainMenu : Nc::Utils::NonCopyable
+    namespace GUI
     {
-        public:
-            enum Pattern
-            {
-                SelectMode,
-    /*            SelectGame,
-                CreateGame,
-                WaitingRoom,
-                InGame,
-                GameOver,
-                Loading
-    */        };
+        class TextArea : public ScrollArea
+        {
+            public:
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextArea);
 
+            public:
+                TextArea(Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0));
 
-        public:
-            MainMenu(Nc::GUI::SceneGraph *gui);
-            ~MainMenu();
+                virtual ISceneNode  *Clone() const          {return new TextArea(*this);}
 
-            void UpdateMode(Pattern mode);
-
-        private:
-            Pattern                 _pattern;
-
-            Nc::GUI::SceneGraph     *_GUI;
-            Nc::GUI::WindowBox      *_selectModeWindow;
-    };
+            private:
+                Utils::Unicode::UTF32   _text;
+                bool                    _editable;
+        };
+    }
 }
 
 #endif

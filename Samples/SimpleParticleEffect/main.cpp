@@ -8,14 +8,14 @@ using namespace Nc;
 void CreateEngines(Engine::Manager &manager)
 {
   // create the graphic engine, by using the CreateWindow member function of our game engine
-  Graphic::Engine *graphic = new Graphic::Engine(&manager, (Graphic::Engine::CreateWindowFunc)&GameEngine::CreateWindow);
+  Graphic::Engine *graphic = new Graphic::Engine(&manager, (Graphic::Engine::CreateWindowFunc)&SimpleParticleEffect::GameEngine::CreateWindow);
   // limit its frame rate to 60 frame by second, and add the engine to the manager
 //  graphic->LimitFrameRate(60);
   manager.AddEngine("Graphic", graphic);
   LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << std::endl;
 
   // create our game engine
-  GameEngine *game = new GameEngine(graphic, &manager);
+  SimpleParticleEffect::GameEngine *game = new SimpleParticleEffect::GameEngine(graphic, &manager);
   // limit its frame rate to 60 frame by second to avoid to take 100% of the CPU, and add the engine to the manager
   game->LimitFrameRate(60);
   manager.AddEngine("Main", game);

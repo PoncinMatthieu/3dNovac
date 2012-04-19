@@ -9,6 +9,7 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
+using namespace FBEffectsDemo;
 
 GameEngine::GameEngine(Nc::Engine::Manager *manager, Graphic::Engine *graphic)
   : Nc::Contrib::GameEngine(graphic, manager)

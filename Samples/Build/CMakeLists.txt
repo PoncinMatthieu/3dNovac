@@ -91,39 +91,6 @@ else()
 												optimized	../../lib/Release/Nc-Core)
 endif()
 
-#------------------------------------------------------------------------------
-#	Sample Viewer
-#------------------------------------------------------------------------------
-file(
-  GLOB
-  SampleViewer-sources
-  ../SampleViewer/*.cpp
-  ../SampleViewer/*.h
-)
-
-add_executable(SampleViewer	${SampleViewer-sources})
-add_library(PluginSampleViewer	SHARED ${SampleViewer-sources})
-
-if(UNIX)
-	target_link_libraries(SampleViewer			Nc-Core Nc-Graphics Nc-GUI GL)
-	target_link_libraries(PluginSampleViewer		Nc-Core Nc-Graphics Nc-GUI GL)
-else()
-	target_link_libraries(SampleViewer			debug 		../../lib/Debug/Nc-Core
-											debug		../../lib/Debug/Nc-Graphics
-											debug		../../lib/Debug/Nc-GUI
-											optimized	../../lib/Release/Nc-Core
-											optimized	../../lib/Release/Nc-Graphics
-											optimized	../../lib/Release/Nc-GUI
-											general		opengl32)
-
-	target_link_libraries(PluginSampleViewer		debug 		../../lib/Debug/Nc-Core
-											debug		../../lib/Debug/Nc-Graphics
-											debug		../../lib/Debug/Nc-GUI
-											optimized	../../lib/Release/Nc-Core
-											optimized	../../lib/Release/Nc-Graphics
-											optimized	../../lib/Release/Nc-GUI
-											general		opengl32)
-endif()
 
 #------------------------------------------------------------------------------
 #	Frustum Demo
@@ -372,4 +339,42 @@ else()
 								general		opengl32)
 endif()
 
+
+#------------------------------------------------------------------------------
+#	Sample Viewer
+#------------------------------------------------------------------------------
+file(
+  GLOB
+  SampleViewer-sources
+  ../SampleViewer/*.cpp
+  ../SampleViewer/*.h
+
+  ../bSplinesDemo/GameEngine.cpp
+  ../bSplinesDemo/bSplines.cpp
+  ../bSplinesDemo/*.h
+)
+
+add_executable(SampleViewer	${SampleViewer-sources})
+add_library(PluginSampleViewer	SHARED ${SampleViewer-sources})
+
+if(UNIX)
+	target_link_libraries(SampleViewer			Nc-Core Nc-Graphics Nc-GUI GL)
+	target_link_libraries(PluginSampleViewer		Nc-Core Nc-Graphics Nc-GUI GL)
+else()
+	target_link_libraries(SampleViewer			debug 		../../lib/Debug/Nc-Core
+											debug		../../lib/Debug/Nc-Graphics
+											debug		../../lib/Debug/Nc-GUI
+											optimized	../../lib/Release/Nc-Core
+											optimized	../../lib/Release/Nc-Graphics
+											optimized	../../lib/Release/Nc-GUI
+											general		opengl32)
+
+	target_link_libraries(PluginSampleViewer		debug 		../../lib/Debug/Nc-Core
+											debug		../../lib/Debug/Nc-Graphics
+											debug		../../lib/Debug/Nc-GUI
+											optimized	../../lib/Release/Nc-Core
+											optimized	../../lib/Release/Nc-Graphics
+											optimized	../../lib/Release/Nc-GUI
+											general		opengl32)
+endif()
 

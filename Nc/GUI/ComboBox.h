@@ -48,6 +48,8 @@ namespace Nc
                     public:
                         ComboBoxUnfoldList(ComboBox *cb, Corner x, Corner y, const Vector2i &pos, const Vector2i &size);
 
+                        virtual ISceneNode  *Clone() const          {return new ComboBoxUnfoldList(*this);}
+
                         /** The mouse button handler to choose an item */
                         void                MouseButtonEvent(const System::Event &event);
                         /** Render the unfold list */
@@ -67,7 +69,11 @@ namespace Nc
                 ComboBox &operator = (const ComboBox &cb);
                 ~ComboBox();
 
+                virtual ISceneNode  *Clone() const          {return new ComboBox(*this);}
+
                 void                AddItem(Item *item);
+
+                inline Item         *CurrentItem()          {return (_currentItem) ? _currentItem->first : NULL;}
 
             protected:
                 void                Copy(const ComboBox &cb);

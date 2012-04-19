@@ -33,7 +33,7 @@ using namespace Nc;
 using namespace Nc::GUI;
 
 WidgetLabeled::WidgetLabeled(const Utils::Unicode::UTF32 &label, int charSize, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const std::string &ttf, Graphic::String::Style s)
-    : Widget(x, y, pos, size), _label(NULL)
+    : Widget(x, y, pos, size), _label(NULL), _centerLabelX(false), _centerLabelY(false)
 {
     CreateLabel(label, charSize, ttf, s);
 }
@@ -76,16 +76,27 @@ void WidgetLabeled::CreateLabel(const Utils::Unicode::UTF32 &l, int charSize, co
     if (_label)
         delete _label;
     _label = new Graphic::String(l, charSize, Color(1, 0, 0), ttf, s);
+    UpdateLabel();
     _stateChanged = true;
+}
+
+void WidgetLabeled::UpdateLabel()
+{
+    if (_centerLabelY && !_centerLabelX)
+        _label->Matrix.Translation(0, (_size.Data[1] / 2.f) - (_label->Size().Data[1] / 2.f), 0);
+    else if (!_centerLabelY && _centerLabelX)
+        _label->Matrix.Translation((_size.Data[0] / 2.f) - (_label->Size().Data[0] / 2.f), 0, 0);
+    else if (_centerLabelY && _centerLabelX)
+        _label->Matrix.Translation((_size.Data[0] / 2.f) - (_label->Size().Data[0] / 2.f), (_size.Data[1] / 2.f) - (_label->Size().Data[1] / 2.f), 0);
 }
 
 void WidgetLabeled::Draw(Graphic::SceneGraph *scene)
 {
-    // draw le label
-    _label->RenderNode(scene);
-
     // draw le widget
     Widget::Draw(scene);
+
+    // draw le label
+    _label->RenderNode(scene);
 }
 
 void WidgetLabeled::GetReelSize(Vector2i &size) const

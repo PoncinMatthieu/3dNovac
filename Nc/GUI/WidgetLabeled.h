@@ -61,7 +61,7 @@ namespace Nc
                 /** \return the label size */
                 inline const Vector2f           &LabelSize()                                    {return _label->Size();}
                 /** Set the label text */
-                inline void                     Label(const Utils::Unicode::UTF32 &text)        {_label->Text(text); _stateChanged = true;}
+                inline void                     Label(const Utils::Unicode::UTF32 &text)        {_label->Text(text); UpdateLabel(); _stateChanged = true;}
                 /** Set the label color */
                 inline void                     LabelColor(const Color &color)                  {_label->SetColor(color); _stateChanged = true;}
                 /** \return the label */
@@ -73,12 +73,17 @@ namespace Nc
                 /** Render the widget labeled */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
+                /** Update the label matrix */
+                void                UpdateLabel();
+
             private:
                 /** Copy the widget properties */
                 void                Copy(const WidgetLabeled &w);
 
             protected:
-                Graphic::String     *_label;        ///< the label (string)
+                Graphic::String     *_label;            ///< the label (string)
+                bool                _centerLabelX;      ///< if true, we center the x position of the label
+                bool                _centerLabelY;      ///< if true, we center the y position of the label
         };
     }
 }

@@ -31,6 +31,7 @@ using namespace Nc::Utils;
 using namespace Nc::System;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
+using namespace GUIDemo;
 
 MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     : _GUI(gui)

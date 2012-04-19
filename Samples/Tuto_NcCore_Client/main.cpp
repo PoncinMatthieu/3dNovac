@@ -1,5 +1,6 @@
 
 #include <Nc/Core/Network/Select.h>
+#include <Nc/Core/Network/SocketTcp.h>
 
 #define BUFF_SIZE	2048
 
