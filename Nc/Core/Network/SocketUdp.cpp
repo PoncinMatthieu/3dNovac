@@ -58,7 +58,7 @@ void    SocketUdp::Create()
     if (!IsValid())
     {
         _bindedPort = 0;
-        _descriptor = socket(PF_INET, SOCK_STREAM, 0);
+        _descriptor = socket(AF_INET, SOCK_DGRAM, 0);
 		if (!IsValid())
 			throw Utils::Exception("SocketUdp", "Failed to create the socket udp.");
 		// To avoid the "Address already in use" error message when trying to bind to the same port
@@ -88,7 +88,7 @@ bool    SocketUdp::Bind(unsigned int port)
             sockaddr_in addr;
             addr.sin_family      = AF_INET;
             addr.sin_port        = htons(port);
-            addr.sin_addr.s_addr = INADDR_ANY;
+            addr.sin_addr.s_addr = htonl(INADDR_ANY);
             memset(addr.sin_zero, 0, sizeof(addr.sin_zero));
 
             // Bind the socket to the port

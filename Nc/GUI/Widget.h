@@ -138,8 +138,9 @@ namespace Nc
                 /** Get the use stencil statement */
                 inline bool             UseStencil() const                      {return _useStencil;}
 
-                /** Set the look name of the widget.
-                    If \p name is empty, the widget will be decorate with the default widget sprite name.
+                /** Set the look object of the widget.
+                    If \p look is null, the widget will not be decored.
+                    \warning the look will be deleted by the widget, a look object should be used with one and only one widget
                 */
                 virtual void            UseLook(ILook *look = NULL);
 

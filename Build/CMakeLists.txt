@@ -24,9 +24,9 @@ if(UNIX)
 	  ../extlibs/Collada/
 	)
 
-      link_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}/../extlibs/Collada/lib/
-	${CMAKE_CURRENT_SOURCE_DIR}/../extlibs/Collada/extlibs/
+    link_directories(
+        ${CMAKE_CURRENT_SOURCE_DIR}/../extlibs/Collada/lib/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../extlibs/Collada/extlibs/
 	)
 else()
 	include_directories(
@@ -125,7 +125,7 @@ add_library(PluginFileFormatCollada 	SHARED ${PluginFileFormatCollada-sources})
 if(UNIX)
 	target_link_libraries(Nc-Core 							pthread)
 	target_link_libraries(Nc-Graphics 						freetype png X11 Xrandr)
-	target_link_libraries(PluginFileFormatCollada 			collada14dom minizip xml2 pcre pcrecpp boost_filesystem)
+	target_link_libraries(PluginFileFormatCollada 			collada14dom minizip xml2 pcre pcrecpp boost_filesystem boost_system)
 else()
 	target_link_libraries(Nc-Graphics	general		../extlibs/freetype
 										general 	opengl32

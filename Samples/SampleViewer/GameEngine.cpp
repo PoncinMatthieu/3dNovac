@@ -101,7 +101,7 @@ void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
 
     LOG << "Start sample: " << *_menu->Sample() << std::endl;
 
-    Contrib::GameEngine *e = _sampleFactory->CreateSample(*menu->Sample());
+//    Contrib::GameEngine *e = _sampleFactory->CreateSample(*_menu->Sample());
 
 }
 
