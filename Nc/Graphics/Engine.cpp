@@ -46,7 +46,7 @@ double      Graphic::Engine::_elapsedTime = 0;
 
 Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager)
 	: Engine::IEngine("Graphic Engine", manager, Nc::Engine::HasAContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
-      _sceneGraphManager(sceneGraphManager), _createWinFunction(func), _context(NULL)
+      _sceneGraphManager(sceneGraphManager), _createWinFunction(func), _win(NULL), _context(NULL)
 {
 }
 

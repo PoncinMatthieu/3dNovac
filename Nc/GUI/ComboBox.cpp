@@ -32,7 +32,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
-ComboBox::ComboBox(SceneGraph *scene, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, float fontSize, const Color &fontColor, const std::string &fontName, const std::string &looksName)
+ComboBox::ComboBox(GUI::SceneGraph *scene, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, float fontSize, const Color &fontColor, const std::string &fontName, const std::string &looksName)
     : Widget(x, y, pos, size), _scene(scene), _fontSize(fontSize), _fontColor(fontColor), _fontName(fontName), _currentItem(NULL), _listUnrolled(false), _currentUnfoldList(NULL)
 {
     _spriteLeft = WindowStyle::Instance().GetNewSprite(looksName + WindowStyle::SpriteName::ComboBoxLeft);

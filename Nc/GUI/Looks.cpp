@@ -32,6 +32,14 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
+ILook::ILook()
+{
+}
+
+ILook::~ILook()
+{
+}
+
 StripLook::StripLook(const std::string &name)
 {
     _spriteLeft = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::StripLeft);

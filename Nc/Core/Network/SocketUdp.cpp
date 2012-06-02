@@ -137,7 +137,7 @@ bool    SocketUdp::Write(const char *src, unsigned int size, const Ip &ip, unsig
 
         // Loop until every byte has been sent
         int sent = 0;
-        for (int len = 0; len < size; len += sent)
+        for (unsigned int len = 0; len < size; len += sent)
         {
             sent = sendto(_descriptor, reinterpret_cast<const char*>(src) + len, size - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
             if (sent <= 0)

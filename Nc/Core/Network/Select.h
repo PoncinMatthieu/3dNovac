@@ -83,7 +83,7 @@ int main()
 }
  \endcode
 		*/
-        class Select
+        class LCORE Select
         {
             public:
                 Select();

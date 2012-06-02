@@ -142,7 +142,7 @@ namespace Nc
                     If \p look is null, the widget will not be decored.
                     \warning the look will be deleted by the widget, a look object should be used with one and only one widget
                 */
-                virtual void            UseLook(ILook *look = NULL);
+                void					UseLook(GUI::ILook *look = NULL);
 
                 /** Remove the given widget */
                 void                    RemoveWidget(Widget *w);

@@ -50,6 +50,14 @@ else()
 									optimized	../../lib/Release/Nc-Graphics
 									general 	../../extlibs/freetype
 									general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET Tuto1 POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 
@@ -70,6 +78,13 @@ if(UNIX)
 else()
 	target_link_libraries(Tuto_NcCore_Server	debug		../../lib/Debug/Nc-Core
 												optimized	../../lib/Release/Nc-Core)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET Tuto_NcCore_Server POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 #------------------------------------------------------------------------------
@@ -89,6 +104,13 @@ if(UNIX)
 else()
 	target_link_libraries(Tuto_NcCore_Client	debug		../../lib/Debug/Nc-Core
 												optimized	../../lib/Release/Nc-Core)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET Tuto_NcCore_Client POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 
@@ -124,6 +146,15 @@ else()
 												optimized	../../lib/Release/Nc-Graphics
 												optimized	../../lib/Release/Nc-GUI
 												general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET FrustumDemo POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 
@@ -159,6 +190,15 @@ else()
 											optimized	../../lib/Release/Nc-Graphics
 											optimized	../../lib/Release/Nc-GUI
 											general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET GUIDemo POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 
@@ -194,6 +234,15 @@ else()
 											optimized	../../lib/Release/Nc-Graphics
 											optimized	../../lib/Release/Nc-GUI
 											general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET LightDemo POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 
@@ -230,6 +279,15 @@ else()
 												optimized	../../lib/Release/Nc-Graphics
 												optimized	../../lib/Release/Nc-GUI
 												general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET bSplinesDemo POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 
@@ -265,6 +323,15 @@ else()
 												optimized	../../lib/Release/Nc-Graphics
 												optimized	../../lib/Release/Nc-GUI
 												general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET FBEffectsDemo POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 #------------------------------------------------------------------------------
@@ -303,6 +370,16 @@ else()
 												optimized	../../lib/Release/Nc-GUI
 												optimized	../../lib/Release/Nc-Contrib
 												general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET SokobanDemo POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 #------------------------------------------------------------------------------
@@ -337,6 +414,16 @@ else()
 								optimized	../../lib/Release/Nc-Graphics
 								optimized	../../lib/Release/Nc-GUI
 								general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET SimpleParticleEffect POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 
 
@@ -376,5 +463,15 @@ else()
 											optimized	../../lib/Release/Nc-Graphics
 											optimized	../../lib/Release/Nc-GUI
 											general		opengl32)
+
+	# copy les dll des dependances
+	add_custom_command(TARGET PluginSampleViewer POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.dll ../bin/${CMAKE_CFG_INTDIR}/
+		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	)
 endif()
 

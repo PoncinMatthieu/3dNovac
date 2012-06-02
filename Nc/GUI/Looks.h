@@ -34,9 +34,10 @@ namespace Nc
     namespace GUI
     {
         /// Define the interface of a drawable object used to render the look of a widget
-        struct ILook
+        struct LGUI ILook
         {
-            virtual ~ILook()    {}
+			ILook();
+			virtual ~ILook();
 
             virtual ILook   *Clone() const = 0;
 
@@ -44,7 +45,7 @@ namespace Nc
             virtual void    Update(const Vector2i &size) = 0;
         };
 
-        class StripLook : public ILook
+        class LGUI StripLook : public ILook
         {
             public:
                 StripLook(const std::string &name);
@@ -66,7 +67,7 @@ namespace Nc
                 Graphic::Sprite     *_spriteMiddle;
         };
 
-        class BoxLook : public ILook
+        class LGUI BoxLook : public ILook
         {
             public:
                 BoxLook(const std::string &name);

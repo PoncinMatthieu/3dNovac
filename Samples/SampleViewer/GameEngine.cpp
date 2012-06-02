@@ -12,7 +12,7 @@ GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
 {
     _sampleFactory = new SampleFactory(graphic, manager);
 
-    AddNewCmd(StartSample,      (Engine::CmdFunction)&GameEngine::StartSampleCmd);
+    AddNewCmd(StartSample,      (Nc::Engine::CmdFunction)&GameEngine::StartSampleCmd);
 }
 
 GameEngine::~GameEngine()

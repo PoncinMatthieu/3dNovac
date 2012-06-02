@@ -40,7 +40,7 @@ namespace Nc
     namespace Network
     {
         /// Define an ip address
-        class Ip
+        class LCORE Ip
         {
             public:
                 Ip();

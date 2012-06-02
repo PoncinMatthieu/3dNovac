@@ -34,7 +34,7 @@ namespace Nc
     namespace GUI
     {
         /// Enable users to access part of a document that is larger than the widget used to display it
-        class ScrollBar : public Widget
+        class LGUI ScrollBar : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ScrollBar);
@@ -55,7 +55,7 @@ namespace Nc
                 /** Set the page size of the view */
                 void        PageSize(float s)                   {_pageSize = s;}
                 /** \return the page size of the slider */
-                float       PageSize() const                    {_pageSize;}
+                float       PageSize() const                    {return _pageSize;}
 
                 /** Set the total position in the document */
                 void        Position(float s)                   {_position = s;}

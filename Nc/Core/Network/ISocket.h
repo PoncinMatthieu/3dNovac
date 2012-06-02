@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Network
     {
-        class ISocket
+        class LCORE ISocket
         {
             public:
                 ISocket();

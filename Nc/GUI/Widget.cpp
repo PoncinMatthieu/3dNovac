@@ -358,7 +358,7 @@ void    Widget::RemoveWidget(Widget *w)
     RemoveChild(w);
 }
 
-void    Widget::UseLook(ILook *look)
+void    Widget::UseLook(GUI::ILook *look)
 {
     if (_widgetLook)
         delete _widgetLook;

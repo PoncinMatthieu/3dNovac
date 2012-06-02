@@ -45,7 +45,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
 
     Widget *selectModeWidget = new Widget(Center, Top, Vector2f(0, 10), Vector2f(winsizeMode[0] - 20, winsizeMode[1] - _selectModeWindow->TitleHeight() - 20));
     _selectModeWindow->AddChild(selectModeWidget);
-    selectModeWidget->UseLook();
+    //selectModeWidget->UseLook();
 
     Button *button = new Button("Single Player", Center, Center, Vector2f(0, 20), Vector2f(140, 20), "Prototype");
     button->HandlerId(GameEngine::ModeSinglePlayer);

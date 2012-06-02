@@ -38,7 +38,7 @@ namespace Nc
         /**
             Use the size of the first widget child to render the scroll area.
         */
-        class ScrollArea : public Widget
+        class LGUI ScrollArea : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ScrollArea);

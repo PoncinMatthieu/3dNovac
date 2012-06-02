@@ -45,7 +45,7 @@ namespace Nc
 				- Network::Ip
 				- Network::Select
 		*/
-        class SocketTcp : public ISocket
+        class LCORE SocketTcp : public ISocket
         {
             public:
                 SocketTcp();

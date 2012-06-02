@@ -37,7 +37,7 @@ namespace Nc
     {
         namespace Visitor
         {
-            struct ResizeAll : public WidgetVisitor<ResizeAll>
+            struct LGUI ResizeAll : public WidgetVisitor<ResizeAll>
             {
                 ResizeAll()
                     : WidgetVisitor<ResizeAll>(Utils::Metaprog::Seq<Widget>::Type(),
@@ -47,7 +47,7 @@ namespace Nc
                 void VisitNode(Widget &w)       {w.Resized();}
             };
 
-            struct IsInhibited : public WidgetVisitor<IsInhibited, true>
+            struct LGUI IsInhibited : public WidgetVisitor<IsInhibited, true>
             {
                 IsInhibited()
                     : WidgetVisitor<IsInhibited, true>( Utils::Metaprog::Seq<Widget>::Type(),
@@ -60,7 +60,7 @@ namespace Nc
                 bool    result;
             };
 
-            struct CheckFocus : public WidgetVisitor<CheckFocus>
+            struct LGUI CheckFocus : public WidgetVisitor<CheckFocus>
             {
                 CheckFocus(const Nc::System::Event &e, Vector2i mouseP)
                     : WidgetVisitor<CheckFocus>(Utils::Metaprog::Seq<Widget>::Type(),
@@ -102,7 +102,7 @@ namespace Nc
                 Widget                      *childFocused;
             };
 
-            struct GetParentWidget : public WidgetVisitor<GetParentWidget, true>
+            struct LGUI GetParentWidget : public WidgetVisitor<GetParentWidget, true>
             {
                 GetParentWidget(const Widget *w)
                     : WidgetVisitor<GetParentWidget, true>( Utils::Metaprog::Seq<Widget>::Type(),
@@ -120,7 +120,7 @@ namespace Nc
                 const Widget    *parent;
             };
 
-            struct ChangeStates : public WidgetVisitor<ChangeStates>
+            struct LGUI ChangeStates : public WidgetVisitor<ChangeStates>
             {
                 ChangeStates()
                     : WidgetVisitor<ChangeStates>(Utils::Metaprog::Seq<Widget>::Type(),

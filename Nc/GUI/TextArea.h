@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace GUI
     {
-        class TextArea : public ScrollArea
+        class LGUI TextArea : public ScrollArea
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextArea);

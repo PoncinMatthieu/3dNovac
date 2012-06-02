@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace GUI
     {
-        class ComboBox : public Widget
+        class LGUI ComboBox : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(GUI::Widget, System::Object, Nc::GUI::ComboBox);

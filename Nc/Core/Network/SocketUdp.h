@@ -42,7 +42,7 @@ namespace Nc
     namespace Network
     {
         /// Define an Udp Socket
-        class SocketUdp : public ISocket
+        class LCORE SocketUdp : public ISocket
         {
             public:
                 SocketUdp();
