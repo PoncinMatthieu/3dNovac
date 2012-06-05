@@ -85,7 +85,7 @@ void XWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
     if (fullscreen)
         SwitchToFullscreen(size);
 
-    _antialisingLevel = antialiasingLevel;
+    _antialiasingLevel = antialiasingLevel;
     ChooseBestVisualInfo();
 
     XSetWindowAttributes attributes;
@@ -170,7 +170,7 @@ void XWindow::ChooseBestVisualInfo()
                 int score = Math::Abs(static_cast<int>(32 - (red + green + blue + alpha))) +
                             Math::Abs(static_cast<int>(24 - depth))   +
                             Math::Abs(static_cast<int>(8  - stencil)) +
-                            Math::Abs(static_cast<int>(_antialisingLevel - ((multiSampling) ? samples : 0)));
+                            Math::Abs(static_cast<int>(_antialiasingLevel - ((multiSampling) ? samples : 0)));
 
                 // Keep it if it's better than the current best
                 if (score < bestScore)
@@ -184,15 +184,15 @@ void XWindow::ChooseBestVisualInfo()
         // If no visual has been found, try a lower level of antialiasing
         if (!bestConfig)
         {
-            if (_antialisingLevel > 2)
+            if (_antialiasingLevel > 2)
             {
-                LOG_ERROR << "Failed to find a pixel format supporting " << _antialisingLevel << " antialiasing levels. Trying with 2 levels" << std::endl;
-                _antialisingLevel = 2;
+                LOG_ERROR << "Failed to find a pixel format supporting " << _antialiasingLevel << " antialiasing levels. Trying with 2 levels" << std::endl;
+                _antialiasingLevel = 2;
             }
-            else if (_antialisingLevel > 0)
+            else if (_antialiasingLevel > 0)
             {
                 LOG_ERROR << "Failed to find a pixel format supporting antialiasing. Antialiasing will be disabled" << std::endl;
-                _antialisingLevel = 0;
+                _antialiasingLevel = 0;
             }
             else
                 throw Utils::Exception("XWindow", "Failed to find a suitable pixel format for the window");
@@ -374,7 +374,7 @@ void XWindow::UseExistingWindow(void *disp, int winId, const Vector2ui &size, un
 {
     _width = size.Data[0];
     _height = size.Data[1];
-    _antialisingLevel = antialiasingLevel;
+    _antialiasingLevel = antialiasingLevel;
     int     ret;
     int     doubleBufferAttributes[] =  {   GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
                                             GLX_RENDER_TYPE,   GLX_RGBA_BIT,

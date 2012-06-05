@@ -69,9 +69,23 @@ void   FileName::SetFullname(const char *name)
             string::operator=(name);
         else
         {
-			Xml::Object *o = CONFIG->Block("RessourcesPath")->Line(subn.substr(0, pos));
-			std::string s;
+            Xml::Object *o = NULL;
 
+            // check on RessourcesPath, RessourcesPathWindows and RessourcesPathLinux
+            if (CONFIG->Block("RessourcesPath")->LineExist(subn.substr(0, pos)))
+                o = CONFIG->Block("RessourcesPath")->Line(subn.substr(0, pos));
+#ifdef SYSTEM_WINDOWS
+            else if (CONFIG->Block("RessourcesPathWindows")->LineExist(subn.substr(0, pos)))
+                o = CONFIG->Block("RessourcesPathWindows")->Line(subn.substr(0, pos));
+#else
+            else if (CONFIG->Block("RessourcesPathLinux")->LineExist(subn.substr(0, pos)))
+                o = CONFIG->Block("RessourcesPathLinux")->Line(subn.substr(0, pos));
+#endif
+            else
+                throw Exception("FileName", std::string("Failed to retreive the path of ") + name);
+
+            // check on params path, pathDebug and pathRelease
+			std::string s;
 			if (o->ParamExist("path"))
 				s = o->Param("path");
 #ifdef _DEBUG
@@ -79,7 +93,7 @@ void   FileName::SetFullname(const char *name)
 				s = o->Param("pathDebug");
 #else
 			else if (o->ParamExist("pathRelease"))
-				s = o->Param("pathRelease");			
+				s = o->Param("pathRelease");
 #endif
 			else
 				throw Exception("FileName", std::string("Failed to retreive the path of ") + name);

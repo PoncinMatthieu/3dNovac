@@ -4,13 +4,13 @@ cmake_policy(SET CMP0015 NEW)
 # project name
 project(3dNovac)
 
-# libraries output path
-set(LIBRARY_OUTPUT_PATH ../lib/)
-
 # force the build type to release if the type is not already set
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 endif()
+
+# libraries output path
+set(LIBRARY_OUTPUT_PATH ../lib/)
 
 # set the include and link directories
 include_directories(../)
@@ -111,12 +111,14 @@ add_library(Nc-Graphics 				SHARED ${Nc-Graphics-sources})
 add_library(Nc-GUI 						SHARED ${Nc-GUI-sources})
 add_library(Nc-Contrib 					SHARED ${Nc-Contrib-sources})
 add_library(Nc-Audio 					SHARED ${Nc-Audio-sources})
-add_library(PluginFileFormatCollada 	SHARED ${PluginFileFormatCollada-sources})
+add_library(PluginFileFormatCollada 			SHARED ${PluginFileFormatCollada-sources})
 
 # Set the dependance libs
 if(UNIX)
-	target_link_libraries(Nc-Core 							pthread)
-	target_link_libraries(Nc-Graphics 						freetype png X11 Xrandr)
+	target_link_libraries(Nc-Core 					pthread)
+	target_link_libraries(Nc-Graphics 				Nc-Core freetype GL png X11 Xrandr)
+	target_link_libraries(Nc-GUI 					Nc-Core Nc-Graphics)
+	target_link_libraries(Nc-Audio 					Nc-Core sfml-audio sfml-system)
 	target_link_libraries(PluginFileFormatCollada 			collada14dom minizip xml2 pcre pcrecpp boost_filesystem boost_system)
 else()
 	target_link_libraries(Nc-Core		ws2_32)
@@ -177,7 +179,8 @@ add_dependencies(Nc-Contrib					Nc-Core Nc-Graphics)
 add_dependencies(PluginFileFormatCollada	Nc-Core Nc-Graphics)
 
 # copy dll and .pdb files for excutable dependencies if NC_COPY_DEPENDENCIES_PATH is set
-if(NC_COPY_DEPENDENCIES_PATH)
+if (WIN32)
+  if(NC_COPY_DEPENDENCIES_PATH)
 	add_custom_command(TARGET Nc-Core POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 	add_custom_command(TARGET Nc-Graphics POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 	add_custom_command(TARGET Nc-GUI POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
@@ -193,4 +196,5 @@ if(NC_COPY_DEPENDENCIES_PATH)
 			add_custom_command(TARGET Nc-Contrib POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 		endif()
 	endif()
+  endif()
 endif()

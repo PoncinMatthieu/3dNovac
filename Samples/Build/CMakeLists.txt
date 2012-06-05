@@ -15,10 +15,9 @@ set(NC_DIR ../..)
 # set path to copy dependencies
 set(NC_COPY_DEPENDENCIES_PATH ../bin/${CMAKE_CFG_INTDIR})
 
+# executable and libraries output path
 set(EXECUTABLE_OUTPUT_PATH ../bin/)
 set(LIBRARY_OUTPUT_PATH ${NC_DIR}/lib/)
-#set(CMAKE_FILE_DIRECTORY ../files/)
-#set(CMAKE_BINARY_DIR ../files/)
 
 
 if(NOT CMAKE_BUILD_TYPE)

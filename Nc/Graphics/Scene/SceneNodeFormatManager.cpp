@@ -44,10 +44,10 @@ SceneNodeFormatManager::SceneNodeFormatManager()
 #ifdef SYSTEM_WINDOWS
 			f += ".dll";
 #else
-			f = "lib" + f + ".so";
+			f = f.Path() + "lib" + f.Filename() + ".so";
 #endif
             _listSceneNodeFormat.push_back(System::PluginLoader<ISceneNodeFormatPlugin>());
-            _listSceneNodeFormat.rbegin()->Load(name);
+            _listSceneNodeFormat.rbegin()->Load(f);
             LOG << "DONE" << std::endl;
         }
     }
