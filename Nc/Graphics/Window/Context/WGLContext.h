@@ -66,14 +66,14 @@ namespace Nc
 						LOG_ERROR << "SwapBuffers failed" << std::endl;
 				}
 
+			private:
+				HGLRC			CreateDummyContext();
+				void			ShowError(char *title);
+
             private:
                 HGLRC           _context;
                 HDC             _drawable;
 
-                int             _antialiasingLevel;
-                int             _depth;
-                int             _stencil;
-                int             _bitsPerPixel;
                 int             _format;
         };
     }

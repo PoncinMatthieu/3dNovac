@@ -64,11 +64,7 @@ namespace Nc
                     /** Convert and return the unicode string in standard std::wstring into the given std::wstring */
                     std::wstring        &ToStdWString(std::wstring &str) const;
 
-                    friend LCORE std::ostream &operator << (std::ostream& os, const UTF32& s)
-                    {
-                        os << s.ToStdString();
-                        return os;
-                    }
+                    friend LCORE std::ostream &operator << (std::ostream& os, const UTF32& s);
             };
         }
     }

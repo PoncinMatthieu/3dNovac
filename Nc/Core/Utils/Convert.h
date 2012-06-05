@@ -53,7 +53,7 @@ namespace Nc
 		/// Call the function std::getline, used to avoid the issue "unresolved symbole on basic_string::npos" in visual studio 2010
 		LCORE void Getline(std::ifstream &stream, std::string &line);
 
-        /// This namespace provide some fonctor class utility
+		/// This namespace provide some fonctor class utility
         namespace Fonctor
         {
             /// fonctor to transform the case of a string
@@ -91,16 +91,7 @@ namespace Nc
             bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest);
 
 			/// Return the first occurence of the \p delimitor into the string \p dest
-			inline LCORE bool SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest)
-            {
-                std::string::size_type pos = str.find_first_of(delimitor);
-                dest = str.substr(0, pos++);
-                if (pos != std::string::npos && pos < str.size())
-                   str = str.substr(pos, std::string::npos);
-                else
-                   str.clear();
-                return true;
-            }
+			LCORE bool SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest);
 
             /// Convert the caracters of the string in lower caracters
             inline void ToLower(std::string &s)     {std::transform(s.begin(), s.end(), s.begin(), Fonctor::ToLower());}

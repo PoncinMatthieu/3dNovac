@@ -71,7 +71,7 @@ void    SocketUdp::Create()
 	}
 }
 
-bool    SocketUdp::Bind(unsigned int port)
+bool    SocketUdp::Bind(unsigned short port)
 {
     if (!IsValid())
         throw Utils::Exception("SocketUdp", "Can't bind, The socket is not valid");
@@ -121,7 +121,7 @@ bool    SocketUdp::Unbind()
     return true;
 }
 
-bool    SocketUdp::Write(const char *src, unsigned int size, const Ip &ip, unsigned int port)
+bool    SocketUdp::Write(const char *src, unsigned int size, const Ip &ip, unsigned short port)
 {
     if (!IsValid())
         throw Utils::Exception("SocketUdp", "Can't write, The socket is not valid");
@@ -147,7 +147,7 @@ bool    SocketUdp::Write(const char *src, unsigned int size, const Ip &ip, unsig
     return true;
 }
 
-int    SocketUdp::Read(char *dst, unsigned int maxSize, Ip &ip, unsigned int &port)
+int    SocketUdp::Read(char *dst, unsigned int maxSize, Ip &ip, unsigned short &port)
 {
     if (!IsValid())
         throw Utils::Exception("SocketUdp", "Can't read, The socket is not valid");

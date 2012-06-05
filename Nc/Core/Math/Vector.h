@@ -101,7 +101,7 @@ namespace Nc
                 template<typename U>
                 T       Angle(const Vector<U,D> &v) const;
 
-                friend LCORE std::ostream &operator << (std::ostream &os, const Vector<T,D> &V)
+                friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Vector<T,D> &V)
                 {
                     char c = 'x';
                     for (unsigned char i = 0; i < D; ++i, ++c)

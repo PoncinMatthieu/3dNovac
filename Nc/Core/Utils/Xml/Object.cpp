@@ -172,3 +172,18 @@ void Object::Write(std::ostream &out, unsigned int i) const
     else
         out << "\n";
 }
+
+namespace Nc
+{
+	namespace Utils
+	{
+		namespace Xml
+		{
+			std::ostream	&operator << (std::ostream &out, const Object &o) 
+			{
+				o.Write(out, 0); 
+				return out;
+			}
+		}
+	}
+}

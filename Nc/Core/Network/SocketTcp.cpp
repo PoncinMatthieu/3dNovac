@@ -76,7 +76,7 @@ void    SocketTcp::Create()
 	}
 }
 
-bool    SocketTcp::Connect(const Ip &ip, unsigned int port)
+bool    SocketTcp::Connect(const Ip &ip, unsigned short port)
 {
     if (!IsValid())
         throw Utils::Exception("SocketTcp", "Can't connect, The socket is not valid");
@@ -93,7 +93,7 @@ bool    SocketTcp::Connect(const Ip &ip, unsigned int port)
     return true;
 }
 
-bool    SocketTcp::Listen(unsigned int port)
+bool    SocketTcp::Listen(unsigned short port)
 {
     if (!IsValid())
         throw Utils::Exception("SocketTcp", "Can't listen, The socket is not valid");

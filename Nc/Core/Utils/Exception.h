@@ -69,7 +69,7 @@ namespace Nc
                 /**
                     Redefinition of the function what to return the msg, after catching any std::exception
                 */
-                virtual const char *what() const throw()                                    {return _msg.c_str();}
+                virtual const char *what() const throw();
 
             private:
                 std::string	_msg;   ///< the message of the exception

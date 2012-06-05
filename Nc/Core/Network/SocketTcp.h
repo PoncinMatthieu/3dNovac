@@ -60,13 +60,13 @@ namespace Nc
                     Connect the socket to the given \p ip and the given \p port
                     \return true if no error.
                 */
-                bool            Connect(const Ip &ip, unsigned int port);
+                bool            Connect(const Ip &ip, unsigned short port);
 
                 /**
                     Set the descriptor to listening a port for connection or incomming data
                     \return true if no error.
                 */
-                bool            Listen(unsigned int port);
+                bool            Listen(unsigned short port);
 
                 /**
                     Wait until a new incomming connection. Fill the new socket and ip used to communicate with the client.

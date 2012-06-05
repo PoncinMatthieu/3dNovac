@@ -32,9 +32,39 @@
 #include "IntrusiveSmartPointer.h"
 #include "NonCopyable.h"
 
-const std::size_t	Nc::Utils::String::npos = std::string::npos;
+using namespace Nc;
 
-void Nc::Utils::Getline(std::ifstream &stream, std::string &line)
+const std::size_t	Utils::String::npos = std::string::npos;
+
+void Utils::Getline(std::ifstream &stream, std::string &line)
 {
 	std::getline(stream, line);
+}
+
+bool Utils::Convert::SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest)
+{
+	std::string::size_type pos = str.find_first_of(delimitor);
+	dest = str.substr(0, pos++);
+	if (pos != Utils::String::npos && pos < str.size())
+	   str = str.substr(pos, Utils::String::npos);
+	else
+	   str.clear();
+	return true;
+}
+
+namespace Nc
+{
+	namespace Utils
+	{
+		std::ostream &operator << (std::ostream &os, const Utils::Clock &cl)
+		{
+			os << "time = " << cl.ElapsedTime() << "s";
+			return os;
+		}
+	}
+}
+
+const char *Utils::Exception::what() const throw()
+{
+	return _msg.c_str();
 }

@@ -64,7 +64,7 @@
         namespace GUI
         {
             // definitions
-            class ILook;
+            struct ILook;
             class Widget;
 
             template<typename VisitorType, bool IsConst = false, typename ReturnType = void>

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+cmake_policy(SET CMP0015 NEW)
 
 # project name
 project(3dNovac)
@@ -11,36 +12,27 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 endif()
 
-# set the include directories
+# set the include and link directories
+include_directories(../)
+include_directories(../extlibs/)
+include_directories(../extlibs/freetype/)
+include_directories(../extlibs/GL3/)
+include_directories(../extlibs/libpng/)
+include_directories(../extlibs/zlib/)
+include_directories(../extlibs/SFML/include/)
+include_directories(../extlibs/Collada/)
 if(UNIX)
-	include_directories(
-	  ../
-	  ../extlibs/
-	  ../extlibs/freetype/
-	  ../extlibs/GL3/
-	  ../extlibs/libpng/
-	  ../extlibs/zlib/
-	  ../extlibs/SFML/include/
-	  ../extlibs/Collada/
-	)
-
-    link_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../extlibs/Collada/lib/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../extlibs/Collada/extlibs/
-	)
+    link_directories(../extlibs/Collada/lib/)
+    link_directories(../extlibs/Collada/extlibs/)
 else()
-	include_directories(
-	  ../
-	  ../extlibs/
-	  ../extlibs/freetype/
-	  ../extlibs/GL3/
-	  ../extlibs/libpng/
-	  ../extlibs/zlib/
-	  ../extlibs/SFML/include/
-	  ../extlibs/Collada/
-	  ../extlibs/Collada/extlibs/boost/
-	)
+	include_directories(../extlibs/Collada/extlibs/boost/)	
+	link_directories(../extlibs/)
+	link_directories(../extlibs/SFML/lib/)
+	link_directories(../extlibs/Collada/lib/)
+	link_directories(../extlibs/Collada/extlibs/)
+	link_directories(../extlibs/Collada/extlibs/boost/lib/)
 endif()
+link_directories(../lib/${CMAKE_CFG_INTDIR})
 
 # Set the Nc-Core sources path only the API folder is not set
 # we use a global and not a global recurse to avoid the svn directories and because some folder shouldn't be added to the compilation process
@@ -127,54 +119,35 @@ if(UNIX)
 	target_link_libraries(Nc-Graphics 						freetype png X11 Xrandr)
 	target_link_libraries(PluginFileFormatCollada 			collada14dom minizip xml2 pcre pcrecpp boost_filesystem boost_system)
 else()
-	target_link_libraries(Nc-Graphics	general		../extlibs/freetype
-										general 	opengl32
-										debug		../lib/Debug/Nc-Core
-										optimized	../lib/Release/Nc-Core
-										)
-
-	target_link_libraries(Nc-Audio 		general		../extlibs/SFML/lib/sfml-audio
-										debug		../lib/Debug/Nc-Core
-										optimized	../lib/Release/Nc-Core
-										)
-
-	target_link_libraries(Nc-GUI 		general 	../extlibs/freetype opengl32
-										debug 		../lib/Debug/Nc-Core
-										debug		../lib/Debug/Nc-Graphics
-										optimized	../lib/Release/Nc-Core
-										optimized	../lib/Release/Nc-Graphics
-										)
-
-	target_link_libraries(Nc-Contrib 	general 	../extlibs/freetype opengl32
-										debug 		../lib/Debug/Nc-Core
-										debug		../lib/Debug/Nc-Graphics
-										optimized	../lib/Release/Nc-Core
-										optimized	../lib/Release/Nc-Graphics
-										)
-
+	target_link_libraries(Nc-Core		ws2_32)
+	target_link_libraries(Nc-Graphics	Nc-Core freetype opengl32)
+	target_link_libraries(Nc-Audio 		general	Nc-Core 
+										debug sfml-audio-d
+										optimized sfml-audio)
+	target_link_libraries(Nc-GUI 		Nc-Core Nc-Graphics freetype opengl32)
+	target_link_libraries(Nc-Contrib 	Nc-Core Nc-Graphics freetype opengl32)
 	target_link_libraries(PluginFileFormatCollada	general 	opengl32
 													general		wsock32
-													general		../extlibs/freetype
-													general		../extlibs/Collada/extlibs/libxml2_a
-													general		../extlibs/Collada/extlibs/zlib
-													general		../extlibs/Collada/extlibs/minizip
-													debug		../lib/Debug/Nc-Core
-													debug		../lib/Debug/Nc-Graphics
-													debug		../extlibs/Collada/lib/libcollada14dom22-d
-													debug		../extlibs/Collada/extlibs/boost/lib/boost_system-d
-													debug		../extlibs/Collada/extlibs/pcred
-													debug		../extlibs/Collada/extlibs/pcrecppd
-													optimized	../lib/Release/Nc-Core
-													optimized	../lib/Release/Nc-Graphics
-													optimized	../extlibs/Collada/lib/libcollada14dom22
-													optimized	../extlibs/Collada/extlibs/boost/lib/boost_system
-													optimized	../extlibs/Collada/extlibs/pcre
-													optimized 	../extlibs/Collada/extlibs/pcrecpp
+													general		freetype
+													general		libxml2_a
+													general		zlib
+													general		minizip
+													general		Nc-Core
+													general		Nc-Graphics
+													debug		libcollada14dom22-d
+													debug		boost_system-d
+													debug		pcred
+													debug		pcrecppd
+													optimized	libcollada14dom22
+													optimized	boost_system
+													optimized	pcre
+													optimized 	pcrecpp
 													)
 endif()
 
 # we want to compile our libs dynamically
 add_definitions(-DNC_DYNAMIC_LINK)
+add_definitions(-DSFML_DYNAMIC)
 
 # set the export defines to export the symbole in the dll
 # those defines are more likely more usefull for Windows, but it could be interesting to keep these define on the other systems
@@ -202,3 +175,22 @@ add_dependencies(Nc-GUI						Nc-Graphics Nc-Core)
 add_dependencies(Nc-Audio					Nc-Core)
 add_dependencies(Nc-Contrib					Nc-Core Nc-Graphics)
 add_dependencies(PluginFileFormatCollada	Nc-Core Nc-Graphics)
+
+# copy dll and .pdb files for excutable dependencies if NC_COPY_DEPENDENCIES_PATH is set
+if(NC_COPY_DEPENDENCIES_PATH)
+	add_custom_command(TARGET Nc-Core POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+	add_custom_command(TARGET Nc-Graphics POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+	add_custom_command(TARGET Nc-GUI POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+	add_custom_command(TARGET Nc-Audio POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Audio.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+	add_custom_command(TARGET Nc-Contrib POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+	if (MSVC_IDE)
+		if (${CMAKE_CFG_INTDIR} MATCHES "Debug")
+			add_custom_command(TARGET Nc-Core POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Core.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+			add_custom_command(TARGET Nc-Graphics POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+			add_custom_command(TARGET Nc-GUI POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-GUI.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+			add_custom_command(TARGET Nc-Audio POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Audio.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+			add_custom_command(TARGET Nc-Contrib POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+		endif()
+	endif()
+endif()

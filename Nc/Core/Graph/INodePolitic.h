@@ -183,7 +183,7 @@ namespace Nc
                 std::string         NodeTypeToString() const                    {return typeid(NodeType).name();}
 
                 /** Print the data of the node to the stream */
-                friend LCORE std::ostream     &operator << (std::ostream &os, const INodePolitic &n)
+                friend /*LCORE*/ std::ostream     &operator << (std::ostream &os, const INodePolitic &n)
                 {
                     os << n.Data;
                     return os;
@@ -206,7 +206,7 @@ namespace Nc
                 std::string         NodeTypeToString() const                    {return typeid(NodeType).name();}
 
                 /** Print the data of the node to the stream */
-                friend LCORE std::ostream     &operator << (std::ostream &oss, const INodePolitic &)
+                friend /*LCORE*/ std::ostream     &operator << (std::ostream &oss, const INodePolitic &)
                 {
                     return oss;
                 }

@@ -62,7 +62,7 @@ namespace Nc
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
                 /** The mouse button handler */
-                void                MouseButtonEvent(const System::Event &event);
+                virtual void		MouseButtonEvent(const System::Event &event);
                 /** Send an event to the good engine */
                 virtual void        execHanle();
 

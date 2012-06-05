@@ -39,7 +39,13 @@ SceneNodeFormatManager::SceneNodeFormatManager()
         if ((*it)->Name() == "SceneNodeFormatPlugin")
         {
             const std::string &name = (*it)->Param("name");
-            LOG << "Loading SceneNodeFormatPlugin `" + name + "` \t\t";
+			LOG << "Loading SceneNodeFormatPlugin `" + name + "` \t\t";
+			Utils::FileName f = name;
+#ifdef SYSTEM_WINDOWS
+			f += ".dll";
+#else
+			f = "lib" + f + ".so";
+#endif
             _listSceneNodeFormat.push_back(System::PluginLoader<ISceneNodeFormatPlugin>());
             _listSceneNodeFormat.rbegin()->Load(name);
             LOG << "DONE" << std::endl;

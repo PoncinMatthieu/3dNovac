@@ -160,7 +160,7 @@ void IEngine::Process()
         _manager->MutexGlobal().Unlock();
     _sleepMutex.Unlock();
     LimitFrameRate();
-    _elapsedTime = _clock.ElapsedTime();
+    _elapsedTime = (float)_clock.ElapsedTime();
     _clock.Reset();
 }
 
@@ -168,7 +168,7 @@ void IEngine::LimitFrameRate()
 {
     if (_limitFPS > 0)
     {
-        float n = (1.f / _limitFPS) - _clock.ElapsedTime();
+        float n = (1.f / _limitFPS) - (float)_clock.ElapsedTime();
         if (n > 0)
             System::Sleep(n);
     }

@@ -66,9 +66,8 @@
 		#undef WIN32_LEAN_AND_MEAN
 		#endif
 
-		#pragma warning(disable : 4244 4099 4251 4996 4275)
+		#pragma warning(disable : 4244 4251 4996 4275)
 		#include <winsock2.h>
-		#pragma comment(lib, "ws2_32.lib")
 	#endif
 
 // linking option (static or shared)
@@ -124,7 +123,7 @@
         {
             namespace Metaprog
             {
-                class Nop;
+                struct Nop;
             }
 
             namespace Xml
@@ -139,7 +138,7 @@
         namespace Math
         {
             // define the classes to typedef basics type
-            template<typename T = unsigned char>    class Pixel;
+            template<typename T = unsigned char>    struct Pixel;
             template<typename T>                    class Box2D;
             template<typename T>                    class Box3D;
             template<typename T>                    class Vector2D;
@@ -171,7 +170,7 @@
 
         namespace System
         {
-            class Event;
+            struct Event;
 
             typedef std::queue<Event>    EventQueue;
         }
@@ -179,7 +178,7 @@
         namespace Graph
         {
             template<typename T, typename NodeType, class Allocator>
-            class ListNodePolitic;
+            struct ListNodePolitic;
             template<typename T>
             class NodeList;
         }

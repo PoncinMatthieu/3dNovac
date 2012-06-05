@@ -27,12 +27,21 @@
 #include "Window.h"
 #include "ICursor.h"
 
-using namespace Nc::Graphic;
+using namespace Nc;
 
-unsigned int    Window::_width = 0;
-unsigned int    Window::_height = 0;
+unsigned int    Graphic::Window::_width = 0;
+unsigned int    Graphic::Window::_height = 0;
 
-Window::~Window()
+Graphic::Window::Window()
+	: _isCreate(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)
+{
+    _antialiasingLevel = 0;
+    _depth = 24;
+    _stencil = 8;
+    _bitsPerPixel = 32;
+}
+
+Graphic::Window::~Window()
 {
     if (_defaultCursor != NULL)
         delete _defaultCursor;

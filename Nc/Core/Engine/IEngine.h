@@ -84,7 +84,7 @@ namespace Nc
                 void                    Stop();
 
                 /** Set the limit frame rate of the thread. If the limit is not null, the thread will be sleeped to have good frame rate */
-                inline void             LimitFrameRate(float limit)     {_limitFPS = limit;}
+                inline void             LimitFrameRate(unsigned int limit)     {_limitFPS = limit;}
 
                 /** Load the contents of the thread before entering in the `MainLoop` */
                 virtual inline void     LoadContent()                   {}

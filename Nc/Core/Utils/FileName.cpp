@@ -69,7 +69,22 @@ void   FileName::SetFullname(const char *name)
             string::operator=(name);
         else
         {
-            FileName str = CONFIG->Block("RessourcesPath")->Line(subn.substr(0, pos))->Param("path");
+			Xml::Object *o = CONFIG->Block("RessourcesPath")->Line(subn.substr(0, pos));
+			std::string s;
+
+			if (o->ParamExist("path"))
+				s = o->Param("path");
+#ifdef _DEBUG
+			else if (o->ParamExist("pathDebug"))
+				s = o->Param("pathDebug");
+#else
+			else if (o->ParamExist("pathRelease"))
+				s = o->Param("pathRelease");			
+#endif
+			else
+				throw Exception("FileName", std::string("Failed to retreive the path of ") + name);
+
+            FileName str = s;
             str += subn.substr(pos+1, string::npos);
             string::operator=(str);
         }
@@ -134,4 +149,16 @@ bool FileName::IsReadable() const
 {
     ifstream fichier(c_str());
     return !fichier.fail();
+}
+
+namespace Nc
+{
+	namespace Utils
+	{
+		std::ostream& operator << (std::ostream& os, const FileName& f)
+        {
+            os << "Filename : `" << static_cast<std::string>(f) << "`";
+            return os;
+        }
+	}
 }

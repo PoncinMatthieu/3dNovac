@@ -156,3 +156,18 @@ unsigned int    UTF32::CharCount(Nc::UInt32 c) const
     }
     return r;
 }
+
+namespace Nc
+{
+	namespace Utils
+	{
+		namespace Unicode
+		{
+			std::ostream &operator << (std::ostream& os, const UTF32& s)
+			{
+				os << s.ToStdString();
+				return os;
+			}
+		}
+	}
+}

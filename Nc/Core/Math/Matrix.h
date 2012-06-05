@@ -61,7 +61,7 @@ namespace Nc
                     return _data + (i * D2);
                 }
 
-                friend LCORE std::ostream &operator << (std::ostream &os, const Matrix<T, D1, D2> &m)
+                friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Matrix<T, D1, D2> &m)
                 {
                     unsigned char k = 0;
                     for (unsigned char i = 0; i < D1; i++)

@@ -85,7 +85,7 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
         for(ContainerType::reverse_iterator it = _childs.rbegin(); _widgetFocused == NULL && it != _childs.rend(); it++)
         {
             Widget *w = (*it)->AsWithoutThrow<Widget>();
-            if (w != NULL)
+			if (w != NULL && w->Enabled() && !w->Inhibited())
             {
                 Vector2i    reelPos;
                 Vector2i    reelSize;
@@ -97,7 +97,7 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
                 LOG_DEBUG << "ReelSize  = " << reelSize << std::endl;
                 LOG_DEBUG << "Mouse = " << mousePos << std::endl;
                 #endif
-                if (w->Enabled() && (Math::InRect(reelPos, reelSize, mousePos)))
+                if (Math::InRect(reelPos, reelSize, mousePos))
                 {
                     _widgetFocused = w;
                     _widgetFocused->Focus(true);

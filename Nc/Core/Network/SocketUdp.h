@@ -57,7 +57,7 @@ namespace Nc
                     Bind the socket to the given port
                     \return true if no error
                 */
-                bool            Bind(unsigned int port);
+                bool            Bind(unsigned short port);
                 /**
                     Unbind the socket to its previous port
                     \return true if no error
@@ -69,31 +69,31 @@ namespace Nc
                     \return true if no error
                 */
                 template<typename T, unsigned int D>
-                bool            Write(const Math::Array<T,D> &src, const Ip &ip, unsigned int port);
+                bool            Write(const Math::Array<T,D> &src, const Ip &ip, unsigned short port);
                 /**
                     Write (send) to the descriptor an array of byte to the ip and port specified
                     \return true if no error
                 */
-                bool            Write(const char *src, unsigned int size, const Ip &ip, unsigned int port);
+                bool            Write(const char *src, unsigned int size, const Ip &ip, unsigned short port);
 
                 /**
                     Read (receive) from the descriptor an array of type T into \p dst.
                     \return the received size, and fill the ip/port of the sender
                 */
                 template<typename T, unsigned int D>
-                int             Read(Math::Array<T,D> &dst, Ip &ip, unsigned int &port);
+                int             Read(Math::Array<T,D> &dst, Ip &ip, unsigned short &port);
                 /**
                     Read (receive) from the descriptor an array of byte into \p dst.
                     \return the received size, and fill the ip/port of the sender
                 */
-                int             Read(char *dst, unsigned int maxSize, Ip &ip, unsigned int &port);
+                int             Read(char *dst, unsigned int maxSize, Ip &ip, unsigned short &port);
 
             private:
-                unsigned int            _bindedPort;
+                unsigned short		_bindedPort;
         };
 
         template<typename T, unsigned int D>
-        bool            SocketUdp::Write(const Math::Array<T,D> &src, const Ip &ip, unsigned int port)
+        bool            SocketUdp::Write(const Math::Array<T,D> &src, const Ip &ip, unsigned short port)
         {
             if (!IsValid())
                 throw Utils::Exception("SocketUdp", "Can't write, The socket is not valid");
@@ -121,7 +121,7 @@ namespace Nc
 		}
 
 		template<typename T, unsigned int D>
-		int    SocketUdp::Read(Math::Array<T,D> &dst, Ip &ip, unsigned int &port)
+		int    SocketUdp::Read(Math::Array<T,D> &dst, Ip &ip, unsigned short &port)
 		{
             if (!IsValid())
                 throw Utils::Exception("SocketUdp", "Can't read, The socket is not valid");

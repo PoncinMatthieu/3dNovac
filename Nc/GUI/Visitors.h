@@ -62,7 +62,7 @@ namespace Nc
 
             struct LGUI CheckFocus : public WidgetVisitor<CheckFocus>
             {
-                CheckFocus(const Nc::System::Event &e, Vector2i mouseP)
+                CheckFocus(const Nc::System::Event &e, const Vector2i &mouseP)
                     : WidgetVisitor<CheckFocus>(Utils::Metaprog::Seq<Widget>::Type(),
                                                 Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type()),
                       event(e), mousePos(mouseP), childFocused(NULL)

@@ -5,11 +5,11 @@
 #include <Nc/Graphics/Effect/DefaultLightingMaterial.h>
 #include <Nc/Contrib/Contrib.h>
 #include "GameEngine.h"
-
-using namespace std;
+ 
+using namespace std; 
 using namespace Nc;
 using namespace Nc::Graphic;
-using namespace LightDemo;
+using namespace LightDemo; 
 
 GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(graphic, manager)
@@ -34,7 +34,7 @@ void GameEngine::CreateWindow(Window *win)
     bool            fullscreen = false;
     unsigned long   pattern = Window::Titlebar | Window::Closeable | Window::Resizeable;
     Vector2ui       winSize(800, 600);
-
+	 
     if (fullscreen)
     {
         pattern |= Window::Fullscreen;
@@ -96,7 +96,7 @@ void GameEngine::LoadContent()
   _graphic->GetSceneManager()->AddScene(_sceneGUI);
 
   // no need to active/disable the context at each loop
-  _pattern.Disable(Nc::Engine::HasAContext);
+  //_pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)

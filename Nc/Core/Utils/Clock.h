@@ -45,11 +45,7 @@ namespace Nc
                 Clock()     {Reset();}
                 ~Clock()	{};
 
-                friend LCORE std::ostream &operator << (std::ostream &os, const Clock &cl)
-                {
-                    os << "time = " << cl.ElapsedTime() << "s";
-                    return os;
-                }
+                friend LCORE std::ostream &operator << (std::ostream &os, const Clock &cl);
 
                 /** Reset the clock */
                 inline void Reset()                     {_paused = false; _pauseTime = 0; _startTime = System::Time();}

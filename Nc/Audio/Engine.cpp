@@ -66,10 +66,11 @@ void Engine::LdDescFile(const FileName &file)
 	bool playSound;
 	if (Convert::StringTo(CONFIG->Block("GameConf")->Line("AudioSound")->Param("state"), playSound) && playSound)
 	{
+// \todo segv on visual 2010
         Xml::ListObject &sounds = content->Block("Sounds")->ListChild();
         for (Xml::ListObject::iterator it = sounds.begin(); it != sounds.end(); ++it)
             LdSound((*it)->Param("path"));
-	}
+	} 
     delete content;
 }
 
@@ -93,7 +94,7 @@ void Engine::StpMusic(Nc::Engine::IEvent*)
 {
     if (_musicOpened)
         _music.Stop();
-}
+} 
 
 void Engine::LdSound(const FileName &file)
 {
@@ -128,28 +129,19 @@ void Engine::LoadDescFileCmd(Nc::Engine::IEvent *e)
 
 void Engine::LoadMusicCmd(Nc::Engine::IEvent *e)
 {
-    Nc::Engine::Event<Utils::FileName> *es = dynamic_cast<Nc::Engine::Event<Utils::FileName>*>(e);
-    if (es == NULL)
-        throw Utils::Exception("AudioEngine", "Function LoadMusicCmd: bad argument. Event<Utils::FileName> is expecting");
-
-    LdMusic(es->Data);
+    const Utils::FileName &f = e->GetData<Utils::FileName>();
+    LdMusic(f);
 }
 
 void Engine::LoadSoundCmd(Nc::Engine::IEvent *e)
 {
-    Nc::Engine::Event<Utils::FileName> *es = dynamic_cast<Nc::Engine::Event<Utils::FileName>*>(e);
-    if (es == NULL)
-        throw Utils::Exception("AudioEngine", "Function LoadSoundCmd: bad argument. Event<Utils::FileName> is expecting");
-
-    LdSound(es->Data);
+	const Utils::FileName &f = e->GetData<Utils::FileName>();
+    LdSound(f);
 }
 
 void Engine::PlaySoundCmd(Nc::Engine::IEvent *e)
 {
-    Nc::Engine::Event<unsigned int> *es = dynamic_cast<Nc::Engine::Event<unsigned int>*>(e);
-    if (es == NULL)
-        throw Utils::Exception("AudioEngine", "Function PlaySoundCmd: bad argument. Event<unsigned int> is expecting");
-
-    PlSound(es->Data);
+	unsigned int id = e->GetData<unsigned int>();
+    PlSound(id);
 }
 

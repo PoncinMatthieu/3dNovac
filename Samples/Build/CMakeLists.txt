@@ -3,11 +3,22 @@ cmake_policy(SET CMP0015 NEW)
 
 project(3dNovac-Samples)
 
+# setup the launcher module for vs2010
+if(MSVC_IDE)
+	list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules")
+	include(CreateLaunchers)
+endif()
+
+# set Nc root directory path
+set(NC_DIR ../..)
+
+# set path to copy dependencies
+set(NC_COPY_DEPENDENCIES_PATH ../bin/${CMAKE_CFG_INTDIR})
+
 set(EXECUTABLE_OUTPUT_PATH ../bin/)
-set(LIBRARY_OUTPUT_PATH ../../lib/)
+set(LIBRARY_OUTPUT_PATH ${NC_DIR}/lib/)
 #set(CMAKE_FILE_DIRECTORY ../files/)
 #set(CMAKE_BINARY_DIR ../files/)
-
 
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -24,10 +35,14 @@ endif()
 # we want to compile our libs dynamically
 add_definitions(-DNC_DYNAMIC_LINK)
 
-include_directories(../../)
-include_directories(../../extlibs/)
-link_directories(../../lib/)
+# add 3dNovac to the project
+SUBDIRS(${NC_DIR}/Build)
 
+# set include and link directories
+include_directories(${NC_DIR})
+include_directories(${NC_DIR}/extlibs/)
+link_directories(${NC_DIR}/lib/${CMAKE_CFG_INTDIR})
+link_directories(${NC_DIR}/extlibs/)
 
 #------------------------------------------------------------------------------
 #	Tuto1
@@ -39,27 +54,14 @@ file(
   ../Tuto1/*.h
 )
 
-add_executable(Tuto1	${Tuto1-sources})
+add_executable(Tuto1		${Tuto1-sources})
+add_dependencies(Tuto1 		Nc-Core Nc-Graphics)
+target_link_libraries(Tuto1	Nc-Core Nc-Graphics)
 
-if(UNIX)
-	target_link_libraries(Tuto1 	Nc-Core Nc-Graphics GL)
-else()
-	target_link_libraries(Tuto1		debug 		../../lib/Debug/Nc-Core
-									debug 		../../lib/Debug/Nc-Graphics
-									optimized	../../lib/Release/Nc-Core
-									optimized	../../lib/Release/Nc-Graphics
-									general 	../../extlibs/freetype
-									general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET Tuto1 POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(Tuto1 ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
-
 
 #------------------------------------------------------------------------------
 #	Tuto_NcCore_Server
@@ -71,20 +73,13 @@ file(
   ../Tuto_NcCore_Server/*.h
 )
 
-add_executable(Tuto_NcCore_Server ${Tuto_NcCore_Server-sources})
+add_executable(Tuto_NcCore_Server 			${Tuto_NcCore_Server-sources})
+add_dependencies(Tuto_NcCore_Server			Nc-Core)
+target_link_libraries(Tuto_NcCore_Server	Nc-Core)
 
-if(UNIX)
-	target_link_libraries(Tuto_NcCore_Server	Nc-Core)
-else()
-	target_link_libraries(Tuto_NcCore_Server	debug		../../lib/Debug/Nc-Core
-												optimized	../../lib/Release/Nc-Core)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET Tuto_NcCore_Server POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(Tuto_NcCore_Server ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -97,20 +92,13 @@ file(
   ../Tuto_NcCore_Client/*.h
 )
 
-add_executable(Tuto_NcCore_Client ${Tuto_NcCore_Client-sources})
+add_executable(Tuto_NcCore_Client			${Tuto_NcCore_Client-sources})
+add_dependencies(Tuto_NcCore_Client			Nc-Core)
+target_link_libraries(Tuto_NcCore_Client	Nc-Core)
 
-if(UNIX)
-	target_link_libraries(Tuto_NcCore_Client	Nc-Core)
-else()
-	target_link_libraries(Tuto_NcCore_Client	debug		../../lib/Debug/Nc-Core
-												optimized	../../lib/Release/Nc-Core)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET Tuto_NcCore_Client POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(Tuto_NcCore_Client ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -124,37 +112,16 @@ file(
   ../FrustumDemo/*.h
 )
 
-add_executable(FrustumDemo		${FrustumDemo-sources})
-add_library(PluginFrustumDemo	SHARED ${FrustumDemo-sources})
+add_executable(FrustumDemo					${FrustumDemo-sources})
+add_library(PluginFrustumDemo				SHARED ${FrustumDemo-sources})
+add_dependencies(FrustumDemo				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
+add_dependencies(PluginFrustumDemo			Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
+target_link_libraries(FrustumDemo			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(PluginFrustumDemo		Nc-Core Nc-Graphics Nc-GUI)
 
-if(UNIX)
-	target_link_libraries(FrustumDemo			Nc-Core Nc-Graphics Nc-GUI GL)
-	target_link_libraries(PluginFrustumDemo		Nc-Core Nc-Graphics Nc-GUI GL)
-else()
-	target_link_libraries(FrustumDemo			debug		../../lib/Debug/Nc-Core
-												debug		../../lib/Debug/Nc-Graphics
-												debug		../../lib/Debug/Nc-GUI
-												optimized	../../lib/Release/Nc-Core
-												optimized	../../lib/Release/Nc-Graphics
-												optimized	../../lib/Release/Nc-GUI
-												general		opengl32)
-
-	target_link_libraries(PluginFrustumDemo		debug		../../lib/Debug/Nc-Core
-												debug		../../lib/Debug/Nc-Graphics
-												debug		../../lib/Debug/Nc-GUI
-												optimized	../../lib/Release/Nc-Core
-												optimized	../../lib/Release/Nc-Graphics
-												optimized	../../lib/Release/Nc-GUI
-												general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET FrustumDemo POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(FrustumDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -168,37 +135,16 @@ file(
   ../GUIDemo/*.h
 )
 
-add_executable(GUIDemo		${GUIDemo-sources})
-add_library(PluginGUIDemo	SHARED ${GUIDemo-sources})
+add_executable(GUIDemo					${GUIDemo-sources})
+add_library(PluginGUIDemo				SHARED ${GUIDemo-sources})
+add_dependencies(GUIDemo 				Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(PluginGUIDemo 			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(GUIDemo			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(PluginGUIDemo		Nc-Core Nc-Graphics Nc-GUI)
 
-if(UNIX)
-	target_link_libraries(GUIDemo			Nc-Core Nc-Graphics Nc-GUI GL)
-	target_link_libraries(PluginGUIDemo		Nc-Core Nc-Graphics Nc-GUI GL)
-else()
-	target_link_libraries(GUIDemo			debug 		../../lib/Debug/Nc-Core
-											debug		../../lib/Debug/Nc-Graphics
-											debug		../../lib/Debug/Nc-GUI
-											optimized	../../lib/Release/Nc-Core
-											optimized	../../lib/Release/Nc-Graphics
-											optimized	../../lib/Release/Nc-GUI
-											general		opengl32)
-
-	target_link_libraries(PluginGUIDemo		debug 		../../lib/Debug/Nc-Core
-											debug		../../lib/Debug/Nc-Graphics
-											debug		../../lib/Debug/Nc-GUI
-											optimized	../../lib/Release/Nc-Core
-											optimized	../../lib/Release/Nc-Graphics
-											optimized	../../lib/Release/Nc-GUI
-											general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET GUIDemo POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(GUIDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -212,37 +158,16 @@ file(
   ../LightDemo/*.h
 )
 
-add_executable(LightDemo		${LightDemo-sources})
-add_library(PluginLightDemo		SHARED ${LightDemo-sources})
+add_executable(LightDemo				${LightDemo-sources})
+add_library(PluginLightDemo				SHARED ${LightDemo-sources})
+add_dependencies(LightDemo 				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
+add_dependencies(PluginLightDemo 		Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
+target_link_libraries(LightDemo			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(PluginLightDemo	Nc-Core Nc-Graphics Nc-GUI)
 
-if(UNIX)
-	target_link_libraries(LightDemo			Nc-Core Nc-Graphics Nc-GUI GL)
-	target_link_libraries(PluginLightDemo	Nc-Core Nc-Graphics Nc-GUI GL)
-else()
-	target_link_libraries(LightDemo			debug 		../../lib/Debug/Nc-Core
-											debug		../../lib/Debug/Nc-Graphics
-											debug		../../lib/Debug/Nc-GUI
-											optimized	../../lib/Release/Nc-Core
-											optimized	../../lib/Release/Nc-Graphics
-											optimized	../../lib/Release/Nc-GUI
-											general		opengl32)
-
-	target_link_libraries(PluginLightDemo	debug 		../../lib/Debug/Nc-Core
-											debug		../../lib/Debug/Nc-Graphics
-											debug		../../lib/Debug/Nc-GUI
-											optimized	../../lib/Release/Nc-Core
-											optimized	../../lib/Release/Nc-Graphics
-											optimized	../../lib/Release/Nc-GUI
-											general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET LightDemo POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(LightDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -256,38 +181,16 @@ file(
   ../bSplinesDemo/*.h
 )
 
-add_executable(bSplinesDemo		${bSplinesDemo-sources})
-add_library(PluginbSplinesDemo	SHARED ${bSplinesDemo-sources})
+add_executable(bSplinesDemo					${bSplinesDemo-sources})
+add_library(PluginbSplinesDemo				SHARED ${bSplinesDemo-sources})
+add_dependencies(bSplinesDemo 				Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(PluginbSplinesDemo 		Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(bSplinesDemo			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(PluginbSplinesDemo	Nc-Core Nc-Graphics Nc-GUI)
 
-
-if(UNIX)
-	target_link_libraries(bSplinesDemo			Nc-Core Nc-Graphics Nc-GUI GL)
-	target_link_libraries(PluginbSplinesDemo	Nc-Core Nc-Graphics Nc-GUI GL)
-else()
-	target_link_libraries(bSplinesDemo			debug 		../../lib/Debug/Nc-Core
-												debug		../../lib/Debug/Nc-Graphics
-												debug		../../lib/Debug/Nc-GUI
-												optimized	../../lib/Release/Nc-Core
-												optimized	../../lib/Release/Nc-Graphics
-												optimized	../../lib/Release/Nc-GUI
-												general		opengl32)
-
-	target_link_libraries(PluginbSplinesDemo	debug 		../../lib/Debug/Nc-Core
-												debug		../../lib/Debug/Nc-Graphics
-												debug		../../lib/Debug/Nc-GUI
-												optimized	../../lib/Release/Nc-Core
-												optimized	../../lib/Release/Nc-Graphics
-												optimized	../../lib/Release/Nc-GUI
-												general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET bSplinesDemo POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(bSplineDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -301,37 +204,16 @@ file(
   ../FBEffectsDemo/*.h
 )
 
-add_executable(FBEffectsDemo		${FBEffectsDemo-sources})
-add_library(PluginFBEffectsDemo		SHARED ${FBEffectsDemo-sources})
+add_executable(FBEffectsDemo				${FBEffectsDemo-sources})
+add_library(PluginFBEffectsDemo				SHARED ${FBEffectsDemo-sources})
+add_dependencies(FBEffectsDemo 				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
+add_dependencies(PluginFBEffectsDemo 		Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
+target_link_libraries(FBEffectsDemo			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(PluginFBEffectsDemo	Nc-Core Nc-Graphics Nc-GUI)
 
-if(UNIX)
-	target_link_libraries(FBEffectsDemo			Nc-Core Nc-Graphics Nc-GUI GL)
-	target_link_libraries(PluginFBEffectsDemo	Nc-Core Nc-Graphics Nc-GUI GL)
-else()
-	target_link_libraries(FBEffectsDemo			debug 		../../lib/Debug/Nc-Core
-												debug		../../lib/Debug/Nc-Graphics
-												debug		../../lib/Debug/Nc-GUI
-												optimized	../../lib/Release/Nc-Core
-												optimized	../../lib/Release/Nc-Graphics
-												optimized	../../lib/Release/Nc-GUI
-												general		opengl32)
-
-	target_link_libraries(PluginFBEffectsDemo	debug 		../../lib/Debug/Nc-Core
-												debug		../../lib/Debug/Nc-Graphics
-												debug		../../lib/Debug/Nc-GUI
-												optimized	../../lib/Release/Nc-Core
-												optimized	../../lib/Release/Nc-Graphics
-												optimized	../../lib/Release/Nc-GUI
-												general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET FBEffectsDemo POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(FBEffectsDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -344,42 +226,16 @@ file(
   ../SokobanDemo/*.h
 )
 
-add_executable(SokobanDemo		${SokobanDemo-sources})
-add_library(PluginSokobanDemo	SHARED ${SokobanDemo-sources})
+add_executable(SokobanDemo					${SokobanDemo-sources})
+add_library(PluginSokobanDemo				SHARED ${SokobanDemo-sources})
+add_dependencies(SokobanDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+add_dependencies(PluginSokobanDemo 			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+target_link_libraries(SokobanDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+target_link_libraries(PluginSokobanDemo		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
-if(UNIX)
-	target_link_libraries(SokobanDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib GL)
-	target_link_libraries(PluginSokobanDemo		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib GL)
-else()
-	target_link_libraries(SokobanDemo			debug 		../../lib/Debug/Nc-Core
-												debug		../../lib/Debug/Nc-Graphics
-												debug		../../lib/Debug/Nc-GUI
-												debug		../../lib/Debug/Nc-Contrib
-												optimized	../../lib/Release/Nc-Core
-												optimized	../../lib/Release/Nc-Graphics
-												optimized	../../lib/Release/Nc-GUI
-												optimized	../../lib/Release/Nc-Contrib
-												general		opengl32)
-
-	target_link_libraries(PluginSokobanDemo		debug 		../../lib/Debug/Nc-Core
-												debug		../../lib/Debug/Nc-Graphics
-												debug		../../lib/Debug/Nc-GUI
-												debug		../../lib/Debug/Nc-Contrib
-												optimized	../../lib/Release/Nc-Core
-												optimized	../../lib/Release/Nc-Graphics
-												optimized	../../lib/Release/Nc-GUI
-												optimized	../../lib/Release/Nc-Contrib
-												general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET SokobanDemo POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(SokobanDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -392,38 +248,16 @@ file(
   ../SimpleParticleEffect/*.h
 )
 
-add_executable(SimpleParticleEffect		${SimpleParticleEffect-sources})
-add_library(PluginSimpleParticleEffect		SHARED ${SimpleParticleEffect-sources})
+add_executable(SimpleParticleEffect					${SimpleParticleEffect-sources})
+add_library(PluginSimpleParticleEffect				SHARED ${SimpleParticleEffect-sources})
+add_dependencies(SimpleParticleEffect 				Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(PluginSimpleParticleEffect 		Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(SimpleParticleEffect			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(PluginSimpleParticleEffect	Nc-Core Nc-Graphics Nc-GUI)
 
-if(UNIX)
-	target_link_libraries(SimpleParticleEffect		Nc-Core Nc-Graphics Nc-GUI GL)
-	target_link_libraries(PluginSimpleParticleEffect	Nc-Core Nc-Graphics Nc-GUI GL)
-else()
-	target_link_libraries(SimpleParticleEffect		debug 		../../lib/Debug/Nc-Core
-								debug		../../lib/Debug/Nc-Graphics
-								debug		../../lib/Debug/Nc-GUI
-								optimized	../../lib/Release/Nc-Core
-								optimized	../../lib/Release/Nc-Graphics
-								optimized	../../lib/Release/Nc-GUI
-								general		opengl32)
-
-	target_link_libraries(PluginSimpleParticleEffect	debug 		../../lib/Debug/Nc-Core
-								debug		../../lib/Debug/Nc-Graphics
-								debug		../../lib/Debug/Nc-GUI
-								optimized	../../lib/Release/Nc-Core
-								optimized	../../lib/Release/Nc-Graphics
-								optimized	../../lib/Release/Nc-GUI
-								general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET SimpleParticleEffect POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(SimpleParticleEffect ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -441,37 +275,14 @@ file(
   ../bSplinesDemo/*.h
 )
 
-add_executable(SampleViewer	${SampleViewer-sources})
-add_library(PluginSampleViewer	SHARED ${SampleViewer-sources})
+add_executable(SampleViewer					${SampleViewer-sources})
+add_library(PluginSampleViewer				SHARED ${SampleViewer-sources})
+add_dependencies(SampleViewer 				Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(PluginSampleViewer 		Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(SampleViewer			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(PluginSampleViewer	Nc-Core Nc-Graphics Nc-GUI)
 
-if(UNIX)
-	target_link_libraries(SampleViewer			Nc-Core Nc-Graphics Nc-GUI GL)
-	target_link_libraries(PluginSampleViewer		Nc-Core Nc-Graphics Nc-GUI GL)
-else()
-	target_link_libraries(SampleViewer			debug 		../../lib/Debug/Nc-Core
-											debug		../../lib/Debug/Nc-Graphics
-											debug		../../lib/Debug/Nc-GUI
-											optimized	../../lib/Release/Nc-Core
-											optimized	../../lib/Release/Nc-Graphics
-											optimized	../../lib/Release/Nc-GUI
-											general		opengl32)
-
-	target_link_libraries(PluginSampleViewer		debug 		../../lib/Debug/Nc-Core
-											debug		../../lib/Debug/Nc-Graphics
-											debug		../../lib/Debug/Nc-GUI
-											optimized	../../lib/Release/Nc-Core
-											optimized	../../lib/Release/Nc-Graphics
-											optimized	../../lib/Release/Nc-GUI
-											general		opengl32)
-
-	# copy les dll des dependances
-	add_custom_command(TARGET PluginSampleViewer POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../../lib/${CMAKE_CFG_INTDIR}/Nc-Contrib.dll ../bin/${CMAKE_CFG_INTDIR}/
-		COMMAND "${CMAKE_COMMAND}" -E copy ../bin/3dNovac.conf ../bin/${CMAKE_CFG_INTDIR}/
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	)
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(SampleViewer ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
-

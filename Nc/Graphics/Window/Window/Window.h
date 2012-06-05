@@ -55,7 +55,7 @@ namespace Nc
                 };
 
             public:
-                Window() : _isCreate(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)  {}
+                Window();
                 virtual ~Window();
 
                 /** Return true if the Window is create */
@@ -96,7 +96,16 @@ namespace Nc
                 inline bool                     IsOwn()                 {return _own;}
 
                 /** Return the antialiasing level available, this could be smaller than the level you put in the Create method */
-                inline unsigned int             AntialiasingLevel()     {return _antialisingLevel;}
+                inline unsigned int             AntialiasingLevel()     {return _antialiasingLevel;}
+
+				/** Return the number of depth bits */
+                inline unsigned int             Depth()					{return _depth;}
+
+				/** Return the number of stencil bits  */
+                inline unsigned int             Stencil()				{return _stencil;}
+
+				/** Return the number of bits per pixel (color buffer) */
+                inline unsigned int             BitsPerPixel()			{return _bitsPerPixel;}
 
                 /** Return the default cursor */
                 inline ICursor                  *DefaultCursor()        {return _defaultCursor;}
@@ -114,7 +123,10 @@ namespace Nc
                 GLContext               *_context;          ///< the associated OpenGL context
                 WindowInput             *_input;            ///< the window input associated
                 bool                    _own;               ///< false if the window use an existing window (Created with the method UseExistingWindow) */
-                unsigned int            _antialisingLevel;  ///< the antialising level of the window
+                unsigned int            _antialiasingLevel; ///< the antialising level of the window
+                unsigned int			_depth;				///< number of bits of the depth buffer
+                unsigned int			_stencil;			///< number of bits of the pixel buffer
+                unsigned int			_bitsPerPixel;		///< number of bits of the color buffer
                 ICursor                 *_defaultCursor;    ///< instance of the default cursor of the window
                 ICursor                 *_currentCursor;    ///< instance of the current cursor activated
 

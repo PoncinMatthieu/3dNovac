@@ -81,7 +81,7 @@ namespace Nc
                 return *this;
             }
 
-            friend LCORE std::ostream& operator << (std::ostream& os, const Pixel& v)
+            friend /*LCORE*/ std::ostream& operator << (std::ostream& os, const Pixel& v)
             {
                 os<< "R = " << (unsigned int)v.R << "\tG = " << (unsigned int)v.G << "\tB = " << (unsigned int)v.B << "\tA = " << (unsigned int)v.A;
                 return os;
@@ -93,7 +93,7 @@ namespace Nc
             T   A;      ///< Alpha componant
         };
 
-		template class Pixel<float>;		///< explicit instanciation of a Pixel defined with floating values
+		template struct Pixel<float>;		///< explicit instanciation of a Pixel defined with floating values
     }
 }
 

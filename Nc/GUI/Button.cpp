@@ -135,7 +135,6 @@ void Button::Draw(Graphic::SceneGraph *scene)
 void Button::MouseButtonEvent(const System::Event &event)
 {
     bool inRect = false;
-
     if (event.MouseButton.Button == System::Mouse::Left)
     {
         // test si la souris est sur le bouton

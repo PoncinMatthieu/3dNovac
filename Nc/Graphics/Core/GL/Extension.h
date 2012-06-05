@@ -155,9 +155,9 @@ namespace Nc
                     typedef HDC (CALL_GLEXT *WGLGETPBUFFERDC_PROC)(::HPBUFFERARB hPbuffer);
 
                 public:
-                    WGLCHOOSEPIXELFORMAT_PROC   wglChoosePixelFormat;       ///< to choose a pixel format in Win32 System
-                    WGLCREATEPBUFFER_PROC       wglCreatePbuffer;           ///< to create a pbuffer in Win32 System
-                    WGLGETPBUFFERDC_PROC        wglGetPbufferDC;            ///< to get a DC pbuffer in Win32 System
+                    WGLCHOOSEPIXELFORMAT_PROC		wglChoosePixelFormat;       ///< to choose a pixel format in Win32 System
+                    WGLCREATEPBUFFER_PROC			wglCreatePbuffer;           ///< to create a pbuffer in Win32 System
+                    WGLGETPBUFFERDC_PROC			wglGetPbufferDC;            ///< to get a DC pbuffer in Win32 System
                 #endif
 
                 friend class Utils::Singleton<Extension>;

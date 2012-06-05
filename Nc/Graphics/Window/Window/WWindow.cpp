@@ -93,6 +93,8 @@ void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
         winsize.Data[1] = Rect.bottom - Rect.top;
     }
 
+	_antialiasingLevel = antialiasingLevel;
+
     // Create the window
     _input = new WWindowInput(this);
     _handle = CreateWindowA(_classNameA, title.c_str(), _win32Style, Left, Top, winsize.Data[0], winsize.Data[1], NULL, NULL, GetModuleHandle(NULL), _input);
@@ -133,6 +135,7 @@ void WWindow::UseExistingWindow(void *disp, int winId, const Vector2ui &size, un
     GetClientRect(_handle, &Rect);
     _width  = Rect.right - Rect.left;
     _height = Rect.bottom - Rect.top;
+	_antialiasingLevel = antialiasingLevel;
 
     _own = false;
     // initialize the inputs of the window

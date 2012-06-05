@@ -81,7 +81,7 @@
             // drawable
             class IGeometryBuffer;
             class MaterialConfig;
-            class Drawable;
+            struct Drawable;
 
 
             // SceneNodes
