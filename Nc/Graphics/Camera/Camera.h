@@ -84,7 +84,7 @@ namespace Nc
                 /** \return true if the camera is a Camera3d */
                 bool            Is3d()                                      {return !_is2d;}
 
-                /** Set the viewport */
+                /** Set the viewport. If the function SetViewport is called, the camera will stop using the size of the windows as viewport */
                 void                    SetViewport(unsigned int viewportX, unsigned int viewportY, unsigned int viewportWidth, unsigned int viewportHeight);
                 /** \return the lower left x componant of the viewport rectangle */
                 inline unsigned int     ViewportX()                         {return _viewportX;}
