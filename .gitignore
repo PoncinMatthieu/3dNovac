@@ -1,0 +1,244 @@
+
+# /
+/svn-commit.tmp
+
+# /Build/
+/Build/3dNovac.cbp
+/Build/3dNovac.depend
+/Build/3dNovac.layout
+/Build/3dNovac.sdf
+/Build/3dNovac.sln
+/Build/3dNovac.suo
+/Build/ALL_BUILD.vcxproj
+/Build/ALL_BUILD.vcxproj.filters
+/Build/CMakeCache.txt
+/Build/CMakeFiles
+/Build/Debug
+/Build/Makefile
+/Build/Nc-Audio.dir
+/Build/Nc-Audio.vcxproj
+/Build/Nc-Audio.vcxproj.filters
+/Build/Nc-Audio.vcxproj.user
+/Build/Nc-Contrib.dir
+/Build/Nc-Contrib.vcxproj
+/Build/Nc-Contrib.vcxproj.filters
+/Build/Nc-Contrib.vcxproj.user
+/Build/Nc-Core.dir
+/Build/Nc-Core.vcxproj
+/Build/Nc-Core.vcxproj.filters
+/Build/Nc-Core.vcxproj.user
+/Build/Nc-GUI.dir
+/Build/Nc-GUI.vcxproj
+/Build/Nc-GUI.vcxproj.filters
+/Build/Nc-GUI.vcxproj.user
+/Build/Nc-Graphics.dir
+/Build/Nc-Graphics.vcxproj
+/Build/Nc-Graphics.vcxproj.filters
+/Build/Nc-Graphics.vcxproj.user
+/Build/PluginFileFormatCollada.dir
+/Build/PluginFileFormatCollada.vcxproj
+/Build/PluginFileFormatCollada.vcxproj.filters
+/Build/PluginFileFormatCollada.vcxproj.user
+/Build/Release
+/Build/Win32
+/Build/ZERO_CHECK.vcxproj
+/Build/ZERO_CHECK.vcxproj.filters
+/Build/ZERO_CHECK.vcxproj.user
+/Build/cmake_install.cmake
+/Build/ipch
+
+# /Documentation/
+/Documentation/html
+
+# /Editor/Build/
+/Editor/Build/Editor.pro.user
+/Editor/Build/Makefile
+
+# /Editor/Build/obj/
+/Editor/Build/obj/moc_EditorEngine.cpp
+/Editor/Build/obj/moc_EditorManager.cpp
+/Editor/Build/obj/moc_MainTreeModel.cpp
+/Editor/Build/obj/moc_MainWindow.cpp
+/Editor/Build/obj/moc_NodeProperties.cpp
+/Editor/Build/obj/moc_QManager.cpp
+/Editor/Build/obj/moc_QSceneGraphManager.cpp
+/Editor/Build/obj/qrc_MainWindow.cpp
+
+# /Editor/bin/
+/Editor/bin/Editor
+/Editor/bin/out.log
+
+# /Samples/Build/
+/Samples/Build/3dNovac-Samples.cbp
+/Samples/Build/3dNovac-Samples.layout
+/Samples/Build/3dNovac-Samples.sln
+/Samples/Build/ALL_BUILD.vcxproj
+/Samples/Build/ALL_BUILD.vcxproj.filters
+/Samples/Build/ALL_BUILD.vcxproj.user
+/Samples/Build/CMakeCache.txt
+/Samples/Build/CMakeFiles
+/Samples/Build/Makefile
+/Samples/Build/bSplineDemo.vcxproj.user
+/Samples/Build/bSplinesDemo.dir
+/Samples/Build/bSplinesDemo.vcxproj
+/Samples/Build/bSplinesDemo.vcxproj.filters
+/Samples/Build/bSplinesDemo.vcxproj.user
+/Samples/Build/cmake_install.cmake
+
+# /Samples/Build/cmake-modules/
+
+# /Samples/Build/cmake-modules/launcher-templates/
+
+# /Samples/FrustumDemo/
+/Samples/FrustumDemo/out.log
+
+# /Samples/GUIDemo/
+/Samples/GUIDemo/out.log
+
+# /Samples/LightDemo/
+/Samples/LightDemo/out.log
+
+# /Samples/Tuto1/
+/Samples/Tuto1/out.log
+
+# /Samples/bin/
+/Samples/bin/out.log
+/Samples/bin/FrustumDemo
+/Samples/bin/GUIDemo
+/Samples/bin/LightDemo
+/Samples/bin/Tuto1
+/Samples/bin/bSplinesDemo
+/Samples/bin/FBEffectsDemo
+/Samples/bin/SokobanDemo
+/Samples/bin/Tuto_NcCore_Client
+/Samples/bin/Tuto_NcCore_Server
+/Samples/bin/Release
+/Samples/bin/Debug
+
+# /extlibs/Collada/
+
+# /extlibs/Collada/dae/
+
+# /extlibs/Collada/dom/
+
+# /extlibs/Collada/extlibs/
+
+# /extlibs/Collada/extlibs/boost/
+
+# /extlibs/Collada/extlibs/boost/boost/
+
+# /extlibs/Collada/extlibs/boost/boost/config/
+
+# /extlibs/Collada/extlibs/boost/boost/config/abi/
+
+# /extlibs/Collada/extlibs/boost/boost/config/compiler/
+
+# /extlibs/Collada/extlibs/boost/boost/config/no_tr1/
+
+# /extlibs/Collada/extlibs/boost/boost/config/platform/
+
+# /extlibs/Collada/extlibs/boost/boost/config/stdlib/
+
+# /extlibs/Collada/extlibs/boost/boost/detail/
+
+# /extlibs/Collada/extlibs/boost/boost/filesystem/
+
+# /extlibs/Collada/extlibs/boost/boost/iterator/
+
+# /extlibs/Collada/extlibs/boost/boost/iterator/detail/
+
+# /extlibs/Collada/extlibs/boost/boost/mpl/
+
+# /extlibs/Collada/extlibs/boost/boost/mpl/aux_/
+
+# /extlibs/Collada/extlibs/boost/boost/mpl/aux_/config/
+
+# /extlibs/Collada/extlibs/boost/boost/mpl/aux_/preprocessed/
+
+# /extlibs/Collada/extlibs/boost/boost/mpl/aux_/preprocessed/gcc/
+
+# /extlibs/Collada/extlibs/boost/boost/mpl/aux_/preprocessed/plain/
+
+# /extlibs/Collada/extlibs/boost/boost/mpl/aux_/preprocessor/
+
+# /extlibs/Collada/extlibs/boost/boost/mpl/limits/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/arithmetic/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/config/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/control/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/control/detail/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/control/detail/edg/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/control/detail/msvc/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/debug/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/detail/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/facilities/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/list/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/list/detail/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/list/detail/edg/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/logical/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/punctuation/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/repetition/
+
+# /extlibs/Collada/extlibs/boost/boost/preprocessor/tuple/
+
+# /extlibs/Collada/extlibs/boost/boost/smart_ptr/
+
+# /extlibs/Collada/extlibs/boost/boost/smart_ptr/detail/
+
+# /extlibs/Collada/extlibs/boost/boost/system/
+
+# /extlibs/Collada/extlibs/boost/boost/type_traits/
+
+# /extlibs/Collada/extlibs/boost/boost/type_traits/detail/
+
+# /extlibs/Collada/extlibs/boost/boost/utility/
+
+# /extlibs/Collada/extlibs/boost/build/
+
+# /extlibs/Collada/extlibs/boost/build/filesystem/
+
+# /extlibs/Collada/extlibs/boost/build/filesystem/vc8/
+
+# /extlibs/Collada/extlibs/boost/build/system/
+
+# /extlibs/Collada/extlibs/boost/build/system/vc8/
+
+# /extlibs/Collada/extlibs/boost/lib/
+
+# /extlibs/Collada/lib/
+
+# /extlibs/Collada/modules/
+
+# /extlibs/SFML/
+
+# /extlibs/SFML/extlibs/
+
+# /extlibs/SFML/include/
+
+# /extlibs/SFML/include/SFML/
+
+# /extlibs/SFML/include/SFML/Audio/
+
+# /extlibs/SFML/include/SFML/System/
+
+# /extlibs/SFML/include/SFML/System/Unix/
+
+# /extlibs/SFML/include/SFML/System/Win32/
+
+# /extlibs/SFML/lib/
