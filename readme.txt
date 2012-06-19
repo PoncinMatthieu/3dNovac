@@ -1,8 +1,8 @@
 
-          3dNovac - C++ framework for multimedia software like Games
-          ==========================================================
-                                http://3dNovac.eu
-                                -----------------
+3dNovac - C++ framework for multimedia software like Games
+==========================================================
+http://3dNovac.eu
+-----------------
 
 3dNovac is a free multimedia C++ Framework. Its main goal is to provide the necessary tools for creating games of all types, while remaining portable and lightweight.
 The framework will therefore manage the main features required for the development of a complete game (Real-time display, environmental management, network management, audio management).
