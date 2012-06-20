@@ -2,6 +2,7 @@
 # /
 /svn-commit.tmp
 /lib/*
+/Samples/bin/*
 
 # /Build/
 /Build/3dNovac.cbp
