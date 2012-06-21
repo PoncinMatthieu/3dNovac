@@ -31,7 +31,6 @@ using namespace Nc;
 using namespace Nc::Math;
 using namespace Nc::Graphic;
 
-Vector2i    WindowInput::_mousePosition;
 bool        WindowInput::_keyStates[System::Key::Count];
 bool        WindowInput::_mouseButtonStates[System::Mouse::Count];
 
@@ -84,9 +83,9 @@ void WindowInput::GenereEvent(const System::Event &e)
     PushEvent(e);
 }
 
-Vector2i WindowInput::MousePositionInGLCoord(unsigned int windowHeight)
+Vector2i WindowInput::MousePositionInGLCoord()
 {
-    return Vector2i(_mousePosition.Data[0], windowHeight - _mousePosition.Data[1]);
+    return Vector2i(_mousePosition.Data[0], _win->Height() - _mousePosition.Data[1]);
 }
 
 char WindowInput::ToChar(System::Key::Code key)

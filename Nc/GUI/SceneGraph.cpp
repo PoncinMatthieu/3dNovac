@@ -81,7 +81,7 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
     {
         Widget *lastWidgetToHaveTheFocus = _widgetFocused;
         _widgetFocused = NULL;
-        Vector2i mousePos = Graphic::WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
+        Vector2i mousePos = static_cast<Graphic::WindowInput*>(event.emitter)->MousePositionInGLCoord();
         for(ContainerType::reverse_iterator it = _childs.rbegin(); _widgetFocused == NULL && it != _childs.rend(); it++)
         {
             Widget *w = (*it)->AsWithoutThrow<Widget>();

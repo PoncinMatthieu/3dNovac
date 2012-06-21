@@ -151,7 +151,7 @@ void    ScrollBar::MouseButtonLeft(const Nc::System::Event &event)
     bool inRect = false;
     Vector2i pos;
     Vector2i size;
-    Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
+    Vector2i mousePos = static_cast<Graphic::WindowInput*>(event.emitter)->MousePositionInGLCoord();
     GetReelPosRecursif(pos);
 
     if (_orientation == Vertical)
@@ -184,7 +184,7 @@ void    ScrollBar::MouseButtonRight(const Nc::System::Event &event)
     bool inRect = false;
     Vector2i pos;
     Vector2i size;
-    Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
+    Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
     GetReelPosRecursif(pos);
 
     if (_orientation == Vertical)
@@ -220,7 +220,7 @@ void    ScrollBar::MouseButtonSlider(const Nc::System::Event &event)
     bool inRect = false;
     Vector2i pos;
     Vector2i size;
-    Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
+    Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
     GetReelPosRecursif(pos);
 
     if (_orientation == Vertical)
@@ -241,7 +241,7 @@ void    ScrollBar::MouseButtonSlider(const Nc::System::Event &event)
 
     if (inRect && !_buttonSliderPressed && event.type == System::Event::MouseButtonPressed)
     {
-        _lastPosMouse = WindowInput::MousePosition();
+        _lastPosMouse = static_cast<WindowInput*>(event.emitter)->MousePosition();
         _buttonSliderPressed = true;
     }
     else if (_buttonSliderPressed && event.type == System::Event::MouseButtonReleased)

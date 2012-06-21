@@ -142,7 +142,7 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
     {
         // test si la souris est sur le bouton
         Vector2i pos;
-        Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<WindowInput*>(event.emitter)->AttachedWindow()->Height());
+        Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
         GetReelPosRecursif(pos);
 
         if (!_listUnrolled)
@@ -184,7 +184,7 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
     if (event.mouseButton.button == System::Mouse::Left && event.type == System::Event::MouseButtonReleased)
     {
         Vector2i pos;
-        Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<WindowInput*>(event.emitter)->AttachedWindow()->Height());
+        Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
         _cb->GetReelPosRecursif(pos);
 
         Vector2i size = _cb->_spriteList->Size();

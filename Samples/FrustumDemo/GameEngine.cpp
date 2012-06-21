@@ -159,12 +159,14 @@ void GameEngine::MouseButtonEvent(System::Event &event)
 
 void GameEngine::MouseMotionEvent(System::Event &event)
 {
-  if (_camera->InViewport(WindowInput::MousePositionInGLCoord(_graphic->GetWindow()->Height())))
+    WindowInput *input = static_cast<WindowInput*>(event.emitter);
+
+  if (_camera->InViewport(input->MousePositionInGLCoord()))
     _camera->UninibitMovement();
   else
     _camera->InibitMovement();
 
-  if (_camera2->InViewport(WindowInput::MousePositionInGLCoord(_graphic->GetWindow()->Height())))
+  if (_camera2->InViewport(input->MousePositionInGLCoord()))
     _camera2->UninibitMovement();
   else
     _camera2->InibitMovement();

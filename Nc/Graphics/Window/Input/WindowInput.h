@@ -68,10 +68,10 @@ namespace Nc
 
                 // return input state
                 /** \return the mouse position with the top/left ref point */
-                static const Math::Vector2i &MousePosition()                                {return _mousePosition;}
+                const Math::Vector2i        &MousePosition()                                {return _mousePosition;}
 
                 /** \return the mouse position with the bottom/left ref point */
-                static Math::Vector2i       MousePositionInGLCoord(unsigned int windowHeight);
+                Math::Vector2i              MousePositionInGLCoord();
 
                 /** \return true if the key is enabled */
                 static bool                 KeyState(System::Key::Code code)                {return _keyStates[code];}
@@ -85,7 +85,7 @@ namespace Nc
             protected:
                 static bool             _keyStates[System::Key::Count];             ///< Store the key states
                 static bool             _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states
-                static Math::Vector2i   _mousePosition;                             ///< Store the current position of the mouse
+                Math::Vector2i          _mousePosition;                             ///< Store the current position of the mouse
                 bool                    _keyRepeat;                                 ///< true if the key are repeating
                 Window                  *_win;                                      ///< instance to the attached windows
         };

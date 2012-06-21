@@ -273,11 +273,12 @@ void StandardCamera3d::MouseButtonEvent(const System::Event &event)
 
             if (_pattern == Trackball)
             {
-                MajTrackballPoint(WindowInput::MousePosition().Data[0], WindowInput::MousePosition().Data[1]);
+                MajTrackballPoint(static_cast<WindowInput*>(event.emitter)->MousePosition().Data[0],
+                                  static_cast<WindowInput*>(event.emitter)->MousePosition().Data[1]);
                 _lastSpherePoint = _currentSpherePoint;
             }
             else
-                _lastPosMouse = WindowInput::MousePosition();
+                _lastPosMouse = static_cast<WindowInput*>(event.emitter)->MousePosition();
         }
     // molette
         if (event.type == System::Event::MouseWheelMoved)

@@ -217,7 +217,7 @@ void Widget::CheckFocus(const Event &event)
         Widget *lastchildToHaveTheFocus = _childFocused;
         _childFocused = NULL;
 
-        Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
+        Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
         Visitor::CheckFocus v(event, mousePos);
         for(ContainerType::iterator it = _childs.begin(); v.childFocused == NULL && it != _childs.end(); it++)
             v(**it);
