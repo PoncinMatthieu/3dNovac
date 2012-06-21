@@ -65,9 +65,9 @@ void GameEngine::ManageWindowEvent(System::Event &event)
   bool send = true;
   if (event.type == System::Event::KeyPressed)
     {
-      if (event.type == System::Event::KeyPressed && event.key.Code == System::Key::Escape)
+      if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
 	Quit();
-      else if (event.key.Code == System::Key::Tilde) // Tilde pour afficher/cacher la console
+      else if (event.key.code == System::Key::Tilde) // Tilde pour afficher/cacher la console
 	{
 	  if (!_console->Focus())
 	    {

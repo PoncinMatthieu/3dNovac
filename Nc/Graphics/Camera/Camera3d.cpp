@@ -87,7 +87,7 @@ void    Camera3d::Fix(SceneGraph *scene)
 
 void    Camera3d::Resized(const System::Event &event)
 {
-    _ratioAspect = (float)event.size.Width/(float)event.size.Height;
+    _ratioAspect = (float)event.size.width/(float)event.size.height;
     Camera::Resized(event);
 }
 

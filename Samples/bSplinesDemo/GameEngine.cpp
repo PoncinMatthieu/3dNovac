@@ -62,21 +62,21 @@ void GameEngine::KeyboardEvent(System::Event &event)
 {
     if (event.type == System::Event::KeyPressed)
     {
-        if (event.type == System::Event::KeyPressed && event.key.Code == System::Key::Escape)
+        if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
             Quit();
-        else if (event.key.Code == System::Key::Num1)
+        else if (event.key.code == System::Key::Num1)
         {
             _current = 0;
             _spline1->Enable(true);
             _spline2->Enable(false);
         }
-        else if (event.key.Code == System::Key::Num2)
+        else if (event.key.code == System::Key::Num2)
         {
             _current = 0;
             _spline2->Enable(true);
             _spline1->Enable(false);
         }
-        else if (event.key.Code == System::Key::Up)
+        else if (event.key.code == System::Key::Up)
         {
 
             if (_spline1->Enabled())
@@ -90,7 +90,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
                 _spline2->Update();
             }
         }
-        else if (event.key.Code == System::Key::Down)
+        else if (event.key.code == System::Key::Down)
         {
             if (_spline1->Enabled())
             {
@@ -103,7 +103,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
                 _spline2->Update();
             }
         }
-        else if (event.key.Code == System::Key::Right)
+        else if (event.key.code == System::Key::Right)
         {
             if (_spline1->Enabled())
             {
@@ -116,7 +116,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
                 _spline2->Update();
             }
         }
-        else if (event.key.Code == System::Key::Left)
+        else if (event.key.code == System::Key::Left)
         {
             if (_spline1->Enabled())
             {
@@ -129,7 +129,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
                 _spline2->Update();
             }
         }
-        else if (event.key.Code == System::Key::Space)
+        else if (event.key.code == System::Key::Space)
         {
             if (_spline1->Enabled())
                 _current = (_current + 1) % _spline1->NbPoint();

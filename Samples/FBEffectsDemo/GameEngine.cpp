@@ -106,14 +106,14 @@ void    GameEngine::KeyboardEvent(System::Event &event)
 
   if (event.type == System::Event::KeyPressed)
     {
-      if (event.key.Code == System::Key::Escape)
+      if (event.key.code == System::Key::Escape)
 	  Quit();
-      if (event.key.Code == System::Key::Space)
+      if (event.key.code == System::Key::Space)
 	_fbEffect->TriggerPostProcessActivation();
-      if (event.key.Code == System::Key::F2)        // bump mapping
+      if (event.key.code == System::Key::F2)        // bump mapping
 	_lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::BumpMapping);
 #ifdef _DEBUG
-      else if (event.key.Code == System::Key::F1)        // draw les normal
+      else if (event.key.code == System::Key::F1)        // draw les normal
 	_lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::DisplayNormal);
 #endif
     }

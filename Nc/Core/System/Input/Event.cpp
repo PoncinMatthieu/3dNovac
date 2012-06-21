@@ -36,15 +36,15 @@ bool Event::operator == (const Event &e)
     {
         case KeyPressed:
         case KeyReleased:
-            return (key.Code == e.key.Code);
+            return (key.code == e.key.code);
         case MouseButtonReleased:
         case MouseButtonPressed:
-            return (mouseButton.Button == e.mouseButton.Button);
+            return (mouseButton.button == e.mouseButton.button);
         case MouseMoved:
-            return (mouseMove.X == e.mouseMove.X && mouseMove.Y == e.mouseMove.Y);
+            return (mouseMove.x == e.mouseMove.x && mouseMove.y == e.mouseMove.y);
         case MouseWheelMoved:
-            return (mouseWheel.Delta == e.mouseWheel.Delta);
+            return (mouseWheel.delta == e.mouseWheel.delta);
         default:
-            return (size.Width == e.size.Width && size.Height == e.size.Height);
+            return (size.width == e.size.width && size.height == e.size.height);
     }
 }

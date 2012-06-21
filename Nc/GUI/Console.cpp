@@ -168,11 +168,11 @@ void Console::KeyboardEvent(const Event &event)
 
     if (!_inhibit && event.type == Event::KeyPressed)
     {
-        if (event.key.Code == Key::Up || event.key.Code == Key::Down)
+        if (event.key.code == Key::Up || event.key.code == Key::Down)
         {
             _mutexMsg.Lock();
             static Utils::Unicode::UTF32   lastcmd;
-            if (event.key.Code == Key::Up)
+            if (event.key.code == Key::Up)
             {
                 if (_itCurrentMsg != _listMsg.rend())
                 {
@@ -194,7 +194,7 @@ void Console::KeyboardEvent(const Event &event)
                     }
                 }
             }
-            else if (event.key.Code == Key::Down)
+            else if (event.key.code == Key::Down)
             {
                 if (_itCurrentMsg == _listMsg.rbegin())
                 {
@@ -224,11 +224,11 @@ void Console::KeyboardEvent(const Event &event)
             }
             _mutexMsg.Unlock();
         }
-        else if (event.key.Code == Key::PageDown && _scroll > 0) // scroll
+        else if (event.key.code == Key::PageDown && _scroll > 0) // scroll
             _scroll--;
-        else if (event.key.Code == Key::PageUp)
+        else if (event.key.code == Key::PageUp)
             _scroll++;
-        else if (event.key.Code == Key::Return && !cmd.empty()) //execute la commande, et vide la string
+        else if (event.key.code == Key::Return && !cmd.empty()) //execute la commande, et vide la string
         {
             LOG << cmd << endl;
             ExecCmd(cmd.ToStdString());
@@ -241,7 +241,7 @@ void Console::KeyboardEvent(const Event &event)
             _labelPrompt->GetReelSize(sizeLabelPrompt);
             _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
         }
-        else if (event.key.Code == Key::Back && !cmd.empty()) // suppression du dernier caractere
+        else if (event.key.code == Key::Back && !cmd.empty()) // suppression du dernier caractere
         {
             cmd.erase(cmd.end() - 1);
             _labelWrite->Label(cmd);
@@ -254,7 +254,7 @@ void Console::KeyboardEvent(const Event &event)
         }
         else    // sinon on peut recuperer le caractere et le push dans le label
         {
-            c = WindowInput::ToChar(event.key.Code);
+            c = WindowInput::ToChar(event.key.code);
             if (c == '\t' || (c >= ' ' && c <= '~'))      // ajout du caractere dans la string de commande
             {
                 cmd += c;

@@ -48,8 +48,8 @@ WindowInput::WindowInput(Window *win) : _win(win)
 void WindowInput::GenereResizeEvent(unsigned int x, unsigned int y)
 {
     System::Event   e(this, System::Event::Resized);
-    e.size.Width = x;
-    e.size.Height = y;
+    e.size.width = x;
+    e.size.height = y;
     GenereEvent(e);
 }
 
@@ -60,23 +60,23 @@ void WindowInput::GenereEvent(const System::Event &e)
         // Resize event
         case System::Event::Resized:
         {
-            _win->_width = e.size.Width;
-            _win->_height = e.size.Height;
+            _win->_width = e.size.width;
+            _win->_height = e.size.height;
             break;
         }
 
         // Mouse moved
         case System::Event::MouseMoved:
         {
-            _mousePosition.Data[0] = e.mouseMove.X;
-            _mousePosition.Data[1] = e.mouseMove.Y;
+            _mousePosition.Data[0] = e.mouseMove.x;
+            _mousePosition.Data[1] = e.mouseMove.y;
             break;
         }
 
-        case System::Event::KeyPressed:             _keyStates[e.key.Code] = true;                          break;        // Key down event
-        case System::Event::KeyReleased:            _keyStates[e.key.Code] = false;                         break;        // Key up event
-        case System::Event::MouseButtonPressed:     _mouseButtonStates[e.mouseButton.Button] = true;        break;        // Mouse button pressed
-        case System::Event::MouseButtonReleased:    _mouseButtonStates[e.mouseButton.Button] = false;       break;        // Mouse button released
+        case System::Event::KeyPressed:             _keyStates[e.key.code] = true;                          break;        // Key down event
+        case System::Event::KeyReleased:            _keyStates[e.key.code] = false;                         break;        // Key up event
+        case System::Event::MouseButtonPressed:     _mouseButtonStates[e.mouseButton.button] = true;        break;        // Mouse button pressed
+        case System::Event::MouseButtonReleased:    _mouseButtonStates[e.mouseButton.button] = false;       break;        // Mouse button released
         default:
             break;
     }

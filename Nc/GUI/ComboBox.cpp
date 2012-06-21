@@ -138,7 +138,7 @@ void    ComboBox::Draw(Graphic::SceneGraph *scene)
 
 void    ComboBox::MouseButtonEvent(const System::Event &event)
 {
-    if (event.mouseButton.Button == System::Mouse::Left && event.type == System::Event::MouseButtonReleased)
+    if (event.mouseButton.button == System::Mouse::Left && event.type == System::Event::MouseButtonReleased)
     {
         // test si la souris est sur le bouton
         Vector2i pos;
@@ -181,7 +181,7 @@ ComboBox::ComboBoxUnfoldList::ComboBoxUnfoldList(ComboBox *cb, Corner x, Corner 
 
 void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &event)
 {
-    if (event.mouseButton.Button == System::Mouse::Left && event.type == System::Event::MouseButtonReleased)
+    if (event.mouseButton.button == System::Mouse::Left && event.type == System::Event::MouseButtonReleased)
     {
         Vector2i pos;
         Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<WindowInput*>(event.emitter)->AttachedWindow()->Height());

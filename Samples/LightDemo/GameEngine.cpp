@@ -111,7 +111,7 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     _camera->Resized(event);
   if (event.type == System::Event::KeyPressed)
     {
-      if (event.type == System::Event::KeyPressed && event.key.Code == System::Key::Escape)
+      if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
 	Quit();
     }
   // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
@@ -124,10 +124,10 @@ void GameEngine::KeyboardEvent(System::Event &event)
   _camera->KeyboardEvent(event);
   if (event.type == System::Event::KeyPressed)
     {
-      if (event.key.Code == System::Key::F2)        // bump mapping
+      if (event.key.code == System::Key::F2)        // bump mapping
         _lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::BumpMapping);
 #ifdef _DEBUG
-      else if (event.key.Code == System::Key::F1)        // draw les normal
+      else if (event.key.code == System::Key::F1)        // draw les normal
         _lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::DisplayNormal);
 #endif
     }

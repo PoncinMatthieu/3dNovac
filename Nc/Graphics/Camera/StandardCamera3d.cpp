@@ -228,12 +228,12 @@ void StandardCamera3d::MouseMotionEvent(const System::Event &event)
     {
         if (_pattern == Turntable || _pattern == Freefly)
         {
-            _angles.Data[0] += (_lastPosMouse.Data[0] - event.mouseMove.X) * _sensibilityRotate;
-            _angles.Data[1] -= (_lastPosMouse.Data[1] - event.mouseMove.Y) * _sensibilityRotate;
+            _angles.Data[0] += (_lastPosMouse.Data[0] - event.mouseMove.x) * _sensibilityRotate;
+            _angles.Data[1] -= (_lastPosMouse.Data[1] - event.mouseMove.y) * _sensibilityRotate;
         }
         else
         {
-            MajTrackballPoint(event.mouseMove.X, event.mouseMove.Y);
+            MajTrackballPoint(event.mouseMove.x, event.mouseMove.y);
         }
 
         MajEye();
@@ -242,8 +242,8 @@ void StandardCamera3d::MouseMotionEvent(const System::Event &event)
             _lastSpherePoint = _currentSpherePoint;
         else
         {
-            _lastPosMouse.Data[0] = event.mouseMove.X;
-            _lastPosMouse.Data[1] = event.mouseMove.Y;
+            _lastPosMouse.Data[0] = event.mouseMove.x;
+            _lastPosMouse.Data[1] = event.mouseMove.y;
         }
 
 		if (_pattern == Freefly)
@@ -258,7 +258,7 @@ void StandardCamera3d::MouseButtonEvent(const System::Event &event)
     if (!_inhibitMovement)
     {
     // bouton gauche
-        if (event.mouseButton.Button == _mouveButton)
+        if (event.mouseButton.button == _mouveButton)
         {
             if (!_stateButtonRight && event.type == System::Event::MouseButtonPressed)
             {
@@ -282,7 +282,7 @@ void StandardCamera3d::MouseButtonEvent(const System::Event &event)
     // molette
         if (event.type == System::Event::MouseWheelMoved)
         {
-            _distance -= event.mouseWheel.Delta * _sensibilityZoom;
+            _distance -= event.mouseWheel.delta * _sensibilityZoom;
             if (_distance < 1)
                 _distance = 1;
             else if (_distance > 100)

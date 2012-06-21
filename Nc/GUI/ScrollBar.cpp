@@ -126,19 +126,19 @@ void ScrollBar::MouseMotionEvent(const Nc::System::Event &event)
 {
     if (_buttonSliderPressed)
     {
-        float diff = (_orientation == Vertical) ? -(_lastPosMouse[1] - event.mouseMove.Y) : (event.mouseMove.X - _lastPosMouse[0]);
+        float diff = (_orientation == Vertical) ? -(_lastPosMouse[1] - event.mouseMove.y) : (event.mouseMove.x - _lastPosMouse[0]);
 
         _position = GetPagePosition(GetSliderTranslation(_position) + diff);
 
-        _lastPosMouse[0] = event.mouseMove.X;
-        _lastPosMouse[1] = event.mouseMove.Y;
+        _lastPosMouse[0] = event.mouseMove.x;
+        _lastPosMouse[1] = event.mouseMove.y;
         _stateChanged = true;
     }
 }
 
 void ScrollBar::MouseButtonEvent(const Nc::System::Event &event)
 {
-    if (event.mouseButton.Button == System::Mouse::Left)
+    if (event.mouseButton.button == System::Mouse::Left)
     {
         MouseButtonLeft(event);
         MouseButtonRight(event);

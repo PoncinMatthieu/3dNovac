@@ -190,38 +190,38 @@ namespace Nc
             /// Define a key evenement
             struct KeyEvent
             {
-                Key::Code Code;
-                bool      Alt;
-                bool      Control;
-                bool      Shift;
+                Key::Code code;
+                bool      alt;
+                bool      control;
+                bool      shift;
             };
 
             /// Define a mouse move evenement
             struct MouseMoveEvent
             {
-                int X;
-                int Y;
+                int x;
+                int y;
             };
 
             /// Define a mouse button evenement
             struct MouseButtonEvent
             {
-                Mouse::Button Button;
-                int           X;
-                int           Y;
+                Mouse::Button button;
+                int           x;
+                int           y;
             };
 
             /// Define a mouse weel event
             struct MouseWheelEvent
             {
-                int Delta;
+                int delta;
             };
 
             /// Define a size evenement (eg: for resize)
             struct SizeEvent
             {
-                unsigned int Width;
-                unsigned int Height;
+                unsigned int width;
+                unsigned int height;
             };
 
             /// Define the type of evenement

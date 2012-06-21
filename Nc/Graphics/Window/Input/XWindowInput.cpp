@@ -163,8 +163,8 @@ void XWindowInput::ProcessEvent(XEvent &event)
             if ((event.xconfigure.width != static_cast<int>(_win->Width())) || (event.xconfigure.height != static_cast<int>(_win->Height())))
             {
                 Event e(this, Event::Resized);
-                e.size.Width = event.xconfigure.width;
-                e.size.Height = event.xconfigure.height;
+                e.size.width = event.xconfigure.width;
+                e.size.height = event.xconfigure.height;
                 GenereEvent(e);
             }
             break;
@@ -189,10 +189,10 @@ void XWindowInput::ProcessEvent(XEvent &event)
 
             // Fill the event parameters
             Event e(this, Event::KeyPressed);
-            e.key.Code    = ConvertKeySym(Sym);
-            e.key.Alt     = event.xkey.state & Mod1Mask;
-            e.key.Control = event.xkey.state & ControlMask;
-            e.key.Shift   = event.xkey.state & ShiftMask;
+            e.key.code    = ConvertKeySym(Sym);
+            e.key.alt     = event.xkey.state & Mod1Mask;
+            e.key.control = event.xkey.state & ControlMask;
+            e.key.shift   = event.xkey.state & ShiftMask;
             GenereEvent(e);
             break;
         }
@@ -247,10 +247,10 @@ void XWindowInput::ProcessEvent(XEvent &event)
 
             // Fill the event parameters
             Event e(this, Event::KeyReleased);
-            e.key.Code    = ConvertKeySym(Sym);
-            e.key.Alt     = event.xkey.state & Mod1Mask;
-            e.key.Control = event.xkey.state & ControlMask;
-            e.key.Shift   = event.xkey.state & ShiftMask;
+            e.key.code    = ConvertKeySym(Sym);
+            e.key.alt     = event.xkey.state & Mod1Mask;
+            e.key.control = event.xkey.state & ControlMask;
+            e.key.shift   = event.xkey.state & ShiftMask;
             GenereEvent(e);
             break;
         }
@@ -262,15 +262,15 @@ void XWindowInput::ProcessEvent(XEvent &event)
             if ((Button == Button1) || (Button == Button2) || (Button == Button3) || (Button == 8) || (Button == 9))
             {
                 Event e(this, Event::MouseButtonPressed);
-                e.mouseButton.X = event.xbutton.x;
-                e.mouseButton.Y = event.xbutton.y;
+                e.mouseButton.x = event.xbutton.x;
+                e.mouseButton.y = event.xbutton.y;
                 switch (Button)
                 {
-                    case Button1 : e.mouseButton.Button = Mouse::Left;     break;
-                    case Button2 : e.mouseButton.Button = Mouse::Middle;   break;
-                    case Button3 : e.mouseButton.Button = Mouse::Right;    break;
-                    case 8 :       e.mouseButton.Button = Mouse::XButton1; break;
-                    case 9 :       e.mouseButton.Button = Mouse::XButton2; break;
+                    case Button1 : e.mouseButton.button = Mouse::Left;     break;
+                    case Button2 : e.mouseButton.button = Mouse::Middle;   break;
+                    case Button3 : e.mouseButton.button = Mouse::Right;    break;
+                    case 8 :       e.mouseButton.button = Mouse::XButton1; break;
+                    case 9 :       e.mouseButton.button = Mouse::XButton2; break;
                 }
                 GenereEvent(e);
             }
@@ -284,22 +284,22 @@ void XWindowInput::ProcessEvent(XEvent &event)
             if ((Button == Button1) || (Button == Button2) || (Button == Button3) || (Button == 8) || (Button == 9))
             {
                 Event e(this, Event::MouseButtonReleased);
-                e.mouseButton.X = event.xbutton.x;
-                e.mouseButton.Y = event.xbutton.y;
+                e.mouseButton.x = event.xbutton.x;
+                e.mouseButton.y = event.xbutton.y;
                 switch (Button)
                 {
-                    case Button1 : e.mouseButton.Button = Mouse::Left;     break;
-                    case Button2 : e.mouseButton.Button = Mouse::Middle;   break;
-                    case Button3 : e.mouseButton.Button = Mouse::Right;    break;
-                    case 8 :       e.mouseButton.Button = Mouse::XButton1; break;
-                    case 9 :       e.mouseButton.Button = Mouse::XButton2; break;
+                    case Button1 : e.mouseButton.button = Mouse::Left;     break;
+                    case Button2 : e.mouseButton.button = Mouse::Middle;   break;
+                    case Button3 : e.mouseButton.button = Mouse::Right;    break;
+                    case 8 :       e.mouseButton.button = Mouse::XButton1; break;
+                    case 9 :       e.mouseButton.button = Mouse::XButton2; break;
                 }
                 GenereEvent(e);
             }
             else if ((Button == Button4) || (Button == Button5))
             {
                 Event e(this, Event::MouseWheelMoved);
-                e.mouseWheel.Delta = event.xbutton.button == Button4 ? 1 : -1;
+                e.mouseWheel.delta = event.xbutton.button == Button4 ? 1 : -1;
                 GenereEvent(e);
             }
             break;
@@ -309,8 +309,8 @@ void XWindowInput::ProcessEvent(XEvent &event)
         case MotionNotify :
         {
             Event e(this, Event::MouseMoved);
-            e.mouseMove.X = event.xmotion.x;
-            e.mouseMove.Y = event.xmotion.y;
+            e.mouseMove.x = event.xmotion.x;
+            e.mouseMove.y = event.xmotion.y;
             GenereEvent(e);
             break;
         }
