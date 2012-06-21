@@ -19,8 +19,8 @@ namespace bSplinesDemo
       GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic);
       virtual ~GameEngine();
 
-      /** To create the window (called by the graphic engine) */
-      void CreateWindow(Nc::Graphic::Window *win);
+        /** To create the window (called by the graphic engine) */
+        void CreateWindow(Nc::Graphic::Window *win);
 
      private:
       virtual void LoadContent();
@@ -39,7 +39,6 @@ namespace bSplinesDemo
       void CreateSplines2();
 
      private:
-        Nc::Graphic::Window     *_window;
         Nc::GUI::SceneGraph     *_scene2d;	///< our GUI scene 2d, displayed by the graphic engine
 
         bSplines			    *_spline1;

@@ -129,11 +129,13 @@ void    Manager::Terminate()
      // pthread_exit();
 }
 
-void    Manager::AddEngine(const std::string &name, IEngine *engine, const Permissions &permissions)
+void    Manager::AddEngine(IEngine *engine, const Permissions &permissions)
 {
 // verifications, si l'engine existe deja ou est null
     if (engine == NULL)
         throw Utils::Exception("Engine::Manager", "The engine is null");
+
+    std::string name = engine->ResolvedClassName();
     MapEngine::iterator it = _mapEngine.find(name);
     if (it != _mapEngine.end())
         throw Utils::Exception("Engine::Manager", "The engine " + name + "already exist");

@@ -7,14 +7,14 @@ using namespace std;
 
 void CreateEngines(Nc::Engine::Manager *manager)
 {
-    Nc::Graphic::Engine *graphic = new Nc::Graphic::Engine(manager, (Nc::Graphic::Engine::CreateWindowFunc)&FrustumDemo::GameEngine::CreateWindow);
+    Nc::Graphic::Engine *graphic = new Nc::Graphic::Engine(FrustumDemo::GameEngine::ClassName(), manager, (Nc::Graphic::Engine::CreateWindowFunc)&FrustumDemo::GameEngine::CreateWindow);
 //    graphic->LimitFrameRate(60);
-    manager->AddEngine("Graphic", graphic);
+    manager->AddEngine(graphic);
     LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << endl;
 
     FrustumDemo::GameEngine *game = new FrustumDemo::GameEngine(graphic, manager);
     game->LimitFrameRate(60);
-    manager->AddEngine("Main", game);
+    manager->AddEngine(game);
     LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << endl;
     LOG << "-----------GameManager-ENGINES-CREATION-SUCCESS--------------" << endl;
 }

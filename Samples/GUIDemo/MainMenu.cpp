@@ -48,9 +48,11 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     //selectModeWidget->UseLook();
 
     Button *button = new Button("Single Player", Center, Center, Vector2f(0, 20), Vector2f(140, 20), "Prototype");
+    button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::ModeSinglePlayer);
     selectModeWidget->AddChild(button);
     button = new Button("Mutiplayer", Center, Center, Vector2f(0, -20), Vector2f(140, 20), "Prototype");
+    button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::ModeMultiplayer);
     selectModeWidget->AddChild(button);
     _GUI->AddChild(_selectModeWindow);

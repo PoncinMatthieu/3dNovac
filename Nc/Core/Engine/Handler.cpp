@@ -30,7 +30,7 @@ using namespace Nc::Engine;
 
 Handler::Handler()
 {
-    _engineName = "Main";
+    _engineName = "";
     _idCmd = 0;
 }
 

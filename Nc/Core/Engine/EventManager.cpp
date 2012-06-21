@@ -31,8 +31,8 @@
 using namespace std;
 using namespace Nc::Engine;
 
-EventManager::EventManager(const std::string &name)
-	: System::Object(name)
+EventManager::EventManager()
+	: System::Object()
 {
     _execEvents = true;
     _receiveEvents = true;
@@ -49,7 +49,9 @@ namespace Nc
     {
         std::ostream& operator << (std::ostream& Out, const EventManager& o)
         {
-            Out << o._name;
+            Out << o.ResolvedClassName();
+            if (!o._name.empty())
+                Out << ":" << o._name;
             return Out;
         }
     }
@@ -84,7 +86,7 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
                 return;
             }
         }
-        throw Utils::Exception(_name, "Unknown command id:" + Utils::Convert::ToString(id));
+        throw Utils::Exception(ResolvedClassName(), "Unknown command id:" + Utils::Convert::ToString(id));
     }
     catch (const std::exception &ex)
     {
@@ -108,7 +110,7 @@ void EventManager::ExecuteEvent(const std::string &name, EventString *e)
                 return;
             }
         }
-        throw Utils::Exception(_name, "Unknown command `" + name + "`");
+        throw Utils::Exception(ResolvedClassName(), "Unknown command `" + name + "`");
     }
     catch (const std::exception &ex)
     {
@@ -116,7 +118,7 @@ void EventManager::ExecuteEvent(const std::string &name, EventString *e)
     }
     catch (...)
     {
-        LOG_ERROR << "Unknown Error, throw catched !" << std::endl;
+        LOG_ERROR << ResolvedClassName() << ": Unknown Error, throw catched !" << std::endl;
     }
 }
 

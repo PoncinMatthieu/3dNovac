@@ -14,6 +14,9 @@ namespace SampleViewer
     class GameEngine : public Nc::Contrib::GameEngine
     {
         public:
+            NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, SampleViewer::GameEngine);
+
+        public:
             enum IndexCmd
             {
                 StartSample = 0

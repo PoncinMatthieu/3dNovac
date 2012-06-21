@@ -90,6 +90,7 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
 
     Button *button = new Button("Start Sample", Center, Center, Vector2i(0,0), 20, 15, 8, "arial");
     selectSampleLayout->AddChild(button);
+    button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::StartSample);
 
     selectSampleLayout->Percent(Vector2f(95, 100));

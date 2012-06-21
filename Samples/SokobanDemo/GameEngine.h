@@ -9,6 +9,9 @@ namespace SokobanDemo
 {
     class GameEngine : public Nc::Contrib::GameEngine
     {
+        public:
+            NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, SokobanDemo::GameEngine);
+
      public:
       GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic);
       ~GameEngine();

@@ -32,7 +32,7 @@ using namespace std;
 using namespace Nc::Engine;
 
 MainEngine::MainEngine(Manager *manager, unsigned int pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
-    : IEngine("Game Engine", manager, pattern, deletePriority, loadingContextPriority, loadingPriority)
+    : IEngine(manager, pattern, deletePriority, loadingContextPriority, loadingPriority)
 {
 }
 

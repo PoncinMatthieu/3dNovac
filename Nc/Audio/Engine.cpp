@@ -36,7 +36,7 @@ using namespace Nc::Utils;
 using namespace Nc::Audio;
 
 Engine::Engine(Nc::Engine::Manager *manager)
-    : Nc::Engine::IEngine("Audio Engine", manager, 0, 1, 1, 1)
+    : Nc::Engine::IEngine(manager, 0, 1, 1, 1)
 {
     _musicOpened = false;
 
@@ -70,7 +70,7 @@ void Engine::LdDescFile(const FileName &file)
         Xml::ListObject &sounds = content->Block("Sounds")->ListChild();
         for (Xml::ListObject::iterator it = sounds.begin(); it != sounds.end(); ++it)
             LdSound((*it)->Param("path"));
-	} 
+	}
     delete content;
 }
 
@@ -94,7 +94,7 @@ void Engine::StpMusic(Nc::Engine::IEvent*)
 {
     if (_musicOpened)
         _music.Stop();
-} 
+}
 
 void Engine::LdSound(const FileName &file)
 {
