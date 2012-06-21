@@ -13,6 +13,9 @@ namespace bSplinesDemo
     class GameEngine : public Nc::Contrib::GameEngine
     {
      public:
+        NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, bSplinesDemo::GameEngine);
+
+     public:
       GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic);
       virtual ~GameEngine();
 
@@ -36,11 +39,12 @@ namespace bSplinesDemo
       void CreateSplines2();
 
      private:
-      Nc::GUI::SceneGraph		*_scene2d;	///< our GUI scene 2d, displayed by the graphic engine
+        Nc::Graphic::Window     *_window;
+        Nc::GUI::SceneGraph     *_scene2d;	///< our GUI scene 2d, displayed by the graphic engine
 
-      bSplines			*_spline1;
-      bSplines			*_spline2;
-      unsigned int			_current;
+        bSplines			    *_spline1;
+        bSplines			    *_spline2;
+        unsigned int			_current;
     };
 }
 

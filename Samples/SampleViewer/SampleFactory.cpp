@@ -8,18 +8,24 @@ SampleFactory::SampleFactory(Nc::Graphic::Engine *graphicEngine, Nc::Engine::Man
     : _graphicEngine(graphicEngine), _manager(manager)
 {
     _sampleNames.push_back("bSplinesDemo");
-
-    _sampleNames.push_back("test1");
-    _sampleNames.push_back("test2");
-    _sampleNames.push_back("test3");
-    _sampleNames.push_back("test4");
 }
 
 Nc::Contrib::GameEngine     *SampleFactory::CreateSample(const std::string &name)
 {
+    Nc::Contrib::GameEngine *engine = NULL;
     if (name == "bSplinesDemo")
-        return new bSplinesDemo::GameEngine(_manager, _graphicEngine);
+        engine = new bSplinesDemo::GameEngine(_manager, _graphicEngine);
 
 
-    return NULL;
+    // init the engine
+    if (engine != NULL)
+    {
+        engine->LimitFrameRate(30);
+        LOG << "engine->Name() = " << engine->Name() << std::endl;
+        _manager->AddEngine(engine->Name(), engine);
+        engine->Start();
+
+    }
+
+    return engine;
 }

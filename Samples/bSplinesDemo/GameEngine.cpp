@@ -27,17 +27,18 @@ void GameEngine::ReleaseContent()
 
 void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 {
-  // create the window
-  win->Create("bSpline 2d", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
+    // create the window
+    win->Create("bSpline 2d", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
+    _window = win;
 }
 
 void GameEngine::LoadContent()
 {
   // add the window Input to the Inputs of the engine
-  AddInput(_graphic->GetWindow()->GetInput());
+  AddInput(_window->GetInput());
 
-  _scene2d = new GUI::SceneGraph(_graphic->GetWindow());
-  _scene2d->AddChild(new Camera2d(_graphic->GetWindow()));
+  _scene2d = new GUI::SceneGraph(_window);
+  _scene2d->AddChild(new Camera2d(_window));
   _graphic->GetSceneManager()->AddScene(_scene2d);
 
   // GUI :

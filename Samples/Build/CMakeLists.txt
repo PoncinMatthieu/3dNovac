@@ -276,10 +276,10 @@ file(
 
 add_executable(SampleViewer					${SampleViewer-sources})
 add_library(PluginSampleViewer				SHARED ${SampleViewer-sources})
-add_dependencies(SampleViewer 				Nc-Core Nc-Graphics Nc-GUI)
-add_dependencies(PluginSampleViewer 		Nc-Core Nc-Graphics Nc-GUI)
-target_link_libraries(SampleViewer			Nc-Core Nc-Graphics Nc-GUI)
-target_link_libraries(PluginSampleViewer	Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(SampleViewer 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+add_dependencies(PluginSampleViewer 		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+target_link_libraries(SampleViewer			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+target_link_libraries(PluginSampleViewer	Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
