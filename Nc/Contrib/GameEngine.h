@@ -49,6 +49,9 @@ namespace Nc
                 /** Set the graphic engine */
                 void            SetGraphicEngine(Graphic::Engine *graphic)              {_graphic = graphic;}
 
+                /** To setup the window from the sample viewer */
+                void            SetWindow(Nc::Graphic::Window *win)                     {_window = win;}
+
             protected:
                 /** Create the shared ogl context */
                 virtual void    CreateContext()     {_context = _graphic->CreateSharedContext();}
@@ -57,6 +60,7 @@ namespace Nc
 
             protected:
                 Graphic::Engine     *_graphic;      ///< instance of the graphic engine
+                Graphic::Window     *_window;       ///< instance of the window used to render
                 Graphic::GLContext  *_context;      ///< instance of the context shared with the context of the graphic engine
         };
     }

@@ -29,7 +29,7 @@ void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 {
     // create the window
     win->Create("bSpline 2d", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
-    _window = win;
+    SetWindow(win);
 }
 
 void GameEngine::LoadContent()

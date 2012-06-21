@@ -21,8 +21,8 @@ Nc::Contrib::GameEngine     *SampleFactory::CreateSample(const std::string &name
     if (engine != NULL)
     {
         engine->LimitFrameRate(30);
-        LOG << "engine->Name() = " << engine->Name() << std::endl;
-        _manager->AddEngine(engine->Name(), engine);
+        _manager->AddEngine(engine);
+        engine->SetWindow(_graphicEngine->GetWindow());
         engine->Start();
 
     }
