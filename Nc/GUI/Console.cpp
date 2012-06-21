@@ -254,7 +254,7 @@ void Console::KeyboardEvent(const Event &event)
         }
         else    // sinon on peut recuperer le caractere et le push dans le label
         {
-            c = WindowInput::ToChar(event.key.code);
+            c = static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
             if (c == '\t' || (c >= ' ' && c <= '~'))      // ajout du caractere dans la string de commande
             {
                 cmd += c;

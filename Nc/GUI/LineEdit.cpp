@@ -114,7 +114,7 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         }
         else
         {
-            UInt32 c = (UInt32)WindowInput::ToChar(event.key.code);
+            UInt32 c = (UInt32)static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
             if (c != '\0' && _font->Size().Data[0] + _font->GetCharSize(c).Data[0] < _size.Data[0]) // ajout du caractere dans la string)
             {
                 Utils::Unicode::UTF32 s = _font->Text();

@@ -74,17 +74,17 @@ namespace Nc
                 Math::Vector2i              MousePositionInGLCoord();
 
                 /** \return true if the key is enabled */
-                static bool                 KeyState(System::Key::Code code)                {return _keyStates[code];}
+                bool                        KeyState(System::Key::Code code)                {return _keyStates[code];}
 
                 /** \return true if the mouse button is enabled */
-                static bool                 MouseButtonState(System::Mouse::Button code)    {return _mouseButtonStates[code];}
+                bool                        MouseButtonState(System::Mouse::Button code)    {return _mouseButtonStates[code];}
 
                 /** \return the corresponding char */
-                static char                 ToChar(System::Key::Code key);
+                char                        ToChar(System::Key::Code key);
 
             protected:
-                static bool             _keyStates[System::Key::Count];             ///< Store the key states
-                static bool             _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states
+                bool                    _keyStates[System::Key::Count];             ///< Store the key states
+                bool                    _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states
                 Math::Vector2i          _mousePosition;                             ///< Store the current position of the mouse
                 bool                    _keyRepeat;                                 ///< true if the key are repeating
                 Window                  *_win;                                      ///< instance to the attached windows

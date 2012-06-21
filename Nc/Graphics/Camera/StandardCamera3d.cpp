@@ -303,7 +303,8 @@ void StandardCamera3d::Update(float runningTime)
     if (!_inhibitMovement)
     {
         bool updateEye = false;
-		if (WindowInput::KeyState(System::Key::W) || WindowInput::KeyState(System::Key::Z))
+        WindowInput *input = _window->GetInput();
+		if (input->KeyState(System::Key::W) || input->KeyState(System::Key::Z))
         {
 			if (_pattern == Freefly)
 				_center += ((_center - _eye) * _moveSpeed * runningTime);
@@ -311,7 +312,7 @@ void StandardCamera3d::Update(float runningTime)
 				_center += ((_center - _eye) * _moveSpeed * runningTime);
             updateEye = true;
         }
-        if (WindowInput::KeyState(System::Key::S))
+        if (input->KeyState(System::Key::S))
         {
 			if (_pattern == Freefly)
 				_center -= ((_center - _eye) * _moveSpeed * runningTime);
@@ -319,7 +320,7 @@ void StandardCamera3d::Update(float runningTime)
             _center -= ((_center - _eye) * _moveSpeed * runningTime);
             updateEye = true;
         }
-        if (WindowInput::KeyState(System::Key::A) || WindowInput::KeyState(System::Key::Q))
+        if (input->KeyState(System::Key::A) || input->KeyState(System::Key::Q))
         {
             if (_pattern == Trackball)
             {
@@ -336,7 +337,7 @@ void StandardCamera3d::Update(float runningTime)
                 _angles.Data[0] +=  _sensibilityRotate * 100 * runningTime;
             updateEye = true;
         }
-        if (WindowInput::KeyState(System::Key::D))
+        if (input->KeyState(System::Key::D))
         {
             if (_pattern == Trackball)
             {

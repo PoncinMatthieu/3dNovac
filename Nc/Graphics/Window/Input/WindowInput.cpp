@@ -31,9 +31,6 @@ using namespace Nc;
 using namespace Nc::Math;
 using namespace Nc::Graphic;
 
-bool        WindowInput::_keyStates[System::Key::Count];
-bool        WindowInput::_mouseButtonStates[System::Mouse::Count];
-
 WindowInput::WindowInput(Window *win) : _win(win)
 {
     _keyRepeat = true;
