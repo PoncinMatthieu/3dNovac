@@ -49,6 +49,7 @@
 
 #include <queue>
 #include "../../Define.h"
+#include "EventEmitter.h"
 
 namespace Nc
 {
@@ -189,38 +190,38 @@ namespace Nc
             /// Define a key evenement
             struct KeyEvent
             {
-                Key::Code Code;
-                bool      Alt;
-                bool      Control;
-                bool      Shift;
+                Key::Code code;
+                bool      alt;
+                bool      control;
+                bool      shift;
             };
 
             /// Define a mouse move evenement
             struct MouseMoveEvent
             {
-                int X;
-                int Y;
+                int x;
+                int y;
             };
 
             /// Define a mouse button evenement
             struct MouseButtonEvent
             {
-                Mouse::Button Button;
-                int           X;
-                int           Y;
+                Mouse::Button button;
+                int           x;
+                int           y;
             };
 
             /// Define a mouse weel event
             struct MouseWheelEvent
             {
-                int Delta;
+                int delta;
             };
 
             /// Define a size evenement (eg: for resize)
             struct SizeEvent
             {
-                unsigned int Width;
-                unsigned int Height;
+                unsigned int width;
+                unsigned int height;
             };
 
             /// Define the type of evenement
@@ -243,20 +244,21 @@ namespace Nc
                 Count // total number of event types
             };
 
-            EventType Type; // Type of the event
+            EventEmitter            *emitter;       ///< pointer to the emitter entity of the event
+            EventType               type;           ///< Type of the event
 
-            union
+            union                                   ///< union of datas
             {
-                KeyEvent            Key;
-                MouseMoveEvent      MouseMove;
-                MouseButtonEvent    MouseButton;
-                MouseWheelEvent     MouseWheel;
-                SizeEvent           Size;
-                void                *Data;
+                KeyEvent            key;
+                MouseMoveEvent      mouseMove;
+                MouseButtonEvent    mouseButton;
+                MouseWheelEvent     mouseWheel;
+                SizeEvent           size;
+                void                *data;
             };
 
-            Event() {}
-            Event(EventType type) {Type = type;}
+            Event() : emitter(NULL)                                             {}
+            Event(EventEmitter *emit, EventType t) : emitter(emit), type(t)     {}
 
             bool operator == (const Event &e);
         };

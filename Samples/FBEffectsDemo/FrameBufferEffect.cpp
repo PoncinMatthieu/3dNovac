@@ -5,10 +5,10 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace FBEffectsDemo;
 
-FrameBufferEffect::FrameBufferEffect()
-  : Effect(), _postProcessActivated(true)
+FrameBufferEffect::FrameBufferEffect(Graphic::Window *window)
+  : Effect(), _window(window), _postProcessActivated(true)
 {
-	_camera2d = new Camera2d();
+	_camera2d = new Camera2d(_window);
 
 	_postProcessMaterial = new ProgrammableMaterial("postProcessEffect", "Nc:Shader:postProcessEffect.vs", "Nc:Shader:postProcessEffect.fs");
 
@@ -51,7 +51,7 @@ FrameBufferEffect::~FrameBufferEffect()
 
 void	FrameBufferEffect::InitFbo1()
 {
-	Vector2ui size(Window::Width(), Window::Height());
+	Vector2ui size(_window->Width(), _window->Height());
 
 	LOG << "create coloreTexture" << std::endl;
 	GL::Texture colorTexture;

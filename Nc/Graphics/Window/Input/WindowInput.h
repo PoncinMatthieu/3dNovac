@@ -57,6 +57,9 @@ namespace Nc
                 /** Check the events of the input */
 				virtual void CheckEvents(){};
 
+                /** \return the attached window */
+                Window  *AttachedWindow() const                                             {return _win;}
+
                 /** Generate a resize event */
                 void GenereResizeEvent(unsigned int x, unsigned int y);
 
@@ -65,24 +68,24 @@ namespace Nc
 
                 // return input state
                 /** \return the mouse position with the top/left ref point */
-                static const Math::Vector2i &MousePosition()                                {return _mousePosition;}
+                const Math::Vector2i        &MousePosition()                                {return _mousePosition;}
 
                 /** \return the mouse position with the bottom/left ref point */
-                static Math::Vector2i       MousePositionInGLCoord();
+                Math::Vector2i              MousePositionInGLCoord();
 
                 /** \return true if the key is enabled */
-                static bool                 KeyState(System::Key::Code code)                {return _keyStates[code];}
+                bool                        KeyState(System::Key::Code code)                {return _keyStates[code];}
 
                 /** \return true if the mouse button is enabled */
-                static bool                 MouseButtonState(System::Mouse::Button code)    {return _mouseButtonStates[code];}
+                bool                        MouseButtonState(System::Mouse::Button code)    {return _mouseButtonStates[code];}
 
                 /** \return the corresponding char */
-                static char                 ToChar(System::Key::Code key);
+                char                        ToChar(System::Key::Code key);
 
             protected:
-                static bool             _keyStates[System::Key::Count];             ///< Store the key states
-                static bool             _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states
-                static Math::Vector2i   _mousePosition;                             ///< Store the current position of the mouse
+                bool                    _keyStates[System::Key::Count];             ///< Store the key states
+                bool                    _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states
+                Math::Vector2i          _mousePosition;                             ///< Store the current position of the mouse
                 bool                    _keyRepeat;                                 ///< true if the key are repeating
                 Window                  *_win;                                      ///< instance to the attached windows
         };

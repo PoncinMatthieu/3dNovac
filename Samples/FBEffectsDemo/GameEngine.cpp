@@ -45,7 +45,7 @@ void GameEngine::LoadContent()
   _graphic->GetSceneManager()->AddScene(_scene3d);
 
   // create the fb effect
-  _fbEffect = new FrameBufferEffect();
+  _fbEffect = new FrameBufferEffect(_graphic->GetWindow());
   _scene3d->AddChild(_fbEffect);
 
   // create the camera
@@ -79,8 +79,8 @@ void GameEngine::LoadContent()
   _camera->AddChild(_light);
 
   // creation de la gui avec le fps widget
-  _sceneGUI = new GUI::SceneGraph();
-  _sceneGUI->AddChild(new Camera2d());
+  _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
+  _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
   _sceneGUI->AddChild(new GUI::FPSWidget());
   _graphic->GetSceneManager()->AddScene(_sceneGUI);
 
@@ -95,7 +95,7 @@ void GameEngine::Update(float runningTime)
 
 void GameEngine::ManageWindowEvent(System::Event &event)
 {
-  if (event.Type == System::Event::Resized)
+  if (event.type == System::Event::Resized)
     _camera->Resized(event);
   MainEngine::ManageWindowEvent(event);
 }
@@ -104,16 +104,16 @@ void    GameEngine::KeyboardEvent(System::Event &event)
 {
   _camera->KeyboardEvent(event);
 
-  if (event.Type == System::Event::KeyPressed)
+  if (event.type == System::Event::KeyPressed)
     {
-      if (event.Key.Code == System::Key::Escape)
+      if (event.key.code == System::Key::Escape)
 	  Quit();
-      if (event.Key.Code == System::Key::Space)
+      if (event.key.code == System::Key::Space)
 	_fbEffect->TriggerPostProcessActivation();
-      if (event.Key.Code == System::Key::F2)        // bump mapping
+      if (event.key.code == System::Key::F2)        // bump mapping
 	_lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::BumpMapping);
 #ifdef _DEBUG
-      else if (event.Key.Code == System::Key::F1)        // draw les normal
+      else if (event.key.code == System::Key::F1)        // draw les normal
 	_lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::DisplayNormal);
 #endif
     }

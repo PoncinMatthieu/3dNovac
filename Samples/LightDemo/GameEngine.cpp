@@ -5,11 +5,11 @@
 #include <Nc/Graphics/Effect/DefaultLightingMaterial.h>
 #include <Nc/Contrib/Contrib.h>
 #include "GameEngine.h"
- 
-using namespace std; 
+
+using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic;
-using namespace LightDemo; 
+using namespace LightDemo;
 
 GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(graphic, manager)
@@ -34,7 +34,7 @@ void GameEngine::CreateWindow(Window *win)
     bool            fullscreen = false;
     unsigned long   pattern = Window::Titlebar | Window::Closeable | Window::Resizeable;
     Vector2ui       winSize(800, 600);
-	 
+
     if (fullscreen)
     {
         pattern |= Window::Fullscreen;
@@ -90,8 +90,8 @@ void GameEngine::LoadContent()
   lightEffect->AddChild(_sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
 
   // creation de la gui avec le fps widget
-  _sceneGUI = new GUI::SceneGraph();
-  _sceneGUI->AddChild(new Camera2d());
+  _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
+  _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
   _sceneGUI->AddChild(new GUI::FPSWidget());
   _graphic->GetSceneManager()->AddScene(_sceneGUI);
 
@@ -107,11 +107,11 @@ void GameEngine::Update(float runningTime)
 void GameEngine::ManageWindowEvent(System::Event &event)
 {
   bool send = true;
-  if (event.Type == System::Event::Resized)
+  if (event.type == System::Event::Resized)
     _camera->Resized(event);
-  if (event.Type == System::Event::KeyPressed)
+  if (event.type == System::Event::KeyPressed)
     {
-      if (event.Type == System::Event::KeyPressed && event.Key.Code == System::Key::Escape)
+      if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
 	Quit();
     }
   // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
@@ -122,12 +122,12 @@ void GameEngine::ManageWindowEvent(System::Event &event)
 void GameEngine::KeyboardEvent(System::Event &event)
 {
   _camera->KeyboardEvent(event);
-  if (event.Type == System::Event::KeyPressed)
+  if (event.type == System::Event::KeyPressed)
     {
-      if (event.Key.Code == System::Key::F2)        // bump mapping
+      if (event.key.code == System::Key::F2)        // bump mapping
         _lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::BumpMapping);
 #ifdef _DEBUG
-      else if (event.Key.Code == System::Key::F1)        // draw les normal
+      else if (event.key.code == System::Key::F1)        // draw les normal
         _lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::DisplayNormal);
 #endif
     }

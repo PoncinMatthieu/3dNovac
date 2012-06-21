@@ -135,23 +135,23 @@ void Button::Draw(Graphic::SceneGraph *scene)
 void Button::MouseButtonEvent(const System::Event &event)
 {
     bool inRect = false;
-    if (event.MouseButton.Button == System::Mouse::Left)
+    if (event.mouseButton.button == System::Mouse::Left)
     {
         // test si la souris est sur le bouton
         Vector2i pos;
         Vector2i size;
-        Vector2i mousePos = WindowInput::MousePositionInGLCoord();
+        Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
         GetReelPosRecursif(pos);
         GetReelSize(size);
         if (Math::InRect(pos, size, mousePos))
             inRect = true;
 
-        if (inRect && !_buttonPressed && event.Type == System::Event::MouseButtonPressed)
+        if (inRect && !_buttonPressed && event.type == System::Event::MouseButtonPressed)
         {
             _buttonPressed = true;
             _stateChanged = true;
         }
-        else if (_buttonPressed && event.Type == System::Event::MouseButtonReleased)
+        else if (_buttonPressed && event.type == System::Event::MouseButtonReleased)
         {
             if (inRect)
                 execHanle();

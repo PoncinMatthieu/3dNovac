@@ -40,8 +40,8 @@ Console::ListMsg::reverse_iterator  Console::_itCurrentMsg = Console::_listMsg.r
 Mutex                               Console::_mutexMsg;
 std::string							Console::_currentWritingMsg;
 
-Console::Console(Pattern p)
-    : WindowBox("Console", "Prototype"), _pattern(p)
+Console::Console(Window *attachedWindow, Pattern p)
+    : WindowBox("Console", "Prototype"), _pattern(p), _attachedWindow(attachedWindow)
 {
     unsigned short  percent = 15; // hauteur de la console en poucentage
 
@@ -50,8 +50,8 @@ Console::Console(Pattern p)
     _prompt = "[Main]> ";
     _engineName = "Main";
 
-    _size.Data[0] = Window::Width() - 1;
-    _size.Data[1] = ((float)(percent * Window::Height()) / 100.0) + _titleHeight;
+    _size.Data[0] = _attachedWindow->Width() - 1;
+    _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) + _titleHeight;
     _pos[0] = 1; // pour voir tous les bord de la console, on se decale de 1
 
     _labelPrompt = new WidgetLabeled(_prompt, 17, Left, Bottom, Vector2f(0, 0), Vector2f(0, 17), "Prototype");
@@ -110,8 +110,8 @@ void Console::Update()
     WindowBox::Update();
     // met a jour la taille de la console en fonction de la taille de la fenetre
     unsigned short  percent = 15; // hauteur de la console en poucentage
-    _size.Data[0] = Window::Width() - 1;
-    _size.Data[1] = ((float)(percent * Window::Height()) / 100.0) + _titleHeight;
+    _size.Data[0] = _attachedWindow->Width() - 1;
+    _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) + _titleHeight;
 
     // met a jour les string de message
     if ((_pattern == TranslateAtFocus && _focus) || (_pattern == Nop))
@@ -166,13 +166,13 @@ void Console::KeyboardEvent(const Event &event)
     static Utils::Unicode::UTF32    cmd;
     char                            c;
 
-    if (!_inhibit && event.Type == Event::KeyPressed)
+    if (!_inhibit && event.type == Event::KeyPressed)
     {
-        if (event.Key.Code == Key::Up || event.Key.Code == Key::Down)
+        if (event.key.code == Key::Up || event.key.code == Key::Down)
         {
             _mutexMsg.Lock();
             static Utils::Unicode::UTF32   lastcmd;
-            if (event.Key.Code == Key::Up)
+            if (event.key.code == Key::Up)
             {
                 if (_itCurrentMsg != _listMsg.rend())
                 {
@@ -194,7 +194,7 @@ void Console::KeyboardEvent(const Event &event)
                     }
                 }
             }
-            else if (event.Key.Code == Key::Down)
+            else if (event.key.code == Key::Down)
             {
                 if (_itCurrentMsg == _listMsg.rbegin())
                 {
@@ -224,11 +224,11 @@ void Console::KeyboardEvent(const Event &event)
             }
             _mutexMsg.Unlock();
         }
-        else if (event.Key.Code == Key::PageDown && _scroll > 0) // scroll
+        else if (event.key.code == Key::PageDown && _scroll > 0) // scroll
             _scroll--;
-        else if (event.Key.Code == Key::PageUp)
+        else if (event.key.code == Key::PageUp)
             _scroll++;
-        else if (event.Key.Code == Key::Return && !cmd.empty()) //execute la commande, et vide la string
+        else if (event.key.code == Key::Return && !cmd.empty()) //execute la commande, et vide la string
         {
             LOG << cmd << endl;
             ExecCmd(cmd.ToStdString());
@@ -241,7 +241,7 @@ void Console::KeyboardEvent(const Event &event)
             _labelPrompt->GetReelSize(sizeLabelPrompt);
             _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
         }
-        else if (event.Key.Code == Key::Back && !cmd.empty()) // suppression du dernier caractere
+        else if (event.key.code == Key::Back && !cmd.empty()) // suppression du dernier caractere
         {
             cmd.erase(cmd.end() - 1);
             _labelWrite->Label(cmd);
@@ -254,7 +254,7 @@ void Console::KeyboardEvent(const Event &event)
         }
         else    // sinon on peut recuperer le caractere et le push dans le label
         {
-            c = WindowInput::ToChar(event.Key.Code);
+            c = static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
             if (c == '\t' || (c >= ' ' && c <= '~'))      // ajout du caractere dans la string de commande
             {
                 cmd += c;

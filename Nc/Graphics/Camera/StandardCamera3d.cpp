@@ -95,8 +95,8 @@ const char *StandardCamera3d::XpmHandClose[] =
     "0,0"
 };
 
-StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, float nearD, float farD, float fielOfView, Pattern p)
-    : Camera3d(ratioAspect, nearD, farD, fielOfView),
+StandardCamera3d::StandardCamera3d(Window *attachedWindow, float ratioAspect, float nearD, float farD, float fielOfView, Pattern p)
+    : Camera3d(attachedWindow, ratioAspect, nearD, farD, fielOfView),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
       _angles(-90, -15)
@@ -104,9 +104,9 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, floa
     // create cursors
 	if (p != StandardCamera3d::Freefly)
 	{
-		_cursorOpen = win->NewCursor();
+		_cursorOpen = _window->NewCursor();
 		_cursorOpen->LoadFromXpm(XpmHandOpen);
-		_cursorClose = win->NewCursor();
+		_cursorClose = _window->NewCursor();
 		_cursorClose->LoadFromXpm(XpmHandClose);
 		_cursorOpen->Enable();
 	}
@@ -126,8 +126,8 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, floa
     MajEye();
 }
 
-StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
-    : Camera3d((float)win->Width()/(float)win->Height(), 0.1f, 1000.f, 70.f),
+StandardCamera3d::StandardCamera3d(Window *attachedWindow, Pattern p)
+    : Camera3d(attachedWindow, (float)attachedWindow->Width()/(float)attachedWindow->Height(), 0.1f, 1000.f, 70.f),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
       _angles(-90, -15)
@@ -135,9 +135,9 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
 	// create cursors
 	if (p != StandardCamera3d::Freefly)
 	{
-		_cursorOpen = win->NewCursor();
+		_cursorOpen = _window->NewCursor();
 		_cursorOpen->LoadFromXpm(XpmHandOpen);
-		_cursorClose = win->NewCursor();
+		_cursorClose = _window->NewCursor();
 		_cursorClose->LoadFromXpm(XpmHandClose);
 		_cursorOpen->Enable();
 	}
@@ -228,12 +228,12 @@ void StandardCamera3d::MouseMotionEvent(const System::Event &event)
     {
         if (_pattern == Turntable || _pattern == Freefly)
         {
-            _angles.Data[0] += (_lastPosMouse.Data[0] - event.MouseMove.X) * _sensibilityRotate;
-            _angles.Data[1] -= (_lastPosMouse.Data[1] - event.MouseMove.Y) * _sensibilityRotate;
+            _angles.Data[0] += (_lastPosMouse.Data[0] - event.mouseMove.x) * _sensibilityRotate;
+            _angles.Data[1] -= (_lastPosMouse.Data[1] - event.mouseMove.y) * _sensibilityRotate;
         }
         else
         {
-            MajTrackballPoint(event.MouseMove.X, event.MouseMove.Y);
+            MajTrackballPoint(event.mouseMove.x, event.mouseMove.y);
         }
 
         MajEye();
@@ -242,8 +242,8 @@ void StandardCamera3d::MouseMotionEvent(const System::Event &event)
             _lastSpherePoint = _currentSpherePoint;
         else
         {
-            _lastPosMouse.Data[0] = event.MouseMove.X;
-            _lastPosMouse.Data[1] = event.MouseMove.Y;
+            _lastPosMouse.Data[0] = event.mouseMove.x;
+            _lastPosMouse.Data[1] = event.mouseMove.y;
         }
 
 		if (_pattern == Freefly)
@@ -258,14 +258,14 @@ void StandardCamera3d::MouseButtonEvent(const System::Event &event)
     if (!_inhibitMovement)
     {
     // bouton gauche
-        if (event.MouseButton.Button == _mouveButton)
+        if (event.mouseButton.button == _mouveButton)
         {
-            if (!_stateButtonRight && event.Type == System::Event::MouseButtonPressed)
+            if (!_stateButtonRight && event.type == System::Event::MouseButtonPressed)
             {
                 if (_cursorClose != NULL) _cursorClose->Enable();
                 _stateButtonRight = true;
             }
-            else if (_stateButtonRight && event.Type == System::Event::MouseButtonReleased)
+            else if (_stateButtonRight && event.type == System::Event::MouseButtonReleased)
             {
                  if (_cursorOpen != NULL) _cursorOpen->Enable();
                 _stateButtonRight = false;
@@ -273,16 +273,17 @@ void StandardCamera3d::MouseButtonEvent(const System::Event &event)
 
             if (_pattern == Trackball)
             {
-                MajTrackballPoint(WindowInput::MousePosition().Data[0], WindowInput::MousePosition().Data[1]);
+                MajTrackballPoint(static_cast<WindowInput*>(event.emitter)->MousePosition().Data[0],
+                                  static_cast<WindowInput*>(event.emitter)->MousePosition().Data[1]);
                 _lastSpherePoint = _currentSpherePoint;
             }
             else
-                _lastPosMouse = WindowInput::MousePosition();
+                _lastPosMouse = static_cast<WindowInput*>(event.emitter)->MousePosition();
         }
     // molette
-        if (event.Type == System::Event::MouseWheelMoved)
+        if (event.type == System::Event::MouseWheelMoved)
         {
-            _distance -= event.MouseWheel.Delta * _sensibilityZoom;
+            _distance -= event.mouseWheel.delta * _sensibilityZoom;
             if (_distance < 1)
                 _distance = 1;
             else if (_distance > 100)
@@ -302,7 +303,8 @@ void StandardCamera3d::Update(float runningTime)
     if (!_inhibitMovement)
     {
         bool updateEye = false;
-		if (WindowInput::KeyState(System::Key::W) || WindowInput::KeyState(System::Key::Z))
+        WindowInput *input = _window->GetInput();
+		if (input->KeyState(System::Key::W) || input->KeyState(System::Key::Z))
         {
 			if (_pattern == Freefly)
 				_center += ((_center - _eye) * _moveSpeed * runningTime);
@@ -310,7 +312,7 @@ void StandardCamera3d::Update(float runningTime)
 				_center += ((_center - _eye) * _moveSpeed * runningTime);
             updateEye = true;
         }
-        if (WindowInput::KeyState(System::Key::S))
+        if (input->KeyState(System::Key::S))
         {
 			if (_pattern == Freefly)
 				_center -= ((_center - _eye) * _moveSpeed * runningTime);
@@ -318,7 +320,7 @@ void StandardCamera3d::Update(float runningTime)
             _center -= ((_center - _eye) * _moveSpeed * runningTime);
             updateEye = true;
         }
-        if (WindowInput::KeyState(System::Key::A) || WindowInput::KeyState(System::Key::Q))
+        if (input->KeyState(System::Key::A) || input->KeyState(System::Key::Q))
         {
             if (_pattern == Trackball)
             {
@@ -335,7 +337,7 @@ void StandardCamera3d::Update(float runningTime)
                 _angles.Data[0] +=  _sensibilityRotate * 100 * runningTime;
             updateEye = true;
         }
-        if (WindowInput::KeyState(System::Key::D))
+        if (input->KeyState(System::Key::D))
         {
             if (_pattern == Trackball)
             {
@@ -450,8 +452,8 @@ void StandardCamera3d::MajEye()
 void StandardCamera3d::MajTrackballPoint(int x, int y)
 {
     //set xy to -1/-1, 1/1 coord
-    _currentSpherePoint.Data[1] = ((float)x / (float)(Window::Width()/2.f)) - 1;
-    _currentSpherePoint.Data[2] = 1 - ((float)y / (float)(Window::Height()/2.f));
+    _currentSpherePoint.Data[1] = ((float)x / (float)(_window->Width()/2.f)) - 1;
+    _currentSpherePoint.Data[2] = 1 - ((float)y / (float)(_window->Height()/2.f));
     _currentSpherePoint.Data[0] = 1 - (_currentSpherePoint.Data[1] * _currentSpherePoint.Data[1]) - (_currentSpherePoint.Data[2] * _currentSpherePoint.Data[2]);
     _currentSpherePoint.Data[0] = (_currentSpherePoint.Data[0] > 0) ? sqrt(_currentSpherePoint.Data[0]) : 0;
 }

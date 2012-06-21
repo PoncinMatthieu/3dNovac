@@ -44,21 +44,24 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::SceneGraph, Nc::System::Object, Nc::GUI::SceneGraph);
 
             public:
-                SceneGraph();
+                SceneGraph(Graphic::Window *attachedWindow);
                 SceneGraph(const SceneGraph &scene);
                 SceneGraph &operator = (const SceneGraph &scene);
                 virtual ~SceneGraph();
 
-                virtual ISceneNode  *Clone() const      {return new SceneGraph(*this);}
+                virtual ISceneNode  *Clone() const              {return new SceneGraph(*this);}
+
+                /** \return the attached window */
+                Graphic::Window     *AttachedWindow() const     {return _attachedWindow;}
 
                 /** Return true if a widget is focused */
-                bool Focused()                          {return (_widgetFocused != NULL);}
+                bool Focused()                                  {return (_widgetFocused != NULL);}
                 /** Unfocus the current focuse widget */
-                void Unfocus()                          {if (_widgetFocused != NULL) _widgetFocused->Focus(false); _widgetFocused = NULL;}
+                void Unfocus()                                  {if (_widgetFocused != NULL) _widgetFocused->Focus(false); _widgetFocused = NULL;}
                 /** Unfocus the given widget */
-                void Unfocus(Widget *w)                 {w->Focus(false); _widgetFocused = NULL;}
+                void Unfocus(Widget *w)                         {w->Focus(false); _widgetFocused = NULL;}
                 /** Focus the given widget */
-                void Focus(Widget *w)                   {_widgetFocused = w; _widgetFocused->Focus(true);}
+                void Focus(Widget *w)                           {_widgetFocused = w; _widgetFocused->Focus(true);}
 
                 /** Manage the window events by dispatching the event to the good widget */
                 void ManageWindowEvent(const Nc::System::Event &event);
@@ -71,6 +74,7 @@ namespace Nc
 
             private:
                 Widget                  *_widgetFocused;    ///< the current focused widget
+                Graphic::Window         *_attachedWindow;   ///< the attached window
         };
     }
 }

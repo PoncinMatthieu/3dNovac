@@ -104,9 +104,9 @@ void LineEdit::Draw(Graphic::SceneGraph *scene)
 
 void LineEdit::KeyboardEvent(const System::Event &event)
 {
-    if (event.Type == System::Event::KeyPressed)
+    if (event.type == System::Event::KeyPressed)
     {
-        if (event.Key.Code == System::Key::Back && !_font->Text().empty()) // suppression du dernier caractere
+        if (event.key.code == System::Key::Back && !_font->Text().empty()) // suppression du dernier caractere
         {
             Utils::Unicode::UTF32 s = _font->Text();
             s.erase(s.end() - 1);
@@ -114,7 +114,7 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         }
         else
         {
-            UInt32 c = (UInt32)WindowInput::ToChar(event.Key.Code);
+            UInt32 c = (UInt32)static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
             if (c != '\0' && _font->Size().Data[0] + _font->GetCharSize(c).Data[0] < _size.Data[0]) // ajout du caractere dans la string)
             {
                 Utils::Unicode::UTF32 s = _font->Text();

@@ -29,9 +29,6 @@
 
 using namespace Nc;
 
-unsigned int    Graphic::Window::_width = 0;
-unsigned int    Graphic::Window::_height = 0;
-
 Graphic::Window::Window()
 	: _isCreate(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)
 {
@@ -39,6 +36,8 @@ Graphic::Window::Window()
     _depth = 24;
     _stencil = 8;
     _bitsPerPixel = 32;
+    _width = 0;
+    _height = 0;
 }
 
 Graphic::Window::~Window()

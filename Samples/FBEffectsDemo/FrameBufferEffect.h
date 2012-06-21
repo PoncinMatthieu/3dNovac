@@ -16,7 +16,7 @@ namespace FBEffectsDemo
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Nc::Graphic::Effect, Nc::System::Object, FBEffectDemo::FrameBufferEffect);
 
             public:
-                FrameBufferEffect();
+                FrameBufferEffect(Nc::Graphic::Window *window);
                 ~FrameBufferEffect();
 
                 virtual ISceneNode      *Clone() const		{return new FrameBufferEffect(*this);}
@@ -31,6 +31,8 @@ namespace FBEffectsDemo
                 void			InitFbo1();
 
             private:
+                Nc::Graphic::Window         *_window;
+
                 Nc::Graphic::GL::FrameBuffer		_fboPass1;
                 Nc::Graphic::Camera2d		*_camera2d;
                 Nc::Graphic::Sprite			*_sprite;

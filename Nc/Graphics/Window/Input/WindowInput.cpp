@@ -31,10 +31,6 @@ using namespace Nc;
 using namespace Nc::Math;
 using namespace Nc::Graphic;
 
-Vector2i    WindowInput::_mousePosition;
-bool        WindowInput::_keyStates[System::Key::Count];
-bool        WindowInput::_mouseButtonStates[System::Mouse::Count];
-
 WindowInput::WindowInput(Window *win) : _win(win)
 {
     _keyRepeat = true;
@@ -47,45 +43,46 @@ WindowInput::WindowInput(Window *win) : _win(win)
 
 void WindowInput::GenereResizeEvent(unsigned int x, unsigned int y)
 {
-    System::Event   e(System::Event::Resized);
-    e.Size.Width = x;
-    e.Size.Height = y;
+    System::Event   e(this, System::Event::Resized);
+    e.size.width = x;
+    e.size.height = y;
     GenereEvent(e);
 }
 
 void WindowInput::GenereEvent(const System::Event &e)
 {
-    switch (e.Type)
+    switch (e.type)
     {
         // Resize event
         case System::Event::Resized:
         {
-            _win->_width = e.Size.Width;
-            _win->_height = e.Size.Height;
+            _win->_width = e.size.width;
+            _win->_height = e.size.height;
             break;
         }
 
         // Mouse moved
         case System::Event::MouseMoved:
         {
-            _mousePosition.Data[0] = e.MouseMove.X;
-            _mousePosition.Data[1] = e.MouseMove.Y;
+            _mousePosition.Data[0] = e.mouseMove.x;
+            _mousePosition.Data[1] = e.mouseMove.y;
             break;
         }
 
-        case System::Event::KeyPressed:             _keyStates[e.Key.Code] = true;                          break;        // Key down event
-        case System::Event::KeyReleased:            _keyStates[e.Key.Code] = false;                         break;        // Key up event
-        case System::Event::MouseButtonPressed:     _mouseButtonStates[e.MouseButton.Button] = true;        break;        // Mouse button pressed
-        case System::Event::MouseButtonReleased:    _mouseButtonStates[e.MouseButton.Button] = false;       break;        // Mouse button released
+        case System::Event::KeyPressed:             _keyStates[e.key.code] = true;                          break;        // Key down event
+        case System::Event::KeyReleased:            _keyStates[e.key.code] = false;                         break;        // Key up event
+        case System::Event::MouseButtonPressed:     _mouseButtonStates[e.mouseButton.button] = true;        break;        // Mouse button pressed
+        case System::Event::MouseButtonReleased:    _mouseButtonStates[e.mouseButton.button] = false;       break;        // Mouse button released
         default:
             break;
     }
+
     PushEvent(e);
 }
 
 Vector2i WindowInput::MousePositionInGLCoord()
 {
-    return Vector2i(_mousePosition.Data[0], Window::Height() - _mousePosition.Data[1]);
+    return Vector2i(_mousePosition.Data[0], _win->Height() - _mousePosition.Data[1]);
 }
 
 char WindowInput::ToChar(System::Key::Code key)
