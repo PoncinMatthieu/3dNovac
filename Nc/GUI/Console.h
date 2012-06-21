@@ -52,7 +52,7 @@ namespace Nc
                 typedef std::list<Utils::Unicode::UTF32>    ListMsg;    ///< The list of message in UTF-32
 
             public:
-                Console(Graphic::Window *attachedWindow, Pattern p = TranslateAtFocus);
+                Console(Graphic::Window *attachedWindow, const std::string &engineName, Pattern p = TranslateAtFocus);
                 virtual ~Console();
 
                 /** Return the reel position of the console */

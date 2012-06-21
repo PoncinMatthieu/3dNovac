@@ -44,9 +44,9 @@ using namespace Nc::Graphic;
 
 double      Graphic::Engine::_elapsedTime = 0;
 
-Graphic::Engine::Engine(Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager)
-	: Engine::IEngine("Graphic Engine", manager, Nc::Engine::HasAContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
-      _sceneGraphManager(sceneGraphManager), _createWinFunction(func), _win(NULL), _context(NULL)
+Graphic::Engine::Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager)
+	: Engine::IEngine(manager, Nc::Engine::HasAContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
+      _sceneGraphManager(sceneGraphManager), _createWinFunction(func), _win(NULL), _context(NULL), _mainEngineClassName(mainEngineClassName)
 {
 }
 
@@ -64,7 +64,7 @@ void Graphic::Engine::CreateContext()
 #else
     _win = new XWindow();
 #endif
-    (static_cast<Nc::Engine::MainEngine*>(_manager->GetEngine("Main"))->*_createWinFunction)(_win);
+    (static_cast<Nc::Engine::MainEngine*>(_manager->GetEngine(_mainEngineClassName))->*_createWinFunction)(_win);
     _context = _win->CreateGLContext();
 
     // initialize opengl context

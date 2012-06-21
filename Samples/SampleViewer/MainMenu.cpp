@@ -59,6 +59,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
 
     Button *button = new Button("Start Sample", Center, Center, Vector2i(0,0), 20, 15, 8, "arial");
     selectSampleLayout->AddChild(button);
+    button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::StartSample);
 
     // create the sample window used to render the samples
@@ -66,25 +67,19 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     sampleWindowBox->DrawTitle(false);
     layout->AddChild(sampleWindowBox);
 
-    LOG << "plop7" << std::endl;
     // set the auto resizing
-LOG << *layout << std::endl;
     layout->Percent(Vector2f(100, 100));
-    LOG << "plop77" << std::endl;
     windowSelectSample->Percent(Vector2f(40, 0));
     selectSampleLayout->Percent(Vector2f(95, 100));
     selectSampleLayout->SetRatio(_comboBox, 65);
     _comboBox->Percent(Vector2f(95, 0));
     button->Percent(Vector2f(95, 0));
 
-    LOG << "plop8" << std::endl;
     layout->SetRatio(sampleWindowBox, 90);
     sampleWindowBox->Percent(Vector2f(80, 100));
 
     // create the fps widget on top of the main layout
     _GUI->AddChild(new FPSWidget(Right, Top));
-
-    LOG << "FIN" << std::endl;
 
     //_console = new GUI::Console();
     //_scene->AddChild(_console);

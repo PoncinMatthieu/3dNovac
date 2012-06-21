@@ -47,9 +47,6 @@ void GameEngine::LoadContent()
   _current = 0;
   CreateSplines1();  // splines et nurbs 1
   CreateSplines2();  // splines et nurbs 2
-
-    // no need to active/disable the context at each loop
-    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void	GameEngine::ManageWindowEvent(Nc::System::Event &event)
@@ -78,7 +75,6 @@ void GameEngine::KeyboardEvent(System::Event &event)
         }
         else if (event.key.code == System::Key::Up)
         {
-
             if (_spline1->Enabled())
             {
                 _spline1->Vertex(_current)[1] += 0.01f;

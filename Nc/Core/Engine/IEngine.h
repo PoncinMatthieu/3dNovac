@@ -68,7 +68,7 @@ namespace Nc
 
             public:
                 // constructeur et destructeur
-                IEngine(const std::string &name, Manager *manager, const Utils::Mask<Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority);
+                IEngine(Manager *manager, const Utils::Mask<Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority);
                 virtual ~IEngine();
 
                 /** Set the manager */

@@ -7,15 +7,15 @@ using namespace Nc;
 void CreateEngines(Nc::Engine::Manager &manager)
 {
 	// creation du graphicEngine
-	Graphic::Engine *graphicEngine = new Graphic::Engine(&manager, (Graphic::Engine::CreateWindowFunc)&FBEffectsDemo::GameEngine::CreateWindow);
+	Graphic::Engine *graphicEngine = new Graphic::Engine(FBEffectsDemo::GameEngine::ClassName(), &manager, (Graphic::Engine::CreateWindowFunc)&FBEffectsDemo::GameEngine::CreateWindow);
 	//graphicEngine->LimitFrameRate(60);
-	manager.AddEngine("Graphic", graphicEngine);
+	manager.AddEngine(graphicEngine);
 	LOG << "Creation of the " << *graphicEngine << "\t\tDONE" << std::endl;
 
 	// creation du gameEngine
 	FBEffectsDemo::GameEngine *gameEngine = new FBEffectsDemo::GameEngine(&manager, graphicEngine);
 	gameEngine->LimitFrameRate(60);
-	manager.AddEngine("Main", gameEngine);
+	manager.AddEngine(gameEngine);
 	LOG << "Creation of the " << *gameEngine << "\t\tDONE" << std::endl;
 }
 

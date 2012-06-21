@@ -12,6 +12,9 @@ namespace bSplinesDemo
 {
     class GameEngine : public Nc::Contrib::GameEngine
     {
+        public:
+            NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, bSplinesDemo::GameEngine);
+
      public:
       GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic);
       virtual ~GameEngine();

@@ -80,8 +80,8 @@ namespace Nc
                 Manager(const Utils::FileName &confFile = "");
                 virtual ~Manager();
 
-                /** Add an engine with his corresponding name */
-                virtual void            AddEngine(const std::string &name, IEngine *engine, const Permissions &permissions = Exit);
+                /** Add an engine */
+                virtual void            AddEngine(IEngine *engine, const Permissions &permissions = Exit);
                 /** Remove the engine with the given name, delete it if del is true */
                 virtual void            RemoveEngine(const std::string &name, bool del = true);
                 /** \return the corresponding engine */

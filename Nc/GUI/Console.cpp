@@ -40,15 +40,15 @@ Console::ListMsg::reverse_iterator  Console::_itCurrentMsg = Console::_listMsg.r
 Mutex                               Console::_mutexMsg;
 std::string							Console::_currentWritingMsg;
 
-Console::Console(Window *attachedWindow, Pattern p)
+Console::Console(Window *attachedWindow, const std::string &engineName, Pattern p)
     : WindowBox("Console", "Prototype"), _pattern(p), _attachedWindow(attachedWindow)
 {
     unsigned short  percent = 15; // hauteur de la console en poucentage
 
     _margin.Init(5, 5);
     _corner[1] = Bottom;
-    _prompt = "[Main]> ";
-    _engineName = "Main";
+    _prompt = "[" + engineName + "]> ";
+    _engineName = engineName;
 
     _size.Data[0] = _attachedWindow->Width() - 1;
     _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) + _titleHeight;

@@ -56,7 +56,7 @@ namespace Nc
                 typedef void (Nc::Engine::MainEngine::*CreateWindowFunc)(Window *win);
 
             public:
-                Engine(Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager = NULL);
+                Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager = NULL);
                 virtual ~Engine();
 
                 /** Load default content, like the DefaultMaterials */
@@ -93,6 +93,8 @@ namespace Nc
                 GLContext               *_context;              ///< The GL context used to render the scene with the scene graph manager
                 GL::State               _renderState;           ///< The render state associated to the rendering context
                 static double           _elapsedTime;           ///< Elapsed Time between 2 frame (in second)
+
+                std::string             _mainEngineClassName;   ///< name of the main engine
         };
     }
 }

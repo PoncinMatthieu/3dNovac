@@ -132,7 +132,7 @@ namespace Nc
                 typedef std::list<CmdString>                                ListCmdString;
 
             public:
-                EventManager(const std::string &name);
+                EventManager();
                 virtual ~EventManager();
 
                 /** Push an EventString (from console) without arg */
@@ -201,7 +201,7 @@ namespace Nc
         void EventString::NextArg(T &arg, const std::string delimit)
         {
             if (!Utils::Convert::SplitStringTo(args, delimit, arg))
-                throw Utils::Exception("RTypeEngine", "can't convert mobId");
+                throw Utils::Exception("EventString::NextArg", "Failed to get the next argument.");
         }
 
         template<typename T>
