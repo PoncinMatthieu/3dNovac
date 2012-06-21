@@ -51,7 +51,7 @@ namespace Nc
                 Widget &operator = (const Widget &w);
                 virtual ~Widget();
 
-                virtual ISceneNode  *Clone() const                              {return new Widget(*this);}
+                virtual ISceneNode      *Clone() const                          {return new Widget(*this);}
 
                 // update et affichage du widget
                 /** Manage the window event of the widget */
@@ -94,7 +94,7 @@ namespace Nc
 
                 /** \return the percent size property */
                 inline const Vector2f   &Percent() const                        {return _percent;}
-                /** Set the percent size. If the percent value is different of null, the widget will be resized with a proportion of his parent */
+                /** Set the percent size. If the percent value is different of null, the widget will be resized with a proportion of his parent. */
                 void                    Percent(const Vector2f &percent);
 
                 /** Return the position of the widget */

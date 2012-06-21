@@ -62,7 +62,7 @@ void GameEngine::LoadContent()
   _scene3d->AddChild(leffect);
 
   // creation de la map
-  _map = new Map("Nc:Root:Sokoban.map", _sceneNodeFormatManager);
+  _map = new Map("Nc:Ressources:Sokoban.map", _sceneNodeFormatManager);
   leffect->AddChild(_map);
 
   // centre la camera
@@ -93,7 +93,7 @@ void GameEngine::Update(float runningTime)
 void GameEngine::ManageWindowEvent(System::Event &event)
 {
   // resize the camera if needed
-  if (event.Type == System::Event::Resized)
+  if (event.type == System::Event::Resized)
     _camera->Resized(event);
   MainEngine::ManageWindowEvent(event);
 }
@@ -103,27 +103,27 @@ void    GameEngine::KeyboardEvent(System::Event &event)
   // send the events to the camera
   _camera->KeyboardEvent(event);
 
-  if (event.Type == System::Event::KeyPressed)
+  if (event.type == System::Event::KeyPressed)
     {
-      if (event.Key.Code == System::Key::Escape)
+      if (event.key.Code == System::Key::Escape)
 	  Quit();
-      if (event.Key.Code == System::Key::Up)
+      if (event.key.Code == System::Key::Up)
 	_map->MovePlayerUp();
-      if (event.Key.Code == System::Key::Down)
+      if (event.key.Code == System::Key::Down)
 	_map->MovePlayerDown();
-      if (event.Key.Code == System::Key::Right)
+      if (event.key.Code == System::Key::Right)
 	_map->MovePlayerRight();
-      if (event.Key.Code == System::Key::Left)
+      if (event.key.Code == System::Key::Left)
 	_map->MovePlayerLeft();
-      if (event.Key.Code == System::Key::F2)        // bump mapping
+      if (event.key.Code == System::Key::F2)        // bump mapping
 	_lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::BumpMapping);
 #ifdef _DEBUG
-      else if (event.Key.Code == System::Key::F1)        // draw les normal
+      else if (event.key.Code == System::Key::F1)        // draw les normal
 	_lightingMaterial->Pattern().Trigger(DefaultLightingMaterial::DisplayNormal);
 #endif
-      if (event.Key.Code == System::Key::PageUp)
+      if (event.key.Code == System::Key::PageUp)
 	_light->Matrix.AddTranslation(0,0,1);
-      if (event.Key.Code == System::Key::PageDown)
+      if (event.key.Code == System::Key::PageDown)
 	_light->Matrix.AddTranslation(0,0,-1);
     }
 }

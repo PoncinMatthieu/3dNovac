@@ -57,18 +57,18 @@ void MainEngine::ManageWindowEvents()
 
 void MainEngine::ManageWindowEvent(Nc::System::Event &event)
 {
-    if (event.Type == System::Event::Closed)
+    if (event.type == System::Event::Closed)
         Quit();
 
-    if (event.Type == System::Event::KeyPressed)
+    if (event.type == System::Event::KeyPressed)
         KeyboardEvent(event);
-    else if (event.Type == System::Event::KeyReleased)
+    else if (event.type == System::Event::KeyReleased)
         KeyboardEvent(event);
-    else if (event.Type == System::Event::MouseMoved)
+    else if (event.type == System::Event::MouseMoved)
         MouseMotionEvent(event);
-    else if (event.Type == System::Event::MouseButtonPressed ||
-             event.Type == System::Event::MouseButtonReleased ||
-             event.Type == System::Event::MouseWheelMoved)
+    else if (event.type == System::Event::MouseButtonPressed ||
+             event.type == System::Event::MouseButtonReleased ||
+             event.type == System::Event::MouseWheelMoved)
         MouseButtonEvent(event);
 }
 

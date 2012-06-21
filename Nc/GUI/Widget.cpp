@@ -194,14 +194,14 @@ void Widget::Draw(Graphic::SceneGraph *scene)
 
 void Widget::ManageWindowEvent(const Event &event)
 {
-    if (event.Type == Event::KeyPressed ||
-        event.Type == Event::KeyReleased)
+    if (event.type == Event::KeyPressed ||
+        event.type == Event::KeyReleased)
         KeyboardEvent(event);
-    else if (event.Type == Event::MouseMoved)
+    else if (event.type == Event::MouseMoved)
         MouseMotionEvent(event);
-    else if (event.Type == Event::MouseButtonPressed ||
-             event.Type == Event::MouseButtonReleased ||
-             event.Type == Event::MouseWheelMoved)
+    else if (event.type == Event::MouseButtonPressed ||
+             event.type == Event::MouseButtonReleased ||
+             event.type == Event::MouseWheelMoved)
         MouseButtonEvent(event);
     CheckFocus(event);
     if (_childFocused != NULL)
@@ -211,13 +211,13 @@ void Widget::ManageWindowEvent(const Event &event)
 void Widget::CheckFocus(const Event &event)
 {
     // testing focus childs
-    if (event.Type == Event::MouseButtonPressed && EnabledRecursif() && !InhibitedRecursif())
+    if (event.type == Event::MouseButtonPressed && EnabledRecursif() && !InhibitedRecursif())
     {
         // set the last child to had the focus
         Widget *lastchildToHaveTheFocus = _childFocused;
         _childFocused = NULL;
 
-        Vector2i mousePos = WindowInput::MousePositionInGLCoord();
+        Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
         Visitor::CheckFocus v(event, mousePos);
         for(ContainerType::iterator it = _childs.begin(); v.childFocused == NULL && it != _childs.end(); it++)
             v(**it);
@@ -231,21 +231,28 @@ void Widget::CheckFocus(const Event &event)
 
 void Widget::GetReelPos(Vector2i &reelPos) const
 {
-    Vector2i    reelSize;
-    Vector2i    parentSize(Window::Width(), Window::Height());
-    Vector2i    parentTranslate;
-    Vector2i    margin; // margin a 0, on prendra celui du parent s'il y en a un (margin interieur)
+    // margin a 0, on prendra celui du parent s'il y en a un (margin interieur)
+    Vector2i    reelSize, parentSize, parentTranslate, margin;
 
     GetReelSize(reelSize);
     reelPos = _pos;
 
     Visitor::GetParentWidget v(this);
     v(*this);
-    if (v.parent != NULL) // recup la size et le margin du parent
+    if (v.parent != NULL) // get the size of the widget parent
     {
         v.parent->GetReelSize(parentSize);
         margin = v.parent->_margin;
         v.parent->PosChild(this, parentTranslate);
+    }
+    else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph wich is supposed to be the parent of the widget at one point
+    {
+        Graphic::Window *win = v.parentSceneGraph->AttachedWindow();
+        parentSize.Init(win->Width(), win->Height());
+    }
+    else
+    {
+        throw Utils::Exception("Widget", "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
     }
 
     // check les corner en x
@@ -338,9 +345,18 @@ void Widget::Resized()
 
         Vector2i sizeParent;
         if (v.parent != NULL)
+        {
             v.parent->SizeChild(this, sizeParent);
+        }
+        else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph wich is supposed to be the parent of the widget at one point
+        {
+            Graphic::Window *win = v.parentSceneGraph->AttachedWindow();
+            sizeParent.Init(win->Width(), win->Height());
+        }
         else
-            sizeParent.Init(Window::Width(), Window::Height());
+        {
+            throw Utils::Exception("Widget", "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
+        }
 
         if (_percent[0] != 0)
             newSize[0] = ((float)(_percent[0] * sizeParent[0]) / 100.0);

@@ -47,39 +47,40 @@ WindowInput::WindowInput(Window *win) : _win(win)
 
 void WindowInput::GenereResizeEvent(unsigned int x, unsigned int y)
 {
-    System::Event   e(System::Event::Resized);
-    e.Size.Width = x;
-    e.Size.Height = y;
+    System::Event   e(this, System::Event::Resized);
+    e.size.Width = x;
+    e.size.Height = y;
     GenereEvent(e);
 }
 
 void WindowInput::GenereEvent(const System::Event &e)
 {
-    switch (e.Type)
+    switch (e.type)
     {
         // Resize event
         case System::Event::Resized:
         {
-            _win->_width = e.Size.Width;
-            _win->_height = e.Size.Height;
+            _win->_width = e.size.Width;
+            _win->_height = e.size.Height;
             break;
         }
 
         // Mouse moved
         case System::Event::MouseMoved:
         {
-            _mousePosition.Data[0] = e.MouseMove.X;
-            _mousePosition.Data[1] = e.MouseMove.Y;
+            _mousePosition.Data[0] = e.mouseMove.X;
+            _mousePosition.Data[1] = e.mouseMove.Y;
             break;
         }
 
-        case System::Event::KeyPressed:             _keyStates[e.Key.Code] = true;                          break;        // Key down event
-        case System::Event::KeyReleased:            _keyStates[e.Key.Code] = false;                         break;        // Key up event
-        case System::Event::MouseButtonPressed:     _mouseButtonStates[e.MouseButton.Button] = true;        break;        // Mouse button pressed
-        case System::Event::MouseButtonReleased:    _mouseButtonStates[e.MouseButton.Button] = false;       break;        // Mouse button released
+        case System::Event::KeyPressed:             _keyStates[e.key.Code] = true;                          break;        // Key down event
+        case System::Event::KeyReleased:            _keyStates[e.key.Code] = false;                         break;        // Key up event
+        case System::Event::MouseButtonPressed:     _mouseButtonStates[e.mouseButton.Button] = true;        break;        // Mouse button pressed
+        case System::Event::MouseButtonReleased:    _mouseButtonStates[e.mouseButton.Button] = false;       break;        // Mouse button released
         default:
             break;
     }
+
     PushEvent(e);
 }
 

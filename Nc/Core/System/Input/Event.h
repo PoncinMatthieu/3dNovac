@@ -49,6 +49,7 @@
 
 #include <queue>
 #include "../../Define.h"
+#include "EventEmitter.h"
 
 namespace Nc
 {
@@ -243,20 +244,21 @@ namespace Nc
                 Count // total number of event types
             };
 
-            EventType Type; // Type of the event
+            EventEmitter            *emitter;       ///< pointer to the emitter entity of the event
+            EventType               type;           ///< Type of the event
 
-            union
+            union                                   ///< union of datas
             {
-                KeyEvent            Key;
-                MouseMoveEvent      MouseMove;
-                MouseButtonEvent    MouseButton;
-                MouseWheelEvent     MouseWheel;
-                SizeEvent           Size;
-                void                *Data;
+                KeyEvent            key;
+                MouseMoveEvent      mouseMove;
+                MouseButtonEvent    mouseButton;
+                MouseWheelEvent     mouseWheel;
+                SizeEvent           size;
+                void                *data;
             };
 
-            Event() {}
-            Event(EventType type) {Type = type;}
+            Event() : emitter(NULL)                                             {}
+            Event(EventEmitter *emit, EventType t) : emitter(emit), type(t)     {}
 
             bool operator == (const Event &e);
         };

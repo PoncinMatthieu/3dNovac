@@ -30,21 +30,21 @@ using namespace Nc::System;
 
 bool Event::operator == (const Event &e)
 {
-    if (Type != e.Type)
+    if (type != e.type)
         return false;
-    switch (Type)
+    switch (type)
     {
         case KeyPressed:
         case KeyReleased:
-            return (Key.Code == e.Key.Code);
+            return (key.Code == e.key.Code);
         case MouseButtonReleased:
         case MouseButtonPressed:
-            return (MouseButton.Button == e.MouseButton.Button);
+            return (mouseButton.Button == e.mouseButton.Button);
         case MouseMoved:
-            return (MouseMove.X == e.MouseMove.X && MouseMove.Y == e.MouseMove.Y);
+            return (mouseMove.X == e.mouseMove.X && mouseMove.Y == e.mouseMove.Y);
         case MouseWheelMoved:
-            return (MouseWheel.Delta == e.MouseWheel.Delta);
+            return (mouseWheel.Delta == e.mouseWheel.Delta);
         default:
-            return (Size.Width == e.Size.Width && Size.Height == e.Size.Height);
+            return (size.Width == e.size.Width && size.Height == e.size.Height);
     }
 }

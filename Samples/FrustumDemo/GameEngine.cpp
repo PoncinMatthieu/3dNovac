@@ -51,8 +51,8 @@ void GameEngine::LoadContent()
     _scene3d = new SceneGraph();
 
     // creation de la camera
-    _camera = new StandardCamera3d(_graphic->GetWindow(), (Window::Width() / 2.f) / Window::Height(), 0.5, 40);
-    _camera->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
+    _camera = new StandardCamera3d(_graphic->GetWindow(), (_graphic->GetWindow()->Width() / 2.f) / _graphic->GetWindow()->Height(), 0.5, 40);
+    _camera->SetViewport(0, 0, _graphic->GetWindow()->Width() / 2.f, _graphic->GetWindow()->Height());
     _scene3d->AddChild(_camera);
 
     // chargement de la sky box
@@ -75,12 +75,12 @@ void GameEngine::LoadContent()
 
     // creation de la 2eme camera avec un autre viewport
     _camera2 = static_cast<StandardCamera3d*>(_camera->Clone());
-    _camera2->SetProjection((Window::Width() / 2.f) / Window::Height(), 0.1f, 1000, 70);
-    _camera2->SetViewport(Window::Width() / 2.f, 0, Window::Width() / 2.f, Window::Height());
+    _camera2->SetProjection((_graphic->GetWindow()->Width() / 2.f) / _graphic->GetWindow()->Height(), 0.1f, 1000, 70);
+    _camera2->SetViewport(_graphic->GetWindow()->Width() / 2.f, 0, _graphic->GetWindow()->Width() / 2.f, _graphic->GetWindow()->Height());
     _camera2->InibitMovement();
     _scene3d->AddChild(_camera2);
     // creation d'une troisieme camera pour fake la vue de l'octree
-    _camera3 = new StandardCamera3d(_graphic->GetWindow(), (Window::Width() / 2.f) / Window::Height(), 0.5, 40);
+    _camera3 = new StandardCamera3d(_graphic->GetWindow(), (_graphic->GetWindow()->Width() / 2.f) / _graphic->GetWindow()->Height(), 0.5, 40);
     _camera3->InibitMovement();
     _camera3->SetFixState(false);
     _camera3->DrawFrustum(true);
@@ -89,8 +89,8 @@ void GameEngine::LoadContent()
     _graphic->GetSceneManager()->AddScene(_scene3d);
 
     // creation de la gui avec le fps widget
-    _sceneGUI = new GUI::SceneGraph();
-    _sceneGUI->AddChild(new Camera2d());
+    _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
+    _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
     _sceneGUI->AddChild(new GUI::FPSWidget());
     _graphic->GetSceneManager()->AddScene(_sceneGUI);
 
@@ -117,15 +117,16 @@ void GameEngine::Update(float runningTime)
 void GameEngine::ManageWindowEvent(System::Event &event)
 {
     bool send = true;
-    if (event.Type == System::Event::Resized)
+    if (event.type == System::Event::Resized)
       {
-        _camera->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
-        _camera2->SetViewport(Window::Width() / 2.f, 0, Window::Width() / 2.f, Window::Height());
-        _camera3->SetViewport(0, 0, Window::Width() / 2.f, Window::Height());
+          Window *win = _graphic->GetWindow();
+        _camera->SetViewport(0, 0, win->Width() / 2.f, win->Height());
+        _camera2->SetViewport(win->Width() / 2.f, 0, win->Width() / 2.f, win->Height());
+        _camera3->SetViewport(0, 0, win->Width() / 2.f, win->Height());
       }
-    if (event.Type == System::Event::KeyPressed)
+    if (event.type == System::Event::KeyPressed)
     {
-        if (event.Type == System::Event::KeyPressed && event.Key.Code == System::Key::Escape)
+        if (event.type == System::Event::KeyPressed && event.key.Code == System::Key::Escape)
             Quit();
     }
     // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
@@ -136,9 +137,9 @@ void GameEngine::ManageWindowEvent(System::Event &event)
 void GameEngine::KeyboardEvent(System::Event &event)
 {
   _camera->KeyboardEvent(event);
-  if (event.Type == System::Event::KeyPressed)
+  if (event.type == System::Event::KeyPressed)
     {
-      if (event.Key.Code == System::Key::Space)
+      if (event.key.Code == System::Key::Space)
 	{
 	  Octree *oct = _entity->Data->As<Octree>();
 	  if (oct->DrawOutlines() == false)
@@ -158,12 +159,12 @@ void GameEngine::MouseButtonEvent(System::Event &event)
 
 void GameEngine::MouseMotionEvent(System::Event &event)
 {
-  if (_camera->InViewport(WindowInput::MousePositionInGLCoord()))
+  if (_camera->InViewport(WindowInput::MousePositionInGLCoord(_graphic->GetWindow()->Height())))
     _camera->UninibitMovement();
   else
     _camera->InibitMovement();
 
-  if (_camera2->InViewport(WindowInput::MousePositionInGLCoord()))
+  if (_camera2->InViewport(WindowInput::MousePositionInGLCoord(_graphic->GetWindow()->Height())))
     _camera2->UninibitMovement();
   else
     _camera2->InibitMovement();

@@ -47,7 +47,7 @@ namespace Nc
             \sa
                 - InputListener
         */
-        class LCORE Input
+        class LCORE Input : public EventEmitter
         {
             protected:
                 typedef std::list<InputListener*>               ListenerList;

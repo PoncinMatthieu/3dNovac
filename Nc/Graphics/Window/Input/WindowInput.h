@@ -57,6 +57,9 @@ namespace Nc
                 /** Check the events of the input */
 				virtual void CheckEvents(){};
 
+                /** \return the attached window */
+                Window  *AttachedWindow() const                                             {return _win;}
+
                 /** Generate a resize event */
                 void GenereResizeEvent(unsigned int x, unsigned int y);
 

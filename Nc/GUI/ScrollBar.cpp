@@ -126,19 +126,19 @@ void ScrollBar::MouseMotionEvent(const Nc::System::Event &event)
 {
     if (_buttonSliderPressed)
     {
-        float diff = (_orientation == Vertical) ? -(_lastPosMouse[1] - event.MouseMove.Y) : (event.MouseMove.X - _lastPosMouse[0]);
+        float diff = (_orientation == Vertical) ? -(_lastPosMouse[1] - event.mouseMove.Y) : (event.mouseMove.X - _lastPosMouse[0]);
 
         _position = GetPagePosition(GetSliderTranslation(_position) + diff);
 
-        _lastPosMouse[0] = event.MouseMove.X;
-        _lastPosMouse[1] = event.MouseMove.Y;
+        _lastPosMouse[0] = event.mouseMove.X;
+        _lastPosMouse[1] = event.mouseMove.Y;
         _stateChanged = true;
     }
 }
 
 void ScrollBar::MouseButtonEvent(const Nc::System::Event &event)
 {
-    if (event.MouseButton.Button == System::Mouse::Left)
+    if (event.mouseButton.Button == System::Mouse::Left)
     {
         MouseButtonLeft(event);
         MouseButtonRight(event);
@@ -151,7 +151,7 @@ void    ScrollBar::MouseButtonLeft(const Nc::System::Event &event)
     bool inRect = false;
     Vector2i pos;
     Vector2i size;
-    Vector2i mousePos = WindowInput::MousePositionInGLCoord();
+    Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
     GetReelPosRecursif(pos);
 
     if (_orientation == Vertical)
@@ -166,9 +166,9 @@ void    ScrollBar::MouseButtonLeft(const Nc::System::Event &event)
     if (Math::InRect(pos, size, mousePos))
         inRect = true;
 
-    if (inRect && !_buttonLeftPressed && event.Type == System::Event::MouseButtonPressed)
+    if (inRect && !_buttonLeftPressed && event.type == System::Event::MouseButtonPressed)
         _buttonLeftPressed = true;
-    else if (_buttonLeftPressed && event.Type == System::Event::MouseButtonReleased)
+    else if (_buttonLeftPressed && event.type == System::Event::MouseButtonReleased)
     {
         if (inRect && _position > 0)
         {
@@ -184,7 +184,7 @@ void    ScrollBar::MouseButtonRight(const Nc::System::Event &event)
     bool inRect = false;
     Vector2i pos;
     Vector2i size;
-    Vector2i mousePos = WindowInput::MousePositionInGLCoord();
+    Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
     GetReelPosRecursif(pos);
 
     if (_orientation == Vertical)
@@ -202,9 +202,9 @@ void    ScrollBar::MouseButtonRight(const Nc::System::Event &event)
     if (Math::InRect(pos, size, mousePos))
         inRect = true;
 
-    if (inRect && !_buttonRightPressed && event.Type == System::Event::MouseButtonPressed)
+    if (inRect && !_buttonRightPressed && event.type == System::Event::MouseButtonPressed)
         _buttonRightPressed = true;
-    else if (_buttonRightPressed && event.Type == System::Event::MouseButtonReleased)
+    else if (_buttonRightPressed && event.type == System::Event::MouseButtonReleased)
     {
         if (inRect && _position < _totalSize - _pageSize)
         {
@@ -220,7 +220,7 @@ void    ScrollBar::MouseButtonSlider(const Nc::System::Event &event)
     bool inRect = false;
     Vector2i pos;
     Vector2i size;
-    Vector2i mousePos = WindowInput::MousePositionInGLCoord();
+    Vector2i mousePos = WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
     GetReelPosRecursif(pos);
 
     if (_orientation == Vertical)
@@ -239,12 +239,12 @@ void    ScrollBar::MouseButtonSlider(const Nc::System::Event &event)
     if (Math::InRect(pos, size, mousePos))
         inRect = true;
 
-    if (inRect && !_buttonSliderPressed && event.Type == System::Event::MouseButtonPressed)
+    if (inRect && !_buttonSliderPressed && event.type == System::Event::MouseButtonPressed)
     {
         _lastPosMouse = WindowInput::MousePosition();
         _buttonSliderPressed = true;
     }
-    else if (_buttonSliderPressed && event.Type == System::Event::MouseButtonReleased)
+    else if (_buttonSliderPressed && event.type == System::Event::MouseButtonReleased)
     {
         _buttonSliderPressed = false;
     }

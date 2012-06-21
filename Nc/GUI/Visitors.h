@@ -30,6 +30,7 @@
 #include "Define.h"
 #include "WidgetVisitor.h"
 #include "WindowBox.h"
+#include "SceneGraph.h"
 
 namespace Nc
 {
@@ -102,12 +103,14 @@ namespace Nc
                 Widget                      *childFocused;
             };
 
+
+            /// Visitor allowing to retreive either the widget parent of the given widget or to retreive the scene graph if no widget parent has been found
             struct LGUI GetParentWidget : public WidgetVisitor<GetParentWidget, true>
             {
                 GetParentWidget(const Widget *w)
-                    : WidgetVisitor<GetParentWidget, true>( Utils::Metaprog::Seq<Widget>::Type(),
+                    : WidgetVisitor<GetParentWidget, true>( Utils::Metaprog::Seq<Widget, SceneGraph>::Type(),
                                                                         Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type(), Graph::VisitParents),
-                      widget(w), parent(NULL)
+                      widget(w), parent(NULL), parentSceneGraph(NULL)
                     {}
 
                 void VisitNode(const Widget &w)
@@ -116,8 +119,15 @@ namespace Nc
                         parent = &w;
                 }
 
-                const Widget    *widget;
-                const Widget    *parent;
+                void VisitNode(const SceneGraph &s)
+                {
+                    if (parentSceneGraph == NULL)
+                        parentSceneGraph = &s;
+                }
+
+                const Widget        *widget;
+                const Widget        *parent;
+                const SceneGraph    *parentSceneGraph;
             };
 
             struct LGUI ChangeStates : public WidgetVisitor<ChangeStates>

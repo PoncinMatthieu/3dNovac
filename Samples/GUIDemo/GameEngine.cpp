@@ -41,14 +41,14 @@ void GameEngine::LoadContent()
   AddInput(_graphic->GetWindow()->GetInput());
 
   // creation de la scene
-  _sceneGUI = new GUI::SceneGraph();
+  _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
   _graphic->GetSceneManager()->AddScene(_sceneGUI);
-  _sceneGUI->AddChild(new Camera2d());
+  _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
 
   // GUI :
   _menu = new MainMenu(_sceneGUI);
   _sceneGUI->AddChild(new GUI::FPSWidget());
-  _console = new GUI::Console();
+  _console = new GUI::Console(_graphic->GetWindow());
   _sceneGUI->AddChild(_console);
 
 
@@ -63,11 +63,11 @@ void GameEngine::Update(float)
 void GameEngine::ManageWindowEvent(System::Event &event)
 {
   bool send = true;
-  if (event.Type == System::Event::KeyPressed)
+  if (event.type == System::Event::KeyPressed)
     {
-      if (event.Type == System::Event::KeyPressed && event.Key.Code == System::Key::Escape)
+      if (event.type == System::Event::KeyPressed && event.key.Code == System::Key::Escape)
 	Quit();
-      else if (event.Key.Code == System::Key::Tilde) // Tilde pour afficher/cacher la console
+      else if (event.key.Code == System::Key::Tilde) // Tilde pour afficher/cacher la console
 	{
 	  if (!_console->Focus())
 	    {

@@ -56,7 +56,7 @@ void	GameEngine::Update(float runningTime)
 void	GameEngine::ManageWindowEvent(System::Event &event)
 {
   // resize the camera if needed
-  if (event.Type == System::Event::Resized)
+  if (event.type == System::Event::Resized)
     _camera->Resized(event);
   MainEngine::ManageWindowEvent(event);
 }

@@ -31,9 +31,9 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-SceneGraph::SceneGraph()
+SceneGraph::SceneGraph(Graphic::Window *attachedWindow)
     : Graphic::SceneGraph(true),
-      _widgetFocused(NULL)
+      _widgetFocused(NULL), _attachedWindow(attachedWindow)
 {
 }
 
@@ -67,7 +67,7 @@ void SceneGraph::BringToFront(Widget *w)
 void SceneGraph::ManageWindowEvent(const System::Event &event)
 {
 // update en cas de resize de la fenetre
-    if (event.Type == System::Event::Resized)
+    if (event.type == System::Event::Resized)
     {
         if (_currentCamera != NULL)
             _currentCamera->Resized(event);
@@ -77,11 +77,11 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
     }
 
 // test de focus
-    if (event.Type == System::Event::MouseButtonPressed)
+    if (event.type == System::Event::MouseButtonPressed)
     {
         Widget *lastWidgetToHaveTheFocus = _widgetFocused;
         _widgetFocused = NULL;
-        Vector2i mousePos = Graphic::WindowInput::MousePositionInGLCoord();
+        Vector2i mousePos = Graphic::WindowInput::MousePositionInGLCoord(static_cast<Graphic::WindowInput*>(event.emitter)->AttachedWindow()->Height());
         for(ContainerType::reverse_iterator it = _childs.rbegin(); _widgetFocused == NULL && it != _childs.rend(); it++)
         {
             Widget *w = (*it)->AsWithoutThrow<Widget>();

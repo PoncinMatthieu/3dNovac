@@ -80,8 +80,8 @@ void GameEngine::LoadContent()
 void GameEngine::CreateGUI()
 {
     // creation de la gui avec le fps widget
-    _sceneGUI = new GUI::SceneGraph();
-    _sceneGUI->AddChild(new Camera2d());
+    _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
+    _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
     _sceneGUI->AddChild(new GUI::FPSWidget());
     _graphic->GetSceneManager()->AddScene(_sceneGUI);
 }
@@ -94,11 +94,11 @@ void GameEngine::Update(float runningTime)
 void GameEngine::ManageWindowEvent(System::Event &event)
 {
     bool send = true;
-    if (event.Type == System::Event::Resized)
+    if (event.type == System::Event::Resized)
         _camera->Resized(event);
-    if (event.Type == System::Event::KeyPressed)
+    if (event.type == System::Event::KeyPressed)
     {
-        if (event.Type == System::Event::KeyPressed && event.Key.Code == System::Key::Escape)
+        if (event.type == System::Event::KeyPressed && event.key.Code == System::Key::Escape)
             Quit();
     }
     // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
@@ -110,9 +110,9 @@ void GameEngine::KeyboardEvent(System::Event &event)
 {
     _camera->KeyboardEvent(event);
 
-    if (event.Type == System::Event::KeyPressed)
+    if (event.type == System::Event::KeyPressed)
     {
-        if (event.Key.Code == System::Key::Space)
+        if (event.key.Code == System::Key::Space)
         {
             if (_particleEffect->Paused())
                 _particleEffect->Restart();
