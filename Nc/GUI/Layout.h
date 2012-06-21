@@ -61,14 +61,25 @@ namespace Nc
                 /** Set the pattern of the layout */
                 inline void         SetPattern(Pattern p)                       {_pattern = p;}
 
-                /** Set the given ratio for the given child */
-                void                SetRatio(Widget *child, float ratio);
+                /**
+                    Set the given \p ratio for the given \p child.
+                    The layout will try to expand the child as much as possible according to the size of the other widgets.
+                */
+                void                SetExpandRatio(Widget *child, float ratio);
 
             protected:
                 /** \return the translation information to position childs */
                 virtual void        PosChild(const Widget *child, Vector2i &v) const;
                 /** \return the size that the child should use to set up it's percent size */
-                virtual void        SizeChild(const Widget *, Vector2i &size) const;
+                virtual void        SizeChild(const Widget *child, Vector2i &size) const;
+
+                virtual void        PosChildHorizontal(const Widget *child, Vector2i &v, const Vector2i &reelSize, int childCount, int childNumber) const;
+                virtual void        PosChildVertical(const Widget *child, Vector2i &v, const Vector2i &reelSize, int childCount, int childNumber) const;
+
+                virtual void        SizeChildHorizontal(const Widget *child, Vector2i &size) const;
+                virtual void        SizeChildVertical(const Widget *child, Vector2i &size) const;
+
+                Vector2i            GetSizeMax(const Widget *child, const Vector2i &size) const;
 
             private:
                 Pattern         _pattern;
