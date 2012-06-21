@@ -68,7 +68,7 @@ namespace Nc
                 static const Math::Vector2i &MousePosition()                                {return _mousePosition;}
 
                 /** \return the mouse position with the bottom/left ref point */
-                static Math::Vector2i       MousePositionInGLCoord();
+                static Math::Vector2i       MousePositionInGLCoord(unsigned int windowHeight);
 
                 /** \return true if the key is enabled */
                 static bool                 KeyState(System::Key::Code code)                {return _keyStates[code];}

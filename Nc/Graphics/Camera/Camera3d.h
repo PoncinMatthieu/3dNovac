@@ -48,7 +48,7 @@ namespace Nc
 
             public:
 				// /!\ near et far sont des define windows provenant de windef.h, ne pas changer le nom nearf en near !
-                Camera3d(float ratioAspect, float nearf, float farf, float fieldOfView);
+                Camera3d(Window *attachedWindow, float ratioAspect, float nearf, float farf, float fieldOfView);
                 virtual ~Camera3d() {};
 
                 /** Set the projection parameters */

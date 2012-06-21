@@ -29,6 +29,12 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
+Camera::Camera(Window *attachedWindow, bool is2d)
+    : Object(), _window(attachedWindow), _resized(true), _setAsCurrentCamera(true), _fix(true), _is2d(is2d), _useWindowSizeForViewport(true)
+{
+}
+
+
 void    Camera::SetViewport(unsigned int viewportX, unsigned int viewportY, unsigned int viewportWidth, unsigned int viewportHeight)
 {
     _useWindowSizeForViewport = false;
@@ -47,8 +53,8 @@ void    Camera::Fix(SceneGraph *scene)
         {
             _viewportX = 0;
             _viewportY = 0;
-            _viewportWidth = Window::Width();
-            _viewportHeight = Window::Height();
+            _viewportWidth = _window->Width();
+            _viewportHeight = _window->Height();
         }
         _resized = false;
         UpdateProjection(scene);

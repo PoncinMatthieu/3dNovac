@@ -49,8 +49,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Camera);
 
             public:
-                Camera(bool is2d)
-                    : Object(), _resized(true), _setAsCurrentCamera(true), _fix(true), _is2d(is2d), _useWindowSizeForViewport(true)  {}
+                Camera(Window *attachedWindow, bool is2d);
                 virtual ~Camera() {}
 
                 /** Clone the camera */
@@ -117,6 +116,8 @@ namespace Nc
                 virtual void            Render(SceneGraph *scene);
 
             protected:
+                Window                  *_window;                   ///< pointer to the attached window
+
                 bool                    _resized;                   ///< resize statement
                 bool                    _setAsCurrentCamera;        ///< if false, the camera will not be set has current camera at the rendering
                 bool                    _fix;                       ///< if false, the camera will not be fixed at the rendering

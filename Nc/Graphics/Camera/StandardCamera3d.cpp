@@ -95,8 +95,8 @@ const char *StandardCamera3d::XpmHandClose[] =
     "0,0"
 };
 
-StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, float nearD, float farD, float fielOfView, Pattern p)
-    : Camera3d(ratioAspect, nearD, farD, fielOfView),
+StandardCamera3d::StandardCamera3d(Window *attachedWindow, float ratioAspect, float nearD, float farD, float fielOfView, Pattern p)
+    : Camera3d(attachedWindow, ratioAspect, nearD, farD, fielOfView),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
       _angles(-90, -15)
@@ -104,9 +104,9 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, floa
     // create cursors
 	if (p != StandardCamera3d::Freefly)
 	{
-		_cursorOpen = win->NewCursor();
+		_cursorOpen = _window->NewCursor();
 		_cursorOpen->LoadFromXpm(XpmHandOpen);
-		_cursorClose = win->NewCursor();
+		_cursorClose = _window->NewCursor();
 		_cursorClose->LoadFromXpm(XpmHandClose);
 		_cursorOpen->Enable();
 	}
@@ -126,8 +126,8 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, float ratioAspect, floa
     MajEye();
 }
 
-StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
-    : Camera3d((float)win->Width()/(float)win->Height(), 0.1f, 1000.f, 70.f),
+StandardCamera3d::StandardCamera3d(Window *attachedWindow, Pattern p)
+    : Camera3d(attachedWindow, (float)attachedWindow->Width()/(float)attachedWindow->Height(), 0.1f, 1000.f, 70.f),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
       _angles(-90, -15)
@@ -135,9 +135,9 @@ StandardCamera3d::StandardCamera3d(Graphic::Window *win, Pattern p)
 	// create cursors
 	if (p != StandardCamera3d::Freefly)
 	{
-		_cursorOpen = win->NewCursor();
+		_cursorOpen = _window->NewCursor();
 		_cursorOpen->LoadFromXpm(XpmHandOpen);
-		_cursorClose = win->NewCursor();
+		_cursorClose = _window->NewCursor();
 		_cursorClose->LoadFromXpm(XpmHandClose);
 		_cursorOpen->Enable();
 	}
@@ -450,8 +450,8 @@ void StandardCamera3d::MajEye()
 void StandardCamera3d::MajTrackballPoint(int x, int y)
 {
     //set xy to -1/-1, 1/1 coord
-    _currentSpherePoint.Data[1] = ((float)x / (float)(Window::Width()/2.f)) - 1;
-    _currentSpherePoint.Data[2] = 1 - ((float)y / (float)(Window::Height()/2.f));
+    _currentSpherePoint.Data[1] = ((float)x / (float)(_window->Width()/2.f)) - 1;
+    _currentSpherePoint.Data[2] = 1 - ((float)y / (float)(_window->Height()/2.f));
     _currentSpherePoint.Data[0] = 1 - (_currentSpherePoint.Data[1] * _currentSpherePoint.Data[1]) - (_currentSpherePoint.Data[2] * _currentSpherePoint.Data[2]);
     _currentSpherePoint.Data[0] = (_currentSpherePoint.Data[0] > 0) ? sqrt(_currentSpherePoint.Data[0]) : 0;
 }

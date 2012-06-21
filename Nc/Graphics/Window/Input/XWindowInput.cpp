@@ -160,7 +160,7 @@ void XWindowInput::ProcessEvent(XEvent &event)
         // Resize event
         case ConfigureNotify :
         {
-            if ((event.xconfigure.width != static_cast<int>(_win->_width)) || (event.xconfigure.height != static_cast<int>(_win->_height)))
+            if ((event.xconfigure.width != static_cast<int>(_win->Width())) || (event.xconfigure.height != static_cast<int>(_win->Height())))
             {
                 Event e(Event::Resized);
                 e.Size.Width = event.xconfigure.width;

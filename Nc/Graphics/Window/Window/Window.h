@@ -81,13 +81,13 @@ namespace Nc
                 virtual void                    Resize(unsigned int width, unsigned int height) = 0;
 
                 /** \return the width of the window */
-                static inline unsigned int		Width()                 {return _width;}
+                inline unsigned int		        Width() const           {return _width;}
 
                 /** \return the height of the window */
-                static inline unsigned int		Height()                {return _height;}
+                inline unsigned int		        Height() const          {return _height;}
 
                 /** Set the window size */
-                static inline void              ResetSize(unsigned int width, unsigned int height)  {_width = width; _height = height;}
+                inline void                     ResetSize(unsigned int width, unsigned int height)      {_width = width; _height = height;}
 
                 /** Return the window input associated */
                 inline WindowInput              *GetInput()             {return _input;}                // get a pointer to a Windowinput who manage the inputs of a window
@@ -118,11 +118,11 @@ namespace Nc
 
             protected:
                 bool                    _isCreate;          ///< true if the window has been created
-                static unsigned int     _width;             ///< the width of the window (shouldn't be static if we want a multi-window managing)
-                static unsigned int     _height;            ///< the height of the window (shouldn't be static if we want a multi-window managing)
+                unsigned int            _width;             ///< the width of the window
+                unsigned int            _height;            ///< the height of the window
                 GLContext               *_context;          ///< the associated OpenGL context
                 WindowInput             *_input;            ///< the window input associated
-                bool                    _own;               ///< false if the window use an existing window (Created with the method UseExistingWindow) */
+                bool                    _own;               ///< false if the window use an existing window (Created with the method UseExistingWindow)
                 unsigned int            _antialiasingLevel; ///< the antialising level of the window
                 unsigned int			_depth;				///< number of bits of the depth buffer
                 unsigned int			_stencil;			///< number of bits of the pixel buffer

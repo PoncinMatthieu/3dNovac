@@ -83,9 +83,9 @@ void WindowInput::GenereEvent(const System::Event &e)
     PushEvent(e);
 }
 
-Vector2i WindowInput::MousePositionInGLCoord()
+Vector2i WindowInput::MousePositionInGLCoord(unsigned int windowHeight)
 {
-    return Vector2i(_mousePosition.Data[0], Window::Height() - _mousePosition.Data[1]);
+    return Vector2i(_mousePosition.Data[0], windowHeight - _mousePosition.Data[1]);
 }
 
 char WindowInput::ToChar(System::Key::Code key)
