@@ -13,7 +13,7 @@ void CreateEngines(Nc::Engine::Manager &manager)
   LOG << "Creation of the " << *graphicEngine << "\t\tDONE" << std::endl;
 
   // creation du gameEngine
-  SokobanDemo::GameEngine *gameEngine = new SokobanDemo::GameEngine(&manager, graphicEngine);
+  SokobanDemo::GameEngine *gameEngine = new SokobanDemo::GameEngine(&manager);
   gameEngine->LimitFrameRate(60);
   manager.AddEngine(gameEngine);
   LOG << "Creation of the " << *gameEngine << "\t\tDONE" << std::endl;

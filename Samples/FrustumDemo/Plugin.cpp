@@ -3,7 +3,7 @@
 
 extern "C" Nc::Contrib::GameEngine	*GetPlugin()
 {
-  FrustumDemo::GameEngine *game = new FrustumDemo::GameEngine(NULL, NULL);
+  FrustumDemo::GameEngine *game = new FrustumDemo::GameEngine(NULL);
   game->LimitFrameRate(60);
   return game;
 }

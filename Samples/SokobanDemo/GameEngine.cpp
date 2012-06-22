@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace SokobanDemo;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager, Graphic::Engine *graphic)
-  : Nc::Contrib::GameEngine(graphic, manager)
+GameEngine::GameEngine(Nc::Engine::Manager *manager)
+  : Nc::Contrib::GameEngine(manager)
 {
 }
 
@@ -22,7 +22,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-  _graphic->GetSceneManager()->RemoveScene(_scene3d);
   delete _scene3d;
   delete _lightingMaterial;
 }
@@ -31,18 +30,19 @@ void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 {
   // create the window
   win->Create("Sokoban", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
+  SetWindow(win);
 }
 
 void GameEngine::LoadContent()
 {
   // add the window Input to the Inputs of the engine
-  AddInput(_graphic->GetWindow()->GetInput());
+  AddInput(_window->GetInput());
 
   // create the camera, scene and set it to the SceneGraphManager of the Graphic engine
-  _camera = new StandardCamera3d(_graphic->GetWindow());
+  _camera = new StandardCamera3d(_window);
   _scene3d = new SceneGraph();
   _scene3d->AddChild(_camera);
-  _graphic->GetSceneManager()->AddScene(_scene3d);
+  _window->GetSceneManager()->AddScene(_scene3d);
 
   // chargement de la sky box
   Utils::FileName filenamesSky1[6] =

@@ -30,6 +30,7 @@
 #include <Nc/Core/Engine/Manager.h>
 #include <Nc/Graphics/Engine.h>
 #include <Nc/Core/Engine/MainEngine.h>
+#include <Nc/Graphics/Scene/SceneGraphManager.h>
 
 namespace Nc
 {
@@ -42,24 +43,20 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::MainEngine, Nc::Contrib::GameEngine);
 
             public:
-                GameEngine(Graphic::Engine *graphic, Engine::Manager *manager)
-                    : Engine::MainEngine(manager), _graphic(graphic), _context(NULL)    {}
+                GameEngine(Engine::Manager *manager)
+                    : Engine::MainEngine(manager), _context(NULL)                       {}
                 virtual ~GameEngine()                                                   {delete _context;}
-
-                /** Set the graphic engine */
-                void            SetGraphicEngine(Graphic::Engine *graphic)              {_graphic = graphic;}
 
                 /** To setup the window from the sample viewer */
                 void            SetWindow(Nc::Graphic::Window *win)                     {_window = win;}
 
             protected:
                 /** Create the shared ogl context */
-                virtual void    CreateContext()     {_context = _graphic->CreateSharedContext();}
+                virtual void    CreateContext()     {_context = _window->CreateSharedContext();}
                 virtual void    ActiveContext()     {if (_context != NULL) _context->Active();}
                 virtual void    DisableContext()    {if (_context != NULL) _context->Disable();}
 
             protected:
-                Graphic::Engine     *_graphic;      ///< instance of the graphic engine
                 Graphic::Window     *_window;       ///< instance of the window used to render
                 Graphic::GLContext  *_context;      ///< instance of the context shared with the context of the graphic engine
         };

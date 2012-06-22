@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace FBEffectsDemo;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager, Graphic::Engine *graphic)
-  : Nc::Contrib::GameEngine(graphic, manager)
+GameEngine::GameEngine(Nc::Engine::Manager *manager)
+  : Nc::Contrib::GameEngine(manager)
 {
 }
 
@@ -22,8 +22,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-  _graphic->GetSceneManager()->RemoveScene(_scene3d);
-  _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
   delete _sceneGUI;
   delete _scene3d;
   delete _lightingMaterial;
@@ -31,25 +29,26 @@ void GameEngine::ReleaseContent()
 
 void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 {
-  // create the window
-  win->Create("FBEffects", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
+    // create the window
+    win->Create("FBEffects", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
+    SetWindow(win);
 }
 
 void GameEngine::LoadContent()
 {
   // add the window Input to the Inputs of the engine
-  AddInput(_graphic->GetWindow()->GetInput());
+  AddInput(_window->GetInput());
 
   // create the scene
   _scene3d = new SceneGraph();
-  _graphic->GetSceneManager()->AddScene(_scene3d);
+  _window->GetSceneManager()->AddScene(_scene3d);
 
   // create the fb effect
-  _fbEffect = new FrameBufferEffect(_graphic->GetWindow());
+  _fbEffect = new FrameBufferEffect(_window);
   _scene3d->AddChild(_fbEffect);
 
   // create the camera
-  _camera = new StandardCamera3d(_graphic->GetWindow());
+  _camera = new StandardCamera3d(_window);
   Utils::FileName filenamesSky1[6] =
     {
       ("Nc:Image:sky/space_lf.png"),
@@ -79,10 +78,10 @@ void GameEngine::LoadContent()
   _camera->AddChild(_light);
 
   // creation de la gui avec le fps widget
-  _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
-  _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
+  _sceneGUI = new GUI::SceneGraph(_window);
+  _sceneGUI->AddChild(new Camera2d(_window));
   _sceneGUI->AddChild(new GUI::FPSWidget());
-  _graphic->GetSceneManager()->AddScene(_sceneGUI);
+  _window->GetSceneManager()->AddScene(_sceneGUI);
 
     // no need to active/disable the context at each loop
 //    _pattern.Disable(Nc::Engine::HasAContext);

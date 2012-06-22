@@ -12,8 +12,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace FrustumDemo;
 
-GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(graphic, manager)
+GameEngine::GameEngine(Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(manager)
 {
 }
 
@@ -23,8 +23,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-  _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
-  _graphic->GetSceneManager()->RemoveScene(_scene3d);
   delete _sceneGUI;
   delete _scene3d;
 }
@@ -41,18 +39,19 @@ void GameEngine::CreateWindow(Window *win)
         winSize = Vector2i(1680, 1050);
     }
     win->Create("Frustum Demo", winSize, pattern, "Nc:Image:icone.png", 3);
+    SetWindow(win);
 }
 
 void GameEngine::LoadContent()
 {
-  AddInput(_graphic->GetWindow()->GetInput());
+  AddInput(_window->GetInput());
 
     // creation de la scene
     _scene3d = new SceneGraph();
 
     // creation de la camera
-    _camera = new StandardCamera3d(_graphic->GetWindow(), (_graphic->GetWindow()->Width() / 2.f) / _graphic->GetWindow()->Height(), 0.5, 40);
-    _camera->SetViewport(0, 0, _graphic->GetWindow()->Width() / 2.f, _graphic->GetWindow()->Height());
+    _camera = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40);
+    _camera->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
     _scene3d->AddChild(_camera);
 
     // chargement de la sky box
@@ -75,24 +74,24 @@ void GameEngine::LoadContent()
 
     // creation de la 2eme camera avec un autre viewport
     _camera2 = static_cast<StandardCamera3d*>(_camera->Clone());
-    _camera2->SetProjection((_graphic->GetWindow()->Width() / 2.f) / _graphic->GetWindow()->Height(), 0.1f, 1000, 70);
-    _camera2->SetViewport(_graphic->GetWindow()->Width() / 2.f, 0, _graphic->GetWindow()->Width() / 2.f, _graphic->GetWindow()->Height());
+    _camera2->SetProjection((_window->Width() / 2.f) / _window->Height(), 0.1f, 1000, 70);
+    _camera2->SetViewport(_window->Width() / 2.f, 0, _window->Width() / 2.f, _window->Height());
     _camera2->InibitMovement();
     _scene3d->AddChild(_camera2);
     // creation d'une troisieme camera pour fake la vue de l'octree
-    _camera3 = new StandardCamera3d(_graphic->GetWindow(), (_graphic->GetWindow()->Width() / 2.f) / _graphic->GetWindow()->Height(), 0.5, 40);
+    _camera3 = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40);
     _camera3->InibitMovement();
     _camera3->SetFixState(false);
     _camera3->DrawFrustum(true);
     _scene3d->AddChild(_camera3);
     _scene3d->AddChild(_entity); // ajout d'octree
-    _graphic->GetSceneManager()->AddScene(_scene3d);
+    _window->GetSceneManager()->AddScene(_scene3d);
 
     // creation de la gui avec le fps widget
-    _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
-    _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
+    _sceneGUI = new GUI::SceneGraph(_window);
+    _sceneGUI->AddChild(new Camera2d(_window));
     _sceneGUI->AddChild(new GUI::FPSWidget());
-    _graphic->GetSceneManager()->AddScene(_sceneGUI);
+    _window->GetSceneManager()->AddScene(_sceneGUI);
 
     _pattern.Disable(Nc::Engine::HasAContext);
 
@@ -119,10 +118,9 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     bool send = true;
     if (event.type == System::Event::Resized)
       {
-          Window *win = _graphic->GetWindow();
-        _camera->SetViewport(0, 0, win->Width() / 2.f, win->Height());
-        _camera2->SetViewport(win->Width() / 2.f, 0, win->Width() / 2.f, win->Height());
-        _camera3->SetViewport(0, 0, win->Width() / 2.f, win->Height());
+        _camera->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
+        _camera2->SetViewport(_window->Width() / 2.f, 0, _window->Width() / 2.f, _window->Height());
+        _camera3->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
       }
     if (event.type == System::Event::KeyPressed)
     {

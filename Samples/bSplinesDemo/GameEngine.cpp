@@ -9,8 +9,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace bSplinesDemo;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic)
-  : Contrib::GameEngine(graphic, manager)
+GameEngine::GameEngine(Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(manager)
 {
 }
 
@@ -20,9 +20,7 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-  // delete the objects of the scene, and delete it
-  _graphic->GetSceneManager()->RemoveScene(_scene2d);
-  delete _scene2d;
+    delete _scene2d;
 }
 
 void GameEngine::CreateWindow(Nc::Graphic::Window *win)
@@ -39,7 +37,7 @@ void GameEngine::LoadContent()
 
   _scene2d = new GUI::SceneGraph(_window);
   _scene2d->AddChild(new Camera2d(_window));
-  _graphic->GetSceneManager()->AddScene(_scene2d);
+  _window->GetSceneManager()->AddScene(_scene2d);
 
   // GUI :
   //    scene2d->AddWidget(new GUI::Console());

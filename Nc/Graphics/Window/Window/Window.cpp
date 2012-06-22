@@ -26,11 +26,13 @@
 
 #include "Window.h"
 #include "ICursor.h"
+#include "../../Scene/SceneGraphManager.h"
+#include "SubWindow.h"
 
 using namespace Nc;
 
-Graphic::Window::Window()
-	: _isCreate(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)
+Graphic::Window::Window(SceneGraphManager *sceneGraphManager)
+	: _sceneGraphManager(sceneGraphManager), _isCreate(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)
 {
     _antialiasingLevel = 0;
     _depth = 24;
@@ -38,6 +40,9 @@ Graphic::Window::Window()
     _bitsPerPixel = 32;
     _width = 0;
     _height = 0;
+
+    if (_sceneGraphManager == NULL)
+        _sceneGraphManager = new SceneGraphManager();
 }
 
 Graphic::Window::~Window()
@@ -45,3 +50,24 @@ Graphic::Window::~Window()
     if (_defaultCursor != NULL)
         delete _defaultCursor;
 }
+
+void    Graphic::Window::InitSceneGraphManager()
+{
+    _sceneGraphManager->Init((_antialiasingLevel > 0));
+}
+
+void    Graphic::Window::Render(GLContext *context)
+{
+    // Render the scene graph manager
+    _sceneGraphManager->Render(_context);
+
+    // Render the sub windows
+    for (ListSubWindow::iterator it = _listSubWindow.begin(); it != _listSubWindow.end(); ++it)
+        (*it)->Render(context);
+}
+
+Graphic::GLContext   *Graphic::Window::CreateSharedContext()
+{
+    return _context->CreateNewSharedContext();
+}
+

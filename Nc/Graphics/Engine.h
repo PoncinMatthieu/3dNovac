@@ -34,7 +34,6 @@
 #include "Define.h"
 #include "Window/Context/GLContext.h"
 #include "Core/GL/State.h"
-#include "Scene/SceneGraphManager.h"
 
 namespace Nc
 {
@@ -56,7 +55,7 @@ namespace Nc
                 typedef void (Nc::Engine::MainEngine::*CreateWindowFunc)(Window *win);
 
             public:
-                Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager = NULL);
+                Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func);
                 virtual ~Engine();
 
                 /** Load default content, like the DefaultMaterials */
@@ -67,12 +66,7 @@ namespace Nc
                 /** Render the scene with the SceneGraphManager, Check the WindowInput Event and update the elapsed time to compute the FPS */
                 virtual void            Execute(float runningTime);
 
-                /** Create and return a GLContext shared with the rendering context (Call the function CreateNewSharedContext of GLContext) */
-                inline GLContext        *CreateSharedContext()              {return _context->CreateNewSharedContext();}
-
             // accessor
-                /** \return the SceneGraphManager used to render the scene */
-                SceneGraphManager       *GetSceneManager()                  {return _sceneGraphManager;}
                 /** \return the window instance used to setup the Window/WindowInput/GLContext */
                 inline Window           *GetWindow()                        {return _win;}
                 /** \return the current number of frame per second (static, so you can call it at anytime) */
@@ -85,8 +79,6 @@ namespace Nc
                 virtual inline void     ActiveContext()                     {if (_context != NULL) _context->Active();}
                 /** To Disable the GLContext, this function is called by the IEngine */
                 virtual inline void     DisableContext()                    {if (_context != NULL) _context->Disable();}
-
-                SceneGraphManager       *_sceneGraphManager;    ///< The Scene graph manager that is used to render the scene
 
                 CreateWindowFunc        _createWinFunction;     ///< The member function pointer of the "Main" engine used to create the window
                 Window                  *_win;                  ///< The instance of the window

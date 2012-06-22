@@ -13,14 +13,13 @@ namespace SampleViewer
     class SampleFactory
     {
         public:
-            SampleFactory(Nc::Graphic::Engine *graphicEngine, Nc::Engine::Manager *manager);
+            SampleFactory(Nc::Engine::Manager *manager);
 
             inline const std::list<std::string>     &SampleNames() const                        {return _sampleNames;}
 
             Nc::Contrib::GameEngine                 *CreateSample(Nc::GUI::WidgetSubWindow *w, const std::string &name);
 
         private:
-            Nc::Graphic::Engine         *_graphicEngine;
             Nc::Engine::Manager         *_manager;
             std::list<std::string>      _sampleNames;
     };

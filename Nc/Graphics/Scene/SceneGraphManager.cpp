@@ -42,8 +42,9 @@ SceneGraphManager::~SceneGraphManager()
 
 void SceneGraphManager::Init(bool multisampling)
 {
-// defini les valeur des tompon a vider
     State &current = State::Current();
+
+// defini les valeur des tompon a vider
     current.ClearColor(_clearColor);
 
 // enable l'antialiasing

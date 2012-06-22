@@ -43,7 +43,8 @@ struct WMHints
     unsigned long State;
 };
 
-XWindow::XWindow() : Window()
+XWindow::XWindow(SceneGraphManager *sceneGraphManager)
+    : Window(sceneGraphManager)
 {
     _display = NULL;
     _vInfo = NULL;

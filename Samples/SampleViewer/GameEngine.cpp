@@ -7,10 +7,10 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace SampleViewer;
 
-GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(graphic, manager)
+GameEngine::GameEngine(Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(manager)
 {
-    _sampleFactory = new SampleFactory(graphic, manager);
+    _sampleFactory = new SampleFactory(manager);
 
     AddNewCmd(StartSample,      (Nc::Engine::CmdFunction)&GameEngine::StartSampleCmd);
 }
@@ -21,7 +21,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-    _graphic->GetSceneManager()->RemoveScene(_scene);
     delete _scene;
 }
 
@@ -36,12 +35,12 @@ void GameEngine::CreateWindow(Window *win)
 
 void GameEngine::LoadContent()
 {
-    AddInput(_graphic->GetWindow()->GetInput());
+    AddInput(_window->GetInput());
 
     // creation de la scene
-    _scene = new GUI::SceneGraph(_graphic->GetWindow());
-    _graphic->GetSceneManager()->AddScene(_scene);
-    _scene->AddChild(new Camera2d(_graphic->GetWindow()));
+    _scene = new GUI::SceneGraph(_window);
+    _window->GetSceneManager()->AddScene(_scene);
+    _scene->AddChild(new Camera2d(_window));
 
     // GUI :
     _menu = new MainMenu(_scene);

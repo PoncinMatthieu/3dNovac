@@ -46,7 +46,7 @@ namespace Nc
         class XWindow : public Window
         {
             public:
-                XWindow();
+                XWindow(SceneGraphManager *sceneGraphManager = NULL);
                 virtual ~XWindow();
 
                 virtual void            Create(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icone, unsigned int antialiasingLevel);

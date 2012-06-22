@@ -12,7 +12,7 @@ void CreateEngines(Nc::Engine::Manager *manager)
     manager->AddEngine(graphic);
     LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << endl;
 
-    FrustumDemo::GameEngine *game = new FrustumDemo::GameEngine(graphic, manager);
+    FrustumDemo::GameEngine *game = new FrustumDemo::GameEngine(manager);
     game->LimitFrameRate(60);
     manager->AddEngine(game);
     LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << endl;

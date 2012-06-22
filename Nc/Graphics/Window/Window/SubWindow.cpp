@@ -32,8 +32,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 
-SubWindow::SubWindow(Window *parent)
-    : Window(), _parent(parent)
+SubWindow::SubWindow(Window *parent, SceneGraphManager *sceneGraphManager)
+    : Window(sceneGraphManager), _parent(parent)
 {
 }
 
@@ -87,7 +87,8 @@ void    SubWindow::Resize(unsigned int width, unsigned int height)
 
 GLContext   *SubWindow::CreateGLContext()
 {
-    return _parent->CreateGLContext();
+    _context = _parent->CreateGLContext();
+    return _context;
 }
 
 ICursor *SubWindow::NewCursor()

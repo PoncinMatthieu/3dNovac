@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace LightDemo;
 
-GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(graphic, manager)
+GameEngine::GameEngine(Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(manager)
 {
 }
 
@@ -22,8 +22,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-    _graphic->GetSceneManager()->RemoveScene(_scene);
-    _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
     delete _lightingMaterial;
     delete _scene;
     delete _sceneGUI;
@@ -41,14 +39,15 @@ void GameEngine::CreateWindow(Window *win)
         winSize = Vector2i(1680, 1050);
     }
     win->Create("Light Tests", winSize, pattern, "Nc:Image:icone.png", 3);
+    SetWindow(win);
 }
 
 void GameEngine::LoadContent()
 {
-  AddInput(_graphic->GetWindow()->GetInput());
+  AddInput(_window->GetInput());
 
   // creation de la camera
-  _camera = new StandardCamera3d(_graphic->GetWindow());
+  _camera = new StandardCamera3d(_window);
 
   // chargement de la sky box
   Utils::FileName filenamesSky1[6] =
@@ -66,7 +65,7 @@ void GameEngine::LoadContent()
   // creation de la scene
   _scene = new SceneGraph();
   _scene->AddChild(_camera);
-  _graphic->GetSceneManager()->AddScene(_scene);
+  _window->GetSceneManager()->AddScene(_scene);
 
   // creation du default lighting Material
   _lightingMaterial = new DefaultLightingMaterial();
@@ -90,10 +89,10 @@ void GameEngine::LoadContent()
   lightEffect->AddChild(_sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
 
   // creation de la gui avec le fps widget
-  _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
-  _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
+  _sceneGUI = new GUI::SceneGraph(_window);
+  _sceneGUI->AddChild(new Camera2d(_window));
   _sceneGUI->AddChild(new GUI::FPSWidget());
-  _graphic->GetSceneManager()->AddScene(_sceneGUI);
+  _window->GetSceneManager()->AddScene(_sceneGUI);
 
   // no need to active/disable the context at each loop
   //_pattern.Disable(Nc::Engine::HasAContext);

@@ -37,7 +37,7 @@ namespace Nc
         class LGRAPHICS SubWindow : public Window
         {
             public:
-                SubWindow(Window *parent);
+                SubWindow(Window *parent, SceneGraphManager *sceneGraphManager = NULL);
                 virtual ~SubWindow();
 
                 virtual void        Create(const Math::Vector2ui &size);
@@ -59,7 +59,7 @@ namespace Nc
                 Window              *Parent() const                                     {return _parent;}
 
             protected:
-                Window              *_parent;
+                Window              *_parent;           ///< parent of the sub window
         };
     }
 }

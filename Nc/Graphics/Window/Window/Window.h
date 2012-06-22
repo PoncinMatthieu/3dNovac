@@ -58,7 +58,7 @@ namespace Nc
                 typedef std::list<SubWindow*>       ListSubWindow;
 
             public:
-                Window();
+                Window(SceneGraphManager *sceneGraphManager = NULL);
                 virtual ~Window();
 
                 /** Return true if the Window is create */
@@ -73,8 +73,17 @@ namespace Nc
                 /** Create and return a new GLContext associated to the window */
                 virtual GLContext  *CreateGLContext() = 0;
 
+                /** Create and return a GLContext shared with the rendering context (Call the function CreateNewSharedContext of GLContext) */
+                virtual GLContext   *CreateSharedContext();
+
                 /** close the window */
                 virtual void        Close() = 0;
+
+                /** Initialize the scene graph manager */
+                virtual void        InitSceneGraphManager();
+
+                /** Render the scenes by using the given GLContext through the scene graph manager */
+                virtual void        Render(GLContext *context);
 
                 // accessor
                 /** Set an Icon to the window with the given image filename */
@@ -122,7 +131,12 @@ namespace Nc
                 /** create and return a New Cursor */
                 virtual ICursor                 *NewCursor() = 0;
 
+                /** \return the SceneGraphManager used to render the scenes */
+                SceneGraphManager               *GetSceneManager()      {return _sceneGraphManager;}
+
             protected:
+                SceneGraphManager       *_sceneGraphManager;    ///< The Scene graph manager that is used to render the scenes
+
                 ListSubWindow           _listSubWindow;     ///< a list of subwindow, which will be used for exemple to forward inputs to a subwindow
 
                 bool                    _isCreate;          ///< true if the window has been created

@@ -35,6 +35,9 @@ namespace Nc
     namespace GUI
     {
         /// Widget creating and managing a Graphic::SubWindow
+        /**
+            Use a FrameBuffer to render the subwindow to render it into the widget.
+        */
         class WidgetSubWindow : public Widget
         {
             public:
@@ -53,7 +56,8 @@ namespace Nc
                 Graphic::SubWindow      *SubWindow() const          {return _subWindow;}
 
             protected:
-                Graphic::SubWindow      *_subWindow;
+                Graphic::SubWindow                  *_subWindow;    ///< SubWindow used to simulate a virtual window
+//                Nc::Graphic::GL::FrameBuffer		_fboPass1;
         };
     }
 }

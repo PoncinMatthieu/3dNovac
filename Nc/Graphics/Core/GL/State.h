@@ -29,6 +29,7 @@
 
 #include <Nc/Core/Utils/Mask.h>
 #include "../GL.h"
+#include "../../Window/Context/GLContext.h"
 
 namespace Nc
 {
@@ -102,7 +103,7 @@ namespace Nc
                         Ogl function:
                             -glClearColor()
                     */
-                    void                ClearColor(Color c);
+                    void                ClearColor(Math::Color c);
                     /** \brief Clear the buffers
                         Ogl function:
                             -glClear()
@@ -258,7 +259,7 @@ namespace Nc
                 private:
                     GLContext                   *_context;                      ///< the context connected to the render state
 
-                    Color                       _currentClearColor;             ///< the current clear color used to clear the buffers
+                    Math::Color                 _currentClearColor;             ///< the current clear color used to clear the buffers
                     MapCapabilityStatement      _mapCurrentCapabilityStatement; ///< the list of all capability statement
                     MapBufferBound              _mapCurrentBufferBound;         ///< the currents buffers id bound into the ogl state machine
                     MapTextureBound             _mapCurrentTextureBound;        ///< the currents textures id bound into the ogl state machine

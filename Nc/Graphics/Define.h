@@ -55,19 +55,6 @@
         #define LGRAPHICS       ///< Linking option of Nc-Graphics module
     #endif
 
-// includes interne
-    #include "Window/Window/Window.h"
-
-// define
-    #ifdef  _DEBUG
-        #define     _DEBUG_LIGHT
-        #define     _DEBUG_GLOBJECT
-        //#define     _DEBUG_MATERIALS_RENDERING
-    #endif
-
-// Singleton
-    #define EXT                 Nc::Graphic::GL::Extension::Instance()          ///< to access to the Extension class
-
     namespace Nc
     {
         namespace Graphic
@@ -90,6 +77,7 @@
 
             // SceneGraph
                 class SceneGraph;
+                class SceneGraphManager;
 
             // space partitioning
                 //... comming soon
@@ -131,6 +119,19 @@
     }
 
     using namespace Nc::Math;
+
+// includes interne
+    #include "Window/Window/Window.h"
+
+// define
+    #ifdef  _DEBUG
+        #define     _DEBUG_LIGHT
+        #define     _DEBUG_GLOBJECT
+        //#define     _DEBUG_MATERIALS_RENDERING
+    #endif
+
+// Singleton
+    #define EXT                 Nc::Graphic::GL::Extension::Instance()          ///< to access to the Extension class
 
 #endif
 

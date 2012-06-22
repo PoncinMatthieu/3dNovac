@@ -26,7 +26,6 @@
 
 #include <Nc/Core/Engine/Manager.h>
 
-#include "Define.h"
 #include "Engine.h"
 #include "Material/FactoryDefaultMaterials.h"
 
@@ -44,9 +43,9 @@ using namespace Nc::Graphic;
 
 double      Graphic::Engine::_elapsedTime = 0;
 
-Graphic::Engine::Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func, SceneGraphManager *sceneGraphManager)
+Graphic::Engine::Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func)
 	: Engine::IEngine(manager, Nc::Engine::HasAContext | Nc::Engine::WaitingLoadContentsOfOthersEngines, 0xff, 0xff, 0xff),
-      _sceneGraphManager(sceneGraphManager), _createWinFunction(func), _win(NULL), _context(NULL), _mainEngineClassName(mainEngineClassName)
+      _createWinFunction(func), _win(NULL), _context(NULL), _mainEngineClassName(mainEngineClassName)
 {
 }
 
@@ -71,9 +70,7 @@ void Graphic::Engine::CreateContext()
     _context->Active();
     _renderState.InitContext(_context);
     _renderState.Enable();
-    if (_sceneGraphManager == NULL)
-        _sceneGraphManager = new SceneGraphManager();
-    _sceneGraphManager->Init((_win->AntialiasingLevel() > 0));
+    _win->InitSceneGraphManager();
     _renderState.Disable();
 }
 
@@ -102,6 +99,6 @@ void Graphic::Engine::Execute(float runningTime)
 
 	// display the scene graph
 	_renderState.Enable();
-	_sceneGraphManager->Render(_context);
+    _win->Render(_context);
 	_renderState.Disable();
 }

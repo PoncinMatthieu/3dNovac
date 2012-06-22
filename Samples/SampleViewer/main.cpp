@@ -12,7 +12,7 @@ void CreateEngines(Nc::Engine::Manager *manager)
     manager->AddEngine(graphic);
     LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << endl;
 
-    SampleViewer::GameEngine *game = new SampleViewer::GameEngine(graphic, manager);
+    SampleViewer::GameEngine *game = new SampleViewer::GameEngine(manager);
     game->LimitFrameRate(30);
     manager->AddEngine(game);
     LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << endl;

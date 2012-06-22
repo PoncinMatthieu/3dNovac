@@ -12,7 +12,7 @@ void CreateEngines(Nc::Engine::Manager *manager)
     manager->AddEngine(graphic);
     LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << endl;
 
-    LightDemo::GameEngine *game = new LightDemo::GameEngine(graphic, manager);
+    LightDemo::GameEngine *game = new LightDemo::GameEngine(manager);
     game->LimitFrameRate(60);
     manager->AddEngine(game);
     LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << endl;

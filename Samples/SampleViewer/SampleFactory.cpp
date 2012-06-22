@@ -6,8 +6,8 @@
 using namespace Nc;
 using namespace SampleViewer;
 
-SampleFactory::SampleFactory(Nc::Graphic::Engine *graphicEngine, Nc::Engine::Manager *manager)
-    : _graphicEngine(graphicEngine), _manager(manager)
+SampleFactory::SampleFactory(Nc::Engine::Manager *manager)
+    : _manager(manager)
 {
     _sampleNames.push_back("bSplinesDemo");
 }
@@ -16,7 +16,7 @@ Nc::Contrib::GameEngine     *SampleFactory::CreateSample(Nc::GUI::WidgetSubWindo
 {
     Nc::Contrib::GameEngine *engine = NULL;
     if (name == "bSplinesDemo")
-        engine = new bSplinesDemo::GameEngine(_manager, _graphicEngine);
+        engine = new bSplinesDemo::GameEngine(_manager);
 
 
     // init the engine

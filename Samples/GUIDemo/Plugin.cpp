@@ -3,7 +3,7 @@
 
 extern "C" Nc::Contrib::GameEngine	*GetPlugin()
 {
-  GUIDemo::GameEngine *game = new GUIDemo::GameEngine(NULL, NULL);
+  GUIDemo::GameEngine *game = new GUIDemo::GameEngine(NULL);
   game->LimitFrameRate(60);
   return game;
 }

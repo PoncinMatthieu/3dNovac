@@ -15,7 +15,7 @@ namespace FBEffectsDemo
             NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, FBEffectsDemo::GameEngine);
 
      public:
-        GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic);
+        GameEngine(Nc::Engine::Manager *manager);
         ~GameEngine();
 
         /** To create the window (called by the graphic engine) */

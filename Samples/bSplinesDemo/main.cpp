@@ -13,7 +13,7 @@ void CreateEngines(Nc::Engine::Manager &manager)
   LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << std::endl;
 
   // creation du gameEngine
-  bSplinesDemo::GameEngine *gameEngine = new bSplinesDemo::GameEngine(&manager, graphic);
+  bSplinesDemo::GameEngine *gameEngine = new bSplinesDemo::GameEngine(&manager);
   gameEngine->LimitFrameRate(60);
   manager.AddEngine(gameEngine);
   LOG << "Creation of " << *gameEngine << "\t\t\t\t\tDONE" << std::endl;

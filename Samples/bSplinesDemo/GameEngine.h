@@ -16,7 +16,7 @@ namespace bSplinesDemo
         NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, bSplinesDemo::GameEngine);
 
      public:
-      GameEngine(Nc::Engine::Manager *manager, Nc::Graphic::Engine *graphic);
+      GameEngine(Nc::Engine::Manager *manager);
       virtual ~GameEngine();
 
         /** To create the window (called by the graphic engine) */

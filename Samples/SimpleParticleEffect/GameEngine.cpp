@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace SimpleParticleEffect;
 
-GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(graphic, manager)
+GameEngine::GameEngine(Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(manager)
 {
 }
 
@@ -22,8 +22,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-    _graphic->GetSceneManager()->RemoveScene(_scene);
-    _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
     delete _scene;
     delete _sceneGUI;
 }
@@ -40,20 +38,21 @@ void GameEngine::CreateWindow(Window *win)
         winSize = Vector2i(1680, 1050);
     }
     win->Create("Simple Particle Effect", winSize, pattern, "Nc:Image:icone.png", 3);
+    SetWindow(win);
 }
 
 void GameEngine::LoadContent()
 {
-    AddInput(_graphic->GetWindow()->GetInput());
+    AddInput(_window->GetInput());
 
     // creation de la camera
-    _camera = new StandardCamera3d(_graphic->GetWindow());
+    _camera = new StandardCamera3d(_window);
     _camera->AddChild(BasicMeshCreator::Axis(1)); // creation d'un repere
 
     // creation de la scene
     _scene = new SceneGraph();
     _scene->AddChild(_camera);
-    _graphic->GetSceneManager()->AddScene(_scene);
+    _window->GetSceneManager()->AddScene(_scene);
 
     // create the particle effect
     _particleEffect = new ParticleEffect();
@@ -80,10 +79,10 @@ void GameEngine::LoadContent()
 void GameEngine::CreateGUI()
 {
     // creation de la gui avec le fps widget
-    _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
-    _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
+    _sceneGUI = new GUI::SceneGraph(_window);
+    _sceneGUI->AddChild(new Camera2d(_window));
     _sceneGUI->AddChild(new GUI::FPSWidget());
-    _graphic->GetSceneManager()->AddScene(_sceneGUI);
+    _window->GetSceneManager()->AddScene(_sceneGUI);
 }
 
 void GameEngine::Update(float runningTime)

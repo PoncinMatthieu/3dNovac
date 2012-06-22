@@ -5,7 +5,7 @@
 class GameEngine : public Nc::Engine::MainEngine
 {
  public:
-  GameEngine(Nc::Graphic::Engine *graphic, Nc::Engine::Manager *manager);
+  GameEngine(Nc::Engine::Manager *manager);
   virtual ~GameEngine();
 
   /** To create the window (called by the graphic engine) */
@@ -18,7 +18,7 @@ class GameEngine : public Nc::Engine::MainEngine
   virtual void	Update(float runningTime);
 
   // manage the OpenGL context
-  virtual void	CreateContext()		{_context = _graphic->CreateSharedContext();}
+  virtual void	CreateContext()		{_context = _window->CreateSharedContext();}
   virtual void	ActiveContext()		{_context->Active();}
   virtual void	DisableContext()	{_context->Disable();}
 
@@ -29,9 +29,9 @@ class GameEngine : public Nc::Engine::MainEngine
   virtual void	MouseMotionEvent(Nc::System::Event &event);
 
  private:
-  Nc::Graphic::Engine					*_graphic;	///< the graphic engine
-  Nc::Graphic::GLContext				*_context;	///< the OpenGL context, needed to use the graphic engine
+    Nc::Graphic::Window                 *_window;   ///< the window used to render everything
+    Nc::Graphic::GLContext				*_context;	///< the OpenGL context, needed to use the graphic engine
 
-  Nc::Graphic::SceneGraph				*_scene3d;	///< our scene 3d, displayed by the graphic engine
-  Nc::Graphic::StandardCamera3d			*_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
+    Nc::Graphic::SceneGraph				*_scene3d;	///< our scene 3d, displayed by the graphic engine
+    Nc::Graphic::StandardCamera3d			*_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
 };

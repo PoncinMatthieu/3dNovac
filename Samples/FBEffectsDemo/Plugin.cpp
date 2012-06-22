@@ -3,7 +3,7 @@
 
 extern "C" Nc::Contrib::GameEngine	*GetPlugin()
 {
-  FBEffectsDemo::GameEngine *game = new FBEffectsDemo::GameEngine(NULL, NULL);
+  FBEffectsDemo::GameEngine *game = new FBEffectsDemo::GameEngine(NULL);
   game->LimitFrameRate(60);
   return game;
 }

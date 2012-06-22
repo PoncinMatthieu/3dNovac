@@ -3,7 +3,7 @@
 
 extern "C" Nc::Contrib::GameEngine	*GetPlugin()
 {
-  SokobanDemo::GameEngine *game = new SokobanDemo::GameEngine(NULL, NULL);
+  SokobanDemo::GameEngine *game = new SokobanDemo::GameEngine(NULL);
   game->LimitFrameRate(60);
   return game;
 }

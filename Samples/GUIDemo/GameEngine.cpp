@@ -7,8 +7,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace GUIDemo;
 
-GameEngine::GameEngine(Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(graphic, manager)
+GameEngine::GameEngine(Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(manager)
 {
 }
 
@@ -18,7 +18,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-  _graphic->GetSceneManager()->RemoveScene(_sceneGUI);
   delete _sceneGUI;
 }
 
@@ -34,21 +33,22 @@ void GameEngine::CreateWindow(Window *win)
       winSize = Vector2i(1680, 1050);
     }
   win->Create("GUI Tests", winSize, pattern, "Nc:Image:icone.png", 3);
+  SetWindow(win);
 }
 
 void GameEngine::LoadContent()
 {
-  AddInput(_graphic->GetWindow()->GetInput());
+  AddInput(_window->GetInput());
 
   // creation de la scene
-  _sceneGUI = new GUI::SceneGraph(_graphic->GetWindow());
-  _graphic->GetSceneManager()->AddScene(_sceneGUI);
-  _sceneGUI->AddChild(new Camera2d(_graphic->GetWindow()));
+  _sceneGUI = new GUI::SceneGraph(_window);
+  _window->GetSceneManager()->AddScene(_sceneGUI);
+  _sceneGUI->AddChild(new Camera2d(_window));
 
   // GUI :
   _menu = new MainMenu(_sceneGUI);
   _sceneGUI->AddChild(new GUI::FPSWidget());
-  _console = new GUI::Console(_graphic->GetWindow(), GameEngine::ClassName());
+  _console = new GUI::Console(_window, GameEngine::ClassName());
   _sceneGUI->AddChild(_console);
 
 
