@@ -56,6 +56,8 @@ namespace Nc
 
                 virtual ICursor     *NewCursor();
 
+                Window              *Parent() const                                     {return _parent;}
+
             protected:
                 Window              *_parent;
         };

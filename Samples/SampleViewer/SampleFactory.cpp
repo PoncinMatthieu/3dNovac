@@ -12,7 +12,7 @@ SampleFactory::SampleFactory(Nc::Graphic::Engine *graphicEngine, Nc::Engine::Man
     _sampleNames.push_back("bSplinesDemo");
 }
 
-Nc::Contrib::GameEngine     *SampleFactory::CreateSample(const std::string &name)
+Nc::Contrib::GameEngine     *SampleFactory::CreateSample(Nc::GUI::WidgetSubWindow *w, const std::string &name)
 {
     Nc::Contrib::GameEngine *engine = NULL;
     if (name == "bSplinesDemo")
@@ -26,9 +26,11 @@ Nc::Contrib::GameEngine     *SampleFactory::CreateSample(const std::string &name
         _manager->AddEngine(engine);
 
         // create a subwindow
-        Graphic::SubWindow *subWin = new Graphic::SubWindow(_graphicEngine->GetWindow());
-        subWin->Create(Vector2ui(800, 600));
-        engine->SetWindow(subWin);
+//        Graphic::SubWindow *subWin = new Graphic::SubWindow(_graphicEngine->GetWindow());
+//        subWin->Create(Vector2ui(800, 600));
+//        engine->SetWindow(subWin);
+
+        engine->SetWindow(w->SubWindow());
 
         // start the engine
         engine->Start();

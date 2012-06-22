@@ -107,9 +107,29 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
 
         // resize the subwindow if the resize value is smaller than the subwindow
         case System::Event::Resized:
-            if (e.size.width < subWindow->Width() || e.size.height < subWindow->Height())
-                subWindow->GetInput()->GenereEvent(e);
-            break;
+        {
+            bool            resized = false;
+            System::Event   newEvent(e);
+            newEvent.size.width = subWindow->Width();
+            newEvent.size.height = subWindow->Height();
+            if (e.size.width < newEvent.size.width)
+            {
+                newEvent.size.width = e.size.width;
+                resized = true;
+            }
+            if (e.size.height < newEvent.size.height)
+            {
+                newEvent.size.height = e.size.height;
+                resized = true;
+            }
+            if (resized)
+            {
+                LOG << "size subWindow: " << subWindow->Width() << "\t" << subWindow->Height() << std::endl;
+                LOG << "WindowInput::ForwardEventToSubWindow genere Resize" << std::endl;
+                subWindow->GetInput()->GenereEvent(newEvent);
+            }
+        }
+        break;
 
         // forward Lost/Gained focus, TextEntered, KeyPressed, KeyReleased
         case System::Event::LostFocus:

@@ -28,6 +28,7 @@
 #include <Nc/GUI/ScrollBar.h>
 #include <Nc/GUI/ComboBox.h>
 #include <Nc/GUI/Looks.h>
+#include <Nc/GUI/WidgetSubWindow.h>
 
 #include "MainMenu.h"
 #include "GameEngine.h"
@@ -41,6 +42,8 @@ using namespace SampleViewer;
 MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     : _GUI(gui)
 {
+    _currentSampleWindow = NULL;
+
     // create the main layout
     Layout *mainLayout = new Layout(Layout::Vertical, Center, Center);
     mainLayout->UseLook(new BoxLook("Background"));
@@ -50,15 +53,15 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     Widget *windowSelectSample = CreateSelectSampleWindow(mainLayout);
 
     // create the sample window used to render the samples
-    Widget *sampleWindow = new Widget(Center, Center);
-    sampleWindow->UseLook(new BoxLook(""));
-    mainLayout->AddChild(sampleWindow);
+    _widgetSampleWindow = new Widget(Center, Center);
+    _widgetSampleWindow->UseLook(new BoxLook(""));
+    mainLayout->AddChild(_widgetSampleWindow);
 
     // set the auto resizing
     mainLayout->Percent(Vector2f(100, 100));
     windowSelectSample->Percent(Vector2f(40, 0));
-    mainLayout->SetExpandRatio(sampleWindow, 100);
-    sampleWindow->Percent(Vector2f(80, 100));
+    mainLayout->SetExpandRatio(_widgetSampleWindow, 100);
+    _widgetSampleWindow->Percent(Vector2f(80, 100));
 
     // create the fps widget on top of the main layout
     _GUI->AddChild(new FPSWidget(Right, Top));
@@ -100,3 +103,21 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
 
     return windowSelectSample;
 }
+
+WidgetSubWindow    *MainMenu::CreateSampleWindow(Window *windowParent)
+{
+    if (_currentSampleWindow != NULL)
+    {
+LOG << "remove current sample window" << std::endl;
+
+        _widgetSampleWindow->RemoveWidget(_currentSampleWindow);
+    }
+
+LOG << "Creating new sample window" << std::endl;
+
+    _currentSampleWindow = new WidgetSubWindow(windowParent, Center, Center);
+    _widgetSampleWindow->AddChild(_currentSampleWindow);
+    _currentSampleWindow->Percent(Vector2f(100, 100));
+    return _currentSampleWindow;
+}
+

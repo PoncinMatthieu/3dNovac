@@ -28,6 +28,7 @@
 #define GUIDEMO_MAINMENU_H_
 
 #include <Nc/GUI/GUI.h>
+#include <Nc/GUI/WidgetSubWindow.h>
 
 namespace SampleViewer
 {
@@ -37,16 +38,21 @@ namespace SampleViewer
             MainMenu(Nc::GUI::SceneGraph *gui);
             ~MainMenu();
 
-            void                    AddSample(const std::string &name);
+            void                        AddSample(const std::string &name);
 
-            const std::string       *Sample()           {return (_comboBox->CurrentItem()) ? &_comboBox->CurrentItem()->Data() : NULL;}
+            const std::string           *Sample() const         {return (_comboBox->CurrentItem()) ? &_comboBox->CurrentItem()->Data() : NULL;}
+
+            Nc::GUI::WidgetSubWindow    *CreateSampleWindow(Nc::Graphic::Window *windowParent);
 
         private:
-            Nc::GUI::Widget         *CreateSelectSampleWindow(Nc::GUI::Layout *parent);
+            Nc::GUI::Widget             *CreateSelectSampleWindow(Nc::GUI::Layout *parent);
 
         private:
-            Nc::GUI::SceneGraph     *_GUI;
-            Nc::GUI::ComboBox       *_comboBox;
+            Nc::GUI::SceneGraph         *_GUI;
+            Nc::GUI::ComboBox           *_comboBox;
+
+            Nc::GUI::Widget             *_widgetSampleWindow;
+            Nc::GUI::WidgetSubWindow    *_currentSampleWindow;
     };
 }
 

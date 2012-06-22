@@ -43,7 +43,7 @@ namespace Nc
         class LGUI  Widget : public Graphic::Object, public Engine::Handler
         {
             public:
-                NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Graphic::Object, System::Object, System::Object, Nc::GUI::Widget);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::GUI::Widget);
 
             public:
                 Widget(Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0));
@@ -90,7 +90,7 @@ namespace Nc
                 /** \return the resizable statement */
                 bool                    Resizable() const               {return _resizable;}
                 /** Resize and reposition the widget with their parent size and position */
-                void                    Resized();
+                virtual void            Resized();
 
                 /** \return the percent size property */
                 inline const Vector2f   &Percent() const                        {return _percent;}

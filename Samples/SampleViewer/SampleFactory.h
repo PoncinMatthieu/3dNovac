@@ -5,6 +5,7 @@
 #include <Nc/Core/Engine/Manager.h>
 #include <Nc/Graphics/Engine.h>
 #include <Nc/Contrib/GameEngine.h>
+#include <Nc/GUI/WidgetSubWindow.h>
 
 
 namespace SampleViewer
@@ -16,7 +17,7 @@ namespace SampleViewer
 
             inline const std::list<std::string>     &SampleNames() const                        {return _sampleNames;}
 
-            Nc::Contrib::GameEngine                 *CreateSample(const std::string &name);
+            Nc::Contrib::GameEngine                 *CreateSample(Nc::GUI::WidgetSubWindow *w, const std::string &name);
 
         private:
             Nc::Graphic::Engine         *_graphicEngine;

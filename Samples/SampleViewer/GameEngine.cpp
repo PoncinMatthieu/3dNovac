@@ -31,6 +31,7 @@ void GameEngine::CreateWindow(Window *win)
     Vector2ui       winSize(1360, 768);
 
     win->Create("Sample Viewer", winSize, pattern, "Nc:Image:icone.png", 3);
+    SetWindow(win);
 }
 
 void GameEngine::LoadContent()
@@ -101,7 +102,7 @@ void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
 
     LOG << "Start sample: " << *_menu->Sample() << std::endl;
 
-    Contrib::GameEngine *engine = _sampleFactory->CreateSample(*_menu->Sample());
+    Contrib::GameEngine *engine = _sampleFactory->CreateSample(_menu->CreateSampleWindow(_window), *_menu->Sample());
     if (engine != NULL)
     {
 

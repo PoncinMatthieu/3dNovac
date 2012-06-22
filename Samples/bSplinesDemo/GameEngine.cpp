@@ -52,6 +52,12 @@ void GameEngine::LoadContent()
 
 void	GameEngine::ManageWindowEvent(Nc::System::Event &event)
 {
+    if (event.type == System::Event::Resized)
+    {
+        LOG << "Resized: " << event.size.width << "\t" << event.size.height << std::endl;
+    }
+
+
   Nc::Engine::MainEngine::ManageWindowEvent(event);
   _scene2d->ManageWindowEvent(event);
 }
