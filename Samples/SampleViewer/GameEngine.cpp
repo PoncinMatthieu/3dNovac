@@ -47,10 +47,6 @@ void GameEngine::LoadContent()
 
     for (std::list<std::string>::const_iterator it = _sampleFactory->SampleNames().begin(); it != _sampleFactory->SampleNames().end(); ++it)
         _menu->AddSample(*it);
-
-
-///    // no need to active/disable the context at each loop
-    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)

@@ -453,4 +453,5 @@ void XWindow::Resize(unsigned int width, unsigned int height)
     _height = height;
     XResizeWindow(_display, _xwin, _width, _height);
     XFlush(_display);
+    Resized();
 }

@@ -65,6 +65,7 @@ void    SubWindow::Create(const Math::Vector2ui &size)
 
     _parent->_listSubWindow.push_back(this);
 
+    _needInitFbo = true;
     _isCreate = true;
 }
 
@@ -95,3 +96,52 @@ ICursor *SubWindow::NewCursor()
 {
     return _parent->NewCursor();
 }
+
+void    SubWindow::Resized()
+{
+    _needInitFbo = true;
+}
+
+void    SubWindow::InitFbo()
+{
+	LOG_DEBUG << "Init SubWindow FrameBuffer" << std::endl;
+
+	Vector2ui size(Width(), Height());
+
+    //if (!_colorTexture.IsValid())
+        _colorTexture.Create(GL::Enum::Texture::Texture2d);
+	_colorTexture.Enable();
+	_colorTexture.Init2d(0, GL::Enum::Texture::RGBA8, size, GL::Enum::PixelFormat::RGBA, GL::Enum::PixelDataType::UnsignedByte, NULL);
+	_colorTexture.GenerateMipmaps();
+	_colorTexture.Disable();
+
+	GL::RenderBuffer depthRenderBuffer;
+	depthRenderBuffer.Create();
+	depthRenderBuffer.Enable();
+	depthRenderBuffer.Init(GL::Enum::RenderBuffer::DepthComponent, size);
+	depthRenderBuffer.Disable();
+
+    //if (!_fbo.IsValid())
+        _fbo.Create();
+	_fbo.Enable();
+	_fbo.Attach(GL::Enum::FrameBuffer::ColorAttachment0, _colorTexture, 0);
+	_fbo.Attach(GL::Enum::FrameBuffer::DepthAttachement, depthRenderBuffer);
+	if(_fbo.CheckStatus() != GL::Enum::FrameBuffer::Complete)
+		throw Utils::Exception("Can't initialize the fbo");
+	_fbo.Disable();
+	_needInitFbo = false;
+	LOG_DEBUG << "Init DONE" << std::endl;
+}
+
+void    SubWindow::Render(GLContext *context)
+{
+    // create the fbo at the first pass
+	if (_needInitFbo)
+		InitFbo();
+
+    _fbo.Enable();
+    Window::Render(context);
+    _fbo.Disable();
+}
+
+

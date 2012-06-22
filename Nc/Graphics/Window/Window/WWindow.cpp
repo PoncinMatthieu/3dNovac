@@ -181,6 +181,7 @@ void WWindow::Resize(unsigned int width, unsigned int height)
     AdjustWindowRect(&Rect, _win32Style, false);
     _width  = Rect.right - Rect.left;
     _height = Rect.bottom - Rect.top;
+    Resized();
 }
 
 void	WWindow::SwitchToFullscreen(const Vector2ui &size)

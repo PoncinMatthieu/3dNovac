@@ -56,8 +56,12 @@ namespace Nc
                 Graphic::SubWindow      *SubWindow() const          {return _subWindow;}
 
             protected:
+                /** Draw the result of the render off screen from the sub window */
+                virtual void            Draw(Graphic::SceneGraph *scene);
+
+            protected:
                 Graphic::SubWindow                  *_subWindow;    ///< SubWindow used to simulate a virtual window
-//                Nc::Graphic::GL::FrameBuffer		_fboPass1;
+                Graphic::Sprite                     *_sprite;       ///< sprite used to render the result off screen of the sub window
         };
     }
 }

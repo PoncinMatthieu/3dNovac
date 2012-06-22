@@ -29,11 +29,18 @@
 
 #include "../../Define.h"
 #include "Window.h"
+#include "../../Core/GL/FrameBuffer.h"
+#include "../../Core/GL/Texture.h"
 
 namespace Nc
 {
     namespace Graphic
     {
+        ///
+        /**
+            \todo Generate Entered/Left mouse event
+            \todo Change the cursor at Entered/Left mouse event
+        */
         class LGRAPHICS SubWindow : public Window
         {
             public:
@@ -50,16 +57,35 @@ namespace Nc
 
                 virtual void        Close();
 
+                /** Render off screen by using a frame buffer */
+                virtual void        Render(GLContext *context);
+
                 virtual bool        SetIcon(const Utils::FileName &)                    {return true;}
 
                 virtual void        Resize(unsigned int width, unsigned int height);
 
+                /** Notify a resize of the window */
+                virtual void        Resized();
+
+                /** \return a new cursor by using the parent to create it */
                 virtual ICursor     *NewCursor();
 
+                /** \return the parent of the sub window */
                 Window              *Parent() const                                     {return _parent;}
+
+                /** \return the sprite used to store the result of the off screen rendering */
+                const GL::Texture   &RenderingResult() const                            {return _colorTexture;}
+
+            protected:
+                void                InitFbo();
 
             protected:
                 Window              *_parent;           ///< parent of the sub window
+                GL::FrameBuffer     _fbo;               ///< frame buffer used to render off screen
+                GL::Texture		    _colorTexture;      ///< texture used to store the result of the rendering off screen
+
+            private:
+                bool                _needInitFbo;
         };
     }
 }

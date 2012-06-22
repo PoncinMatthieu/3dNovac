@@ -66,6 +66,7 @@ void WindowInput::GenereEvent(const System::Event &e)
         {
             _win->_width = e.size.width;
             _win->_height = e.size.height;
+            _win->Resized();
             break;
         }
 

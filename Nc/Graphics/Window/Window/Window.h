@@ -91,6 +91,8 @@ namespace Nc
 
                 /** Resize the window */
                 virtual void                    Resize(unsigned int width, unsigned int height) = 0;
+                /** Notify a resize of the window */
+                virtual void                    Resized()               {}
 
                 /** \return the width of the window */
                 inline unsigned int		        Width() const           {return _width;}

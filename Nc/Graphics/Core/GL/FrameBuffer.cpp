@@ -57,8 +57,6 @@ FrameBuffer &FrameBuffer::operator = (const FrameBuffer &fbo)
 
 FrameBuffer::~FrameBuffer()
 {
-    for (; !_attachedBuffers.empty(); _attachedBuffers.erase(_attachedBuffers.begin()))
-        delete _attachedBuffers.begin()->second;
     ReleaseRef();
 }
 
@@ -73,6 +71,8 @@ void    FrameBuffer::Create(Enum::FrameBuffer::Target target)
 void    FrameBuffer::Release()
 {
     glDeleteFramebuffers(1, &_index);
+    for (; !_attachedBuffers.empty(); _attachedBuffers.erase(_attachedBuffers.begin()))
+        delete _attachedBuffers.begin()->second;
     LOG_DEBUG << "FrameBuffer " << _index << " DELETED" << std::endl;
     _index = 0;
 }

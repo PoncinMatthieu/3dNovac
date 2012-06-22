@@ -24,6 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
+#include <Nc/Graphics/Object/Sprite.h>
 #include "WidgetSubWindow.h"
 
 using namespace Nc;
@@ -34,6 +35,7 @@ WidgetSubWindow::WidgetSubWindow(Graphic::Window *windowParent, Corner x, Corner
 {
     _subWindow = new Graphic::SubWindow(windowParent);
     _subWindow->Create(_size);
+    _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
 }
 
 WidgetSubWindow::WidgetSubWindow(const WidgetSubWindow &w)
@@ -41,6 +43,7 @@ WidgetSubWindow::WidgetSubWindow(const WidgetSubWindow &w)
 {
     _subWindow = new Graphic::SubWindow(w._subWindow->Parent());
     _subWindow->Create(_size);
+    _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
 }
 
 WidgetSubWindow &WidgetSubWindow::operator = (const WidgetSubWindow &w)
@@ -48,6 +51,7 @@ WidgetSubWindow &WidgetSubWindow::operator = (const WidgetSubWindow &w)
     Widget::operator = (w);
     _subWindow = new Graphic::SubWindow(w._subWindow->Parent());
     _subWindow->Create(_size);
+    _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
 }
 
 WidgetSubWindow::~WidgetSubWindow()
@@ -64,5 +68,16 @@ void    WidgetSubWindow::Resized()
     e.size.width = _size.Data[0];
     e.size.height = _size.Data[1];
     _subWindow->GetInput()->GenereEvent(e);
+
+    _sprite->Size(_size);
+    _sprite->TextureBox(Box2i(Vector2f(0,0), _size));
 }
 
+void    WidgetSubWindow::Draw(Graphic::SceneGraph *scene)
+{
+    Widget::Draw(scene);
+
+    if (_sprite->GetTexture().GetIndex() != _subWindow->RenderingResult().GetIndex())
+        _sprite->SetTexture(_subWindow->RenderingResult());
+    _sprite->RenderNode(scene);
+}

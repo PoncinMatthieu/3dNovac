@@ -52,6 +52,8 @@ namespace Nc
                 virtual ISceneNode          *Clone() const              {return new Sprite(*this);}
 
                 // accessors
+                /** Set the texture */
+                inline const void           SetTexture(const GL::Texture &t)    {_drawables[0]->Config->Textures[0] = t; _needUpdate = true;}
                 /** \return the texture */
                 inline const GL::Texture    &GetTexture() const         {return _drawables[0]->Config->Textures[0];}
                 /** \return the texture */
