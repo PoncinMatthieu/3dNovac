@@ -1,7 +1,9 @@
 
+#include <Nc/Graphics/Window/Window/SubWindow.h>
 #include "SampleFactory.h"
 #include "../bSplinesDemo/GameEngine.h"
 
+using namespace Nc;
 using namespace SampleViewer;
 
 SampleFactory::SampleFactory(Nc::Graphic::Engine *graphicEngine, Nc::Engine::Manager *manager)
@@ -22,9 +24,14 @@ Nc::Contrib::GameEngine     *SampleFactory::CreateSample(const std::string &name
     {
         engine->LimitFrameRate(30);
         _manager->AddEngine(engine);
-        engine->SetWindow(_graphicEngine->GetWindow());
-        engine->Start();
 
+        // create a subwindow
+        Graphic::SubWindow *subWin = new Graphic::SubWindow(_graphicEngine->GetWindow());
+        subWin->Create(Vector2ui(800, 600));
+        engine->SetWindow(subWin);
+
+        // start the engine
+        engine->Start();
     }
 
     return engine;

@@ -84,6 +84,8 @@ namespace Nc
                 ICursor()               {}
                 virtual ~ICursor()      {}
 
+                virtual ICursor     *Clone() const = 0;
+
                 /** Enable the cursor and set the current cursor of the attached window */
                 virtual void Enable() = 0;
                 /** Disable the cursor */

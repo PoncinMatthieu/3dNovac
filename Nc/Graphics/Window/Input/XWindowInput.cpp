@@ -63,7 +63,7 @@ void XWindowInput::Create()
     _inputContext = XCreateIC( _inputMethod,
                                 XNClientWindow,  static_cast<XWindow*>(_win)->_xwin,
                                 XNFocusWindow,   static_cast<XWindow*>(_win)->_xwin,
-                                XNInputStyle,    XIMPreeditNothing  | XIMStatusNothing,
+                                XNInputStyle,    XIMPreeditNothing | XIMStatusNothing,
                                 NULL);
     if (!_inputContext)
         throw Utils::Exception("XWindowInput", "Failed to create input context");

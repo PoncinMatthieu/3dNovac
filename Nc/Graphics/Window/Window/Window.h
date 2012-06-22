@@ -38,6 +38,7 @@ namespace Nc
         class GLContext;
         class WindowInput;
         class ICursor;
+        class SubWindow;
 
         /// Interface to create and manage a window for multiarchi
         /**
@@ -53,6 +54,8 @@ namespace Nc
                     Titlebar    =   1 << 2,         ///< show the Titlebar
                     Closeable   =   1 << 3          ///< set the window closable
                 };
+
+                typedef std::list<SubWindow*>       ListSubWindow;
 
             public:
                 Window();
@@ -89,8 +92,11 @@ namespace Nc
                 /** Set the window size */
                 inline void                     ResetSize(unsigned int width, unsigned int height)      {_width = width; _height = height;}
 
+                /** Return the OpenGL context associated */
+                inline GLContext                *GetContext()           {return _context;}
+
                 /** Return the window input associated */
-                inline WindowInput              *GetInput()             {return _input;}                // get a pointer to a Windowinput who manage the inputs of a window
+                inline WindowInput              *GetInput()             {return _input;}
 
                 /** return false if the window use an existing window (Created with the method UseExistingWindow) */
                 inline bool                     IsOwn()                 {return _own;}
@@ -117,6 +123,8 @@ namespace Nc
                 virtual ICursor                 *NewCursor() = 0;
 
             protected:
+                ListSubWindow           _listSubWindow;     ///< a list of subwindow, which will be used for exemple to forward inputs to a subwindow
+
                 bool                    _isCreate;          ///< true if the window has been created
                 unsigned int            _width;             ///< the width of the window
                 unsigned int            _height;            ///< the height of the window
@@ -131,6 +139,7 @@ namespace Nc
                 ICursor                 *_currentCursor;    ///< instance of the current cursor activated
 
                 friend class WindowInput;
+                friend class SubWindow;
         };
     }
 }

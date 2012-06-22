@@ -36,6 +36,7 @@ namespace Nc
     namespace Graphic
     {
         class Window;
+        class SubWindow;
 
         /// Interface to manage the window inputs (keyboard/mouse/etc)
         /**
@@ -50,12 +51,12 @@ namespace Nc
         {
             public:
                 WindowInput(Window *win);
-                virtual ~WindowInput() {};
+                virtual ~WindowInput();
 
                 /** Create and init the input */
                 virtual void Create() = 0;
                 /** Check the events of the input */
-				virtual void CheckEvents(){};
+				virtual void CheckEvents()                                                  {}
 
                 /** \return the attached window */
                 Window  *AttachedWindow() const                                             {return _win;}
@@ -68,24 +69,31 @@ namespace Nc
 
                 // return input state
                 /** \return the mouse position with the top/left ref point */
-                const Math::Vector2i        &MousePosition()                                {return _mousePosition;}
+                const Math::Vector2i        &MousePosition() const                          {return _mousePosition;}
+
+                /** \return true if the mouse is in the window... This statement is changed by the events MouseEntered and MouseLeft */
+                bool                        MouseIn() const                                 {return _mouseIn;}
 
                 /** \return the mouse position with the bottom/left ref point */
-                Math::Vector2i              MousePositionInGLCoord();
+                Math::Vector2i              MousePositionInGLCoord() const;
 
                 /** \return true if the key is enabled */
-                bool                        KeyState(System::Key::Code code)                {return _keyStates[code];}
+                bool                        KeyState(System::Key::Code code) const          {return _keyStates[code];}
 
                 /** \return true if the mouse button is enabled */
-                bool                        MouseButtonState(System::Mouse::Button code)    {return _mouseButtonStates[code];}
+                bool                        MouseButtonState(System::Mouse::Button code) const {return _mouseButtonStates[code];}
 
                 /** \return the corresponding char */
-                char                        ToChar(System::Key::Code key);
+                char                        ToChar(System::Key::Code key) const;
+
+            protected:
+                void                        ForwardEventToSubWindow(SubWindow *subWindow, const System::Event &e);
 
             protected:
                 bool                    _keyStates[System::Key::Count];             ///< Store the key states
                 bool                    _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states
                 Math::Vector2i          _mousePosition;                             ///< Store the current position of the mouse
+                bool                    _mouseIn;                                   ///< statement used to know if the mouse is in or out of the window
                 bool                    _keyRepeat;                                 ///< true if the key are repeating
                 Window                  *_win;                                      ///< instance to the attached windows
         };
