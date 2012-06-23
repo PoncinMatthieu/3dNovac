@@ -87,6 +87,7 @@ void    SubWindow::Resize(unsigned int width, unsigned int height)
 {
     _width = width;
     _height = height;
+    Resized();
 }
 
 GLContext   *SubWindow::CreateGLContext()
@@ -107,12 +108,9 @@ void    SubWindow::Resized()
 
 void    SubWindow::InitFbo()
 {
-	LOG_DEBUG << "Init SubWindow FrameBuffer" << std::endl;
-
 	Vector2ui size(Width(), Height());
 
-    //if (!_colorTexture.IsValid())
-        _colorTexture.Create(GL::Enum::Texture::Texture2d);
+    _colorTexture.Create(GL::Enum::Texture::Texture2d);
 	_colorTexture.Enable();
 	_colorTexture.Init2d(0, GL::Enum::Texture::RGBA8, size, GL::Enum::PixelFormat::RGBA, GL::Enum::PixelDataType::UnsignedByte, NULL);
 	_colorTexture.GenerateMipmaps();
@@ -124,8 +122,7 @@ void    SubWindow::InitFbo()
 	depthRenderBuffer.Init(GL::Enum::RenderBuffer::DepthComponent, size);
 	depthRenderBuffer.Disable();
 
-    //if (!_fbo.IsValid())
-        _fbo.Create();
+    _fbo.Create();
 	_fbo.Enable();
 	_fbo.Attach(GL::Enum::FrameBuffer::ColorAttachment0, _colorTexture, 0);
 	_fbo.Attach(GL::Enum::FrameBuffer::DepthAttachement, depthRenderBuffer);
@@ -133,7 +130,6 @@ void    SubWindow::InitFbo()
 		throw Utils::Exception("Can't initialize the fbo");
 	_fbo.Disable();
 	_needInitFbo = false;
-	LOG_DEBUG << "Init DONE" << std::endl;
 }
 
 void    SubWindow::Render(GLContext *context)

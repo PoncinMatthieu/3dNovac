@@ -62,7 +62,9 @@ namespace Nc
                 virtual void    Fix(SceneGraph *scene);
 
                 /** Update the ratio aspect of the projection */
-                virtual void    Resized(const System::Event &event);
+                inline void     Resized(const System::Event &event)         {Resized(Vector2ui(event.size.width, event.size.height));}
+                /** Update the ratio aspect of the projection */
+                virtual void    Resized(const Vector2ui &size);
 
                 //Vector3f        Get3dCoordinateFromProjection(int x, int y);
 

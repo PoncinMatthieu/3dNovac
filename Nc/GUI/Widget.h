@@ -99,12 +99,14 @@ namespace Nc
 
                 /** Return the position of the widget */
                 inline const Vector2i   &Pos() const                            {return _pos;}
-                /** Set the position */
-                inline void             Pos(const Vector2i &pos)                {_pos = pos; _stateChanged = true;}
+                /** Set the position of the widget */
+                void                    Pos(const Vector2i &pos);
                 /** \return the reel position of the widget (including the relative position Corner) */
                 virtual void            GetReelPos(Vector2i &pos) const;
                 /** \return the reel recursive position of the widget (including the relative position Corner and the parents) */
                 void                    GetReelPosRecursif(Vector2i &pos) const;
+                /** Notify a changement of position of the widget */
+                virtual void            Reposed();
 
                 /** Set the size of the widget */
                 inline void             Size(const Vector2i &size)              {_size = size; _stateChanged = true;}

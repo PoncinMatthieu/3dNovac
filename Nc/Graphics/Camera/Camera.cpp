@@ -125,3 +125,13 @@ bool    Camera::Project(const TMatrix &modelMatrix, const TMatrix &viewMatrix, c
     winCoords[2] = in[2];
     return true;
 }
+
+void    Camera::TransformModelMatrixToRender(SceneGraph *scene)
+{
+    scene->ModelMatrix().AddTransformation(Matrix);
+}
+
+void    Camera::Resized(const Vector2ui &)
+{
+    _resized = true;
+}

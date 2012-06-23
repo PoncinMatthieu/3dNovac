@@ -65,18 +65,20 @@ namespace Nc
                 /** Update the projection of the scene */
                 virtual void    UpdateProjection(SceneGraph *scene) = 0;
 
-                virtual void    TransformModelMatrixToRender(SceneGraph *scene)    {scene->ModelMatrix().AddTransformation(Matrix);}
+                virtual void    TransformModelMatrixToRender(SceneGraph *scene);
 
                 /** Fix the camera, Should set the ViewMatrix. If the window has been resized, the camera will resize the viewport of OpenGL */
                 virtual void    Fix(SceneGraph *scene);
 
                 /** Set to true the resized statement, need to be called to reset the viewport and projection matrix */
-                virtual void    Resized(const System::Event &)              {_resized = true;}
+                inline void     Resized(const System::Event &event)         {Resized(Vector2ui(event.size.width, event.size.height));}
+                /** Set to true the resized statement, need to be called to reset the viewport and projection matrix */
+                virtual void    Resized(const Vector2ui &);
 
                 /** Set the state setHasCurrentCamera. if false, the camera will not be set has current camera at the rendering */
-                void            SetAsCurrentCamera(bool state)              {_setAsCurrentCamera = state;}
+                inline void     SetAsCurrentCamera(bool state)              {_setAsCurrentCamera = state;}
                 /** Set the fix state. if false, the camera will not be fixed at the rendering */
-                void            SetFixState(bool state)                     {_fix = state;}
+                inline void     SetFixState(bool state)                     {_fix = state;}
 
                 /** \return true if the camera is a Camera2d */
                 bool            Is2d()                                      {return _is2d;}

@@ -26,6 +26,7 @@
 
 #include "../Window/Window.h"
 #include "../Window/SubWindow.h"
+#include "../Window/ICursor.h"
 #include "WindowInput.h"
 
 using namespace Nc;
@@ -77,11 +78,23 @@ void WindowInput::GenereEvent(const System::Event &e)
             _mousePosition.Data[1] = e.mouseMove.y;
             break;
         }
+        case System::Event::MouseButtonPressed:
+        {
+            _mouseButtonStates[e.mouseButton.button] = true;
+            _mousePosition.Data[0] = e.mouseButton.x;
+            _mousePosition.Data[1] = e.mouseButton.y;
+            break;
+        }
+        case System::Event::MouseButtonReleased:
+        {
+            _mouseButtonStates[e.mouseButton.button] = false;
+            _mousePosition.Data[0] = e.mouseButton.x;
+            _mousePosition.Data[1] = e.mouseButton.y;
+            break;
+        }
 
         case System::Event::KeyPressed:             _keyStates[e.key.code] = true;                          break;          // Key down event
         case System::Event::KeyReleased:            _keyStates[e.key.code] = false;                         break;          // Key up event
-        case System::Event::MouseButtonPressed:     _mouseButtonStates[e.mouseButton.button] = true;        break;          // Mouse button pressed
-        case System::Event::MouseButtonReleased:    _mouseButtonStates[e.mouseButton.button] = false;       break;          // Mouse button released
 
         case System::Event::MouseEntered:           _mouseIn = true;                                        break;
         case System::Event::MouseLeft:              _mouseIn = false;                                       break;
@@ -95,8 +108,16 @@ void WindowInput::GenereEvent(const System::Event &e)
     // forward the event to sub windows
     // and recreate some events like mouse entered/left if needed
     _win->_mutexListSubWindow.Lock();
-    for (Window::ListSubWindow::iterator it = _win->_listSubWindow.begin(); it != _win->_listSubWindow.end(); ++it)
-        ForwardEventToSubWindow(*it, e);
+    try
+    {
+        for (Window::ListSubWindow::iterator it = _win->_listSubWindow.begin(); it != _win->_listSubWindow.end(); ++it)
+            ForwardEventToSubWindow(*it, e);
+    }
+    catch (...)
+    {
+        _win->_mutexListSubWindow.Unlock();
+        throw;
+    }
     _win->_mutexListSubWindow.Unlock();
 }
 
@@ -112,7 +133,7 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
         case System::Event::Resized:
         {
             bool            resized = false;
-            System::Event   newEvent(e);
+            System::Event   newEvent(subWindow->Input(), e.type);
             newEvent.size.width = subWindow->Width();
             newEvent.size.height = subWindow->Height();
             if (e.size.width < newEvent.size.width)
@@ -126,13 +147,9 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
                 resized = true;
             }
             if (resized)
-            {
-                LOG << "size subWindow: " << subWindow->Width() << "\t" << subWindow->Height() << std::endl;
-                LOG << "WindowInput::ForwardEventToSubWindow genere Resize" << std::endl;
                 subWindow->Input()->GenereEvent(newEvent);
-            }
+            break;
         }
-        break;
 
         // forward Lost/Gained focus, TextEntered, KeyPressed, KeyReleased
         case System::Event::LostFocus:
@@ -143,22 +160,74 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
             subWindow->Input()->GenereEvent(e);
             break;
 
-        // forward mouse button events only if the mouse is in the subwindow
+        // forward mouse wheel moved events only if the mouse is in the subwindow
         case System::Event::MouseWheelMoved:
-        case System::Event::MouseButtonPressed:
-        case System::Event::MouseButtonReleased:
-            if (subWindow->Input()->MouseIn())
+        {
+            bool buttonPressed = false;
+            for (unsigned int i = 0; i < System::Mouse::Count; ++i)
+            {
+                if (subWindow->Input()->MouseButtonState(static_cast<System::Mouse::Button>(i)))
+                    buttonPressed = true;
+            }
+            if (subWindow->Input()->MouseIn() || buttonPressed)
                 subWindow->Input()->GenereEvent(e);
             break;
+        }
+
+        // forward mouse button events only if the mouse is in the subwindow and update the position of the mouse
+        case System::Event::MouseButtonPressed:
+        case System::Event::MouseButtonReleased:
+        {
+            System::Event newEvent(subWindow->Input(), e.type);
+            newEvent.mouseButton.button = e.mouseButton.button;
+            UpdateMousePositionSubWindow(subWindow, newEvent.mouseButton.x, newEvent.mouseButton.y, e.mouseButton.x, e.mouseButton.y);
+            if (subWindow->Input()->MouseIn() || e.type == System::Event::MouseButtonReleased)
+                subWindow->Input()->GenereEvent(newEvent);
+
+            if (e.type == System::Event::MouseButtonReleased && (newEvent.mouseButton.x < 0 || newEvent.mouseButton.y < 0 || newEvent.mouseButton.x >= subWindow->Width() || newEvent.mouseButton.y >= subWindow->Height()))
+            {
+                _win->CurrentCursor()->Enable();
+                System::Event newEvent(subWindow->Input(), System::Event::MouseLeft);
+                subWindow->Input()->GenereEvent(newEvent);
+            }
+            break;
+        }
 
         // forward mouse movement events only if the mouse in in the subwindow, and recreate a mouse Entered/Left if needed
         case System::Event::MouseMoved:
+        {
+            int newX, newY;
+            UpdateMousePositionSubWindow(subWindow, newX, newY, e.mouseMove.x, e.mouseMove.y);
 
-            /// \todo regenerate Mouter Entered/Left events when needed
+            if (!subWindow->Input()->MouseIn() && (newX > 0 && newY > 0 && newX < subWindow->Width() && newY < subWindow->Height()))
+            {
+                subWindow->CurrentCursor()->Enable();
+                System::Event newEvent(subWindow->Input(), System::Event::MouseEntered);
+                subWindow->Input()->GenereEvent(newEvent);
+            }
+            else if (subWindow->Input()->MouseIn() && (newX < 0 || newY < 0 || newX >= subWindow->Width() || newY >= subWindow->Height()))
+            {
+                _win->CurrentCursor()->Enable();
+                System::Event newEvent(subWindow->Input(), System::Event::MouseLeft);
+                subWindow->Input()->GenereEvent(newEvent);
+            }
 
-            if (subWindow->Input()->MouseIn())
-                subWindow->Input()->GenereEvent(e);
-            return;
+            bool buttonPressed = false;
+            for (unsigned int i = 0; i < System::Mouse::Count; ++i)
+            {
+                if (subWindow->Input()->MouseButtonState(static_cast<System::Mouse::Button>(i)))
+                    buttonPressed = true;
+            }
+
+            if (subWindow->Input()->MouseIn() || buttonPressed)
+            {
+                System::Event newEvent(subWindow->Input(), e.type);
+                newEvent.mouseMove.x = newX;
+                newEvent.mouseMove.y = newY;
+                subWindow->Input()->GenereEvent(newEvent);
+            }
+            break;
+        }
 
         // do not forward mouse entered event
         case System::Event::MouseEntered:
@@ -166,9 +235,19 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
 
         // forward mouse left
         case System::Event::MouseLeft:
-            subWindow->Input()->GenereEvent(e);
+            if (subWindow->Input()->MouseIn())
+            {
+                _win->CurrentCursor()->Enable();
+                subWindow->Input()->GenereEvent(e);
+            }
             break;
     }
+}
+
+void    WindowInput::UpdateMousePositionSubWindow(SubWindow *subWindow, int &newX, int &newY, const int &oldX, const int &oldY)
+{
+    newX = oldX - subWindow->Pos().Data[0];
+    newY = oldY - (_win->Height() - subWindow->Pos().Data[1] - subWindow->Height());
 }
 
 Vector2i WindowInput::MousePositionInGLCoord() const

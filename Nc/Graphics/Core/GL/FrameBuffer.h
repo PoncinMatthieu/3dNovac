@@ -37,6 +37,9 @@ namespace Nc
         namespace GL
         {
             /// To Manipulate a Frame Buffer Object (fbo)
+            /**
+                \warning Be carefull while manipulating a framebuffer, a framebuffer must be enabled/disable each time you want to use it. The previous framebuffer will be set after disabling the current one.
+            */
             class LGRAPHICS FrameBuffer : public Object
             {
                 public:
@@ -57,14 +60,14 @@ namespace Nc
                     /** \return the index of the Frame Buffer Object */
                     virtual unsigned int        GetIndex() const    {return _index;}
                     /** Enable the fbo */
-                    virtual void                Enable() const;
+                    virtual void                Enable();
                     /** Disable the fbo */
-                    virtual void                Disable() const;
+                    virtual void                Disable();
 
                     /** Enable the fbo with the given target */
-                    virtual void                Enable(Enum::FrameBuffer::Target target) const;
+                    virtual void                Enable(Enum::FrameBuffer::Target target);
                     /** Disable the fbo with the given target */
-                    virtual void                Disable(Enum::FrameBuffer::Target target) const;
+                    virtual void                Disable(Enum::FrameBuffer::Target target);
 
                     /**
                         Attach the given \p renderBuffer to the frame buffer.
@@ -101,6 +104,8 @@ namespace Nc
                     Enum::FrameBuffer::Target   _target;            ///< the target used to bind the fbo
                     unsigned int                _index;             ///< The id of the fbo
                     MapAttachedObject           _attachedBuffers;   ///< The map of attached buffers
+
+                    unsigned int                _previouslyBound;   ///< framebuffer previously bound (saved in Enable and restored in Disable methods)
             };
         }
     }

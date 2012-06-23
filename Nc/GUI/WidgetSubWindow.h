@@ -51,6 +51,8 @@ namespace Nc
 
                 /** Resize the widget with the SubWindow */
                 virtual void            Resized();
+                /** Repos the widget with the SubWindow */
+                virtual void            Reposed();
 
                 /** \return the SubWindow */
                 Graphic::SubWindow      *SubWindow() const          {return _subWindow;}

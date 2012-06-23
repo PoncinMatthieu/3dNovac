@@ -60,6 +60,11 @@ namespace Nc
                 /** Render off screen by using a frame buffer */
                 virtual void        Render(GLContext *context);
 
+                /** Set the postion of the subwindow into the parent */
+                void                Pos(const Vector2i &pos)                            {_pos = pos;}
+                /** \return the postion of the subwindow into the parent */
+                const Vector2i      &Pos() const                                        {return _pos;}
+
                 virtual bool        SetIcon(const Utils::FileName &)                    {return true;}
 
                 virtual void        Resize(unsigned int width, unsigned int height);
@@ -81,6 +86,7 @@ namespace Nc
 
             protected:
                 Window              *_parent;           ///< parent of the sub window
+                Vector2i            _pos;               ///< position relative to the parent
                 GL::FrameBuffer     _fbo;               ///< frame buffer used to render off screen
                 GL::Texture		    _colorTexture;      ///< texture used to store the result of the rendering off screen
 

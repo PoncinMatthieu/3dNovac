@@ -229,6 +229,22 @@ void Widget::CheckFocus(const Event &event)
     }
 }
 
+void Widget::Pos(const Vector2i &pos)
+{
+    _pos = pos;
+
+    // notify the changement to every child
+    Visitor::ReposedAll reposedAll;
+    reposedAll(*this);
+
+    _stateChanged = true;
+}
+
+void Widget::Reposed()
+{
+    // do nothing
+}
+
 void Widget::GetReelPos(Vector2i &reelPos) const
 {
     // margin a 0, on prendra celui du parent s'il y en a un (margin interieur)
@@ -330,8 +346,10 @@ void Widget::ChangeChildsStateRecursive()
 void Widget::Percent(const Vector2f &percent)
 {
     _percent = percent;
-    Visitor::ResizeAll resizeAll;
-    resizeAll(*this);
+
+    // notify the changement to every childs
+    Visitor::ResizedAll resizedAll;
+    resizedAll(*this);
 }
 
 void Widget::Resized()

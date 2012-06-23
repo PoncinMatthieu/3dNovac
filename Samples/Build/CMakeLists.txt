@@ -115,8 +115,8 @@ file(GLOB FrustumDemoMain-sources ../FrustumDemo/main.cpp)
 list(REMOVE_ITEM FrustumDemo-sources ${FrustumDemoMain-sources})
 
 add_executable(FrustumDemo					${FrustumDemo-sources} ${FrustumDemoMain-sources})
-add_dependencies(FrustumDemo				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
-target_link_libraries(FrustumDemo			Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(FrustumDemo				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+target_link_libraries(FrustumDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
@@ -138,8 +138,8 @@ file(GLOB GUIDemoMain-sources ../GUIDemo/main.cpp)
 list(REMOVE_ITEM GUIDemo-sources ${GUIDemoMain-sources})
 
 add_executable(GUIDemo					${GUIDemo-sources} ${GUIDemoMain-sources})
-add_dependencies(GUIDemo 				Nc-Core Nc-Graphics Nc-GUI)
-target_link_libraries(GUIDemo			Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(GUIDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+target_link_libraries(GUIDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
@@ -161,8 +161,8 @@ file(GLOB LightDemoMain-sources ../LightDemo/main.cpp)
 list(REMOVE_ITEM LightDemo-sources ${LightDemoMain-sources})
 
 add_executable(LightDemo				${LightDemo-sources} ${LightDemoMain-sources})
-add_dependencies(LightDemo 				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
-target_link_libraries(LightDemo			Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(LightDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+target_link_libraries(LightDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
@@ -184,8 +184,8 @@ file(GLOB bSplinesDemoMain-sources ../bSplinesDemo/main.cpp)
 list(REMOVE_ITEM bSplinesDemo-sources ${bSplinesDemoMain-sources})
 
 add_executable(bSplinesDemo					${bSplinesDemo-sources} ${bSplinesDemoMain-sources})
-add_dependencies(bSplinesDemo 				Nc-Core Nc-Graphics Nc-GUI)
-target_link_libraries(bSplinesDemo			Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(bSplinesDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+target_link_libraries(bSplinesDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
@@ -207,8 +207,8 @@ file(GLOB FBEffectsDemoMain-sources ../FBEffectsDemo/main.cpp)
 list(REMOVE_ITEM FBEffectsDemo-sources ${FBEffectsDemoMain-sources})
 
 add_executable(FBEffectsDemo				${FBEffectsDemo-sources} ${FBEffectsDemoMain-sources})
-add_dependencies(FBEffectsDemo 				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
-target_link_libraries(FBEffectsDemo			Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(FBEffectsDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+target_link_libraries(FBEffectsDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
@@ -251,8 +251,8 @@ file(GLOB SimpleParticleEffectMain-sources ../SimpleParticleEffect/main.cpp)
 list(REMOVE_ITEM SimpleParticleEffect-sources ${SimpleParticleEffectMain-sources})
 
 add_executable(SimpleParticleEffect			${SimpleParticleEffect-sources} ${SimpleParticleEffectMain-sources})
-add_dependencies(SimpleParticleEffect			Nc-Core Nc-Graphics Nc-GUI)
-target_link_libraries(SimpleParticleEffect		Nc-Core Nc-Graphics Nc-GUI)
+add_dependencies(SimpleParticleEffect			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+target_link_libraries(SimpleParticleEffect		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)

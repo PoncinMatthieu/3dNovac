@@ -30,7 +30,7 @@ using namespace Nc::Graphic::GL;
 using namespace Nc::Utils;
 
 FrameBuffer::FrameBuffer()
-    : _index(0)
+    : _index(0), _previouslyBound(0)
 {
 }
 
@@ -77,30 +77,45 @@ void    FrameBuffer::Release()
     _index = 0;
 }
 
-void    FrameBuffer::Enable() const
+void    FrameBuffer::Enable()
 {
     Enable(_target);
 }
 
-void    FrameBuffer::Disable() const
+void    FrameBuffer::Disable()
 {
     Disable(_target);
 }
 
-void    FrameBuffer::Enable(Enum::FrameBuffer::Target target) const
+void    FrameBuffer::Enable(Enum::FrameBuffer::Target target)
 {
     if (State::IsSet())
-        State::Current().Bind(target, _index);
+    {
+        State &st = State::Current();
+
+        // save the previous framebuffer
+        _previouslyBound = st.CurrentBound(target);
+
+        // set the framebuffer
+        st.Bind(target, _index);
+    }
     else
-        glBindFramebuffer(target, _index);
+        throw Utils::Exception("FrameBuffer::Enable", "GL::State is not set.");
 }
 
-void    FrameBuffer::Disable(Enum::FrameBuffer::Target target) const
+void    FrameBuffer::Disable(Enum::FrameBuffer::Target target)
 {
     if (State::IsSet())
-        State::Current().Unbind(target);
+    {
+        // unset the framebuffer
+        if (_previouslyBound == 0)
+            State::Current().Unbind(target);
+        else
+            State::Current().Bind(target, _previouslyBound);
+        _previouslyBound = 0;
+    }
     else
-        glBindFramebuffer(target, 0);
+        throw Utils::Exception("FrameBuffer::Disable", "GL::State is not set.");
 }
 
 void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, const RenderBuffer &renderBuffer)

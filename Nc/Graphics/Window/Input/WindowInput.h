@@ -88,6 +88,7 @@ namespace Nc
 
             protected:
                 void                        ForwardEventToSubWindow(SubWindow *subWindow, const System::Event &e);
+                void                        UpdateMousePositionSubWindow(SubWindow *subWindow, int &newX, int &newY, const int &oldX, const int &oldY);
 
             protected:
                 bool                    _keyStates[System::Key::Count];             ///< Store the key states

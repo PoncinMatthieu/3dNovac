@@ -23,6 +23,8 @@ namespace FBEffectsDemo
 
                 void			        TriggerPostProcessActivation()	{_postProcessActivated = (_postProcessActivated) ? false : true;}
 
+                void                    Resized()           {_fboNeedInit = true;}
+
             protected:
                 virtual void            Render(Nc::Graphic::SceneGraph *scene);
                 virtual void		    Update(float elapsedTime);
@@ -31,18 +33,19 @@ namespace FBEffectsDemo
                 void			InitFbo1();
 
             private:
-                Nc::Graphic::Window         *_window;
+                Nc::Graphic::Window                 *_window;
+                bool                                _fboNeedInit;
 
-                Nc::Graphic::GL::FrameBuffer		_fboPass1;
-                Nc::Graphic::Camera2d		*_camera2d;
-                Nc::Graphic::Sprite			*_sprite;
+                Nc::Graphic::GL::FrameBuffer        _fboPass1;
+                Nc::Graphic::Camera2d		        *_camera2d;
+                Nc::Graphic::Sprite			        *_sprite;
 
-                bool			_postProcessActivated;
+                bool			                    _postProcessActivated;
 
-                Nc::Graphic::ProgrammableMaterial	*_postProcessMaterial;
-                Nc::Graphic::GL::Uniform<float,2>	*_sketchJitter;
-                float					_sketchJitterSpeed;
-                float					_timeToNextJitter;
+                Nc::Graphic::ProgrammableMaterial   *_postProcessMaterial;
+                Nc::Graphic::GL::Uniform<float,2>   *_sketchJitter;
+                float					            _sketchJitterSpeed;
+                float					            _timeToNextJitter;
       };
 }
 

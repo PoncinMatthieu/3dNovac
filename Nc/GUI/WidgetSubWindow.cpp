@@ -75,6 +75,17 @@ void    WidgetSubWindow::Resized()
 
     _sprite->Size(Vector2i(e.size.width, e.size.height));
     _sprite->TextureBox(Box2i(Vector2f(0,0), _sprite->Size()));
+
+    Vector2i pos;
+    GetReelPosRecursif(pos);
+    _subWindow->Pos(pos);
+}
+
+void    WidgetSubWindow::Reposed()
+{
+    Vector2i pos;
+    GetReelPosRecursif(pos);
+    _subWindow->Pos(pos);
 }
 
 void    WidgetSubWindow::Draw(Graphic::SceneGraph *scene)

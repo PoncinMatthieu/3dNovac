@@ -42,5 +42,4 @@ SubWindowInput::~SubWindowInput()
 
 void SubWindowInput::Create()
 {
-
 }

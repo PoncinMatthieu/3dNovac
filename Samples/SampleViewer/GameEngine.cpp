@@ -59,6 +59,7 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     {
         if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
             Quit();
+/*
         else if (event.key.code == System::Key::Tilde) // Tilde pour afficher/cacher la console
         {
             if (!_console->Focus())
@@ -69,6 +70,7 @@ void GameEngine::ManageWindowEvent(System::Event &event)
             else
                 _scene->Unfocus(_console);
         }
+*/
     }
     // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
     if (send)
@@ -112,8 +114,8 @@ void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
 
     // init the sample game engine
     engine->LimitFrameRate(60);
-    _manager->AddEngine(engine);
     engine->SetWindow(w->SubWindow());
+    _manager->AddEngine(engine);
 
     // start the sample game engine
     _currentSample = engine->ResolvedClassName();

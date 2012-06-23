@@ -41,11 +41,18 @@ FrameBufferEffect::FrameBufferEffect(Graphic::Window *window)
 	_timeToNextJitter = 0;
 	_sketchJitterSpeed = 25;
 */
+
+	Vector2ui size(_window->Width(), _window->Height());
+	_sprite = new Sprite(size, GL::Texture(), Box2i(Vector2f(0,0), size), GL::Blend::Disabled);
+	_sprite->UseSceneMaterial(true);
+
+    _fboNeedInit = true;
 }
 
 FrameBufferEffect::~FrameBufferEffect()
 {
 	delete _camera2d;
+	delete _sprite;
 	delete _postProcessMaterial;
 }
 
@@ -69,7 +76,7 @@ void	FrameBufferEffect::InitFbo1()
 	depthRenderBuffer.Disable();
 
 	LOG << "Create fbo" << std::endl;
-	_fboPass1.Create();
+    _fboPass1.Create();
 	_fboPass1.Enable();
 	_fboPass1.Attach(GL::Enum::FrameBuffer::ColorAttachment0, colorTexture, 0);
 	_fboPass1.Attach(GL::Enum::FrameBuffer::DepthAttachement, depthRenderBuffer);
@@ -77,15 +84,18 @@ void	FrameBufferEffect::InitFbo1()
 		throw Utils::Exception("Can't initialize the fbo");
 	_fboPass1.Disable();
 
-	LOG << "create sprite" << std::endl;
-	_sprite = new Sprite(size, colorTexture, Box2i(Vector2f(0,0), colorTexture.Size()), GL::Blend::Disabled);
-	_sprite->UseSceneMaterial(true);
-	LOG << "init done" << std::endl;
+    _sprite->SetTexture(colorTexture);
+    _sprite->Size(size);
+    _sprite->TextureBox(Box2i(Vector2f(0,0), size));
+    _camera2d->Resized(size);
+    LOG << "init done" << std::endl;
+
+	_fboNeedInit = false;
 }
 
 void	FrameBufferEffect::Render(SceneGraph *scene)
 {
-	if (!_fboPass1.IsAttached())
+	if (_fboNeedInit)
 		InitFbo1();
 
 	// pass1 : processing

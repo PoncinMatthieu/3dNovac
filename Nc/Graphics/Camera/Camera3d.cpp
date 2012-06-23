@@ -85,10 +85,10 @@ void    Camera3d::Fix(SceneGraph *scene)
         scene->ViewMatrix() = _viewMatrix;
 }
 
-void    Camera3d::Resized(const System::Event &event)
+void    Camera3d::Resized(const Vector2ui &size)
 {
-    _ratioAspect = (float)event.size.width/(float)event.size.height;
-    Camera::Resized(event);
+    _ratioAspect = (float)size.Data[0]/(float)size.Data[1];
+    Camera::Resized(size);
 }
 
 void Camera3d::UpdateViewMatrix()

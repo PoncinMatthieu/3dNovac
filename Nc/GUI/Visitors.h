@@ -38,14 +38,24 @@ namespace Nc
     {
         namespace Visitor
         {
-            struct LGUI ResizeAll : public WidgetVisitor<ResizeAll>
+            struct LGUI ResizedAll : public WidgetVisitor<ResizedAll>
             {
-                ResizeAll()
-                    : WidgetVisitor<ResizeAll>(Utils::Metaprog::Seq<Widget>::Type(),
+                ResizedAll()
+                    : WidgetVisitor<ResizedAll>(Utils::Metaprog::Seq<Widget>::Type(),
                                                            Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type())
                     {}
 
                 void VisitNode(Widget &w)       {w.Resized();}
+            };
+
+            struct LGUI ReposedAll : public WidgetVisitor<ReposedAll>
+            {
+                ReposedAll()
+                    : WidgetVisitor<ReposedAll>(Utils::Metaprog::Seq<Widget>::Type(),
+                                                           Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type())
+                    {}
+
+                void VisitNode(Widget &w)       {w.Reposed();}
             };
 
             struct LGUI IsInhibited : public WidgetVisitor<IsInhibited, true>

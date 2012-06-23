@@ -48,10 +48,6 @@ void GameEngine::LoadContent()
   _sceneGUI->AddChild(new GUI::FPSWidget());
   _console = new GUI::Console(_window, GameEngine::ClassName());
   _sceneGUI->AddChild(_console);
-
-
-    // no need to active/disable the context at each loop
-    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float)

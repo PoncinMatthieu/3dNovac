@@ -79,9 +79,6 @@ void GameEngine::LoadContent()
   _sceneGUI->AddChild(new Camera2d(_window));
   _sceneGUI->AddChild(new GUI::FPSWidget());
   _window->SceneManager()->AddScene(_sceneGUI);
-
-    // no need to active/disable the context at each loop
-//    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)
@@ -91,9 +88,12 @@ void GameEngine::Update(float runningTime)
 
 void GameEngine::ManageWindowEvent(System::Event &event)
 {
-  if (event.type == System::Event::Resized)
-    _camera->Resized(event);
-  MainEngine::ManageWindowEvent(event);
+    if (event.type == System::Event::Resized)
+    {
+        _camera->Resized(event);
+        _fbEffect->Resized();
+    }
+    MainEngine::ManageWindowEvent(event);
 }
 
 void    GameEngine::KeyboardEvent(System::Event &event)

@@ -30,7 +30,7 @@ void	GameEngine::CreateWindow(Window *win)
     win->Create("Tuto 1", Vector2i(800, 600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
 
     // add the window Input to the Inputs of the engine
-    AddInput(win->GetInput());
+    AddInput(win->Input());
 
     // set the window
     _window = win;
@@ -42,7 +42,7 @@ void	GameEngine::LoadContent()
 	_scene3d = new SceneGraph();
 	_camera = new StandardCamera3d(_window);
 	_scene3d->AddChild(_camera);
-	_window->GetSceneManager()->AddScene(_scene3d);
+	_window->SceneManager()->AddScene(_scene3d);
 
 	// create a new repere to display at the center of the scene
 	_scene3d->AddChild(BasicMeshCreator::Axis(1));

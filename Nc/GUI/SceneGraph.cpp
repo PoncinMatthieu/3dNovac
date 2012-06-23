@@ -70,10 +70,11 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
     if (event.type == System::Event::Resized)
     {
         if (_currentCamera != NULL)
-            _currentCamera->Resized(event);
+            _currentCamera->Resized(Vector2ui(event.size.width, event.size.height));
 
-        Visitor::ResizeAll resizeAll;
-        resizeAll(*this);
+        // notify the resize to every widget
+        Visitor::ResizedAll resizedAll;
+        resizedAll(*this);
     }
 
 // test de focus
