@@ -1,6 +1,6 @@
 
-#ifndef PARTICLE_EFFECT_H_
-#define PARTICLE_EFFECT_H_
+#ifndef SIMPLEPARTICLEEFFECT_PARTICLEEFFECT_H_
+#define SIMPLEPARTICLEEFFECT_PARTICLEEFFECT_H_
 
 #include <Nc/Graphics/Core/GL/VertexDescriptor.h>
 #include <Nc/Graphics/Effect/Animation.h>

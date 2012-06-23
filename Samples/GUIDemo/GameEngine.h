@@ -1,11 +1,11 @@
 
 
-#ifndef POPULOUS_GAME_ENGINE
-#define POPULOUS_GAME_ENGINE
+#ifndef GUIDEMO_GAMEENGINE_H_
+#define GUIDEMO_GAMEENGINE_H_
 
 #include <Nc/Contrib/GameEngine.h>
-#include <Nc/Graphics/Camera/Camera2d.h>
 #include <Nc/GUI/GUI.h>
+#include <Nc/Graphics/Camera/Camera2d.h>
 #include "MainMenu.h"
 
 namespace GUIDemo

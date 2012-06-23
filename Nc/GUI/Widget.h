@@ -187,7 +187,7 @@ namespace Nc
                     Can be redefine to manage the specific placement of childs in a widget (like in a WindowBox or a Layout)
                     \return the size that the child should use to set up it's percent size when we call the Resized method.
                  */
-                virtual void            SizeChild(const Widget *, Vector2i &size) const     {GetReelSize(size);}
+                virtual void            SizeChild(const Widget *, Vector2i &size) const;
 
                 /** Check the focus statement of the childs with the given event, compute the focus test */
                 void                    CheckFocus(const Nc::System::Event &event);

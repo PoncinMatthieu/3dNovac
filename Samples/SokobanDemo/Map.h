@@ -1,6 +1,6 @@
 
-#ifndef SOKOBAN_MAP_H_
-#define SOKOBAN_MAP_H_
+#ifndef SOKOBANDEMO_MAP_H_
+#define SOKOBANDEMO_MAP_H_
 
 #include <Nc/Graphics/Scene/SceneNodeFormatManager.h>
 #include <Nc/Graphics/Object/Object.h>

@@ -260,16 +260,16 @@ void Widget::GetReelPos(Vector2i &reelPos) const
         reelPos.Data[0] = parentSize.Data[0] - reelSize.Data[0] - margin.Data[0] - reelPos.Data[0];
     else if (_corner[0] == Left)
         reelPos.Data[0] += margin.Data[0];
-    else if (_corner[0] == Center)
-        reelPos.Data[0] += (parentSize[0] / 2.0) - (reelSize.Data[0] / 2.0) + margin.Data[0];
+    else if (_corner[0] == Center) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
+        reelPos.Data[0] += (parentSize[0] / 2.0) - (reelSize.Data[0] / 2.0);
 
     // check les corner en y
     if (_corner[1] == Top)
         reelPos.Data[1] = parentSize.Data[1] - reelSize.Data[1] - margin.Data[1] - reelPos.Data[1];
     else if (_corner[1] == Bottom)
         reelPos.Data[1] += margin.Data[1];
-    else if (_corner[1] == Center)
-        reelPos.Data[1] += (parentSize.Data[1] / 2.0) - (reelSize.Data[1] / 2.0) + margin.Data[1];
+    else if (_corner[1] == Center) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
+        reelPos.Data[1] += (parentSize.Data[1] / 2.0) - (reelSize.Data[1] / 2.0);
     reelPos += parentTranslate;
 }
 
@@ -380,3 +380,10 @@ void    Widget::UseLook(GUI::ILook *look)
         delete _widgetLook;
     _widgetLook = look;
 }
+
+void    Widget::SizeChild(const Widget *, Vector2i &size) const
+{
+    GetReelSize(size);
+    size -= (_margin * 2);
+}
+

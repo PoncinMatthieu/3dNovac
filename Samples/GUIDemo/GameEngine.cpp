@@ -38,11 +38,9 @@ void GameEngine::CreateWindow(Window *win)
 
 void GameEngine::LoadContent()
 {
-  AddInput(_window->GetInput());
-
   // creation de la scene
   _sceneGUI = new GUI::SceneGraph(_window);
-  _window->GetSceneManager()->AddScene(_sceneGUI);
+  _window->SceneManager()->AddScene(_sceneGUI);
   _sceneGUI->AddChild(new Camera2d(_window));
 
   // GUI :

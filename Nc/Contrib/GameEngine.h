@@ -43,18 +43,19 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::MainEngine, Nc::Contrib::GameEngine);
 
             public:
-                GameEngine(Engine::Manager *manager)
-                    : Engine::MainEngine(manager), _context(NULL)                       {}
-                virtual ~GameEngine()                                                   {delete _context;}
+                GameEngine(Engine::Manager *manager);
+                virtual ~GameEngine();
 
-                /** To setup the window from the sample viewer */
-                void            SetWindow(Nc::Graphic::Window *win)                     {_window = win;}
+                /** To setup the window from the sample viewer, will also add the input from the window to the GameEngine */
+                void            SetWindow(Nc::Graphic::Window *win);
 
             protected:
-                /** Create the shared ogl context */
-                virtual void    CreateContext()     {_context = _window->CreateSharedContext();}
-                virtual void    ActiveContext()     {if (_context != NULL) _context->Active();}
-                virtual void    DisableContext()    {if (_context != NULL) _context->Disable();}
+                /** Create the shared ogl context specific to the thread of the GameEngine */
+                virtual void    CreateContext();
+                /** Active the ogl context */
+                virtual void    ActiveContext();
+                /** Disable the ogl context */
+                virtual void    DisableContext();
 
             protected:
                 Graphic::Window     *_window;       ///< instance of the window used to render

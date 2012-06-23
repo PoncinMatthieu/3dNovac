@@ -1,6 +1,6 @@
 
-#ifndef MAIN_ENGINE_H_
-#define MAIN_ENGINE_H_
+#ifndef SOKOBANDEMO_GAMEENGINE_H_
+#define SOKOBANDEMO_GAMEENGINE_H_
 
 #include <Nc/Contrib/GameEngine.h>
 #include "Map.h"

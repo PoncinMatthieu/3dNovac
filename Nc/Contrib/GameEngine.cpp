@@ -1,7 +1,7 @@
 
 /*-----------------------------------------------------------------------------
 
-	3dNovac GUIDemo
+	3dNovac Contrib
 	Copyright (C) 2010-2011, The 3dNovac Team
 
     This file is part of 3dNovac.
@@ -19,45 +19,46 @@
     You should have received a copy of the GNU Lesser General Public License
     along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
 
-    File Created At:        27/09/2011
+    File Created At:        23/06/2012
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
 
-#ifndef GUIDEMO_MAINMENU_H_
-#define GUIDEMO_MAINMENU_H_
+#include <Nc/Graphics/Window/Input/WindowInput.h>
+#include "GameEngine.h"
 
-#include <Nc/GUI/GUI.h>
+using namespace Nc;
+using namespace Nc::Contrib;
 
-namespace GUIDemo
+GameEngine::GameEngine(Engine::Manager *manager)
+    : Engine::MainEngine(manager), _context(NULL)
 {
-    class MainMenu : Nc::Utils::NonCopyable
-    {
-        public:
-            enum Pattern
-            {
-                SelectMode/*,
-                SelectGame,
-                CreateGame,
-                WaitingRoom,
-                InGame,
-                GameOver,
-                Loading
-    */        };
-
-
-        public:
-            MainMenu(Nc::GUI::SceneGraph *gui);
-            ~MainMenu();
-
-            void UpdateMode(Pattern mode);
-
-        private:
-            Pattern                 _pattern;
-
-            Nc::GUI::SceneGraph     *_GUI;
-            Nc::GUI::WindowBox      *_selectModeWindow;
-    };
 }
 
-#endif
+GameEngine::~GameEngine()
+{
+    delete _context;
+}
+
+void    GameEngine::SetWindow(Nc::Graphic::Window *win)
+{
+    _window = win;
+    AddInput(_window->Input());
+}
+
+void    GameEngine::CreateContext()
+{
+    _context = _window->CreateSharedContext();
+}
+
+void    GameEngine::ActiveContext()
+{
+    if (_context != NULL)
+        _context->Active();
+}
+
+void    GameEngine::DisableContext()
+{
+    if (_context != NULL)
+        _context->Disable();
+}

@@ -35,14 +35,11 @@ void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 
 void GameEngine::LoadContent()
 {
-  // add the window Input to the Inputs of the engine
-  AddInput(_window->GetInput());
-
   // create the camera, scene and set it to the SceneGraphManager of the Graphic engine
   _camera = new StandardCamera3d(_window);
   _scene3d = new SceneGraph();
   _scene3d->AddChild(_camera);
-  _window->GetSceneManager()->AddScene(_scene3d);
+  _window->SceneManager()->AddScene(_scene3d);
 
   // chargement de la sky box
   Utils::FileName filenamesSky1[6] =

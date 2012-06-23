@@ -32,12 +32,9 @@ void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 
 void GameEngine::LoadContent()
 {
-  // add the window Input to the Inputs of the engine
-  AddInput(_window->GetInput());
-
   _scene2d = new GUI::SceneGraph(_window);
   _scene2d->AddChild(new Camera2d(_window));
-  _window->GetSceneManager()->AddScene(_scene2d);
+  _window->SceneManager()->AddScene(_scene2d);
 
   // GUI :
   //    scene2d->AddWidget(new GUI::Console());

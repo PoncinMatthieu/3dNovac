@@ -184,10 +184,10 @@ namespace Nc
         T   &IEvent::GetData()
         {
             if (this == NULL)
-                throw Utils::Exception("IEvent", "GetData: Event if Null, Event<" + std::string(typeid(T).name()) + "> expected");
+                throw Utils::Exception("IEvent:GetData", "Event if Null, Event<" + std::string(typeid(T).name()) + "> expected");
             Event<T> *e = dynamic_cast<Event<T>*>(this);
             if (e == NULL)
-                throw Utils::Exception("IEvent", "GetData: bad param, Event<" + std::string(typeid(T).name()) + "> expected");
+                throw Utils::Exception("IEvent:GetData", "Bad param, Event<" + std::string(typeid(T).name()) + "> expected");
             return e->Data;
         }
 

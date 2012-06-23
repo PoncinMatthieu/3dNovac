@@ -80,13 +80,12 @@ void IEngine::Loading()
         {
             LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-------------------" << endl;
             CreateContext();
-            DisableContext();
             _pattern.Enable(ContextIsLoaded);
             LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-done--------------" << endl;
         }
         catch (const std::exception &e)
         {
-            LOG << "FATAL ERROR during creating context : " << e.what() << std::endl;
+            LOG << "FATAL ERROR while creating context: " << e.what() << std::endl;
             exit(-1);
         }
         _manager->MutexGlobal().Unlock();
@@ -109,16 +108,13 @@ void IEngine::Loading()
         }
         catch (const std::exception &e)
         {
-            LOG << "FATAL ERROR during Loading contents : " << e.what() << std::endl;
+            LOG << "FATAL ERROR while Loading contents: " << e.what() << std::endl;
             exit(-1);
         }
        _manager->MutexGlobal().Unlock();
         if (_pattern.Enabled(WaitingLoadContentsOfOthersEngines))
             _manager->WaitEnginesLoading();                     // waiting for others loading content engines
     }
-
-    if (_pattern.Enabled(HasAContext))
-        ActiveContext();
 }
 
 void IEngine::Releasing()
@@ -140,12 +136,12 @@ void IEngine::Process()
     try
     {
         #ifdef _DEBUG_THREAD_ENGINE
-            LOG_DEBUG <<"Execute `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
+            LOG_DEBUG <<"Execute `" << *this << "` pid = " << System::ThreadId() << "\n";
         #endif
             ExecuteEvents();
             Execute(_elapsedTime);
         #ifdef _DEBUG_THREAD_ENGINE
-            LOG_DEBUG <<"Execute END `" << *this << "` pid = " << Utils::System::ThreadId() << "\n";
+            LOG_DEBUG <<"Execute END `" << *this << "` pid = " << System::ThreadId() << "\n";
         #endif
     }
     catch (const std::exception &e)

@@ -55,6 +55,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     // create the sample window used to render the samples
     _widgetSampleWindow = new Widget(Center, Center);
     _widgetSampleWindow->UseLook(new BoxLook(""));
+    _widgetSampleWindow->Margin(Vector2i(5, 5));
     mainLayout->AddChild(_widgetSampleWindow);
 
     // set the auto resizing
@@ -107,17 +108,17 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
 WidgetSubWindow    *MainMenu::CreateSampleWindow(Window *windowParent)
 {
     if (_currentSampleWindow != NULL)
-    {
-LOG << "remove current sample window" << std::endl;
-
         _widgetSampleWindow->RemoveWidget(_currentSampleWindow);
-    }
-
-LOG << "Creating new sample window" << std::endl;
 
     _currentSampleWindow = new WidgetSubWindow(windowParent, Center, Center);
     _widgetSampleWindow->AddChild(_currentSampleWindow);
     _currentSampleWindow->Percent(Vector2f(100, 100));
     return _currentSampleWindow;
+}
+
+void    MainMenu::CloseSampleWindow()
+{
+    if (_currentSampleWindow != NULL)
+        _currentSampleWindow->SubWindow()->Close();
 }
 

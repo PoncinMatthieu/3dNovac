@@ -44,8 +44,6 @@ void GameEngine::CreateWindow(Window *win)
 
 void GameEngine::LoadContent()
 {
-  AddInput(_window->GetInput());
-
     // creation de la scene
     _scene3d = new SceneGraph();
 
@@ -85,13 +83,13 @@ void GameEngine::LoadContent()
     _camera3->DrawFrustum(true);
     _scene3d->AddChild(_camera3);
     _scene3d->AddChild(_entity); // ajout d'octree
-    _window->GetSceneManager()->AddScene(_scene3d);
+    _window->SceneManager()->AddScene(_scene3d);
 
     // creation de la gui avec le fps widget
     _sceneGUI = new GUI::SceneGraph(_window);
     _sceneGUI->AddChild(new Camera2d(_window));
     _sceneGUI->AddChild(new GUI::FPSWidget());
-    _window->GetSceneManager()->AddScene(_sceneGUI);
+    _window->SceneManager()->AddScene(_sceneGUI);
 
     _pattern.Disable(Nc::Engine::HasAContext);
 

@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef GUIDEMO_MAINMENU_H_
-#define GUIDEMO_MAINMENU_H_
+#ifndef SAMPLEVIEWER_MAINMENU_H_
+#define SAMPLEVIEWER_MAINMENU_H_
 
 #include <Nc/GUI/GUI.h>
 #include <Nc/GUI/WidgetSubWindow.h>
@@ -43,6 +43,8 @@ namespace SampleViewer
             const std::string           *Sample() const         {return (_comboBox->CurrentItem()) ? &_comboBox->CurrentItem()->Data() : NULL;}
 
             Nc::GUI::WidgetSubWindow    *CreateSampleWindow(Nc::Graphic::Window *windowParent);
+
+            void                        CloseSampleWindow();
 
         private:
             Nc::GUI::Widget             *CreateSelectSampleWindow(Nc::GUI::Layout *parent);

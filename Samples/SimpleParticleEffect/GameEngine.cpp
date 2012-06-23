@@ -43,8 +43,6 @@ void GameEngine::CreateWindow(Window *win)
 
 void GameEngine::LoadContent()
 {
-    AddInput(_window->GetInput());
-
     // creation de la camera
     _camera = new StandardCamera3d(_window);
     _camera->AddChild(BasicMeshCreator::Axis(1)); // creation d'un repere
@@ -52,7 +50,7 @@ void GameEngine::LoadContent()
     // creation de la scene
     _scene = new SceneGraph();
     _scene->AddChild(_camera);
-    _window->GetSceneManager()->AddScene(_scene);
+    _window->SceneManager()->AddScene(_scene);
 
     // create the particle effect
     _particleEffect = new ParticleEffect();
@@ -82,7 +80,7 @@ void GameEngine::CreateGUI()
     _sceneGUI = new GUI::SceneGraph(_window);
     _sceneGUI->AddChild(new Camera2d(_window));
     _sceneGUI->AddChild(new GUI::FPSWidget());
-    _window->GetSceneManager()->AddScene(_sceneGUI);
+    _window->SceneManager()->AddScene(_sceneGUI);
 }
 
 void GameEngine::Update(float runningTime)

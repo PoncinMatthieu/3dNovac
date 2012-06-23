@@ -71,14 +71,20 @@ namespace Nc
                 {
                     bool state;
                     if (Utils::Convert::StringTo(CONFIG->Block("GlobalConfig")->Line("ErrorTreatAsWarning")->Param("state"), state) && state)
-                        LOG_ERROR << "Warning: " << s1 << ": " << s2 << std::endl;
+                        Warning(s1, s2);
                     else
                         throw Utils::Exception(s1, s2);
                 }
 
+                /** Can be used to write a warning with the logger */
+                static inline void Warning(const std::string &s1, const std::string &s2)
+                {
+                    LOG_ERROR << "Warning: " << s1 << ": " << s2 << std::endl;
+                }
+
             protected:
-                Config()    {_content = NULL;}
-                ~Config();
+                Config();
+                virtual ~Config();
 
             protected:
                 Utils::Xml::File        _file;          ///< xml file used to read and write the configs

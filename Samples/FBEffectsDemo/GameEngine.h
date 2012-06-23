@@ -1,6 +1,6 @@
 
-#ifndef MAIN_ENGINE_H_
-#define MAIN_ENGINE_H_
+#ifndef FBEFFECTSDEMO_GAMEENGINE_H_
+#define FBEFFECTSDEMO_GAMEENGINE_H_
 
 #include <Nc/Contrib/GameEngine.h>
 #include <Nc/Graphics/Scene/SceneNodeFormatManager.h>

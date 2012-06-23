@@ -1,6 +1,6 @@
 
-#ifndef BSPLINES_2D_H_
-#define BSPLINES_2D_H_
+#ifndef BSPLINESDEMO_BSPLINES_H_
+#define BSPLINESDEMO_BSPLINES_H_
 
 #include <Nc/Graphics/Object/Object.h>
 

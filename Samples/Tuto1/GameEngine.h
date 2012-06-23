@@ -1,4 +1,7 @@
 
+#ifndef TUTO1_GAMEENGINE_H_
+#define TUTO1_GAMEENGINE_H_
+
 #include <Nc/Core/Engine/MainEngine.h>
 #include <Nc/Graphics/Engine.h>
 
@@ -35,3 +38,5 @@ class GameEngine : public Nc::Engine::MainEngine
     Nc::Graphic::SceneGraph				*_scene3d;	///< our scene 3d, displayed by the graphic engine
     Nc::Graphic::StandardCamera3d			*_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
 };
+
+#endif

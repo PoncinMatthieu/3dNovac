@@ -1,6 +1,6 @@
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#ifndef TUTO_NC_CORE_SERVER_CLIENT_H_
+#define TUTO_NC_CORE_SERVER_CLIENT_H_
 
 #include <Nc/Core/Network/SocketTcp.h>
 

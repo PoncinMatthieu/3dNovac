@@ -138,7 +138,7 @@ void    Manager::AddEngine(IEngine *engine, const Permissions &permissions)
     std::string name = engine->ResolvedClassName();
     MapEngine::iterator it = _mapEngine.find(name);
     if (it != _mapEngine.end())
-        throw Utils::Exception("Engine::Manager", "The engine " + name + "already exist");
+        throw Utils::Exception("Engine::Manager", "The engine '" + name + "' already exist");
 
     _mapEngine[name] = AllowedEngine(engine, permissions);
 }

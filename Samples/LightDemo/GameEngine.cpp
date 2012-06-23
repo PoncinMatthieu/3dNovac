@@ -44,8 +44,6 @@ void GameEngine::CreateWindow(Window *win)
 
 void GameEngine::LoadContent()
 {
-  AddInput(_window->GetInput());
-
   // creation de la camera
   _camera = new StandardCamera3d(_window);
 
@@ -65,7 +63,7 @@ void GameEngine::LoadContent()
   // creation de la scene
   _scene = new SceneGraph();
   _scene->AddChild(_camera);
-  _window->GetSceneManager()->AddScene(_scene);
+  _window->SceneManager()->AddScene(_scene);
 
   // creation du default lighting Material
   _lightingMaterial = new DefaultLightingMaterial();
@@ -92,7 +90,7 @@ void GameEngine::LoadContent()
   _sceneGUI = new GUI::SceneGraph(_window);
   _sceneGUI->AddChild(new Camera2d(_window));
   _sceneGUI->AddChild(new GUI::FPSWidget());
-  _window->GetSceneManager()->AddScene(_sceneGUI);
+  _window->SceneManager()->AddScene(_sceneGUI);
 
   // no need to active/disable the context at each loop
   //_pattern.Disable(Nc::Engine::HasAContext);

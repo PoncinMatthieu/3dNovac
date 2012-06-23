@@ -1,7 +1,7 @@
 
 
-#ifndef POPULOUS_GAME_ENGINE
-#define POPULOUS_GAME_ENGINE
+#ifndef SAMPLEVIEWER_GAMEENGINE_H_
+#define SAMPLEVIEWER_GAMEENGINE_H_
 
 #include <Nc/Contrib/GameEngine.h>
 #include <Nc/Graphics/Camera/Camera2d.h>
@@ -43,6 +43,7 @@ namespace SampleViewer
             Nc::GUI::Console		*_console;
             MainMenu                *_menu;
             SampleFactory           *_sampleFactory;
+            std::string             _currentSample;
     };
 }
 

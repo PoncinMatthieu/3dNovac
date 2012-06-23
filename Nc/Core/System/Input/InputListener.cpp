@@ -29,12 +29,28 @@
 using namespace std;
 using namespace Nc::System;
 
+InputListener::InputListener()
+{
+}
+
 InputListener::~InputListener()
 {
     for (ListInput::iterator it = _inputList.begin(); it != _inputList.end(); ++it)
     {
         (*it)->RemoveListener(this);
     }
+}
+
+void    InputListener::AddInput(Input *input)
+{
+    input->AddListener(this);
+    _inputList.push_back(input);
+}
+
+void    InputListener::RemoveInput(Input *input)
+{
+    input->RemoveListener(this);
+    _inputList.remove(input);
 }
 
 bool InputListener::PollEvent(Event &e)

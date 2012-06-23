@@ -1,6 +1,6 @@
 
-#ifndef BSPLINE_GAME_ENGINE
-#define BSPLINE_GAME_ENGINE
+#ifndef BSPLINESDEMO_GAMEENGINE_H_
+#define BSPLINESDEMO_GAMEENGINE_H_
 
 #include <Nc/Contrib/GameEngine.h>
 #include <Nc/Core/Engine/MainEngine.h>

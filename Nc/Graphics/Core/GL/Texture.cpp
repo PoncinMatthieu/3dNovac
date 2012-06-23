@@ -92,8 +92,8 @@ void Texture::CheckSize(const Vector2ui &size)
     if (!Math::IsAPowerOf2(size.Data[0]) || !Math::IsAPowerOf2(size.Data[1]))
     {
         if (EXT.NonPowerOf2Supported())
-            LOG_DEBUG << "Warning: To increse performance, please use a texture size of power of 2. " + _name + ":" +
-                        Utils::Convert::ToString(size.Data[0]) + "/" + Utils::Convert::ToString(size.Data[1]) << std::endl;
+            System::Config::Warning("GL::Texture",  "To increse performance, please use a texture size of power of 2. " + _name + ":" +
+                                                    Utils::Convert::ToString(size.Data[0]) + "/" + Utils::Convert::ToString(size.Data[1]));
         else
             throw Utils::Exception("Texture", "Can't create the texture: Texturing with a non power of two size is not supported on this plateform.");
     }

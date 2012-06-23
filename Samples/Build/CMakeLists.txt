@@ -111,7 +111,10 @@ file(
   ../FrustumDemo/*.h
 )
 
-add_executable(FrustumDemo					${FrustumDemo-sources})
+file(GLOB FrustumDemoMain-sources ../FrustumDemo/main.cpp)
+list(REMOVE_ITEM FrustumDemo-sources ${FrustumDemoMain-sources})
+
+add_executable(FrustumDemo					${FrustumDemo-sources} ${FrustumDemoMain-sources})
 add_dependencies(FrustumDemo				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
 target_link_libraries(FrustumDemo			Nc-Core Nc-Graphics Nc-GUI)
 
@@ -131,7 +134,10 @@ file(
   ../GUIDemo/*.h
 )
 
-add_executable(GUIDemo					${GUIDemo-sources})
+file(GLOB GUIDemoMain-sources ../GUIDemo/main.cpp)
+list(REMOVE_ITEM GUIDemo-sources ${GUIDemoMain-sources})
+
+add_executable(GUIDemo					${GUIDemo-sources} ${GUIDemoMain-sources})
 add_dependencies(GUIDemo 				Nc-Core Nc-Graphics Nc-GUI)
 target_link_libraries(GUIDemo			Nc-Core Nc-Graphics Nc-GUI)
 
@@ -151,7 +157,10 @@ file(
   ../LightDemo/*.h
 )
 
-add_executable(LightDemo				${LightDemo-sources})
+file(GLOB LightDemoMain-sources ../LightDemo/main.cpp)
+list(REMOVE_ITEM LightDemo-sources ${LightDemoMain-sources})
+
+add_executable(LightDemo				${LightDemo-sources} ${LightDemoMain-sources})
 add_dependencies(LightDemo 				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
 target_link_libraries(LightDemo			Nc-Core Nc-Graphics Nc-GUI)
 
@@ -162,7 +171,7 @@ endif()
 
 
 #------------------------------------------------------------------------------
-#	bSplineDemo Demo
+#	bSplinesDemo Demo
 #------------------------------------------------------------------------------
 file(
   GLOB
@@ -171,7 +180,10 @@ file(
   ../bSplinesDemo/*.h
 )
 
-add_executable(bSplinesDemo					${bSplinesDemo-sources})
+file(GLOB bSplinesDemoMain-sources ../bSplinesDemo/main.cpp)
+list(REMOVE_ITEM bSplinesDemo-sources ${bSplinesDemoMain-sources})
+
+add_executable(bSplinesDemo					${bSplinesDemo-sources} ${bSplinesDemoMain-sources})
 add_dependencies(bSplinesDemo 				Nc-Core Nc-Graphics Nc-GUI)
 target_link_libraries(bSplinesDemo			Nc-Core Nc-Graphics Nc-GUI)
 
@@ -191,7 +203,10 @@ file(
   ../FBEffectsDemo/*.h
 )
 
-add_executable(FBEffectsDemo				${FBEffectsDemo-sources})
+file(GLOB FBEffectsDemoMain-sources ../FBEffectsDemo/main.cpp)
+list(REMOVE_ITEM FBEffectsDemo-sources ${FBEffectsDemoMain-sources})
+
+add_executable(FBEffectsDemo				${FBEffectsDemo-sources} ${FBEffectsDemoMain-sources})
 add_dependencies(FBEffectsDemo 				Nc-Core Nc-Graphics Nc-GUI PluginFileFormatCollada)
 target_link_libraries(FBEffectsDemo			Nc-Core Nc-Graphics Nc-GUI)
 
@@ -210,7 +225,10 @@ file(
   ../SokobanDemo/*.h
 )
 
-add_executable(SokobanDemo					${SokobanDemo-sources})
+file(GLOB SokobanDemoMain-sources ../SokobanDemo/main.cpp)
+list(REMOVE_ITEM SokobanDemo-sources ${SokobanDemoMain-sources})
+
+add_executable(SokobanDemo					${SokobanDemo-sources} ${SokobanDemoMain-sources})
 add_dependencies(SokobanDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
 target_link_libraries(SokobanDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
@@ -229,13 +247,16 @@ file(
   ../SimpleParticleEffect/*.h
 )
 
-add_executable(SimpleParticleEffect					${SimpleParticleEffect-sources})
-add_dependencies(SimpleParticleEffect 				Nc-Core Nc-Graphics Nc-GUI)
-target_link_libraries(SimpleParticleEffect			Nc-Core Nc-Graphics Nc-GUI)
+file(GLOB SimpleParticleEffectMain-sources ../SimpleParticleEffect/main.cpp)
+list(REMOVE_ITEM SimpleParticleEffect-sources ${SimpleParticleEffectMain-sources})
+
+add_executable(SimpleParticleEffect			${SimpleParticleEffect-sources} ${SimpleParticleEffectMain-sources})
+add_dependencies(SimpleParticleEffect			Nc-Core Nc-Graphics Nc-GUI)
+target_link_libraries(SimpleParticleEffect		Nc-Core Nc-Graphics Nc-GUI)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(SimpleParticleEffect ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+  create_target_launcher(SimpleParticleEffect ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -247,17 +268,21 @@ file(
   SampleViewer-sources
   ../SampleViewer/*.cpp
   ../SampleViewer/*.h
-
-  ../bSplinesDemo/GameEngine.cpp
-  ../bSplinesDemo/bSplines.cpp
-  ../bSplinesDemo/*.h
 )
 
-add_executable(SampleViewer					${SampleViewer-sources})
-add_dependencies(SampleViewer 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
-target_link_libraries(SampleViewer			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+list(APPEND SampleViewer-sources ${FrustumDemo-sources})
+list(APPEND SampleViewer-sources ${GUIDemo-sources})
+list(APPEND SampleViewer-sources ${LightDemo-sources})
+list(APPEND SampleViewer-sources ${bSplinesDemo-sources})
+list(APPEND SampleViewer-sources ${FBEffectsDemo-sources})
+list(APPEND SampleViewer-sources ${SokobanDemo-sources})
+list(APPEND SampleViewer-sources ${SimpleParticleEffect-sources})
+
+add_executable(SampleViewer		${SampleViewer-sources})
+add_dependencies(SampleViewer		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+target_link_libraries(SampleViewer	Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(SampleViewer ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+  create_target_launcher(SampleViewer ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()

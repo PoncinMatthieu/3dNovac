@@ -44,14 +44,17 @@ SubWindow::~SubWindow()
 
 void    SubWindow::Close()
 {
-    _parent->_listSubWindow.remove(this);
+    if (_isCreate)
+    {
+        _parent->RemoveSubWindow(this);
+    }
 }
 
 void    SubWindow::Create(const Math::Vector2ui &size)
 {
     _width = size.Data[0];
     _height = size.Data[1];
-    _context = _parent->GetContext();
+    _context = _parent->Context();
     _own = _parent->IsOwn();
     _antialiasingLevel = _parent->AntialiasingLevel();
     _depth = _parent->Depth();
@@ -60,10 +63,10 @@ void    SubWindow::Create(const Math::Vector2ui &size)
     _defaultCursor = _parent->DefaultCursor()->Clone();
     _currentCursor = _defaultCursor;
 
-    _input = new SubWindowInput(this, _parent->GetInput());
+    _input = new SubWindowInput(this, _parent->Input());
     _input->Create();
 
-    _parent->_listSubWindow.push_back(this);
+    _parent->AddSubWindow(this);
 
     _needInitFbo = true;
     _isCreate = true;

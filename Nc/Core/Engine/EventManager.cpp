@@ -90,7 +90,7 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
     }
     catch (const std::exception &ex)
     {
-        LOG_ERROR << "Error : "<< ex.what() << std::endl;
+        LOG_ERROR << "Error: " << *this << ": " << ex.what() << std::endl;
     }
     catch (...)
     {
@@ -114,7 +114,7 @@ void EventManager::ExecuteEvent(const std::string &name, EventString *e)
     }
     catch (const std::exception &ex)
     {
-        LOG_ERROR << "Error : "<< ex.what() << std::endl;
+        LOG_ERROR << "Error: " << *this << ": " << ex.what() << std::endl;
     }
     catch (...)
     {

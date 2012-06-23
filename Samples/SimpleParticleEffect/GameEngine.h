@@ -1,7 +1,7 @@
 
 
-#ifndef POPULOUS_GAME_ENGINE
-#define POPULOUS_GAME_ENGINE
+#ifndef SIMPLEPARTICLEEFFECT_GAMEENGINE_H_
+#define SIMPLEPARTICLEEFFECT_GAMEENGINE_H_
 
 #include <Nc/Contrib/GameEngine.h>
 #include <Nc/Graphics/Camera/StandardCamera3d.h>

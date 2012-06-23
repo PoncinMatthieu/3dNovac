@@ -35,11 +35,9 @@ void GameEngine::CreateWindow(Window *win)
 
 void GameEngine::LoadContent()
 {
-    AddInput(_window->GetInput());
-
     // creation de la scene
     _scene = new GUI::SceneGraph(_window);
-    _window->GetSceneManager()->AddScene(_scene);
+    _window->SceneManager()->AddScene(_scene);
     _scene->AddChild(new Camera2d(_window));
 
     // GUI :
@@ -93,15 +91,33 @@ void GameEngine::MouseMotionEvent(System::Event &)
 void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
 {
     if (!_menu->Sample())
-        throw Utils::Exception("SampleViewer::GameEngine", "No sample selected.");
+        throw Utils::Exception("StartSampleCmd", "No sample selected.");
 
     LOG << "Start sample: " << *_menu->Sample() << std::endl;
 
-    Contrib::GameEngine *engine = _sampleFactory->CreateSample(_menu->CreateSampleWindow(_window), *_menu->Sample());
-    if (engine != NULL)
-    {
+    // close the previous sub window
+    _menu->CloseSampleWindow();
 
-    }
+    // delete the previous sample game engine
+    if (!_currentSample.empty())
+        _manager->RemoveEngine(_currentSample, true);
+
+    // create the new sample game engine
+    Contrib::GameEngine *engine = _sampleFactory->CreateSample(*_menu->Sample());
+    if (engine == NULL)
+        throw Utils::Exception("StartSampleCmd", "Failed to create the new GameEngine.");
+
+    // create the widget sub window
+    GUI::WidgetSubWindow *w = _menu->CreateSampleWindow(_window);
+
+    // init the sample game engine
+    engine->LimitFrameRate(60);
+    _manager->AddEngine(engine);
+    engine->SetWindow(w->SubWindow());
+
+    // start the sample game engine
+    _currentSample = engine->ResolvedClassName();
+    engine->Start();
 }
 
 

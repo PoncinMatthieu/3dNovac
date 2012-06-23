@@ -57,20 +57,24 @@ WidgetSubWindow &WidgetSubWindow::operator = (const WidgetSubWindow &w)
 WidgetSubWindow::~WidgetSubWindow()
 {
     delete _subWindow;
+    delete _sprite;
 }
 
 void    WidgetSubWindow::Resized()
 {
     Widget::Resized();
 
-    // genere a resize event
-    System::Event e(_subWindow->GetInput(), System::Event::Resized);
-    e.size.width = _size.Data[0];
-    e.size.height = _size.Data[1];
-    _subWindow->GetInput()->GenereEvent(e);
+    Vector2i reelSize;
+    GetReelSize(reelSize);
 
-    _sprite->Size(_size);
-    _sprite->TextureBox(Box2i(Vector2f(0,0), _size));
+    // genere a resize event
+    System::Event e(_subWindow->Input(), System::Event::Resized);
+    e.size.width = reelSize.Data[0];
+    e.size.height = reelSize.Data[1];
+    _subWindow->Input()->GenereEvent(e);
+
+    _sprite->Size(Vector2i(e.size.width, e.size.height));
+    _sprite->TextureBox(Box2i(Vector2f(0,0), _sprite->Size()));
 }
 
 void    WidgetSubWindow::Draw(Graphic::SceneGraph *scene)

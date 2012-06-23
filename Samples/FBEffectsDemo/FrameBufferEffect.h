@@ -1,6 +1,6 @@
 
-#ifndef FRAMEBUFFER_EFFECT_H_
-#define FRAMEBUFFER_EFFECT_H_
+#ifndef FBEFFECTSDEMO_FRAMEBUFFEREFFECT_H_
+#define FBEFFECTSDEMO_FRAMEBUFFEREFFECT_H_
 
 #include <Nc/Graphics/Core/GL/FrameBuffer.h>
 #include <Nc/Graphics/Effect/Effect.h>

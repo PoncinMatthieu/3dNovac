@@ -70,8 +70,9 @@ namespace Nc
 
             protected:
                 Window  *_win;          ///< The instance of the associated window
-                bool    _isCreate;      ///< a boolean to define if the context is create
-                bool    _isShared;      ///< a boolean to define if the context is shared
+                bool    _isCreate;      ///< Statement to define if the context is create
+                bool    _isShared;      ///< Statement to define if the context is shared
+                bool    _isActive;      ///< Statement to define if the context is active
         };
     }
 }

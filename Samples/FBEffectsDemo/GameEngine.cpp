@@ -36,12 +36,9 @@ void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 
 void GameEngine::LoadContent()
 {
-  // add the window Input to the Inputs of the engine
-  AddInput(_window->GetInput());
-
   // create the scene
   _scene3d = new SceneGraph();
-  _window->GetSceneManager()->AddScene(_scene3d);
+  _window->SceneManager()->AddScene(_scene3d);
 
   // create the fb effect
   _fbEffect = new FrameBufferEffect(_window);
@@ -81,7 +78,7 @@ void GameEngine::LoadContent()
   _sceneGUI = new GUI::SceneGraph(_window);
   _sceneGUI->AddChild(new Camera2d(_window));
   _sceneGUI->AddChild(new GUI::FPSWidget());
-  _window->GetSceneManager()->AddScene(_sceneGUI);
+  _window->SceneManager()->AddScene(_sceneGUI);
 
     // no need to active/disable the context at each loop
 //    _pattern.Disable(Nc::Engine::HasAContext);

@@ -1,7 +1,7 @@
 
 
-#ifndef POPULOUS_GAME_ENGINE
-#define POPULOUS_GAME_ENGINE
+#ifndef FRUSTUMDEMO_GAMEENGINE_H_
+#define FRUSTUMDEMO_GAMEENGINE_H_
 
 #include <Nc/Contrib/GameEngine.h>
 #include <Nc/Graphics/Scene/SceneNodeFormatManager.h>

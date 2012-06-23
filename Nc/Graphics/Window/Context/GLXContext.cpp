@@ -47,6 +47,30 @@ Graphic::GLXContext::~GLXContext()
     }
 }
 
+void    Graphic::GLXContext::Active()
+{
+    if (_isActive)
+        System::Config::Warning("GLXContext:Active", "Context already active.");
+    if (glXMakeCurrent(_display, static_cast<XWindow*>(_win)->_xwin, _context) == 0)
+        System::Config::Error("GLXContext:Active", "Make current failed");
+    _isActive = true;
+}
+
+void    Graphic::GLXContext::Disable()
+{
+    if (!_isActive)
+        System::Config::Warning("GLXContext:Disable", "Context already disabled.");
+    if (glXMakeCurrent(_display, 0, 0) == 0)
+        System::Config::Error("GLXContext:Disable", "Make current failed.");
+    _isActive = false;
+}
+
+void    Graphic::GLXContext::SwapBuffers()
+{
+    glXSwapBuffers(_display, static_cast<XWindow*>(_win)->_xwin);
+}
+
+
 /*
 // Helper to check for extension string presence.  Adapted from:
 //   http://www.opengl.org/resources/features/OGLextensions/
@@ -186,15 +210,21 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
     else
         LOG_DEBUG << " Direct GLX rendering context obtained.";
     if (sharedContext != NULL)
+    {
         LOG_DEBUG << " Shared with " << sharedContext;
+        _isShared = true;
+    }
     LOG_DEBUG << std::endl;
+
+    // the context is now created but not active
+    _isActive = false;
     _isCreate = true;
 }
 
 Graphic::GLContext *Graphic::GLXContext::CreateNewSharedContext()
 {
     if (!_isCreate)
-        throw Utils::Exception("GLXContext", "Can't create a shared GLXContext if the first is not yet create");
+        throw Utils::Exception("GLXContext", "Can't create a shared GLXContext if the first is not even created");
 
     // Create a new opengl context for the current thread
     // Create an other display connection to the Xserver otherwise the glx will crash on Qt with nvidia drivers
@@ -202,7 +232,6 @@ Graphic::GLContext *Graphic::GLXContext::CreateNewSharedContext()
     GLXContext   *newSharedRenderer = new GLXContext(static_cast<XWindow*>(_win));
     newSharedRenderer->_display = XOpenDisplay(0);
     newSharedRenderer->Create(this);
-    newSharedRenderer->_isShared = true;
     Disable();
     return newSharedRenderer;
 }

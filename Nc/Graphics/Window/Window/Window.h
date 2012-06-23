@@ -104,10 +104,10 @@ namespace Nc
                 inline void                     ResetSize(unsigned int width, unsigned int height)      {_width = width; _height = height;}
 
                 /** Return the OpenGL context associated */
-                inline GLContext                *GetContext()           {return _context;}
+                inline GLContext                *Context()              {return _context;}
 
                 /** Return the window input associated */
-                inline WindowInput              *GetInput()             {return _input;}
+                inline WindowInput              *Input()                {return _input;}
 
                 /** return false if the window use an existing window (Created with the method UseExistingWindow) */
                 inline bool                     IsOwn()                 {return _own;}
@@ -134,12 +134,16 @@ namespace Nc
                 virtual ICursor                 *NewCursor() = 0;
 
                 /** \return the SceneGraphManager used to render the scenes */
-                SceneGraphManager               *GetSceneManager()      {return _sceneGraphManager;}
+                SceneGraphManager               *SceneManager()         {return _sceneGraphManager;}
+
+            protected:
+                /** Called by a SubWindow to add it's instance to the list of SubWindow */
+                void                    AddSubWindow(SubWindow *w);
+                /** Called by a SubWindow to remove it's instance from the list of SubWindow */
+                void                    RemoveSubWindow(SubWindow *w);
 
             protected:
                 SceneGraphManager       *_sceneGraphManager;    ///< The Scene graph manager that is used to render the scenes
-
-                ListSubWindow           _listSubWindow;     ///< a list of subwindow, which will be used for exemple to forward inputs to a subwindow
 
                 bool                    _isCreate;          ///< true if the window has been created
                 unsigned int            _width;             ///< the width of the window
@@ -153,6 +157,10 @@ namespace Nc
                 unsigned int			_bitsPerPixel;		///< number of bits of the color buffer
                 ICursor                 *_defaultCursor;    ///< instance of the default cursor of the window
                 ICursor                 *_currentCursor;    ///< instance of the current cursor activated
+
+            private:
+                ListSubWindow           _listSubWindow;     ///< list of subwindow, which will be used for exemple to forward inputs to a subwindow
+                System::Mutex           _mutexListSubWindow;///< mutex protecting the access of the list of subwindow.
 
                 friend class WindowInput;
                 friend class SubWindow;

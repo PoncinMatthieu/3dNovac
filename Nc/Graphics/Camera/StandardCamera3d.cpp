@@ -303,7 +303,7 @@ void StandardCamera3d::Update(float runningTime)
     if (!_inhibitMovement)
     {
         bool updateEye = false;
-        WindowInput *input = _window->GetInput();
+        WindowInput *input = _window->Input();
 		if (input->KeyState(System::Key::W) || input->KeyState(System::Key::Z))
         {
 			if (_pattern == Freefly)

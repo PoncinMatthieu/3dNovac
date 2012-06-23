@@ -54,19 +54,9 @@ namespace Nc
                 virtual void        Create(GLContext *sharedContext = NULL);
                 virtual GLContext   *CreateNewSharedContext();
 
-                virtual void        Active()
-                {
-                    if (glXMakeCurrent(_display, static_cast<XWindow*>(_win)->_xwin, _context) == 0)
-                        LOG_ERROR << "Make current failed" << std::endl;
-                }
-
-                virtual void        Disable()
-                {
-                    if (glXMakeCurrent(_display, 0, 0) == 0)
-                        LOG_ERROR << "Make current failed" << std::endl;
-                }
-
-                virtual void        SwapBuffers()   {glXSwapBuffers(_display, static_cast<XWindow*>(_win)->_xwin);}
+                virtual void        Active();
+                virtual void        Disable();
+                virtual void        SwapBuffers();
 
             private:
                 Display         *_display;      // the display connection to the X server of the context (A shared context recreate a display connection to the Xserver and a context associated to a window use the display connection of the window)

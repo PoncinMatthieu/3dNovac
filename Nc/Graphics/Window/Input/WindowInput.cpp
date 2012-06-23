@@ -94,8 +94,10 @@ void WindowInput::GenereEvent(const System::Event &e)
 
     // forward the event to sub windows
     // and recreate some events like mouse entered/left if needed
+    _win->_mutexListSubWindow.Lock();
     for (Window::ListSubWindow::iterator it = _win->_listSubWindow.begin(); it != _win->_listSubWindow.end(); ++it)
         ForwardEventToSubWindow(*it, e);
+    _win->_mutexListSubWindow.Unlock();
 }
 
 void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System::Event &e)
@@ -127,7 +129,7 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
             {
                 LOG << "size subWindow: " << subWindow->Width() << "\t" << subWindow->Height() << std::endl;
                 LOG << "WindowInput::ForwardEventToSubWindow genere Resize" << std::endl;
-                subWindow->GetInput()->GenereEvent(newEvent);
+                subWindow->Input()->GenereEvent(newEvent);
             }
         }
         break;
@@ -138,15 +140,15 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
         case System::Event::TextEntered:
         case System::Event::KeyPressed:
         case System::Event::KeyReleased:
-            subWindow->GetInput()->GenereEvent(e);
+            subWindow->Input()->GenereEvent(e);
             break;
 
         // forward mouse button events only if the mouse is in the subwindow
         case System::Event::MouseWheelMoved:
         case System::Event::MouseButtonPressed:
         case System::Event::MouseButtonReleased:
-            if (subWindow->GetInput()->MouseIn())
-                subWindow->GetInput()->GenereEvent(e);
+            if (subWindow->Input()->MouseIn())
+                subWindow->Input()->GenereEvent(e);
             break;
 
         // forward mouse movement events only if the mouse in in the subwindow, and recreate a mouse Entered/Left if needed
@@ -154,8 +156,8 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
 
             /// \todo regenerate Mouter Entered/Left events when needed
 
-            if (subWindow->GetInput()->MouseIn())
-                subWindow->GetInput()->GenereEvent(e);
+            if (subWindow->Input()->MouseIn())
+                subWindow->Input()->GenereEvent(e);
             return;
 
         // do not forward mouse entered event
@@ -164,7 +166,7 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
 
         // forward mouse left
         case System::Event::MouseLeft:
-            subWindow->GetInput()->GenereEvent(e);
+            subWindow->Input()->GenereEvent(e);
             break;
     }
 }

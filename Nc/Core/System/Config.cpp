@@ -30,6 +30,11 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::System;
 
+Config::Config()
+{
+    _content = NULL;
+}
+
 Config::~Config()
 {
     if (_file.Content() != NULL)
