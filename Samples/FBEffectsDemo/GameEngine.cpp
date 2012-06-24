@@ -94,6 +94,7 @@ void GameEngine::ManageWindowEvent(System::Event &event)
         _fbEffect->Resized();
     }
     MainEngine::ManageWindowEvent(event);
+    _sceneGUI->ManageWindowEvent(event);
 }
 
 void    GameEngine::KeyboardEvent(System::Event &event)

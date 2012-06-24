@@ -52,7 +52,7 @@ void    Graphic::GLXContext::Active()
     if (_isActive)
         System::Config::Warning("GLXContext:Active", "Context already active.");
     if (glXMakeCurrent(_display, static_cast<XWindow*>(_win)->_xwin, _context) == 0)
-        System::Config::Error("GLXContext:Active", "Make current failed");
+        System::Config::Error("GLXContext:Active", "Make current failed.");
     _isActive = true;
 }
 
