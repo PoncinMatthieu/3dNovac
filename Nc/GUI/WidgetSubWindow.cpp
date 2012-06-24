@@ -41,24 +41,24 @@ WidgetSubWindow::WidgetSubWindow(Graphic::Window *windowParent, Corner x, Corner
 WidgetSubWindow::WidgetSubWindow(const WidgetSubWindow &w)
     : Widget(w)
 {
+    _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
     _subWindow = new Graphic::SubWindow(w._subWindow->Parent());
     _subWindow->Create(_size);
-    _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
 }
 
 WidgetSubWindow &WidgetSubWindow::operator = (const WidgetSubWindow &w)
 {
     Widget::operator = (w);
+    _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
     _subWindow = new Graphic::SubWindow(w._subWindow->Parent());
     _subWindow->Create(_size);
-    _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
 	return *this;
 }
 
 WidgetSubWindow::~WidgetSubWindow()
 {
-    delete _subWindow;
     delete _sprite;
+    delete _subWindow;
 }
 
 void    WidgetSubWindow::Resized()

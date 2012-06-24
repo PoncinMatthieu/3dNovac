@@ -112,7 +112,10 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         {
             // The mouse has moved, if the cursor is in our window we must refresh the cursor
             if (LOWORD(LParam) == HTCLIENT)
-				static_cast<WWindow*>(_win)->_currentCursor->Enable();
+			{
+				if (static_cast<WWindow*>(_win)->_currentCursor != NULL)
+					static_cast<WWindow*>(_win)->_currentCursor->Enable();
+			}
             break;
         }
 

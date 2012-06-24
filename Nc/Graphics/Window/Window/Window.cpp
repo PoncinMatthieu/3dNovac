@@ -32,7 +32,7 @@
 using namespace Nc;
 
 Graphic::Window::Window(SceneGraphManager *sceneGraphManager)
-	: _sceneGraphManager(sceneGraphManager), _isCreate(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)
+	: _sceneGraphManager(sceneGraphManager), _isCreate(false), _isEnable(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)
 {
     _antialiasingLevel = 0;
     _depth = 24;
@@ -63,9 +63,20 @@ void    Graphic::Window::Render(GLContext *context)
 
     // Render the sub windows
     _mutexListSubWindow.Lock();
-    for (ListSubWindow::iterator it = _listSubWindow.begin(); it != _listSubWindow.end(); ++it)
-        (*it)->Render(context);
-    _mutexListSubWindow.Unlock();
+	try
+	{
+		for (ListSubWindow::iterator it = _listSubWindow.begin(); it != _listSubWindow.end(); ++it)
+		{
+			if ((*it)->Enabled())
+				(*it)->Render(context);
+		}
+		_mutexListSubWindow.Unlock();
+	}
+	catch (...)
+	{
+		_mutexListSubWindow.Unlock();
+		throw;
+	}
 }
 
 Graphic::GLContext   *Graphic::Window::CreateSharedContext()

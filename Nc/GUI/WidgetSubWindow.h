@@ -56,6 +56,8 @@ namespace Nc
 
                 /** \return the SubWindow */
                 Graphic::SubWindow      *SubWindow() const          {return _subWindow;}
+				/** Enable the sub window for rendering */
+				void					EnableSubWindow()			{_subWindow->Enable(true);}
 
             protected:
                 /** Draw the result of the render off screen from the sub window */

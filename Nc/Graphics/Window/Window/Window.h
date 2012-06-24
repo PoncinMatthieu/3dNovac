@@ -82,6 +82,11 @@ namespace Nc
                 /** Initialize the scene graph manager */
                 virtual void        InitSceneGraphManager();
 
+				/** Set the enable statement for rendering. If true, the window can be rendered */
+				void				Enable(bool state)					{_isEnable = state;}
+				/** \return true if the window can be rendered */
+				inline bool			Enabled() const						{return _isEnable;}
+
                 /** Render the scenes by using the given GLContext through the scene graph manager */
                 virtual void        Render(GLContext *context);
 
@@ -146,6 +151,7 @@ namespace Nc
                 SceneGraphManager       *_sceneGraphManager;    ///< The Scene graph manager that is used to render the scenes
 
                 bool                    _isCreate;          ///< true if the window has been created
+				bool					_isEnable;			///< statement enabling the rendering of the window
                 unsigned int            _width;             ///< the width of the window
                 unsigned int            _height;            ///< the height of the window
                 GLContext               *_context;          ///< the associated OpenGL context
