@@ -12,32 +12,26 @@ FrameBufferEffect::FrameBufferEffect(Graphic::Window *window)
 
 	_postProcessMaterial = new ProgrammableMaterial("postProcessEffect", "Nc:Shader:postProcessEffect.vs", "Nc:Shader:postProcessEffect.fs");
 
+	_postProcessMaterial->SetAttrib(DefaultVertexType::ComponentsName::Coord, "InCoord");
+	_postProcessMaterial->SetAttrib(DefaultVertexType::ComponentsName::TexCoord, "InTexCoord");
+
 	_postProcessMaterial->SetMVPMatrixUniform("MVPMatrix");
 	_postProcessMaterial->SetDrawableTextureUnitUniform(0, "Frame");
 	_postProcessMaterial->GetUniform<GL::Texture, 1>("SketchSampler")->Init(1, GL::Texture("Nc:Image:Sketch.png"));
+	_sketchJitter = _postProcessMaterial->GetUniform<float,2>("SketchJitter");
+
 	_postProcessMaterial->GetUniform<bool,1>("SketchActivated")->value = true;
 	_postProcessMaterial->GetUniform<bool,1>("SketchColored")->value = true;
 	_postProcessMaterial->GetUniform<float,1>("SketchThreshold")->value = 1.f;
 	_postProcessMaterial->GetUniform<float,1>("SketchBrightness")->value =	0.333f;
-	_sketchJitter = _postProcessMaterial->GetUniform<float,2>("SketchJitter");
-	_postProcessMaterial->SetAttrib(DefaultVertexType::ComponentsName::Coord, "InCoord");
-	_postProcessMaterial->SetAttrib(DefaultVertexType::ComponentsName::TexCoord, "InTexCoord");
-
 	_timeToNextJitter = 0;
 	_sketchJitterSpeed = 10;
 
 /*
-	_postProcessMaterial->SetMVPMatrixUniform("MVPMatrix");
-	_postProcessMaterial->SetDrawableTextureUnitUniform(0, "Frame");
-	_postProcessMaterial->GetUniform<GL::Texture, 1>("SketchSampler")->Init(1, GL::Texture("Nc:Image:Sketch.png"));
 	_postProcessMaterial->GetUniform<bool,1>("SketchActivated")->value = true;
 	_postProcessMaterial->GetUniform<bool,1>("SketchColored")->value = false;
 	_postProcessMaterial->GetUniform<float,1>("SketchThreshold")->value = 0.0f;
 	_postProcessMaterial->GetUniform<float,1>("SketchBrightness")->value =	0.1333f;
-	_sketchJitter = _postProcessMaterial->GetUniform<float,2>("SketchJitter");
-	_postProcessMaterial->SetAttrib(DefaultVertexType::ComponentsName::Coord, "InCoord");
-	_postProcessMaterial->SetAttrib(DefaultVertexType::ComponentsName::TexCoord, "InTexCoord");
-
 	_timeToNextJitter = 0;
 	_sketchJitterSpeed = 25;
 */

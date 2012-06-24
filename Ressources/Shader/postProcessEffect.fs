@@ -20,7 +20,7 @@ out vec4	FragmentColor;
 void main()
 {
 	FragmentColor = texture(Frame, vertice.TexCoord);
-	
+
 	if (SketchActivated)
 	{
 		// Adjust the scene color to remove very dark values and increase the contrast.

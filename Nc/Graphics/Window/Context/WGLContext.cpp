@@ -77,10 +77,10 @@ void	WGLContext::Disable()
 	// get the current thread id
 	unsigned int threadId = System::ThreadId();
 
-	// check if the context active into the current thread
+	// check if the context is active into the current thread
 	if (_currentThreadId != threadId)
 	{
-		// check if the context is already disable
+		// check if the context is already disable or active into another thread
 		if (_currentThreadId == 0)
 			System::Config::Warning("WGLContext::Disable", "The context is already disable.");
 		else
