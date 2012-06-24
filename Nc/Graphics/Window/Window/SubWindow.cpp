@@ -98,7 +98,9 @@ GLContext   *SubWindow::CreateGLContext()
 
 ICursor *SubWindow::NewCursor()
 {
-    return _parent->NewCursor();
+    ICursor *c = _parent->NewCursor();
+    c->AttachWindow(this);
+    return c;
 }
 
 void    SubWindow::Resized()

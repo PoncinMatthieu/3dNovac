@@ -164,6 +164,7 @@ namespace Nc
 
                 friend class WindowInput;
                 friend class SubWindow;
+                friend class ICursor;
         };
     }
 }

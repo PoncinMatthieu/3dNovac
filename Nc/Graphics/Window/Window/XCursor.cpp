@@ -35,7 +35,7 @@ using namespace Nc::Math;
 unsigned int    Graphic::Cursor::_nbCursor = 0;
 
 Graphic::Cursor::Cursor(XWindow *w)
-    : _win(w), _cursor(NULL)
+    : ICursor(w), _win(w), _cursor(NULL)
 {
     CreateHiddenCursor();
 }
@@ -49,12 +49,14 @@ Graphic::Cursor::Cursor(const Graphic::Cursor &c)
 
 Graphic::Cursor::~Cursor()
 {
+    if (_attachedWindow->CurrentCursor() == this)
+        SetCurrentCursor(NULL);
     if (_win->_currentCursor == this)
         _win->_currentCursor = NULL;
     _nbCursor--;
     if (_nbCursor == 0 && _hiddenCursor)
     {
-        //XFreeCursor(_win->_display, *_hiddenCursor);  // generate multiple invalid read of size 4 under valgrind
+        //XFreeCursor(static_cast<XWindow*>(_win)->_display, *_hiddenCursor);  // generate multiple invalid read of size 4 under valgrind
         delete _hiddenCursor;
         _hiddenCursor = NULL;
     }
@@ -73,9 +75,9 @@ void Graphic::Cursor::Enable()
         //XLockDisplay(static_cast<XWindow*>(_win)->_display);
         XDefineCursor(_win->_display, _win->_xwin, (_cursor != NULL) ? *_cursor : None);
         //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
-        //XFlush(_win->_display); // genere un XIO error avec Qt
+        //XFlush(static_cast<XWindow*>(_win)->_display); // genere un XIO error avec Qt
     }
-    _win->_currentCursor = this;
+    SetCurrentCursor(this);
 }
 
 void Graphic::Cursor::Disable()
@@ -85,9 +87,9 @@ void Graphic::Cursor::Disable()
         //XLockDisplay(static_cast<XWindow*>(_win)->_display);
         XDefineCursor(_win->_display, _win->_xwin, *_hiddenCursor);
         //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
-        //XFlush(_win->_display); // genere un XIO error avec Qt
+        //XFlush(static_cast<XWindow*>(_win)->_display); // genere un XIO error avec Qt
     }
-    _win->_currentCursor = this;
+    SetCurrentCursor(this);
 }
 
 void Graphic::Cursor::CreateHiddenCursor()

@@ -81,23 +81,36 @@ namespace Nc
         class LGRAPHICS ICursor
         {
             public:
-                ICursor()               {}
-                virtual ~ICursor()      {}
+                ICursor(Window *attachedWindow) : _attachedWindow(attachedWindow)   {}
+                virtual ~ICursor()                  {}
 
-                virtual ICursor     *Clone() const = 0;
+                /** \return a clone of the current cursor */
+                virtual ICursor *Clone() const = 0;
 
                 /** Enable the cursor and set the current cursor of the attached window */
-                virtual void Enable() = 0;
+                virtual void    Enable() = 0;
                 /** Disable the cursor */
-                virtual void Disable() = 0;
+                virtual void    Disable() = 0;
 
                 /** Load the cursor from an Xpm image */
-                virtual void LoadFromXpm(const char *xpm[]) = 0;
+                virtual void    LoadFromXpm(const char *xpm[]) = 0;
 
                 //virtual void LoadFromImage(const Utils::FileName &f) = 0; //todo
 
                 /// load data from 1 bit per pixel
-                virtual void LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter) = 0;
+                virtual void    LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter) = 0;
+
+                /** Set the attached window, can be call to attach the cursor to a sub window */
+                void            AttachWindow(Window *attachedWindow)    {_attachedWindow = attachedWindow;}
+
+            protected:
+                void            SetCurrentCursor(ICursor *cur)
+                {
+                    _attachedWindow->_currentCursor = cur;
+                }
+
+            protected:
+                Window          *_attachedWindow;       ///< instance of the attached window
         };
     }
 }

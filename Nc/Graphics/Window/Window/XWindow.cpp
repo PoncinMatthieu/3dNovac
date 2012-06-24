@@ -455,3 +455,9 @@ void XWindow::Resize(unsigned int width, unsigned int height)
     XFlush(_display);
     Resized();
 }
+
+ICursor *XWindow::NewCursor()
+{
+    return new Graphic::Cursor(this);
+}
+

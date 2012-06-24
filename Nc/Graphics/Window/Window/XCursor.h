@@ -53,6 +53,7 @@ namespace Nc
                 Cursor(const Cursor &c);
                 virtual ~Cursor();
 
+                /** \return a clone of the current cursor */
                 virtual ICursor     *Clone() const                  {return new Cursor(*this);}
 
                 /** Enable the cursor */

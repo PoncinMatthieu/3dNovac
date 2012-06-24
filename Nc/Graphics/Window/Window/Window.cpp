@@ -86,4 +86,3 @@ void    Graphic::Window::AddSubWindow(SubWindow *w)
     _listSubWindow.push_back(w);
     _mutexListSubWindow.Unlock();
 }
-
