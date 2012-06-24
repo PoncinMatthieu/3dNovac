@@ -52,6 +52,7 @@ WidgetSubWindow &WidgetSubWindow::operator = (const WidgetSubWindow &w)
     _subWindow = new Graphic::SubWindow(w._subWindow->Parent());
     _subWindow->Create(_size);
     _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
+	return *this;
 }
 
 WidgetSubWindow::~WidgetSubWindow()

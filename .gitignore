@@ -3,6 +3,21 @@
 /svn-commit.tmp
 /lib/*
 /Samples/bin/*
+/Samples/Build/launch*
+/Samples/Build/3dNovac-Samples.*
+/Samples/Build/FBEffectsDemo.*
+/Samples/Build/FrustumDemo.*
+/Samples/Build/GUIDemo.*
+/Samples/Build/LightDemo.*
+/Samples/Build/SampleViewer.*
+/Samples/Build/SimpleParticleEffect.*
+/Samples/Build/SokobanDemo.*
+/Samples/Build/Tuto1.*
+/Samples/Build/Tuto_NcCore_Client.*
+/Samples/Build/Tuto_NcCore_Server.*
+/Samples/Build/Win32
+/Samples/Build/ipch
+/Samples/Build/ZERO_CHECK.*
 
 # /Build/
 /Build/3dNovac.cbp

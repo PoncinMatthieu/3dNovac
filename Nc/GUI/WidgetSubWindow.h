@@ -38,7 +38,7 @@ namespace Nc
         /**
             Use a FrameBuffer to render the subwindow to render it into the widget.
         */
-        class WidgetSubWindow : public Widget
+        class LGUI WidgetSubWindow : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Widget, System::Object, System::Object, Nc::GUI::WidgetSubWindow);

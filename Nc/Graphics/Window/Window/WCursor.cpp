@@ -30,27 +30,29 @@
 using namespace Nc;
 
 Graphic::Cursor::Cursor(WWindow *w)
-    : _win(w), _cursor(NULL)
+    : ICursor(w), _win(w), _cursor(NULL)
 {
 	_cursor = LoadCursor(NULL, IDC_ARROW);
 }
 
 Graphic::Cursor::~Cursor()
 {
-    if (_win->_currentCursor == this)
+	if (_attachedWindow->CurrentCursor() == this)
+		SetCurrentCursor(NULL);
+	if (_win->_currentCursor == this)
         _win->_currentCursor = NULL;
 }
 
 void Graphic::Cursor::Enable()
 {
 	SetCursor(_cursor);
-	_win->_currentCursor = this;
+	SetCurrentCursor(this);
 }
 
 void Graphic::Cursor::Disable()
 {
 	SetCursor(NULL);
-	_win->_currentCursor = this;
+	SetCurrentCursor(this);
 }
 
 void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned char *mask, const Vector2ui &size, const Vector2ui &posCenter)

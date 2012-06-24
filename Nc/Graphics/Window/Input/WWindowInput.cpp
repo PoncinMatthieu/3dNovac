@@ -119,25 +119,25 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         // Gain focus event
         case WM_SETFOCUS :
         {
-            GenereEvent(Event(Event::GainedFocus));
+            GenereEvent(Event(this, Event::GainedFocus));
             break;
         }
 
         // Lost focus event
         case WM_KILLFOCUS :
         {
-            GenereEvent(Event(Event::LostFocus));
+            GenereEvent(Event(this, Event::LostFocus));
             break;
         }
 
         // Resize event
         case WM_SIZE :
         {
-            Event e(Event::Resized);
+            Event e(this, Event::Resized);
             RECT Rect;
             GetClientRect(static_cast<WWindow*>(_win)->_handle, &Rect);
-            e.Size.Width = Rect.right - Rect.left;
-            e.Size.Height = Rect.bottom - Rect.top;
+            e.size.width = Rect.right - Rect.left;
+            e.size.height = Rect.bottom - Rect.top;
             GenereEvent(e);
             break;
         }
@@ -145,7 +145,7 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         // Close event
         case WM_CLOSE :
         {
-            GenereEvent(Event(Event::Closed));
+            GenereEvent(Event(this, Event::Closed));
             break;
         }
 
@@ -155,11 +155,11 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         {
             if (_keyRepeatEnabled || ((HIWORD(LParam) & KF_REPEAT) == 0))
             {
-                Event e(Event::KeyPressed);
-                e.Key.Code    = ConvertVirtualKey(WParam, LParam);
-                e.Key.Alt     = HIWORD(GetAsyncKeyState(VK_MENU))    != 0;
-                e.Key.Control = HIWORD(GetAsyncKeyState(VK_CONTROL)) != 0;
-                e.Key.Shift   = HIWORD(GetAsyncKeyState(VK_SHIFT))   != 0;
+                Event e(this, Event::KeyPressed);
+                e.key.code    = ConvertVirtualKey(WParam, LParam);
+                e.key.alt     = HIWORD(GetAsyncKeyState(VK_MENU))    != 0;
+                e.key.control = HIWORD(GetAsyncKeyState(VK_CONTROL)) != 0;
+                e.key.shift   = HIWORD(GetAsyncKeyState(VK_SHIFT))   != 0;
                 GenereEvent(e);
             }
             break;
@@ -184,59 +184,59 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         case WM_KEYUP :
         case WM_SYSKEYUP :
         {
-            Event e(Event::KeyReleased);
-            e.Key.Code    = ConvertVirtualKey(WParam, LParam);
-            e.Key.Alt     = HIWORD(GetAsyncKeyState(VK_MENU))    != 0;
-            e.Key.Control = HIWORD(GetAsyncKeyState(VK_CONTROL)) != 0;
-            e.Key.Shift   = HIWORD(GetAsyncKeyState(VK_SHIFT))   != 0;
+            Event e(this, Event::KeyReleased);
+            e.key.code    = ConvertVirtualKey(WParam, LParam);
+            e.key.alt     = HIWORD(GetAsyncKeyState(VK_MENU))    != 0;
+            e.key.control = HIWORD(GetAsyncKeyState(VK_CONTROL)) != 0;
+            e.key.shift   = HIWORD(GetAsyncKeyState(VK_SHIFT))   != 0;
             GenereEvent(e);
             break;
         }
 
         case WM_MOUSEWHEEL:
         {
-            Event e(Event::MouseWheelMoved);
-            e.MouseWheel.Delta = static_cast<short>(HIWORD(WParam)) / 120;
+            Event e(this, Event::MouseWheelMoved);
+            e.mouseWheel.delta = static_cast<short>(HIWORD(WParam)) / 120;
             GenereEvent(e);
             break;
         }
 
         case WM_LBUTTONDOWN:
         {
-            Event e(Event::MouseButtonPressed);
-            e.MouseButton.Button = Mouse::Left;
-            e.MouseButton.X      = LOWORD(LParam);
-            e.MouseButton.Y      = HIWORD(LParam);
+            Event e(this, Event::MouseButtonPressed);
+            e.mouseButton.button = Mouse::Left;
+            e.mouseButton.x      = LOWORD(LParam);
+            e.mouseButton.y      = HIWORD(LParam);
             GenereEvent(e);
             break;
         }
 
         case WM_LBUTTONUP:
         {
-            Event e(Event::MouseButtonReleased);
-            e.MouseButton.Button = Mouse::Left;
-            e.MouseButton.X      = LOWORD(LParam);
-            e.MouseButton.Y      = HIWORD(LParam);
+            Event e(this, Event::MouseButtonReleased);
+            e.mouseButton.button = Mouse::Left;
+            e.mouseButton.x      = LOWORD(LParam);
+            e.mouseButton.y      = HIWORD(LParam);
             GenereEvent(e);
             break;
         }
 
         case WM_RBUTTONDOWN:
         {
-            Event e(Event::MouseButtonPressed);
-            e.MouseButton.Button = Mouse::Right;
-            e.MouseButton.X      = LOWORD(LParam);
-            e.MouseButton.Y      = HIWORD(LParam);
+            Event e(this, Event::MouseButtonPressed);
+            e.mouseButton.button = Mouse::Right;
+            e.mouseButton.x      = LOWORD(LParam);
+            e.mouseButton.y      = HIWORD(LParam);
             GenereEvent(e);
             break;
         }
 
         case WM_RBUTTONUP:
         {
-            Event e(Event::MouseButtonReleased);
-            e.MouseButton.Button = Mouse::Right;
-            e.MouseButton.X      = LOWORD(LParam);
-            e.MouseButton.Y      = HIWORD(LParam);
+            Event e(this, Event::MouseButtonReleased);
+            e.mouseButton.button = Mouse::Right;
+            e.mouseButton.x      = LOWORD(LParam);
+            e.mouseButton.y      = HIWORD(LParam);
             GenereEvent(e);
             break;
         }
@@ -244,10 +244,10 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         // Mouse wheel button down event
         case WM_MBUTTONDOWN:
         {
-            Event e(Event::MouseButtonPressed);
-            e.MouseButton.Button = Mouse::Middle;
-            e.MouseButton.X      = LOWORD(LParam);
-            e.MouseButton.Y      = HIWORD(LParam);
+            Event e(this, Event::MouseButtonPressed);
+            e.mouseButton.button = Mouse::Middle;
+            e.mouseButton.x      = LOWORD(LParam);
+            e.mouseButton.y      = HIWORD(LParam);
             GenereEvent(e);
             break;
         }
@@ -255,10 +255,10 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         // Mouse wheel button up event
         case WM_MBUTTONUP:
         {
-            Event e(Event::MouseButtonReleased);
-            e.MouseButton.Button = Mouse::Middle;
-            e.MouseButton.X      = LOWORD(LParam);
-            e.MouseButton.Y      = HIWORD(LParam);
+            Event e(this, Event::MouseButtonReleased);
+            e.mouseButton.button = Mouse::Middle;
+            e.mouseButton.x      = LOWORD(LParam);
+            e.mouseButton.y      = HIWORD(LParam);
             GenereEvent(e);
             break;
         }
@@ -298,12 +298,12 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
 
                 _isCursorIn = true;
 
-                GenereEvent(Event(Event::MouseEntered));
+                GenereEvent(Event(this, Event::MouseEntered));
             }
 
-            Event e(Event::MouseMoved);
-            e.MouseMove.X = LOWORD(LParam);
-            e.MouseMove.Y = HIWORD(LParam);
+            Event e(this, Event::MouseMoved);
+            e.mouseMove.x = LOWORD(LParam);
+            e.mouseMove.y = HIWORD(LParam);
             GenereEvent(e);
             break;
         }
@@ -312,7 +312,7 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         case WM_MOUSELEAVE:
         {
             _isCursorIn = false;
-            GenereEvent(Event(Event::MouseLeft));
+            GenereEvent(Event(this, Event::MouseLeft));
             break;
         }
     }

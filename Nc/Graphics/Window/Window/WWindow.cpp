@@ -52,24 +52,24 @@ WWindow::~WWindow()
 void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel)
 {
     // register the window class
-    WNDCLASSA WindowClass;
-    WindowClass.style         = 0;
-    WindowClass.lpfnWndProc   = &WWindowInput::GlobalOnEvent;
-    WindowClass.cbClsExtra    = 0;
-    WindowClass.cbWndExtra    = 0;
-    WindowClass.hInstance     = GetModuleHandle(NULL);
-    WindowClass.hIcon         = NULL;
-    WindowClass.hCursor       = 0;
-    WindowClass.hbrBackground = 0;
-    WindowClass.lpszMenuName  = NULL;
-    WindowClass.lpszClassName = _classNameA;
-    RegisterClassA(&WindowClass);
+    WNDCLASSA windowClass;
+    windowClass.style         = 0;
+    windowClass.lpfnWndProc   = &WWindowInput::GlobalOnEvent;
+    windowClass.cbClsExtra    = 0;
+    windowClass.cbWndExtra    = 0;
+    windowClass.hInstance     = GetModuleHandle(NULL);
+    windowClass.hIcon         = NULL;
+    windowClass.hCursor       = 0;
+    windowClass.hbrBackground = 0;
+    windowClass.lpszMenuName  = NULL;
+    windowClass.lpszClassName = _classNameA;
+    RegisterClassA(&windowClass);
 
 // Compute position and size
-    HDC ScreenDC = GetDC(NULL);
-    int Left   = (GetDeviceCaps(ScreenDC, HORZRES) - size.Data[0])  / 2;
-    int Top    = (GetDeviceCaps(ScreenDC, VERTRES) - size.Data[1]) / 2;
-    ReleaseDC(NULL, ScreenDC);
+    HDC screenDC = GetDC(NULL);
+    int left   = (GetDeviceCaps(screenDC, HORZRES) - size.Data[0])  / 2;
+    int top    = (GetDeviceCaps(screenDC, VERTRES) - size.Data[1]) / 2;
+    ReleaseDC(NULL, screenDC);
 
     // Choose the window style according to the Style parameter
     if (pattern == 0)
@@ -97,7 +97,7 @@ void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
 
     // Create the window
     _input = new WWindowInput(this);
-    _handle = CreateWindowA(_classNameA, title.c_str(), _win32Style, Left, Top, winsize.Data[0], winsize.Data[1], NULL, NULL, GetModuleHandle(NULL), _input);
+    _handle = CreateWindowA(_classNameA, title.c_str(), _win32Style, left, top, winsize.Data[0], winsize.Data[1], NULL, NULL, GetModuleHandle(NULL), _input);
     if (_handle == NULL)
         throw Utils::Exception("WWindow", "Can't create the window");
 

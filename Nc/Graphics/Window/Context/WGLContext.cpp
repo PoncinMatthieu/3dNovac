@@ -49,49 +49,28 @@ WGLContext::~WGLContext()
     }
 }
 
-HGLRC WGLContext::CreateDummyContext()
+void 	WGLContext::Active()
 {
-    // Setup a pixel format descriptor from the rendering settings
-    PIXELFORMATDESCRIPTOR PixelDescriptor;
-    ZeroMemory(&PixelDescriptor, sizeof(PIXELFORMATDESCRIPTOR));
-    PixelDescriptor.nSize        = sizeof(PIXELFORMATDESCRIPTOR);
-    PixelDescriptor.nVersion     = 1;
-    PixelDescriptor.iLayerType   = PFD_MAIN_PLANE;
-    PixelDescriptor.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-    PixelDescriptor.iPixelType   = PFD_TYPE_RGBA;
-    PixelDescriptor.cColorBits   = 32;
-    PixelDescriptor.cDepthBits   = 24;
-    PixelDescriptor.cStencilBits = 8;
-    PixelDescriptor.cAlphaBits   = 0;
+	if (_isActive)
+		System::Config::Warning("WGLContext:Active", "Context already active.");
+	if (wglMakeCurrent(_drawable, _context) == false)
+		System::Config::Error("WGLContext::Active", "Make current failed.");
+	_isActive = true;
+}
 
-    // Get the pixel format that best matches our requirements
-    int format = ChoosePixelFormat(_drawable, &PixelDescriptor);
-    if (format == 0)
-	{
-		ShowError("WGLContext::ChoosePixelFormat");
-        throw Utils::Exception("WGLContext", "Can't find a suitable pixel format for the device context");
-	}
+void	WGLContext::Disable()
+{
+	if (!_isActive)
+		System::Config::Warning("GLXContext:Disable", "Context already disabled.");
+	if (wglMakeCurrent(0, 0) == false)
+		System::Config::Error("WGLContext::Disable", "Make current failed.");
+	_isActive = false;
+}
 
-	// Extract the depth and stencil bits from the chosen format
-    PIXELFORMATDESCRIPTOR attrib;
-    attrib.nSize    = sizeof(PIXELFORMATDESCRIPTOR);
-    attrib.nVersion = 1;
-    DescribePixelFormat(_drawable, format, sizeof(PIXELFORMATDESCRIPTOR), &attrib);
-
-    // Set the chosen pixel format
-    if (!SetPixelFormat(_drawable, format, &attrib))
-	{
-		ShowError("WGLContext::SetPixelFormat");
-        throw Utils::Exception("WGLContext", "Can't set pixel format for the device context");
-	}
-
-	HGLRC context = wglCreateContext(_drawable);
-    if (context == NULL)
-	{
-		ShowError("WGLContext::wglCreateContext");
-        throw Utils::Exception("WGLContext", "Can't create the gl context for the window");
-	}
-	return context;
+void	WGLContext::SwapBuffers()
+{
+	if (::SwapBuffers(_drawable) == false)
+		LOG_ERROR << "SwapBuffers failed" << std::endl;
 }
 
 void WGLContext::Create(GLContext *sharedContext)
@@ -104,21 +83,66 @@ void WGLContext::Create(GLContext *sharedContext)
     // Get the device context attached to the window
     _drawable = GetDC(static_cast<WWindow*>(_win)->_handle);
     if (_drawable == NULL)
+	{
+		ShowError("WGLContext:Create:GetDC");
         throw Utils::Exception("WGLContext", "Can't get device context of window");
+	}
 
-	// \todo windows do not allow to set the pixel format more than once... therefore to use the wgl extention we need to create also a dummy windows
-	// we need some wgl extention to load a proper opengl context...
-	// but before loading a wgl extention we need a valid opengl context... :/
-	// therefore, we create a dummy opengl context to load and use those extention before creating the real opengl context which will be used by the renderer.
-	//HGLRC dummyContext = CreateDummyContext();
-	//if (wglMakeCurrent(_drawable, dummyContext) == false)
-	//	throw Utils::Exception("WGLContext", "Active dummy context: Make current failed");
+	// if we are creating an independant context, we choose the pixel format
+	if (sharedContext == NULL)
+	{
+		ChoosePixelFormat();
+		SetPixelFormat();
+	}
 
-    // Let's find a suitable pixel format -- first try with antialiasing
+	// Create the OpenGL context from the device context
+    _context = wglCreateContext(_drawable);
+    if (_context == NULL)
+	{
+		ShowError("WGLContext:Create:SetPixelFormat");
+        throw Utils::Exception("WGLContext", "Failed to create the gl context for the device");
+	}
+
+	// Set the shared context
+	if (sharedContext != NULL)
+	{
+		if (!wglShareLists(static_cast<WGLContext*>(sharedContext)->_context, _context))
+		{
+			ShowError("WGLContext:Create:wglShareLists");
+			throw Utils::Exception("WGLContext", "Can't share lists with the new context");
+		}
+		_isShared = true;
+	}
+
+	// the context is now created but not active
+	_isActive = false;
+	_isCreate = true;
+}
+
+void	WGLContext::ChoosePixelFormat()
+{
+	// Let's find a suitable pixel format -- first try with antialiasing
     _format = 0;
     if (_win->AntialiasingLevel() > 0)
     {
-        // Get the wglChoosePixelFormatARB function (it is an extension)
+		// we need some wgl extention to load a proper opengl context...
+		// but before loading a wgl extention we need a valid opengl context... :/
+		// therefore, we create a dummy opengl context to load and use those extention before creating the real opengl context which will be used by the renderer.
+		HWND dummyWindowHandle;
+		HDC dummyDrawable;
+		HGLRC dummyContext;
+		CreateDummyContext(dummyWindowHandle, dummyDrawable, dummyContext);
+
+		// save current context
+		
+		// active the context to be able to load the extension
+		if (wglMakeCurrent(dummyDrawable, dummyContext) == false)
+		{
+			ShowError("WGLContext:Create:wglMakeCurrent");
+			throw Utils::Exception("WGLContext", "Active dummy context: Make current failed");
+		}
+
+		// Load the extension wglChoosePixelFormatARB
 		PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = reinterpret_cast<PFNWGLCHOOSEPIXELFORMATARBPROC>(wglGetProcAddress("wglChoosePixelFormatARB"));
         if (wglChoosePixelFormatARB)
         {
@@ -145,7 +169,7 @@ void WGLContext::Create(GLContext *sharedContext)
                 {
                     // No format matching our needs : reduce the multisampling level
                     LOG_ERROR << "Failed to find a pixel format supporting "
-                              << _win->AntialiasingLevel() << " antialiasing levels ; trying with 2 levels" << std::endl;
+                              << _win->AntialiasingLevel() << " antialiasing levels. trying with 2 levels" << std::endl;
 
                     static_cast<WWindow*>(_win)->_antialiasingLevel = IntAttributes[11] = 2;
 	                IsValid = wglChoosePixelFormatARB(_drawable, IntAttributes, FloatAttributes, sizeof(Formats) / sizeof(*Formats), Formats, &NbFormats) != 0;
@@ -154,7 +178,7 @@ void WGLContext::Create(GLContext *sharedContext)
                 if (!IsValid || (NbFormats == 0))
                 {
                     // Cannot find any pixel format supporting multisampling ; disabling antialiasing
-                    LOG_ERROR << "Failed to find a pixel format supporting antialiasing ; antialiasing will be disabled" << std::endl;
+                    LOG_ERROR << "Failed to find a pixel format supporting antialiasing. antialiasing will be disabled" << std::endl;
                     static_cast<WWindow*>(_win)->_antialiasingLevel = 0;
                 }
             }
@@ -187,11 +211,21 @@ void WGLContext::Create(GLContext *sharedContext)
         }
         else
         {
-            // wglChoosePixelFormatARB not supported ; disabling antialiasing
-            LOG_ERROR << "Antialiasing is not supported ; it will be disabled" << std::endl;
+            // wglChoosePixelFormatARB not supported; disabling antialiasing
+            LOG_ERROR << "Antialiasing is not supported. it will be disabled" << std::endl;
             static_cast<WWindow*>(_win)->_antialiasingLevel = 0;
         }
-    }
+
+		// delete dummy context
+		DeleteDummyContext(dummyWindowHandle, dummyDrawable, dummyContext);
+/*
+		if (wglMakeCurrent(0, 0) == false)
+		{
+			ShowError("WGLContext:DeleteDummyContext:wglMakeCurrent");
+			throw Utils::Exception("WGLContext:DeleteDummyContext", "Make current failed");
+		} 
+*/
+	}
 
     // Find a pixel format with no antialiasing, if not needed or not supported
     if (_format == 0)
@@ -210,20 +244,19 @@ void WGLContext::Create(GLContext *sharedContext)
         PixelDescriptor.cAlphaBits   = (_win->BitsPerPixel() == 32) ? 8 : 0;
 
         // Get the pixel format that best matches our requirements
-        _format = ChoosePixelFormat(_drawable, &PixelDescriptor);
+        _format = ::ChoosePixelFormat(_drawable, &PixelDescriptor);
         if (_format == 0)
 		{
 			ShowError("WGLContext::ChoosePixelFormat");
             throw Utils::Exception("WGLContext", "Can't find a suitable pixel format for the device context");
 		}
-    }
+	}
+}
 
-/*	if (wglMakeCurrent(0, 0) == false)
-		throw Utils::Exception("WGLContext", "Disable dummy context: Make current failed");
-*/
-
+void	WGLContext::SetPixelFormat()
+{
     // Extract the depth and stencil bits from the chosen format
-    PIXELFORMATDESCRIPTOR attribs;
+	PIXELFORMATDESCRIPTOR	attribs;
     attribs.nSize    = sizeof(PIXELFORMATDESCRIPTOR);
     attribs.nVersion = 1;
     DescribePixelFormat(_drawable, _format, sizeof(PIXELFORMATDESCRIPTOR), &attribs);
@@ -231,30 +264,84 @@ void WGLContext::Create(GLContext *sharedContext)
     static_cast<WWindow*>(_win)->_stencil = attribs.cStencilBits;
 
     // Set the chosen pixel format
-    if (!SetPixelFormat(_drawable, _format, &attribs))
+    if (!::SetPixelFormat(_drawable, _format, &attribs))
 	{
-		ShowError("WGLContext::SetPixelFormat");
+		ShowError("WGLContext:Create:SetPixelFormat");
         throw Utils::Exception("WGLContext", "Failed to set pixel format for the device");
 	}
+}
 
-    // Create the OpenGL context from the device context
-    _context = wglCreateContext(_drawable);
-    if (_context == NULL)
+void	WGLContext::CreateDummyContext(HWND &dummyWindowHandle, HDC &dummyDrawable, HGLRC &dummyContext)
+{
+	dummyWindowHandle = CreateWindowA("STATIC", "", WS_POPUP | WS_DISABLED, 0, 0, 1, 1, NULL, NULL, GetModuleHandle(NULL), NULL);
+	ShowWindow(dummyWindowHandle, SW_HIDE);
+
+	// Get the device context attached to the dummy window
+    dummyDrawable = GetDC(dummyWindowHandle);
+    if (dummyDrawable == NULL)
 	{
-		ShowError("WGLContext::SetPixelFormat");
-        throw Utils::Exception("WGLContext", "Failed to create the gl context for the device");
+		ShowError("WGLContext:CreateDummyContext:GetDC");
+        throw Utils::Exception("WGLContext:CreateDummyContext", "Can't get device context of the dummy window");
 	}
 
-	if (sharedContext != NULL)
+    // Setup a pixel format descriptor from the rendering settings
+    PIXELFORMATDESCRIPTOR pixelDescriptor;
+    ZeroMemory(&pixelDescriptor, sizeof(PIXELFORMATDESCRIPTOR));
+    pixelDescriptor.nSize        = sizeof(PIXELFORMATDESCRIPTOR);
+    pixelDescriptor.nVersion     = 1;
+    pixelDescriptor.iLayerType   = PFD_MAIN_PLANE;
+    pixelDescriptor.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+    pixelDescriptor.iPixelType   = PFD_TYPE_RGBA;
+    pixelDescriptor.cColorBits   = 32;
+    pixelDescriptor.cDepthBits   = 24;
+    pixelDescriptor.cStencilBits = 8;
+    pixelDescriptor.cAlphaBits   = 0;
+
+    // Get the pixel format that best matches our requirements
+    int format = ::ChoosePixelFormat(dummyDrawable, &pixelDescriptor);
+    if (format == 0)
 	{
-		if (!wglShareLists(static_cast<WGLContext*>(sharedContext)->_context, _context))
-		{
-			ShowError("WGLContext::wglShareLists");
-			throw Utils::Exception("WGLContext", "Can't share lists with the new context");
-		}
+		ShowError("WGLContext:CreateDummyContext:ChoosePixelFormat");
+        throw Utils::Exception("WGLContext", "Can't find a suitable pixel format for the device context");
 	}
 
-	_isCreate = true;
+	// Extract the depth and stencil bits from the chosen format
+    PIXELFORMATDESCRIPTOR attrib;
+    attrib.nSize    = sizeof(PIXELFORMATDESCRIPTOR);
+    attrib.nVersion = 1;
+    DescribePixelFormat(dummyDrawable, format, sizeof(PIXELFORMATDESCRIPTOR), &attrib);
+
+    // Set the chosen pixel format
+    if (!::SetPixelFormat(dummyDrawable, format, &attrib))
+	{
+		ShowError("WGLContext:CreateDummyContext:SetPixelFormat");
+        throw Utils::Exception("WGLContext", "Can't set pixel format for the device context");
+	}
+
+    if ((dummyContext = wglCreateContext(dummyDrawable)) == NULL)
+	{
+		ShowError("WGLContext:CreateDummyContext:wglCreateContext");
+        throw Utils::Exception("WGLContext", "Can't create the gl context for the window");
+	}
+}
+
+void WGLContext::DeleteDummyContext(HWND dummyWindowHandle, HDC dummyDrawable, HGLRC dummyContext)
+{
+	if (ReleaseDC(dummyWindowHandle, dummyDrawable) == false)
+	{
+		ShowError("WGLContext:DeleteDummyContext:ReleaseDC");
+		throw Utils::Exception("WGLContext:DeleteDummyContext", "ReleaseDC failed");
+	}
+	if (wglDeleteContext(dummyContext) == false)
+	{
+		ShowError("WGLContext:DeleteDummyContext:wglDeleteContext");
+		throw Utils::Exception("WGLContext:DeleteDummyContext", "wglDeleteContext failed");
+	}
+	if (DestroyWindow(dummyWindowHandle) == false)
+	{
+		ShowError("WGLContext:DeleteDummyContext:DestroyWindow");
+		throw Utils::Exception("WGLContext:DeleteDummyContext", "DestroyWindow failed");
+	}
 }
 
 GLContext *WGLContext::CreateNewSharedContext()
@@ -266,7 +353,6 @@ GLContext *WGLContext::CreateNewSharedContext()
 	Active();
 	WGLContext *newSharedContext = new WGLContext(static_cast<WWindow*>(_win));
 	newSharedContext->Create(this);
-	newSharedContext->_isShared = true;
 	Disable();
 	return newSharedContext;
 }

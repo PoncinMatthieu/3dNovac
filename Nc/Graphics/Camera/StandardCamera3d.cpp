@@ -164,8 +164,8 @@ StandardCamera3d::StandardCamera3d(const StandardCamera3d &cam)
 {
 	if (cam._pattern != StandardCamera3d::Freefly)
 	{
-		_cursorOpen = new Graphic::Cursor(*(Cursor*)cam._cursorOpen);
-		_cursorClose = new Graphic::Cursor(*(Cursor*)cam._cursorClose);
+		_cursorOpen = cam._cursorOpen->Clone();
+		_cursorClose = cam._cursorClose->Clone();
 	}
 	else
 	{
