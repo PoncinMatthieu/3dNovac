@@ -49,20 +49,48 @@ Graphic::GLXContext::~GLXContext()
 
 void    Graphic::GLXContext::Active()
 {
-    if (_isActive)
-        System::Config::Warning("GLXContext:Active", "Context already active.");
-    if (glXMakeCurrent(_display, static_cast<XWindow*>(_win)->_xwin, _context) == 0)
-        System::Config::Error("GLXContext:Active", "Make current failed");
-    _isActive = true;
+    // get the current thread id
+    unsigned int threadId = System::ThreadId();
+
+    // check if the context is already active
+    if (_currentThreadId != 0)
+    {
+        // check if the context is already active in that thread ot into another
+        if (_currentThreadId == threadId)
+            System::Config::Warning("GLXContext:Active", "The context is already active.");
+        else
+            System::Config::Error("GLXContext:Active", "The context is active into another context.");
+    }
+    else
+    {
+        // active the context
+        if (glXMakeCurrent(_display, static_cast<XWindow*>(_win)->_xwin, _context) == 0)
+            System::Config::Error("GLXContext:Active", "Make current failed.");
+        _currentThreadId = threadId;
+    }
 }
 
 void    Graphic::GLXContext::Disable()
 {
-    if (!_isActive)
-        System::Config::Warning("GLXContext:Disable", "Context already disabled.");
-    if (glXMakeCurrent(_display, 0, 0) == 0)
-        System::Config::Error("GLXContext:Disable", "Make current failed.");
-    _isActive = false;
+    // get the current thread id
+    unsigned int threadId = System::ThreadId();
+
+    // check if the context is active into the current thread
+    if (_currentThreadId != threadId)
+    {
+        // check if the context is already disable or active into another thread
+        if (_currentThreadId == 0)
+            System::Config::Warning("GLXContext:Disable", "The context is already disable.");
+        else
+            System::Config::Error("GLXContext:Disable", "The context is active into another context.");
+    }
+    else
+    {
+        // disable the context
+        if (glXMakeCurrent(_display, 0, 0) == 0)
+            System::Config::Error("GLXContext:Disable", "Make current failed.");
+        _currentThreadId = 0;
+    }
 }
 
 void    Graphic::GLXContext::SwapBuffers()
@@ -217,7 +245,7 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
     LOG_DEBUG << std::endl;
 
     // the context is now created but not active
-    _isActive = false;
+    _currentThreadId = 0;
     _isCreate = true;
 }
 
