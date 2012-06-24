@@ -49,17 +49,23 @@ ProgrammableMaterial::~ProgrammableMaterial()
 
 bool    ProgrammableMaterial::Configure(Drawable &drawable)
 {
-    GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
+	GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
     _program.Enable();
     for (unsigned int i = 0; i < desc.Size(); ++i)
     {
-        for (AttribMap::iterator it = _attribs.begin(); it != _attribs.end(); ++it)
+		bool find = false;
+		for (AttribMap::iterator it = _attribs.begin(); it != _attribs.end(); ++it)
         {
             if (desc[i].Name == it->first)
+			{
                 desc[i].IndexAttrib = it->second;
-        }
+				find = true;
+			}
+		}
+		if (!find)
+			desc[i].IndexAttrib = -1;
     }
-    return true;
+	return true;
 }
 
 void    ProgrammableMaterial::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
