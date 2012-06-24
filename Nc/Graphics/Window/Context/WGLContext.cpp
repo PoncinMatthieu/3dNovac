@@ -51,26 +51,63 @@ WGLContext::~WGLContext()
 
 void 	WGLContext::Active()
 {
-	if (_isActive)
-		System::Config::Warning("WGLContext:Active", "Context already active.");
-	if (wglMakeCurrent(_drawable, _context) == false)
-		System::Config::Error("WGLContext::Active", "Make current failed.");
-	_isActive = true;
+	// get the current thread id
+	unsigned int threadId = System::ThreadId();
+
+	// check if the context is already active
+	if (_currentThreadId != 0)
+	{
+		// check is the context is already active in that thread or into another thread
+		if (_currentThreadId == threadId)
+			System::Config::Warning("WGLContext::Active", "The context is already active.");
+		else
+			System::Config::Error("WGLContext::Active", "The context is active into another context.");
+	}
+	else
+	{
+		// active the context
+		if (wglMakeCurrent(_drawable, _context) == false)
+			System::Config::Error("WGLContext::Active", "Make current failed.");
+		_currentThreadId = threadId;
+	}
 }
 
 void	WGLContext::Disable()
 {
-	if (!_isActive)
-		System::Config::Warning("GLXContext:Disable", "Context already disabled.");
-	if (wglMakeCurrent(0, 0) == false)
-		System::Config::Error("WGLContext::Disable", "Make current failed.");
-	_isActive = false;
+	// get the current thread id
+	unsigned int threadId = System::ThreadId();
+
+	// check if the context active into the current thread
+	if (_currentThreadId != threadId)
+	{
+		// check if the context is already disable
+		if (_currentThreadId == 0)
+			System::Config::Warning("WGLContext::Disable", "The context is already disable.");
+		else
+			System::Config::Error("WGLContext::Disable", "The context is active into another context.");
+	}
+	else
+	{
+		// disable the context
+		if (wglMakeCurrent(0, 0) == false)
+			System::Config::Error("WGLContext::Disable", "Make current failed.");
+		_currentThreadId = 0;
+	}
 }
 
 void	WGLContext::SwapBuffers()
 {
-	if (::SwapBuffers(_drawable) == false)
-		LOG_ERROR << "SwapBuffers failed" << std::endl;
+	// get the current thread id
+	unsigned int threadId = System::ThreadId();
+
+	// check if the context is active in the current thread
+	if (_currentThreadId != threadId)
+		System::Config::Error("WGLContext::SwapBuffers", "The context is not active in the current thread.");
+	else
+	{
+		if (::SwapBuffers(_drawable) == false)
+			System::Config::Error("WGLContext::SwapBuffers", "SwapBuffers failed");
+	}
 }
 
 void WGLContext::Create(GLContext *sharedContext)
@@ -115,7 +152,7 @@ void WGLContext::Create(GLContext *sharedContext)
 	}
 
 	// the context is now created but not active
-	_isActive = false;
+	_currentThreadId = 0;
 	_isCreate = true;
 }
 
@@ -133,12 +170,10 @@ void	WGLContext::ChoosePixelFormat()
 		HGLRC dummyContext;
 		CreateDummyContext(dummyWindowHandle, dummyDrawable, dummyContext);
 
-		// save current context
-		
 		// active the context to be able to load the extension
 		if (wglMakeCurrent(dummyDrawable, dummyContext) == false)
 		{
-			ShowError("WGLContext:Create:wglMakeCurrent");
+			ShowError("WGLContext:ChoosePixelFormat:wglMakeCurrent");
 			throw Utils::Exception("WGLContext", "Active dummy context: Make current failed");
 		}
 
@@ -216,15 +251,15 @@ void	WGLContext::ChoosePixelFormat()
             static_cast<WWindow*>(_win)->_antialiasingLevel = 0;
         }
 
-		// delete dummy context
-		DeleteDummyContext(dummyWindowHandle, dummyDrawable, dummyContext);
-/*
+		// unset the dummy context
 		if (wglMakeCurrent(0, 0) == false)
 		{
-			ShowError("WGLContext:DeleteDummyContext:wglMakeCurrent");
-			throw Utils::Exception("WGLContext:DeleteDummyContext", "Make current failed");
+			ShowError("WGLContext:ChoosePixelFormat:wglMakeCurrent");
+			throw Utils::Exception("WGLContext:ChoosePixelFormat", "Make current failed");
 		} 
-*/
+
+		// delete dummy context
+		DeleteDummyContext(dummyWindowHandle, dummyDrawable, dummyContext);
 	}
 
     // Find a pixel format with no antialiasing, if not needed or not supported
@@ -248,7 +283,7 @@ void	WGLContext::ChoosePixelFormat()
         if (_format == 0)
 		{
 			ShowError("WGLContext::ChoosePixelFormat");
-            throw Utils::Exception("WGLContext", "Can't find a suitable pixel format for the device context");
+            throw Utils::Exception("WGLContext:ChoosePixelFormat", "Can't find a suitable pixel format for the device context");
 		}
 	}
 }
@@ -266,8 +301,8 @@ void	WGLContext::SetPixelFormat()
     // Set the chosen pixel format
     if (!::SetPixelFormat(_drawable, _format, &attribs))
 	{
-		ShowError("WGLContext:Create:SetPixelFormat");
-        throw Utils::Exception("WGLContext", "Failed to set pixel format for the device");
+		ShowError("WGLContext:SetPixelFormat:SetPixelFormat");
+        throw Utils::Exception("WGLContext:SetPixelFormat", "Failed to set pixel format for the device");
 	}
 }
 
