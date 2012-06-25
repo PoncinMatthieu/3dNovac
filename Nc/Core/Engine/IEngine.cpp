@@ -77,6 +77,7 @@ void IEngine::Loading()
     if (_loadingContextPriority > 0)
     {
         _manager->WaitLoadingContextPriority(_loadingContextPriority); // waiting for our turn to load the context
+        _manager->RequestDisableEveryContext(); // ask to disable every context before creating one
         _manager->MutexGlobal().Lock();
         try
         {
@@ -91,6 +92,7 @@ void IEngine::Loading()
             exit(-1);
         }
         _manager->MutexGlobal().Unlock();
+        _manager->RequestActiveEveryContext(); // let the engines to manage their contexts
         _manager->WaitEnginesContextLoading();	            // waiting for others context
     }
 
@@ -131,24 +133,44 @@ void IEngine::Releasing()
 
 void IEngine::Process()
 {
-    _sleepMutex.Lock();
-    if (_pattern.Enabled(Synchronized))
-        _manager->MutexGlobal().Lock();
-
     // if the engine has a context, check if the context is enable
     if (_context != NULL)
     {
+
+        // wait until the manager reactivate the context
+        bool st = true;
+        while (_requestedToDisableContext)
+        {
+            // disable the context if we asked for it
+            if (st && _context->CurrentThreadId() != 0)
+            {
+                LOG << *this << " disable context" << std::endl;
+                _context->Disable();
+                st = false;
+            }
+            System::Sleep(0);
+        }
+
         unsigned int id = _context->CurrentThreadId();
         if (_threadId != id)
         {
             if (id != 0)
             {
                 // request to disable the context in his current thread, and wait for it
-                _manager->RequestDisableContext(id);
+//                _manager->RequestDisableContext(id);
+
+                LOG << "/!\\ context active into another thread" << std::endl;
+
             }
+            LOG << "active context" << std::endl;
             _context->Active();
         }
     }
+
+    _sleepMutex.Lock();
+    if (_pattern.Enabled(Synchronized))
+        _manager->MutexGlobal().Lock();
+
 
     try
     {
@@ -166,8 +188,7 @@ void IEngine::Process()
         LOG_ERROR << "Error on " << *this << ": " << e.what() << std::endl;
     }
 
-//    if (_pattern.Enabled(HasAContext))
-//        DisableContext();
+//_context->Disable();
 
     if (_pattern.Enabled(Synchronized))
         _manager->MutexGlobal().Unlock();
@@ -175,16 +196,6 @@ void IEngine::Process()
     LimitFrameRate();
     _elapsedTime = (float)_clock.ElapsedTime();
     _clock.Reset();
-
-    // disable the context if we asked for it
-    if (_requestedToDisableContext)
-    {
-        if (_context != NULL)
-        {
-            _context->Disable();
-        }
-        _requestedToDisableContext = false;
-    }
 }
 
 void IEngine::LimitFrameRate()
@@ -215,4 +226,9 @@ void    IEngine::Stop()
 void    IEngine::RequestDisableContext()
 {
     _requestedToDisableContext = true;
+}
+
+void    IEngine::RequestActiveContext()
+{
+    _requestedToDisableContext = false;
 }

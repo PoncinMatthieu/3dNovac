@@ -32,29 +32,23 @@ void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 
 void GameEngine::LoadContent()
 {
-  _scene2d = new GUI::SceneGraph(_window);
-  _scene2d->AddChild(new Camera2d(_window));
-  _window->SceneManager()->AddScene(_scene2d);
+    _scene2d = new GUI::SceneGraph(_window);
+    _scene2d->AddChild(new Camera2d(_window));
+    _window->SceneManager()->AddScene(_scene2d);
 
-  // GUI :
-  //    scene2d->AddWidget(new GUI::Console());
-  _scene2d->AddChild(new GUI::FPSWidget(GUI::Center, GUI::Top));
+    // GUI :
+    //    scene2d->AddWidget(new GUI::Console());
+    _scene2d->AddChild(new GUI::FPSWidget(GUI::Center, GUI::Top));
 
-  _current = 0;
-  CreateSplines1();  // splines et nurbs 1
-  CreateSplines2();  // splines et nurbs 2
+    _current = 0;
+    CreateSplines1();  // splines et nurbs 1
+    CreateSplines2();  // splines et nurbs 2
 }
 
 void	GameEngine::ManageWindowEvent(Nc::System::Event &event)
 {
-    if (event.type == System::Event::Resized)
-    {
-        LOG << "Resized: " << event.size.width << "\t" << event.size.height << std::endl;
-    }
-
-
-  Nc::Engine::MainEngine::ManageWindowEvent(event);
-  _scene2d->ManageWindowEvent(event);
+    Nc::Engine::MainEngine::ManageWindowEvent(event);
+    _scene2d->ManageWindowEvent(event);
 }
 
 void GameEngine::KeyboardEvent(System::Event &event)

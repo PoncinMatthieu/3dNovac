@@ -355,7 +355,42 @@ void Manager::RequestDisableContext(unsigned int threadId)
     while (!state)
     {
         IContext *c = e->Context();
-        if (c != NULL && c->CurrentThreadId() == 0)
+        if (c == NULL || (c != NULL && c->CurrentThreadId() == 0))
             state = true;
     }
+}
+
+void Manager::RequestDisableEveryContext()
+{
+    // request disable context
+    _mutexGlobal.Lock();
+    for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
+        it->second.engine->RequestDisableContext();
+    _mutexGlobal.Unlock();
+
+    // wait for it
+    bool state = false;
+    while (!state)
+    {
+        state = true;
+        _mutexGlobal.Lock();
+        for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
+        {
+            IContext *c = it->second.engine->Context();
+            if (c != NULL && c->CurrentThreadId() != 0)
+                state = false;
+        }
+        _mutexGlobal.Unlock();
+        if (!state)
+            System::Sleep(0);
+    }
+}
+
+void Manager::RequestActiveEveryContext()
+{
+    // request disable context
+    _mutexGlobal.Lock();
+    for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
+        it->second.engine->RequestActiveContext();
+    _mutexGlobal.Unlock();
 }

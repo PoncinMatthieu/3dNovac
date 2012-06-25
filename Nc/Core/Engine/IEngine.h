@@ -112,9 +112,11 @@ namespace Nc
                 unsigned char           LoadingPriority()               {return _loadingPriority;}
 
                 /** \return the context of the engine */
-                IContext                *Context()                  {return _context;}
+                IContext                *Context()                      {return _context;}
                 /** Called by the Manager to request the engine to disable his context */
                 void                    RequestDisableContext();
+                /** Called by the Manager to reactivate the context previously disabled */
+                void                    RequestActiveContext();
 
             protected:
                 /** Before to entering in the main loop, load contents and create context by using the engine manager priorities*/

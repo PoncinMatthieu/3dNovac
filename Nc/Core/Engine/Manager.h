@@ -106,6 +106,10 @@ namespace Nc
 
                 /** Request to the corresponding engine by using his threadId to disable his context and wait for it */
                 void                    RequestDisableContext(unsigned int threadId);
+                /** Request to disable every context in every engines and wait for it */
+                void                    RequestDisableEveryContext();
+                /** Request to reactive context management on every engine */
+                void                    RequestActiveEveryContext();
 
                 /** Wait until all the engine as been started */
                 void                    WaitAllEngineStarted();

@@ -122,7 +122,9 @@ void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
     engine->Start();
 
 	// wait the loading and enable the sub window for rendering
+    _context->Disable();
 	_manager->WaitEnginesLoading();
+    _context->Active();
 	w->EnableSubWindow();
 }
 
