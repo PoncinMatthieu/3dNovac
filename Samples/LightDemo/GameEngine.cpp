@@ -103,17 +103,18 @@ void GameEngine::Update(float runningTime)
 
 void GameEngine::ManageWindowEvent(System::Event &event)
 {
-  bool send = true;
-  if (event.type == System::Event::Resized)
-    _camera->Resized(event);
-  if (event.type == System::Event::KeyPressed)
+    bool send = true;
+    if (event.type == System::Event::Resized)
+        _camera->Resized(event);
+    if (event.type == System::Event::KeyPressed)
     {
-      if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
-	Quit();
+        if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
+            Quit();
     }
-  // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
-  if (send)
-    MainEngine::ManageWindowEvent(event);
+    // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
+    if (send)
+        MainEngine::ManageWindowEvent(event);
+    _sceneGUI->ManageWindowEvent(event);
 }
 
 void GameEngine::KeyboardEvent(System::Event &event)
