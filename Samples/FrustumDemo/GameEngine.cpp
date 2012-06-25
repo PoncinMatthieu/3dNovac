@@ -90,11 +90,6 @@ void GameEngine::LoadContent()
     _sceneGUI->AddChild(new Camera2d(_window));
     _sceneGUI->AddChild(new GUI::FPSWidget());
     _window->SceneManager()->AddScene(_sceneGUI);
-
-    _pattern.Disable(Nc::Engine::HasAContext);
-
-    // no need to active/disable the context at each loop
-    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)
@@ -106,9 +101,7 @@ void GameEngine::Update(float runningTime)
     _camera3->Center(_camera->Center());
     _camera3->Up(_camera->Up());
 
-    ActiveContext();
     _camera3->UpdateViewFrustum();
-    DisableContext();
 }
 
 void GameEngine::ManageWindowEvent(System::Event &event)

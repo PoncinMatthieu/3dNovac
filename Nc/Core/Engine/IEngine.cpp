@@ -34,8 +34,8 @@ using namespace Nc::Engine;
 
 IEngine::IEngine(Manager *manager, const Utils::Mask<Nc::Engine::Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
     : EventManager(), _manager(manager), _loaded(false), _released(false), _pattern(pattern),
-      _deletePriority(deletePriority), _loadingContextPriority(loadingContextPriority), _loadingPriority(loadingPriority),
-      _elapsedTime(0), _limitFPS(0), _stop(false)
+      _deletePriority(deletePriority), _loadingContextPriority(loadingContextPriority), _loadingPriority(loadingPriority), _context(NULL),
+      _elapsedTime(0), _limitFPS(0), _stop(false), _threadId(0), _requestedToDisableContext(false)
 {
 }
 
@@ -47,6 +47,7 @@ void IEngine::Run()
 {
     try
     {
+        _threadId = System::ThreadId();
         Loading();			// loading ressources and contexts by using the loading priorities
         MainLoop();			// main loop of the thread
 		Releasing();		// release the ressources by using the deleting priorities
@@ -54,7 +55,7 @@ void IEngine::Run()
     catch (const std::exception &e)
     {
         LOG_ERROR << "FATAL Error on " << *this << ": " << e.what() << endl;
-///\todo _manager->Stop() don't work on a fatal error so we exit
+/// \todo _manager->Stop() might not work on a fatal error so we exit
 //        _manager->Stop();
         exit(-1);
     }
@@ -71,8 +72,9 @@ void IEngine::MainLoop()
 void IEngine::Loading()
 {
     _manager->WaitAllEngineStarted();
-    // if we have a context
-    if (_pattern.Enabled(HasAContext) && _loadingContextPriority > 0)
+
+    // Load context
+    if (_loadingContextPriority > 0)
     {
         _manager->WaitLoadingContextPriority(_loadingContextPriority); // waiting for our turn to load the context
         _manager->MutexGlobal().Lock();
@@ -89,22 +91,25 @@ void IEngine::Loading()
             exit(-1);
         }
         _manager->MutexGlobal().Unlock();
-        if (_pattern.Disabled(DontWaitOthersContext))
-            _manager->WaitEnginesContextLoading();	            // waiting for others context
+        _manager->WaitEnginesContextLoading();	            // waiting for others context
     }
 
+    // Load
     if (_loadingPriority > 0)
     {
         _manager->WaitLoadingPriority(_loadingPriority);        // waiting for our turn to load contents
         _manager->MutexGlobal().Lock();
         try
         {
-            ActiveContext();
+            if (_context != NULL)
+                _context->Active();
             LOG_DEBUG << "------------------"<< *this << "-:-" << "Loading-----------------------" << endl;
             LoadContent();
             _loaded = true;
             LOG_DEBUG << "------------------"<< *this << "-:-" << "Loading-done------------------" << endl;
-            DisableContext();
+
+            if (_context != NULL)
+                _context->Disable();
         }
         catch (const std::exception &e)
         {
@@ -130,8 +135,20 @@ void IEngine::Process()
     if (_pattern.Enabled(Synchronized))
         _manager->MutexGlobal().Lock();
 
-    if (_pattern.Enabled(HasAContext))
-        ActiveContext();
+    // if the engine has a context, check if the context is enable
+    if (_context != NULL)
+    {
+        unsigned int id = _context->CurrentThreadId();
+        if (_threadId != id)
+        {
+            if (id != 0)
+            {
+                // request to disable the context in his current thread, and wait for it
+                _manager->RequestDisableContext(id);
+            }
+            _context->Active();
+        }
+    }
 
     try
     {
@@ -149,8 +166,8 @@ void IEngine::Process()
         LOG_ERROR << "Error on " << *this << ": " << e.what() << std::endl;
     }
 
-    if (_pattern.Enabled(HasAContext))
-        DisableContext();
+//    if (_pattern.Enabled(HasAContext))
+//        DisableContext();
 
     if (_pattern.Enabled(Synchronized))
         _manager->MutexGlobal().Unlock();
@@ -158,6 +175,16 @@ void IEngine::Process()
     LimitFrameRate();
     _elapsedTime = (float)_clock.ElapsedTime();
     _clock.Reset();
+
+    // disable the context if we asked for it
+    if (_requestedToDisableContext)
+    {
+        if (_context != NULL)
+        {
+            _context->Disable();
+        }
+        _requestedToDisableContext = false;
+    }
 }
 
 void IEngine::LimitFrameRate()
@@ -183,4 +210,9 @@ void    IEngine::WakeUp()
 void    IEngine::Stop()
 {
     _stop = true;
+}
+
+void    IEngine::RequestDisableContext()
+{
+    _requestedToDisableContext = true;
 }

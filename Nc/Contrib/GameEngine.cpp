@@ -31,7 +31,7 @@ using namespace Nc;
 using namespace Nc::Contrib;
 
 GameEngine::GameEngine(Engine::Manager *manager)
-    : Engine::MainEngine(manager), _context(NULL)
+    : Engine::MainEngine(manager)
 {
 }
 
@@ -49,16 +49,4 @@ void    GameEngine::SetWindow(Nc::Graphic::Window *win)
 void    GameEngine::CreateContext()
 {
     _context = _window->CreateSharedContext();
-}
-
-void    GameEngine::ActiveContext()
-{
-    if (_context != NULL)
-        _context->Active();
-}
-
-void    GameEngine::DisableContext()
-{
-    if (_context != NULL)
-        _context->Disable();
 }

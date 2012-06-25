@@ -69,9 +69,6 @@ void GameEngine::LoadContent()
 
     // create the GUI
     CreateGUI();
-
-    // no need to active/disable the context at each loop
-    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::CreateGUI()

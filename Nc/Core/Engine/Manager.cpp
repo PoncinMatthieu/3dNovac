@@ -160,13 +160,21 @@ IEngine *Manager::GetEngine(const std::string &name)
 {
     MapEngine::iterator it = _mapEngine.find(name);
     if (it == _mapEngine.end())
-        throw Utils::Exception("Engine::Manager", "'" + name + "' Don't exist !");
+        throw Utils::Exception("Engine::Manager", "'" + name + "' Don't exist!");
     return it->second.engine;
+}
+
+IEngine *Manager::GetEngine(unsigned int threadId)
+{
+    for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); ++itEngine)
+        if (itEngine->second.engine->ThreadId())
+            return itEngine->second.engine;
+    throw Utils::Exception("Engine::Manager", "Engine with threadId: " + Utils::Convert::ToString(threadId) + " do not exist!");
 }
 
 void    Manager::Start()
 {
-// lancement des threads
+// launch the threads
     _mutexGlobal.Lock();
     for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); ++itEngine)
         itEngine->second.engine->Start();
@@ -333,4 +341,21 @@ void Manager::WaitReleasePriority(unsigned int priority)
 		if (priority > topPriority)
 			System::Sleep(0);
 	}
+}
+
+void Manager::RequestDisableContext(unsigned int threadId)
+{
+    IEngine *e = GetEngine(threadId);
+
+    // request disable
+    e->RequestDisableContext();
+
+    // wait for disabling
+    bool state = false;
+    while (!state)
+    {
+        IContext *c = e->Context();
+        if (c != NULL && c->CurrentThreadId() == 0)
+            state = true;
+    }
 }

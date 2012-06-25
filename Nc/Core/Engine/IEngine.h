@@ -34,6 +34,7 @@
 #include "../Utils/Clock.h"
 #include "../Utils/Mask.h"
 #include "EventManager.h"
+#include "IContext.h"
 
 namespace Nc
 {
@@ -43,23 +44,23 @@ namespace Nc
 
         enum Pattern
 		{
-			Nop = 									0,			///< do nothing
-			Synchronized =                          1 << 0,     ///< define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other
-			HasAContext =                           1 << 1,     ///< define if we need to create and call `Active/DisableContext` at each loop
-			ContextIsLoaded =                       1 << 2,     ///< informe that the context is loaded, /!\ DON'T USE OUTSIDE OF THE CLASS
-			WaitingLoadContentsOfOthersEngines =    1 << 3,     ///< force the waiting of the others engines afers to have loaded the contents
-			DontWaitOthersContext =                 1 << 4      ///< don't wait the others context (used by the graphic engine for displaying while the loading)
+			Nop = 									0,			///< Do nothing
+			Synchronized =                          1 << 0,     ///< Define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other
+			ContextIsLoaded =                       1 << 1,     ///< Informe that the context is loaded, /!\ DO NOT USE OUTSIDE OF THE CLASS
+			WaitingLoadContentsOfOthersEngines =    1 << 2,     ///< Force the waiting of the others engines afers to have loaded the contents
         };
 
         /// Abstract class to define a Threaded Engine
         /**
             Abstract class to define a Threaded Engine.
             Inherite of EventManager, so an engine has a set of routine to receive events from another Engine/Thread
-            <br/>
-            An engine could have a "Context". A context is created and load before to load contents.
+
+            An engine can have a "Context". A context is created and load before to load contents.
+            To create a context you must redefine the method "CreateContext".
+
             An engine has a set of priority in the loading and deleting process.
             So in the loading process and with highest priority, the engine will be loaded at first,
-            and in the deleting process and with en highest priority, the engine will be the last one deleted
+            and in the deleting process and with en highest priority, the engine will be the last one to be deleted.
         */
         class LCORE IEngine : public EventManager, public System::Thread
         {
@@ -94,8 +95,11 @@ namespace Nc
                 /** Execute the engine, to be redefine */
                 virtual void            Execute(float runningTime) = 0;
 
+                /** \return the thread id of the engine */
+                inline unsigned int     ThreadId() const                {return _threadId;}
+
                 /** \return true if the context is loaded or if there are no context */
-                inline bool             ContextLoaded()                 {return (_pattern.Disabled(HasAContext) || _pattern.Enabled(ContextIsLoaded));}
+                inline bool             ContextLoaded()                 {return _pattern.Enabled(ContextIsLoaded);}
                 /** \return true if the engine is loaded */
                 inline bool             Loaded() const                  {return _loaded;}
 				/** \return true if the content of the engine has been released */
@@ -107,6 +111,11 @@ namespace Nc
                 /** \return the priority loading */
                 unsigned char           LoadingPriority()               {return _loadingPriority;}
 
+                /** \return the context of the engine */
+                IContext                *Context()                  {return _context;}
+                /** Called by the Manager to request the engine to disable his context */
+                void                    RequestDisableContext();
+
             protected:
                 /** Before to entering in the main loop, load contents and create context by using the engine manager priorities*/
                 virtual void            Loading();
@@ -117,19 +126,15 @@ namespace Nc
                 /**
 					Process the engine.
 					Procedure :
-						- Active/DisableContext
+						- Active/Disable Context
 						- ExecuteEvents
 						- Execute
 						- Thread synchronisation with mutex
 				*/
                 virtual void            Process();
 
-                /** Create the context, to redefine */
-                virtual inline void     CreateContext()     {}
-                /** Active the context, to redefine */
-                virtual inline void     ActiveContext()     {}
-                /** Disable the context, to redefine */
-                virtual inline void     DisableContext()    {}
+                /** Create the context, to redefine in the engine requiring a context */
+                virtual void            CreateContext()             {_context = NULL;}
 
             protected:
                 Manager                 *_manager;                  ///< The instance of the engine Manager
@@ -141,8 +146,10 @@ namespace Nc
                 unsigned char           _loadingContextPriority;    ///< if the priority is null, no context loading
                 unsigned char           _loadingPriority;           ///< if the priority is null, no content loading
 
+                IContext                *_context;                  ///< Instance of the context bound to the engine
+
             private:
-                /** limit the fps if the limit is >0 */
+                /** limit the fps if the limit is > 0 */
                 void                    LimitFrameRate();
 
                 float                   _elapsedTime;               ///< Elapsed time between 2 frame (Execute) in second
@@ -150,6 +157,8 @@ namespace Nc
                 Utils::Clock            _clock;                     ///< the clock used to compute the elapsed time and the fps sleep if the limit is set
                 System::Mutex           _sleepMutex;                ///< mutex used to sleep the engine
                 bool                    _stop;                      ///< a boolean to stop the engine
+                unsigned int            _threadId;                  ///< the thread id of the engine
+                bool                    _requestedToDisableContext; ///< statement so that the engine know if we want him to disable his context
         };
     }
 }

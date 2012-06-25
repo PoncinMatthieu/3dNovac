@@ -44,8 +44,8 @@ using namespace Nc::Graphic;
 double      Graphic::Engine::_elapsedTime = 0;
 
 Graphic::Engine::Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func)
-	: Engine::IEngine(manager, Nc::Engine::HasAContext | Nc::Engine::WaitingLoadContentsOfOthersEngines | Nc::Engine::Synchronized, 0xff, 0xff, 0xff),
-      _createWinFunction(func), _win(NULL), _context(NULL), _mainEngineClassName(mainEngineClassName)
+	: Engine::IEngine(manager, Nc::Engine::WaitingLoadContentsOfOthersEngines | Nc::Engine::Synchronized, 0xff, 0xff, 0xff),
+      _createWinFunction(func), _win(NULL), _mainEngineClassName(mainEngineClassName)
 {
 }
 
@@ -64,16 +64,18 @@ void Graphic::Engine::CreateContext()
     _win = new XWindow();
 #endif
     (static_cast<Nc::Engine::MainEngine*>(_manager->GetEngine(_mainEngineClassName))->*_createWinFunction)(_win);
-    _context = _win->CreateGLContext();
+    GLContext *newContext = _win->CreateGLContext();
+    _context = newContext;
 
     // initialize opengl context
-    _context->Active();
-    _renderState.InitContext(_context);
+    newContext->Active();
+    _renderState.InitContext(newContext);
     _renderState.Enable();
     _win->InitSceneGraphManager();
 	_renderState.Disable();
-    _context->Disable();
+    newContext->Disable();
 	_win->Enable(true);
+
 }
 
 void Graphic::Engine::ReleaseContent()
@@ -102,6 +104,6 @@ void Graphic::Engine::Execute(float runningTime)
 	// display the scene graph
 	_renderState.Enable();
 	if (_win->Enabled())
-		_win->Render(_context);
+		_win->Render(static_cast<GLContext*>(_context));
 	_renderState.Disable();
 }

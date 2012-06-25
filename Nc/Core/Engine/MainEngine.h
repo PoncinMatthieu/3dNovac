@@ -41,7 +41,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::IEngine, Nc::Engine::MainEngine);
 
             public:
-                MainEngine(Manager *manager, unsigned int pattern = HasAContext | WaitingLoadContentsOfOthersEngines,
+                MainEngine(Manager *manager, unsigned int pattern = WaitingLoadContentsOfOthersEngines,
                            unsigned char deletePriority = 2, unsigned char loadingContextPriority = 2, unsigned int loadingPriority = 2);
                 virtual ~MainEngine();
 

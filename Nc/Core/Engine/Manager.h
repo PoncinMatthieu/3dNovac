@@ -86,6 +86,8 @@ namespace Nc
                 virtual void            RemoveEngine(const std::string &name, bool del = true);
                 /** \return the corresponding engine */
                 static IEngine          *GetEngine(const std::string &name);
+                /** \return the corresponding engine by using his threadId. Be careful, an engine know his threadId only after being launched. */
+                static IEngine          *GetEngine(unsigned int threadId);
                 /** \return the engines managed by the Manager */
                 static const MapEngine  &GetEngines()                   {return _mapEngine;}
 
@@ -101,6 +103,9 @@ namespace Nc
 
                 /** \return the mutex witch is used to protect and synchronize the engines */
                 inline System::Mutex    &MutexGlobal()                  {return _mutexGlobal;}
+
+                /** Request to the corresponding engine by using his threadId to disable his context and wait for it */
+                void                    RequestDisableContext(unsigned int threadId);
 
                 /** Wait until all the engine as been started */
                 void                    WaitAllEngineStarted();

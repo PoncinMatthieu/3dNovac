@@ -52,15 +52,10 @@ namespace Nc
 
             protected:
                 /** Create the shared ogl context specific to the thread of the GameEngine */
-                virtual void    CreateContext();
-                /** Active the ogl context */
-                virtual void    ActiveContext();
-                /** Disable the ogl context */
-                virtual void    DisableContext();
+                virtual void            CreateContext();
 
             protected:
                 Graphic::Window     *_window;       ///< instance of the window used to render
-                Graphic::GLContext  *_context;      ///< instance of the context shared with the context of the graphic engine
         };
     }
 }

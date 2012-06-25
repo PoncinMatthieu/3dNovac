@@ -31,6 +31,7 @@
 #include <list>
 #include <map>
 #include <Nc/Core/System/API/API.h>
+#include <Nc/Core/Engine/IContext.h>
 #include "../../Define.h"
 
 namespace Nc
@@ -44,11 +45,8 @@ namespace Nc
             Typically a GLContext is created in 2 ways. With a Window by calling the method Window::CreateGLContext(),
             or with an other context by calling the method GLContext::CreateNewSharedContext().
         */
-        class LGRAPHICS GLContext : public Utils::NonCopyable
+        class LGRAPHICS GLContext : public Engine::IContext
         {
-			public:
-				typedef std::map<unsigned int, GLContext*>	MapPIDContext;
-
             public:
                 GLContext(Window *win);
                 virtual ~GLContext();
@@ -59,23 +57,16 @@ namespace Nc
                 /** Create a new shared OpenGL context with the current */
                 virtual GLContext  *CreateNewSharedContext() = 0;
 
-                /** Active the opengl context */
-                virtual void        Active() = 0;
-
-                /** Disable the opengl context */
-                virtual void        Disable() = 0;
-
                 /** swap the buffers, (for a double buffered appli) */
                 virtual void        SwapBuffers() = 0;
 
                 /** \return the attached window to the context */
-                inline Window       *AttachedWindow()                   {return _win;}
+                inline Window       *AttachedWindow() const             {return _win;}
 
             protected:
                 Window			*_win;				///< The instance of the associated window
                 bool			_isCreate;			///< Statement to define if the context is create
                 bool			_isShared;			///< Statement to define if the context is shared
-				unsigned int	_currentThreadId;	///< Register the thread id in which the context is currently bound
 		};
     }
 }
