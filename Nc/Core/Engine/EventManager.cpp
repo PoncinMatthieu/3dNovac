@@ -129,9 +129,11 @@ void  EventManager::ExecuteEvents()
         // exec queue event
         for (; !_queueEvent.empty(); _queueEvent.pop())
         {
-            _mutexQueue.Lock();
-            std::pair<unsigned int, IEvent*> p = _queueEvent.front();
-            _mutexQueue.Unlock();
+            std::pair<unsigned int, IEvent*> p;
+            {
+                System::Locker l(&_mutexQueue);
+                p = _queueEvent.front();
+            }
             ExecuteEvent(p.first, p.second);
             if (p.second != NULL)
                 delete p.second;
@@ -140,9 +142,11 @@ void  EventManager::ExecuteEvents()
         // exec queue event string
         for (; !_queueEventString.empty(); _queueEventString.pop())
         {
-            _mutexQueue.Lock();
-            std::pair<std::string, EventString*> p = _queueEventString.front();
-            _mutexQueue.Unlock();
+            std::pair<std::string, EventString*> p;
+            {
+                System::Locker l(&_mutexQueue);
+                p = _queueEventString.front();
+            }
             ExecuteEvent(p.first, p.second);
             if (p.second != NULL)
                 delete p.second;
@@ -152,24 +156,21 @@ void  EventManager::ExecuteEvents()
 
 void    EventManager::PushEvent(unsigned int id, IEvent *e)
 {
-    _mutexQueue.Lock();
+    System::Locker l(&_mutexQueue);
     if (_receiveEvents)
         _queueEvent.push(std::pair<unsigned int, IEvent*>(id, e));
-    _mutexQueue.Unlock();
 }
 
 void EventManager::PushEvent(const std::string &cmdName)
 {
-    _mutexQueue.Lock();
+    System::Locker l(&_mutexQueue);
     if (_receiveEvents)
         _queueEventString.push(std::pair<std::string, EventString*>(cmdName, (EventString*)NULL));
-    _mutexQueue.Unlock();
 }
 
 void EventManager::PushEvent(const std::string &cmdName, const std::string &args)
 {
-    _mutexQueue.Lock();
+    System::Locker l(&_mutexQueue);
     if (_receiveEvents)
         _queueEventString.push(std::pair<std::string, EventString*>(cmdName, new EventString(args)));
-    _mutexQueue.Unlock();
 }

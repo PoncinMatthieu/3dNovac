@@ -38,6 +38,9 @@ namespace Nc
     namespace Graphic
     {
         /// Interface to define a scene node
+        /**
+            \todo we should delete the methods Lock/Unlock and use the RAII patern.
+        */
         class LGRAPHICS ISceneNode : public System::Object
         {
             public:
@@ -93,9 +96,9 @@ namespace Nc
                 void                        SaveDot(const Utils::FileName &file) const      {Graph::DotGraph<ISceneNode,true>::Save(file, *this);}
 
                 /** Lock the node, to use for exemple when you want to remove a child, this will protect the node with a mutex for a multithreaded context */
-                inline void                 Lock() throw()                                  {_mutex.Lock();}
+                inline void                 Lock() throw()                                  {if (_locker == NULL) _locker = new System::Locker(&_mutex);}
                 /** Unlock the node */
-                inline void                 Unlock() throw()                                {_mutex.Unlock();}
+                inline void                 Unlock() throw()                                {if (_locker != NULL) delete _locker; _locker = NULL;}
 
                 /** Set the enable statement of the node */
                 virtual void                Enable(bool status)                             {_enabled = status;}
@@ -137,6 +140,7 @@ namespace Nc
 
             private:
                 System::Mutex           _mutex;                 ///< a mutex used to protect the node, (this mutex is lock at the render pass)
+                System::Locker          *_locker;               ///< used to lock the mutex
                 bool                    _enabled;               ///< an enable statement
 
                 IUpdatingController     *_updatingController;   ///< controller called at the updating time

@@ -39,9 +39,8 @@ void bSplines::InitOption()
 
 void bSplines::Draw(Graphic::SceneGraph *scene)
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     Object::Draw(scene);
-    _mutex.Unlock();
 }
 
 void bSplines::ComputeKnots(Array<int> &knots)
@@ -62,14 +61,12 @@ void bSplines::ComputeKnots(Array<int> &knots)
 
 void bSplines::Update()
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
 
     // update les geometry des drawables
     UpdateControlPoints(Color(255, 0, 0), Color(128, 128, 128));
     UpdatebSpline(Color(255, 255, 0));
     UpdateNurb(Color(0, 255, 255));
-
-    _mutex.Unlock();
 }
 
 void bSplines::UpdateControlPoints(const Color &c1, const Color &c2)

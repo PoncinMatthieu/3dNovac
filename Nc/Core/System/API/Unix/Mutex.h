@@ -46,6 +46,7 @@ namespace Nc
                 Mutex &operator = (const Mutex &)       {return *this;}
                 virtual ~Mutex()                        {pthread_mutex_destroy(&_mutexId);}
 
+			private:
                 inline void Lock()                      {pthread_mutex_lock(&_mutexId);}
                 inline void Unlock()                    {pthread_mutex_unlock(&_mutexId);}
 

@@ -167,11 +167,10 @@ IEngine *Manager::GetEngine(const std::string &name)
 void    Manager::Start()
 {
 // lancement des threads
-    _mutexGlobal.Lock();
+    System::Locker l(&_mutexGlobal);
     for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); ++itEngine)
         itEngine->second.engine->Start();
     _isLaunched = true;
-    _mutexGlobal.Unlock();
 }
 
 void    Manager::Wait()
@@ -183,7 +182,7 @@ void    Manager::Wait()
 
 void    Manager::Stop()
 {
-    _mutexGlobal.Lock();
+    System::Locker l(&_mutexGlobal);
     // check if the current thread is allowed to exit the thread
     unsigned int currentThreadId = System::ThreadId();
     if (_mainThreadId == currentThreadId)
@@ -199,7 +198,6 @@ void    Manager::Stop()
             }
         }
     }
-    _mutexGlobal.Unlock();
 }
 
 void Manager::PushEvent(const std::string &engineName, unsigned int id)
@@ -256,9 +254,8 @@ void Manager::WaitAllEngineStarted()
     bool isLaunched = false;
     while (!isLaunched)
     {
-        _mutexGlobal.Lock();
+        System::Locker l(&_mutexGlobal);
         isLaunched = _isLaunched;
-        _mutexGlobal.Unlock();
     }
 }
 
@@ -269,11 +266,10 @@ void Manager::WaitLoadingContextPriority(unsigned char priority)
     while (topPriority > priority)
     {
         topPriority = 0;
-        _mutexGlobal.Lock();
+        System::Locker l(&_mutexGlobal);
         for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
             if (!it->second.engine->ContextLoaded() && it->second.engine->LoadingContextPriority() > topPriority)
                 topPriority = it->second.engine->LoadingContextPriority();
-        _mutexGlobal.Unlock();
     }
 }
 
@@ -283,11 +279,10 @@ void Manager::WaitLoadingPriority(unsigned char priority)
     while (priority < topPriority)
     {
         topPriority = 0;
-        _mutexGlobal.Lock();
+        System::Locker l(&_mutexGlobal);
         for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
             if (!it->second.engine->Loaded() && it->second.engine->LoadingPriority() > topPriority)
                 topPriority = it->second.engine->LoadingPriority();
-        _mutexGlobal.Unlock();
     }
 }
 
@@ -297,11 +292,10 @@ void Manager::WaitEnginesContextLoading()
     while (!state && IsLaunched())
     {
         state = true;
-        _mutexGlobal.Lock();
+        System::Locker l(&_mutexGlobal);
         for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
             if (!it->second.engine->ContextLoaded())
                 state = false;
-        _mutexGlobal.Unlock();
     }
 }
 
@@ -311,11 +305,10 @@ void Manager::WaitEnginesLoading()
     while (!state && IsLaunched())
     {
         state = true;
-        _mutexGlobal.Lock();
+        System::Locker l(&_mutexGlobal);
         for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
             if (!it->second.engine->Loaded())
                 state = false;
-        _mutexGlobal.Unlock();
     }
 }
 
@@ -325,11 +318,12 @@ void Manager::WaitReleasePriority(unsigned int priority)
     while (priority > topPriority)
     {
         topPriority = 0xff;
-        _mutexGlobal.Lock();
-        for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
-            if (!it->second.engine->Released() && it->second.engine->DeletePriority() < topPriority)
-                topPriority = it->second.engine->LoadingPriority();
-        _mutexGlobal.Unlock();
+        {
+            System::Locker l(&_mutexGlobal);
+            for (MapEngine::iterator it = _mapEngine.begin(); it != _mapEngine.end(); ++it)
+                if (!it->second.engine->Released() && it->second.engine->DeletePriority() < topPriority)
+                    topPriority = it->second.engine->LoadingPriority();
+        }
 		if (priority > topPriority)
 			System::Sleep(0);
 	}

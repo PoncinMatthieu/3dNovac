@@ -297,8 +297,9 @@ namespace Nc
                     float                       _currentPointSize;              ///< the current rasterization size of the points
                     float                       _currentLineWidth;              ///< the current rasterization width of the lines
 
+                    /// \todo we should delete the static current. We could put the GL::State into the GLContext
                     static State                *_current;                      ///< Pointer to the current activated render state
-                    static System::Mutex        _mutex;                         ///< The mutex used to protect the render state
+                    //static System::Mutex        _mutex;                         ///< The mutex used to protect the render state
                     static unsigned int         _instanceCounter;               ///< An instance used to know how many render state exist
             };
         }

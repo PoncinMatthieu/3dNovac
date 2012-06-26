@@ -207,10 +207,9 @@ namespace Nc
         template<typename T>
         void    EventManager::PushEvent(unsigned int id, const T &arg)
         {
-            _mutexQueue.Lock();
+            System::Locker l(&_mutexQueue);
             if (_receiveEvents)
                 _queueEvent.push(std::pair<unsigned int, IEvent*>(id, new Event<T>(arg)));
-            _mutexQueue.Unlock();
         }
     }
 }

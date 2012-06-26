@@ -56,16 +56,14 @@ void    InputListener::RemoveInput(Input *input)
 bool InputListener::PollEvent(Event &e)
 {
 // si il y a un evenement, on le depile et return true
-    _mutexQueue.Lock();
+    System::Locker l(&_mutexQueue);
     if (!_eventQueue.empty())
     {
         e = _eventQueue.front();
         _eventQueue.pop();
 //        for (ListAction::iterator it = _inputActionList.begin(); it != _inputActionList.end(); ++it)
 //            (*it)->CheckEvents(e);
-        _mutexQueue.Unlock();
         return true;
     }
-    _mutexQueue.Unlock();
     return false;
 }

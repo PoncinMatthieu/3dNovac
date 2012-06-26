@@ -78,9 +78,10 @@ void* MemoryManager::Allocate(std::size_t aSize, FileName aFile, int aLine, bool
     NewData.Type = aType;
 
 // enregistrement des donnes dans la map memory avec pour clé la valeur du pointeur vers l'objet
-    _mutex.Lock();
-    _mapMemory[Ptr] = NewData;
-    _mutex.Unlock();
+    {
+        System::Locker l(&_mutex);
+        _mapMemory[Ptr] = NewData;
+    }
 
 // enregistrement dans le log
 #ifdef _DEBUG_MEMORY_CONSOLE
@@ -131,9 +132,10 @@ void MemoryManager::Free(void* Ptr, bool aType)
         _stackCurrentFree.pop();
     }
 
-    _mutex.Lock();
-    _mapMemory.erase(It);
-    _mutex.Unlock();
+    {
+        System::Locker l(&_mutex);
+        _mapMemory.erase(It);
+    }
     free(Ptr);// Libération de la mémoire
 }
 
@@ -143,9 +145,8 @@ void MemoryManager::CurrentFree(FileName aFile, int aLine)
     Data.File = aFile;
     Data.Line = aLine;
 
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     _stackCurrentFree.push(Data);
-    _mutex.Unlock();
 }
 
 

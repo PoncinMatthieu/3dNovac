@@ -62,21 +62,12 @@ void    Graphic::Window::Render(GLContext *context)
     _sceneGraphManager->Render(_context);
 
     // Render the sub windows
-    _mutexListSubWindow.Lock();
-	try
-	{
-		for (ListSubWindow::iterator it = _listSubWindow.begin(); it != _listSubWindow.end(); ++it)
-		{
-			if ((*it)->Enabled())
-				(*it)->Render(context);
-		}
-		_mutexListSubWindow.Unlock();
-	}
-	catch (...)
-	{
-		_mutexListSubWindow.Unlock();
-		throw;
-	}
+    System::Locker l(&_mutexListSubWindow);
+    for (ListSubWindow::iterator it = _listSubWindow.begin(); it != _listSubWindow.end(); ++it)
+    {
+        if ((*it)->Enabled())
+            (*it)->Render(context);
+    }
 }
 
 Graphic::GLContext   *Graphic::Window::CreateSharedContext()
@@ -86,14 +77,12 @@ Graphic::GLContext   *Graphic::Window::CreateSharedContext()
 
 void    Graphic::Window::RemoveSubWindow(SubWindow *w)
 {
-    _mutexListSubWindow.Lock();
+    System::Locker l(&_mutexListSubWindow);
     _listSubWindow.remove(w);
-    _mutexListSubWindow.Unlock();
 }
 
 void    Graphic::Window::AddSubWindow(SubWindow *w)
 {
-    _mutexListSubWindow.Lock();
+    System::Locker l(&_mutexListSubWindow);
     _listSubWindow.push_back(w);
-    _mutexListSubWindow.Unlock();
 }

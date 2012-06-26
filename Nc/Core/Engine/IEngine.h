@@ -149,6 +149,7 @@ namespace Nc
                 unsigned int            _limitFPS;                  ///< if > 0, used to sleep the thread with the good values to have the good number of seconds
                 Utils::Clock            _clock;                     ///< the clock used to compute the elapsed time and the fps sleep if the limit is set
                 System::Mutex           _sleepMutex;                ///< mutex used to sleep the engine
+                System::Locker          *_sleepLocker;              ///< locker used to sleep the engine
                 bool                    _stop;                      ///< a boolean to stop the engine
         };
     }

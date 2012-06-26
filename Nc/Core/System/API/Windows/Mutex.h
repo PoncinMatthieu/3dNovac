@@ -45,21 +45,22 @@ namespace Nc
             public:
                 Mutex()
                 {
-		  static unsigned int i = 0;
-		  _i = i++;
-		  if (!InitializeCriticalSectionAndSpinCount(&_mutexId, 0x80000400))
-		    throw Utils::Exception("Failed to create the mutex.");
+				  static unsigned int i = 0;
+				  _i = i++;
+				  if (!InitializeCriticalSectionAndSpinCount(&_mutexId, 0x80000400))
+					throw Utils::Exception("Failed to create the mutex.");
                 }
                 Mutex(const Mutex &)
-		  {
-		  static unsigned int i = 0;
-		  _i = i++;
-		  if (!InitializeCriticalSectionAndSpinCount(&_mutexId, 0x80000400))
-		    throw Utils::Exception("Failed to create the mutex.");
-		  }
+				{
+				  static unsigned int i = 0;
+				  _i = i++;
+				  if (!InitializeCriticalSectionAndSpinCount(&_mutexId, 0x80000400))
+					throw Utils::Exception("Failed to create the mutex.");
+				}
                 Mutex &operator = (const Mutex &)	{return *this;}
                 virtual ~Mutex()			{DeleteCriticalSection(&_mutexId);}
 
+			private:
                 inline void Lock()
 				{
 					#ifdef _DEBUG_MUTEX

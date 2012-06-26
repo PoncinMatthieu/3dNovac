@@ -58,7 +58,7 @@ void SceneGraphManager::Init(bool multisampling)
 
 void SceneGraphManager::Render(GLContext *context)
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
 
 // vide les tampons
     State::Current().Clear(_clearMask);
@@ -75,8 +75,6 @@ void SceneGraphManager::Render(GLContext *context)
 */
     //glFlush();
     context->SwapBuffers();
-
-    _mutex.Unlock();
 }
 
 void SceneGraphManager::Update(float elapsedTime)
@@ -87,23 +85,20 @@ void SceneGraphManager::Update(float elapsedTime)
 
 void SceneGraphManager::BringToFront(SceneGraph *scene)
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     _listScene.remove(scene);
     _listScene.push_back(scene);
-    _mutex.Unlock();
 }
 
 void SceneGraphManager::AddScene(SceneGraph *scene)
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     _listScene.push_back(scene);
-    _mutex.Unlock();
 }
 
 void SceneGraphManager::RemoveScene(SceneGraph *scene)
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     _listScene.remove(scene);
-    _mutex.Unlock();
 }
 

@@ -35,12 +35,17 @@ using namespace Nc::Engine;
 IEngine::IEngine(Manager *manager, const Utils::Mask<Nc::Engine::Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
     : EventManager(), _manager(manager), _loaded(false), _released(false), _pattern(pattern),
       _deletePriority(deletePriority), _loadingContextPriority(loadingContextPriority), _loadingPriority(loadingPriority),
-      _elapsedTime(0), _limitFPS(0), _stop(false)
+      _elapsedTime(0), _limitFPS(0), _sleepLocker(NULL), _stop(false)
 {
 }
 
 IEngine::~IEngine()
 {
+    if (_sleepLocker != NULL)
+    {
+        delete _sleepLocker;
+        _sleepLocker = NULL;
+    }
 }
 
 void IEngine::Run()
@@ -75,20 +80,13 @@ void IEngine::Loading()
     if (_pattern.Enabled(HasAContext) && _loadingContextPriority > 0)
     {
         _manager->WaitLoadingContextPriority(_loadingContextPriority); // waiting for our turn to load the context
-        _manager->MutexGlobal().Lock();
-        try
         {
+            System::Locker(&_manager->MutexGlobal());
             LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-------------------" << endl;
             CreateContext();
             _pattern.Enable(ContextIsLoaded);
             LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-done--------------" << endl;
         }
-        catch (const std::exception &e)
-        {
-            LOG << "FATAL ERROR while creating context: " << e.what() << std::endl;
-            exit(-1);
-        }
-        _manager->MutexGlobal().Unlock();
         if (_pattern.Disabled(DontWaitOthersContext))
             _manager->WaitEnginesContextLoading();	            // waiting for others context
     }
@@ -96,9 +94,8 @@ void IEngine::Loading()
     if (_loadingPriority > 0)
     {
         _manager->WaitLoadingPriority(_loadingPriority);        // waiting for our turn to load contents
-        _manager->MutexGlobal().Lock();
-        try
         {
+            System::Locker(&_manager->MutexGlobal());
             ActiveContext();
             LOG_DEBUG << "------------------"<< *this << "-:-" << "Loading-----------------------" << endl;
             LoadContent();
@@ -106,12 +103,6 @@ void IEngine::Loading()
             LOG_DEBUG << "------------------"<< *this << "-:-" << "Loading-done------------------" << endl;
             DisableContext();
         }
-        catch (const std::exception &e)
-        {
-            LOG << "FATAL ERROR while Loading contents: " << e.what() << std::endl;
-            exit(-1);
-        }
-       _manager->MutexGlobal().Unlock();
         if (_pattern.Enabled(WaitingLoadContentsOfOthersEngines))
             _manager->WaitEnginesLoading();                     // waiting for others loading content engines
     }
@@ -126,35 +117,36 @@ void IEngine::Releasing()
 
 void IEngine::Process()
 {
-    _sleepMutex.Lock();
-    if (_pattern.Enabled(Synchronized))
-        _manager->MutexGlobal().Lock();
-
-    if (_pattern.Enabled(HasAContext))
-        ActiveContext();
-
-    try
     {
-        #ifdef _DEBUG_THREAD_ENGINE
-            LOG_DEBUG <<"Execute `" << *this << "` pid = " << System::ThreadId() << "\n";
-        #endif
-            ExecuteEvents();
-            Execute(_elapsedTime);
-        #ifdef _DEBUG_THREAD_ENGINE
-            LOG_DEBUG <<"Execute END `" << *this << "` pid = " << System::ThreadId() << "\n";
-        #endif
-    }
-    catch (const std::exception &e)
-    {
-        LOG_ERROR << "Error on " << *this << ": " << e.what() << std::endl;
-    }
+        System::Locker l(&_sleepMutex);
+        {
+            System::Locker l2(NULL);
+            if (_pattern.Enabled(Synchronized))
+                l2.Lock(&_manager->MutexGlobal());
 
-    if (_pattern.Enabled(HasAContext))
-        DisableContext();
+            if (_pattern.Enabled(HasAContext))
+                ActiveContext();
 
-    if (_pattern.Enabled(Synchronized))
-        _manager->MutexGlobal().Unlock();
-    _sleepMutex.Unlock();
+            try
+            {
+                #ifdef _DEBUG_THREAD_ENGINE
+                    LOG_DEBUG <<"Execute `" << *this << "` pid = " << System::ThreadId() << "\n";
+                #endif
+                    ExecuteEvents();
+                    Execute(_elapsedTime);
+                #ifdef _DEBUG_THREAD_ENGINE
+                    LOG_DEBUG <<"Execute END `" << *this << "` pid = " << System::ThreadId() << "\n";
+                #endif
+            }
+            catch (const std::exception &e)
+            {
+                LOG_ERROR << "Error on " << *this << ": " << e.what() << std::endl;
+            }
+
+            if (_pattern.Enabled(HasAContext))
+                DisableContext();
+        }
+    }
     LimitFrameRate();
     _elapsedTime = (float)_clock.ElapsedTime();
     _clock.Reset();
@@ -172,12 +164,19 @@ void IEngine::LimitFrameRate()
 
 void    IEngine::Sleep()
 {
-    _sleepMutex.Lock();
+    if (_sleepLocker == NULL)
+    {
+        _sleepLocker = new System::Locker(&_sleepMutex);
+    }
 }
 
 void    IEngine::WakeUp()
 {
-    _sleepMutex.Unlock();
+    if (_sleepLocker != NULL)
+    {
+        delete _sleepLocker;
+        _sleepLocker = NULL;
+    }
 }
 
 void    IEngine::Stop()

@@ -58,42 +58,40 @@ namespace Nc
         class   Singleton
         {
             public:
-            /**
-                Static function wich return the instance of the singleton T.
-                \return the instance of the singleton of type T
-            */
-            static T &Instance()
-              {
-                if (_instance == NULL)
+                /**
+                    Static function wich return the instance of the singleton T.
+                    \return the instance of the singleton of type T
+                */
+                static T &Instance()
                 {
-                    // synchronize the threads access, only once for creation, so in a second if != NULL
-                    _mutex.Lock();
                     if (_instance == NULL)
                     {
-                        try // in a try catch block, to avoid the mutex be block forever
-                        {
+                        // synchronize the threads access, only once for creation, so in a second if != NULL
+                        System::Locker l(&_mutex);
+                        if (_instance == NULL)
                             _instance = new T();
-                        }
-                        catch (...) // unlock and rethrow
-                        {
-                            _mutex.Unlock();
-                            throw;
-                        }
                     }
-                    _mutex.Unlock();
+                    return *_instance;
                 }
-                return *_instance;
-              }
 
-            /**
-                Delete the instance.
-                If this function is not called before the program exit, the data will be not released and appears in valgrind.
-                It's totally normal and not ugly with a static witch exist during the all execution of the program
-            */
-              static void DeleteInstance()  {if (_instance != NULL) delete _instance; _instance = NULL;}
+                /**
+                    Delete the instance.
+                    If this function is not called before the program exit, the data will be not released and appears in valgrind.
+                    It's totally normal and not ugly with a static witch exist during the all execution of the program
+                */
+                static void DeleteInstance()
+                {
+                    System::Locker l(&_mutex);
+                    if (_instance != NULL)
+                        delete _instance;
+                    _instance = NULL;
+                }
 
-            /** \return true if the instance is already created */
-              static bool Exist()           {return (_instance != NULL);}
+                /** \return true if the instance is already created */
+                static bool Exist()
+                {
+                    return (_instance != NULL);
+                }
 
             protected:
                 Singleton()                 {_instance = NULL;}

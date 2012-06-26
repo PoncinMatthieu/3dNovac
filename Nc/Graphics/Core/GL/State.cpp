@@ -31,7 +31,6 @@ using namespace Nc;
 using namespace Nc::Graphic::GL;
 
 State           *State::_current = NULL;
-System::Mutex   State::_mutex;
 unsigned int    State::_instanceCounter = 0;
 
 State::State()
@@ -46,16 +45,12 @@ State::~State()
 
 void    State::Enable()
 {
-    if (_instanceCounter != 1)
-        _mutex.Lock();
     _current = this;
 }
 
 void    State::Disable()
 {
     _current = NULL;
-    if (_instanceCounter != 1)
-        _mutex.Unlock();
 }
 
 void    State::InitContext(Graphic::GLContext *context)

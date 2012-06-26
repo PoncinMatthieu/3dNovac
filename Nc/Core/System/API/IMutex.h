@@ -27,7 +27,8 @@
 #ifndef NC_CORE_UTILS_SYSTEM_IMUTEX_H_
 #define NC_CORE_UTILS_SYSTEM_IMUTEX_H_
 
-#include "../../Utils/NonCopyable.h"
+#include "../../Define.h"
+#include "Locker.h"
 
 namespace Nc
 {
@@ -37,13 +38,16 @@ namespace Nc
         class LCORE IMutex
         {
             public:
-                IMutex()             {}
-                virtual ~IMutex()    {}
+                IMutex()            {}
+                virtual ~IMutex()   {}
 
+            private:
                 /** Lock the mutex */
                 virtual void Lock()  = 0;
                 /** Unlock the mutex */
                 virtual void Unlock() = 0;
+
+                friend class Locker;
         };
     }
 }

@@ -54,9 +54,8 @@ Logger::~Logger()
 
 void Logger::SetLogger(Logger *logger)
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     _instance = logger;
-    _mutex.Unlock();
 }
 
 Logger &Logger::Log(int status)
@@ -114,7 +113,7 @@ void Logger::CheckFile()
 
 void Logger::Write(const string Msg, bool flush)
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
 
   // log
     if (_status == 0)
@@ -167,6 +166,4 @@ void Logger::Write(const string Msg, bool flush)
             _file.flush();
         }
     }
-
-    _mutex.Unlock();
 }

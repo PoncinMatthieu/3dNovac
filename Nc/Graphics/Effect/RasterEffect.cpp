@@ -37,7 +37,7 @@ RasterEffect::RasterEffect(Pattern pattern)
 
 void RasterEffect::SetPattern(Pattern pattern)
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     if (pattern == Points)
     {
         _mode.SetPolygonMode(GL::Enum::FrontAndBack, GL::Enum::Point);
@@ -73,27 +73,25 @@ void RasterEffect::SetPattern(Pattern pattern)
         _mode2.SetPolygonOffset(-1.f, -1.f);
         _mode2.SetDepthTest(false);
     }
-    _mutex.Unlock();
 }
 
 void RasterEffect::Render(SceneGraph *scene)
 {
     bool activated = _activated;
 
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     if (activated)
         _mode.Enable();
     RenderChilds(scene);
     if (activated)
         _mode.Disable();
-    _mutex.Unlock();
 }
 
 void RasterEffect::Render(Entity *node, SceneGraph *scene)
 {
     bool activated = _activated;
 
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     // first pass
     if (activated)
         _mode.Enable();
@@ -108,5 +106,4 @@ void RasterEffect::Render(Entity *node, SceneGraph *scene)
         node->RenderChilds(scene);
         _mode2.Disable();
     }
-    _mutex.Unlock();
 }

@@ -142,7 +142,7 @@ void Console::Render(Graphic::SceneGraph *scene)
 
     if ((_pattern == TranslateAtFocus && _focus) || (_pattern == Nop))
     {
-        _mutexMsg.Lock();
+        System::Locker l(&_mutexMsg);
         ListMsg::reverse_iterator itMsg = _listMsg.rbegin();
         for (unsigned int i = 0; i < _scroll; i++)
             if (itMsg != _listMsg.rend())
@@ -156,7 +156,6 @@ void Console::Render(Graphic::SceneGraph *scene)
                 (*it)->RenderNode(scene);
                 ++itMsg;
             }
-        _mutexMsg.Unlock();
     }
 }
 
@@ -170,7 +169,7 @@ void Console::KeyboardEvent(const Event &event)
     {
         if (event.key.code == Key::Up || event.key.code == Key::Down)
         {
-            _mutexMsg.Lock();
+            System::Locker l(&_mutexMsg);
             static Utils::Unicode::UTF32   lastcmd;
             if (event.key.code == Key::Up)
             {
@@ -222,7 +221,6 @@ void Console::KeyboardEvent(const Event &event)
                     _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
                 }
             }
-            _mutexMsg.Unlock();
         }
         else if (event.key.code == Key::PageDown && _scroll > 0) // scroll
             _scroll--;
@@ -272,12 +270,11 @@ void Console::KeyboardEvent(const Event &event)
 
 void Console::PushMsg(const string &s)
 {
-    _mutexMsg.Lock();
+    System::Locker l(&_mutexMsg);
     _listMsg.push_back(s);
     if (_listMsg.size() > 150)
         _listMsg.erase(_listMsg.begin(), _listMsg.end());
     _itCurrentMsg = _listMsg.rbegin();
-    _mutexMsg.Unlock();
 }
 
 void Console::ExecCmd(const string &cmd)

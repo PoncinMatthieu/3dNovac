@@ -57,9 +57,9 @@ namespace Nc
                 virtual ~Input();
 
                 /** Add the given listner to the listener list */
-                inline void         AddListener(InputListener *listener)            {_mutex.Lock(); _listeners.push_back(listener); _mutex.Unlock();}
+                inline void         AddListener(InputListener *listener)            {System::Locker l(&_mutex); _listeners.push_back(listener);}
                 /** Remove he given listner to the listener list */
-                inline void         RemoveListener(InputListener *listener)         {_mutex.Lock(); _listeners.remove(listener); _mutex.Unlock();}
+                inline void         RemoveListener(InputListener *listener)         {System::Locker l(&_mutex); _listeners.remove(listener);}
 
                 /** To be redefine, called to check if there is new events */
                 virtual void        CheckEvents() = 0;

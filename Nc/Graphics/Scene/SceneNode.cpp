@@ -35,13 +35,18 @@ using namespace Nc::Graphic;
 
 ISceneNode::ISceneNode()
     :   System::Object(),
-        _enabled(true),
+        _locker(NULL), _enabled(true),
         _updatingController(NULL), _renderingController(NULL)
 {
 }
 
 ISceneNode::~ISceneNode()
 {
+    if (_locker != NULL)
+    {
+        delete _locker;
+        _locker = NULL;
+    }
 }
 
 bool    ISceneNode::EnabledRecursif() const

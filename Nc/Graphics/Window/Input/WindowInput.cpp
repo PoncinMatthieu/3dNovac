@@ -107,18 +107,9 @@ void WindowInput::GenereEvent(const System::Event &e)
 
     // forward the event to sub windows
     // and recreate some events like mouse entered/left if needed
-    _win->_mutexListSubWindow.Lock();
-    try
-    {
-        for (Window::ListSubWindow::iterator it = _win->_listSubWindow.begin(); it != _win->_listSubWindow.end(); ++it)
-            ForwardEventToSubWindow(*it, e);
-    }
-    catch (...)
-    {
-        _win->_mutexListSubWindow.Unlock();
-        throw;
-    }
-    _win->_mutexListSubWindow.Unlock();
+    System::Locker l(&_win->_mutexListSubWindow);
+    for (Window::ListSubWindow::iterator it = _win->_listSubWindow.begin(); it != _win->_listSubWindow.end(); ++it)
+        ForwardEventToSubWindow(*it, e);
 }
 
 void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System::Event &e)

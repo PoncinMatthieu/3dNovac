@@ -108,7 +108,7 @@ Vector2f String::GetCharSize(UInt32 c) const
 
 void String::UpdateGeometry()
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
     _needUpdate = false;
 
     // Set the scaling factor to get the actual size
@@ -214,7 +214,7 @@ void String::UpdateGeometry()
 
         X += curGlyph->Add;        // Advance to the next character
     }
-    _mutex.Unlock();
+    l.Unlock();
 
     // Add the last line (which was not finished with a \n)
     if (_style.Enabled(Underlined))
@@ -239,7 +239,7 @@ void String::UpdateGeometry()
 
 void String::RecomputeSize()
 {
-    _mutex.Lock();
+    System::Locker l(&_mutex);
 
     // Reset the "need update" state
     _needUpdateSize = false;
@@ -248,7 +248,6 @@ void String::RecomputeSize()
     if (_text.empty())
     {
         _size = Vector2f(0, _charSize);
-        _mutex.Unlock();
         return;
     }
 
@@ -290,7 +289,7 @@ void String::RecomputeSize()
         if (Math::Abs(charHeight) > Math::Abs(curHeight))
             curHeight = charHeight;
     }
-    _mutex.Unlock();
+    l.Unlock();
 
     // Update the last line
     if (curWidth > width)

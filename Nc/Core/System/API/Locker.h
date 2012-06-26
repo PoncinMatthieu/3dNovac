@@ -19,38 +19,39 @@
     You should have received a copy of the GNU Lesser General Public License
     along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
 
-    File Created At:        03/08/2010
+    File Created At:        26/06/2012
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
 
-#include "InputListener.h"
-#include "Input.h"
+#ifndef NC_CORE_SYSTEM_API_LOCKER_H_
+#define NC_CORE_SYSTEM_API_LOCKER_H_
 
-using namespace Nc;
-using namespace Nc::System;
+#include "../../Define.h"
 
-Input::Input()
+namespace Nc
 {
-}
-
-Input::~Input()
-{
-    while (!_listeners.empty())
+    namespace System
     {
-        (*_listeners.begin())->RemoveInput(this);
+        class IMutex;
+
+        class LCORE Locker
+        {
+            public:
+                Locker(IMutex *mutex);
+                ~Locker();
+
+                void Lock(IMutex *mutex);
+                void Unlock();
+
+            private:
+                void Ctor(IMutex *mutex);
+                void Dtor();
+
+            private:
+                IMutex  *_mutex;
+        };
     }
 }
 
-void    Input::PushEvent(const Event &e)
-{
-    System::Locker l(&_mutex);
-    for (ListenerList::iterator it = _listeners.begin(); it != _listeners.end(); ++it)
-    {
-        System::Locker l(&(*it)->GetMutex());
-        (*it)->GetEventQueue().push(e); // push l'event dans la queue
-    }
-}
-
-
-
+#endif
