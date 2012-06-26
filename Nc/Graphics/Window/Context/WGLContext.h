@@ -48,33 +48,28 @@ namespace Nc
                 void            Create(GLContext *sharedContext = NULL);
                 GLContext		*CreateNewSharedContext();
 
-                virtual void 	Active()
-				{
-					if (wglMakeCurrent(_drawable, _context) == false)
-						throw Utils::Exception("WGLContext::Active", "Make current failed");
-				}
-
-                virtual void	Disable()
-				{
-					if (wglMakeCurrent(0, 0) == false)
-						LOG_ERROR << "WGLContext::Disable: Make current failed" << std::endl;
-				}
-
-				virtual void	SwapBuffers()
-				{
-					if (::SwapBuffers(_drawable) == false)
-						LOG_ERROR << "SwapBuffers failed" << std::endl;
-				}
+                virtual void 	Active();
+                virtual void	Disable();
+				virtual void	SwapBuffers();
 
 			private:
-				HGLRC			CreateDummyContext();
+				/** Choose the proper pixel format */
+				void			ChoosePixelFormat();
+				/** Set the choosed pixel format */
+				void			SetPixelFormat();
+				/** Create a dummy window and context to be able to load an extention */
+				void			CreateDummyContext(HWND &dummyWindowHandle, HDC &dummyDrawable, HGLRC &dummyContext);
+				/** Delete the dummy window and context */
+				void			DeleteDummyContext(HWND dummyWindowHandle, HDC dummyDrawable, HGLRC dummyContext);
+
+				/** Display an error window */
 				void			ShowError(char *title);
 
             private:
-                HGLRC           _context;
-                HDC             _drawable;
+                HGLRC					_context;
+                HDC						_drawable;
 
-                int             _format;
+                int						_format;
         };
     }
 }

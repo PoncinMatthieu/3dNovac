@@ -45,6 +45,8 @@ bool    DefaultMaterialColored::Configure(Drawable &drawable)
             desc[i].IndexAttrib = _attribCoord;
         else if (desc[i].Name == ComponentsName::Color)
             desc[i].IndexAttrib = _attribColor;
+        else
+            desc[i].IndexAttrib = -1;
     }
     return true;
 }
@@ -76,6 +78,8 @@ bool    DefaultMaterialTextured::Configure(Drawable &drawable)
             desc[i].IndexAttrib = _attribTexCoord;
         else if (desc[i].Name == ComponentsName::Color)
             desc[i].IndexAttrib = _attribColor;
+        else
+            desc[i].IndexAttrib = -1;
     }
     return true;
 }

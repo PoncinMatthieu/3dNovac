@@ -186,7 +186,8 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
 
             if (e.type == System::Event::MouseButtonReleased && (newEvent.mouseButton.x < 0 || newEvent.mouseButton.y < 0 || newEvent.mouseButton.x >= subWindow->Width() || newEvent.mouseButton.y >= subWindow->Height()))
             {
-                _win->CurrentCursor()->Enable();
+				if (_win->CurrentCursor() != NULL)
+					_win->CurrentCursor()->Enable();
                 System::Event newEvent(subWindow->Input(), System::Event::MouseLeft);
                 subWindow->Input()->GenereEvent(newEvent);
             }
@@ -201,13 +202,15 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
 
             if (!subWindow->Input()->MouseIn() && (newX > 0 && newY > 0 && newX < subWindow->Width() && newY < subWindow->Height()))
             {
-                subWindow->CurrentCursor()->Enable();
+				if (_win->CurrentCursor() != NULL)
+	                subWindow->CurrentCursor()->Enable();
                 System::Event newEvent(subWindow->Input(), System::Event::MouseEntered);
                 subWindow->Input()->GenereEvent(newEvent);
             }
             else if (subWindow->Input()->MouseIn() && (newX < 0 || newY < 0 || newX >= subWindow->Width() || newY >= subWindow->Height()))
             {
-                _win->CurrentCursor()->Enable();
+				if (_win->CurrentCursor() != NULL)
+					_win->CurrentCursor()->Enable();
                 System::Event newEvent(subWindow->Input(), System::Event::MouseLeft);
                 subWindow->Input()->GenereEvent(newEvent);
             }
@@ -237,7 +240,8 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
         case System::Event::MouseLeft:
             if (subWindow->Input()->MouseIn())
             {
-                _win->CurrentCursor()->Enable();
+				if (_win->CurrentCursor() != NULL)
+					_win->CurrentCursor()->Enable();
                 subWindow->Input()->GenereEvent(e);
             }
             break;

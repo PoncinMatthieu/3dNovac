@@ -31,13 +31,14 @@
 #include <Nc/Graphics/Engine.h>
 #include <Nc/Core/Engine/MainEngine.h>
 #include <Nc/Graphics/Scene/SceneGraphManager.h>
+#include "Define.h"
 
 namespace Nc
 {
     namespace Contrib
     {
         /// Helps to create an engine witch use the graphic engine with a shared context
-        class GameEngine : public Engine::MainEngine
+        class LCONTRIB GameEngine : public Engine::MainEngine
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::MainEngine, Nc::Contrib::GameEngine);

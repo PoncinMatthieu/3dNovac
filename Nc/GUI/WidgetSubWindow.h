@@ -38,7 +38,7 @@ namespace Nc
         /**
             Use a FrameBuffer to render the subwindow to render it into the widget.
         */
-        class WidgetSubWindow : public Widget
+        class LGUI WidgetSubWindow : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Widget, System::Object, System::Object, Nc::GUI::WidgetSubWindow);
@@ -56,6 +56,8 @@ namespace Nc
 
                 /** \return the SubWindow */
                 Graphic::SubWindow      *SubWindow() const          {return _subWindow;}
+				/** Enable the sub window for rendering */
+				void					EnableSubWindow()			{_subWindow->Enable(true);}
 
             protected:
                 /** Draw the result of the render off screen from the sub window */

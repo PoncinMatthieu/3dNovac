@@ -71,8 +71,9 @@ void Graphic::Engine::CreateContext()
     _renderState.InitContext(_context);
     _renderState.Enable();
     _win->InitSceneGraphManager();
-    _renderState.Disable();
+	_renderState.Disable();
     _context->Disable();
+	_win->Enable(true);
 }
 
 void Graphic::Engine::ReleaseContent()
@@ -100,6 +101,7 @@ void Graphic::Engine::Execute(float runningTime)
 
 	// display the scene graph
 	_renderState.Enable();
-    _win->Render(_context);
+	if (_win->Enabled())
+		_win->Render(_context);
 	_renderState.Disable();
 }

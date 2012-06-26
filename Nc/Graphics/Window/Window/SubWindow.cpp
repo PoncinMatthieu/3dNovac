@@ -39,7 +39,8 @@ SubWindow::SubWindow(Window *parent, SceneGraphManager *sceneGraphManager)
 
 SubWindow::~SubWindow()
 {
-    Close();
+    if (_isCreate)
+		Close();
 }
 
 void    SubWindow::Close()
@@ -47,12 +48,16 @@ void    SubWindow::Close()
     if (_isCreate)
     {
         _parent->RemoveSubWindow(this);
+		_isCreate = false;
     }
 }
 
 void    SubWindow::Create(const Math::Vector2ui &size)
 {
-    _width = size.Data[0];
+	if (_isCreate)
+		System::Config::Error("SubWindow", "The window has already been created.");
+	
+	_width = size.Data[0];
     _height = size.Data[1];
     _context = _parent->Context();
     _own = _parent->IsOwn();
@@ -68,7 +73,7 @@ void    SubWindow::Create(const Math::Vector2ui &size)
 
     _parent->AddSubWindow(this);
 
-    _needInitFbo = true;
+	_needInitFbo = true;
     _isCreate = true;
 }
 

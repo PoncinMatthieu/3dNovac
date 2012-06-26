@@ -38,7 +38,7 @@ GLContext::GLContext(Window *win) : _win(win)
         throw Utils::Exception("GLContext", "Can't create any Renderer if the window is null");
     _isCreate = false;
     _isShared = false;
-    _isActive = false;
+	_currentThreadId = 0;
 }
 
 GLContext::~GLContext()

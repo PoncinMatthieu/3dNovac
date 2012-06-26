@@ -86,7 +86,7 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
                 return;
             }
         }
-        throw Utils::Exception(ResolvedClassName(), "Unknown command id:" + Utils::Convert::ToString(id));
+        throw Utils::Exception("Unknown command id:" + Utils::Convert::ToString(id));
     }
     catch (const std::exception &ex)
     {
@@ -94,7 +94,7 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
     }
     catch (...)
     {
-        LOG_ERROR << "Unknown Error, throw catched !" << std::endl;
+        LOG_ERROR << *this << " Unknown Error, throw catched !" << std::endl;
     }
 }
 
