@@ -120,6 +120,10 @@ void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
     // start the sample game engine
     _currentSample = engine->ResolvedClassName();
     engine->Start();
+
+	// wait the loading and enable the sub window for rendering
+	_manager->WaitEnginesLoading();
+	w->EnableSubWindow();
 }
 
 

@@ -46,6 +46,9 @@ namespace Nc
         */
         class LGRAPHICS GLContext : public Utils::NonCopyable
         {
+			public:
+				typedef std::map<unsigned int, GLContext*>	MapPIDContext;
+
             public:
                 GLContext(Window *win);
                 virtual ~GLContext();
@@ -69,11 +72,11 @@ namespace Nc
                 inline Window       *AttachedWindow()                   {return _win;}
 
             protected:
-                Window  *_win;          ///< The instance of the associated window
-                bool    _isCreate;      ///< Statement to define if the context is create
-                bool    _isShared;      ///< Statement to define if the context is shared
-                bool    _isActive;      ///< Statement to define if the context is active
-        };
+                Window			*_win;				///< The instance of the associated window
+                bool			_isCreate;			///< Statement to define if the context is create
+                bool			_isShared;			///< Statement to define if the context is shared
+				unsigned int	_currentThreadId;	///< Register the thread id in which the context is currently bound
+		};
     }
 }
 
