@@ -69,7 +69,7 @@ void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type
     _shader = 0;
 
     // open the file
-	// be careful, we open the file in binary mode, because if the file is in "CRLF" format the function tellg return the good size 
+	// be careful, we open the file in binary mode, because if the file is in "CRLF" format the function tellg return the good size
 	// but the function read will bypass the "CRLF" and the size won't match.
 	// another solution would have been to fill the buffer of zero before reading.
 	ifstream file(filename.c_str(), ios_base::binary | ios::in);
@@ -140,15 +140,15 @@ void Shader::PrintCompilationError(const char *source, Enum::ShaderType type, co
     delete[] error;
 
 	LOG_ERROR << std::endl;
-	if (type == Enum::ShaderType::FragmentShader)
+	if (type == Enum::FragmentShader)
 		LOG_ERROR << "Fragment";
-	else if (type == Enum::ShaderType::GeometryShader)
+	else if (type == Enum::GeometryShader)
 		LOG_ERROR << "Geometry";
-	else if (type == Enum::ShaderType::VertexShader)
+	else if (type == Enum::VertexShader)
 		LOG_ERROR << "Vertex";
 	LOG_ERROR << " Shader compilation of `" << name.c_str() << "` Failed." << std::endl;
 
-	unsigned int len = std::strlen(source);
+	unsigned int len = strlen(source);
 	unsigned int line = 1;
 	for (unsigned int i = 0; i < len; ++i)
 	{
@@ -158,7 +158,7 @@ void Shader::PrintCompilationError(const char *source, Enum::ShaderType type, co
 			LOG_ERROR << i << source[i];
 			if (source[i] == '\n')
 				++line;
-			else 
+			else
 				++i;
 		}
 	}

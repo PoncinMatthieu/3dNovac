@@ -33,6 +33,7 @@ namespace Nc
 {
     namespace Utils
     {
+#ifdef SYSTEM_WINDOWS
 		/// Used to register every tag by using a class name
 		/**
 			Before creating the tag register with classNames, we were using a TagCounter in template.
@@ -46,18 +47,21 @@ namespace Nc
 			static size_t					counter;
 			static MapClassNameTagValue		tagValues;
 		};
-		
+#endif
+
 		/// Define a class to manage a Tag system to associate a unique tag to a class for the given VTableType
         template<typename VTableType>
         struct TagManager
         {
             private:
             /// Define a tag counter to put a unique tag on each visitable class
-                /*template<typename Base>
+#ifdef SYSTEM_LINUX
+                template<typename Base>
                 struct TagCounter
                 {
                     static size_t       counter; // default 0
-                };*/
+                };
+#endif
 
             /// Define a class witch store the tag for each Visitable associated to the given Base
                 template<typename Visitable, typename Base>
@@ -76,7 +80,9 @@ namespace Nc
                     // first time : generate tag
                     if (tag == 0)
                     {
-						//tag = ++TagCounter<const Base>::counter;
+#ifdef SYSTEM_LINUX
+						tag = ++TagCounter<const Base>::counter;
+#else
 						std::string className = typeid(Visitable).name();
 						TagRegister::MapClassNameTagValue::iterator it = TagRegister::tagValues.find(className);
 						if (it != TagRegister::tagValues.end())
@@ -86,17 +92,20 @@ namespace Nc
 						else
 						{
 							tag = ++TagRegister::counter;
-							TagRegister::tagValues.insert(std::pair<std::string, size_t>(className, tag));
+                            TagRegister::tagValues.insert(std::make_pair<std::string, size_t>(className, tag));
 						}
-						//LOG << "Generate tag " << tag << "  with VtableType: " << typeid(VTableType).name() << " and base: " << typeid(Base).name() << "     for " << typeid(Visitable).name() << std::endl;
+                        //LOG << "Generate tag " << tag << "  with VtableType: " << typeid(VTableType).name() << " and base: " << typeid(Base).name() << "     for " << typeid(Visitable).name() << std::endl;
+#endif
 					}
                     return tag;
                 }
         };
 
-        //template<typename VTableType>
-        //template<typename Base>
-        //size_t TagManager<VTableType>::TagCounter<Base>::counter = 0;
+#ifdef SYSTEM_LINUX
+        template<typename VTableType>
+        template<typename Base>
+        size_t TagManager<VTableType>::TagCounter<Base>::counter = 0;
+#endif
 
         template<typename VTableType>
         template<typename Visitable, typename Base>

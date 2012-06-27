@@ -29,6 +29,7 @@
 
 #include <Nc/Graphics/Scene/SceneNodeVisitor.h>
 #include "Define.h"
+#include "Widget.h"
 
 namespace Nc
 {

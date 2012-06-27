@@ -35,8 +35,10 @@
 
 using namespace Nc;
 
+#ifdef SYSTEM_WINDOWS
 size_t										Utils::TagRegister::counter = 0;
 Utils::TagRegister::MapClassNameTagValue	Utils::TagRegister::tagValues;
+#endif
 
 const std::size_t	Utils::String::npos = std::string::npos;
 
