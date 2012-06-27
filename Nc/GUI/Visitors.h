@@ -40,73 +40,28 @@ namespace Nc
         {
             struct LGUI ResizedAll : public WidgetVisitor<ResizedAll>
             {
-                ResizedAll()
-                    : WidgetVisitor<ResizedAll>(Utils::Metaprog::Seq<Widget>::Type(),
-                                                           Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type())
-                    {}
-
-                void VisitNode(Widget &w)       {w.Resized();}
+                ResizedAll();
+                void VisitNode(Widget &w);
             };
 
             struct LGUI ReposedAll : public WidgetVisitor<ReposedAll>
             {
-                ReposedAll()
-                    : WidgetVisitor<ReposedAll>(Utils::Metaprog::Seq<Widget>::Type(),
-                                                           Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type())
-                    {}
-
-                void VisitNode(Widget &w)       {w.Reposed();}
+                ReposedAll();
+                void VisitNode(Widget &w);
             };
 
             struct LGUI IsInhibited : public WidgetVisitor<IsInhibited, true>
             {
-                IsInhibited()
-                    : WidgetVisitor<IsInhibited, true>( Utils::Metaprog::Seq<Widget>::Type(),
-                                                                    Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type(), Graph::VisitParents),
-                      result(false)
-                    {}
-
-                void VisitNode(const Widget &w)         {if (w.Inhibited()) result = true;}
+                IsInhibited();
+                void VisitNode(const Widget &w);
 
                 bool    result;
             };
 
             struct LGUI CheckFocus : public WidgetVisitor<CheckFocus>
             {
-                CheckFocus(const Nc::System::Event &e, const Vector2i &mouseP)
-                    : WidgetVisitor<CheckFocus>(Utils::Metaprog::Seq<Widget>::Type(),
-                                                Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type()),
-                      event(e), mousePos(mouseP), childFocused(NULL)
-                    {}
-
-                void VisitNode(Widget &w)
-                {
-                    if (!w.EnabledRecursif() || w.InhibitedRecursif())
-                        return;
-
-                    Vector2i    pos;
-                    Vector2i    size;
-
-                    w.GetReelPosRecursif(pos);
-                    w.GetReelSize(size);
-                    #ifdef _DEBUG_GUI_FOCUS
-                    LOG_DEBUG << "Widget: " << w << std::endl;
-                    LOG_DEBUG << "ReelPos   = " << pos << std::endl;
-                    LOG_DEBUG << "ReelSize  = " << size << std::endl;
-                    LOG_DEBUG << "Mouse = " << mousePos << std::endl;
-                    #endif
-                    if (Math::InRect(pos, size, mousePos))
-                    {
-                        childFocused = &w;
-                        childFocused->Focus(true);
-                        #ifdef _DEBUG_GUI_FOCUS
-                        LOG_DEBUG << "OK" << std::endl;
-                        #endif
-                    }
-                    #ifdef _DEBUG_GUI_FOCUS
-                    LOG << std::endl;
-                    #endif
-                }
+                CheckFocus(const Nc::System::Event &e, const Vector2i &mouseP);
+                void VisitNode(Widget &w);
 
                 const Nc::System::Event     &event;
                 const Vector2i              &mousePos;
@@ -117,23 +72,9 @@ namespace Nc
             /// Visitor allowing to retreive either the widget parent of the given widget or to retreive the scene graph if no widget parent has been found
             struct LGUI GetParentWidget : public WidgetVisitor<GetParentWidget, true>
             {
-                GetParentWidget(const Widget *w)
-                    : WidgetVisitor<GetParentWidget, true>( Utils::Metaprog::Seq<Widget, SceneGraph>::Type(),
-                                                                        Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type(), Graph::VisitParents),
-                      widget(w), parent(NULL), parentSceneGraph(NULL)
-                    {}
-
-                void VisitNode(const Widget &w)
-                {
-                    if (widget != &w && parent == NULL)
-                        parent = &w;
-                }
-
-                void VisitNode(const SceneGraph &s)
-                {
-                    if (parentSceneGraph == NULL)
-                        parentSceneGraph = &s;
-                }
+                GetParentWidget(const Widget *w);
+                void VisitNode(const Widget &w);
+                void VisitNode(const SceneGraph &s);
 
                 const Widget        *widget;
                 const Widget        *parent;
@@ -142,12 +83,8 @@ namespace Nc
 
             struct LGUI ChangeStates : public WidgetVisitor<ChangeStates>
             {
-                ChangeStates()
-                    : WidgetVisitor<ChangeStates>(Utils::Metaprog::Seq<Widget>::Type(),
-                                                              Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type())
-                    {}
-
-                void VisitNode(Widget &w)       {w.ChangeState();}
+                ChangeStates();
+                void VisitNode(Widget &w);
             };
         }
     }

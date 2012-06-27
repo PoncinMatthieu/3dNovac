@@ -190,7 +190,7 @@ namespace Nc
                             Invoker::template Invoke<void, VisitorType, VisitableType>(static_cast<VisitorType&>(*this), static_cast<VisitableType&>(b));  // invoke visit method
                         }
 
-                        /** Visit the given class, call the visit method if the class is visitable and call the invokable method if the class intrusive */
+                        /** Visit the given class, call the visit method if the class is visitable and call the invokable method if the class is intrusive */
                         void operator() (Base &b)
                         {
                             if (_postVisit)

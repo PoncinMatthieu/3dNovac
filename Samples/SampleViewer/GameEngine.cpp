@@ -22,6 +22,7 @@ GameEngine::~GameEngine()
 void GameEngine::ReleaseContent()
 {
     delete _scene;
+	delete _menu;
 }
 
 void GameEngine::CreateWindow(Window *win)

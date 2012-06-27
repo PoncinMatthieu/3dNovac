@@ -153,7 +153,10 @@ namespace Nc
             private:
                 static unsigned int _nbObject;      ///< the current number of object
         };
-    }
+
+		// explicit instanciation
+		//template class Utils::VisitableBase<Object>;
+	}
 }
 
 #endif // OBJECT_H_INCLUDED

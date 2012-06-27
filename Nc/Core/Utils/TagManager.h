@@ -33,23 +33,38 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Define a class to manage a Tag system to associate a unique tag to a class for the given VTableType
+		/// Used to register every tag by using a class name
+		/**
+			Before creating the tag register with classNames, we were using a TagCounter in template.
+			Unfortunately, on windows we have a copy of every static on every DLL, so we had different classes with the same tag.
+			To Correct this, we created this tag register with class name. This necessarily put down the perf but only during the loading of the .dll/.so
+		*/
+		struct LCORE TagRegister
+		{
+			typedef std::map<std::string, size_t>	MapClassNameTagValue;
+
+			static size_t					counter;
+			static MapClassNameTagValue		tagValues;
+		};
+		
+		/// Define a class to manage a Tag system to associate a unique tag to a class for the given VTableType
         template<typename VTableType>
         struct TagManager
         {
             private:
             /// Define a tag counter to put a unique tag on each visitable class
-                template<typename Base>
+                /*template<typename Base>
                 struct TagCounter
                 {
                     static size_t       counter; // default 0
-                };
+                };*/
 
             /// Define a class witch store the tag for each Visitable associated to the given Base
                 template<typename Visitable, typename Base>
                 struct TagHolder
                 {
                     static size_t       tag;
+					static std::string	visitableClassName;
                 };
 
             public:
@@ -61,21 +76,32 @@ namespace Nc
                     // first time : generate tag
                     if (tag == 0)
                     {
-                        tag = ++TagCounter<const Base>::counter;
-                        //LOG << "Generate tag " << tag << "  with VtableType: " << typeid(VTableType).name() << " and base: " << typeid(Base).name() << "     for " << typeid(Visitable).name() << std::endl;
-                    }
+						//tag = ++TagCounter<const Base>::counter;
+						std::string className = typeid(Visitable).name();
+						TagRegister::MapClassNameTagValue::iterator it = TagRegister::tagValues.find(className);
+						if (it != TagRegister::tagValues.end())
+						{
+							tag = it->second;
+						}
+						else
+						{
+							tag = ++TagRegister::counter;
+							TagRegister::tagValues.insert(std::pair<std::string, size_t>(className, tag));
+						}
+						//LOG << "Generate tag " << tag << "  with VtableType: " << typeid(VTableType).name() << " and base: " << typeid(Base).name() << "     for " << typeid(Visitable).name() << std::endl;
+					}
                     return tag;
                 }
         };
 
-        template<typename VTableType>
-        template<typename Base>
-        size_t TagManager<VTableType>::TagCounter<Base>::counter = 0;
+        //template<typename VTableType>
+        //template<typename Base>
+        //size_t TagManager<VTableType>::TagCounter<Base>::counter = 0;
 
         template<typename VTableType>
         template<typename Visitable, typename Base>
         size_t TagManager<VTableType>::TagHolder<Visitable, Base>::tag = TagManager<VTableType>::GetTag<Visitable, Base>();
-    }
+	}
 }
 
 #endif

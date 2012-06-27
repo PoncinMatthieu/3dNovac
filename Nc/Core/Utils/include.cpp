@@ -31,8 +31,12 @@
 #include "Convert.h"
 #include "IntrusiveSmartPointer.h"
 #include "NonCopyable.h"
+#include "TagManager.h"
 
 using namespace Nc;
+
+size_t										Utils::TagRegister::counter = 0;
+Utils::TagRegister::MapClassNameTagValue	Utils::TagRegister::tagValues;
 
 const std::size_t	Utils::String::npos = std::string::npos;
 
