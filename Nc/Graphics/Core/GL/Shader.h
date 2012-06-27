@@ -68,6 +68,9 @@ namespace Nc
                     /** Compile the given shader source */
                     void            Compile(const char *source, Enum::ShaderType type, const Utils::FileName &name);
 
+					/** Print the compilation error */
+					void			PrintCompilationError(const char *source, Enum::ShaderType type, const Utils::FileName &name);
+
                 private:
                     unsigned int    _shader;      ///< the shader id
             };

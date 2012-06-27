@@ -69,12 +69,16 @@ void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type
     _shader = 0;
 
     // open the file
-    ifstream file(filename.c_str(), ios::in);
+	// be careful, we open the file in binary mode, because if the file is in "CRLF" format the function tellg return the good size 
+	// but the function read will bypass the "CRLF" and the size won't match.
+	// another solution would have been to fill the buffer of zero before reading.
+	ifstream file(filename.c_str(), ios_base::binary | ios::in);
 
     // get size file
+	long pos = file.tellg();
     file.seekg(0, ios_base::end);
-    unsigned int size = file.tellg();
-    file.seekg(0, ios_base::beg);
+    long size = file.tellg();
+    file.seekg(pos, ios_base::beg);
 
     // read file
     char *source = new char[size + 1];
@@ -90,6 +94,7 @@ void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type
 
     // compile the source
     Compile(source, type, filename);
+	delete source;
 }
 
 void Shader::LoadFromMemory(const char *source, Enum::ShaderType type, const Utils::FileName &name)
@@ -118,14 +123,45 @@ void    Shader::Compile(const char *source, Enum::ShaderType type, const Utils::
     glGetShaderiv(_shader, GL_COMPILE_STATUS, &compileStatus);
     if (!compileStatus)
     {
-        int     errorSize;
-        char    *error;
-        glGetShaderiv(_shader, GL_INFO_LOG_LENGTH, &errorSize);
-        error = new char[errorSize];
-        glGetShaderInfoLog(_shader, errorSize, &errorSize, error);
-        std::string se(error);
-        delete[] error;
-        throw Utils::Exception("Shader", se);
+		PrintCompilationError(source, type, name);
+		throw Utils::Exception("Shader::Compile", "Failed to compile '" + name + "'");
     }
     LOG_DEBUG << "DONE" << std::endl;
+}
+
+void Shader::PrintCompilationError(const char *source, Enum::ShaderType type, const Utils::FileName &name)
+{
+    int     errorSize;
+    char    *error;
+    glGetShaderiv(_shader, GL_INFO_LOG_LENGTH, &errorSize);
+    error = new char[errorSize];
+    glGetShaderInfoLog(_shader, errorSize, &errorSize, error);
+    std::string se(error);
+    delete[] error;
+
+	LOG_ERROR << std::endl;
+	if (type == Enum::ShaderType::FragmentShader)
+		LOG_ERROR << "Fragment";
+	else if (type == Enum::ShaderType::GeometryShader)
+		LOG_ERROR << "Geometry";
+	else if (type == Enum::ShaderType::VertexShader)
+		LOG_ERROR << "Vertex";
+	LOG_ERROR << " Shader compilation of `" << name.c_str() << "` Failed." << std::endl;
+
+	unsigned int len = std::strlen(source);
+	unsigned int line = 1;
+	for (unsigned int i = 0; i < len; ++i)
+	{
+		LOG_ERROR << line << "\t: ";
+		for (unsigned int lastLine = line; i < len && lastLine == line;)
+		{
+			LOG_ERROR << i << source[i];
+			if (source[i] == '\n')
+				++line;
+			else 
+				++i;
+		}
+	}
+	LOG_ERROR << std::endl;
+	LOG_ERROR << se << std::endl;
 }
