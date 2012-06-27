@@ -81,11 +81,11 @@ void IEngine::Loading()
     {
         _manager->WaitLoadingContextPriority(_loadingContextPriority); // waiting for our turn to load the context
         {
-            System::Locker(&_manager->MutexGlobal());
-            LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-------------------" << endl;
+            System::Locker l(&_manager->MutexGlobal());
+            LOG_DEBUG << "---------------"<< *this << "-:-Create-Context-------------------" << endl;
             CreateContext();
             _pattern.Enable(ContextIsLoaded);
-            LOG_DEBUG << "---------------"<< *this << "-:-" << "Create-Context-done--------------" << endl;
+            LOG_DEBUG << "---------------"<< *this << "-:-Create-Context-done--------------" << endl;
         }
         if (_pattern.Disabled(DontWaitOthersContext))
             _manager->WaitEnginesContextLoading();	            // waiting for others context
@@ -95,12 +95,12 @@ void IEngine::Loading()
     {
         _manager->WaitLoadingPriority(_loadingPriority);        // waiting for our turn to load contents
         {
-            System::Locker(&_manager->MutexGlobal());
+            System::Locker l(&_manager->MutexGlobal());
             ActiveContext();
-            LOG_DEBUG << "------------------"<< *this << "-:-" << "Loading-----------------------" << endl;
+            LOG_DEBUG << "------------------"<< *this << "-:-Loading-----------------------" << endl;
             LoadContent();
             _loaded = true;
-            LOG_DEBUG << "------------------"<< *this << "-:-" << "Loading-done------------------" << endl;
+            LOG_DEBUG << "------------------"<< *this << "-:-Loading-done------------------" << endl;
             DisableContext();
         }
         if (_pattern.Enabled(WaitingLoadContentsOfOthersEngines))
