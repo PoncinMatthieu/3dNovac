@@ -34,7 +34,9 @@ namespace Nc
     namespace GUI
     {
         /// To manage a button
-        /** Display and manage a button. */
+        /**
+            Display and manage a button.
+        */
         class LGUI  Button : public Widget
         {
             public:
@@ -75,6 +77,7 @@ namespace Nc
             private:
                 Graphic::Sprite     *_sprite;               ///< the sprite of the button
                 Graphic::String     *_font;                 ///< The text of the button
+                float               _charSize;              ///< Recorde the charsize used for the font
                 bool                _buttonPressed;         ///< Mark if the button is pressed
                 Color               _colorDisable;          ///< The color of the disabled button
         };

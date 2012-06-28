@@ -73,9 +73,11 @@ Button &Button::operator = (const Button &w)
 void    Button::Initialize(const std::string &text, const Vector2i &size, const std::string &ttf, const std::string &lookName)
 {
     _colorDisable = Color(0.2f, 0.2f, 0.2f);
-    //_margin.Data[0] = 4; <-- why?
     _buttonPressed = false;
-    _font = new Graphic::String(text, size.Data[1], Color(1, 1, 1), ttf);
+    _margin[0] = 2;
+    _margin[1] = 2;
+    _charSize = size.Data[1] - _margin[1];
+    _font = new Graphic::String(text, _charSize, Color(1, 1, 1), ttf);
 
     // if the sprite is not set, we take the default one in the window style
     _sprite = WindowStyle::Instance().GetNewSprite(lookName + WindowStyle::SpriteName::Button);
@@ -119,6 +121,19 @@ void Button::Update()
     // update the sprite size
     if (_sprite->Size() != _size)
         _sprite->Size(_size);
+
+    // update the size of the title
+    // we have to reduce the size of the text if it's too large
+    bool st = false;
+    if (_font->CharSize() != _charSize)
+        _font->CharSize(_charSize);
+    while (!st && _font->CharSize() > 0)
+    {
+        if (_font->Size().Data[0] > (_size.Data[0] - _margin[0]) || _font->Size().Data[1] > (_size.Data[1] - _margin[1]))
+            _font->CharSize(_font->CharSize() - 1);
+        else
+            st = true;
+    }
 
     // center the font
     const Vector2f &fontSize = _font->Size();
