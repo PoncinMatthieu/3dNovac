@@ -38,6 +38,10 @@ namespace Nc
     {
         /// Manage the inputs, like WindowInput
         /**
+			An input listener, contain a list of input in which they are attached, and an event queue to receive events.
+
+			The event queue is protected with a mutex.
+		
             \sa
                 - Input
         */

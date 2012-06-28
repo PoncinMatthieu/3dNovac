@@ -58,6 +58,7 @@ namespace Nc
         /// Provide a logging system
         /**
             Logger base, redefine the methode write by inheritance to have your own logging system.
+
             The Logger is thread safe.
         */
         class LCORE Logger : public Singleton<Logger>, NonCopyable
@@ -120,10 +121,10 @@ namespace Nc
                 virtual ~Logger();
 
                 /**
-                    To redefine in your own logger class <br/>
-                    By default, <br/>
-                    Write the msg, and flush the buffer if `flush` == true <br/>
-                    Call the CheckFile method to open the file, if it's not open
+                    To redefine in your own logger class.
+					
+                    By default, write the msg, and flush the buffer if `flush` == true.
+                    And call the CheckFile method to open the file, if it's not open
                 */
                 virtual void Write(const std::string msg, bool flush);
 

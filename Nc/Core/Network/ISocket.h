@@ -35,7 +35,15 @@ namespace Nc
 {
     namespace Network
     {
-        class LCORE ISocket
+		/// Interface used to define a socket
+		/**
+			Contain a descriptor. 
+			
+			To create your own socket you should, redefine the following method:
+				- Create: to open the descriptor
+				- Close: to close the descriptor
+		*/
+		class LCORE ISocket
         {
             public:
                 ISocket();

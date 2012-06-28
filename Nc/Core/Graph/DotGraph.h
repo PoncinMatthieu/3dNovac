@@ -40,6 +40,7 @@ namespace Nc
         /// To record a graph in a dot graph file format (.dot)
         /**
             \todo implement the LoadFile method
+			\todo now that we defined a visitor for the graph, we should try to use it with the DotGraph class
         */
         template<typename T, bool Subtree = false>
         class DotGraph : public Utils::IFileFormat<DotGraph<T,Subtree>, T>

@@ -43,17 +43,17 @@ namespace Nc
         struct  EventString;
 
         /**
-            Member function pointer to receive an event
+            Member function pointer used to receive an event.
             \param e could be NULL
         */
         typedef void (EventManager::*CmdFunction)(IEvent *e);
         /**
-            Member function pointer to receive an event string (from the console)
+            Member function pointer used to receive an event string.
             \param e could be NULL
         */
         typedef void (EventManager::*CmdFunctionString)(EventString *e);
 
-        /// Base class to define an engine event
+        /// Interface to define an engine event
         struct LCORE IEvent
         {
             virtual ~IEvent()       {}
@@ -82,7 +82,7 @@ namespace Nc
             T   Data;           ///< data of type T
         };
 
-        /// Define an event string
+        /// Define an event containing a string
         /**
             Used to send event witch contain a string. Principaly used to manage the console events
         */
@@ -101,6 +101,9 @@ namespace Nc
         };
 
         /// Define a Cmd handler witch have an id and a member function pointer
+		/**
+			The id to identify the event, and call the function.
+		*/
         struct LCORE Cmd
         {
             Cmd(unsigned int i, CmdFunction f) : id(i), function(f)    {}
@@ -109,17 +112,21 @@ namespace Nc
             CmdFunction         function;       ///< The member function pointer to excute the handler event
         };
 
-        /// Define a CmdString handler witch have a name, a comment to describe the cmd and a member function pointer (used for the console cmds)
+        /// Define a CmdString handler witch have a name, a comment to describe the cmd and a member function pointer
         struct LCORE CmdString
         {
             CmdString(const std::string &n, const std::string &c, CmdFunctionString f) : name(n), comment(c), function(f)    {}
 
             std::string         name;           ///< Name of the command
-            std::string         comment;        ///< Comment of the command (displayed with the command help)
+            std::string         comment;        ///< Comment of the command
             CmdFunctionString   function;       ///< The member function pointer to excute the handler event
         };
 
-        /// Base class used to manage events, can receive event and execute it
+        /// Base class used to manage events, can receive events and execute them
+		/**
+			To receive events, you have to add a new command by using the method "AddNewCmd" which will take an id corresponding to the event and a pointer to a member function of your engine to be called if the EventManager receive an event with the same id.
+			And next, you can push events from the Manager, the corresponding member function pointer will be called.
+		*/
         class LCORE EventManager : public System::Object
         {
             public:
@@ -135,9 +142,9 @@ namespace Nc
                 EventManager();
                 virtual ~EventManager();
 
-                /** Push an EventString (from console) without arg */
+                /** Push an EventString without arg */
                 void    PushEvent(const std::string &cmdName);
-                /** Push an EventString (from console) with an argument string */
+                /** Push an EventString with an argument string */
                 void    PushEvent(const std::string &cmdName, const std::string &args);
 
                 /** Push an IEvent* */
@@ -150,9 +157,10 @@ namespace Nc
                 /** Execute all event present in the event queues */
                 void    ExecuteEvents();
 
-                /** Create a new command to call for an event */
+                /** Create a new command to receive events */
                 void    AddNewCmd(unsigned int id, CmdFunction function);
-                void    AddNewCmd(const std::string &name, const std::string &comment, CmdFunctionString function); // for the console
+                /** Create a new command string to receive events */
+                void    AddNewCmd(const std::string &name, const std::string &comment, CmdFunctionString function);
 
                 bool    _execEvents;        ///< to pause the execution of events in the event queue
                 bool    _receiveEvents;     ///< to bypass events (stop the reception of events)
@@ -160,20 +168,20 @@ namespace Nc
             private:
                 /** Execute an event */
                 void    ExecuteEvent(unsigned int id, IEvent *e);
-                /** Excute an event string */
+                /** Execute an event string */
                 void    ExecuteEvent(const std::string &name, EventString *e);
 
-                /** display the list of commands string (for the console) */
+                /** Display the list of commands string */
                 void    Help(EventString *);
 
 
-                QueueEvent              _queueEvent;                ///< queue of IEvent to execute when we call `ExecuteEvents`
-                QueueEventString        _queueEventString;          ///< queue of EventString to execute when we call `ExecuteEvents`
+                QueueEvent              _queueEvent;                ///< Queue of IEvent to execute when we call `ExecuteEvents`
+                QueueEventString        _queueEventString;          ///< Queue of EventString to execute when we call `ExecuteEvents`
 
-                ListCmd                 _listCmd;                   ///< list of Event handler to use for the management of events
-                ListCmdString           _listCmdString;             ///< list of EventString handler to use for the management of event strings
+                ListCmd                 _listCmd;                   ///< List of Event handler to use for the management of events
+                ListCmdString           _listCmdString;             ///< List of EventString handler to use for the management of event strings
 
-                System::Mutex           _mutexQueue;                ///< protect the mutex queue
+                System::Mutex           _mutexQueue;                ///< Protect the mutex queue
 
                 friend LCORE std::ostream& operator << (std::ostream& Out, const EventManager& o);
         };

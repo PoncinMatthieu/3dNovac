@@ -58,6 +58,9 @@ namespace Nc
     namespace System
     {
         /// base class, with an Id and a Name, the Id is unique
+		/**
+			The object inherit of Utils::VisitableBase so the object can be visited with a visitor.
+		*/
         class LCORE  Object : public Utils::VisitableBase<Object>
         {
             public:

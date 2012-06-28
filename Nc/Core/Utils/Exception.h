@@ -39,9 +39,10 @@ namespace Nc
     {
         /// Propose an exception class base
         /**
-            provide Exception class where you can passed a message,\
-            in windows the std::exception has the same effect, but not in linux,
-            so this class assure you to have the same implementation for each OS
+            provide Exception class in which you can pass a message.
+			
+            In windows the std::exception implementation can use an std::string in the constructor but not in linux,
+            so this class assure you to have the same implementation for each OS.
         */
         class LCORE Exception : public std::exception
         {

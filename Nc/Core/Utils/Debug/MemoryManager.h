@@ -45,6 +45,7 @@ namespace Nc
             To Use this class, you have just to include `OverloadAlloc.h` in your file      <br/>
 
             \todo recode this memory manager to be thread safe
+			\warning this memory manager is deprecated. It needs to be recode.
             \warning `OverloadAlloc.h` need to be not included in a .h and included after all include
         */
         class MemoryManager

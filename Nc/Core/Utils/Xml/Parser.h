@@ -43,7 +43,7 @@ namespace Nc
     {
         namespace Xml
         {
-            /// Provide a parser for reading an Xml format by using a std::istream
+            /// Provide a parser for reading an Xml format by using an std::istream
             class LCORE Parser
             {
                 private:
@@ -74,8 +74,9 @@ namespace Nc
 
 					/** Generate a token */
 					bool GenereToken(Token &newToken);
-					// avis aux amateur, ne pas regarder le code de ces 2 fonctions, ca pique les yeaux :), elles fonctionnent tres bien et c'est tout ce qu'on leurs demandent
-					bool SearchTokenInBuffer(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract); // search and fill a token, in the stream
+					// avis aux amateur, ne pas regarder le code de ces 2 fonctions, ca pique les yeaux :), elles fonctionnent tres bien et c'est tout ce qu'on leurs demandent :D
+					/** search and fill a token, in the stream */
+					bool SearchTokenInBuffer(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract);
                     unsigned int ChooseTypeToken(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract);
 
                     /** Create an Xml object with the given token */

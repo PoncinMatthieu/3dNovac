@@ -36,9 +36,11 @@ namespace Nc
 #ifdef SYSTEM_WINDOWS
 		/// Used to register every tag by using a class name
 		/**
-			Before creating the tag register with classNames, we were using a TagCounter in template.
+			On linux, we use a templated TagCounter.
 			Unfortunately, on windows we have a copy of every static on every DLL, so we had different classes with the same tag.
-			To Correct this, we created this tag register with class name. This necessarily put down the perf but only during the loading of the .dll/.so
+			To Correct this, we created this tag register which register the class name to ensure that we create only one tag by classe type. This necessarily put down the perf but only during the loading of the .dll/.so.
+
+			Damn you windows!!!
 		*/
 		struct LCORE TagRegister
 		{

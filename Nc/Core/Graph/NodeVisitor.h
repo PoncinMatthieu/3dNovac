@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graph
     {
-        /// Visitor base class to visit a Node
+        /// Visitor base class used to visit a Node
         template<class VisitorType, typename ReturnType = void, typename Base = Priv::INodeBasePolitic>
         class NodeVisitor : public AbstractNodeVisitor<VisitorType, ReturnType, Base>
         {

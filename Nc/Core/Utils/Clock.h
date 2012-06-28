@@ -38,7 +38,13 @@ namespace Nc
 {
     namespace Utils
     {
-        /// a multi-archi Clock, provide elapsedTime in second
+        /// a multi-archi Clock, providing elapsedTime in second
+		/**
+			The clock can be paused, reset and restart.
+
+			The clock is reset a first time in the constructor, 
+			you can get the elapsed time since the last reset of the clock by calling the method ElapsedTime.
+		*/
         class LCORE Clock
         {
             public:

@@ -51,16 +51,28 @@ namespace Nc
 			DontWaitOthersContext =                 1 << 4      ///< don't wait the others context (used by the graphic engine for displaying while the loading)
         };
 
-        /// Abstract class to define a Threaded Engine
+        /// Interface to define a Threaded Engine
         /**
-            Abstract class to define a Threaded Engine.
-            Inherite of EventManager, so an engine has a set of routine to receive events from another Engine/Thread
-            <br/>
-            An engine could have a "Context". A context is created and load before to load contents.
+            Inherite of EventManager, so an engine has a set of routine to receive events from another Engine (Thread)
+
+			To create your own engine, you should at least redefine the method Execute.
+			And usualy you will have to redefine the following methods:
+				- CreateContext: to add a context to your engine.
+				- ActiveContext: to active the context.
+				- DisableContext: to disable the context.
+				- LoadContent: to load your contents after the creation of the context.
+				- ReleaseContent: to realease your contents before the thread terminate.
+			
+			An engine has it's main loop executing forever until you call the Stop method, or the manager ask to stop the engine.
+			You can have a control over the frequency of execution by setting the LimitFrameRate.
+			
+            An engine can contain a "Context" which will be created by calling the method CreateContext before loading contents.
+			You should redefine the CreateContext method and ActiveContext/DisableContext to put a context on your engine.
+
             An engine has a set of priority in the loading and deleting process.
-            So in the loading process and with highest priority, the engine will be loaded at first,
-            and in the deleting process and with en highest priority, the engine will be the last one deleted
-        */
+            So in the loading process, with highest priority, the engine will be loaded at first,
+            and in the deleting process, with highest priority, the engine will be the last one to be deleted.
+		*/
         class LCORE IEngine : public EventManager, public System::Thread
         {
             public:

@@ -60,7 +60,7 @@ namespace Nc
                 std::string         ToString() const;
 
             public:
-                static const Ip     LocalHost;      ///< static ip used to define the localhost
+                static const Ip     localHost;      ///< static ip used to define the localhost
 
             private:
                 UInt32              _addr;          ///< the address of the ip

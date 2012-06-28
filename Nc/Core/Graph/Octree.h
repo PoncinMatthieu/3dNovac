@@ -35,6 +35,7 @@ namespace Nc
 {
     namespace Graph
     {
+		/// Politic used to define an octree with 8 childs and with space management (center and size)
         template<typename T, typename NodeType, class Allocator>
         struct OctreeNodePolitic : public NNodePolitic<std::list<T>, NodeType, 8, true, Allocator>
         {

@@ -42,6 +42,18 @@ namespace Nc
     namespace Network
     {
         /// Define an Udp Socket
+		/**
+			To use a socket UDP you will need to `Create` it before doing anything.
+
+			A created socket need to be closed with `Close`.
+
+			An UDP socket do not require any connection, but need to be bind to a port to receive data.
+			To send data, you just have to use the method read with the good ip and port.
+
+			\sa
+				- Network::Ip
+				- Network::Select
+		*/
         class LCORE SocketUdp : public ISocket
         {
             public:

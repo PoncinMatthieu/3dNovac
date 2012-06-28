@@ -35,7 +35,7 @@
 
 namespace Nc
 {
-    /// Define some usefull abstract and implementation of tree structure
+    /// Define some usefull abstract and implementation of graph/tree structure
     namespace Graph
     {
         /// Abstract class used to define a node by using a Politic \p P, a \p NodeType and an \p Allocator

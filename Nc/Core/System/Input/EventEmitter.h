@@ -33,6 +33,7 @@ namespace Nc
 {
     namespace System
     {
+		/// Define a base class used to emit events
         class LCORE EventEmitter
         {
         };

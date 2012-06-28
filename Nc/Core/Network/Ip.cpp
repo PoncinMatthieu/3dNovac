@@ -36,7 +36,7 @@
 using namespace Nc;
 using namespace Nc::Network;
 
-const Ip     Ip::LocalHost("127.0.0.1");
+const Ip     Ip::localHost("127.0.0.1");
 
 Ip::Ip()
     : _addr(INADDR_NONE)

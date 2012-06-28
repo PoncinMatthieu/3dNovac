@@ -188,7 +188,7 @@ namespace Nc
                 Allocator           _alloc;             ///< the allocator used to allocate and construct the childs node
         };
 
-        /// Politic to used to define a node with a list of childs
+        /// Politic used to define a node with a list of childs
         template<typename T, class NodeType, class Allocator>
         struct ListNodePolitic : public NNodePolitic<T,NodeType,0,true, Allocator>
         {

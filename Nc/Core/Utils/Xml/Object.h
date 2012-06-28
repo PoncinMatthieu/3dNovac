@@ -41,6 +41,10 @@ namespace Nc
         namespace Xml
         {
             /// Xml::Object, provide an element of a DOM Model
+			/**
+				\todo now that we defined a graph structure, we should use it to define the XML object. 
+				\todo now that we defined a visitor structure, we should use it on the XML object to allow the visitation of the XML object.
+			*/
             class LCORE Object
             {
                 public:

@@ -35,16 +35,17 @@ namespace Nc
 	/// To Abstract some usefull class to manipulate network connections
     namespace Network
     {
-        /// Define a select class used to determine witch socket can be read or write.
+        /// Define a select class used to determine which socket can be read or write.
 		/**
-			<div class="title"> Here a full sample to use a select in a Tcp client application : </div>
+			<div class="title">Full sample to use a select in a Tcp client application:</div>
+
  \code
 int main()
 {
-	char 				buf[2048 + 1];
- 	Network::Ip         ip("127.0.0.1");
+	char				buf[2048 + 1];
+	Network::Ip			ip("127.0.0.1");
 	Network::SocketTcp	socket;
-	Network::Select 	select;
+	Network::Select		select;
 
 	// connection
 	socket.Create();
@@ -82,13 +83,14 @@ int main()
 	return 0;
 }
  \endcode
+
 		*/
         class LCORE Select
         {
             public:
                 Select();
 
-                /** Clear the set of read and write. To call before each `Wait` */
+                /** Clear the set of read and write. */
                 void            Clear();
                 /** Set the given \p socket for reading */
                 void            SetForReading(const ISocket &socket);

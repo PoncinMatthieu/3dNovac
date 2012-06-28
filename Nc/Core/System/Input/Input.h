@@ -39,9 +39,11 @@ namespace Nc
 
         /// Provide an interface for Inputs
         /**
-            Provide an interface for Inputs. An input as a list Listener.
+            Provide an interface for Inputs. An input as a list of Listener.
             To add a Listener, use the method AddEventQueue.
+
             All the events need to be push with the method PushEvent.
+			
             CheckEvent needs to be redefined.
 
             \sa

@@ -35,6 +35,19 @@ namespace Nc
     namespace Engine
     {
         /// Abstract class to help the implementation of a Main Engine witch receive events from an InputListener
+		/**
+			Inherite from System::InputListener to be able to receive input events.
+			So a MainEngine can receive two types of events:
+				- Engine::IEvent from another engine, by using the manager has an intermediate.
+				- System::Event from the InputListener.
+				
+			To redefine your own engine, you should redefine the following methods:
+				- Update which is called at each loop. The method gives you the time elapsed between two Update call.
+				- KeyboardEvent which is called if the engine receive an input event comming from the keyboard.
+				- MouseButtonEvent which is called if the engine receive an input event comming from a mouse button.
+				- MouseMotionEvent which is called if the engine receive an input event comming from a mouse movement.
+				- ManageWindowEvent that you can also redefine to get a better control over input events.
+		*/
         class LCORE MainEngine : public IEngine, public System::InputListener
         {
             public:
@@ -47,9 +60,9 @@ namespace Nc
 
             protected:
                 /**
-                    Use this function to stop the engines normally.
+                    Use this function to stop the engines normally by requesting the Manager to stop every engines.
                     Call the function `ReleaseContent` to release many contents and check if we really want to stop the execution of all engines.
-                    So if the function `ReleaseContent` return false, do not stop the engines.
+                    So if the function `ReleaseContent` return false, the engines won't be stop.
                 */
                 void            Quit();
 

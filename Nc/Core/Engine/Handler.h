@@ -45,9 +45,9 @@ namespace Nc
                 Handler();
                 Handler(const std::string &engineName, unsigned int id);
 
-                /** Set the name of the engine witch would recieve the events */
+                /** Set the name of the engine which will recieve the events */
                 inline void                 HandlerEngineName(const std::string &name)      {_engineName = name;}
-                /** \return the EngineName witch would recieve the events */
+                /** \return the EngineName which will recieve the events */
                 inline const std::string    &HandlerEngineName() const      {return _engineName;}
 
                 /** Set the Id of the Cmd to send */

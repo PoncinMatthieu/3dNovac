@@ -39,7 +39,7 @@ namespace Nc
         ///this namespace provide some classes to manage an Xml Format
         namespace Xml
         {
-            /// Provide a Xml::File managing
+            /// Provide a Xml::File management
             class LCORE File
             {
                 public:

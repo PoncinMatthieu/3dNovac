@@ -36,7 +36,8 @@ namespace Nc
     {
         /// Template class designed to manipulate a binary tree structure
         /**
-            The Binary tree use by default a BinaryNodeAVL to stock the datas. The BinaryTree could be see as a simple abstraction to use more easily the root node <br/>
+            The Binary tree use by default a BinaryNodeAVL to stock the datas. The BinaryTree could be see as a simple abstraction to use more easily the root node
+			
             By default the BinaryTree use a BinaryNodeAVL to define the comportement of the insertion/remove into the tree.
             But you could implement your own Node and Politic to define a specific comportement.
 

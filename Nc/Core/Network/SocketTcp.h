@@ -35,8 +35,10 @@ namespace Nc
     {
         /// Define a Tcp Socket
 		/**
-			To use a socket you will need to `Create` it before doing anything.
+			To use a socket TCP you will need to `Create` it before doing anything.
+
 			A created socket need to be closed with `Close`.
+
 			To create a client, use the method `Connect`,
 			and to create a listening socket to accept connection you'll need to use the `Listen` method to initialize it
 			and `Accept` to accept a new connection.

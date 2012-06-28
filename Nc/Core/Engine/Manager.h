@@ -38,7 +38,7 @@
 
 namespace Nc
 {
-    /// Provide abstraction to create multithreaded engine, like a GraphicalEngine, GameEngine, AudioEngine, and NetworkEngine
+    /// Provide a creation and management system to use threaded engine, like a GraphicalEngine, GameEngine, AudioEngine, and NetworkEngine, or whatever...
     /**
         \todo Add an option to do not make threads or to synchronize an engine with an other(s) (for instance it would be very intersting to make some benchmark with and without multithreaded opengl contexts - to see if it's really good to use a dedicated rendering thread with an other shared context)
     */
@@ -47,9 +47,9 @@ namespace Nc
         class   IEngine;
         struct  IEvent;
 
-        /// Manage Engines of 3dNovac
+        /// Manage Engines
         /**
-            Manage the launching of the threads (engines) and dispatch events between them
+            Manage the launching of the threads (engines) and dispatch events between them.
             Store a map of engine associated to a permission mask.
         */
         class LCORE Manager : public Utils::NonCopyable
@@ -63,6 +63,7 @@ namespace Nc
                 };
                 typedef Utils::Mask<Permission>             Permissions;
 
+				/// store an engine with it's permissions
                 struct AllowedEngine
                 {
                     AllowedEngine()                                     {}
@@ -76,7 +77,7 @@ namespace Nc
                 typedef std::map<std::string, AllowedEngine>        MapEngine;
 
             public:
-                /** \param confFile to load the 3dNovac System::Config file, it will be closed in the destructor. if empty, do not load the confFile */
+                /** \param confFile allow you to load automatically the 3dNovac System::Config file, it will be closed in the destructor. If the param stay empty, it won't load the confFile */
                 Manager(const Utils::FileName &confFile = "");
                 virtual ~Manager();
 
@@ -93,7 +94,7 @@ namespace Nc
                 inline bool             IsLaunched()                    {return _isLaunched;}
 
                 /** Start the engines */
-                virtual void            Start();   // demarre les threads (engine)
+                virtual void            Start();
                 /** Stop the engines if the current thread has been allowed to did it */
                 void                    Stop();
                 /** Wait the engines until they are stoped */
@@ -122,10 +123,10 @@ namespace Nc
                 static void             PushEvent(const std::string &engineName, unsigned int id);
                 /** Dispatch events to the corresponding engine */
                 static void             PushEvent(const std::string &engineName, unsigned int id, IEvent *e);
-                /** Dispatch events to the corresponding engine */
-                static void             PushEvent(const std::string &engineName, const std::string &cmdName, const std::string &args);  // from console
-                /** Dispatch events to the corresponding engine */
-                static void             PushEvent(const std::string &engineName, const std::string &cmdName);                           // from console
+                /** Dispatch string events to the corresponding engine */
+                static void             PushEvent(const std::string &engineName, const std::string &cmdName, const std::string &args);
+                /** Dispatch string events to the corresponding engine */
+                static void             PushEvent(const std::string &engineName, const std::string &cmdName);
 
             protected:
                 static MapEngine        _mapEngine;             ///< Engine map container

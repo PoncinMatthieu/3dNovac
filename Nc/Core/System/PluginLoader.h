@@ -42,14 +42,16 @@ namespace Nc
     {
         /// Template class to load a plugin
         /**
-            To load a plugin. Can load only one plugin by PluginLoader instance.
-            A plugin should have this extern c symbol:
+            You can load only one plugin by PluginLoader instance.
+            
+			A plugin is a simple .dll on window or .so on linux which should contain the extern C symbol:
  \code
     T   *GetPlugin();
  \endcode
 
             The PluginLoader delete the instance at the next Load or at the destruction of the PluginLoader.
-            If you have already delete the instance yourself, you can call the method `UnsetInstance` to avoid the delete. But the library will be unload in all case.
+
+            If you have already delete the instance yourself, you can call the method `UnsetInstance` to avoid the delete. But the library will be unload in every case.
         */
         template<typename T>
         class PluginLoader

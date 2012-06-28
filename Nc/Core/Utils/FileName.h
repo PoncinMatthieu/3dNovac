@@ -38,9 +38,13 @@ namespace Nc
         /// manipulate your filename path
         /**
             Parse filename to access the path, filename, extention, change filename, etc...
-            For transparency and simplicity, FileName inherite of std::string
 
-            If the given path begin with "Nc:Type:", then the beginning of the filename will be set to the "RessourcePath/Type" of the Config file of 3dNovac
+            For transparency and simplicity, FileName inherite of std::string.
+
+            If the given path begin with "Nc:Type:", then the beginning of the filename will be set to the "RessourcePath/Type" of the 3dNovac Config file.
+			
+			\sa
+				- System::Config
         */
         class LCORE FileName : public std::string
         {

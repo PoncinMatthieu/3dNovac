@@ -37,13 +37,17 @@ namespace Nc
     {
         /// Provide a SmartPointer class with type T and bool IsArray
         /**
-            Provide a SmartPointer class with type T, and the bool IsArray to inform if the operator delete[] needs to be called insteed of the delete operator
+            Provide a SmartPointer class with type T, and the bool IsArray to inform if the operator delete[] needs to be called insteed of the delete operator.
 
-            <h3>To use the SmartPointer, use a typedef like this :  </h3>
-                typedef SmartPointer<MyClass>    SPMyClass;     <br/> <br/>
-                And next create the instance like this : <br/>
-                SPMyClass sp = new MyClass();
-        */
+            <div class="title"> To use the SmartPointer, use a typedef like this: </div>
+ \code
+	// typedef to use the smart pointer of type MyClass
+	typedef SmartPointer<MyClass>    SPMyClass;
+
+	// create the instance like this
+	SPMyClass sp = new MyClass();
+ \endcode
+		*/
         template<typename T, bool IsArray = false>
         class SmartPointer
         {

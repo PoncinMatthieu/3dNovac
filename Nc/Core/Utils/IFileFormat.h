@@ -36,7 +36,10 @@ namespace Nc
         /// Interface to manage file formats
         /**
             A file format define a way to manage a specific format to read and save.
-            It just
+			
+			To define your own file format, you should redefine the following methods:
+				- LoadFile: to load the file.
+				- SaveFile: to save the file.
         */
         template<typename FileFormat, typename T>
         class IFileFormat

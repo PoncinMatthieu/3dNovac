@@ -40,7 +40,7 @@ namespace Nc
 {
     namespace Graph
     {
-        /// a set of class witch should'nt be used outside of the graph namespace
+        /// A set of class which should'nt be used outside of the graph namespace
         namespace Priv
         {
             /// Base class for each node of the graph namespace
