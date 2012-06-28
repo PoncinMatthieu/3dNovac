@@ -35,16 +35,16 @@ namespace Nc
     {
         /// Provide a way to organise the rendering in a scene
         /**
-            The SceneGraphManager class, is used to define a scene. Basicly contain and render 2 SceneGraph Object. <br/>
-            (one for a 3d rendering, and another for the 2d rendering in front of the screen like GUI) <br/>
+            The SceneGraphManager class, is used to define a complete scene. Contains a list of SceneGraph.
+
             The SceneGraphs contained by the SceneGraphManager are not deleted when the SceneGraphManager is destroyed.
-            So it's your role to destroy it if they are dynamically allocated.
+            So it's your role to destroy them if they are dynamically allocated.
         */
         class LGRAPHICS SceneGraphManager
         {
             public:
                 SceneGraphManager();
-                ~SceneGraphManager();
+                virtual ~SceneGraphManager();
 
                 /** Init some opengl statements */
                 void            Init(bool multisampling);
@@ -55,9 +55,9 @@ namespace Nc
                 inline const ListPScene     &Scenes() const                 {return _listScene;}
 
                 /** Add a scene to the scene manager */
-                virtual void         AddScene(SceneGraph *scene);
+                virtual void        AddScene(SceneGraph *scene);
                 /** Remove the given scene */
-                virtual void         RemoveScene(SceneGraph *scene);
+                virtual void        RemoveScene(SceneGraph *scene);
 
                 /** Bring the given scene to front (these scene would be displayed at the end) */
                 void                BringToFront(SceneGraph *scene);
@@ -69,7 +69,7 @@ namespace Nc
                 void                Update(float elapsedTime);
 
             protected:
-                ListPScene                  _listScene;         ///< the list of scene witch will be rendered
+                ListPScene                  _listScene;         ///< the list of scene which will be rendered
                 GL::State::BufferBitMask    _clearMask;         ///< the clear mask (defaul: GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
                 Color                       _clearColor;        ///< the clear color of the scene
                 System::Mutex               _mutex;             ///< a mutex used to protect the scene

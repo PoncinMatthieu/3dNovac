@@ -125,7 +125,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
     if (!IsValid())
         throw Utils::Exception("FrameBuffer::Attach", "The FrameBuffer is not valid");
     if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
-        throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer witch is not enabled.");
+        throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer which is not enabled.");
 
     glFramebufferRenderbuffer(_target, attachPoint, Enum::RenderBuffer::RenderBuffer, renderBuffer.GetIndex());
     _attachedBuffers[attachPoint] = renderBuffer.Clone();
@@ -138,7 +138,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
     if (!IsValid())
         throw Utils::Exception("FrameBuffer::Attach", "The FrameBuffer is not valid");
     if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
-        throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer witch is not enabled.");
+        throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer which is not enabled.");
 
     glFramebufferTexture(_target, attachPoint, texture.GetIndex(), level);
     _attachedBuffers[attachPoint] = texture.Clone();
@@ -147,7 +147,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
 Enum::FrameBuffer::State FrameBuffer::CheckStatus()
 {
     if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
-        throw Utils::Exception("FrameBuffer::CheckStatus", "Can't check the status of the framebuffer witch is not enabled.");
+        throw Utils::Exception("FrameBuffer::CheckStatus", "Can't check the status of the framebuffer which is not enabled.");
     return static_cast<Enum::FrameBuffer::State>(glCheckFramebufferStatus(_target));
 }
 

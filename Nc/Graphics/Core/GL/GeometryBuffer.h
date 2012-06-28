@@ -37,7 +37,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Template interface wich define a geometry with it's given VertexType
+            /// Template interface which define a geometry with it's given VertexType
             /**
                 Define the geometry with a VertexBuffer and a primitive type
                 \todo Use a VertexArray to optimised the rendering
@@ -145,7 +145,8 @@ namespace Nc
 
                 private:
                     /**
-                        Map the Vertex and Index buffer in the VAO (Vertex Array Object). <br/>
+                        Map the Vertex and Index buffer in the VAO (Vertex Array Object).
+
                         (it appears that the vertexArrays are not shared beetween contexts like the displayLists)
                         So the Map method is private and called once by the render method
                     */
@@ -224,7 +225,8 @@ namespace Nc
 
                 private:
                     /**
-                        Map the Vertex buffer in the VAO (Vertex Array Object). <br/>
+                        Map the Vertex buffer in the VAO (Vertex Array Object).
+
                         (it appears that the vertexArrays are not shared beetween contexts like the displayLists)
                         So the Map method is private and called once by the render method
                     */

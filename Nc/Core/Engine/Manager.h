@@ -100,7 +100,7 @@ namespace Nc
                 /** Wait the engines until they are stoped */
                 virtual void            Wait();
 
-                /** \return the mutex witch is used to protect and synchronize the engines */
+                /** \return the mutex which is used to protect and synchronize the engines */
                 inline System::Mutex    &MutexGlobal()                  {return _mutexGlobal;}
 
                 /** Wait until all the engine as been started */

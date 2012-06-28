@@ -112,7 +112,7 @@ void    Texture::Create(Enum::Texture::Target target)
 void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
 {
     if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
-        throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture witch is not enabled.");
+        throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture which is not enabled.");
     CheckSize(size);
     glTexImage2D(_target, level, internalFormat, size.Data[0], size.Data[1], 0, pixelFormat, pixelType, pixelData);
     _size = size;

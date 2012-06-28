@@ -57,7 +57,7 @@ namespace Nc
                 const Vector3D<T> &Point() const                {return _point;}
 
             private:
-                Vector3D<T>     _normal;        ///< normal witch define the orientation of the plane
+                Vector3D<T>     _normal;        ///< normal which define the orientation of the plane
                 Vector3D<T>     _point;         ///< reference point for the vector
                 T               _d;
         };

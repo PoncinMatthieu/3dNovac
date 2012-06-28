@@ -64,7 +64,7 @@ namespace Nc
                 inline bool             UpdateProjection()              {return _updateProjection;}
                 /** Set the update projection statement */
                 inline void             UpdateProjection(bool state)    {_updateProjection = state;}
-                /** \return the projection matrix witch will be used to update the projection */
+                /** \return the projection matrix which will be used to update the projection */
                 inline const TMatrix    &Projection()                   {return _projectionMatrix;}
                 /** Will set the projection as given, automatically set the projection statement to true */
                 void                    Projection(float ratioAspect, float nearf, float farf, float fieldOfView);
@@ -77,7 +77,7 @@ namespace Nc
                 inline bool             UpdateView()                    {return _updateView;}
                 /** Set the update view statement */
                 inline void             UpdateView(bool state)          {_updateView = state;}
-                /** \return the projection matrix witch will be used to update the projection */
+                /** \return the projection matrix which will be used to update the projection */
                 inline const TMatrix    &View()                         {return _viewMatrix;}
                 /** Will set the view matrix with the 3 given vectors, automatically set the view statement to true */
                 void                    View(Vector3f eye, Vector3f center, Vector3f up);

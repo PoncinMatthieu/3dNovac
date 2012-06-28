@@ -57,7 +57,7 @@ namespace Nc
     {
         /// Provide a logging system
         /**
-            Logger base, redefine the methode write by inheritance to have your own logging system.
+            Logger base, redefine the method write by inheritance to have your own logging system.
 
             The Logger is thread safe.
         */
@@ -122,7 +122,7 @@ namespace Nc
 
                 /**
                     To redefine in your own logger class.
-					
+
                     By default, write the msg, and flush the buffer if `flush` == true.
                     And call the CheckFile method to open the file, if it's not open
                 */

@@ -81,7 +81,7 @@ namespace Nc
                 inline unsigned int         Id() const			                {return _id;}
 
                 /**
-                    Allow you to move up the SceneNode in the inheritance hierarchy, without any dynamic_cast witch could incredibly decrease the performances.
+                    Allow you to move up the SceneNode in the inheritance hierarchy, without any dynamic_cast which could incredibly decrease the performances.
                     \return the SceneNode static_cast into the given type if the ClassName is corresponding to the given type.
                 */
                 template<typename T>
@@ -94,7 +94,7 @@ namespace Nc
                 }
 
                 /**
-                    Allow you to move up the SceneNode in the inheritance hierarchy, without any dynamic_cast witch could incredibly decrease the performances.
+                    Allow you to move up the SceneNode in the inheritance hierarchy, without any dynamic_cast which could incredibly decrease the performances.
                     \return the SceneNode static_cast into the given type if the ClassName is corresponding to the given type.
                 */
                 template<typename T>
@@ -107,7 +107,7 @@ namespace Nc
                 }
 
                 /**
-                    Allow you to move up the SceneNode in the inheritance hierarchy, without any dynamic_cast witch could incredibly decrease the performances.
+                    Allow you to move up the SceneNode in the inheritance hierarchy, without any dynamic_cast which could incredibly decrease the performances.
                     Throw an exception if the given node is not to the good type.
                     \return the SceneNode static_cast into the given type if the ClassName is corresponding to the given type.
                 */
@@ -123,7 +123,7 @@ namespace Nc
                 }
 
                 /**
-                    Allow you to move up the SceneNode in the inheritance hierarchy, without any dynamic_cast witch could incredibly decrease the performances.
+                    Allow you to move up the SceneNode in the inheritance hierarchy, without any dynamic_cast which could incredibly decrease the performances.
                     Throw an exception if the given node is not to the good type.
                     \return the SceneNode static_cast into the given type if the ClassName is corresponding to the given type.
                 */

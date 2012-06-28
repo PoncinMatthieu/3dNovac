@@ -42,6 +42,15 @@ namespace Nc
         /**
             A camera is typically used to set the Projection and the View Matrix in a SceneGraph.
             And also manage the viewport of the current opengl Context
+
+	    To redefine you own camera, you should redefine the following functions:
+		- Clone: To allow the creation of an identical camera
+		- MouseMotionEvent: To receive events
+		- MouseButtonEvent: To receive events
+		- KeyboardEvent: To receive events
+		- UpdateProjection: to update the projection matrix of the scene
+		- PointInFrustum: to test if a point is in the field of view of the camera
+		- BoxInFrustum: to test if a box is in the field of view of the camera
         */
         class LGRAPHICS Camera : public Object
         {

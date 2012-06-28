@@ -71,7 +71,7 @@ void    RenderBuffer::Disable() const
 void    RenderBuffer::Init(Enum::RenderBuffer::ColorFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
     if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
-        throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer witch is not enabled.");
+        throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer which is not enabled.");
 
     if (samples == 0)
     {
@@ -87,7 +87,7 @@ void    RenderBuffer::Init(Enum::RenderBuffer::ColorFormat internalFormat, const
 void    RenderBuffer::Init(Enum::RenderBuffer::DepthFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
     if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
-        throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer witch is not enabled.");
+        throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer which is not enabled.");
 
     if (samples == 0)
     {
@@ -103,7 +103,7 @@ void    RenderBuffer::Init(Enum::RenderBuffer::DepthFormat internalFormat, const
 void    RenderBuffer::Init(Enum::RenderBuffer::StencilFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
     if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
-        throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer witch is not enabled.");
+        throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer which is not enabled.");
 
     if (samples == 0)
     {
@@ -119,7 +119,7 @@ void    RenderBuffer::Init(Enum::RenderBuffer::StencilFormat internalFormat, con
 void    RenderBuffer::Init(Enum::RenderBuffer::DepthStencilFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
     if (State::IsSet() && State::Current().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
-        throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer witch is not enabled.");
+        throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer which is not enabled.");
 
     if (samples == 0)
     {

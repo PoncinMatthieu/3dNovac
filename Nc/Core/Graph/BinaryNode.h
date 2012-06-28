@@ -85,7 +85,7 @@ namespace Nc
                 /** Extract all data's childs of the node into the given list */
                 void                ExtractChilds(std::list<T> &childs) const;
 
-                /** \return the node witch match with the given key */
+                /** \return the node which match with the given key */
                 NodeType            *Search(const T &key);
                 /**
                     Insert the given node
@@ -93,9 +93,9 @@ namespace Nc
                 */
                 NodeType            *Insert(NodeType *newNode);
                 /**
-                    Remove the node witch match with the given key
+                    Remove the node which match with the given key
                     \param removedNode will be set to the removed node
-                    \return the node witch take place insteed of the removedNode
+                    \return the node which take place insteed of the removedNode
                 */
                 NodeType            *Remove(const T &key, NodeType *&removedNode);
 
@@ -114,7 +114,7 @@ namespace Nc
             protected:
                 NodeType    *_left;         ///< the left node
                 NodeType    *_right;        ///< the right node
-                Allocator   _alloc;         ///< the allocator witch allocate the left and right node
+                Allocator   _alloc;         ///< the allocator which allocate the left and right node
         };
 
         /** To define a binary search tree using the AVL method */
@@ -136,7 +136,7 @@ namespace Nc
                 */
                 NodeType        *Insert(NodeType *newNode);
                 /**
-                    Remove the first node witch match with the given key, and fill the removed node
+                    Remove the first node which match with the given key, and fill the removed node
                     \return the root of the tree (the tree has been balanced so the root could have change)
                 */
                 NodeType        *Remove(const T &key, NodeType *&removedNode);

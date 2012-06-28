@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to define a Material witch is mandated to render drawables
+        /// Interface to define a Material which is mandated to render drawables
         /**
             \todo render the drawables in one time not a call of the material for each drawables of the objects, this would improve the number of matrix compute and Ogl call
         */

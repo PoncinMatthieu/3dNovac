@@ -65,7 +65,7 @@ namespace Nc
                 };
 #endif
 
-            /// Define a class witch store the tag for each Visitable associated to the given Base
+            /// Define a class which store the tag for each Visitable associated to the given Base
                 template<typename Visitable, typename Base>
                 struct TagHolder
                 {

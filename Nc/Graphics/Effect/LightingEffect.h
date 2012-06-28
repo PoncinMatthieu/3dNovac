@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Define a light to use with the LightingEffect
+        /// Define a light to use with the LightingEffect.
         struct LGRAPHICS Light : public Object
         {
             NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Light)
@@ -49,7 +49,7 @@ namespace Nc
             float       radius;             ///< the raduis of the light
         };
 
-        /// Define an interface for the lighting Material
+        /// Define an interface for the lighting Material.
         class ILightingMaterial : public IMaterial
         {
             public:
@@ -62,9 +62,9 @@ namespace Nc
                 LightingEffect      *_currentLightingEffect;    ///< pointer to the current lighting effect
         };
 
-        /// Define a LightinhEffect used to render some light effect on childs
+        /// Define a LightinhEffect used to render some light effect on childs.
         /**
-            The lightingEffect is a "Material effect" in that case, we need to configure the materials of the childs to apply the effects
+            The lightingEffect is a "Material effect" in that case, we need to configure the materials of the childs to apply the effects.
         */
         class LGRAPHICS LightingEffect : public Effect
         {

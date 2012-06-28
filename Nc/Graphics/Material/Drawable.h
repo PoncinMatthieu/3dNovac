@@ -37,8 +37,10 @@ namespace Nc
         /// Define a Drawable
         /**
             A drawable is an association of a MaterialConfig and a GeometryBuffer.
-            The MaterialConfig help us to store data like Texture and RasterMode witch is material dependant
-            and The Geometry help us to store data like vertices informations coord/colors/texture_coord witch is Material independant.
+
+            The MaterialConfig help us to store data like Texture and RasterMode which is material dependant
+            and The Geometry help us to store data like vertices informations coord/colors/texture_coord which is Material independant.
+
             The drawable class is typically here to simplify the manipulation of the MaterialConfig and GeometryBuffer with the materials.
         */
         struct LGRAPHICS Drawable

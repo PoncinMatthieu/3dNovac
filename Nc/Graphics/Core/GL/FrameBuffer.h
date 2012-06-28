@@ -38,6 +38,9 @@ namespace Nc
         {
             /// To Manipulate a Frame Buffer Object (fbo)
             /**
+                A framebuffer must be attached to render buffers or textures before to be used.
+                After creating and attaching render buffers to the fbo, you should use the method 'CheckStatus' to check if you built the fbo correctly.
+
                 \warning Be carefull while manipulating a framebuffer, a framebuffer must be enabled/disable each time you want to use it. The previous framebuffer will be set after disabling the current one.
             */
             class LGRAPHICS FrameBuffer : public Object

@@ -261,7 +261,7 @@ void Widget::GetReelPos(Vector2i &reelPos) const
         margin = v.parent->_margin;
         v.parent->PosChild(this, parentTranslate);
     }
-    else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph wich is supposed to be the parent of the widget at one point
+    else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph which is supposed to be the parent of the widget at one point
     {
         Graphic::Window *win = v.parentSceneGraph->AttachedWindow();
         parentSize.Init(win->Width(), win->Height());
@@ -366,7 +366,7 @@ void Widget::Resized()
         {
             v.parent->SizeChild(this, sizeParent);
         }
-        else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph wich is supposed to be the parent of the widget at one point
+        else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph which is supposed to be the parent of the widget at one point
         {
             Graphic::Window *win = v.parentSceneGraph->AttachedWindow();
             sizeParent.Init(win->Width(), win->Height());

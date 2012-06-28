@@ -37,7 +37,7 @@ namespace Nc
         /// Reference some struct that define default VertexTypes
         namespace DefaultVertexType
         {
-            /** Define the names of the defaults componants witch should used in the default shaders */
+            /** Define the names of the defaults componants which should used in the default shaders */
             namespace ComponentsName
             {
                 static const std::string Coord = "Coord";

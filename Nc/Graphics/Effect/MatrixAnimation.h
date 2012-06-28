@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// To manage simple animation with matrix like Rotation/Translation
+        /// To manage simple animation with matrix like Rotation/Translation.
         /**
             \deprecated this class shouldn't be use, try to create a controller to manipulate the matrix on your node.
             \todo this class should be recode or just deleted, no longer necessary

@@ -40,8 +40,8 @@ namespace Nc
                 \todo Manage the glHint (for antialiasing), glFog functions
 
                 <div class="title"> Allow you to manage some opengl state </div>
-                    - Abstract the glPolygonMode witch controls the interpretation of polygons for rasterization.
-                    - Abstract the DepthTest and glDepthMask witch control the depth buffer
+                    - Abstract the glPolygonMode which controls the interpretation of polygons for rasterization.
+                    - Abstract the DepthTest and glDepthMask which control the depth buffer
                     - Abstract the glLineWidth and glPointSize
             */
             class RasterMode

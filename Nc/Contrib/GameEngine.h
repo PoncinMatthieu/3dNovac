@@ -37,7 +37,7 @@ namespace Nc
 {
     namespace Contrib
     {
-        /// Helps to create an engine witch use the graphic engine with a shared context
+        /// Helps to create an engine which use the graphic engine with a shared context
         class LCONTRIB GameEngine : public Engine::MainEngine
         {
             public:

@@ -34,10 +34,10 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Template class animation to manage any animation
+        /// Template class animation to manage any animation.
         /**
-            the typename T should be the type of AnimationFrame. An animation is typically composed by a list of animation frame <br/>
-            So to use this class you will have to implemente a new Frame class by heritance like the SpriteAnimFrame class
+            The typename T should be the type of AnimationFrame. An animation is typically composed by a list of animation frame.
+            So to use this class you will have to implemente a new Frame class by heritance like the SpriteAnimFrame class.
         */
         template<typename T>
         class FramesAnimation : public Animation

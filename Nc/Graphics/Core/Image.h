@@ -37,8 +37,13 @@ namespace Nc
     {
         /// To Load and manage image
         /**
-            The images is stored in RGBA mode with 32 bit per pixel. <br\>
-            The images are loaded by the `ImageLoader` class.
+            The images is stored in RGBA mode with 32 bit per pixel.
+
+            Images are loaded by the `ImageLoader` class.
+
+            \sa
+                - ImageLoader
+                - ImageLoaderPng
         */
         class LGRAPHICS  Image
         {

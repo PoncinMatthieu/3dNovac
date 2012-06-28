@@ -59,7 +59,7 @@ namespace Nc
                 void SaveNodeRecursively(std::ofstream &f, const T &content);
         };
 
-        /// Specialization of DotGraph to manage subtrees (tree witch store a tree in data)
+        /// Specialization of DotGraph to manage subtrees (tree which store a tree in data)
         template<typename T>
         class DotGraph<T,true> : public Utils::IFileFormat<DotGraph<T,true>, T>
         {

@@ -43,7 +43,7 @@ namespace Nc
                 This render state is essantially used to centralize the ogl functions but also to avoid any redundant state changes in the ogl state machine.
                 See the opengl documentation for more detail on the opengl functions.
 
-                \warning All opengl functions witch modify the opengl machine state like glEnable() glDisable() should not be direcly call but call with a method of the render state.
+                \warning All opengl functions which modify the opengl machine state like glEnable() glDisable() should not be direcly call but call with a method of the render state.
             */
             class LGRAPHICS State : Utils::NonCopyable
             {

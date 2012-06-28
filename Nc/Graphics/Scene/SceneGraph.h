@@ -38,7 +38,8 @@ namespace Nc
     {
         /// Interface used by the SceneGraphManager to store data of a scene and render it
         /**
-            A Scene Graph is basically composed by 3 stack of matrix used to render the scene. <br/>
+            A Scene Graph is basically composed by 3 stack of matrix used to render the scene.
+
             The Scene Graph has also a RasterMode used to globally set the default rasters mode.
             <div class="title"> So there are : </div>
                 - the ProjectionMatrix      <-- Used to project the model like in a perspective or in a orthonormal repere

@@ -44,9 +44,9 @@ namespace Nc
         /**
             A cursor can be load from an xpm format and as to be Enable to be seeing.
             When you Enable the cursor, the current cursor of the window will be automatically set
-            <br/> <br/>
-            Here is an exemple of xmp cursor:
 
+
+            <div class="title">Here is an exemple of xmp cursor:</div>
  \code
     const char *StandardCamera3d::XpmHandOpen[] =
     {

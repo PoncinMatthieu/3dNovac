@@ -35,7 +35,7 @@ namespace Nc
     {
         /// Base class to defines controllers in a scene node
         /**
-            In truth, the Controller class is a specific visitor, wich visit only the given node
+            In truth, the Controller class is a specific visitor, which visit only the given node
         */
         template<typename ControllerType>
         class Controller : public Graph::NodeVisitor<ControllerType, void, System::Object>

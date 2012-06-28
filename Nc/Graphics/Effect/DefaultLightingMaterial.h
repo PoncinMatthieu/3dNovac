@@ -36,10 +36,10 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// The material politic used to render a defaultLighting
+        /// The material politic used to render a defaultLighting.
         /**
-            \todo Manage specular components
-            \todo Find a way to draw advanced effect like shadow and reflexion
+            \todo Manage specular components.
+            \todo Find a way to draw advanced effect like shadow and reflexion.
         */
         class LGRAPHICS DefaultLightingMaterial : public ILightingMaterial
         {

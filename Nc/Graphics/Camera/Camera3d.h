@@ -37,9 +37,9 @@ namespace Nc
         /// Abstract class to define 3d Camera
         /**
             A 3d Camera needs to have the routines to manage the events and to update the mouvement of the camera.
-            The camera is composed by an Eye, a Center and a vector Up
+            The camera is composed by an Eye, a Center and a vector Up.
 
-            \todo Recode gluUnProject witch is deprecated and reimplement the Get3dCoordinateFromProjection method.
+            \todo Recode gluUnProject which is deprecated and implement the Get3dCoordinateFromProjection method.
         */
         class LGRAPHICS Camera3d : public Camera
         {
@@ -134,7 +134,7 @@ namespace Nc
 
             private:
                 bool            _viewMatrixUpdated; ///< statement to avoid to update the scene View Matrix each time
-                TMatrix         _viewMatrix;        ///< the view matrix witch correspond to the vectors _eye / _center / _up. This matrix is used to set the View Matrix of the scene at the call of the method "Fix".
+                TMatrix         _viewMatrix;        ///< the view matrix which correspond to the vectors _eye / _center / _up. This matrix is used to set the View Matrix of the scene at the call of the method "Fix".
         };
     }
 }

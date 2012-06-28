@@ -59,8 +59,8 @@ namespace Nc
 
                 public:
                     /**
-						Use this function to parse an xml stream <br/>
-						\return a CONTENT Object witch contain all others object
+						Use this function to parse an xml stream.
+						\return a CONTENT Object which contain all others object
 					*/
 					static Object *Parse(std::istream &in, bool parseHeader = true);
 

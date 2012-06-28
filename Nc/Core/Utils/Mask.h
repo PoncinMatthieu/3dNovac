@@ -35,7 +35,7 @@ namespace Nc
     {
         /// to manipulate a bit mask easily
         /**
-            The bit field used a type T wich should be an enum and D to specify the sizeof of the mask.
+            The bit field used a type T which should be an enum and D to specify the sizeof of the mask.
 
             <div class="title">Sample code to used a Mask:</div>
  \code

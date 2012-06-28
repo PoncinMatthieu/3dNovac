@@ -105,7 +105,7 @@ namespace Nc
                 Allocator           _alloc;             ///< the allocator use to allocate and construct the childs node
         };
 
-        /// Specialization for a NNodePolitic witch contain a list of childs
+        /// Specialization for a NNodePolitic which contain a list of childs
         template<typename T, class NodeType, bool Graph, class Allocator>
         class NNodePolitic<T,NodeType,0,Graph,Allocator> : public INodePolitic<T,NodeType,Graph>
         {

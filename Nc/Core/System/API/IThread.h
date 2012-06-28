@@ -60,7 +60,8 @@ namespace Nc
                 virtual ~IThread()   {};
 
                 /**
-                    Create and immediatly start the thread. <br/>
+                    Create and immediatly start the thread.
+
                     The virtual function Run() will be called in the thread after that
                 */
                 virtual void            Start() = 0;
@@ -72,8 +73,9 @@ namespace Nc
 
             protected:
                 /**
-                    virtal pure methode, to redefine in a subclass. <br/>
-                    After that the Start methode is call, the methode Run will be called in the thread
+                    virtal pure method, to redefine in a subclass.
+
+                    After that the Start method is call, the method Run will be called in the thread
                 */
                 virtual void    Run() = 0;
 

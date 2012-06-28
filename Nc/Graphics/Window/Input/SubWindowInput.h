@@ -33,6 +33,12 @@ namespace Nc
 {
     namespace Graphic
     {
+        /// Define an input to be used with a SubWindow
+        /**
+            \sa
+                - WindowInput
+                - SubWindow
+        */
         class LGRAPHICS SubWindowInput : public WindowInput
         {
             public:

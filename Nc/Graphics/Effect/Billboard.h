@@ -36,6 +36,7 @@ namespace Nc
         /// Simulate a billboarding effect
         /**
             Billboarding is a method in which a sprite is rendered perpendicular to the camera without respect to camera movement and the sprite used is called a billboard.
+
             To use the Billboard class you just have to add an object like a String or a Sprite as child. You can call the method RotateChilds after adding the child to setup it's matrix carrectly (in the case of a Sprite or String).
 
             The billboard has 2 operation mode:

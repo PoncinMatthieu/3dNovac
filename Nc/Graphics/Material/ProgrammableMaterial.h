@@ -34,10 +34,11 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Define a Material witch could be directly configurable outside of the class
+        /// Define a Material which could be directly configurable outside of the class
         /**
-            This class helps to create materials rapidely without inheritance of the IMaterial class.
-            Keep in mind that using this class could be slower than redefine your own materials by inherite of the IMaterial class.
+            This class helps to create materials quickly without inheritance of the IMaterial class.
+
+            Keep in mind that using this class could be slower than redefine your own materials by inheritance of the IMaterial class.
 
             To use this class you should configure it by setting the attributes just after it's creation and setting the uniforms value before the rendering.
         */
@@ -73,7 +74,7 @@ namespace Nc
                 GL::Uniform<T,Nb>   *GetUniform(const std::string &name);
 
                 /**
-                    Set the texture unit location witch would be used to set the drawables textures,
+                    Set the texture unit location which would be used to set the drawables textures,
                     the unit 0 will be linked with the first texture and the unit 1 with the second texture.
                 */
                 void                SetDrawableTextureUnitUniform(unsigned int unit, const char *name);

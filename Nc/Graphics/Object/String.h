@@ -39,9 +39,9 @@ namespace Nc
     {
         class Font;
 
-        /// string Object2d class to render text
+        /// String class used to render text
         /**
-            A Graphical 2d string is defined by an UTF32 string, a size, a color, pattern style and a font
+            A Graphical 2d string is defined by an UTF32 string, a size, a color, pattern style and a font.
         */
         class LGRAPHICS   String : public Object
         {

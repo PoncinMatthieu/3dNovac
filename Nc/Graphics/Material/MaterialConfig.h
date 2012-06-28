@@ -70,7 +70,7 @@ namespace Nc
                 Array<GL::Texture,0>    Textures;
 
             protected:
-                GL::Blend               _blend;         ///< the blend methode of the material
+                GL::Blend               _blend;         ///< the blend method of the material
                 GL::RasterMode          _rasterMode;    ///< the raster mode of the material
         };
 	}

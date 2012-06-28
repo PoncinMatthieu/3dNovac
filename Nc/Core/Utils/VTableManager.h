@@ -59,7 +59,7 @@ namespace Nc
                             _table[index] = f;
                         }
 
-                        /** \return the function witch correspond to the given index, null if the function doesn't exist */
+                        /** \return the function which correspond to the given index, null if the function doesn't exist */
                         Func GetFunc(size_t index) const
                         {
                             if(index >= _table.size())

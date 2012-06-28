@@ -40,8 +40,9 @@ namespace Nc
 
         /// Interface to manage the window inputs (keyboard/mouse/etc)
         /**
-            Manage all the input associated to the window <br/>
-            A WindowInput is automatically created with his associated window so to get it call Window::GetInput()
+            Manage all the input associated to the window.
+
+            A WindowInput is automatically created with his associated window so to get it call Window::GetInput().
 
             \sa
                 - Window

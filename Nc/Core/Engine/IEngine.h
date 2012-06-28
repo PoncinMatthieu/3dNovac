@@ -62,10 +62,10 @@ namespace Nc
 				- DisableContext: to disable the context.
 				- LoadContent: to load your contents after the creation of the context.
 				- ReleaseContent: to realease your contents before the thread terminate.
-			
+
 			An engine has it's main loop executing forever until you call the Stop method, or the manager ask to stop the engine.
 			You can have a control over the frequency of execution by setting the LimitFrameRate.
-			
+
             An engine can contain a "Context" which will be created by calling the method CreateContext before loading contents.
 			You should redefine the CreateContext method and ActiveContext/DisableContext to put a context on your engine.
 
@@ -124,7 +124,7 @@ namespace Nc
                 virtual void            Loading();
                 /** Just after the main loop, delete the contents by using the engine manager priorities */
                 virtual void            Releasing();
-                /** The main loop of the thread witch call the `Process` method until the Manager will stoped */
+                /** The main loop of the thread which call the `Process` method until the Manager will stoped */
                 virtual void            MainLoop();
                 /**
 					Process the engine.

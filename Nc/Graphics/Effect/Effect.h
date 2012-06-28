@@ -35,7 +35,7 @@ namespace Nc
     {
         /// Interface to manage and render effects
         /**
-            To create your own effect, you should implement not only the clone and render methode but also the Defines NC_UTILS_DEFINE_PARENT_CLASS and NC_UTILS_DEFINE_VISITABLE.
+            To create your own effect, you should implement not only the clone and render method but also the Defines NC_UTILS_DEFINE_PARENT_CLASS and NC_UTILS_DEFINE_VISITABLE.
             An effect should be able to be activated or not. By default the effect is activated.
         */
         class LGRAPHICS Effect : public Entity

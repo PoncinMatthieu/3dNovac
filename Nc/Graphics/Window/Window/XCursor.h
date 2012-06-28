@@ -39,11 +39,12 @@ namespace Nc
 
         /// Implementation of a ICursor for an X11 system
         /**
-            The cursor is actually loading the data with only 1 bit per pixel <br/>
-            To create a cursor you will need to have an XWindow but you shouldn't create a create directly a cursor, the best way is to use the methode Window::NewCursor() <br/>
-            <br/>
+            The cursor is actually loading the data with only 1 bit per pixel.
+
+            To create a cursor you will need to have an XWindow but you shouldn't create directly a cursor, the best way is to use the method Window::NewCursor().
+
             \todo We have disabled cursor management when the window is created by using an existing window. Because cursor management cause freese bug with Qt
-            \todo Implemente cursor loading with more than 1 bit per pixel (it's a problem on X11)
+            \todo Implement cursor loading with more than 1 bit per pixel (it's a problem on X11)
             \todo Implement a load from image method
         */
         class Cursor : public ICursor

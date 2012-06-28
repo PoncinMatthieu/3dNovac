@@ -50,7 +50,7 @@ namespace Nc
 
                 /** Init the address with the given \p ip address */
                 void                Init(const std::string &ip);
-                /** Init the address with the given 4 byte witch describ the ip address */
+                /** Init the address with the given 4 byte which describ the ip address */
                 void                Init(unsigned char byte1, unsigned char byte2, unsigned char byte3, unsigned char byte4);
 
                 /** \return true if the address is valid */

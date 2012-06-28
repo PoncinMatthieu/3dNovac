@@ -37,7 +37,7 @@ namespace Nc
         /// Template class designed to manipulate a binary tree structure
         /**
             The Binary tree use by default a BinaryNodeAVL to stock the datas. The BinaryTree could be see as a simple abstraction to use more easily the root node
-			
+
             By default the BinaryTree use a BinaryNodeAVL to define the comportement of the insertion/remove into the tree.
             But you could implement your own Node and Politic to define a specific comportement.
 
@@ -116,7 +116,7 @@ namespace Nc
                 void            Insert(const T &key);
 
                 /**
-                    Remove the first witch match with the given key
+                    Remove the first which match with the given key
                     \param data, filled with the data of the removed node if not null and if a node has been removed
                     \return true if a node has been removed
                 */

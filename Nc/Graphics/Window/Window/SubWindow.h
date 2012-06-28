@@ -36,8 +36,11 @@ namespace Nc
 {
     namespace Graphic
     {
-        ///
+        /// To manage a sub window
         /**
+            \sa
+                - Window
+
             \todo Generate Entered/Left mouse event
             \todo Change the cursor at Entered/Left mouse event
         */

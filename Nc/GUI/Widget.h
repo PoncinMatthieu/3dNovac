@@ -36,7 +36,7 @@ namespace Nc
     {
         /// Base class to define a widget
         /**
-            A widget can receive window events and interact concequently.   <br/>
+            A widget can receive window events and interact concequently.
             A widget use it's parents widget to calculate it's relative positions.
             And The relative position is computed with the defined Corner for X position and Y position
         */
@@ -157,12 +157,12 @@ namespace Nc
 
                 /**
                     Add a composed widget.
-                    The composed widget are not deleted by the widget itself, so they should be deleted by the class wich added those childs
+                    The composed widget are not deleted by the widget itself, so they should be deleted by the class which added those childs
                 */
                 void                    AddComposedWidget(Widget *widget);
                 /**
                     Remove the widget from the list of composed widget.
-                    The composed widget are not deleted by the widget itself, so they should be deleted by the class wich added those childs
+                    The composed widget are not deleted by the widget itself, so they should be deleted by the class which added those childs
                 */
                 void                    RemoveComposedWidget(Widget *widget);
 
@@ -222,7 +222,7 @@ namespace Nc
                 Widget                  *_owner;                    ///< widget's owner... widgets can have a owner, this owner is charged to manage the widget like if it was a child but this widget does not appear in the child tree. This allow the creation of composed widget
                 ListPWidget             _composedWidget;            ///< list of composed widget... those widgets are managed like childs but are owned by the current widget and can't be modified outside of the class.
 
-                Widget                  *_childFocused;             ///< The child wich has the focus
+                Widget                  *_childFocused;             ///< The child which has the focus
                 bool                    _focus;                     ///< Mark if the widget has the focus
                 Vector2i                _size;                      ///< Size of the widget
                 Vector2i                _pos;                       ///< Position if the widget (relative to the parent and the Corner)

@@ -99,7 +99,7 @@ namespace Nc
 
         /// Specialisation of Node
         /**
-            Used to define and manipulate a tree/graph structure using a politic and the type of data witch would be stored with the data structure.
+            Used to define and manipulate a tree/graph structure using a politic and the type of data which would be stored with the data structure.
  <div class="title"> To use this specialisation directly, you can create your node like this: </div>
  \code
     #include <Nc/Core/Utils/Logger.h>

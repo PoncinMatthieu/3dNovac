@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to create plugins witch would be used to import and export SceneNode's
+        /// Interface to create plugins which would be used to import and export SceneNode's
         class LGRAPHICS ISceneNodeFormatPlugin
         {
             public:

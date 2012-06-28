@@ -146,10 +146,10 @@ namespace Nc
             template<typename T>
             struct Container    { T   Data; };
 
-            /// Just a struct witch do and store nothing
+            /// Just a struct which do and store nothing
             struct Nop {};
 
-            /// A Classic allocator witch allocate and destroy objects
+            /// A Classic allocator which allocate and destroy objects
             template<typename T>
             struct Allocator
             {

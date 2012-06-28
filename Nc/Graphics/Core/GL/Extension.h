@@ -55,6 +55,9 @@ namespace Nc
         namespace GL
         {
             /// Manage the OpenGL extensions
+            /**
+                Especialy used on windows to dynamically load opengl functions.
+            */
             class LGRAPHICS Extension : public Utils::Singleton<Extension>
             {
                 public:

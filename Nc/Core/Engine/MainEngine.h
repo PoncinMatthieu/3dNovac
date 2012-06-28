@@ -34,13 +34,13 @@ namespace Nc
 {
     namespace Engine
     {
-        /// Abstract class to help the implementation of a Main Engine witch receive events from an InputListener
+        /// Abstract class to help the implementation of a Main Engine which receive events from an InputListener
 		/**
 			Inherite from System::InputListener to be able to receive input events.
 			So a MainEngine can receive two types of events:
 				- Engine::IEvent from another engine, by using the manager has an intermediate.
 				- System::Event from the InputListener.
-				
+
 			To redefine your own engine, you should redefine the following methods:
 				- Update which is called at each loop. The method gives you the time elapsed between two Update call.
 				- KeyboardEvent which is called if the engine receive an input event comming from the keyboard.

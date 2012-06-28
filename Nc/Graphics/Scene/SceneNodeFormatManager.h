@@ -37,16 +37,16 @@ namespace Nc
         /**
             Plugins are loaded with the Xml System::Config file by using the "SceneNodeFormatPlugin" path in the "GameConf".
 
- \p The config file
+            <div class="title">Exemple of config file</div>
  \code
 <Config>
-        <GameConf>
-                <SceneNodeFormatPlugin name="Nc:Plugin:libPluginFileFormatCollada.so" />
-                <SceneNodeFormatPlugin name="Nc:Plugin:libPluginFileFormat3ds.so" />
-        </GameConf>
-        <RessourcesPath>
-                <Plugin path="../Ressources/Plugin/" />
-        </RessourcesPath>
+    <GameConf>
+        <SceneNodeFormatPlugin name="Nc:Plugin:libPluginFileFormatCollada.so" />
+        <SceneNodeFormatPlugin name="Nc:Plugin:libPluginFileFormat3ds.so" />
+    </GameConf>
+    <RessourcesPath>
+        <Plugin path="../Ressources/Plugin/" />
+    </RessourcesPath>
 </Config>
  \endcode
         */

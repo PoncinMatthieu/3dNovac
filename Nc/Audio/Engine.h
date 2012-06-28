@@ -52,7 +52,7 @@ namespace Nc
                 /// The event command for the Audio::Engine
                 enum CmdIndex
                 {
-                    LoadDescFile = 0,   ///< Load a .desc xml configuration file witch contain all the sounds to load
+                    LoadDescFile = 0,   ///< Load a .desc xml configuration file which contain all the sounds to load
                     LoadMusic,          ///< Load a music file on memory
                     PlayMusic,          ///< Play the music loaded
                     StopMusic,          ///< Stop the music loaded

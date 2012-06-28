@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// This class encapsulate some usefull classes witch can help you to use a Visitor pattern
+        /// This class encapsulate some usefull classes which can help you to use a Visitor pattern
         /**
             The implemented visitor, is a "Cooperative Visitor", this one use some template method like a VTable to define with object should be visited.
             The Cooperative Visitor is a flexible and efficient version of the visitor design pattern that accommodates arbritrary argument and return types.
@@ -43,7 +43,7 @@ namespace Nc
 
             The Visitor Manager implement two visitor.
             The first one allow you to visit an object by using a vtable and resolving the type and calling the visit method if you want to visit the true type by initialize the type you want to visit with a typelist.
-            And the second allow you like the first to visit an object but use a second vtable to call methods witch should use to recall the visitor itself to visit a structure like a graph or a tree.
+            And the second allow you like the first to visit an object but use a second vtable to call methods which should use to recall the visitor itself to visit a structure like a graph or a tree.
         */
         class VisitorManager
         {
@@ -236,7 +236,7 @@ namespace Nc
 
                     private:
                         bool                        _postVisit;
-                        const VTableInvokableType   *_vTableInvokable;      // vtable pointer for the nodes witch should be internaly visited
+                        const VTableInvokableType   *_vTableInvokable;      // vtable pointer for the nodes which should be internaly visited
                   };
         };
     }

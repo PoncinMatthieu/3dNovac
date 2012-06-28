@@ -35,7 +35,7 @@ namespace Nc
     {
         /// Define an entity node
         /**
-            An entity is define by a Matrix and can contain only one subtree and a list of childs
+            An entity is define by a Matrix and can contain only one subtree and a list of childs.
         */
         class LGRAPHICS Entity : public AbstractSceneNode<Graph::ListNodePolitic>
         {
@@ -54,13 +54,14 @@ namespace Nc
 
                 virtual ISceneNode          *Clone() const                                      {return new Entity(*this);}
 
-                /** \return the number of subtree witch can contain a least one subtree */
+                /** \return the number of subtree which can contain a least one subtree */
                 virtual unsigned int        SubTreeCount() const                                {return ((Data == NULL) ? 0 : 1);}
                 /** \return the subtree */
                 virtual const ISceneNode    *SubTree(unsigned int) const                        {return Data;}
 
                 /**
                     Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given \p oldAt.
+
                     Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible)
                 */
                 virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt);

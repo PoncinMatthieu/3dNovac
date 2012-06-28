@@ -88,7 +88,7 @@ namespace Nc
 
             protected:
                 Utils::Xml::File        _file;          ///< xml file used to read and write the configs
-                Utils::Xml::Object      *_content;      ///< xml object witch store the configs
+                Utils::Xml::Object      *_content;      ///< xml object which store the configs
 
                 friend class Utils::Singleton<Config>;
         };

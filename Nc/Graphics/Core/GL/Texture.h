@@ -42,10 +42,10 @@ namespace Nc
                 public:
                     Texture();
                     /**
-                        - \p file specify the texture filename
-                        - \p magnifyingFilter must be GL_NEAREST or GL_LINEAR
-                        - \p mignifyingFilter can be GL_NEAREST, GL_LINEAR, GL_NEAREST_MIPMAP_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR
-                        - \p generateMipmap, if true, generate the mipmaps of the texture
+                        - \param file specify the texture filename
+                        - \param magnifyingFilter must be GL_NEAREST or GL_LINEAR
+                        - \param mignifyingFilter can be GL_NEAREST, GL_LINEAR, GL_NEAREST_MIPMAP_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR
+                        - \param generateMipmap, if true, generate the mipmaps of the texture
                     */
                     Texture(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true);
                     virtual ~Texture();

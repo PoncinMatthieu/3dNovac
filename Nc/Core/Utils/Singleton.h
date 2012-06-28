@@ -59,7 +59,7 @@ namespace Nc
         {
             public:
                 /**
-                    Static function wich return the instance of the singleton T.
+                    Static function which return the instance of the singleton T.
                     \return the instance of the singleton of type T
                 */
                 static T &Instance()
@@ -77,7 +77,7 @@ namespace Nc
                 /**
                     Delete the instance.
                     If this function is not called before the program exit, the data will be not released and appears in valgrind.
-                    It's totally normal and not ugly with a static witch exist during the all execution of the program
+                    It's totally normal and not ugly with a static which exist during the all execution of the program
                 */
                 static void DeleteInstance()
                 {

@@ -35,7 +35,7 @@ namespace Nc
     {
         ///
         /**
-            \todo Implemente the grid layout, with the possibility to set up a given widget to a given case
+            \todo Implement the grid layout, with the possibility to set up a given widget to a given case
         */
         class LGUI Layout : public Widget
         {

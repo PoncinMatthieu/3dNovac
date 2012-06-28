@@ -36,6 +36,10 @@ namespace Nc
         namespace GL
         {
             /// To manipulate a Render Buffer Object (rbo)
+            /**
+                \sa
+                    - FrameBuffer
+            */
             class LGRAPHICS RenderBuffer : public Object
             {
                 public:

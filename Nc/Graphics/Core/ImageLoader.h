@@ -41,7 +41,10 @@ namespace Nc
     {
         /// Interface to load an image
         /**
-            Actually only the png file format is support.
+            Actually only the png file format is supported.
+
+            \sa
+                - ImageLoaderPng
         */
         class LGRAPHICS  ImageLoader
         {

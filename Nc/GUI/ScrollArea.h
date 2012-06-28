@@ -51,7 +51,7 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const          {return new ScrollArea(*this);}
 
-                /** Set the widget wich will be used to setup the scroll area by using the size of the view object */
+                /** Set the widget which will be used to setup the scroll area by using the size of the view object */
                 void                SetView(Widget *view);
 
             protected:

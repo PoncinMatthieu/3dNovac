@@ -36,7 +36,7 @@ namespace Nc
     {
         /// Implementation of a standard Camera3d
         /**
-            To manage default freefly, trackball or turntable camera
+            To manage default freefly, trackball or turntable camera.
         */
         class LGRAPHICS StandardCamera3d : public Camera3d
         {
@@ -100,7 +100,7 @@ namespace Nc
                 /** Manage the keyboard event */
                 virtual void    KeyboardEvent(const System::Event &) {};
 
-                /** Update the geometry witch draw the frustum of the camera */
+                /** Update the geometry which draw the frustum of the camera */
                 virtual void    UpdateViewFrustum();
                 /** Draw the frustum */
                 void            DrawFrustum(bool state);
@@ -119,7 +119,7 @@ namespace Nc
                 /** Recompute the trackball point with the given mouse position */
                 void MajTrackballPoint(int x, int y);
 
-                System::Mouse::Button   _mouveButton;   ///< the button witch active the movement of the camera
+                System::Mouse::Button   _mouveButton;   ///< the button which active the movement of the camera
 
                 Pattern     _pattern;                   ///< the pattern of the camera
                 bool        _inhibitMovement;           ///< if true, the camera will no receive the movements events

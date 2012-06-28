@@ -110,7 +110,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Drawable &drawable)
         attribs[2] = normalProgram.GetAttribLocation("InNormal");
     }
 
-    // disable the attrib witch we don't need
+    // disable the attrib which we don't need
     GL::VertexDescriptor    &desc = drawable.Geometry->Descriptor();
     Array<unsigned int>     lastAttribs(desc.Size());
     for (unsigned int i = 0; i < desc.Size(); ++i)

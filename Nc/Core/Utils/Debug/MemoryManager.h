@@ -40,13 +40,15 @@ namespace Nc
     {
         /// Check the allocated memory
         /**
-            MemoryManager is a singleton class who provide a check of all memory allocated. <br/>
-            Log the memory allocations in the file DebugMemory.log                          <br/>
-            To Use this class, you have just to include `OverloadAlloc.h` in your file      <br/>
+            MemoryManager is a singleton class who provide a check of all memory allocated.
 
-            \todo recode this memory manager to be thread safe
-			\warning this memory manager is deprecated. It needs to be recode.
-            \warning `OverloadAlloc.h` need to be not included in a .h and included after all include
+            Log the memory allocations in the file DebugMemory.log
+
+            To Use this class, you have just to include `OverloadAlloc.h` in your file.
+
+            \todo recode this memory manager to be thread safe.
+			\deprecated this memory manager is deprecated. It needs to be recoded.
+            \warning `OverloadAlloc.h` need to be not included in a .h and included after all include.
         */
         class MemoryManager
         {

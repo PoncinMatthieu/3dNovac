@@ -45,7 +45,7 @@ namespace Nc
 {
     namespace Utils
     {
-		/// Define a string witch inherite of the std::string. This class can be used to avoid the "unresolved symbol on basic_string::npos" in visual studio
+		/// Define a string which inherite of the std::string. This class can be used to avoid the "unresolved symbol on basic_string::npos" in visual studio
 		struct LCORE String : public std::string
 		{
 			static const std::size_t npos;

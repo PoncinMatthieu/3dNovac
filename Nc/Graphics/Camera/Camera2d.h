@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Implementation of a 2d Camera witch used an orthonormal projection
+        /// Implementation of a 2d Camera which used an orthonormal projection
         class LGRAPHICS Camera2d : public Camera
         {
             public:

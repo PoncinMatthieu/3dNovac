@@ -38,11 +38,11 @@ namespace Nc
         /// This namespace reference every classes that abstract the OpenGL librairy
         namespace GL
         {
-            /// Interface to manage OpenGL Object, manage the opengl ressource like a smart pointer
+            /// Interface to manage an OpenGL Object, manage the opengl ressource like a smart pointer
             /**
-                The ressource is shared between two ressources when you use the copy constructor or the copy operator. <br/>
+                The ressource is shared between two object when you use the copy constructor or the copy operator.
                 So GL::Object, is a reference counter of gl ressources (index) like texture and shader.
-                Release the opengl ressources when no more reference exists <br/>
+                It release the opengl ressources when no more reference exists.
 
                 <div class="title"> To create new GL::Object follow these instructions : </div>
                     - Use ReleaseRef() in the destructor of the child.

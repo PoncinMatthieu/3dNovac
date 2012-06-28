@@ -84,7 +84,7 @@ namespace Nc
 
         /// Define an event containing a string
         /**
-            Used to send event witch contain a string. Principaly used to manage the console events
+            Used to send event which contain a string. Principaly used to manage the console events
         */
         struct LCORE EventString : public IEvent
         {
@@ -100,7 +100,7 @@ namespace Nc
             std::string     args;           ///< the string argument of the event
         };
 
-        /// Define a Cmd handler witch have an id and a member function pointer
+        /// Define a Cmd handler which have an id and a member function pointer
 		/**
 			The id to identify the event, and call the function.
 		*/
@@ -112,7 +112,7 @@ namespace Nc
             CmdFunction         function;       ///< The member function pointer to excute the handler event
         };
 
-        /// Define a CmdString handler witch have a name, a comment to describe the cmd and a member function pointer
+        /// Define a CmdString handler which have a name, a comment to describe the cmd and a member function pointer
         struct LCORE CmdString
         {
             CmdString(const std::string &n, const std::string &c, CmdFunctionString f) : name(n), comment(c), function(f)    {}

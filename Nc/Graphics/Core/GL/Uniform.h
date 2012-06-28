@@ -174,7 +174,7 @@ namespace Nc
                     T       value4;
             };
 
-		
+
 			template class Uniform<float, 1>;
 			template class Uniform<float, 2>;
 		}
