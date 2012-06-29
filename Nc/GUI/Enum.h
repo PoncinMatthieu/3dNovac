@@ -43,18 +43,27 @@ namespace Nc
             Center      = CenterH | CenterV     ///< Centers horizontally and vertically.
         };
 
-        /// typedef to use a mask of alignment
+        /// typedef to use a mask of alignment.
         typedef Utils::Mask<Alignment>     AlignmentMask;
 
-        /// used to define an object orientation
+        /// used to define an object orientation.
         enum Orientation
         {
             Horizontal  = 1 << 0,
             Vertical    = 1 << 1
         };
 
-        /// typdef to use a mask of orientation
+        /// typdef to use a mask of orientation.
         typedef Utils::Mask<Orientation>   OrientationMask;
+
+        /// Allow to define edge sizes in a box.
+        struct BoxEdges
+        {
+            unsigned int    left;
+            unsigned int    right;
+            unsigned int    top;
+            unsigned int    bottom;
+        };
     }
 }
 

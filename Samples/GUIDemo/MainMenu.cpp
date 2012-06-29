@@ -43,7 +43,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
 // selectMode Window
     _selectModeWindow = new WindowBox("Main menu", Center, winsizeMode);
 
-    Widget *selectModeWidget = new Widget(CenterH | Top, Vector2f(winsizeMode[0] - 20, winsizeMode[1] - _selectModeWindow->TitleHeight() - 20));
+    Widget *selectModeWidget = new Widget(CenterH | Top, Vector2f(winsizeMode[0] - 20, winsizeMode[1] - 20));
     selectModeWidget->Pos(Vector2i(0, 10));
     _selectModeWindow->AddChild(selectModeWidget);
 

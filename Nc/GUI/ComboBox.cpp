@@ -50,7 +50,7 @@ ComboBox::ComboBox(GUI::SceneGraph *scene, const AlignmentMask &alignment, const
     if (_spriteList == NULL)
         throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBoxList + "' from the WindowStyle");
 
-    _margin[0] = 5;
+    _margin.left = 5;
     _size[1] = l->spriteMiddle->Size()[1];
 }
 
@@ -157,7 +157,7 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
 void    ComboBox::AddItem(Item *item)
 {
     Graphic::String *s = new Graphic::String(item->Data(), _fontSize, _fontColor, _fontName);
-    s->Matrix.AddTranslation(_margin[0], s->Size()[1] / 2, 0);
+    s->Matrix.AddTranslation(_margin.left, s->Size()[1] / 2, 0);
 
     _itemList.push_back(std::pair<Item*, Graphic::String*>(item, s));
     _currentItem = &(*_itemList.begin());

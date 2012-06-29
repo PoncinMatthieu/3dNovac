@@ -11,35 +11,35 @@
 
   <Sprite name="BackgroundBoxMiddle"		topX="0" topY="0" bottomX="8" bottomY="8" />
 
-  <Sprite name="WindowBoxLeftEdge"			topX="0" topY="77" bottomX="10" bottomY="93" />
-  <Sprite name="WindowBoxTopEdge"			topX="9" topY="64" bottomX="26" bottomY="74" />
-  <Sprite name="WindowBoxRightEdge"			topX="28" topY="75" bottomX="39" bottomY="88" />
-  <Sprite name="WindowBoxBottomEdge"		topX="10" topY="91" bottomX="26" bottomY="102" />
-  <Sprite name="WindowBoxLeftTop"			topX="0" topY="64" bottomX="10" bottomY="74" />
-  <Sprite name="WindowBoxRightTop"			topX="28" topY="64" bottomX="39" bottomY="74" />
-  <Sprite name="WindowBoxLeftBottom"		topX="0" topY="91" bottomX="10" bottomY="102" />
-  <Sprite name="WindowBoxRightBottom"		topX="28" topY="91" bottomX="39" bottomY="102" />
-  <Sprite name="WindowBoxMiddle"			topX="10" topY="75" bottomX="26" bottomY="90" />
+  <Sprite name="WidgetBoxLeftEdge"			topX="0" topY="77" bottomX="10" bottomY="93" />
+  <Sprite name="WidgetBoxTopEdge"			topX="9" topY="64" bottomX="26" bottomY="74" />
+  <Sprite name="WidgetBoxRightEdge"			topX="28" topY="75" bottomX="39" bottomY="88" />
+  <Sprite name="WidgetBoxBottomEdge"		topX="10" topY="91" bottomX="26" bottomY="102" />
+  <Sprite name="WidgetBoxLeftTop"			topX="0" topY="64" bottomX="10" bottomY="74" />
+  <Sprite name="WidgetBoxRightTop"			topX="28" topY="64" bottomX="39" bottomY="74" />
+  <Sprite name="WidgetBoxLeftBottom"		topX="0" topY="91" bottomX="10" bottomY="102" />
+  <Sprite name="WidgetBoxRightBottom"		topX="28" topY="91" bottomX="39" bottomY="102" />
+  <Sprite name="WidgetBoxMiddle"			topX="10" topY="75" bottomX="26" bottomY="90" />
 
-  <Sprite name="Window2BoxLeftEdge"			topX="44" topY="85" bottomX="52" bottomY="95" />
-  <Sprite name="Window2BoxTopEdge"			topX="63" topY="67" bottomX="88" bottomY="75" />
-  <Sprite name="Window2BoxRightEdge"		topX="91" topY="76" bottomX="99" bottomY="84" />
-  <Sprite name="Window2BoxBottomEdge"		topX="53" topY="95" bottomX="79" bottomY="103" />
-  <Sprite name="Window2BoxLeftTop"			topX="44" topY="67" bottomX="62" bottomY="86" />
-  <Sprite name="Window2BoxRightTop"			topX="88" topY="67" bottomX="99" bottomY="77" />
-  <Sprite name="Window2BoxLeftBottom"		topX="44" topY="92" bottomX="55" bottomY="103" />
-  <Sprite name="Window2BoxRightBottom"		topX="66" topY="83" bottomX="99" bottomY="103" />
-  <Sprite name="Window2BoxMiddle"			topX="67" topY="83" bottomX="77" bottomY="88" />
+  <Sprite name="Widget2BoxLeftEdge"			topX="44" topY="85" bottomX="52" bottomY="95" />
+  <Sprite name="Widget2BoxTopEdge"			topX="63" topY="67" bottomX="88" bottomY="75" />
+  <Sprite name="Widget2BoxRightEdge"		topX="91" topY="76" bottomX="99" bottomY="84" />
+  <Sprite name="Widget2BoxBottomEdge"		topX="53" topY="95" bottomX="79" bottomY="103" />
+  <Sprite name="Widget2BoxLeftTop"			topX="44" topY="67" bottomX="62" bottomY="86" />
+  <Sprite name="Widget2BoxRightTop"			topX="88" topY="67" bottomX="99" bottomY="77" />
+  <Sprite name="Widget2BoxLeftBottom"		topX="44" topY="92" bottomX="55" bottomY="103" />
+  <Sprite name="Widget2BoxRightBottom"		topX="66" topY="83" bottomX="99" bottomY="103" />
+  <Sprite name="Widget2BoxMiddle"			topX="67" topY="83" bottomX="77" bottomY="88" />
 
-  <Sprite name="1WindowBoxLeftEdge"			topX="0" topY="49" bottomX="10" bottomY="65" />
-  <Sprite name="1WindowBoxTopEdge"			topX="9" topY="36" bottomX="26" bottomY="46" />
-  <Sprite name="1WindowBoxRightEdge"		topX="28" topY="47" bottomX="39" bottomY="60" />
-  <Sprite name="1WindowBoxBottomEdge"		topX="10" topY="63" bottomX="26" bottomY="74" />
-  <Sprite name="1WindowBoxLeftTop"			topX="0" topY="36" bottomX="10" bottomY="46" />
-  <Sprite name="1WindowBoxRightTop"			topX="28" topY="36" bottomX="39" bottomY="46" />
-  <Sprite name="1WindowBoxLeftBottom"		topX="0" topY="63" bottomX="10" bottomY="74" />
-  <Sprite name="1WindowBoxRightBottom"		topX="28" topY="63" bottomX="39" bottomY="74" />
-  <Sprite name="1WindowBoxMiddle"			topX="10" topY="47" bottomX="26" bottomY="62" />
+  <Sprite name="WindowBoxLeftEdge"			topX="0" topY="127" bottomX="10" bottomY="131" />
+  <Sprite name="WindowBoxTopEdge"			topX="9" topY="102" bottomX="26" bottomY="127" />
+  <Sprite name="WindowBoxRightEdge"			topX="28" topY="127" bottomX="39" bottomY="126" />
+  <Sprite name="WindowBoxBottomEdge"		topX="10" topY="129" bottomX="26" bottomY="140" />
+  <Sprite name="WindowBoxLeftTop"			topX="0" topY="102" bottomX="10" bottomY="127" />
+  <Sprite name="WindowBoxRightTop"			topX="28" topY="102" bottomX="39" bottomY="127" />
+  <Sprite name="WindowBoxLeftBottom"		topX="0" topY="129" bottomX="10" bottomY="140" />
+  <Sprite name="WindowBoxRightBottom"		topX="28" topY="129" bottomX="39" bottomY="140" />
+  <Sprite name="WindowBoxMiddle"			topX="10" topY="127" bottomX="26" bottomY="131" />
 
   <Sprite name="ButtonStripLeft"			topX="0" topY="8" bottomX="6" bottomY="36" />
   <Sprite name="ButtonStripMiddle"			topX="6" topY="8" bottomX="102" bottomY="36" />

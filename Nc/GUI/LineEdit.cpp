@@ -36,14 +36,14 @@ using namespace Nc::Graphic;
 LineEdit::LineEdit(const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const std::string &looksName)
     : Widget(alignment, size)
 {
+    UseLook(new StripLook(looksName + WindowStyle::SpriteName::LineEdit));
+
     _editable = true;
     _fontUnderscoreDisplayed = false;
-    _margin[0] = 5;
-    _margin[1] = 5;
-    _font = new Graphic::String("", size[1] - (_margin[1] * 2), Color(), ttf);
-    _fontUnderscore = new Graphic::String("|", size[1] - (_margin[1] * 2), Color(), ttf);
-
-    UseLook(new StripLook(looksName + WindowStyle::SpriteName::LineEdit));
+    //MarginH(5);
+    MarginV(5);
+    _font = new Graphic::String("", size[1] - (_margin.top + _margin.bottom + _widgetLook->edges.top + _widgetLook->edges.bottom), Color(), ttf);
+    _fontUnderscore = new Graphic::String("|", size[1] - (_margin.top + _margin.bottom + _widgetLook->edges.top + _widgetLook->edges.bottom), Color(), ttf);
 }
 
 LineEdit::~LineEdit()
@@ -83,15 +83,15 @@ void    LineEdit::Update()
 {
     Widget::Update();
 
-    float charSize = _size[1] - (_margin[1] * 2);
+    float charSize = _size[1] - (_margin.top + _margin.bottom + _widgetLook->edges.top + _widgetLook->edges.bottom);
     if (charSize != _font->CharSize())
     {
         _font->CharSize(charSize);
         _fontUnderscore->CharSize(charSize);
     }
-    _font->Matrix.Translation(_margin[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
+    _font->Matrix.Translation(_margin.left + _widgetLook->edges.left, (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 
-    _fontUnderscore->Matrix.Translation(_margin[0] + _font->Size()[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
+    _fontUnderscore->Matrix.Translation(_margin.left + _widgetLook->edges.left + _font->Size()[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 }
 
 void LineEdit::Draw(Graphic::SceneGraph *scene)
@@ -100,7 +100,7 @@ void LineEdit::Draw(Graphic::SceneGraph *scene)
     _font->RenderNode(scene);
 
     // if we have the focus, we draw the underscore and make it blink
-    if (_focus)
+    if (_focus && _editable)
     {
         if (_clock.ElapsedTime() > 1)
         {

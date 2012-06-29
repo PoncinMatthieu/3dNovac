@@ -53,7 +53,10 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
     _size = size;
     _alignment = alignment;
     _useStencil = false;
-    _margin = Vector2i(0, 0);
+    _margin.left = 0;
+    _margin.right = 0;
+    _margin.top = 0;
+    _margin.bottom = 0;
     _widgetLook = NULL;
     _owner = NULL;
     _stateChanged = true;
@@ -199,10 +202,31 @@ void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
         GetReelPosRecursif(pos);
         GetReelSize(size);
 
-        pos[0] += _margin[0];
-        pos[1] += _margin[1];
-        size[0] -= (_margin[0] * 2);
-        size[1] -= (_margin[1] * 2);
+        if (_alignment.Enabled(Left))
+            pos[0] += _margin.left;
+        else
+            pos[0] += _margin.right;
+        if (_alignment.Enabled(Top))
+            pos[1] += _margin.top;
+        else
+            pos[1] += _margin.bottom;
+        size[0] -= (_margin.left + _margin.right);
+        size[1] -= (_margin.top + _margin.bottom);
+
+        if (_widgetLook != NULL)
+        {
+            if (_alignment.Enabled(Left))
+                pos[0] += _widgetLook->edges.left;
+            else
+                pos[0] += _widgetLook->edges.right;
+            if (_alignment.Enabled(Top))
+                pos[1] += _widgetLook->edges.top;
+            else
+                pos[1] += _widgetLook->edges.bottom;
+            size[0] -= (_widgetLook->edges.left + _widgetLook->edges.right);
+            size[1] -= (_widgetLook->edges.top + _widgetLook->edges.bottom);
+        }
+
         scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
     }
 }
@@ -276,7 +300,13 @@ void Widget::Reposed()
 void Widget::GetReelPos(Vector2i &reelPos) const
 {
     // margin a 0, on prendra celui du parent s'il y en a un (margin interieur)
-    Vector2i    reelSize, parentSize, parentTranslate, margin;
+    Vector2i    reelSize, parentSize, parentTranslate;
+    BoxEdges    margin;
+
+    margin.left = 0;
+    margin.right = 0;
+    margin.top = 0;
+    margin.bottom = 0;
 
     GetReelSize(reelSize);
     reelPos = _pos;
@@ -287,6 +317,15 @@ void Widget::GetReelPos(Vector2i &reelPos) const
     {
         v.parent->GetReelSize(parentSize);
         margin = v.parent->_margin;
+
+        if (v.parent->_widgetLook != NULL)
+        {
+            margin.left += v.parent->_widgetLook->edges.left;
+            margin.right += v.parent->_widgetLook->edges.right;
+            margin.top += v.parent->_widgetLook->edges.top;
+            margin.bottom += v.parent->_widgetLook->edges.bottom;
+        }
+
         v.parent->PosChild(this, parentTranslate);
     }
     else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph which is supposed to be the parent of the widget at one point
@@ -301,17 +340,17 @@ void Widget::GetReelPos(Vector2i &reelPos) const
 
     // check les corner en x
     if (_alignment.Enabled(Right))
-        reelPos.Data[0] = parentSize.Data[0] - reelSize.Data[0] - margin.Data[0] - reelPos.Data[0];
+        reelPos.Data[0] = parentSize.Data[0] - reelSize.Data[0] - margin.right - reelPos.Data[0];
     else if (_alignment.Enabled(Left))
-        reelPos.Data[0] += margin.Data[0];
+        reelPos.Data[0] += margin.left;
     else if (_alignment.Enabled(CenterH)) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
         reelPos.Data[0] += (parentSize[0] / 2.0) - (reelSize.Data[0] / 2.0);
 
     // check les corner en y
     if (_alignment.Enabled(Top))
-        reelPos.Data[1] = parentSize.Data[1] - reelSize.Data[1] - margin.Data[1] - reelPos.Data[1];
+        reelPos.Data[1] = parentSize.Data[1] - reelSize.Data[1] - margin.top - reelPos.Data[1];
     else if (_alignment.Enabled(Bottom))
-        reelPos.Data[1] += margin.Data[1];
+        reelPos.Data[1] += margin.bottom;
     else if (_alignment.Enabled(CenterV)) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
         reelPos.Data[1] += (parentSize.Data[1] / 2.0) - (reelSize.Data[1] / 2.0);
     reelPos += parentTranslate;
@@ -408,6 +447,13 @@ void    Widget::UseLook(GUI::ILook *look)
 void    Widget::SizeChild(const Widget *, Vector2i &size) const
 {
     GetReelSize(size);
-    size -= (_margin * 2);
+    size[0] -= (_margin.left + _margin.right);
+    size[1] -= (_margin.top + _margin.bottom);
+
+    if (_widgetLook != NULL)
+    {
+        size[0] -= (_widgetLook->edges.left + _widgetLook->edges.right);
+        size[1] -= (_widgetLook->edges.top + _widgetLook->edges.bottom);
+    }
 }
 

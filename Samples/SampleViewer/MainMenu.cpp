@@ -57,7 +57,8 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     // create the sample window used to render the samples
     _widgetSampleWindow = new Widget(Center);
     _widgetSampleWindow->UseLook(new BoxLook());
-    _widgetSampleWindow->Margin(Vector2i(5, 5));
+    _widgetSampleWindow->MarginH(5);
+    _widgetSampleWindow->MarginV(5);
     _widgetSampleWindow->Percent(Vector2f(100, 90));
     mainLayout->AddChild(_widgetSampleWindow);
 
@@ -83,18 +84,16 @@ void    MainMenu::AddSample(const std::string &name)
 Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
 {
     Layout *descriptionLayout = new Layout(Layout::Vertical, Center, Vector2i(300, 0));
-    descriptionLayout->UseLook(new BoxLook());
-    descriptionLayout->MarginX(5);
-    descriptionLayout->MarginY(5);
+    descriptionLayout->MarginH(5);
+    descriptionLayout->MarginV(5);
     parent->AddChild(descriptionLayout);
 
     // create the select window with the combobox and the button
     Widget *windowSelectSample = CreateSelectSampleWindow(descriptionLayout);
     windowSelectSample->Percent(Vector2f(100, 0));
 
-
     // create a spacer between the select window and the rest
-    Widget *spacer1 = new Widget(CenterH | Top, Vector2i(0, 10));
+    Widget *spacer1 = new Widget(CenterH | Top, Vector2i(0, 5));
     descriptionLayout->AddChild(spacer1);
 
 
@@ -104,11 +103,11 @@ Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
     descriptionLayout->AddChild(winDescArea);
     descriptionLayout->SetExpandRatio(winDescArea, 100);
 
+
     // create the text area to describe the selected sample
     _descriptionTextArea = new TextArea(CenterH | Bottom);
     _descriptionTextArea->Percent(Vector2f(100, 100));
     winDescArea->AddChild(_descriptionTextArea);
-
 
     return descriptionLayout;
 }
@@ -116,20 +115,23 @@ Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
 Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
 {
     Widget *windowSelectSample = new Widget(CenterH | Top, Vector2i(0,60));
-    windowSelectSample->UseLook(new BoxLook("Window"));
+    windowSelectSample->UseLook(new BoxLook("Widget"));
     parent->AddChild(windowSelectSample);
 
     Layout *selectSampleLayout = new Layout(Layout::Horizontal, Center);
-    selectSampleLayout->Percent(Vector2f(95, 100));
+    selectSampleLayout->Percent(Vector2f(100, 100));
     windowSelectSample->AddChild(selectSampleLayout);
 
     _sampleComboBox = new ComboBox(_GUI, Center, Vector2i(250,0));
-    _sampleComboBox->Percent(Vector2f(95, 0));
+    _sampleComboBox->Percent(Vector2f(100, 0));
     selectSampleLayout->AddChild(_sampleComboBox);
-    selectSampleLayout->SetExpandRatio(_sampleComboBox, 65);
+    selectSampleLayout->SetExpandRatio(_sampleComboBox, 100);
 
-    Button *button = new Button("Start", Center, 20, 15, 8, "arial");
-    button->Percent(Vector2f(95, 0));
+    // create a spacer widget between the combo box and the button
+    Widget *spacer = new Widget(Center, Vector2i(5,0));
+    selectSampleLayout->AddChild(spacer);
+
+    Button *button = new Button("Start", Center, Vector2i(70, 28), "arial");
     selectSampleLayout->AddChild(button);
     button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::StartSample);

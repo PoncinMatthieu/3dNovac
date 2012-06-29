@@ -62,6 +62,7 @@ namespace Nc
                     static const std::string    ComboBox;
                     static const std::string    ComboBoxList;
                     static const std::string    LineEdit;
+                    static const std::string    WindowBox;
                     static const std::string    ScrollBarRightButton;
                     static const std::string    ScrollBarLeftButton;
                     static const std::string    ScrollBarSliderBackground;

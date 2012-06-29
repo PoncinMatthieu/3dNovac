@@ -84,9 +84,7 @@ void    WidgetSubWindow::Resize()
 
 void    WidgetSubWindow::Reposed()
 {
-    Vector2i pos;
-    GetReelPosRecursif(pos);
-    _subWindow->Pos(pos);
+    Resized();
 }
 
 void    WidgetSubWindow::Draw(Graphic::SceneGraph *scene)

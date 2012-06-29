@@ -27,6 +27,7 @@
 #ifndef NC_GUI_LOOKS_H_
 #define NC_GUI_LOOKS_H_
 
+#include <Nc/Graphics/Object/Sprite.h>
 #include "Define.h"
 #include "WindowStyle.h"
 
@@ -45,7 +46,8 @@ namespace Nc
             virtual void    Draw(Graphic::SceneGraph *scene) = 0;
             virtual void    Update(const Vector2i &size) = 0;
 
-            Color   color;
+            Color       color;
+            BoxEdges    edges;
         };
 
         class LGUI StripLook : public ILook

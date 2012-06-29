@@ -50,6 +50,7 @@ const std::string   WindowStyle::SpriteName::ButtonPressed = "ButtonPressed";
 const std::string   WindowStyle::SpriteName::ComboBox = "ComboBox";
 const std::string   WindowStyle::SpriteName::ComboBoxList = "ComboBoxList";
 const std::string   WindowStyle::SpriteName::LineEdit = "LineEdit";
+const std::string   WindowStyle::SpriteName::WindowBox = "Window";
 const std::string   WindowStyle::SpriteName::ScrollBarRightButton = "ScrollBarRightButton";
 const std::string   WindowStyle::SpriteName::ScrollBarLeftButton = "ScrollBarLeftButton";
 const std::string   WindowStyle::SpriteName::ScrollBarSliderBackground = "ScrollBarSliderBackground";

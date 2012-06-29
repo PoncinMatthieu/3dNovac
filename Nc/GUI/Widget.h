@@ -127,11 +127,11 @@ namespace Nc
                 /** \return the alignment settings. */
                 inline const AlignmentMask  &Alignment() const                      {return _alignment;}
                 /** Set the margin inside of the widget for childs. */
-                inline void                 Margin(const Vector2i &margin)          {_margin = margin; _stateChanged = true;}
-                /** Set the X margin value. */
-                inline void                 MarginX(int x)                          {_margin[0] = x; _stateChanged = true;}
-                /** Set the Y margin value. */
-                inline void                 MarginY(int y)                          {_margin[1] = y; _stateChanged = true;}
+                inline void                 Margin(const BoxEdges &margin)          {_margin = margin; _stateChanged = true;}
+                /** Set the horizontal margin value. */
+                inline void                 MarginH(int m)                          {_margin.left = _margin.right = m; _stateChanged = true;}
+                /** Set the vertical margin value. */
+                inline void                 MarginV(int m)                          {_margin.top = _margin.bottom = m; _stateChanged = true;}
 
                 /** Set the use stencil statement.
                     \warning this statement should be modified only before rendering...otherwise you should use a mutex to protect it's access.
@@ -237,7 +237,7 @@ namespace Nc
                 bool                    _resized;                   ///< if true, the size of the widget will be compute before to be rendered.
                 bool                    _generateHandleAtEnterFocus;///< if true, genere an handle when we enter in focus.
                 bool                    _resizable;                 ///< if false, the widget will not be resized.
-                Vector2i                _margin;                    ///< margin inside of the widget.
+                BoxEdges                _margin;                    ///< margin inside of the widget.
                 Vector2f                _percent;                   ///< if the percent is different of null, then the size will be calculated in function of the parent size (if no parent then use the window size).
 
                 bool                    _useStencil;                ///< if true, use the stencil buffer to be sure that the childs will not be drawn outside of the widget.

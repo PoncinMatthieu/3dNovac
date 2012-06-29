@@ -30,18 +30,17 @@ using namespace Nc;
 using namespace Nc::GUI;
 
 FPSWidget::FPSWidget(const AlignmentMask &alignment)
-    : Label("000", 20, alignment, Vector2i(0,20))
+    : Label("000", 20, alignment)
 {
-    _size.Data[1] = _label->Size().Data[1];
     TextColor(Color(1,1,1));
 }
 
 void FPSWidget::Update()
 {
-    Widget::Update();
-
     // update the size of the widget
     _size = _label->Size();
+
+    Label::Update();
 }
 
 void FPSWidget::Draw(Graphic::SceneGraph *scene)
@@ -51,7 +50,7 @@ void FPSWidget::Draw(Graphic::SceneGraph *scene)
     static unsigned int     moyFps = 0;
 
     // toutes les 50 frames, on reset, et print la moyenne de fps
-    if (i >= 50/*frequency*/)
+    if (i >= 50)//frequency)
     {
         std::ostringstream FPS;
         //frequency = moyFps / frequency;
@@ -66,5 +65,6 @@ void FPSWidget::Draw(Graphic::SceneGraph *scene)
         moyFps += fps;
         ++i;
     }
+
     Label::Draw(scene);
 }

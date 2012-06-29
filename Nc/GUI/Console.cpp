@@ -41,17 +41,17 @@ Mutex                               Console::_mutexMsg;
 std::string							Console::_currentWritingMsg;
 
 Console::Console(Window *attachedWindow, const std::string &engineName, Pattern p)
-    : WindowBox("Console", "Prototype"), _pattern(p), _attachedWindow(attachedWindow)
+    : WindowBox("Console", Left | Bottom, Vector2i(0,0), "Prototype"), _pattern(p), _attachedWindow(attachedWindow)
 {
     unsigned short  percent = 15; // hauteur de la console en poucentage
 
-    _margin.Init(5, 5);
-    _alignment = Left | Bottom;
+    MarginH(5);
+    MarginV(5);
     _prompt = "[" + engineName + "]> ";
     _engineName = engineName;
 
     _size.Data[0] = _attachedWindow->Width() - 1;
-    _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) + _titleHeight;
+    _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
     _pos[0] = 1; // pour voir tous les bord de la console, on se decale de 1
 
     _labelPrompt = new Label(_prompt, 17, Left | Bottom, Vector2f(0, 17), "Prototype");
@@ -73,7 +73,6 @@ Console::Console(Window *attachedWindow, const std::string &engineName, Pattern 
     #ifndef _DEBUG_GUI_DISABLE_CONSOLE_LOGGING
         LOG.SetLoggingFunction(Write); // set le logger de base dans notre console graphique
     #endif
-    _drawTitle = true;
 }
 
 Console::~Console()
@@ -104,7 +103,7 @@ void Console::GetReelPos(Vector2i &pos) const
 {
     WindowBox::GetReelPos(pos);
     if (_pattern == TranslateAtFocus && !_focus)
-        pos.Data[1] -= _size.Data[1] - _titleHeight;
+        pos.Data[1] -= _size.Data[1] /*- _titleHeight*/;
 }
 
 void Console::Update()
@@ -113,19 +112,19 @@ void Console::Update()
     // met a jour la taille de la console en fonction de la taille de la fenetre
     unsigned short  percent = 15; // hauteur de la console en poucentage
     _size.Data[0] = _attachedWindow->Width() - 1;
-    _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) + _titleHeight;
+    _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
 
     // met a jour les string de message
     if ((_pattern == TranslateAtFocus && _focus) || (_pattern == Nop))
     {
         TMatrix         m;
         float           textHeight1 = _labelPrompt->GetLabel()->CharSize(), textHeight2 = 14;
-        unsigned int    nbMsg = (((float)(_size.Data[1] - _titleHeight - textHeight1)) / textHeight2);
+        unsigned int    nbMsg = (((float)(_size.Data[1] /*- _titleHeight*/ - textHeight1)) / textHeight2);
 
         if (nbMsg != _listFont.size())
         {
             DeleteListFont();
-            m.AddTranslation(10., (double)textHeight1 + _margin.Data[1] + _pos.Data[1], 0.);
+            m.AddTranslation(10., (double)textHeight1 + _margin.top + _pos.Data[1], 0.);
             for (unsigned int i = 0; i < nbMsg; i++)
             {
                 String *newString = new String("", textHeight2, Color(0.8f, 0.8f, 0.8f), "arial");

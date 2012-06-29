@@ -41,14 +41,6 @@ Button::Button(const std::string &text, const AlignmentMask &alignment, const Ve
     Initialize(text, size, ttf, lookName);
 }
 
-Button::Button(const std::string &text, const AlignmentMask &alignment, int fontSize, int marginX, int marginY, const std::string &ttf, const std::string &lookName)
-    : Widget(alignment)
-{
-    Initialize(text, Vector2i(0, fontSize), ttf, lookName);
-    _size[0] = (marginX * 2) + _font->Size()[0];
-    _size[1] = (marginY * 2) + _font->Size()[1];
-}
-
 Button::~Button()
 {
     delete _font;
@@ -76,16 +68,14 @@ Button &Button::operator = (const Button &w)
 
 void    Button::Initialize(const std::string &text, const Vector2i &size, const std::string &ttf, const std::string &lookName)
 {
-    _colorDisable = Color(0.2f, 0.2f, 0.2f);
-    _buttonPressed = false;
-    _margin[0] = 2;
-    _margin[1] = 2;
-    _charSize = size.Data[1] - _margin[1];
-    _font = new Graphic::String(text, _charSize, Color(1, 1, 1), ttf);
-
-
     _buttonLook = new StripLook(lookName + WindowStyle::SpriteName::Button);
     _buttonLookPressed = new StripLook(lookName + WindowStyle::SpriteName::ButtonPressed);
+    UseLook(_buttonLook);
+
+    _colorDisable = Color(0.2f, 0.2f, 0.2f);
+    _buttonPressed = false;
+    _charSize = size.Data[1] - (_margin.top + _margin.bottom) - (_buttonLook->edges.top + _buttonLook->edges.bottom);
+    _font = new Graphic::String(text, _charSize, Color(1, 1, 1), ttf);
 }
 
 void    Button::Copy(const Button &w)
@@ -132,7 +122,8 @@ void Button::Update()
         _font->CharSize(_charSize);
     while (!st && _font->CharSize() > 0)
     {
-        if (_font->Size().Data[0] > (_size.Data[0] - _margin[0]) || _font->Size().Data[1] > (_size.Data[1] - _margin[1]))
+        if (_font->Size().Data[0] > (_size.Data[0] - _margin.left - _margin.right - _buttonLook->edges.left - _buttonLook->edges.right) ||
+            _font->Size().Data[1] > (_size.Data[1] - _margin.top - _margin.bottom - _buttonLook->edges.top - _buttonLook->edges.bottom))
             _font->CharSize(_font->CharSize() - 1);
         else
             st = true;

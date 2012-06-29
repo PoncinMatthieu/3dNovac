@@ -46,8 +46,6 @@ namespace Nc
             public:
                 Button(const std::string &text, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0),
                        const std::string &ttf = "arial", const std::string &lookName = "");
-                Button(const std::string &text, const AlignmentMask &alignment, int fontSize, int marginX, int marginY,
-                       const std::string &ttf = "arial", const std::string &lookName = "");
                 Button(const Button &w);
                 Button &operator = (const Button &w);
                 virtual ~Button();
