@@ -27,20 +27,20 @@
 #ifndef NC_GUI_TEXTBOX_H_
 #define NC_GUI_TEXTBOX_H_
 
-#include "WidgetLabeled.h"
+#include "Widget.h"
 
 namespace Nc
 {
     namespace GUI
     {
-        /// to manage a text box
-        class LGUI  LineEdit : public WidgetLabeled
+        /// To manage a text box
+        class LGUI  LineEdit : public Widget
         {
             public:
-                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WidgetLabeled, System::Object, Nc::GUI::LineEdit);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::LineEdit);
 
             public:
-                LineEdit(const std::string &label, Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial", const std::string &looksName = "");
+                LineEdit(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial", const std::string &looksName = "");
                 LineEdit(const LineEdit &w);
                 LineEdit &operator = (const LineEdit &w);
                 ~LineEdit();
@@ -48,31 +48,30 @@ namespace Nc
                 virtual ISceneNode  *Clone() const              {return new LineEdit(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
-                /** Set the text of the text box */
+                /** Set the text of the text box. */
                 void                                Text(const Utils::Unicode::UTF32 &t)        {_font->Text(t);}
-                /** Return the text of the text box */
+                /** Return the text of the text box. */
                 inline const Utils::Unicode::UTF32  &Text() const                               {return _font->Text();}
 
             protected:
-                /** update the geometry of the text box */
+                /** update the geometry of the text box. */
                 virtual void Update();
-                /** Render the text box */
+                /** Render the text box. */
                 virtual void Draw(Graphic::SceneGraph *scene);
-                /** Fill the string of the text box */
-                void GetData(std::string &data);
 
-                /** the keyboard handler */
+                /** the keyboard handler. */
                 virtual void KeyboardEvent(const System::Event &event);
 
             private:
-                /** Copy the widget */
+                /** Copy the widget. */
                 void        Copy(const LineEdit &w);
 
             protected:
-                Graphic::String     *_font;         ///< the text in the text box
-
-            private:
-                unsigned int        _indexDrawable;
+                Graphic::String     *_font;                     ///< the text in the text box.
+                bool                _editable;                  ///< if true, the linedit will receive events from the keyboard.
+                Graphic::String     *_fontUnderscore;           ///< store the undescore draw next to the editable text.
+                bool                _fontUnderscoreDisplayed;   ///< if true, the underscore is displayed.
+                Utils::Clock        _clock;                     ///< clock used to draw the underscore next to the editable text and make it blink.
         };
     }
 }

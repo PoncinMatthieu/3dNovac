@@ -27,25 +27,28 @@
 #ifndef NC_GUI_FPSWIDGET_H_
 #define NC_GUI_FPSWIDGET_H_
 
-#include "WidgetLabeled.h"
+#include "Label.h"
 
 namespace Nc
 {
     namespace GUI
     {
         /// To display the Frame per second of the Graphic::Engine
-        class LGUI FPSWidget : public WidgetLabeled
+        class LGUI FPSWidget : public Label
         {
             public:
-                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WidgetLabeled, System::Object, Nc::GUI::FPSWidget);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Label, System::Object, Nc::GUI::FPSWidget);
 
             public:
-                FPSWidget(Corner x = Center, Corner y = Top);
+                FPSWidget(const AlignmentMask &alignment = Center | Top);
 
                 virtual ISceneNode  *Clone() const              {return new FPSWidget(*this);}
 
+            public:
+                /** Update the geometry of the fps widget */
+                virtual void Update();
                 /** Render the fps */
-                void Draw(Graphic::SceneGraph *scene);
+                virtual void Draw(Graphic::SceneGraph *scene);
         };
     }
 }

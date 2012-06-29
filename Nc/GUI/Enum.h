@@ -31,22 +31,30 @@ namespace Nc
 {
     namespace GUI
     {
-        /// enum to define a relative position of a Widget
-        enum Corner
+        /// enum used to describe alignement. It contains horizontal and vertical flags that can be combined to produce the required effect.
+        enum Alignment
         {
-            Top,        ///< should be used to define the Y relative position of the widget
-            Bottom,     ///< should be used to define the Y relative position of the widget
-            Left,       ///< should be used to define the X relative position of the widget
-            Right,      ///< should be used to define the X relative position of the widget
-            Center      ///< can be used to define the X or Y relative position of the widget
+            Left        = 1 << 1,               ///< Alignment with the left edge.
+            CenterH     = 1 << 2,               ///< Centers horizontally in the available space.
+            Right       = 1 << 3,               ///< Alignment with the right edge.
+            Bottom      = 1 << 4,               ///< Alignment with the bottom.
+            CenterV     = 1 << 5,               ///< Centers vertically in the available space.
+            Top         = 1 << 6,               ///< Alignment with the top.
+            Center      = CenterH | CenterV     ///< Centers horizontally and vertically.
         };
+
+        /// typedef to use a mask of alignment
+        typedef Utils::Mask<Alignment>     AlignmentMask;
 
         /// used to define an object orientation
         enum Orientation
         {
-            Horizontal,
-            Vertical
+            Horizontal  = 1 << 0,
+            Vertical    = 1 << 1
         };
+
+        /// typdef to use a mask of orientation
+        typedef Utils::Mask<Orientation>   OrientationMask;
     }
 }
 

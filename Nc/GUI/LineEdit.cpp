@@ -25,6 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "LineEdit.h"
+#include "Looks.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
@@ -32,43 +33,44 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-LineEdit::LineEdit(const std::string &label, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const std::string &ttf, const std::string &looksName)
-    : WidgetLabeled(label, size[1], x, y, pos, size, ttf)
+LineEdit::LineEdit(const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const std::string &looksName)
+    : Widget(alignment, size)
 {
-    _margin[0] = 4;
-    _centerLabelY = true;
-    UpdateLabel();
-    _font = new Graphic::String("", size[1], Color(1, 1, 1), ttf);
+    _editable = true;
+    _fontUnderscoreDisplayed = false;
+    _margin[0] = 5;
+    _margin[1] = 5;
+    _font = new Graphic::String("", size[1] - (_margin[1] * 2), Color(), ttf);
+    _fontUnderscore = new Graphic::String("|", size[1] - (_margin[1] * 2), Color(), ttf);
 
-    // creation des drawable
-    _indexDrawable = _drawables.size();
-    GL::GeometryBuffer<DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<DefaultVertexType::Colored2d, false>(GL::Enum::LineLoop);
-    geometry1->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
-    _drawables.push_back(new Drawable(geometry1));
-    ChooseDefaultMaterial();
+    UseLook(new StripLook(looksName + WindowStyle::SpriteName::LineEdit));
 }
 
 LineEdit::~LineEdit()
 {
     delete _font;
+    delete _fontUnderscore;
 }
 
 LineEdit::LineEdit(const LineEdit &w)
-    : WidgetLabeled(w)
+    : Widget(w)
 {
     Copy(w);
 }
 
 LineEdit &LineEdit::operator = (const LineEdit &w)
 {
-    WidgetLabeled::operator = (w);
+    Widget::operator = (w);
     Copy(w);
     return *this;
 }
 
 void    LineEdit::Copy(const LineEdit &w)
 {
-    _font = new Graphic::String(*w._font);
+    _font = static_cast<String*>(w._font->Clone());
+    _fontUnderscore = static_cast<String*>(w._fontUnderscore->Clone());
+    _fontUnderscoreDisplayed = false;
+    _editable = w._editable;
 }
 
 void    LineEdit::ToString(std::ostream &os) const
@@ -79,32 +81,44 @@ void    LineEdit::ToString(std::ostream &os) const
 
 void    LineEdit::Update()
 {
-    WidgetLabeled::Update();
+    Widget::Update();
 
-    Color c(0,0,1);
-    if (!_focus)
-        c = Color(0,1,0);
+    float charSize = _size[1] - (_margin[1] * 2);
+    if (charSize != _font->CharSize())
+    {
+        _font->CharSize(charSize);
+        _fontUnderscore->CharSize(charSize);
+    }
+    _font->Matrix.Translation(_margin[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 
-    Array<DefaultVertexType::Colored2d, 4>   vertices;
-    vertices[0].Fill(_label->Size().Data[0], 0, c);
-    vertices[1].Fill(_label->Size().Data[0], _size.Data[1], c);
-    vertices[2].Fill(_label->Size().Data[0] + _size.Data[0], _size.Data[1], c);
-    vertices[3].Fill(_label->Size().Data[0] + _size.Data[0], 0, c);
-    static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable]->Geometry)->VBO().UpdateData(vertices.Data);
-
-    _font->Matrix.Translation(_label->Size().Data[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
+    _fontUnderscore->Matrix.Translation(_margin[0] + _font->Size()[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 }
 
 void LineEdit::Draw(Graphic::SceneGraph *scene)
 {
-    WidgetLabeled::Draw(scene);
-    GetMaterial()->Render(scene, *_drawables[_indexDrawable]);
+    Widget::Draw(scene);
     _font->RenderNode(scene);
+
+    // if we have the focus, we draw the underscore and make it blink
+    if (_focus)
+    {
+        if (_clock.ElapsedTime() > 1)
+        {
+            _fontUnderscoreDisplayed = !_fontUnderscoreDisplayed;
+            _clock.Reset();
+        }
+
+        if (_fontUnderscoreDisplayed)
+            _fontUnderscore->RenderNode(scene);
+    }
+    else
+        _fontUnderscoreDisplayed = false;
+
 }
 
 void LineEdit::KeyboardEvent(const System::Event &event)
 {
-    if (event.type == System::Event::KeyPressed)
+    if (_editable && event.type == System::Event::KeyPressed)
     {
         if (event.key.code == System::Key::Back && !_font->Text().empty()) // suppression du dernier caractere
         {
@@ -124,9 +138,4 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         }
         _stateChanged = true;
     }
-}
-
-void LineEdit::GetData(std::string &data)
-{
-    data = _font->Text().ToStdString();
 }

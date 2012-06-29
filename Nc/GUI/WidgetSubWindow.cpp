@@ -30,8 +30,8 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-WidgetSubWindow::WidgetSubWindow(Graphic::Window *windowParent, Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
-    : Widget(x, y, pos, size)
+WidgetSubWindow::WidgetSubWindow(Graphic::Window *windowParent, const AlignmentMask &alignment, const Vector2i &size)
+    : Widget(alignment, size)
 {
     _subWindow = new Graphic::SubWindow(windowParent);
     _subWindow->Create(_size);
@@ -61,9 +61,9 @@ WidgetSubWindow::~WidgetSubWindow()
     delete _subWindow;
 }
 
-void    WidgetSubWindow::Resized()
+void    WidgetSubWindow::Resize()
 {
-    Widget::Resized();
+    Widget::Resize();
 
     Vector2i reelSize;
     GetReelSize(reelSize);

@@ -29,8 +29,8 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-Layout::Layout(Pattern p, Corner x, Corner y, const Vector2i &size)
-    :   Widget(x, y, Vector2i(0,0), size),
+Layout::Layout(Pattern p, const AlignmentMask &alignment, const Vector2i &size)
+    :   Widget(alignment, size),
         _pattern(p)
 {
 }
@@ -71,9 +71,9 @@ void    Layout::PosChildHorizontal(const Widget *child, Vector2i &v, const Vecto
     if (_mapRatio.empty())
     {
         int inc = reelSize[0] / childCount;
-        if (child->GetCorner(0) == Right)
+        if (child->Alignment().Enabled(Right))
             childNumber = childNumber - childCount + 1;
-        if (child->GetCorner(0) == Center)
+        if (child->Alignment().Enabled(CenterH))
             v[0] = v[0] - (reelSize[0] / 2) + (inc / 2);
         v[0] += (inc * childNumber);
     }
@@ -119,11 +119,11 @@ void    Layout::PosChildHorizontal(const Widget *child, Vector2i &v, const Vecto
         {
             v[0] += inc[i];
         }
-        if (child->GetCorner(0) == Right)
+        if (child->Alignment().Enabled(Right))
         {
             v[0] -= (reelSize[0] - inc[i]);
         }
-        else if (child->GetCorner(0) == Center)
+        else if (child->Alignment().Enabled(CenterH))
         {
             v[0] -= ((reelSize[0] / 2) - (inc[i] / 2));
         }
@@ -136,9 +136,9 @@ void    Layout::PosChildVertical(const Widget *child, Vector2i &v, const Vector2
     if (_mapRatio.empty())
     {
         int inc = reelSize[1] / childCount;
-        if (child->GetCorner(1) == Bottom)
+        if (child->Alignment().Enabled(Bottom))
             childNumber = childNumber - childCount + 1;
-        if (child->GetCorner(1) == Center)
+        if (child->Alignment().Enabled(CenterV))
             v[1] = v[1] + (reelSize[1] / 2) - (inc / 2);
         v[1] -= (inc * childNumber);
 
@@ -185,11 +185,11 @@ void    Layout::PosChildVertical(const Widget *child, Vector2i &v, const Vector2
         {
             v[1] -= inc[i];
         }
-        if (child->GetCorner(1) == Bottom)
+        if (child->Alignment().Enabled(Bottom))
         {
             v[1] += (reelSize[1] - inc[i]);
         }
-        else if (child->GetCorner(1) == Center)
+        else if (child->Alignment().Enabled(CenterV))
         {
             v[1] += ((reelSize[1] / 2) - (inc[i] / 2));
         }

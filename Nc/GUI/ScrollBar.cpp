@@ -38,8 +38,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
-ScrollBar::ScrollBar(Corner x, Corner y, const Vector2i &pos, int length, Orientation orientation, const std::string &lookName)
-    : Widget(x, y, pos, Vector2i(0,0)), _orientation(orientation), _totalSize(0), _pageSize(0), _position(0), _buttonLeftPressed(false), _buttonRightPressed(false), _buttonSliderPressed(false)
+ScrollBar::ScrollBar(const AlignmentMask &alignment, int length, Orientation orientation, const std::string &lookName)
+    : Widget(alignment, Vector2i(0,0)), _orientation(orientation), _totalSize(0), _pageSize(0), _position(0), _buttonLeftPressed(false), _buttonRightPressed(false), _buttonSliderPressed(false)
 {
     // load and configure every sprites
     NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteLeftButton, lookName + WindowStyle::SpriteName::ScrollBarLeftButton);

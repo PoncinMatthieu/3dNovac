@@ -41,17 +41,19 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     Vector2f    winsizeInGame(300, 110);
 
 // selectMode Window
-    _selectModeWindow = new WindowBox("Main menu", Center, Center, Vector2f(0, 0), winsizeMode);
+    _selectModeWindow = new WindowBox("Main menu", Center, winsizeMode);
 
-    Widget *selectModeWidget = new Widget(Center, Top, Vector2f(0, 10), Vector2f(winsizeMode[0] - 20, winsizeMode[1] - _selectModeWindow->TitleHeight() - 20));
+    Widget *selectModeWidget = new Widget(CenterH | Top, Vector2f(winsizeMode[0] - 20, winsizeMode[1] - _selectModeWindow->TitleHeight() - 20));
+    selectModeWidget->Pos(Vector2i(0, 10));
     _selectModeWindow->AddChild(selectModeWidget);
-    //selectModeWidget->UseLook();
 
-    Button *button = new Button("Single Player", Center, Center, Vector2f(0, 20), Vector2f(140, 20), "Prototype");
+    Button *button = new Button("Single Player", Center, Vector2f(140, 20), "Prototype");
+    button->Pos(Vector2f(0, 20));
     button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::ModeSinglePlayer);
     selectModeWidget->AddChild(button);
-    button = new Button("Mutiplayer", Center, Center, Vector2f(0, -20), Vector2f(140, 20), "Prototype");
+    button = new Button("Mutiplayer", Center, Vector2f(140, 20), "Prototype");
+    button->Pos(Vector2f(0, -20));
     button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::ModeMultiplayer);
     selectModeWidget->AddChild(button);

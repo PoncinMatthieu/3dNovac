@@ -33,7 +33,7 @@
 #define NC_GUI_GUI_H_
 
 #include "SceneGraph.h"
-#include "WidgetLabeled.h"
+#include "Label.h"
 #include "Button.h"
 #include "LineEdit.h"
 #include "WindowBox.h"

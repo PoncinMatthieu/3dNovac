@@ -29,7 +29,8 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-TextArea::TextArea(Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const std::string &ttf)
+TextArea::TextArea(const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf)
+    : ScrollArea(alignment, size)
 {
     _editable = false;
 

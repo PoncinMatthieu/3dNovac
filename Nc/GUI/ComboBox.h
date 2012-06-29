@@ -46,7 +46,7 @@ namespace Nc
                 class ComboBoxUnfoldList : public Widget
                 {
                     public:
-                        ComboBoxUnfoldList(ComboBox *cb, Corner x, Corner y, const Vector2i &pos, const Vector2i &size);
+                        ComboBoxUnfoldList(ComboBox *cb, const AlignmentMask &alignment, const Vector2i &pos, const Vector2i &size);
 
                         virtual ISceneNode  *Clone() const          {return new ComboBoxUnfoldList(*this);}
 
@@ -64,7 +64,7 @@ namespace Nc
 
 
             public:
-                ComboBox(GUI::SceneGraph *scene, Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), float fontSize = 15, const Color &fontColor = Color(0,0,0), const std::string &fontName = "arial", const std::string &looksName = "");
+                ComboBox(GUI::SceneGraph *scene, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), float fontSize = 15, const Color &fontColor = Color(0,0,0), const std::string &fontName = "arial", const std::string &looksName = "");
                 ComboBox(const ComboBox &cb);
                 ComboBox &operator = (const ComboBox &cb);
                 ~ComboBox();

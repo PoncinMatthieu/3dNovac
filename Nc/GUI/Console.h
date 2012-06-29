@@ -29,13 +29,16 @@
 
 #include <list>
 #include "WindowBox.h"
-#include "WidgetLabeled.h"
+#include "Label.h"
 
 namespace Nc
 {
     namespace GUI
     {
         /// To manage a console
+        /**
+            \todo Recode the console
+        */
         class LGUI  Console : public WindowBox, Utils::NonCopyable
         {
             public:
@@ -87,9 +90,9 @@ namespace Nc
 				static std::string					_currentWritingMsg;	///< The message that is save between a Write and a flush
 
                 std::list<Graphic::String*>         _listFont;          ///< list of string used to render the messages
-                WidgetLabeled                       *_labelPrompt;      ///< the label used to render the prompt
-                WidgetLabeled                       *_labelWrite;       ///< the label used to render the command text
-                WidgetLabeled                       *_labelCursor;      ///< the label used to render the cursor
+                Label                               *_labelPrompt;      ///< the label used to render the prompt
+                Label                               *_labelWrite;       ///< the label used to render the command text
+                Label                               *_labelCursor;      ///< the label used to render the cursor
                 float                               _cursorWidth;       ///< posittion of the cursor
 
                 unsigned int                        _scroll;            ///< scroll position

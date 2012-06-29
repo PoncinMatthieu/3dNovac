@@ -44,13 +44,13 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Widget, System::Object, System::Object, Nc::GUI::WidgetSubWindow);
 
             public:
-                WidgetSubWindow(Graphic::Window *windowParent, Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0));
+                WidgetSubWindow(Graphic::Window *windowParent, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0));
                 WidgetSubWindow(const WidgetSubWindow &w);
                 WidgetSubWindow &operator = (const WidgetSubWindow &w);
                 virtual ~WidgetSubWindow();
 
                 /** Resize the widget with the SubWindow */
-                virtual void            Resized();
+                virtual void            Resize();
                 /** Repos the widget with the SubWindow */
                 virtual void            Reposed();
 

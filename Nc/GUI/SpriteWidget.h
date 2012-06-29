@@ -52,7 +52,7 @@ namespace Nc
                 typedef std::list<SpritePos>  ListSpritePos;    ///< Define a list of sprite/position
 
             public:
-                SpriteWidget(Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0));
+                SpriteWidget(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0));
                 virtual ~SpriteWidget();
 
                 virtual ISceneNode  *Clone() const                  {return new SpriteWidget(*this);}

@@ -33,8 +33,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
-ComboBox::ComboBox(GUI::SceneGraph *scene, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, float fontSize, const Color &fontColor, const std::string &fontName, const std::string &looksName)
-    : Widget(x, y, pos, size), _scene(scene), _fontSize(fontSize), _fontColor(fontColor), _fontName(fontName), _currentItem(NULL), _listUnrolled(false), _currentUnfoldList(NULL)
+ComboBox::ComboBox(GUI::SceneGraph *scene, const AlignmentMask &alignment, const Vector2i &size, float fontSize, const Color &fontColor, const std::string &fontName, const std::string &looksName)
+    : Widget(alignment, size), _scene(scene), _fontSize(fontSize), _fontColor(fontColor), _fontName(fontName), _currentItem(NULL), _listUnrolled(false), _currentUnfoldList(NULL)
 {
     StripLook *l = new StripLook(looksName + WindowStyle::SpriteName::ComboBox);
     UseLook(l);
@@ -145,7 +145,7 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
                 pos[1] += (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2;
                 pos[1] += _spriteList->Size()[1];
 
-                _currentUnfoldList = new ComboBoxUnfoldList(this, Left, Bottom, pos, Vector2i(_spriteList->Size()[0], -_spriteList->Size()[1] * _itemList.size()));
+                _currentUnfoldList = new ComboBoxUnfoldList(this, Left | Bottom, pos, Vector2i(_spriteList->Size()[0], -_spriteList->Size()[1] * _itemList.size()));
                 _scene->AddChild(_currentUnfoldList);
                 _scene->Focus(_currentUnfoldList);
                 _listUnrolled = true;
@@ -164,9 +164,10 @@ void    ComboBox::AddItem(Item *item)
     _stateChanged = true;
 }
 
-ComboBox::ComboBoxUnfoldList::ComboBoxUnfoldList(ComboBox *cb, Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
-    : Widget(x, y, pos, size), _cb(cb)
+ComboBox::ComboBoxUnfoldList::ComboBoxUnfoldList(ComboBox *cb, const AlignmentMask &alignment, const Vector2i &pos, const Vector2i &size)
+    : Widget(alignment, size), _cb(cb)
 {
+    _pos = pos;
 }
 
 void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &event)

@@ -45,8 +45,9 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     _currentSampleWindow = NULL;
 
     // create the main layout
-    Layout *mainLayout = new Layout(Layout::Horizontal, Center, Center);
+    Layout *mainLayout = new Layout(Layout::Horizontal, Center);
     mainLayout->UseLook(new BoxLook("Background"));
+    mainLayout->Percent(Vector2f(100, 100));
     _GUI->AddChild(mainLayout);
 
     // create the description window
@@ -54,18 +55,17 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     descriptionWindow->Percent(Vector2f(0, 90));
 
     // create the sample window used to render the samples
-    _widgetSampleWindow = new Widget(Center, Center);
+    _widgetSampleWindow = new Widget(Center);
     _widgetSampleWindow->UseLook(new BoxLook());
     _widgetSampleWindow->Margin(Vector2i(5, 5));
+    _widgetSampleWindow->Percent(Vector2f(100, 90));
     mainLayout->AddChild(_widgetSampleWindow);
 
     // set the auto resizing
-    mainLayout->Percent(Vector2f(100, 100));
     mainLayout->SetExpandRatio(_widgetSampleWindow, 100);
-    _widgetSampleWindow->Percent(Vector2f(100, 90));
 
     // create the fps widget on top of the main layout
-    _GUI->AddChild(new FPSWidget(Right, Top));
+    _GUI->AddChild(new FPSWidget(Right | Top));
 
     //_console = new GUI::Console();
     //_scene->AddChild(_console);
@@ -82,7 +82,7 @@ void    MainMenu::AddSample(const std::string &name)
 
 Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
 {
-    Layout *descriptionLayout = new Layout(Layout::Vertical, Center, Center, Vector2i(300, 0));
+    Layout *descriptionLayout = new Layout(Layout::Vertical, Center, Vector2i(300, 0));
     descriptionLayout->UseLook(new BoxLook());
     descriptionLayout->MarginX(5);
     descriptionLayout->MarginY(5);
@@ -92,48 +92,47 @@ Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
     Widget *windowSelectSample = CreateSelectSampleWindow(descriptionLayout);
     windowSelectSample->Percent(Vector2f(100, 0));
 
-    // create a line edit for debug to del
-    LineEdit *lineEdit = new LineEdit("Plop", Center, Top, Vector2i(0, 0), Vector2i(0, 20));
-    descriptionLayout->AddChild(lineEdit);
-    lineEdit->Percent(Vector2f(100, 0));
+
+    // create a spacer between the select window and the rest
+    Widget *spacer1 = new Widget(CenterH | Top, Vector2i(0, 10));
+    descriptionLayout->AddChild(spacer1);
 
 
     // create the window description area
-    WindowBox *winDescArea = new WindowBox("Description", Center, Top);
+    WindowBox *winDescArea = new WindowBox("Description", CenterH | Top);
+    winDescArea->Percent(Vector2f(100, 100));
     descriptionLayout->AddChild(winDescArea);
+    descriptionLayout->SetExpandRatio(winDescArea, 100);
 
     // create the text area to describe the selected sample
-    _descriptionTextArea = new TextArea(Center, Bottom);
-    winDescArea->AddChild(_descriptionTextArea);
+    _descriptionTextArea = new TextArea(CenterH | Bottom);
     _descriptionTextArea->Percent(Vector2f(100, 100));
+    winDescArea->AddChild(_descriptionTextArea);
 
-    winDescArea->Percent(Vector2f(100, 100));
-    descriptionLayout->SetExpandRatio(winDescArea, 100);
 
     return descriptionLayout;
 }
 
 Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
 {
-    Widget *windowSelectSample = new Widget(Center, Top, Vector2i(0,0), Vector2i(0,60));
+    Widget *windowSelectSample = new Widget(CenterH | Top, Vector2i(0,60));
     windowSelectSample->UseLook(new BoxLook("Window"));
     parent->AddChild(windowSelectSample);
 
-    Layout *selectSampleLayout = new Layout(Layout::Horizontal, Center, Center);
+    Layout *selectSampleLayout = new Layout(Layout::Horizontal, Center);
+    selectSampleLayout->Percent(Vector2f(95, 100));
     windowSelectSample->AddChild(selectSampleLayout);
 
-    _sampleComboBox = new ComboBox(_GUI, Center, Center, Vector2i(0,0), Vector2i(250,0));
+    _sampleComboBox = new ComboBox(_GUI, Center, Vector2i(250,0));
+    _sampleComboBox->Percent(Vector2f(95, 0));
     selectSampleLayout->AddChild(_sampleComboBox);
+    selectSampleLayout->SetExpandRatio(_sampleComboBox, 65);
 
-    Button *button = new Button("Start", Center, Center, Vector2i(0,0), 20, 15, 8, "arial");
+    Button *button = new Button("Start", Center, 20, 15, 8, "arial");
+    button->Percent(Vector2f(95, 0));
     selectSampleLayout->AddChild(button);
     button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::StartSample);
-
-    selectSampleLayout->Percent(Vector2f(95, 100));
-    selectSampleLayout->SetExpandRatio(_sampleComboBox, 65);
-    _sampleComboBox->Percent(Vector2f(95, 0));
-    button->Percent(Vector2f(95, 0));
     return windowSelectSample;
 }
 
@@ -142,9 +141,9 @@ WidgetSubWindow    *MainMenu::CreateSampleWindow(Window *windowParent)
     if (_currentSampleWindow != NULL)
         _widgetSampleWindow->RemoveWidget(_currentSampleWindow);
 
-    _currentSampleWindow = new WidgetSubWindow(windowParent, Center, Center);
-    _widgetSampleWindow->AddChild(_currentSampleWindow);
+    _currentSampleWindow = new WidgetSubWindow(windowParent, Center);
     _currentSampleWindow->Percent(Vector2f(100, 100));
+    _widgetSampleWindow->AddChild(_currentSampleWindow);
     return _currentSampleWindow;
 }
 

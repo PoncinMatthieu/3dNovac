@@ -46,7 +46,7 @@ Console::Console(Window *attachedWindow, const std::string &engineName, Pattern 
     unsigned short  percent = 15; // hauteur de la console en poucentage
 
     _margin.Init(5, 5);
-    _corner[1] = Bottom;
+    _alignment = Left | Bottom;
     _prompt = "[" + engineName + "]> ";
     _engineName = engineName;
 
@@ -54,18 +54,20 @@ Console::Console(Window *attachedWindow, const std::string &engineName, Pattern 
     _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) + _titleHeight;
     _pos[0] = 1; // pour voir tous les bord de la console, on se decale de 1
 
-    _labelPrompt = new WidgetLabeled(_prompt, 17, Left, Bottom, Vector2f(0, 0), Vector2f(0, 17), "Prototype");
-    _labelPrompt->LabelColor(Color(1, 1, 1));
+    _labelPrompt = new Label(_prompt, 17, Left | Bottom, Vector2f(0, 17), "Prototype");
+    _labelPrompt->TextColor(Color(1, 1, 1));
     AddChild(_labelPrompt);
 
     Vector2i size;
     _labelPrompt->GetReelSize(size);
-    _labelWrite = new WidgetLabeled("", 17, Left, Bottom, Vector2f(size.Data[0], 0), Vector2f(0, 17), "Prototype");
-    _labelWrite->LabelColor(Color(1, 1, 1));
+    _labelWrite = new Label("", 17, Left | Bottom, Vector2f(0, 17), "Prototype");
+    _labelWrite->Pos(Vector2f(size.Data[0], 0));
+    _labelWrite->TextColor(Color(1, 1, 1));
     AddChild(_labelWrite);
 
-    _labelCursor = new WidgetLabeled("_", 17, Left, Bottom, Vector2f(size.Data[0], 0), Vector2f(0, 17), "arial");
-    _labelCursor->LabelColor(Color(0, 1, 0));
+    _labelCursor = new Label("_", 17, Left | Bottom, Vector2f(0, 17), "arial");
+    _labelCursor->Pos(Vector2f(size.Data[0], 0));
+    _labelCursor->TextColor(Color(0, 1, 0));
     AddChild(_labelCursor);
 
     #ifndef _DEBUG_GUI_DISABLE_CONSOLE_LOGGING
@@ -184,7 +186,7 @@ void Console::KeyboardEvent(const Event &event)
                     if (_itCurrentMsg != _listMsg.rend())
                     {
                         cmd = *_itCurrentMsg;
-                        _labelWrite->Label(cmd);
+                        _labelWrite->Text(cmd);
                         Vector2i sizeLabelWrite;
                         Vector2i sizeLabelPrompt;
                         _labelWrite->GetReelSize(sizeLabelWrite);
@@ -200,7 +202,7 @@ void Console::KeyboardEvent(const Event &event)
                     if (lastcmdSet)
                     {
                         cmd = lastcmd;
-                        _labelWrite->Label(cmd);
+                        _labelWrite->Text(cmd);
                         Vector2i sizeLabelWrite;
                         Vector2i sizeLabelPrompt;
                         _labelWrite->GetReelSize(sizeLabelWrite);
@@ -213,7 +215,7 @@ void Console::KeyboardEvent(const Event &event)
                 {
                     --_itCurrentMsg;
                     cmd = *_itCurrentMsg;
-                    _labelWrite->Label(cmd);
+                    _labelWrite->Text(cmd);
                     Vector2i sizeLabelWrite;
                     Vector2i sizeLabelPrompt;
                     _labelWrite->GetReelSize(sizeLabelWrite);
@@ -231,7 +233,7 @@ void Console::KeyboardEvent(const Event &event)
             LOG << cmd << endl;
             ExecCmd(cmd.ToStdString());
             cmd.clear();
-            _labelWrite->Label("");
+            _labelWrite->Text("");
             lastcmdSet = false;
             Vector2i sizeLabelWrite;
             Vector2i sizeLabelPrompt;
@@ -242,7 +244,7 @@ void Console::KeyboardEvent(const Event &event)
         else if (event.key.code == Key::Back && !cmd.empty()) // suppression du dernier caractere
         {
             cmd.erase(cmd.end() - 1);
-            _labelWrite->Label(cmd);
+            _labelWrite->Text(cmd);
             Vector2i sizeLabelWrite;
             Vector2i sizeLabelPrompt;
             _labelWrite->GetReelSize(sizeLabelWrite);
@@ -256,7 +258,7 @@ void Console::KeyboardEvent(const Event &event)
             if (c == '\t' || (c >= ' ' && c <= '~'))      // ajout du caractere dans la string de commande
             {
                 cmd += c;
-                _labelWrite->Label(cmd);
+                _labelWrite->Text(cmd);
                 Vector2i sizeLabelWrite;
                 Vector2i sizeLabelPrompt;
                 _labelWrite->GetReelSize(sizeLabelWrite);

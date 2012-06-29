@@ -29,11 +29,19 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-FPSWidget::FPSWidget(Corner x, Corner y)
-    : WidgetLabeled("000", 20, x, y, Vector2i(0,5), Vector2i(0,20))
+FPSWidget::FPSWidget(const AlignmentMask &alignment)
+    : Label("000", 20, alignment, Vector2i(0,20))
 {
     _size.Data[1] = _label->Size().Data[1];
-    LabelColor(Color(1,1,1));
+    TextColor(Color(1,1,1));
+}
+
+void FPSWidget::Update()
+{
+    Widget::Update();
+
+    // update the size of the widget
+    _size = _label->Size();
 }
 
 void FPSWidget::Draw(Graphic::SceneGraph *scene)
@@ -48,7 +56,7 @@ void FPSWidget::Draw(Graphic::SceneGraph *scene)
         std::ostringstream FPS;
         //frequency = moyFps / frequency;
         FPS << (moyFps / i);
-        Label(FPS.str());
+        Text(FPS.str());
         moyFps = 0;
         i = 0;
     }
@@ -58,5 +66,5 @@ void FPSWidget::Draw(Graphic::SceneGraph *scene)
         moyFps += fps;
         ++i;
     }
-    WidgetLabeled::Draw(scene);
+    Label::Draw(scene);
 }

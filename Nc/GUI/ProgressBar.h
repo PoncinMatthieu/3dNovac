@@ -34,13 +34,16 @@ namespace Nc
     namespace GUI
     {
         /// To manage a progress bar
+        /**
+            \todo Recode the progress bar to use the Looks class.
+        */
         class LGUI  ProgressBar : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ProgressBar);
 
             public:
-                ProgressBar(Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
+                ProgressBar(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
                 virtual ~ProgressBar();
 
                 virtual ISceneNode  *Clone() const                              {return new ProgressBar(*this);}
@@ -60,7 +63,6 @@ namespace Nc
             protected:
                 /** update the geometry of the progress bar */
                 virtual void Update();
-
                 /** Render the progress bar */
                 virtual void Draw(Graphic::SceneGraph *scene);
 

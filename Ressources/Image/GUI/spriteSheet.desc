@@ -63,14 +63,14 @@
   <Sprite name="ScrollBarSliderExpandPressed"	topX="182" topY="26" bottomX="183" bottomY="41" />
   <Sprite name="ScrollBarRightButtonPressed"	topX="212" topY="26" bottomX="226" bottomY="41" />
 
-  <Sprite name="ComboBoxStripLeft"		topX="109" topY="9" bottomX="113" bottomY="33" />
-  <Sprite name="ComboBoxStripRight"		topX="140" topY="9" bottomX="162" bottomY="33" />
+  <Sprite name="ComboBoxStripLeft"			topX="109" topY="9" bottomX="113" bottomY="33" />
+  <Sprite name="ComboBoxStripRight"			topX="140" topY="9" bottomX="162" bottomY="33" />
   <Sprite name="ComboBoxStripMiddle"		topX="113" topY="9" bottomX="140" bottomY="33" />
-  <Sprite name="ComboBoxList"		topX="113" topY="34" bottomX="140" bottomY="52" />
+  <Sprite name="ComboBoxList"				topX="113" topY="34" bottomX="140" bottomY="52" />
 
-  <Sprite name="LineEditStripLeft"		topX="227" topY="9" bottomX="233" bottomY="33" />
-  <Sprite name="LineEditStripRight"		topX="238" topY="9" bottomX="243" bottomY="33" />
-  <Sprite name="LineEditStripMiddle"		topX="233" topY="9" bottomX="238" bottomY="33" />
+  <Sprite name="LineEditStripLeft"			topX="227" topY="9" bottomX="232" bottomY="31" />
+  <Sprite name="LineEditStripRight"			topX="235" topY="9" bottomX="239" bottomY="31" />
+  <Sprite name="LineEditStripMiddle"		topX="232" topY="9" bottomX="235" bottomY="31" />
 
 </SpriteSheet>
 

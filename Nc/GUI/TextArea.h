@@ -43,7 +43,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextArea);
 
             public:
-                TextArea(Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
+                TextArea(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
 
                 virtual ISceneNode              *Clone() const          {return new TextArea(*this);}
 

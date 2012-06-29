@@ -44,9 +44,9 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Button);
 
             public:
-                Button(const std::string &text, Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0),
+                Button(const std::string &text, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0),
                        const std::string &ttf = "arial", const std::string &lookName = "");
-                Button(const std::string &text, Corner x, Corner y, const Vector2i &pos, int fontSize, int marginX, int marginY,
+                Button(const std::string &text, const AlignmentMask &alignment, int fontSize, int marginX, int marginY,
                        const std::string &ttf = "arial", const std::string &lookName = "");
                 Button(const Button &w);
                 Button &operator = (const Button &w);

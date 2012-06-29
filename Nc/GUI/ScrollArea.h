@@ -44,7 +44,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ScrollArea);
 
             public:
-                ScrollArea(Corner x = Left, Corner y = Top, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0) );
+                ScrollArea(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0) );
                 ScrollArea(const ScrollArea &sc);
                 ScrollArea &operator = (const ScrollArea &sc);
                 virtual ~ScrollArea();

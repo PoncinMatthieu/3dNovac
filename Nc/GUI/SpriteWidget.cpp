@@ -30,8 +30,8 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-SpriteWidget::SpriteWidget(Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
-    : Widget(x, y, pos, size)
+SpriteWidget::SpriteWidget(const AlignmentMask &alignment, const Vector2i &size)
+    : Widget(alignment, size)
 {
 }
 

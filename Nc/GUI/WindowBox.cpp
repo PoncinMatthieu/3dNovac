@@ -38,8 +38,8 @@ WindowBox::WindowBox(const std::string &title, const std::string &ttf)
     Init(title, ttf);
 }
 
-WindowBox::WindowBox(const std::string &title, Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
-    : Widget(x, y, pos, size)
+WindowBox::WindowBox(const std::string &title, const AlignmentMask &alignment, const Vector2i &size)
+    : Widget(alignment, size)
 {
     Init(title, "arial");
 }

@@ -40,7 +40,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::WindowBox);
 
             public:
-                WindowBox(const std::string &title, Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0,0), const Vector2i &size = Vector2i(0,0));
+                WindowBox(const std::string &title, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0));
                 WindowBox(const WindowBox &w);
                 WindowBox &operator = (const WindowBox &w);
                 virtual ~WindowBox();

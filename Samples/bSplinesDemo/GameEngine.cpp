@@ -38,7 +38,7 @@ void GameEngine::LoadContent()
 
   // GUI :
   //    scene2d->AddWidget(new GUI::Console());
-  _scene2d->AddChild(new GUI::FPSWidget(GUI::Center, GUI::Top));
+  _scene2d->AddChild(new GUI::FPSWidget(GUI::CenterH | GUI::Top));
 
   _current = 0;
   CreateSplines1();  // splines et nurbs 1

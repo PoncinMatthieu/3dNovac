@@ -30,8 +30,8 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-ProgressBar::ProgressBar(Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const Utils::FileName &file)
-    : Widget(x, y, pos, size),
+ProgressBar::ProgressBar(const AlignmentMask &alignment, const Vector2i &size, const Utils::FileName &file)
+    : Widget(alignment, size),
     _progressBox(0, 0, size.Data[0], size.Data[1]),
     _percent(0)
 {

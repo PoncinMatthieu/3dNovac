@@ -27,7 +27,6 @@
 #include <Nc/Core/Engine/Manager.h>
 #include <Nc/Graphics/Object/BasicMeshCreator.h>
 #include "Widget.h"
-#include "WidgetLabeled.h"
 #include "Visitors.h"
 #include "Looks.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
@@ -38,13 +37,13 @@ using namespace Nc::System;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-Widget::Widget(Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
+Widget::Widget(const AlignmentMask &alignment, const Vector2i &size)
     : Object(), Handler()
 {
-    Init(pos, size, x, y);
+    Init(size, alignment);
 }
 
-void Widget::Init(const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
+void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
 {
     _childFocused = NULL;
     _inhibit = false;
@@ -52,9 +51,7 @@ void Widget::Init(const Vector2i &pos, const Vector2i &size, Corner x, Corner y)
     _generateHandleAtEnterFocus = false;
     _resizable = true;
     _size = size;
-    _pos = pos;
-    _corner[0] = x;
-    _corner[1] = y;
+    _alignment = alignment;
     _useStencil = false;
     _margin = Vector2i(0, 0);
     _widgetLook = NULL;
@@ -90,8 +87,7 @@ void Widget::Copy(const Widget &w)
     _focus = w._focus;
     _size = w._size;
     _pos = w._pos;
-    _corner[0] = w._corner[0];
-    _corner[1] = w._corner[1];
+    _alignment = w._alignment;
     _generateHandleAtEnterFocus = w._generateHandleAtEnterFocus;
     _margin = w._margin;
     _percent = w._percent;
@@ -128,6 +124,38 @@ void Widget::Update()
 
     if (_widgetLook)
         _widgetLook->Update(size);
+}
+
+void Widget::Resize()
+{
+    if (_resizable && (_percent[0] != 0 || _percent[1] != 0))
+    {
+        Visitor::GetParentWidget v(this);
+        v(*this);
+
+        Vector2i newSize = Size();
+
+        Vector2i sizeParent;
+        if (v.parent != NULL)
+        {
+            v.parent->SizeChild(this, sizeParent);
+        }
+        else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph which is supposed to be the parent of the widget at one point
+        {
+            Graphic::Window *win = v.parentSceneGraph->AttachedWindow();
+            sizeParent.Init(win->Width(), win->Height());
+        }
+        else
+        {
+            throw Utils::Exception("Widget", "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
+        }
+
+        if (_percent[0] != 0)
+            newSize[0] = ((float)(_percent[0] * sizeParent[0]) / 100.0);
+        if (_percent[1] != 0)
+            newSize[1] = ((float)(_percent[1] * sizeParent[1]) / 100.0);
+        Size(newSize);
+    }
 }
 
 void Widget::RenderBegin(Graphic::SceneGraph *scene)
@@ -272,19 +300,19 @@ void Widget::GetReelPos(Vector2i &reelPos) const
     }
 
     // check les corner en x
-    if (_corner[0] == Right)
+    if (_alignment.Enabled(Right))
         reelPos.Data[0] = parentSize.Data[0] - reelSize.Data[0] - margin.Data[0] - reelPos.Data[0];
-    else if (_corner[0] == Left)
+    else if (_alignment.Enabled(Left))
         reelPos.Data[0] += margin.Data[0];
-    else if (_corner[0] == Center) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
+    else if (_alignment.Enabled(CenterH)) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
         reelPos.Data[0] += (parentSize[0] / 2.0) - (reelSize.Data[0] / 2.0);
 
     // check les corner en y
-    if (_corner[1] == Top)
+    if (_alignment.Enabled(Top))
         reelPos.Data[1] = parentSize.Data[1] - reelSize.Data[1] - margin.Data[1] - reelPos.Data[1];
-    else if (_corner[1] == Bottom)
+    else if (_alignment.Enabled(Bottom))
         reelPos.Data[1] += margin.Data[1];
-    else if (_corner[1] == Center) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
+    else if (_alignment.Enabled(CenterV)) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
         reelPos.Data[1] += (parentSize.Data[1] / 2.0) - (reelSize.Data[1] / 2.0);
     reelPos += parentTranslate;
 }
@@ -326,6 +354,11 @@ void Widget::Focus(bool state)
 
 void Widget::CheckState()
 {
+    if (_resized)
+    {
+        Resize();
+        _resized = false;
+    }
     if (_stateChanged)
     {
         Update();
@@ -354,34 +387,7 @@ void Widget::Percent(const Vector2f &percent)
 
 void Widget::Resized()
 {
-    if (_resizable && (_percent[0] != 0 || _percent[1] != 0))
-    {
-        Visitor::GetParentWidget v(this);
-        v(*this);
-
-        Vector2i newSize = Size();
-
-        Vector2i sizeParent;
-        if (v.parent != NULL)
-        {
-            v.parent->SizeChild(this, sizeParent);
-        }
-        else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph which is supposed to be the parent of the widget at one point
-        {
-            Graphic::Window *win = v.parentSceneGraph->AttachedWindow();
-            sizeParent.Init(win->Width(), win->Height());
-        }
-        else
-        {
-            throw Utils::Exception("Widget", "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
-        }
-
-        if (_percent[0] != 0)
-            newSize[0] = ((float)(_percent[0] * sizeParent[0]) / 100.0);
-        if (_percent[1] != 0)
-            newSize[1] = ((float)(_percent[1] * sizeParent[1]) / 100.0);
-        Size(newSize);
-    }
+    _resized = true;
     _stateChanged = true;
 }
 

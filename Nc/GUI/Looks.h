@@ -28,6 +28,7 @@
 #define NC_GUI_LOOKS_H_
 
 #include "Define.h"
+#include "WindowStyle.h"
 
 namespace Nc
 {

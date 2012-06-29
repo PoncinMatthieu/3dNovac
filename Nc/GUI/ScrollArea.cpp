@@ -29,11 +29,11 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-ScrollArea::ScrollArea(Corner x, Corner y, const Vector2i &pos, const Vector2i &size)
-    : Widget(x, y, pos, size), _view(NULL)
+ScrollArea::ScrollArea(const AlignmentMask &alignment, const Vector2i &size)
+    : Widget(alignment, size), _view(NULL)
 {
-    _scrollBarH = new ScrollBar(Left, Bottom, Vector2i(0, 0), size[0], Horizontal);
-    _scrollBarV = new ScrollBar(Right, Top, Vector2i(0, 0), size[1], Vertical);
+    _scrollBarH = new ScrollBar(Left | Bottom, size[0], Horizontal);
+    _scrollBarV = new ScrollBar(Right | Top, size[1], Vertical);
     AddComposedWidget(_scrollBarH);
     AddComposedWidget(_scrollBarV);
     _useStencil = true;

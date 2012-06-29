@@ -27,7 +27,6 @@
 #include <Nc/Core/Engine/Manager.h>
 #include <Nc/Graphics/Object/Sprite.h>
 #include "Button.h"
-#include "WindowStyle.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
@@ -36,14 +35,14 @@ using namespace Nc::Graphic;
 using namespace Nc::GUI;
 using namespace Nc::System;
 
-Button::Button(const std::string &text, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, const std::string &ttf, const std::string &lookName)
-    : Widget(x, y, pos, size)
+Button::Button(const std::string &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const std::string &lookName)
+    : Widget(alignment, size)
 {
     Initialize(text, size, ttf, lookName);
 }
 
-Button::Button(const std::string &text, Corner x, Corner y, const Vector2i &pos, int fontSize, int marginX, int marginY, const std::string &ttf, const std::string &lookName)
-    : Widget(x, y, pos)
+Button::Button(const std::string &text, const AlignmentMask &alignment, int fontSize, int marginX, int marginY, const std::string &ttf, const std::string &lookName)
+    : Widget(alignment)
 {
     Initialize(text, Vector2i(0, fontSize), ttf, lookName);
     _size[0] = (marginX * 2) + _font->Size()[0];
