@@ -43,12 +43,14 @@ namespace Nc
 
             virtual void    Draw(Graphic::SceneGraph *scene) = 0;
             virtual void    Update(const Vector2i &size) = 0;
+
+            Color   color;
         };
 
         class LGUI StripLook : public ILook
         {
             public:
-                StripLook(const std::string &name);
+                StripLook(const std::string &name = "");
                 StripLook(const StripLook &l);
                 StripLook &operator = (const StripLook &l);
                 ~StripLook();
@@ -61,16 +63,16 @@ namespace Nc
             private:
                 void    Copy(const StripLook &l);
 
-            private:
-                Graphic::Sprite     *_spriteLeft;
-                Graphic::Sprite     *_spriteRight;
-                Graphic::Sprite     *_spriteMiddle;
+            public:
+                Graphic::Sprite     *spriteLeft;
+                Graphic::Sprite     *spriteRight;
+                Graphic::Sprite     *spriteMiddle;
         };
 
         class LGUI BoxLook : public ILook
         {
             public:
-                BoxLook(const std::string &name);
+                BoxLook(const std::string &name = "");
                 BoxLook(const BoxLook &l);
                 BoxLook &operator = (const BoxLook &l);
                 ~BoxLook();
@@ -84,16 +86,16 @@ namespace Nc
             private:
                 void    Copy(const BoxLook &l);
 
-            private:
-                Graphic::Sprite     *_spriteLeftEdge;
-                Graphic::Sprite     *_spriteTopEdge;
-                Graphic::Sprite     *_spriteRightEdge;
-                Graphic::Sprite     *_spriteBottomEdge;
-                Graphic::Sprite     *_spriteLeftTop;
-                Graphic::Sprite     *_spriteRightTop;
-                Graphic::Sprite     *_spriteLeftBottom;
-                Graphic::Sprite     *_spriteRightBottom;
-                Graphic::Sprite     *_spriteMiddle;
+            public:
+                Graphic::Sprite     *spriteLeftEdge;
+                Graphic::Sprite     *spriteTopEdge;
+                Graphic::Sprite     *spriteRightEdge;
+                Graphic::Sprite     *spriteBottomEdge;
+                Graphic::Sprite     *spriteLeftTop;
+                Graphic::Sprite     *spriteRightTop;
+                Graphic::Sprite     *spriteLeftBottom;
+                Graphic::Sprite     *spriteRightBottom;
+                Graphic::Sprite     *spriteMiddle;
         };
     }
 }

@@ -52,8 +52,13 @@ Button::Button(const std::string &text, Corner x, Corner y, const Vector2i &pos,
 
 Button::~Button()
 {
-    delete _sprite;
     delete _font;
+
+    if (_widgetLook != NULL && (_widgetLook == _buttonLook || _widgetLook == _buttonLookPressed))
+        _widgetLook = NULL;
+
+    delete _buttonLook;
+    delete _buttonLookPressed;
 }
 
 Button::Button(const Button &w)
@@ -79,10 +84,9 @@ void    Button::Initialize(const std::string &text, const Vector2i &size, const 
     _charSize = size.Data[1] - _margin[1];
     _font = new Graphic::String(text, _charSize, Color(1, 1, 1), ttf);
 
-    // if the sprite is not set, we take the default one in the window style
-    _sprite = WindowStyle::Instance().GetNewSprite(lookName + WindowStyle::SpriteName::Button);
-    if (_sprite == NULL)
-        throw Utils::Exception("Button", "Cannot get the sprite '" + lookName + WindowStyle::SpriteName::Button + "' from the WindowStyle");
+
+    _buttonLook = new StripLook(lookName + WindowStyle::SpriteName::Button);
+    _buttonLookPressed = new StripLook(lookName + WindowStyle::SpriteName::ButtonPressed);
 }
 
 void    Button::Copy(const Button &w)
@@ -99,28 +103,28 @@ void Button::ToString(std::ostream &os) const
 
 void Button::Update()
 {
-    Widget::Update();
-    // modifie la couleur en fonction de la selection du bouton
+    // update the color
     Color c(1, 1, 1);
     if (InhibitedRecursif())
     {
         c = _colorDisable;
         _font->SetColor(_colorDisable);
     }
-    else
-    {
+
+    if (_font->GetColor() != c)
         _font->SetColor(c);
-        if (_buttonPressed)
-            c = Color(1, 0, 0);
-    }
 
-    // update the color
-    if (c != _sprite->GetColor())
-        _sprite->SetColor(c);
+    if (_widgetLook != NULL)
+        _widgetLook->color = c;
 
-    // update the sprite size
-    if (_sprite->Size() != _size)
-        _sprite->Size(_size);
+    // update the widget look, if pressed
+    if (_buttonPressed)
+        _widgetLook = _buttonLookPressed;
+    else
+        _widgetLook = _buttonLook;
+
+    // update the widget, which will update the look
+    Widget::Update();
 
     // update the size of the title
     // we have to reduce the size of the text if it's too large
@@ -143,7 +147,6 @@ void Button::Update()
 void Button::Draw(Graphic::SceneGraph *scene)
 {
     Widget::Draw(scene);
-    _sprite->RenderNode(scene);
     _font->RenderNode(scene);
 }
 
@@ -179,19 +182,5 @@ void Button::MouseButtonEvent(const System::Event &event)
 void Button::execHanle()
 {
     if (!InhibitedRecursif())
-    {
-        /*
-        string datas;
-        list<string> listData;
-        GetParentChildData(listData);
-        for (list<string>::iterator it = listData.begin(); it != listData.end();)
-        {
-            datas += *it;
-            it++;
-            if (it != listData.end())
-                datas += ':';
-        }
-        */
         SendEvent(_id);
-    }
 }

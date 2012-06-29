@@ -67,22 +67,24 @@ namespace Nc
                 virtual ISceneNode              *Clone() const                                  {return new String(*this);}
 
                 /** Set the UTF32 text */
-                void                            Text(const Utils::Unicode::UTF32 &text)         {_needUpdate = _needUpdateSize = true;   _text = text;}
+                void                            Text(const Utils::Unicode::UTF32 &text);
                 /** Return the UTF32 text */
                 const Utils::Unicode::UTF32     &Text() const                                   {return _text;}
 
                 /** Set the color */
-                void                SetColor(const Color &color)        {_needUpdate = true; _color = color;}
+                void                SetColor(const Color &color);
+                /** \return the color */
+                const Color         &GetColor() const                                           {return _color;}
                 /** Return the size */
-                const Vector2f      &Size()                             {if (_needUpdateSize) RecomputeSize(); return _size;}
+                const Vector2f      &Size();
                 /** Return the size of the specified character */
                 Vector2f            GetCharSize(UInt32 c) const;
                 /** Return the global char size */
-                float               CharSize() const                    {return _charSize;}
+                float               CharSize() const                                            {return _charSize;}
                 /** Set the global char size */
-                void                CharSize(float size)                {_charSize = size; _needUpdate = _needUpdateSize = true;}
+                void                CharSize(float size);
 
-                inline Font         *GetFont()                          {return _font;}
+                inline Font         *GetFont() const                                            {return _font;}
 
                 /** Destroy the font, to call at the end of the program to avoid memory leek */
                 static void         DestroyFonts();

@@ -91,9 +91,6 @@ namespace Nc
                 float               _fontSize;
                 Color               _fontColor;
                 std::string         _fontName;
-                Graphic::Sprite     *_spriteLeft;
-                Graphic::Sprite     *_spriteRight;
-                Graphic::Sprite     *_spriteMiddle;
                 Graphic::Sprite     *_spriteList;
 
                 ListItem            _itemList;

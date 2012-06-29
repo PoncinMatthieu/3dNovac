@@ -29,6 +29,7 @@
 
 #include <Nc/GUI/GUI.h>
 #include <Nc/GUI/WidgetSubWindow.h>
+#include <Nc/GUI/TextArea.h>
 
 namespace SampleViewer
 {
@@ -40,18 +41,20 @@ namespace SampleViewer
 
             void                        AddSample(const std::string &name);
 
-            const std::string           *Sample() const         {return (_comboBox->CurrentItem()) ? &_comboBox->CurrentItem()->Data() : NULL;}
+            const std::string           *Sample() const         {return (_sampleComboBox->CurrentItem()) ? &_sampleComboBox->CurrentItem()->Data() : NULL;}
 
             Nc::GUI::WidgetSubWindow    *CreateSampleWindow(Nc::Graphic::Window *windowParent);
 
             void                        CloseSampleWindow();
 
         private:
+            Nc::GUI::Widget             *CreateDescriptionSampleWindow(Nc::GUI::Layout *parent);
             Nc::GUI::Widget             *CreateSelectSampleWindow(Nc::GUI::Layout *parent);
 
         private:
             Nc::GUI::SceneGraph         *_GUI;
-            Nc::GUI::ComboBox           *_comboBox;
+            Nc::GUI::ComboBox           *_sampleComboBox;
+            Nc::GUI::TextArea           *_descriptionTextArea;
 
             Nc::GUI::Widget             *_widgetSampleWindow;
             Nc::GUI::WidgetSubWindow    *_currentSampleWindow;

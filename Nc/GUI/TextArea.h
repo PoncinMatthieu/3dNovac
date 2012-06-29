@@ -33,18 +33,32 @@ namespace Nc
 {
     namespace GUI
     {
+        /// Define an area used to display and edit text.
+        /**
+            \todo the text are is not editable right now.
+        */
         class LGUI TextArea : public ScrollArea
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextArea);
 
             public:
-                TextArea(Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0));
+                TextArea(Corner x = Top, Corner y = Left, const Vector2i &pos = Vector2i(0, 0), const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
 
-                virtual ISceneNode  *Clone() const          {return new TextArea(*this);}
+                virtual ISceneNode              *Clone() const          {return new TextArea(*this);}
+
+                /** \return the text */
+                const Utils::Unicode::UTF32     &Text() const           {return _text;}
+
+
+            protected:
+                /** Render the text area */
+                virtual void        Draw(Graphic::SceneGraph *scene);
+
 
             private:
                 Utils::Unicode::UTF32   _text;
+                Graphic::String         *_string;
                 bool                    _editable;
         };
     }

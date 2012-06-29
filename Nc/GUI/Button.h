@@ -28,6 +28,7 @@
 #define NC_GUI_BUTTON_H_
 
 #include "Widget.h"
+#include "Looks.h"
 
 namespace Nc
 {
@@ -75,7 +76,8 @@ namespace Nc
                 void                Copy(const Button &w);
 
             private:
-                Graphic::Sprite     *_sprite;               ///< the sprite of the button
+                StripLook           *_buttonLook;           ///< look used to render the button in it's normal state
+                StripLook           *_buttonLookPressed;    ///< look used to render the button pressed
                 Graphic::String     *_font;                 ///< The text of the button
                 float               _charSize;              ///< Recorde the charsize used for the font
                 bool                _buttonPressed;         ///< Mark if the button is pressed

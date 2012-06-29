@@ -29,8 +29,8 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-Layout::Layout(Pattern p, Corner x, Corner y)
-    :   Widget(x, y),
+Layout::Layout(Pattern p, Corner x, Corner y, const Vector2i &size)
+    :   Widget(x, y, Vector2i(0,0), size),
         _pattern(p)
 {
 }
@@ -215,7 +215,7 @@ Vector2i Layout::GetSizeMax(const Widget *child, const Vector2i &size) const
 
 void Layout::SizeChild(const Widget *child, Vector2i &size) const
 {
-    GetReelSize(size);
+    Widget::SizeChild(child, size);
 
     switch (_pattern)
     {

@@ -43,23 +43,23 @@ namespace Nc
                     static const std::string    StripLeft;
                     static const std::string    StripRight;
                     static const std::string    StripMiddle;
+
+                    static const std::string    BoxLeftEdge;
+                    static const std::string    BoxTopEdge;
+                    static const std::string    BoxRightEdge;
+                    static const std::string    BoxBottomEdge;
+                    static const std::string    BoxLeftTop;
+                    static const std::string    BoxRightTop;
+                    static const std::string    BoxLeftBottom;
+                    static const std::string    BoxRightBottom;
+                    static const std::string    BoxMiddle;
                 };
 
                 struct SpriteName
                 {
-                    static const std::string    WidgetLeftEdge;
-                    static const std::string    WidgetTopEdge;
-                    static const std::string    WidgetRightEdge;
-                    static const std::string    WidgetBottomEdge;
-                    static const std::string    WidgetLeftTop;
-                    static const std::string    WidgetRightTop;
-                    static const std::string    WidgetLeftBottom;
-                    static const std::string    WidgetRightBottom;
-                    static const std::string    WidgetMiddle;
                     static const std::string    Button;
-                    static const std::string    ComboBoxLeft;
-                    static const std::string    ComboBoxRight;
-                    static const std::string    ComboBoxMiddle;
+                    static const std::string    ButtonPressed;
+                    static const std::string    ComboBox;
                     static const std::string    ComboBoxList;
                     static const std::string    LineEdit;
                     static const std::string    ScrollBarRightButton;

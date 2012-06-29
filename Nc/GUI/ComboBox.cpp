@@ -27,6 +27,7 @@
 #include <Nc/Graphics/Object/Sprite.h>
 #include "ComboBox.h"
 #include "WindowStyle.h"
+#include "Looks.h"
 
 using namespace Nc;
 using namespace Nc::Graphic;
@@ -35,21 +36,22 @@ using namespace Nc::GUI;
 ComboBox::ComboBox(GUI::SceneGraph *scene, Corner x, Corner y, const Vector2i &pos, const Vector2i &size, float fontSize, const Color &fontColor, const std::string &fontName, const std::string &looksName)
     : Widget(x, y, pos, size), _scene(scene), _fontSize(fontSize), _fontColor(fontColor), _fontName(fontName), _currentItem(NULL), _listUnrolled(false), _currentUnfoldList(NULL)
 {
-    _spriteLeft = WindowStyle::Instance().GetNewSprite(looksName + WindowStyle::SpriteName::ComboBoxLeft);
-    if (_spriteLeft == NULL)
-        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBoxLeft + "' from the WindowStyle");
-    _spriteRight = WindowStyle::Instance().GetNewSprite(looksName + WindowStyle::SpriteName::ComboBoxRight);
-    if (_spriteRight == NULL)
-        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBoxRight + "' from the WindowStyle");
-    _spriteMiddle = WindowStyle::Instance().GetNewSprite(looksName + WindowStyle::SpriteName::ComboBoxMiddle);
-    if (_spriteMiddle == NULL)
-        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBoxMiddle + "' from the WindowStyle");
+    StripLook *l = new StripLook(looksName + WindowStyle::SpriteName::ComboBox);
+    UseLook(l);
+
+    if (l->spriteLeft == NULL)
+        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBox + "Left" + "' from the WindowStyle");
+    if (l->spriteRight == NULL)
+        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBox + "Right" + "' from the WindowStyle");
+    if (l->spriteMiddle == NULL)
+        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBox + "Middle" + "' from the WindowStyle");
+
     _spriteList = WindowStyle::Instance().GetNewSprite(looksName + WindowStyle::SpriteName::ComboBoxList);
     if (_spriteList == NULL)
         throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBoxList + "' from the WindowStyle");
 
     _margin[0] = 5;
-    _size[1] = _spriteMiddle->Size()[1];
+    _size[1] = l->spriteMiddle->Size()[1];
 }
 
 ComboBox::ComboBox(const ComboBox &cb)
@@ -72,9 +74,6 @@ void    ComboBox::Copy(const ComboBox &cb)
     _fontColor = cb._fontColor;
     _fontName = cb._fontName;
     _listUnrolled = cb._listUnrolled;
-    _spriteLeft = new Sprite(*cb._spriteLeft);
-    _spriteRight = new Sprite(*cb._spriteRight);
-    _spriteMiddle = new Sprite(*cb._spriteMiddle);
     _spriteList = new Sprite(*cb._spriteList);
 
     for (ListItem::const_iterator it = cb._itemList.begin(); it != cb._itemList.end(); ++it)
@@ -87,9 +86,6 @@ void    ComboBox::Copy(const ComboBox &cb)
 
 ComboBox::~ComboBox()
 {
-    delete _spriteLeft;
-    delete _spriteRight;
-    delete _spriteMiddle;
     delete _spriteList;
 
     for (ListItem::iterator it = _itemList.begin(); it != _itemList.end(); ++it)
@@ -107,10 +103,7 @@ void    ComboBox::Update()
     Vector2i size;
     GetReelSize(size);
 
-    _spriteMiddle->Size(Vector2f(size[0] - _spriteLeft->Size()[0] - _spriteRight->Size()[0], _spriteMiddle->Size()[1]));
-    _spriteMiddle->Matrix.Translation(_spriteLeft->Size()[0], 0, 0);
-    _spriteRight->Matrix.Translation(_spriteLeft->Size()[0] + _spriteMiddle->Size()[0], 0, 0);
-    _spriteList->Size(Vector2f(size[0] - _spriteLeft->Size()[0] - _spriteRight->Size()[0], _spriteList->Size()[1]));
+    _spriteList->Size(Vector2f(size[0] - static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0] - static_cast<StripLook*>(_widgetLook)->spriteRight->Size()[0], _spriteList->Size()[1]));
 
     if (!_listUnrolled && _currentUnfoldList != NULL)
     {
@@ -122,14 +115,11 @@ void    ComboBox::Update()
 void    ComboBox::Draw(Graphic::SceneGraph *scene)
 {
     Widget::Draw(scene);
-    _spriteLeft->RenderNode(scene);
-    _spriteMiddle->RenderNode(scene);
-    _spriteRight->RenderNode(scene);
 
     if (!_listUnrolled)
     {
         scene->PushModelMatrix();
-        scene->ModelMatrix().AddTranslation(_spriteLeft->Size()[0], (_spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2, 0);
+        scene->ModelMatrix().AddTranslation(static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0], (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2, 0);
         if (_currentItem != NULL)
             _currentItem->second->RenderNode(scene);
         scene->PopModelMatrix();
@@ -151,8 +141,8 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
             GetReelSize(size);
             if (Math::InRect(pos, size, mousePos))
             {
-                pos[0] += _spriteLeft->Size()[0];
-                pos[1] += (_spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2;
+                pos[0] += static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0];
+                pos[1] += (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2;
                 pos[1] += _spriteList->Size()[1];
 
                 _currentUnfoldList = new ComboBoxUnfoldList(this, Left, Bottom, pos, Vector2i(_spriteList->Size()[0], -_spriteList->Size()[1] * _itemList.size()));
@@ -188,8 +178,8 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
         _cb->GetReelPosRecursif(pos);
 
         Vector2i size = _cb->_spriteList->Size();
-        pos[0] += _cb->_spriteLeft->Size()[0];
-        pos[1] += ((_cb->_spriteMiddle->Size()[1] - _cb->_spriteList->Size()[1]) / 2);
+        pos[0] += static_cast<StripLook*>(_cb->_widgetLook)->spriteLeft->Size()[0];
+        pos[1] += ((static_cast<StripLook*>(_cb->_widgetLook)->spriteMiddle->Size()[1] - _cb->_spriteList->Size()[1]) / 2);
         for (ListItem::iterator it = _cb->_itemList.begin(); it != _cb->_itemList.end(); ++it)
         {
             if (Math::InRect(pos, size, mousePos))

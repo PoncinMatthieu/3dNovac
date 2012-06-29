@@ -196,12 +196,12 @@ void WindowBox::Draw(Graphic::SceneGraph *scene)
 }
 
 void WindowBox::PosChild(const Widget *child, Vector2i &v) const
-{
+{/*
     if (_drawTitle && (child->GetCorner(1) == Top || child->GetCorner(1) == Center))
         v[1] = -_titleHeight;
     else if (!_drawTitle && child->GetCorner(1) == Bottom)
         v[1] += _titleHeight;
-}
+*/}
 
 void WindowBox::GetReelSize(Vector2i &size) const
 {

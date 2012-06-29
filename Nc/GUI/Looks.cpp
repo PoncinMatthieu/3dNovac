@@ -33,6 +33,7 @@ using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
 ILook::ILook()
+    : color(1,1,1)
 {
 }
 
@@ -42,9 +43,9 @@ ILook::~ILook()
 
 StripLook::StripLook(const std::string &name)
 {
-    _spriteLeft = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::StripLeft);
-    _spriteRight = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::StripRight);
-    _spriteMiddle = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::StripMiddle);
+    spriteLeft = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::StripLeft);
+    spriteRight = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::StripRight);
+    spriteMiddle = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::StripMiddle);
 }
 
 StripLook::StripLook(const StripLook &l)
@@ -60,72 +61,81 @@ StripLook &StripLook::operator = (const StripLook &l)
 
 StripLook::~StripLook()
 {
-    if (_spriteLeft != NULL)
-        delete _spriteLeft;
-    if (_spriteRight != NULL)
-        delete _spriteRight;
-    if (_spriteMiddle != NULL)
-        delete _spriteMiddle;
+    if (spriteLeft != NULL)
+        delete spriteLeft;
+    if (spriteRight != NULL)
+        delete spriteRight;
+    if (spriteMiddle != NULL)
+        delete spriteMiddle;
 }
 
 void    StripLook::Copy(const StripLook &l)
 {
-    _spriteLeft = l._spriteLeft;
-    _spriteRight = l._spriteRight;
-    _spriteMiddle = l._spriteMiddle;
+    spriteLeft = l.spriteLeft;
+    spriteRight = l.spriteRight;
+    spriteMiddle = l.spriteMiddle;
 
-    if (_spriteLeft != NULL)
-        _spriteLeft = (Sprite*)_spriteLeft->Clone();
-    if (_spriteRight != NULL)
-        _spriteRight = (Sprite*)_spriteRight->Clone();
-    if (_spriteMiddle != NULL)
-        _spriteMiddle = (Sprite*)_spriteMiddle->Clone();
+    if (spriteLeft != NULL)
+        spriteLeft = static_cast<Sprite*>(spriteLeft->Clone());
+    if (spriteRight != NULL)
+        spriteRight = static_cast<Sprite*>(spriteRight->Clone());
+    if (spriteMiddle != NULL)
+        spriteMiddle = static_cast<Sprite*>(spriteMiddle->Clone());
 }
 
 void StripLook::Update(const Vector2i &size)
 {
-    if (_spriteLeft)
+    if (spriteLeft)
     {
-        _spriteLeft->Size(Vector2f(_spriteLeft->Size()[0], size[1]));
-    }
-    if (_spriteMiddle)
-    {
-        int leftSize = (_spriteLeft) ? _spriteLeft->Size()[0] : 0;
-        int rightSize = (_spriteRight) ? _spriteRight->Size()[0] : 0;
+        spriteLeft->Size(Vector2f(spriteLeft->Size()[0], size[1]));
 
-        _spriteMiddle->Size(Vector2f(size[0] - leftSize - rightSize, size[1]));
-        _spriteMiddle->Matrix.Translation(leftSize, 0, 0);
+        if (spriteLeft->GetColor() != color)
+            spriteLeft->SetColor(color);
     }
-    if (_spriteRight)
+    if (spriteMiddle)
     {
-        int leftSize = (_spriteLeft) ? _spriteLeft->Size()[0] : 0;
-        int middleSize = (_spriteMiddle) ? _spriteMiddle->Size()[0] : 0;
+        int leftSize = (spriteLeft) ? spriteLeft->Size()[0] : 0;
+        int rightSize = (spriteRight) ? spriteRight->Size()[0] : 0;
 
-        _spriteRight->Size(Vector2f(_spriteRight->Size()[0], size[1]));
-        _spriteRight->Matrix.Translation(leftSize + middleSize, 0, 0);
+        spriteMiddle->Size(Vector2f(size[0] - leftSize - rightSize, size[1]));
+        spriteMiddle->Matrix.Translation(leftSize, 0, 0);
+
+        if (spriteMiddle->GetColor() != color)
+            spriteMiddle->SetColor(color);
+    }
+    if (spriteRight)
+    {
+        int leftSize = (spriteLeft) ? spriteLeft->Size()[0] : 0;
+        int middleSize = (spriteMiddle) ? spriteMiddle->Size()[0] : 0;
+
+        spriteRight->Size(Vector2f(spriteRight->Size()[0], size[1]));
+        spriteRight->Matrix.Translation(leftSize + middleSize, 0, 0);
+
+        if (spriteRight->GetColor() != color)
+            spriteRight->SetColor(color);
     }
 }
 
 void StripLook::Draw(Graphic::SceneGraph *scene)
 {
-    _spriteLeft->RenderNode(scene);
-    _spriteMiddle->RenderNode(scene);
-    _spriteRight->RenderNode(scene);
+    spriteLeft->RenderNode(scene);
+    spriteMiddle->RenderNode(scene);
+    spriteRight->RenderNode(scene);
 }
 
 
 BoxLook::BoxLook(const std::string &name)
 {
     // get the sprites from the window style (sprite name = name + position)
-    _spriteLeftEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetLeftEdge);
-    _spriteTopEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetTopEdge);
-    _spriteRightEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetRightEdge);
-    _spriteBottomEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetBottomEdge);
-    _spriteLeftTop = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetLeftTop);
-    _spriteRightTop = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetRightTop);
-    _spriteLeftBottom = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetLeftBottom);
-    _spriteRightBottom = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetRightBottom);
-    _spriteMiddle = WindowStyle::Instance().GetNewSprite(name + WindowStyle::SpriteName::WidgetMiddle);
+    spriteLeftEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxLeftEdge);
+    spriteTopEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxTopEdge);
+    spriteRightEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxRightEdge);
+    spriteBottomEdge = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxBottomEdge);
+    spriteLeftTop = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxLeftTop);
+    spriteRightTop = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxRightTop);
+    spriteLeftBottom = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxLeftBottom);
+    spriteRightBottom = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxRightBottom);
+    spriteMiddle = WindowStyle::Instance().GetNewSprite(name + WindowStyle::LooksSpriteName::BoxMiddle);
 }
 
 BoxLook::BoxLook(const BoxLook &l)
@@ -141,56 +151,56 @@ BoxLook &BoxLook::operator = (const BoxLook &l)
 
 BoxLook::~BoxLook()
 {
-    if (_spriteLeftEdge != NULL)
-        delete _spriteLeftEdge;
-    if (_spriteTopEdge != NULL)
-        delete _spriteTopEdge;
-    if (_spriteRightEdge != NULL)
-        delete _spriteRightEdge;
-    if (_spriteBottomEdge != NULL)
-        delete _spriteBottomEdge;
-    if (_spriteLeftTop != NULL)
-        delete _spriteLeftTop;
-    if (_spriteRightTop != NULL)
-        delete _spriteRightTop;
-    if (_spriteLeftBottom != NULL)
-        delete _spriteLeftBottom;
-    if (_spriteRightBottom != NULL)
-        delete _spriteRightBottom;
-    if (_spriteMiddle != NULL)
-        delete _spriteMiddle;
+    if (spriteLeftEdge != NULL)
+        delete spriteLeftEdge;
+    if (spriteTopEdge != NULL)
+        delete spriteTopEdge;
+    if (spriteRightEdge != NULL)
+        delete spriteRightEdge;
+    if (spriteBottomEdge != NULL)
+        delete spriteBottomEdge;
+    if (spriteLeftTop != NULL)
+        delete spriteLeftTop;
+    if (spriteRightTop != NULL)
+        delete spriteRightTop;
+    if (spriteLeftBottom != NULL)
+        delete spriteLeftBottom;
+    if (spriteRightBottom != NULL)
+        delete spriteRightBottom;
+    if (spriteMiddle != NULL)
+        delete spriteMiddle;
 }
 
 void    BoxLook::Copy(const BoxLook &l)
 {
-    _spriteLeftEdge = l._spriteLeftEdge;
-    _spriteTopEdge = l._spriteTopEdge;
-    _spriteRightEdge = l._spriteRightEdge;
-    _spriteBottomEdge = l._spriteBottomEdge;
-    _spriteLeftTop = l._spriteLeftTop;
-    _spriteRightTop = l._spriteRightTop;
-    _spriteLeftBottom = l._spriteLeftBottom;
-    _spriteRightBottom = l._spriteRightBottom;
-    _spriteMiddle = l._spriteMiddle;
+    spriteLeftEdge = l.spriteLeftEdge;
+    spriteTopEdge = l.spriteTopEdge;
+    spriteRightEdge = l.spriteRightEdge;
+    spriteBottomEdge = l.spriteBottomEdge;
+    spriteLeftTop = l.spriteLeftTop;
+    spriteRightTop = l.spriteRightTop;
+    spriteLeftBottom = l.spriteLeftBottom;
+    spriteRightBottom = l.spriteRightBottom;
+    spriteMiddle = l.spriteMiddle;
 
-    if (_spriteLeftEdge != NULL)
-        _spriteLeftEdge = (Sprite*)_spriteLeftEdge->Clone();
-    if (_spriteTopEdge != NULL)
-        _spriteTopEdge = (Sprite*)_spriteTopEdge->Clone();
-    if (_spriteRightEdge != NULL)
-        _spriteRightEdge = (Sprite*)_spriteRightEdge->Clone();
-    if (_spriteBottomEdge != NULL)
-        _spriteBottomEdge = (Sprite*)_spriteBottomEdge->Clone();
-    if (_spriteLeftTop != NULL)
-        _spriteLeftTop = (Sprite*)_spriteLeftTop->Clone();
-    if (_spriteRightTop != NULL)
-        _spriteRightTop = (Sprite*)_spriteRightTop->Clone();
-    if (_spriteLeftBottom != NULL)
-        _spriteLeftBottom = (Sprite*)_spriteLeftBottom->Clone();
-    if (_spriteRightBottom != NULL)
-        _spriteRightBottom = (Sprite*)_spriteRightBottom->Clone();
-    if (_spriteMiddle != NULL)
-        _spriteMiddle = (Sprite*)_spriteMiddle->Clone();
+    if (spriteLeftEdge != NULL)
+        spriteLeftEdge = static_cast<Sprite*>(spriteLeftEdge->Clone());
+    if (spriteTopEdge != NULL)
+        spriteTopEdge = static_cast<Sprite*>(spriteTopEdge->Clone());
+    if (spriteRightEdge != NULL)
+        spriteRightEdge = static_cast<Sprite*>(spriteRightEdge->Clone());
+    if (spriteBottomEdge != NULL)
+        spriteBottomEdge = static_cast<Sprite*>(spriteBottomEdge->Clone());
+    if (spriteLeftTop != NULL)
+        spriteLeftTop = static_cast<Sprite*>(spriteLeftTop->Clone());
+    if (spriteRightTop != NULL)
+        spriteRightTop = static_cast<Sprite*>(spriteRightTop->Clone());
+    if (spriteLeftBottom != NULL)
+        spriteLeftBottom = static_cast<Sprite*>(spriteLeftBottom->Clone());
+    if (spriteRightBottom != NULL)
+        spriteRightBottom = static_cast<Sprite*>(spriteRightBottom->Clone());
+    if (spriteMiddle != NULL)
+        spriteMiddle = static_cast<Sprite*>(spriteMiddle->Clone());
 }
 
 void BoxLook::Update(const Vector2i &size)
@@ -198,109 +208,134 @@ void BoxLook::Update(const Vector2i &size)
     int lxLeftBottom = 0, lyLeftBottom = 0, lxLeftTop = 0, lyLeftTop = 0, lxRightBottom = 0, lyRightBottom = 0, lxRightTop = 0, lyRightTop = 0;
 
     // get the corner size
-    if (_spriteLeftBottom != NULL)
+    if (spriteLeftBottom != NULL)
     {
-        lxLeftBottom = _spriteLeftBottom->TextureBox().Length(0);
-        lyLeftBottom = _spriteLeftBottom->TextureBox().Length(1);
+        lxLeftBottom = spriteLeftBottom->TextureBox().Length(0);
+        lyLeftBottom = spriteLeftBottom->TextureBox().Length(1);
     }
-    if (_spriteLeftTop != NULL)
+    if (spriteLeftTop != NULL)
     {
-        lxLeftTop = _spriteLeftTop->TextureBox().Length(0);
-        lyLeftTop = _spriteLeftTop->TextureBox().Length(1);
+        lxLeftTop = spriteLeftTop->TextureBox().Length(0);
+        lyLeftTop = spriteLeftTop->TextureBox().Length(1);
     }
-    if (_spriteRightBottom != NULL)
+    if (spriteRightBottom != NULL)
     {
-        lxRightBottom = _spriteRightBottom->TextureBox().Length(0);
-        lyRightBottom = _spriteRightBottom->TextureBox().Length(1);
+        lxRightBottom = spriteRightBottom->TextureBox().Length(0);
+        lyRightBottom = spriteRightBottom->TextureBox().Length(1);
     }
-    if (_spriteRightTop != NULL)
+    if (spriteRightTop != NULL)
     {
-        lxRightTop = _spriteRightTop->TextureBox().Length(0);
-        lyRightTop = _spriteRightTop->TextureBox().Length(1);
+        lxRightTop = spriteRightTop->TextureBox().Length(0);
+        lyRightTop = spriteRightTop->TextureBox().Length(1);
     }
 
     // Set the size and position of the sprites
-    if (_spriteMiddle != NULL)
+    if (spriteMiddle != NULL)
     {
-        _spriteMiddle->Size(Vector2f(size[0] - lxLeftBottom - lxLeftTop, size[1] - lyLeftBottom - lyLeftTop));
-        _spriteMiddle->Matrix.Translation(lxLeftBottom, lyLeftBottom, 0);
+        spriteMiddle->Size(Vector2f(size[0] - lxLeftBottom - lxLeftTop, size[1] - lyLeftBottom - lyLeftTop));
+        spriteMiddle->Matrix.Translation(lxLeftBottom, lyLeftBottom, 0);
+
+        if (spriteMiddle->GetColor() != color)
+            spriteMiddle->SetColor(color);
     }
 
-    if (_spriteLeftTop != NULL)
+    if (spriteLeftTop != NULL)
     {
-        _spriteLeftTop->Size(Vector2f(_spriteLeftTop->TextureBox().Length(0), lyLeftTop));
-        _spriteLeftTop->Matrix.Translation(0, size[1] - lyLeftTop, 0);
+        spriteLeftTop->Size(Vector2f(spriteLeftTop->TextureBox().Length(0), lyLeftTop));
+        spriteLeftTop->Matrix.Translation(0, size[1] - lyLeftTop, 0);
+
+        if (spriteLeftTop->GetColor() != color)
+            spriteLeftTop->SetColor(color);
     }
 
-    if (_spriteRightTop != NULL)
+    if (spriteRightTop != NULL)
     {
-        _spriteRightTop->Size(Vector2f(lxRightTop, lyRightTop));
-        _spriteRightTop->Matrix.Translation(size[0] - lxRightTop, size[1] - lyRightTop, 0);
+        spriteRightTop->Size(Vector2f(lxRightTop, lyRightTop));
+        spriteRightTop->Matrix.Translation(size[0] - lxRightTop, size[1] - lyRightTop, 0);
+
+        if (spriteRightTop->GetColor() != color)
+            spriteRightTop->SetColor(color);
     }
 
-    if (_spriteLeftBottom != NULL)
-        _spriteLeftBottom->Size(Vector2f(_spriteLeftBottom->TextureBox().Length(0), _spriteLeftBottom->TextureBox().Length(1)));
-
-    if (_spriteRightBottom)
+    if (spriteLeftBottom != NULL)
     {
-        _spriteRightBottom->Size(Vector2f(lxRightBottom, lyRightBottom));
-        _spriteRightBottom->Matrix.Translation(size[0] - lxRightBottom, 0, 0);
+        spriteLeftBottom->Size(Vector2f(spriteLeftBottom->TextureBox().Length(0), spriteLeftBottom->TextureBox().Length(1)));
+
+        if (spriteLeftBottom->GetColor() != color)
+            spriteLeftBottom->SetColor(color);
     }
 
-    if (_spriteLeftEdge != NULL)
+    if (spriteRightBottom)
     {
-        _spriteLeftEdge->Size(Vector2f(_spriteLeftEdge->TextureBox().Length(0), size[1] - lyLeftBottom - lyLeftTop));
-        _spriteLeftEdge->Matrix.Translation(0, lyLeftBottom, 0);
+        spriteRightBottom->Size(Vector2f(lxRightBottom, lyRightBottom));
+        spriteRightBottom->Matrix.Translation(size[0] - lxRightBottom, 0, 0);
+
+        if (spriteRightBottom->GetColor() != color)
+            spriteRightBottom->SetColor(color);
     }
 
-    if (_spriteTopEdge != NULL)
+    if (spriteLeftEdge != NULL)
     {
-        float s = _spriteTopEdge->TextureBox().Length(1);
-        _spriteTopEdge->Size(Vector2f(size[0] - lxLeftTop - lxRightTop, s));
-        _spriteTopEdge->Matrix.Translation(lxLeftTop, size[1] - s, 0);
+        spriteLeftEdge->Size(Vector2f(spriteLeftEdge->TextureBox().Length(0), size[1] - lyLeftBottom - lyLeftTop));
+        spriteLeftEdge->Matrix.Translation(0, lyLeftBottom, 0);
+
+        if (spriteLeftEdge->GetColor() != color)
+            spriteLeftEdge->SetColor(color);
     }
 
-    if (_spriteRightEdge != NULL)
+    if (spriteTopEdge != NULL)
     {
-        float s = _spriteRightEdge->TextureBox().Length(0);
-        _spriteRightEdge->Size(Vector2f(s, size[1] - lyRightBottom - lyRightTop));
-        _spriteRightEdge->Matrix.Translation(size[0] - s, lyRightBottom, 0);
+        float s = spriteTopEdge->TextureBox().Length(1);
+        spriteTopEdge->Size(Vector2f(size[0] - lxLeftTop - lxRightTop, s));
+        spriteTopEdge->Matrix.Translation(lxLeftTop, size[1] - s, 0);
+
+        if (spriteTopEdge->GetColor() != color)
+            spriteTopEdge->SetColor(color);
     }
 
-    if (_spriteBottomEdge != NULL)
+    if (spriteRightEdge != NULL)
     {
-        _spriteBottomEdge->Size(Vector2f(size[0] - lxLeftBottom - lxRightBottom, _spriteBottomEdge->TextureBox().Length(1)));
-        _spriteBottomEdge->Matrix.Translation(lxLeftBottom, 0, 0);
+        float s = spriteRightEdge->TextureBox().Length(0);
+        spriteRightEdge->Size(Vector2f(s, size[1] - lyRightBottom - lyRightTop));
+        spriteRightEdge->Matrix.Translation(size[0] - s, lyRightBottom, 0);
+
+        if (spriteRightEdge->GetColor() != color)
+            spriteRightEdge->SetColor(color);
+    }
+
+    if (spriteBottomEdge != NULL)
+    {
+        spriteBottomEdge->Size(Vector2f(size[0] - lxLeftBottom - lxRightBottom, spriteBottomEdge->TextureBox().Length(1)));
+        spriteBottomEdge->Matrix.Translation(lxLeftBottom, 0, 0);
+
+        if (spriteBottomEdge->GetColor() != color)
+            spriteBottomEdge->SetColor(color);
     }
 }
 
 void BoxLook::Draw(Graphic::SceneGraph *scene)
 {
-    scene->PushModelMatrix();
-
     // render middle sprite
-    if (_spriteMiddle != NULL)
-        _spriteMiddle->RenderNode(scene);
+    if (spriteMiddle != NULL)
+        spriteMiddle->RenderNode(scene);
 
     // render corner sprites
-    if (_spriteLeftTop != NULL)
-        _spriteLeftTop->RenderNode(scene);
-    if (_spriteRightTop != NULL)
-        _spriteRightTop->RenderNode(scene);
-    if (_spriteLeftBottom != NULL)
-        _spriteLeftBottom->RenderNode(scene);
-    if (_spriteRightBottom != NULL)
-        _spriteRightBottom->RenderNode(scene);
+    if (spriteLeftTop != NULL)
+        spriteLeftTop->RenderNode(scene);
+    if (spriteRightTop != NULL)
+        spriteRightTop->RenderNode(scene);
+    if (spriteLeftBottom != NULL)
+        spriteLeftBottom->RenderNode(scene);
+    if (spriteRightBottom != NULL)
+        spriteRightBottom->RenderNode(scene);
 
     // render edge sprites
-    if (_spriteLeftEdge != NULL)
-        _spriteLeftEdge->RenderNode(scene);
-    if (_spriteTopEdge != NULL)
-        _spriteTopEdge->RenderNode(scene);
-    if (_spriteRightEdge != NULL)
-        _spriteRightEdge->RenderNode(scene);
-    if (_spriteBottomEdge != NULL)
-        _spriteBottomEdge->RenderNode(scene);
-
-    scene->PopModelMatrix();
+    if (spriteLeftEdge != NULL)
+        spriteLeftEdge->RenderNode(scene);
+    if (spriteTopEdge != NULL)
+        spriteTopEdge->RenderNode(scene);
+    if (spriteRightEdge != NULL)
+        spriteRightEdge->RenderNode(scene);
+    if (spriteBottomEdge != NULL)
+        spriteBottomEdge->RenderNode(scene);
 }

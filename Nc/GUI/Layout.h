@@ -52,7 +52,7 @@ namespace Nc
                 typedef std::map<Widget*, float>        MapRatio;
 
             public:
-                Layout(Pattern p, Corner x = Top, Corner y = Left);
+                Layout(Pattern p, Corner x = Top, Corner y = Left, const Vector2i &size = Vector2i(0,0));
 
                 virtual ISceneNode  *Clone() const                              {return new Layout(*this);}
 

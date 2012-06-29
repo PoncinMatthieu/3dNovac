@@ -82,6 +82,31 @@ void String::DestroyFonts()
     }
 }
 
+void    String::Text(const Utils::Unicode::UTF32 &text)
+{
+    _needUpdate = _needUpdateSize = true;
+    _text = text;
+}
+
+void    String::SetColor(const Color &color)
+{
+    _needUpdate = true;
+    _color = color;
+}
+
+const Vector2f      &String::Size()
+{
+    if (_needUpdateSize)
+        RecomputeSize();
+    return _size;
+}
+
+void    String::CharSize(float size)
+{
+    _charSize = size;
+    _needUpdate = _needUpdateSize = true;
+}
+
 void    String::TransformModelMatrixToRender(SceneGraph *scene)
 {
     if (!_text.empty())

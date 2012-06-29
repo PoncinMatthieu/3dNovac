@@ -140,7 +140,8 @@ namespace Nc
                 /** Get the use stencil statement */
                 inline bool             UseStencil() const                      {return _useStencil;}
 
-                /** Set the look object of the widget.
+                /**
+                    Set the look object of the widget and delete the previous look.
                     If \p look is null, the widget will not be decored.
                     \warning the look will be deleted by the widget, a look object should be used with one and only one widget
                 */
@@ -237,8 +238,7 @@ namespace Nc
 
                 bool                    _useStencil;                ///< if true, use the stencil buffer to be sure that the childs will not be drawn outside of the widget.
 
-            private:
-                ILook                   *_widgetLook;
+                ILook                   *_widgetLook;               ///< look used to render the look of the widget
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class WidgetVisitor;

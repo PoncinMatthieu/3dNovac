@@ -45,24 +45,24 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     _currentSampleWindow = NULL;
 
     // create the main layout
-    Layout *mainLayout = new Layout(Layout::Vertical, Center, Center);
+    Layout *mainLayout = new Layout(Layout::Horizontal, Center, Center);
     mainLayout->UseLook(new BoxLook("Background"));
     _GUI->AddChild(mainLayout);
 
-    // create the select window with the combobox and the button
-    Widget *windowSelectSample = CreateSelectSampleWindow(mainLayout);
+    // create the description window
+    Widget *descriptionWindow = CreateDescriptionSampleWindow(mainLayout);
+    descriptionWindow->Percent(Vector2f(0, 90));
 
     // create the sample window used to render the samples
     _widgetSampleWindow = new Widget(Center, Center);
-    _widgetSampleWindow->UseLook(new BoxLook(""));
+    _widgetSampleWindow->UseLook(new BoxLook());
     _widgetSampleWindow->Margin(Vector2i(5, 5));
     mainLayout->AddChild(_widgetSampleWindow);
 
     // set the auto resizing
     mainLayout->Percent(Vector2f(100, 100));
-    windowSelectSample->Percent(Vector2f(40, 0));
     mainLayout->SetExpandRatio(_widgetSampleWindow, 100);
-    _widgetSampleWindow->Percent(Vector2f(80, 100));
+    _widgetSampleWindow->Percent(Vector2f(100, 90));
 
     // create the fps widget on top of the main layout
     _GUI->AddChild(new FPSWidget(Right, Top));
@@ -77,31 +77,63 @@ MainMenu::~MainMenu()
 
 void    MainMenu::AddSample(const std::string &name)
 {
-    _comboBox->AddItem(new Item(name));
+    _sampleComboBox->AddItem(new Item(name));
+}
+
+Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
+{
+    Layout *descriptionLayout = new Layout(Layout::Vertical, Center, Center, Vector2i(300, 0));
+    descriptionLayout->UseLook(new BoxLook());
+    descriptionLayout->MarginX(5);
+    descriptionLayout->MarginY(5);
+    parent->AddChild(descriptionLayout);
+
+    // create the select window with the combobox and the button
+    Widget *windowSelectSample = CreateSelectSampleWindow(descriptionLayout);
+    windowSelectSample->Percent(Vector2f(100, 0));
+
+    // create a line edit for debug to del
+    LineEdit *lineEdit = new LineEdit("Plop", Center, Top, Vector2i(0, 0), Vector2i(0, 20));
+    descriptionLayout->AddChild(lineEdit);
+    lineEdit->Percent(Vector2f(100, 0));
+
+
+    // create the window description area
+    WindowBox *winDescArea = new WindowBox("Description", Center, Top);
+    descriptionLayout->AddChild(winDescArea);
+
+    // create the text area to describe the selected sample
+    _descriptionTextArea = new TextArea(Center, Bottom);
+    winDescArea->AddChild(_descriptionTextArea);
+    _descriptionTextArea->Percent(Vector2f(100, 100));
+
+    winDescArea->Percent(Vector2f(100, 100));
+    descriptionLayout->SetExpandRatio(winDescArea, 100);
+
+    return descriptionLayout;
 }
 
 Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
 {
-    Widget *windowSelectSample = new Widget(Center, Center, Vector2i(0,0), Vector2i(0,60));
+    Widget *windowSelectSample = new Widget(Center, Top, Vector2i(0,0), Vector2i(0,60));
     windowSelectSample->UseLook(new BoxLook("Window"));
     parent->AddChild(windowSelectSample);
 
     Layout *selectSampleLayout = new Layout(Layout::Horizontal, Center, Center);
     windowSelectSample->AddChild(selectSampleLayout);
 
-    _comboBox = new ComboBox(_GUI, Center, Center, Vector2i(0,0), Vector2i(250,0));
-    selectSampleLayout->AddChild(_comboBox);
+    _sampleComboBox = new ComboBox(_GUI, Center, Center, Vector2i(0,0), Vector2i(250,0));
+    selectSampleLayout->AddChild(_sampleComboBox);
 
-    Button *button = new Button("Start Sample", Center, Center, Vector2i(0,0), 20, 15, 8, "arial");
+    Button *button = new Button("Start", Center, Center, Vector2i(0,0), 20, 15, 8, "arial");
     selectSampleLayout->AddChild(button);
     button->HandlerEngineName(GameEngine::ClassName());
     button->HandlerId(GameEngine::StartSample);
 
     selectSampleLayout->Percent(Vector2f(95, 100));
-    selectSampleLayout->SetExpandRatio(_comboBox, 65);
-    _comboBox->Percent(Vector2f(95, 0));
+    selectSampleLayout->SetExpandRatio(_sampleComboBox, 65);
+    _sampleComboBox->Percent(Vector2f(95, 0));
     button->Percent(Vector2f(95, 0));
-
     return windowSelectSample;
 }
 
