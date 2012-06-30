@@ -53,10 +53,8 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
     _size = size;
     _alignment = alignment;
     _useStencil = false;
-    _padding.left = 0;
-    _padding.right = 0;
-    _padding.top = 0;
-    _padding.bottom = 0;
+    _margin.Init(0, 0, 0, 0);
+    _padding.Init(0, 0, 0, 0);
     _widgetLook = NULL;
     _owner = NULL;
 
@@ -95,6 +93,7 @@ void Widget::Copy(const Widget &w)
     _pos = w._pos;
     _alignment = w._alignment;
     _generateHandleAtEnterFocus = w._generateHandleAtEnterFocus;
+    _margin = w._margin;
     _padding = w._padding;
     _percent = w._percent;
     _useStencil = w._useStencil;
@@ -314,11 +313,6 @@ void    Widget::RelativePos(Vector2i &relativePos) const
     Vector2i    parentSize, parentTranslate;
     BoxEdges    padding;
 
-    padding.left = 0;
-    padding.right = 0;
-    padding.top = 0;
-    padding.bottom = 0;
-
     relativePos = _pos;
 
     Visitor::GetParentWidget v(this);
@@ -348,17 +342,17 @@ void    Widget::RelativePos(Vector2i &relativePos) const
 
     // check horizontal alignment
     if (_alignment.Enabled(Right))
-        relativePos.Data[0] = parentSize.Data[0] - _size.Data[0] - padding.right - relativePos.Data[0];
+        relativePos.Data[0] = parentSize.Data[0] - _size.Data[0] - MarginRight() - padding.right - relativePos.Data[0];
     else if (_alignment.Enabled(Left))
-        relativePos.Data[0] += padding.left;
+        relativePos.Data[0] += MarginLeft() + padding.left;
     else if (_alignment.Enabled(CenterH)) // do not put the padding if center (position with the padding will be automatically computed with the size marged (at function: SizeChild) )
         relativePos.Data[0] += (parentSize[0] / 2.0) - (_size.Data[0] / 2.0);
 
     // check vertical alignment
     if (_alignment.Enabled(Top))
-        relativePos.Data[1] = parentSize.Data[1] - _size.Data[1] - padding.top - relativePos.Data[1];
+        relativePos.Data[1] = parentSize.Data[1] - _size.Data[1] - MarginTop() - padding.top - relativePos.Data[1];
     else if (_alignment.Enabled(Bottom))
-        relativePos.Data[1] += padding.bottom;
+        relativePos.Data[1] += MarginBottom() + padding.bottom;
     else if (_alignment.Enabled(CenterV)) // do not put the padding if center (position with the padding will be automatically computed with the size marged (at function: SizeChild) )
         relativePos.Data[1] += (parentSize.Data[1] / 2.0) - (_size.Data[1] / 2.0);
     relativePos += parentTranslate;
@@ -452,17 +446,77 @@ void    Widget::UseLook(GUI::ILook *look)
     _widgetLook = look;
 }
 
-void    Widget::SizeChild(const Widget *, Vector2i &size) const
+void    Widget::SizeChild(const Widget *w, Vector2i &size) const
 {
     size = _size;
-    size[0] -= (_padding.left + _padding.right);
-    size[1] -= (_padding.top + _padding.bottom);
+    size[0] -= (PaddingLeft() + PaddingRight());
+    size[1] -= (PaddingTop() + PaddingBottom());
+    size[0] -= (w->MarginLeft() + w->MarginRight());
+    size[1] -= (w->MarginTop() + w->MarginBottom());
+}
 
-    if (_widgetLook != NULL)
-    {
-        size[0] -= (_widgetLook->edges.left + _widgetLook->edges.right);
-        size[1] -= (_widgetLook->edges.top + _widgetLook->edges.bottom);
-    }
+void    Widget::Margin(const BoxEdges &margin)
+{
+    _margin = margin;
+    _stateChanged = true;
+}
+
+void    Widget::MarginH(int m)
+{
+    _margin.left = m;
+    _margin.right = m;
+    _stateChanged = true;
+}
+
+void    Widget::MarginV(int m)
+{
+    _margin.top = m;
+    _margin.bottom = m;
+    _stateChanged = true;
+}
+
+void    Widget::MarginLeft(int m)
+{
+    _margin.left = m;
+    _stateChanged = true;
+}
+
+void    Widget::MarginRight(int m)
+{
+    _margin.right = m;
+    _stateChanged = true;
+}
+
+void    Widget::MarginTop(int m)
+{
+    _margin.top = m;
+    _stateChanged = true;
+}
+
+void    Widget::MarginBottom(int m)
+{
+    _margin.bottom = m;
+    _stateChanged = true;
+}
+
+unsigned int    Widget::MarginLeft() const
+{
+    return _margin.left;
+}
+
+unsigned int    Widget::MarginRight() const
+{
+    return _margin.right;
+}
+
+unsigned int    Widget::MarginTop() const
+{
+    return _margin.top;
+}
+
+unsigned int    Widget::MarginBottom() const
+{
+    return _margin.bottom;
 }
 
 void    Widget::Padding(const BoxEdges &padding)
@@ -481,6 +535,30 @@ void    Widget::PaddingH(int p)
 void    Widget::PaddingV(int p)
 {
     _padding.top = p;
+    _padding.bottom = p;
+    _stateChanged = true;
+}
+
+void    Widget::PaddingLeft(int p)
+{
+    _padding.left = p;
+    _stateChanged = true;
+}
+
+void    Widget::PaddingRight(int p)
+{
+    _padding.right = p;
+    _stateChanged = true;
+}
+
+void    Widget::PaddingTop(int p)
+{
+    _padding.top = p;
+    _stateChanged = true;
+}
+
+void    Widget::PaddingBottom(int p)
+{
     _padding.bottom = p;
     _stateChanged = true;
 }

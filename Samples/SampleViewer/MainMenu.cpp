@@ -92,12 +92,9 @@ Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
     Widget *windowSelectSample = CreateSelectSampleWindow(descriptionLayout);
     windowSelectSample->Percent(Vector2f(100, 0));
 
-    // create a spacer between the select window and the rest
-    Widget *spacer1 = new Widget(CenterH | Top, Vector2i(0, 5));
-    descriptionLayout->AddChild(spacer1);
-
     // create the window description area
     WindowBox *winDescArea = new WindowBox("Description", CenterH | Top);
+    winDescArea->MarginTop(5);
     winDescArea->Percent(Vector2f(100, 100));
     descriptionLayout->AddChild(winDescArea);
     descriptionLayout->SetExpandRatio(winDescArea, 100);
@@ -120,14 +117,11 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
     selectSampleLayout->Percent(Vector2f(100, 100));
     windowSelectSample->AddChild(selectSampleLayout);
 
-    _sampleComboBox = new ComboBox(_GUI, Center, Vector2i(250,0));
+    _sampleComboBox = new ComboBox(_GUI, Left | CenterV, Vector2i(250,0));
+    _sampleComboBox->MarginRight(5);
     _sampleComboBox->Percent(Vector2f(100, 0));
     selectSampleLayout->AddChild(_sampleComboBox);
     selectSampleLayout->SetExpandRatio(_sampleComboBox, 100);
-
-    // create a spacer widget between the combo box and the button
-    Widget *spacer = new Widget(Center, Vector2i(5,0));
-    selectSampleLayout->AddChild(spacer);
 
     Button *button = new Button("Start", Center, Vector2i(70, 28), "arial");
     selectSampleLayout->AddChild(button);

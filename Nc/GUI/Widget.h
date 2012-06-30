@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// Base class to define a widget
+        /// Base class to define a widget.
         /**
             A widget can receive window events and interact concequently.
             A widget use it's parents widget to calculate it's relative positions.
@@ -124,12 +124,43 @@ namespace Nc
                 /** \return the alignment settings. */
                 inline const AlignmentMask  &Alignment() const                      {return _alignment;}
 
-                /** Set the margin inside of the widget for childs. */
-                void                Padding(const BoxEdges &padding);
+                /** Set the margin of the widget. */
+                void                Margin(const BoxEdges &margin);
                 /** Set the horizontal margin value. */
-                void                PaddingH(int p);
+                void                MarginH(int m);
                 /** Set the vertical margin value. */
+                void                MarginV(int m);
+                /** \return the margin left. */
+                void                MarginLeft(int m);
+                /** \return the margin right. */
+                void                MarginRight(int m);
+                /** \return the margin top. */
+                void                MarginTop(int m);
+                /** \return the margin bottom. */
+                void                MarginBottom(int m);
+                /** \return the margin left. */
+                unsigned int        MarginLeft() const;
+                /** \return the margin right. */
+                unsigned int        MarginRight() const;
+                /** \return the margin top. */
+                unsigned int        MarginTop() const;
+                /** \return the margin bottom. */
+                unsigned int        MarginBottom() const;
+
+                /** Set the padding of the widget. */
+                void                Padding(const BoxEdges &padding);
+                /** Set the horizontal padding value. */
+                void                PaddingH(int p);
+                /** Set the vertical padding value. */
                 void                PaddingV(int p);
+                /** \return the padding left. */
+                void                PaddingLeft(int p);
+                /** \return the padding right. */
+                void                PaddingRight(int p);
+                /** \return the padding top. */
+                void                PaddingTop(int p);
+                /** \return the padding bottom. */
+                void                PaddingBottom(int p);
                 /** \return the padding left, the result correspond to the padding property plus the size of the widget look edge. */
                 unsigned int        PaddingLeft() const;
                 /** \return the padding right, the result correspond to the padding property plus the size of the widget look edge. */
@@ -253,7 +284,8 @@ namespace Nc
                 ILook                   *_widgetLook;               ///< look used to render the look of the widget.
 
             private:
-                BoxEdges                _padding;                   ///< Used to space out widgets, padding correspond of the space inside the widget in which the childs are spaced out.
+                BoxEdges                _margin;                    ///< Used to space out widgets, mergin correspond of the space outside the widget in which the childs are spaced out. To access the property you should call the methods "MarginLeft / MarginRight / MarginTop / MarginBottom"
+                BoxEdges                _padding;                   ///< Used to space out widgets, padding correspond of the space inside the widget in which the childs are spaced out. To access the property you should call the methods "PaddingLeft / PaddingRight / PaddingTop / PaddingBottom"
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class WidgetVisitor;

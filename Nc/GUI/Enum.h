@@ -57,12 +57,27 @@ namespace Nc
         typedef Utils::Mask<Orientation>   OrientationMask;
 
         /// Allow to define edge sizes in a box.
-        struct BoxEdges
+        struct LGUI BoxEdges
         {
-            unsigned int    left;
-            unsigned int    right;
-            unsigned int    top;
-            unsigned int    bottom;
+            BoxEdges()
+                : left(0), right(0), top(0), bottom(0)
+            {}
+            BoxEdges(int l, int r, int t, int b)
+                : left(l), right(r), top(t), bottom(b)
+            {}
+
+            void Init(int left, int right, int top, int bottom)
+            {
+                this->left = left;
+                this->right = right;
+                this->top = top;
+                this->bottom = bottom;
+            }
+
+            int     left;
+            int     right;
+            int     top;
+            int     bottom;
         };
     }
 }
