@@ -53,12 +53,15 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
     _size = size;
     _alignment = alignment;
     _useStencil = false;
-    _margin.left = 0;
-    _margin.right = 0;
-    _margin.top = 0;
-    _margin.bottom = 0;
+    _padding.left = 0;
+    _padding.right = 0;
+    _padding.top = 0;
+    _padding.bottom = 0;
     _widgetLook = NULL;
     _owner = NULL;
+
+    _reposed = true;
+    _resized = true;
     _stateChanged = true;
 }
 
@@ -92,12 +95,14 @@ void Widget::Copy(const Widget &w)
     _pos = w._pos;
     _alignment = w._alignment;
     _generateHandleAtEnterFocus = w._generateHandleAtEnterFocus;
-    _margin = w._margin;
+    _padding = w._padding;
     _percent = w._percent;
     _useStencil = w._useStencil;
     _widgetLook = (w._widgetLook) ? w._widgetLook->Clone() : NULL;
 
     _owner = NULL;
+    _reposed = true;
+    _resized = true;
     _stateChanged = true;
 }
 
@@ -203,15 +208,15 @@ void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
         GetReelSize(size);
 
         if (_alignment.Enabled(Left))
-            pos[0] += _margin.left;
+            pos[0] += _padding.left;
         else
-            pos[0] += _margin.right;
+            pos[0] += _padding.right;
         if (_alignment.Enabled(Top))
-            pos[1] += _margin.top;
+            pos[1] += _padding.top;
         else
-            pos[1] += _margin.bottom;
-        size[0] -= (_margin.left + _margin.right);
-        size[1] -= (_margin.top + _margin.bottom);
+            pos[1] += _padding.bottom;
+        size[0] -= (_padding.left + _padding.right);
+        size[1] -= (_padding.top + _padding.bottom);
 
         if (_widgetLook != NULL)
         {
@@ -294,19 +299,18 @@ void Widget::Pos(const Vector2i &pos)
 
 void Widget::Reposed()
 {
-    // do nothing
+    _reposed = true;
 }
 
 void Widget::GetReelPos(Vector2i &reelPos) const
 {
-    // margin a 0, on prendra celui du parent s'il y en a un (margin interieur)
     Vector2i    reelSize, parentSize, parentTranslate;
-    BoxEdges    margin;
+    BoxEdges    padding;
 
-    margin.left = 0;
-    margin.right = 0;
-    margin.top = 0;
-    margin.bottom = 0;
+    padding.left = 0;
+    padding.right = 0;
+    padding.top = 0;
+    padding.bottom = 0;
 
     GetReelSize(reelSize);
     reelPos = _pos;
@@ -316,14 +320,14 @@ void Widget::GetReelPos(Vector2i &reelPos) const
     if (v.parent != NULL) // get the size of the widget parent
     {
         v.parent->GetReelSize(parentSize);
-        margin = v.parent->_margin;
+        padding = v.parent->_padding;
 
         if (v.parent->_widgetLook != NULL)
         {
-            margin.left += v.parent->_widgetLook->edges.left;
-            margin.right += v.parent->_widgetLook->edges.right;
-            margin.top += v.parent->_widgetLook->edges.top;
-            margin.bottom += v.parent->_widgetLook->edges.bottom;
+            padding.left += v.parent->_widgetLook->edges.left;
+            padding.right += v.parent->_widgetLook->edges.right;
+            padding.top += v.parent->_widgetLook->edges.top;
+            padding.bottom += v.parent->_widgetLook->edges.bottom;
         }
 
         v.parent->PosChild(this, parentTranslate);
@@ -340,18 +344,18 @@ void Widget::GetReelPos(Vector2i &reelPos) const
 
     // check les corner en x
     if (_alignment.Enabled(Right))
-        reelPos.Data[0] = parentSize.Data[0] - reelSize.Data[0] - margin.right - reelPos.Data[0];
+        reelPos.Data[0] = parentSize.Data[0] - reelSize.Data[0] - padding.right - reelPos.Data[0];
     else if (_alignment.Enabled(Left))
-        reelPos.Data[0] += margin.left;
-    else if (_alignment.Enabled(CenterH)) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
+        reelPos.Data[0] += padding.left;
+    else if (_alignment.Enabled(CenterH)) // do not put the padding if center (position with the padding will be automatically computed with the size marged (at function: SizeChild) )
         reelPos.Data[0] += (parentSize[0] / 2.0) - (reelSize.Data[0] / 2.0);
 
     // check les corner en y
     if (_alignment.Enabled(Top))
-        reelPos.Data[1] = parentSize.Data[1] - reelSize.Data[1] - margin.top - reelPos.Data[1];
+        reelPos.Data[1] = parentSize.Data[1] - reelSize.Data[1] - padding.top - reelPos.Data[1];
     else if (_alignment.Enabled(Bottom))
-        reelPos.Data[1] += margin.bottom;
-    else if (_alignment.Enabled(CenterV)) // do not put the margin if center (position with the margin will be automatically computed with the size marged (at function: SizeChild) )
+        reelPos.Data[1] += padding.bottom;
+    else if (_alignment.Enabled(CenterV)) // do not put the padding if center (position with the padding will be automatically computed with the size marged (at function: SizeChild) )
         reelPos.Data[1] += (parentSize.Data[1] / 2.0) - (reelSize.Data[1] / 2.0);
     reelPos += parentTranslate;
 }
@@ -393,6 +397,11 @@ void Widget::Focus(bool state)
 
 void Widget::CheckState()
 {
+    if (_reposed)
+    {
+        Repos();
+        _reposed = false;
+    }
     if (_resized)
     {
         Resize();
@@ -447,8 +456,8 @@ void    Widget::UseLook(GUI::ILook *look)
 void    Widget::SizeChild(const Widget *, Vector2i &size) const
 {
     GetReelSize(size);
-    size[0] -= (_margin.left + _margin.right);
-    size[1] -= (_margin.top + _margin.bottom);
+    size[0] -= (_padding.left + _padding.right);
+    size[1] -= (_padding.top + _padding.bottom);
 
     if (_widgetLook != NULL)
     {
@@ -457,3 +466,46 @@ void    Widget::SizeChild(const Widget *, Vector2i &size) const
     }
 }
 
+void    Widget::Padding(const BoxEdges &padding)
+{
+    _padding = padding;
+    _stateChanged = true;
+}
+
+void    Widget::PaddingH(int p)
+{
+    _padding.left = p;
+    _padding.right = p;
+    _stateChanged = true;
+}
+
+void    Widget::PaddingV(int p)
+{
+    _padding.top = p;
+    _padding.bottom = p;
+    _stateChanged = true;
+}
+
+unsigned int    Widget::PaddingLeft() const
+{
+    unsigned int r = _padding.left;
+    return (_widgetLook != NULL) ? r + _widgetLook->edges.left : r;
+}
+
+unsigned int    Widget::PaddingRight() const
+{
+    unsigned int r = _padding.right;
+    return (_widgetLook != NULL) ? r + _widgetLook->edges.right : r;
+}
+
+unsigned int    Widget::PaddingTop() const
+{
+    unsigned int r = _padding.top;
+    return (_widgetLook != NULL) ? r + _widgetLook->edges.top : r;
+}
+
+unsigned int    Widget::PaddingBottom() const
+{
+    unsigned int r = _padding.bottom;
+    return (_widgetLook != NULL) ? r + _widgetLook->edges.bottom : r;
+}

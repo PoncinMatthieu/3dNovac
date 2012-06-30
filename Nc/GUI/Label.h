@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To manage a widget with a label
+        /// To manage a widget with a label.
         class LGUI  Label : public Widget
         {
             public:
@@ -51,7 +51,7 @@ namespace Nc
                 virtual ISceneNode  *Clone() const                                              {return new Label(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
-                /** Add the given widget as a child to the label and setup the widget so it will be positioned next to the label */
+                /** Add the given widget as a child to the label and setup the widget so it will be positioned next to the label. */
                 void                            AddBuddy(Widget *w);
 
                 /** Create the label with a text, a font and a style. */
@@ -95,8 +95,8 @@ namespace Nc
                 void                Copy(const Label &w);
 
             protected:
-                Graphic::String     *_label;        ///< the label (string).
-                AlignmentMask       _labelAlignment;     ///< describe the alignement of the label.
+                Graphic::String     *_label;            ///< the label (string).
+                AlignmentMask       _labelAlignment;    ///< describe the alignement of the label.
         };
     }
 }

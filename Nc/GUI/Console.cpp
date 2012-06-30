@@ -45,8 +45,8 @@ Console::Console(Window *attachedWindow, const std::string &engineName, Pattern 
 {
     unsigned short  percent = 15; // hauteur de la console en poucentage
 
-    MarginH(5);
-    MarginV(5);
+    PaddingH(5);
+    PaddingV(5);
     _prompt = "[" + engineName + "]> ";
     _engineName = engineName;
 
@@ -124,7 +124,7 @@ void Console::Update()
         if (nbMsg != _listFont.size())
         {
             DeleteListFont();
-            m.AddTranslation(10., (double)textHeight1 + _margin.top + _pos.Data[1], 0.);
+            m.AddTranslation(10., (double)textHeight1 + PaddingTop() + _pos.Data[1], 0.);
             for (unsigned int i = 0; i < nbMsg; i++)
             {
                 String *newString = new String("", textHeight2, Color(0.8f, 0.8f, 0.8f), "arial");

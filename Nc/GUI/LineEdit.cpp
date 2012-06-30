@@ -41,9 +41,9 @@ LineEdit::LineEdit(const AlignmentMask &alignment, const Vector2i &size, const s
     _editable = true;
     _fontUnderscoreDisplayed = false;
     //MarginH(5);
-    MarginV(5);
-    _font = new Graphic::String("", size[1] - (_margin.top + _margin.bottom + _widgetLook->edges.top + _widgetLook->edges.bottom), Color(), ttf);
-    _fontUnderscore = new Graphic::String("|", size[1] - (_margin.top + _margin.bottom + _widgetLook->edges.top + _widgetLook->edges.bottom), Color(), ttf);
+    PaddingV(5);
+    _font = new Graphic::String("", size[1] - (PaddingTop() + PaddingBottom()), Color(), ttf);
+    _fontUnderscore = new Graphic::String("|", size[1] - (PaddingTop() + PaddingBottom()), Color(), ttf);
 }
 
 LineEdit::~LineEdit()
@@ -83,15 +83,15 @@ void    LineEdit::Update()
 {
     Widget::Update();
 
-    float charSize = _size[1] - (_margin.top + _margin.bottom + _widgetLook->edges.top + _widgetLook->edges.bottom);
+    float charSize = _size[1] - (PaddingTop() + PaddingBottom());
     if (charSize != _font->CharSize())
     {
         _font->CharSize(charSize);
         _fontUnderscore->CharSize(charSize);
     }
-    _font->Matrix.Translation(_margin.left + _widgetLook->edges.left, (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
+    _font->Matrix.Translation(PaddingLeft(), (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 
-    _fontUnderscore->Matrix.Translation(_margin.left + _widgetLook->edges.left + _font->Size()[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
+    _fontUnderscore->Matrix.Translation(PaddingLeft() + _font->Size()[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 }
 
 void LineEdit::Draw(Graphic::SceneGraph *scene)

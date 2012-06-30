@@ -57,8 +57,8 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     // create the sample window used to render the samples
     _widgetSampleWindow = new Widget(Center);
     _widgetSampleWindow->UseLook(new BoxLook());
-    _widgetSampleWindow->MarginH(5);
-    _widgetSampleWindow->MarginV(5);
+    _widgetSampleWindow->PaddingH(5);
+    _widgetSampleWindow->PaddingV(5);
     _widgetSampleWindow->Percent(Vector2f(100, 90));
     mainLayout->AddChild(_widgetSampleWindow);
 
@@ -84,8 +84,8 @@ void    MainMenu::AddSample(const std::string &name)
 Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
 {
     Layout *descriptionLayout = new Layout(Layout::Vertical, Center, Vector2i(300, 0));
-    descriptionLayout->MarginH(5);
-    descriptionLayout->MarginV(5);
+    descriptionLayout->PaddingH(5);
+    descriptionLayout->PaddingV(5);
     parent->AddChild(descriptionLayout);
 
     // create the select window with the combobox and the button
@@ -96,13 +96,11 @@ Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
     Widget *spacer1 = new Widget(CenterH | Top, Vector2i(0, 5));
     descriptionLayout->AddChild(spacer1);
 
-
     // create the window description area
     WindowBox *winDescArea = new WindowBox("Description", CenterH | Top);
     winDescArea->Percent(Vector2f(100, 100));
     descriptionLayout->AddChild(winDescArea);
     descriptionLayout->SetExpandRatio(winDescArea, 100);
-
 
     // create the text area to describe the selected sample
     _descriptionTextArea = new TextArea(CenterH | Bottom);

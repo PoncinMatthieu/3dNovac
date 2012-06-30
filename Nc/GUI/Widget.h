@@ -59,7 +59,7 @@ namespace Nc
 
                 /** \return true if the state of the widget has changed after the last rendering pass. */
                 inline bool             StateChanged() const                    {return _stateChanged;}
-                /** Set to true the changed statement. */
+                /** Notify to the widget that it's state has changed. The Update method will be called at the next render pass. */
                 inline void             ChangeState()                           {_stateChanged = true;}
 
                 /** Set the enable statement of the widget. */
@@ -89,7 +89,7 @@ namespace Nc
                 void                    Resizable(bool state)           {_resizable = state;}
                 /** \return the resizable statement. */
                 bool                    Resizable() const               {return _resizable;}
-                /** Resize and reposition the widget with their parent size and position. */
+                /** Notify to the widget that it has been resized. The Resize method will be called at the next render pass.*/
                 virtual void            Resized();
 
                 /** \return the percent size property. */
@@ -105,7 +105,7 @@ namespace Nc
                 virtual void            GetReelPos(Vector2i &pos) const;
                 /** \return the reel recursive position of the widget (including the relative position Corner and the parents). */
                 void                    GetReelPosRecursif(Vector2i &pos) const;
-                /** Notify a changement of position of the widget. */
+                /** Notify a changement of position of the widget. The Repos method will be called at the next render pass. */
                 virtual void            Reposed();
 
                 /** Set the size of the widget. */
@@ -126,12 +126,21 @@ namespace Nc
                 inline void                 Alignment(const AlignmentMask &mask)    {_alignment = mask;}
                 /** \return the alignment settings. */
                 inline const AlignmentMask  &Alignment() const                      {return _alignment;}
+
                 /** Set the margin inside of the widget for childs. */
-                inline void                 Margin(const BoxEdges &margin)          {_margin = margin; _stateChanged = true;}
+                void                Padding(const BoxEdges &padding);
                 /** Set the horizontal margin value. */
-                inline void                 MarginH(int m)                          {_margin.left = _margin.right = m; _stateChanged = true;}
+                void                PaddingH(int p);
                 /** Set the vertical margin value. */
-                inline void                 MarginV(int m)                          {_margin.top = _margin.bottom = m; _stateChanged = true;}
+                void                PaddingV(int p);
+                /** \return the padding left, the result correspond to the padding property plus the size of the widget look edge. */
+                unsigned int        PaddingLeft() const;
+                /** \return the padding right, the result correspond to the padding property plus the size of the widget look edge. */
+                unsigned int        PaddingRight() const;
+                /** \return the padding top, the result correspond to the padding property plus the size of the widget look edge. */
+                unsigned int        PaddingTop() const;
+                /** \return the padding bottom, the result correspond to the padding property plus the size of the widget look edge. */
+                unsigned int        PaddingBottom() const;
 
                 /** Set the use stencil statement.
                     \warning this statement should be modified only before rendering...otherwise you should use a mutex to protect it's access.
@@ -206,10 +215,12 @@ namespace Nc
                 /** Set the changed state statement to true for all child widgets. */
                 void                    ChangeChildsStateRecursive();
 
-                /** Update the widget geometry. */
+                /** Update the widget geometry. Called when the state of the widget has changed (when property _stateChanged == true) */
                 virtual void            Update();
-                /** Resize the widget. */
+                /** Resize the widget. Called when the widget or a parent has been resized. */
                 virtual void            Resize();
+                /** Repos the widget. Called when the widget or a parent has changed of position. */
+                virtual void            Repos()         {}
 
             private:
                 /** Init the widget with the basics information. */
@@ -234,15 +245,18 @@ namespace Nc
 
                 bool                    _inhibit;                   ///< eg: if a button or a parent of the button is set false, the button don't exec the handler.
                 bool                    _stateChanged;              ///< if true, the widget will be update before to be rendered.
-                bool                    _resized;                   ///< if true, the size of the widget will be compute before to be rendered.
+                bool                    _resized;                   ///< if true, the method resize will be called before the widget render itself and the size of the widget will be compute if possible.
+                bool                    _reposed;                   ///< if true, the method repos will be called before the widget render itself.
                 bool                    _generateHandleAtEnterFocus;///< if true, genere an handle when we enter in focus.
                 bool                    _resizable;                 ///< if false, the widget will not be resized.
-                BoxEdges                _margin;                    ///< margin inside of the widget.
                 Vector2f                _percent;                   ///< if the percent is different of null, then the size will be calculated in function of the parent size (if no parent then use the window size).
 
                 bool                    _useStencil;                ///< if true, use the stencil buffer to be sure that the childs will not be drawn outside of the widget.
 
                 ILook                   *_widgetLook;               ///< look used to render the look of the widget.
+
+            private:
+                BoxEdges                _padding;                   ///< Used to space out widgets, padding correspond of the space inside the widget in which the childs are spaced out.
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class WidgetVisitor;

@@ -35,7 +35,7 @@ using namespace Nc::GUI;
 Label::Label(const Utils::Unicode::UTF32 &label, float charSize, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, Graphic::String::Style s)
     : Widget(alignment, size), _label(NULL), _labelAlignment(Left | CenterV)
 {
-    MarginH(5);
+    PaddingH(5);
     CreateLabel(label, charSize, ttf, s);
 }
 
@@ -85,9 +85,9 @@ void Label::Update()
     // update the size of the label on the size of the text if the size if too small
     // (more likely if we didn't set the size at first)
     if (_size[0] < _label->Size()[0])
-        _size[0] = _label->Size()[0] + _margin.left + _margin.right;
+        _size[0] = _label->Size()[0] + PaddingLeft() + PaddingRight();
     if (_size[1] < _label->Size()[1])
-        _size[1] = _label->Size()[1] + _margin.top + _margin.bottom;
+        _size[1] = _label->Size()[1] + PaddingTop() + PaddingBottom();
 
     Widget::Update();
     UpdateLabel();

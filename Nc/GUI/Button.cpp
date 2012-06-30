@@ -74,7 +74,7 @@ void    Button::Initialize(const std::string &text, const Vector2i &size, const 
 
     _colorDisable = Color(0.2f, 0.2f, 0.2f);
     _buttonPressed = false;
-    _charSize = size.Data[1] - (_margin.top + _margin.bottom) - (_buttonLook->edges.top + _buttonLook->edges.bottom);
+    _charSize = size.Data[1] - (PaddingTop() + PaddingBottom());
     _font = new Graphic::String(text, _charSize, Color(1, 1, 1), ttf);
 }
 
@@ -122,8 +122,8 @@ void Button::Update()
         _font->CharSize(_charSize);
     while (!st && _font->CharSize() > 0)
     {
-        if (_font->Size().Data[0] > (_size.Data[0] - _margin.left - _margin.right - _buttonLook->edges.left - _buttonLook->edges.right) ||
-            _font->Size().Data[1] > (_size.Data[1] - _margin.top - _margin.bottom - _buttonLook->edges.top - _buttonLook->edges.bottom))
+        if (_font->Size().Data[0] > (_size.Data[0] - PaddingLeft() - PaddingRight()) ||
+            _font->Size().Data[1] > (_size.Data[1] - PaddingTop() - PaddingBottom()))
             _font->CharSize(_font->CharSize() - 1);
         else
             st = true;

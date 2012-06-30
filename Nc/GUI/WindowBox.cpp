@@ -99,11 +99,11 @@ void WindowBox::Update()
     Widget::Update();
 
     if (_titleAlignment.Enabled(Left))
-        _title->Matrix.Translation(_margin.left, _size.Data[1] - static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] + (_title->Size()[1] / 2), 0);
+        _title->Matrix.Translation(PaddingLeft(), _size.Data[1] - static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] + (_title->Size()[1] / 2), 0);
     else if (_titleAlignment.Enabled(CenterH))
         _title->Matrix.Translation((_size.Data[0] / 2) - (_title->Size()[0] / 2), _size.Data[1] - static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] + (_title->Size()[1] / 2), 0);
     else
-        _title->Matrix.Translation(_size.Data[0] - _margin.right - _title->Size()[0], _size.Data[1] - static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] + (_title->Size()[1] / 2), 0);
+        _title->Matrix.Translation(_size.Data[0] - PaddingRight() - _title->Size()[0], _size.Data[1] - static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] + (_title->Size()[1] / 2), 0);
 }
 
 void WindowBox::Draw(Graphic::SceneGraph *scene)
@@ -113,19 +113,3 @@ void WindowBox::Draw(Graphic::SceneGraph *scene)
     _title->RenderNode(scene);
 }
 
-/*
-void WindowBox::PosChild(const Widget *child, Vector2i &v) const
-{
-    if (_drawTitle && (child->GetCorner(1) == Top || child->GetCorner(1) == Center))
-        v[1] = -_titleHeight;
-    else if (!_drawTitle && child->GetCorner(1) == Bottom)
-        v[1] += _titleHeight;
-}
-*/
-/*
-void WindowBox::GetReelSize(Vector2i &size) const
-{
-    Widget::GetReelSize(size);
-    size.Data[1] -= static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1];
-}
-*/
