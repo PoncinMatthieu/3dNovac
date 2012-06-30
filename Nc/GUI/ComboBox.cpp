@@ -99,11 +99,7 @@ void    ComboBox::Update()
 {
     Widget::Update();
 
-    // get the size of the widget, and update the size of the sprites
-    Vector2i size;
-    GetReelSize(size);
-
-    _spriteList->Size(Vector2f(size[0] - static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0] - static_cast<StripLook*>(_widgetLook)->spriteRight->Size()[0], _spriteList->Size()[1]));
+    _spriteList->Size(Vector2f(_size[0] - static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0] - static_cast<StripLook*>(_widgetLook)->spriteRight->Size()[0], _spriteList->Size()[1]));
 
     if (!_listUnrolled && _currentUnfoldList != NULL)
     {
@@ -133,13 +129,11 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
         // test si la souris est sur le bouton
         Vector2i pos;
         Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
-        GetReelPosRecursif(pos);
+        AbsolutePos(pos);
 
         if (!_listUnrolled)
         {
-            Vector2i size;
-            GetReelSize(size);
-            if (Math::InRect(pos, size, mousePos))
+            if (Math::InRect(pos, _size, mousePos))
             {
                 pos[0] += static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0];
                 pos[1] += (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2;
@@ -176,7 +170,7 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
     {
         Vector2i pos;
         Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
-        _cb->GetReelPosRecursif(pos);
+        _cb->AbsolutePos(pos);
 
         Vector2i size = _cb->_spriteList->Size();
         pos[0] += static_cast<StripLook*>(_cb->_widgetLook)->spriteLeft->Size()[0];

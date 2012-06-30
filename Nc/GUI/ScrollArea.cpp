@@ -83,12 +83,9 @@ void ScrollArea::SetView(Widget *view)
 {
     _view = view;
 
-    Vector2i size;
-    _view->GetReelSize(size);
-
-    _scrollBarH->TotalSize(size[0]);
+    _scrollBarH->TotalSize(_view->Size()[0]);
     _scrollBarH->Position(0);
-    _scrollBarV->TotalSize(size[1]);
+    _scrollBarV->TotalSize(_view->Size()[1]);
     _scrollBarV->Position(0);
 }
 
@@ -96,25 +93,21 @@ void ScrollArea::Update()
 {
     Widget::Update();
 
-    Vector2i size;
-    GetReelSize(size);
-
     if (_view != NULL)
     {
-        Vector2i pos, size;
-        _view->GetReelPos(pos);
-        _view->GetReelSize(size);
+        Vector2i pos;
+        _view->RelativePos(pos);
 
         // if both scrollbar as to be rendered, reduce the size of the scrollbars
-        if (size[0] > _size[0] && size[1] > _size[1])
+        if (_view->Size()[0] > _size[0] && _view->Size()[1] > _size[1])
         {
             _scrollBarH->Size(Vector2i(_size[0] - _scrollBarV->Size()[0], _scrollBarH->Size()[1]));
             _scrollBarV->Size(Vector2i(_scrollBarV->Size()[0], _size[1] - _scrollBarH->Size()[1]));
         }
     }
 
-    _scrollBarH->PageSize(size[0]);
-    _scrollBarV->PageSize(size[1]);
+    _scrollBarH->PageSize(_size[0]);
+    _scrollBarV->PageSize(_size[1]);
 }
 
 void ScrollArea::Draw(Graphic::SceneGraph *scene)
@@ -140,12 +133,11 @@ void ScrollArea::RenderEnd(Graphic::SceneGraph *scene)
     if (_view != NULL)
     {
         Vector2i pos, size;
-        _view->GetReelPos(pos);
-        _view->GetReelSize(size);
+        _view->RelativePos(pos);
 
-        if (size[0] > _size[0])
+        if (_view->Size()[0] > _size[0])
             _scrollBarH->RenderNode(scene);
-        if (size[1] > _size[1])
+        if (_view->Size()[1] > _size[1])
             _scrollBarV->RenderNode(scene);
     }
 

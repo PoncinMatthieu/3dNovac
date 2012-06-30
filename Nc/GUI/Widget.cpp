@@ -127,11 +127,8 @@ bool    Widget::InhibitedRecursif() const
 
 void Widget::Update()
 {
-    Vector2i    size;
-    GetReelSize(size);
-
     if (_widgetLook)
-        _widgetLook->Update(size);
+        _widgetLook->Update(_size);
 }
 
 void Widget::Resize()
@@ -172,7 +169,7 @@ void Widget::RenderBegin(Graphic::SceneGraph *scene)
 
     // definit la position en fonction des corners
     Vector2i reelPos;
-    GetReelPos(reelPos);
+    RelativePos(reelPos);
     scene->PushModelMatrix();
     scene->ModelMatrix().AddTranslation(reelPos.Data[0], reelPos.Data[1], 0.f); // translation sur la position relative au Corner
 }
@@ -203,9 +200,8 @@ void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
     {
         scene->GLState()->Enable(GL::Enum::ScissorTest);
 
-        Vector2i pos, size;
-        GetReelPosRecursif(pos);
-        GetReelSize(size);
+        Vector2i pos, size(_size);
+        AbsolutePos(pos);
 
         if (_alignment.Enabled(Left))
             pos[0] += _padding.left;
@@ -286,7 +282,18 @@ void Widget::CheckFocus(const Event &event)
     }
 }
 
-void Widget::Pos(const Vector2i &pos)
+void    Widget::Size(const Vector2i &size)
+{
+    _size = size;
+
+    // notify the changement to every child
+    Visitor::ResizedAll resizedAll;
+    resizedAll(*this);
+
+    _stateChanged = true;
+}
+
+void    Widget::Pos(const Vector2i &pos)
 {
     _pos = pos;
 
@@ -302,9 +309,9 @@ void Widget::Reposed()
     _reposed = true;
 }
 
-void Widget::GetReelPos(Vector2i &reelPos) const
+void    Widget::RelativePos(Vector2i &relativePos) const
 {
-    Vector2i    reelSize, parentSize, parentTranslate;
+    Vector2i    parentSize, parentTranslate;
     BoxEdges    padding;
 
     padding.left = 0;
@@ -312,16 +319,14 @@ void Widget::GetReelPos(Vector2i &reelPos) const
     padding.top = 0;
     padding.bottom = 0;
 
-    GetReelSize(reelSize);
-    reelPos = _pos;
+    relativePos = _pos;
 
     Visitor::GetParentWidget v(this);
     v(*this);
     if (v.parent != NULL) // get the size of the widget parent
     {
-        v.parent->GetReelSize(parentSize);
+        parentSize = v.parent->Size();
         padding = v.parent->_padding;
-
         if (v.parent->_widgetLook != NULL)
         {
             padding.left += v.parent->_widgetLook->edges.left;
@@ -329,7 +334,6 @@ void Widget::GetReelPos(Vector2i &reelPos) const
             padding.top += v.parent->_widgetLook->edges.top;
             padding.bottom += v.parent->_widgetLook->edges.bottom;
         }
-
         v.parent->PosChild(this, parentTranslate);
     }
     else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph which is supposed to be the parent of the widget at one point
@@ -342,39 +346,34 @@ void Widget::GetReelPos(Vector2i &reelPos) const
         throw Utils::Exception("Widget", "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
     }
 
-    // check les corner en x
+    // check horizontal alignment
     if (_alignment.Enabled(Right))
-        reelPos.Data[0] = parentSize.Data[0] - reelSize.Data[0] - padding.right - reelPos.Data[0];
+        relativePos.Data[0] = parentSize.Data[0] - _size.Data[0] - padding.right - relativePos.Data[0];
     else if (_alignment.Enabled(Left))
-        reelPos.Data[0] += padding.left;
+        relativePos.Data[0] += padding.left;
     else if (_alignment.Enabled(CenterH)) // do not put the padding if center (position with the padding will be automatically computed with the size marged (at function: SizeChild) )
-        reelPos.Data[0] += (parentSize[0] / 2.0) - (reelSize.Data[0] / 2.0);
+        relativePos.Data[0] += (parentSize[0] / 2.0) - (_size.Data[0] / 2.0);
 
-    // check les corner en y
+    // check vertical alignment
     if (_alignment.Enabled(Top))
-        reelPos.Data[1] = parentSize.Data[1] - reelSize.Data[1] - padding.top - reelPos.Data[1];
+        relativePos.Data[1] = parentSize.Data[1] - _size.Data[1] - padding.top - relativePos.Data[1];
     else if (_alignment.Enabled(Bottom))
-        reelPos.Data[1] += padding.bottom;
+        relativePos.Data[1] += padding.bottom;
     else if (_alignment.Enabled(CenterV)) // do not put the padding if center (position with the padding will be automatically computed with the size marged (at function: SizeChild) )
-        reelPos.Data[1] += (parentSize.Data[1] / 2.0) - (reelSize.Data[1] / 2.0);
-    reelPos += parentTranslate;
+        relativePos.Data[1] += (parentSize.Data[1] / 2.0) - (_size.Data[1] / 2.0);
+    relativePos += parentTranslate;
 }
 
-void Widget::GetReelPosRecursif(Vector2i &pos) const
+void    Widget::AbsolutePos(Vector2i &absolutePos) const
 {
     // get back the first parent
     Visitor::GetParentWidget v(this);
     v(*this);
     if (v.parent != NULL)
-        v.parent->GetReelPosRecursif(pos);
-    Vector2i reelPos;
-    GetReelPos(reelPos);
-    pos += reelPos;
-}
-
-void Widget::GetReelSize(Vector2i &size) const
-{
-    size = _size;
+        v.parent->AbsolutePos(absolutePos);
+    Vector2i relativePos;
+    RelativePos(relativePos);
+    absolutePos += relativePos;
 }
 
 void Widget::Focus(bool state)
@@ -455,7 +454,7 @@ void    Widget::UseLook(GUI::ILook *look)
 
 void    Widget::SizeChild(const Widget *, Vector2i &size) const
 {
-    GetReelSize(size);
+    size = _size;
     size[0] -= (_padding.left + _padding.right);
     size[1] -= (_padding.top + _padding.bottom);
 
@@ -509,3 +508,52 @@ unsigned int    Widget::PaddingBottom() const
     unsigned int r = _padding.bottom;
     return (_widgetLook != NULL) ? r + _widgetLook->edges.bottom : r;
 }
+
+void    Widget::Inhibit(bool status)
+{
+    _inhibit = status;
+    ChangeChildsStateRecursive();
+}
+
+void    Widget::Inhibit()
+{
+    _inhibit = true;
+    ChangeChildsStateRecursive();
+}
+
+void    Widget::Uninhibit()
+{
+    _inhibit = false;
+    ChangeChildsStateRecursive();
+}
+
+void    Widget::GenerateHandleAtEnterFocus(bool state)
+{
+    _generateHandleAtEnterFocus = state;
+    _stateChanged = true;
+}
+
+void    Widget::UseStencil(bool state)
+{
+    _useStencil = state;
+    _stateChanged = true;
+}
+
+void    Widget::Enable(bool status)
+{
+    Object::Enable(status);
+    ChangeChildsStateRecursive();
+}
+
+void    Widget::Enable()
+{
+    Object::Enable();
+    ChangeChildsStateRecursive();
+}
+
+void    Widget::Disable()
+{
+    Object::Disable();
+    ChangeChildsStateRecursive();
+}
+

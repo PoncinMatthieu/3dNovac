@@ -85,7 +85,7 @@ namespace Nc
                 /** Update the label matrix. */
                 void                UpdateLabel();
 
-                /** \return a vector to translate the childs when we call the GetReelPos method. */
+                /** \return a vector to translate the childs when we call the RelativePos method. */
                 virtual void        PosChild(const Widget *, Vector2i &) const;
                 /** \return the size that the child should use to set up it's percent size when we call the Resized method. */
                 virtual void        SizeChild(const Widget *, Vector2i &size) const;

@@ -89,16 +89,14 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
 			if (w != NULL && w->Enabled() && !w->Inhibited())
             {
                 Vector2i    reelPos;
-                Vector2i    reelSize;
-                w->GetReelPos(reelPos);
-                w->GetReelSize(reelSize);
+                w->RelativePos(reelPos);
                 #ifdef _DEBUG_GUI_FOCUS
-                LOG_DEBUG << "Widget: " << *w << std::endl;
-                LOG_DEBUG << "ReelPos   = " << reelPos << std::endl;
-                LOG_DEBUG << "ReelSize  = " << reelSize << std::endl;
-                LOG_DEBUG << "Mouse = " << mousePos << std::endl;
+                LOG_DEBUG << "Widget   : " << *w << std::endl;
+                LOG_DEBUG << "ReelPos  = " << reelPos << std::endl;
+                LOG_DEBUG << "Size     = " << w->Size() << std::endl;
+                LOG_DEBUG << "Mouse    = " << mousePos << std::endl;
                 #endif
-                if (Math::InRect(reelPos, reelSize, mousePos))
+                if (Math::InRect(reelPos, w->Size(), mousePos))
                 {
                     _widgetFocused = w;
                     _widgetFocused->Focus(true);

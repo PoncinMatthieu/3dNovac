@@ -77,17 +77,15 @@ void CheckFocus::VisitNode(Widget &w)
         return;
 
     Vector2i    pos;
-    Vector2i    size;
 
-    w.GetReelPosRecursif(pos);
-    w.GetReelSize(size);
+    w.AbsolutePos(pos);
     #ifdef _DEBUG_GUI_FOCUS
-    LOG_DEBUG << "Widget: " << w << std::endl;
+    LOG_DEBUG << "Widget    : " << w << std::endl;
     LOG_DEBUG << "ReelPos   = " << pos << std::endl;
-    LOG_DEBUG << "ReelSize  = " << size << std::endl;
-    LOG_DEBUG << "Mouse = " << mousePos << std::endl;
+    LOG_DEBUG << "Size      = " << w,Size() << std::endl;
+    LOG_DEBUG << "Mouse     = " << mousePos << std::endl;
     #endif
-    if (Math::InRect(pos, size, mousePos))
+    if (Math::InRect(pos, w.Size(), mousePos))
     {
         childFocused = &w;
         childFocused->Focus(true);

@@ -50,13 +50,10 @@ void Layout::PosChild(const Widget *child, Vector2i &v) const
         if (child == *it)
             break;
 
-    Vector2i reelSize;
-    GetReelSize(reelSize);
-
     switch (_pattern)
     {
-        case Horizontal:    PosChildHorizontal(child, v, reelSize, childCount, childNumber);   break;
-        case Vertical:      PosChildVertical(child, v, reelSize, childCount, childNumber);   break;
+        case Horizontal:    PosChildHorizontal(child, v, childCount, childNumber);   break;
+        case Vertical:      PosChildVertical(child, v, childCount, childNumber);   break;
 /*
         case Grid:
             LOG << "The Layout grid is not implemented" << std::endl;
@@ -65,16 +62,16 @@ void Layout::PosChild(const Widget *child, Vector2i &v) const
     }
 }
 
-void    Layout::PosChildHorizontal(const Widget *child, Vector2i &v, const Vector2i &reelSize, int childCount, int childNumber) const
+void    Layout::PosChildHorizontal(const Widget *child, Vector2i &v, int childCount, int childNumber) const
 {
     // if the ratio map is empty, no need to complexify it
     if (_mapRatio.empty())
     {
-        int inc = reelSize[0] / childCount;
+        int inc = _size[0] / childCount;
         if (child->Alignment().Enabled(Right))
             childNumber = childNumber - childCount + 1;
         if (child->Alignment().Enabled(CenterH))
-            v[0] = v[0] - (reelSize[0] / 2) + (inc / 2);
+            v[0] = v[0] - (_size[0] / 2) + (inc / 2);
         v[0] += (inc * childNumber);
     }
     else // otherwise, we need to create a size table to store childs size
@@ -93,24 +90,24 @@ void    Layout::PosChildHorizontal(const Widget *child, Vector2i &v, const Vecto
             if (itRatio != _mapRatio.end())
             {
 
-                int sMax = GetSizeMax(w, reelSize)[0];
+                int sMax = GetSizeMax(w, _size)[0];
 
-                inc[i] = ((float)reelSize[0] * itRatio->second) / 100;
+                inc[i] = ((float)_size[0] * itRatio->second) / 100;
 
                 if (inc[i] < w->Size()[0])
                     inc[i] = w->Size()[0];
                 if (inc[i] > sMax)
                     inc[i] = sMax;
-                if (totalSize + inc[i] > reelSize[0])
-                    inc[i] = reelSize[0] - totalSize;
+                if (totalSize + inc[i] > _size[0])
+                    inc[i] = _size[0] - totalSize;
                 totalSize += inc[i];
             }
             else
             {
                 inc[i] = w->Size()[0];
 
-                if (totalSize + inc[i] > reelSize[0])
-                    inc[i] = reelSize[0] - totalSize;
+                if (totalSize + inc[i] > _size[0])
+                    inc[i] = _size[0] - totalSize;
                 totalSize += inc[i];
             }
         }
@@ -121,25 +118,25 @@ void    Layout::PosChildHorizontal(const Widget *child, Vector2i &v, const Vecto
         }
         if (child->Alignment().Enabled(Right))
         {
-            v[0] -= (reelSize[0] - inc[i]);
+            v[0] -= (_size[0] - inc[i]);
         }
         else if (child->Alignment().Enabled(CenterH))
         {
-            v[0] -= ((reelSize[0] / 2) - (inc[i] / 2));
+            v[0] -= ((_size[0] / 2) - (inc[i] / 2));
         }
     }
 }
 
-void    Layout::PosChildVertical(const Widget *child, Vector2i &v, const Vector2i &reelSize, int childCount, int childNumber) const
+void    Layout::PosChildVertical(const Widget *child, Vector2i &v, int childCount, int childNumber) const
 {
     // if the ratio map is empty, no need to complexify it
     if (_mapRatio.empty())
     {
-        int inc = reelSize[1] / childCount;
+        int inc = _size[1] / childCount;
         if (child->Alignment().Enabled(Bottom))
             childNumber = childNumber - childCount + 1;
         if (child->Alignment().Enabled(CenterV))
-            v[1] = v[1] + (reelSize[1] / 2) - (inc / 2);
+            v[1] = v[1] + (_size[1] / 2) - (inc / 2);
         v[1] -= (inc * childNumber);
 
     }
@@ -159,24 +156,24 @@ void    Layout::PosChildVertical(const Widget *child, Vector2i &v, const Vector2
             if (itRatio != _mapRatio.end())
             {
 
-                int sMax = GetSizeMax(w, reelSize)[1];
+                int sMax = GetSizeMax(w, _size)[1];
 
-                inc[i] = ((float)reelSize[1] * itRatio->second) / 100;
+                inc[i] = ((float)_size[1] * itRatio->second) / 100;
 
                 if (inc[i] < w->Size()[1])
                     inc[i] = w->Size()[1];
                 if (inc[i] > sMax)
                     inc[i] = sMax;
-                if (totalSize + inc[i] > reelSize[1])
-                    inc[i] = reelSize[1] - totalSize;
+                if (totalSize + inc[i] > _size[1])
+                    inc[i] = _size[1] - totalSize;
                 totalSize += inc[i];
             }
             else
             {
                 inc[i] = w->Size()[1];
 
-                if (totalSize + inc[i] > reelSize[1])
-                    inc[i] = reelSize[1] - totalSize;
+                if (totalSize + inc[i] > _size[1])
+                    inc[i] = _size[1] - totalSize;
                 totalSize += inc[i];
             }
         }
@@ -187,11 +184,11 @@ void    Layout::PosChildVertical(const Widget *child, Vector2i &v, const Vector2
         }
         if (child->Alignment().Enabled(Bottom))
         {
-            v[1] += (reelSize[1] - inc[i]);
+            v[1] += (_size[1] - inc[i]);
         }
         else if (child->Alignment().Enabled(CenterV))
         {
-            v[1] += ((reelSize[1] / 2) - (inc[i] / 2));
+            v[1] += ((_size[1] / 2) - (inc[i] / 2));
         }
     }
 }

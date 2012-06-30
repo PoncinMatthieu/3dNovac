@@ -63,64 +63,61 @@ namespace Nc
                 inline void             ChangeState()                           {_stateChanged = true;}
 
                 /** Set the enable statement of the widget. */
-                virtual void            Enable(bool status)                {Object::Enable(status); ChangeChildsStateRecursive();}
+                virtual void            Enable(bool status);
                 /** Enable the widget. */
-                virtual void            Enable()                           {Object::Enable(); ChangeChildsStateRecursive();}
+                virtual void            Enable();
                 /** Disable the widget. */
-                virtual void            Disable()                          {Object::Disable(); ChangeChildsStateRecursive();}
+                virtual void            Disable();
                 /** \return the enable statement. */
-                virtual bool            Enabled() const                    {return Object::Enabled();}
+                virtual bool            Enabled() const                     {return Object::Enabled();}
 
                 /** Set the inhibit statement of the widget. */
-                virtual void            Inhibit(bool status)              {_inhibit = status; ChangeChildsStateRecursive();}
+                virtual void            Inhibit(bool status);
                 /** inhibit the widget. */
-                virtual void            Inhibit()                         {_inhibit = true; ChangeChildsStateRecursive();}
+                virtual void            Inhibit();
                 /** Uninhibit the widget. */
-                virtual void            Uninhibit()                       {_inhibit = false; ChangeChildsStateRecursive();}
+                virtual void            Uninhibit();
                 /** \return the inhibit statement. */
-                virtual bool            Inhibited() const                 {return _inhibit;}
+                virtual bool            Inhibited() const                   {return _inhibit;}
                 /**
                     \return the inhibit statement (if false, draw it but for expample fill in grey a disabled button).
                     Recursif, return false if a parent is set to false.
                 */
                 virtual bool            InhibitedRecursif() const;
 
+                /** \return the size of the widget. */
+                inline const Vector2i   &Size() const                       {return _size;}
+                /** Set the size of the widget. */
+                void                    Size(const Vector2i &size);
                 /** Set the resizable statement. */
-                void                    Resizable(bool state)           {_resizable = state;}
+                void                    Resizable(bool state)               {_resizable = state;}
                 /** \return the resizable statement. */
-                bool                    Resizable() const               {return _resizable;}
+                bool                    Resizable() const                   {return _resizable;}
                 /** Notify to the widget that it has been resized. The Resize method will be called at the next render pass.*/
                 virtual void            Resized();
 
-                /** \return the percent size property. */
-                inline const Vector2f   &Percent() const                        {return _percent;}
-                /** Set the percent size. If the percent value is different of null, the widget will be resized with a proportion of his parent. */
-                void                    Percent(const Vector2f &percent);
-
                 /** Return the position of the widget. */
-                inline const Vector2i   &Pos() const                            {return _pos;}
+                inline const Vector2i   &Pos() const                        {return _pos;}
                 /** Set the position of the widget. */
                 void                    Pos(const Vector2i &pos);
-                /** \return the reel position of the widget (including the relative position Corner). */
-                virtual void            GetReelPos(Vector2i &pos) const;
-                /** \return the reel recursive position of the widget (including the relative position Corner and the parents). */
-                void                    GetReelPosRecursif(Vector2i &pos) const;
-                /** Notify a changement of position of the widget. The Repos method will be called at the next render pass. */
+                /** \return the relative position of the widget (including the alignment of the widget and it's padding's parent). */
+                void                    RelativePos(Vector2i &pos) const;
+                /** \return the absolute position of the widget (recursively includes the alignment of the widget and it's padding's parent). */
+                void                    AbsolutePos(Vector2i &pos) const;
+                /** Notify a changement of position to the widget. The Repos method will be called at the next render pass. */
                 virtual void            Reposed();
 
-                /** Set the size of the widget. */
-                inline void             Size(const Vector2i &size)              {_size = size; _stateChanged = true;}
-                /** \return the size of the widget. */
-                inline const Vector2i   &Size() const                           {return _size;}
-                /** \return the reel size of the widget (including some specifique modification). */
-                virtual void            GetReelSize(Vector2i &size) const;
+                /** \return the percent size property. */
+                inline const Vector2f   &Percent() const                    {return _percent;}
+                /** Set the percent size. If the percent value is different of null, the widget will be resized with a proportion of his parent. */
+                void                    Percent(const Vector2f &percent);
 
                 /** Set the focus statement. */
                 void                    Focus(bool state);
                 /** \return the focus statement. */
-                bool                    Focus() const                           {return _focus;}
+                bool                    Focus() const                               {return _focus;}
                 /** Set the generateHandleAtEnterFocus statement. If it's true, the widget will generate an event when the widget will entered in focus. */
-                inline void             GenerateHandleAtEnterFocus(bool state)  {_generateHandleAtEnterFocus = state; _stateChanged = true;}
+                void                    GenerateHandleAtEnterFocus(bool state);
 
                 /** Set the alignment settings. */
                 inline void                 Alignment(const AlignmentMask &mask)    {_alignment = mask;}
@@ -145,9 +142,9 @@ namespace Nc
                 /** Set the use stencil statement.
                     \warning this statement should be modified only before rendering...otherwise you should use a mutex to protect it's access.
                  */
-                inline void             UseStencil(bool state)                  {_useStencil = state; _stateChanged = true;}
+                void                UseStencil(bool state);
                 /** Get the use stencil statement */
-                inline bool             UseStencil() const                      {return _useStencil;}
+                inline bool         UseStencil() const                          {return _useStencil;}
 
                 /**
                     Set the look object of the widget and delete the previous look.
@@ -192,7 +189,7 @@ namespace Nc
 
                 /**
                     Can be redefine to manage the specific placement of childs in a widget (like in a WindowBox or a Layout).
-                    \return a vector to translate the childs when we call the GetReelPos method.
+                    \return a vector to translate the childs when we call the RelativePos method.
                  */
                 virtual void            PosChild(const Widget *, Vector2i &) const          {}
                 /**

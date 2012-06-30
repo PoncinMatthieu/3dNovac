@@ -73,8 +73,8 @@ namespace Nc
                 /** \return the size that the child should use to set up it's percent size */
                 virtual void        SizeChild(const Widget *child, Vector2i &size) const;
 
-                virtual void        PosChildHorizontal(const Widget *child, Vector2i &v, const Vector2i &reelSize, int childCount, int childNumber) const;
-                virtual void        PosChildVertical(const Widget *child, Vector2i &v, const Vector2i &reelSize, int childCount, int childNumber) const;
+                virtual void        PosChildHorizontal(const Widget *child, Vector2i &v, int childCount, int childNumber) const;
+                virtual void        PosChildVertical(const Widget *child, Vector2i &v, int childCount, int childNumber) const;
 
                 virtual void        SizeChildHorizontal(const Widget *child, Vector2i &size) const;
                 virtual void        SizeChildVertical(const Widget *child, Vector2i &size) const;

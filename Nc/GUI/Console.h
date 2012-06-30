@@ -59,7 +59,7 @@ namespace Nc
                 virtual ~Console();
 
                 /** Return the reel position of the console */
-                virtual void        GetReelPos(Vector2i &pos) const;
+                //virtual void        GetReelPos(Vector2i &pos) const;
 
                 /** Push a message in the message list of the console */
                 static void         PushMsg(const std::string &s);

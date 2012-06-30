@@ -58,15 +58,13 @@ Console::Console(Window *attachedWindow, const std::string &engineName, Pattern 
     _labelPrompt->TextColor(Color(1, 1, 1));
     AddChild(_labelPrompt);
 
-    Vector2i size;
-    _labelPrompt->GetReelSize(size);
     _labelWrite = new Label("", 17, Left | Bottom, Vector2f(0, 17), "Prototype");
-    _labelWrite->Pos(Vector2f(size.Data[0], 0));
+    _labelWrite->Pos(Vector2f(_size.Data[0], 0));
     _labelWrite->TextColor(Color(1, 1, 1));
     AddChild(_labelWrite);
 
     _labelCursor = new Label("_", 17, Left | Bottom, Vector2f(0, 17), "arial");
-    _labelCursor->Pos(Vector2f(size.Data[0], 0));
+    _labelCursor->Pos(Vector2f(_size.Data[0], 0));
     _labelCursor->TextColor(Color(0, 1, 0));
     AddChild(_labelCursor);
 
@@ -98,14 +96,14 @@ void Console::Write(const std::string msg, bool flush)
         _currentWritingMsg.clear();
     }
 }
-
+/*
 void Console::GetReelPos(Vector2i &pos) const
 {
     WindowBox::GetReelPos(pos);
     if (_pattern == TranslateAtFocus && !_focus)
-        pos.Data[1] -= _size.Data[1] /*- _titleHeight*/;
+        pos.Data[1] -= _size.Data[1] /*- _titleHeight*//*;
 }
-
+*/
 void Console::Update()
 {
     WindowBox::Update();
@@ -186,11 +184,7 @@ void Console::KeyboardEvent(const Event &event)
                     {
                         cmd = *_itCurrentMsg;
                         _labelWrite->Text(cmd);
-                        Vector2i sizeLabelWrite;
-                        Vector2i sizeLabelPrompt;
-                        _labelWrite->GetReelSize(sizeLabelWrite);
-                        _labelPrompt->GetReelSize(sizeLabelPrompt);
-                        _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
+                        _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
                     }
                 }
             }
@@ -202,11 +196,7 @@ void Console::KeyboardEvent(const Event &event)
                     {
                         cmd = lastcmd;
                         _labelWrite->Text(cmd);
-                        Vector2i sizeLabelWrite;
-                        Vector2i sizeLabelPrompt;
-                        _labelWrite->GetReelSize(sizeLabelWrite);
-                        _labelPrompt->GetReelSize(sizeLabelPrompt);
-                        _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
+                        _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
                         lastcmdSet = false;
                     }
                 }
@@ -215,11 +205,7 @@ void Console::KeyboardEvent(const Event &event)
                     --_itCurrentMsg;
                     cmd = *_itCurrentMsg;
                     _labelWrite->Text(cmd);
-                    Vector2i sizeLabelWrite;
-                    Vector2i sizeLabelPrompt;
-                    _labelWrite->GetReelSize(sizeLabelWrite);
-                    _labelPrompt->GetReelSize(sizeLabelPrompt);
-                    _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
+                    _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
                 }
             }
         }
@@ -234,21 +220,13 @@ void Console::KeyboardEvent(const Event &event)
             cmd.clear();
             _labelWrite->Text("");
             lastcmdSet = false;
-            Vector2i sizeLabelWrite;
-            Vector2i sizeLabelPrompt;
-            _labelWrite->GetReelSize(sizeLabelWrite);
-            _labelPrompt->GetReelSize(sizeLabelPrompt);
-            _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
+            _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
         }
         else if (event.key.code == Key::Back && !cmd.empty()) // suppression du dernier caractere
         {
             cmd.erase(cmd.end() - 1);
             _labelWrite->Text(cmd);
-            Vector2i sizeLabelWrite;
-            Vector2i sizeLabelPrompt;
-            _labelWrite->GetReelSize(sizeLabelWrite);
-            _labelPrompt->GetReelSize(sizeLabelPrompt);
-            _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
+            _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
             lastcmdSet = false;
         }
         else    // sinon on peut recuperer le caractere et le push dans le label
@@ -258,11 +236,7 @@ void Console::KeyboardEvent(const Event &event)
             {
                 cmd += c;
                 _labelWrite->Text(cmd);
-                Vector2i sizeLabelWrite;
-                Vector2i sizeLabelPrompt;
-                _labelWrite->GetReelSize(sizeLabelWrite);
-                _labelPrompt->GetReelSize(sizeLabelPrompt);
-                _labelCursor->Pos(Vector2f(sizeLabelWrite.Data[0] + sizeLabelPrompt.Data[0], 0));
+                _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
             }
             lastcmdSet = false;
         }

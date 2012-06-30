@@ -147,11 +147,9 @@ void Button::MouseButtonEvent(const System::Event &event)
     {
         // test si la souris est sur le bouton
         Vector2i pos;
-        Vector2i size;
         Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
-        GetReelPosRecursif(pos);
-        GetReelSize(size);
-        if (Math::InRect(pos, size, mousePos))
+        AbsolutePos(pos);
+        if (Math::InRect(pos, _size, mousePos))
             inRect = true;
 
         if (inRect && !_buttonPressed && event.type == System::Event::MouseButtonPressed)
