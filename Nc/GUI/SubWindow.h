@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_WIDGETSUBWINDOW_H_
-#define NC_GUI_WIDGETSUBWINDOW_H_
+#ifndef NC_GUI_SUBWINDOW_H_
+#define NC_GUI_SUBWINDOW_H_
 
 #include <Nc/Graphics/Window/Window/SubWindow.h>
 #include "Widget.h"
@@ -38,16 +38,16 @@ namespace Nc
         /**
             Use a FrameBuffer to render the subwindow to render it into the widget.
         */
-        class LGUI WidgetSubWindow : public Widget
+        class LGUI SubWindow : public Widget
         {
             public:
-                NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Widget, System::Object, System::Object, Nc::GUI::WidgetSubWindow);
+                NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Widget, System::Object, System::Object, Nc::GUI::SubWindow);
 
             public:
-                WidgetSubWindow(Graphic::Window *windowParent, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0));
-                WidgetSubWindow(const WidgetSubWindow &w);
-                WidgetSubWindow &operator = (const WidgetSubWindow &w);
-                virtual ~WidgetSubWindow();
+                SubWindow(Graphic::Window *windowParent, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0));
+                SubWindow(const SubWindow &w);
+                SubWindow &operator = (const SubWindow &w);
+                virtual ~SubWindow();
 
                 /** Resize the widget with the SubWindow */
                 virtual void            Resize();
@@ -55,7 +55,7 @@ namespace Nc
                 virtual void            Reposed();
 
                 /** \return the SubWindow */
-                Graphic::SubWindow      *SubWindow() const          {return _subWindow;}
+                Graphic::SubWindow      *GetSubWindow() const          {return _subWindow;}
 				/** Enable the sub window for rendering */
 				void					EnableSubWindow()			{_subWindow->Enable(true);}
 

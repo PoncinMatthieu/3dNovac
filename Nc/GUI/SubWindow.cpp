@@ -25,12 +25,12 @@
 -----------------------------------------------------------------------------*/
 
 #include <Nc/Graphics/Object/Sprite.h>
-#include "WidgetSubWindow.h"
+#include "SubWindow.h"
 
 using namespace Nc;
 using namespace Nc::GUI;
 
-WidgetSubWindow::WidgetSubWindow(Graphic::Window *windowParent, const AlignmentMask &alignment, const Vector2i &size)
+SubWindow::SubWindow(Graphic::Window *windowParent, const AlignmentMask &alignment, const Vector2i &size)
     : Widget(alignment, size)
 {
     _subWindow = new Graphic::SubWindow(windowParent);
@@ -38,7 +38,7 @@ WidgetSubWindow::WidgetSubWindow(Graphic::Window *windowParent, const AlignmentM
     _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
 }
 
-WidgetSubWindow::WidgetSubWindow(const WidgetSubWindow &w)
+SubWindow::SubWindow(const SubWindow &w)
     : Widget(w)
 {
     _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
@@ -46,7 +46,7 @@ WidgetSubWindow::WidgetSubWindow(const WidgetSubWindow &w)
     _subWindow->Create(_size);
 }
 
-WidgetSubWindow &WidgetSubWindow::operator = (const WidgetSubWindow &w)
+SubWindow &SubWindow::operator = (const SubWindow &w)
 {
     Widget::operator = (w);
     _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
@@ -55,13 +55,13 @@ WidgetSubWindow &WidgetSubWindow::operator = (const WidgetSubWindow &w)
 	return *this;
 }
 
-WidgetSubWindow::~WidgetSubWindow()
+SubWindow::~SubWindow()
 {
     delete _sprite;
     delete _subWindow;
 }
 
-void    WidgetSubWindow::Resize()
+void    SubWindow::Resize()
 {
     Widget::Resize();
 
@@ -79,12 +79,12 @@ void    WidgetSubWindow::Resize()
     _subWindow->Pos(pos);
 }
 
-void    WidgetSubWindow::Reposed()
+void    SubWindow::Reposed()
 {
     Resized();
 }
 
-void    WidgetSubWindow::Draw(Graphic::SceneGraph *scene)
+void    SubWindow::Draw(Graphic::SceneGraph *scene)
 {
     Widget::Draw(scene);
 

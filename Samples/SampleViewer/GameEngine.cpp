@@ -111,11 +111,11 @@ void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
         throw Utils::Exception("StartSampleCmd", "Failed to create the new GameEngine.");
 
     // create the widget sub window
-    GUI::WidgetSubWindow *w = _menu->CreateSampleWindow(_window);
+    GUI::SubWindow *w = _menu->CreateSampleWindow(_window);
 
     // init the sample game engine
     engine->LimitFrameRate(60);
-    engine->SetWindow(w->SubWindow());
+    engine->SetWindow(w->GetSubWindow());
     _manager->AddEngine(engine);
 
     // start the sample game engine

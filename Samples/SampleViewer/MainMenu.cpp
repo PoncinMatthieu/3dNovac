@@ -28,11 +28,12 @@
 #include <Nc/GUI/ScrollBar.h>
 #include <Nc/GUI/ComboBox.h>
 #include <Nc/GUI/Looks.h>
-#include <Nc/GUI/WidgetSubWindow.h>
+#include <Nc/GUI/SubWindow.h>
 
 #include "MainMenu.h"
 #include "GameEngine.h"
 
+using namespace Nc;
 using namespace Nc::Utils;
 using namespace Nc::System;
 using namespace Nc::GUI;
@@ -130,12 +131,12 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
     return windowSelectSample;
 }
 
-WidgetSubWindow    *MainMenu::CreateSampleWindow(Window *windowParent)
+GUI::SubWindow      *MainMenu::CreateSampleWindow(Window *windowParent)
 {
     if (_currentSampleWindow != NULL)
         _widgetSampleWindow->RemoveWidget(_currentSampleWindow);
 
-    _currentSampleWindow = new WidgetSubWindow(windowParent, Center);
+    _currentSampleWindow = new GUI::SubWindow(windowParent, Center);
     _currentSampleWindow->Percent(Vector2f(100, 100));
     _widgetSampleWindow->AddChild(_currentSampleWindow);
     return _currentSampleWindow;
@@ -144,6 +145,6 @@ WidgetSubWindow    *MainMenu::CreateSampleWindow(Window *windowParent)
 void    MainMenu::CloseSampleWindow()
 {
     if (_currentSampleWindow != NULL)
-        _currentSampleWindow->SubWindow()->Close();
+        _currentSampleWindow->GetSubWindow()->Close();
 }
 

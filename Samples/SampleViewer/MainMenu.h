@@ -28,7 +28,7 @@
 #define SAMPLEVIEWER_MAINMENU_H_
 
 #include <Nc/GUI/GUI.h>
-#include <Nc/GUI/WidgetSubWindow.h>
+#include <Nc/GUI/SubWindow.h>
 #include <Nc/GUI/TextArea.h>
 
 namespace SampleViewer
@@ -43,7 +43,7 @@ namespace SampleViewer
 
             const std::string           *Sample() const         {return (_sampleComboBox->CurrentItem()) ? &_sampleComboBox->CurrentItem()->Data() : NULL;}
 
-            Nc::GUI::WidgetSubWindow    *CreateSampleWindow(Nc::Graphic::Window *windowParent);
+            Nc::GUI::SubWindow          *CreateSampleWindow(Nc::Graphic::Window *windowParent);
 
             void                        CloseSampleWindow();
 
@@ -57,7 +57,7 @@ namespace SampleViewer
             Nc::GUI::TextArea           *_descriptionTextArea;
 
             Nc::GUI::Widget             *_widgetSampleWindow;
-            Nc::GUI::WidgetSubWindow    *_currentSampleWindow;
+            Nc::GUI::SubWindow          *_currentSampleWindow;
     };
 }
 
