@@ -41,6 +41,8 @@ namespace SampleViewer
 
             void                        AddSample(const std::string &name);
 
+            void                        SampleSelected();
+
             const std::string           *Sample() const         {return (_sampleComboBox->CurrentItem()) ? &_sampleComboBox->CurrentItem()->Data() : NULL;}
 
             Nc::GUI::SubWindow          *CreateSampleWindow(Nc::Graphic::Window *windowParent);
@@ -54,6 +56,7 @@ namespace SampleViewer
         private:
             Nc::GUI::SceneGraph         *_GUI;
             Nc::GUI::ComboBox           *_sampleComboBox;
+            Nc::GUI::Image              *_sampleImage;
             Nc::GUI::TextArea           *_descriptionTextArea;
 
             Nc::GUI::Widget             *_widgetSampleWindow;

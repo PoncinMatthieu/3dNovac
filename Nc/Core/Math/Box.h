@@ -223,7 +223,7 @@ namespace Nc
         T   Box<T,D>::Length(unsigned char dimension) const
         {
             if (dimension >= D)
-                throw Utils::Exception("Math::Box", "Overflow in an accesseur of class Box");
+                throw Utils::Exception("Math::Box", "Overflow in an accessor of class Box");
             return _max.Data[dimension] - _min.Data[dimension];
         }
 

@@ -31,7 +31,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// enum used to describe alignement. It contains horizontal and vertical flags that can be combined to produce the required effect.
+        /// enum used to describe alignment. It contains horizontal and vertical flags that can be combined to produce the required effect.
         enum Alignment
         {
             Left        = 1 << 1,               ///< Alignment with the left edge.

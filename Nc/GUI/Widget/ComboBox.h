@@ -86,6 +86,8 @@ namespace Nc
                 /** The mouse button handler to choose an item */
                 void                MouseButtonEvent(const System::Event &event);
 
+                void                ItemChoosed(StringItem *item);
+
             private:
                 SceneGraph          *_scene;
                 float               _fontSize;

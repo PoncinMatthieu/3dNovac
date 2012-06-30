@@ -65,7 +65,7 @@ namespace Nc
                 /** The mouse button handler */
                 virtual void		MouseButtonEvent(const System::Event &event);
                 /** Send an event to the good engine */
-                virtual void        execHanle();
+                virtual void        ExecHanle();
 
             private:
                 /** Initialise the widget */

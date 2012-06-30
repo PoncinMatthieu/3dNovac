@@ -158,6 +158,12 @@ void    ComboBox::AddItem(Item *item)
     _stateChanged = true;
 }
 
+void    ComboBox::ItemChoosed(StringItem *item)
+{
+    _currentItem = item;
+    SendEvent(this);
+}
+
 ComboBox::ComboBoxUnfoldList::ComboBoxUnfoldList(ComboBox *cb, const AlignmentMask &alignment, const Vector2i &pos, const Vector2i &size)
     : Widget(alignment, size), _cb(cb)
 {
@@ -178,7 +184,9 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
         for (ListItem::iterator it = _cb->_itemList.begin(); it != _cb->_itemList.end(); ++it)
         {
             if (Math::InRect(pos, size, mousePos))
-                _cb->_currentItem = &(*it);
+            {
+                _cb->ItemChoosed(&*it);
+            }
             pos[1] -= _cb->_spriteList->Size()[1];
         }
 

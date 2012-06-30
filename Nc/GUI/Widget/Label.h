@@ -96,7 +96,7 @@ namespace Nc
 
             protected:
                 Graphic::String     *_label;            ///< the label (string).
-                AlignmentMask       _labelAlignment;    ///< describe the alignement of the label.
+                AlignmentMask       _labelAlignment;    ///< describe the alignment of the label.
         };
     }
 }

@@ -39,7 +39,7 @@
 #include "Widget/WindowBox.h"
 #include "Widget/ComboBox.h"
 #include "Widget/Console.h"
-#include "Widget/SpriteWidget.h"
+#include "Widget/Image.h"
 #include "Widget/ProgressBar.h"
 #include "Widget/FPSWidget.h"
 #include "Widget/Layout.h"

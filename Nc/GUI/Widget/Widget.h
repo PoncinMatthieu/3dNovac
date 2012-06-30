@@ -264,7 +264,7 @@ namespace Nc
                 Widget                  *_owner;                    ///< widget's owner... widgets can have a owner, this owner is charged to manage the widget like if it was a child but this widget does not appear in the child tree. This allow the creation of composed widget.
                 ListPWidget             _composedWidget;            ///< list of composed widget... those widgets are managed like childs but are owned by the current widget and can't be modified outside of the class.
 
-                AlignmentMask           _alignment;                 ///< The alignement of the widget relative to the parent.
+                AlignmentMask           _alignment;                 ///< The alignment of the widget relative to the parent.
                 Vector2i                _size;                      ///< Size of the widget.
                 Vector2i                _pos;                       ///< Position if the widget (relative to the parent and the alignment mask).
 

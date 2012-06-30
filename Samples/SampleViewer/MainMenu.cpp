@@ -100,6 +100,10 @@ Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
     descriptionLayout->AddChild(winDescArea);
     descriptionLayout->SetExpandRatio(winDescArea, 100);
 
+    _sampleImage = new GUI::Image(CenterH | Top, Vector2i(0, 150));
+    _sampleImage->Percent(Vector2f(100, 0));
+    winDescArea->AddChild(_sampleImage);
+
     // create the text area to describe the selected sample
     _descriptionTextArea = new TextArea(CenterH | Bottom);
     _descriptionTextArea->Percent(Vector2f(100, 100));
@@ -120,6 +124,8 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
 
     _sampleComboBox = new ComboBox(_GUI, Left | CenterV, Vector2i(250,0));
     _sampleComboBox->MarginRight(5);
+    _sampleComboBox->HandlerEngineName(GameEngine::ClassName());
+    _sampleComboBox->HandlerId(GameEngine::SampleSelected);
     _sampleComboBox->Percent(Vector2f(100, 0));
     selectSampleLayout->AddChild(_sampleComboBox);
     selectSampleLayout->SetExpandRatio(_sampleComboBox, 100);
@@ -148,3 +154,15 @@ void    MainMenu::CloseSampleWindow()
         _currentSampleWindow->GetSubWindow()->Close();
 }
 
+void    MainMenu::SampleSelected()
+{
+    if (_sampleComboBox->CurrentItem() != NULL)
+    {
+        // unset the sprite
+        _sampleImage->Sprite(NULL);
+
+        // create the sprite used for the description of the sample
+        Sprite *sp = new Sprite(Vector2i(0,0), GL::Texture("Nc:Image:Samples/" + _sampleComboBox->CurrentItem()->Data() + ".png"), 100);
+        _sampleImage->Sprite(sp);
+    }
+}

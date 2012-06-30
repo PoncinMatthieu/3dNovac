@@ -13,6 +13,7 @@ GameEngine::GameEngine(Nc::Engine::Manager *manager)
     _sampleFactory = new SampleFactory(manager);
 
     AddNewCmd(StartSample,      (Nc::Engine::CmdFunction)&GameEngine::StartSampleCmd);
+    AddNewCmd(SampleSelected,   (Nc::Engine::CmdFunction)&GameEngine::SampleSelectedCmd);
 }
 
 GameEngine::~GameEngine()
@@ -46,6 +47,7 @@ void GameEngine::LoadContent()
 
     for (std::list<std::string>::const_iterator it = _sampleFactory->SampleNames().begin(); it != _sampleFactory->SampleNames().end(); ++it)
         _menu->AddSample(*it);
+    _menu->SampleSelected();
 }
 
 void GameEngine::Update(float runningTime)
@@ -89,6 +91,11 @@ void GameEngine::MouseButtonEvent(System::Event &)
 
 void GameEngine::MouseMotionEvent(System::Event &)
 {
+}
+
+void GameEngine::SampleSelectedCmd(Nc::Engine::IEvent *)
+{
+    _menu->SampleSelected();
 }
 
 void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)

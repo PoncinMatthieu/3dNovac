@@ -160,15 +160,14 @@ void Button::MouseButtonEvent(const System::Event &event)
         else if (_buttonPressed && event.type == System::Event::MouseButtonReleased)
         {
             if (inRect)
-                execHanle();
+                ExecHanle();
             _buttonPressed = false;
             _stateChanged = true;
         }
     }
 }
 
-void Button::execHanle()
+void Button::ExecHanle()
 {
-    if (!InhibitedRecursif())
-        SendEvent(_id);
+    SendEvent(_id);
 }
