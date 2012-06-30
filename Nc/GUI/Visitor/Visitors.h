@@ -24,13 +24,12 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_VISITORS_H_
-#define NC_GUI_VISITORS_H_
+#ifndef NC_GUI_VISITOR_VISITORS_H_
+#define NC_GUI_VISITOR_VISITORS_H_
 
-#include "Define.h"
+#include "../Define.h"
 #include "WidgetVisitor.h"
-#include "WindowBox.h"
-#include "SceneGraph.h"
+#include "../SceneGraph.h"
 
 namespace Nc
 {
@@ -76,9 +75,9 @@ namespace Nc
                 void VisitNode(const Widget &w);
                 void VisitNode(const SceneGraph &s);
 
-                const Widget        *widget;
-                const Widget        *parent;
-                const SceneGraph    *parentSceneGraph;
+                const Widget            *widget;
+                const Widget            *parent;
+                const SceneGraph        *parentSceneGraph;
             };
 
             struct LGUI ChangeStates : public WidgetVisitor<ChangeStates>

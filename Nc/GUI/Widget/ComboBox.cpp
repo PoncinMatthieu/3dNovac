@@ -26,8 +26,8 @@
 
 #include <Nc/Graphics/Object/Sprite.h>
 #include "ComboBox.h"
-#include "WindowStyle.h"
-#include "Looks.h"
+#include "../Look/StyleSheet.h"
+#include "../Look/Looks.h"
 
 using namespace Nc;
 using namespace Nc::Graphic;
@@ -36,19 +36,19 @@ using namespace Nc::GUI;
 ComboBox::ComboBox(GUI::SceneGraph *scene, const AlignmentMask &alignment, const Vector2i &size, float fontSize, const Color &fontColor, const std::string &fontName, const std::string &looksName)
     : Widget(alignment, size), _scene(scene), _fontSize(fontSize), _fontColor(fontColor), _fontName(fontName), _currentItem(NULL), _listUnrolled(false), _currentUnfoldList(NULL)
 {
-    StripLook *l = new StripLook(looksName + WindowStyle::SpriteName::ComboBox);
+    StripLook *l = new StripLook(looksName + StyleSheet::Name::ComboBox);
     UseLook(l);
 
     if (l->spriteLeft == NULL)
-        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBox + "Left" + "' from the WindowStyle");
+        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + StyleSheet::Name::ComboBox + "Left" + "' from the StyleSheet");
     if (l->spriteRight == NULL)
-        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBox + "Right" + "' from the WindowStyle");
+        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + StyleSheet::Name::ComboBox + "Right" + "' from the StyleSheet");
     if (l->spriteMiddle == NULL)
-        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBox + "Middle" + "' from the WindowStyle");
+        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + StyleSheet::Name::ComboBox + "Middle" + "' from the StyleSheet");
 
-    _spriteList = WindowStyle::Instance().GetNewSprite(looksName + WindowStyle::SpriteName::ComboBoxList);
+    _spriteList = StyleSheet::Instance().GetNewSprite(looksName + StyleSheet::Name::ComboBoxList);
     if (_spriteList == NULL)
-        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + WindowStyle::SpriteName::ComboBoxList + "' from the WindowStyle");
+        throw Utils::Exception("ComboBox", "Cannot get the sprite '" + looksName + StyleSheet::Name::ComboBoxList + "' from the StyleSheet");
 
     PaddingH(5);
     _size[1] = l->spriteMiddle->Size()[1];

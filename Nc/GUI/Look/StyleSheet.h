@@ -24,21 +24,21 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_WINDOWSTYLE_H_
-#define NC_GUI_WINDOWSTYLE_H_
+#ifndef NC_GUI_LOOK_STYLESHEET_H_
+#define NC_GUI_LOOK_STYLESHEET_H_
 
 #include <Nc/Graphics/Core/SpriteSheet.h>
-#include "Define.h"
+#include "../Define.h"
 
 namespace Nc
 {
     namespace GUI
     {
         /// Singleton to a set of properties related to the GUI. (eg: the sprite sheet of the GUI)
-        class LGUI WindowStyle : public Utils::Singleton<WindowStyle>
+        class LGUI StyleSheet : public Utils::Singleton<StyleSheet>
         {
             public:
-                struct LooksSpriteName
+                struct LooksName
                 {
                     static const std::string    StripLeft;
                     static const std::string    StripRight;
@@ -55,7 +55,7 @@ namespace Nc
                     static const std::string    BoxMiddle;
                 };
 
-                struct SpriteName
+                struct Name
                 {
                     static const std::string    Button;
                     static const std::string    ButtonPressed;
@@ -77,18 +77,18 @@ namespace Nc
                 Graphic::Sprite     *GetNewSprite(const std::string &name);
 
             protected:
-                WindowStyle();
-                ~WindowStyle();
+                StyleSheet();
+                ~StyleSheet();
 
             private:
                 Graphic::SpriteSheet    *_spriteSheet;          ///< sprite sheet of the GUI
 
-                friend class Utils::Singleton<WindowStyle>;
+                friend class Utils::Singleton<StyleSheet>;
         };
     }
 
     // explicit instantiation
-    template class Utils::Singleton<GUI::WindowStyle>;
+    template class Utils::Singleton<GUI::StyleSheet>;
 }
 
 #endif

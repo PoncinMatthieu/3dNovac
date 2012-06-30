@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_WINDOWBOX_H_
-#define NC_GUI_WINDOWBOX_H_
+#ifndef NC_GUI_WIDGET_WINDOWBOX_H_
+#define NC_GUI_WIDGET_WINDOWBOX_H_
 
 #include "Widget.h"
 

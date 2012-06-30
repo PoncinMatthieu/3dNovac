@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_TEXTAREA_H_
-#define NC_GUI_TEXTAREA_H_
+#ifndef NC_GUI_WIDGET_TEXTAREA_H_
+#define NC_GUI_WIDGET_TEXTAREA_H_
 
 #include "ScrollArea.h"
 

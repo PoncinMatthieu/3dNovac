@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_SCROLLBAR_H_
-#define NC_GUI_SCROLLBAR_H_
+#ifndef NC_GUI_WIDGET_SCROLLBAR_H_
+#define NC_GUI_WIDGET_SCROLLBAR_H_
 
 #include "Widget.h"
 

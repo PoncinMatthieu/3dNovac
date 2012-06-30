@@ -28,8 +28,8 @@
 #define SAMPLEVIEWER_MAINMENU_H_
 
 #include <Nc/GUI/GUI.h>
-#include <Nc/GUI/SubWindow.h>
-#include <Nc/GUI/TextArea.h>
+#include <Nc/GUI/Widget/SubWindow.h>
+#include <Nc/GUI/Widget/TextArea.h>
 
 namespace SampleViewer
 {

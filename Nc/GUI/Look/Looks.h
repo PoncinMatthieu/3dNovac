@@ -24,12 +24,12 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_LOOKS_H_
-#define NC_GUI_LOOKS_H_
+#ifndef NC_GUI_LOOK_LOOKS_H_
+#define NC_GUI_LOOK_LOOKS_H_
 
 #include <Nc/Graphics/Object/Sprite.h>
-#include "Define.h"
-#include "WindowStyle.h"
+#include "../Define.h"
+#include "StyleSheet.h"
 
 namespace Nc
 {

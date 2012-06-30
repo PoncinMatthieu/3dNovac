@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "SceneGraph.h"
-#include "Visitors.h"
+#include "Visitor/Visitors.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace Nc;

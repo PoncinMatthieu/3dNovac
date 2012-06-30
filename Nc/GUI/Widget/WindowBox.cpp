@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "WindowBox.h"
-#include "Looks.h"
+#include "../Look/Looks.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
@@ -47,7 +47,7 @@ void WindowBox::ToString(std::ostream &os) const
 
 void  WindowBox::Init(const std::string &title, float charSize, const std::string &ttf, const AlignmentMask &mask, const std::string &looksName)
 {
-    UseLook(new BoxLook(looksName + WindowStyle::SpriteName::WindowBox));
+    UseLook(new BoxLook(looksName + StyleSheet::Name::WindowBox));
 
     _title = NULL;
     ChangeTitle(title, charSize, ttf, mask);

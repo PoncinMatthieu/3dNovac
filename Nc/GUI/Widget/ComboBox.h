@@ -24,12 +24,12 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_COMBOBOX_H_
-#define NC_GUI_COMBOBOX_H_
+#ifndef NC_GUI_WIDGET_COMBOBOX_H_
+#define NC_GUI_WIDGET_COMBOBOX_H_
 
-#include "SceneGraph.h"
+#include "../SceneGraph.h"
+#include "../Item.h"
 #include "Widget.h"
-#include "Item.h"
 
 namespace Nc
 {

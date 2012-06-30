@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "LineEdit.h"
-#include "Looks.h"
+#include "../Look/Looks.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
@@ -36,7 +36,7 @@ using namespace Nc::Graphic;
 LineEdit::LineEdit(const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const std::string &looksName)
     : Widget(alignment, size)
 {
-    UseLook(new StripLook(looksName + WindowStyle::SpriteName::LineEdit));
+    UseLook(new StripLook(looksName + StyleSheet::Name::LineEdit));
 
     _editable = true;
     _fontUnderscoreDisplayed = false;

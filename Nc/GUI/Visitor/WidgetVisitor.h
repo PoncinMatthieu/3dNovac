@@ -24,12 +24,12 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_WIDGETVISITOR_H_
-#define NC_GUI_WIDGETVISITOR_H_
+#ifndef NC_GUI_VISITOR_WIDGETVISITOR_H_
+#define NC_GUI_VISITOR_WIDGETVISITOR_H_
 
 #include <Nc/Graphics/Scene/SceneNodeVisitor.h>
-#include "Define.h"
-#include "Widget.h"
+#include "../Define.h"
+#include "../Widget/Widget.h"
 
 namespace Nc
 {

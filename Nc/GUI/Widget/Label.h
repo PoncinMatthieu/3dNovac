@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_LABEL_H_
-#define NC_GUI_LABEL_H_
+#ifndef NC_GUI_WIDGET_LABEL_H_
+#define NC_GUI_WIDGET_LABEL_H_
 
 #include <string.h>
 

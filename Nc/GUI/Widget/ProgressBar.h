@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_PROGRESS_BAR_H_
-#define NC_GUI_PROGRESS_BAR_H_
+#ifndef NC_GUI_WIDGET_PROGRESS_BAR_H_
+#define NC_GUI_WIDGET_PROGRESS_BAR_H_
 
 #include "Widget.h"
 

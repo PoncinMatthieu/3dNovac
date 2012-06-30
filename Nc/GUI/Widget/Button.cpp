@@ -68,8 +68,8 @@ Button &Button::operator = (const Button &w)
 
 void    Button::Initialize(const std::string &text, const Vector2i &size, const std::string &ttf, const std::string &lookName)
 {
-    _buttonLook = new StripLook(lookName + WindowStyle::SpriteName::Button);
-    _buttonLookPressed = new StripLook(lookName + WindowStyle::SpriteName::ButtonPressed);
+    _buttonLook = new StripLook(lookName + StyleSheet::Name::Button);
+    _buttonLookPressed = new StripLook(lookName + StyleSheet::Name::ButtonPressed);
     UseLook(_buttonLook);
 
     _colorDisable = Color(0.2f, 0.2f, 0.2f);

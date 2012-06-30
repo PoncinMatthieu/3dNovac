@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_SPRITE_WIDGET_H_
-#define NC_GUI_SPRITE_WIDGET_H_
+#ifndef NC_GUI_WIDGET_SPRITE_WIDGET_H_
+#define NC_GUI_WIDGET_SPRITE_WIDGET_H_
 
 #include <Nc/Graphics/Object/Sprite.h>
 #include "Widget.h"

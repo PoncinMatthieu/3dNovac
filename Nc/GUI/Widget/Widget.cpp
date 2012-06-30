@@ -27,8 +27,8 @@
 #include <Nc/Core/Engine/Manager.h>
 #include <Nc/Graphics/Object/BasicMeshCreator.h>
 #include "Widget.h"
-#include "Visitors.h"
-#include "Looks.h"
+#include "../Visitor/Visitors.h"
+#include "../Look/Looks.h"
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;

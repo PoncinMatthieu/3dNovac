@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_TEXTBOX_H_
-#define NC_GUI_TEXTBOX_H_
+#ifndef NC_GUI_WIDGET_TEXTBOX_H_
+#define NC_GUI_WIDGET_TEXTBOX_H_
 
 #include "Widget.h"
 

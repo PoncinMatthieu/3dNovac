@@ -24,11 +24,11 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_BUTTON_H_
-#define NC_GUI_BUTTON_H_
+#ifndef NC_GUI_WIDGET_BUTTON_H_
+#define NC_GUI_WIDGET_BUTTON_H_
 
 #include "Widget.h"
-#include "Looks.h"
+#include "../Look/Looks.h"
 
 namespace Nc
 {

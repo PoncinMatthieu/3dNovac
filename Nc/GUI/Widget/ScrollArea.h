@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_SCROLLAREA_H_
-#define NC_GUI_SCROLLAREA_H_
+#ifndef NC_GUI_WIDGET_SCROLLAREA_H_
+#define NC_GUI_WIDGET_SCROLLAREA_H_
 
 #include "Widget.h"
 #include "ScrollBar.h"

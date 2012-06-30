@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_SUBWINDOW_H_
-#define NC_GUI_SUBWINDOW_H_
+#ifndef NC_GUI_WIDGET_SUBWINDOW_H_
+#define NC_GUI_WIDGET_SUBWINDOW_H_
 
 #include <Nc/Graphics/Window/Window/SubWindow.h>
 #include "Widget.h"
@@ -56,8 +56,8 @@ namespace Nc
 
                 /** \return the SubWindow */
                 Graphic::SubWindow      *GetSubWindow() const          {return _subWindow;}
-				/** Enable the sub window for rendering */
-				void					EnableSubWindow()			{_subWindow->Enable(true);}
+                /** Enable the sub window for rendering */
+                void					EnableSubWindow()			{_subWindow->Enable(true);}
 
             protected:
                 /** Draw the result of the render off screen from the sub window */

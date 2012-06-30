@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "Looks.h"
-#include "WindowStyle.h"
+#include "StyleSheet.h"
 
 using namespace Nc;
 using namespace Nc::GUI;
@@ -42,11 +42,11 @@ ILook::~ILook()
 
 StripLook::StripLook(const std::string &name)
 {
-    WindowStyle &winStyle = WindowStyle::Instance();
+    StyleSheet &winStyle = StyleSheet::Instance();
 
-    spriteLeft = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::StripLeft);
-    spriteRight = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::StripRight);
-    spriteMiddle = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::StripMiddle);
+    spriteLeft = winStyle.GetNewSprite(name + StyleSheet::LooksName::StripLeft);
+    spriteRight = winStyle.GetNewSprite(name + StyleSheet::LooksName::StripRight);
+    spriteMiddle = winStyle.GetNewSprite(name + StyleSheet::LooksName::StripMiddle);
 
     edges.left = (spriteLeft) ? spriteLeft->Size()[0] : 0;
     edges.right = (spriteRight) ? spriteRight->Size()[0] : 0;
@@ -132,17 +132,17 @@ void StripLook::Draw(Graphic::SceneGraph *scene)
 
 BoxLook::BoxLook(const std::string &name)
 {
-    WindowStyle &winStyle = WindowStyle::Instance();
+    StyleSheet &winStyle = StyleSheet::Instance();
 
-    spriteLeftEdge = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxLeftEdge);
-    spriteTopEdge = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxTopEdge);
-    spriteRightEdge = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxRightEdge);
-    spriteBottomEdge = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxBottomEdge);
-    spriteLeftTop = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxLeftTop);
-    spriteRightTop = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxRightTop);
-    spriteLeftBottom = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxLeftBottom);
-    spriteRightBottom = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxRightBottom);
-    spriteMiddle = winStyle.GetNewSprite(name + WindowStyle::LooksSpriteName::BoxMiddle);
+    spriteLeftEdge = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxLeftEdge);
+    spriteTopEdge = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxTopEdge);
+    spriteRightEdge = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxRightEdge);
+    spriteBottomEdge = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxBottomEdge);
+    spriteLeftTop = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxLeftTop);
+    spriteRightTop = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxRightTop);
+    spriteLeftBottom = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxLeftBottom);
+    spriteRightBottom = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxRightBottom);
+    spriteMiddle = winStyle.GetNewSprite(name + StyleSheet::LooksName::BoxMiddle);
 
     edges.left = (spriteLeftEdge) ? spriteLeftEdge->Size()[0] : 0;
     edges.right = (spriteRightEdge) ? spriteRightEdge->Size()[0] : 0;

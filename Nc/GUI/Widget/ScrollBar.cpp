@@ -26,12 +26,12 @@
 
 #include <Nc/Graphics/Object/Sprite.h>
 #include "ScrollBar.h"
-#include "WindowStyle.h"
+#include "../Look/StyleSheet.h"
 
 #define NC_GUI_LOAD_SCROLLBAR_SPRITE(sprite, name)  \
-    sprite = WindowStyle::Instance().GetNewSprite(name);  \
+    sprite = StyleSheet::Instance().GetNewSprite(name);  \
     if (sprite == NULL)  \
-        throw Utils::Exception("ScrollBar", "Cannot get the sprite '" + name + "' from the WindowStyle");
+        throw Utils::Exception("ScrollBar", "Cannot get the sprite '" + name + "' from the StyleSheet");
 
 
 using namespace Nc;
@@ -42,22 +42,22 @@ ScrollBar::ScrollBar(const AlignmentMask &alignment, int length, Orientation ori
     : Widget(alignment, Vector2i(0,0)), _orientation(orientation), _totalSize(0), _pageSize(0), _position(0), _buttonLeftPressed(false), _buttonRightPressed(false), _buttonSliderPressed(false)
 {
     // load and configure every sprites
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteLeftButton, lookName + WindowStyle::SpriteName::ScrollBarLeftButton);
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteRightButton, lookName + WindowStyle::SpriteName::ScrollBarRightButton);
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderBackground, lookName + WindowStyle::SpriteName::ScrollBarSliderBackground);
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderLeft, lookName + WindowStyle::SpriteName::ScrollBarSliderLeft);
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderMiddle, lookName + WindowStyle::SpriteName::ScrollBarSliderMiddle);
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderRight, lookName + WindowStyle::SpriteName::ScrollBarSliderRight);
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand1, lookName + WindowStyle::SpriteName::ScrollBarSliderExpand);
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand2, lookName + WindowStyle::SpriteName::ScrollBarSliderExpand);
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteLeftButton, lookName + StyleSheet::Name::ScrollBarLeftButton);
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteRightButton, lookName + StyleSheet::Name::ScrollBarRightButton);
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderBackground, lookName + StyleSheet::Name::ScrollBarSliderBackground);
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderLeft, lookName + StyleSheet::Name::ScrollBarSliderLeft);
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderMiddle, lookName + StyleSheet::Name::ScrollBarSliderMiddle);
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderRight, lookName + StyleSheet::Name::ScrollBarSliderRight);
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand1, lookName + StyleSheet::Name::ScrollBarSliderExpand);
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand2, lookName + StyleSheet::Name::ScrollBarSliderExpand);
 
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteLeftButtonPressed, lookName + WindowStyle::SpriteName::ScrollBarLeftButton + "Pressed");
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteRightButtonPressed, lookName + WindowStyle::SpriteName::ScrollBarRightButton + "Pressed");
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderLeftPressed, lookName + WindowStyle::SpriteName::ScrollBarSliderLeft + "Pressed");
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderMiddlePressed, lookName + WindowStyle::SpriteName::ScrollBarSliderMiddle + "Pressed");
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderRightPressed, lookName + WindowStyle::SpriteName::ScrollBarSliderRight + "Pressed");
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand1Pressed, lookName + WindowStyle::SpriteName::ScrollBarSliderExpand + "Pressed");
-    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand2Pressed, lookName + WindowStyle::SpriteName::ScrollBarSliderExpand + "Pressed");
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteLeftButtonPressed, lookName + StyleSheet::Name::ScrollBarLeftButton + "Pressed");
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteRightButtonPressed, lookName + StyleSheet::Name::ScrollBarRightButton + "Pressed");
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderLeftPressed, lookName + StyleSheet::Name::ScrollBarSliderLeft + "Pressed");
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderMiddlePressed, lookName + StyleSheet::Name::ScrollBarSliderMiddle + "Pressed");
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderRightPressed, lookName + StyleSheet::Name::ScrollBarSliderRight + "Pressed");
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand1Pressed, lookName + StyleSheet::Name::ScrollBarSliderExpand + "Pressed");
+    NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand2Pressed, lookName + StyleSheet::Name::ScrollBarSliderExpand + "Pressed");
 
     // set the real size of the scroll bar
     _size = (orientation == Vertical)   ? Vector2i(_spriteLeftButton->TextureBox().Length()[1], length)

@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_LAYOUT_H_
-#define NC_GUI_LAYOUT_H_
+#ifndef NC_GUI_WIDGET_LAYOUT_H_
+#define NC_GUI_WIDGET_LAYOUT_H_
 
 #include "Widget.h"
 

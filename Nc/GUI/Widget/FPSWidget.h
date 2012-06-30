@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_FPSWIDGET_H_
-#define NC_GUI_FPSWIDGET_H_
+#ifndef NC_GUI_WIDGET_FPSWIDGET_H_
+#define NC_GUI_WIDGET_FPSWIDGET_H_
 
 #include "Label.h"
 

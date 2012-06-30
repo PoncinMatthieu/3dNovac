@@ -24,11 +24,11 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_WIDGET_H_
-#define NC_GUI_WIDGET_H_
+#ifndef NC_GUI_WIDGET_WIDGET_H_
+#define NC_GUI_WIDGET_WIDGET_H_
 
 #include <Nc/Core/Engine/Handler.h>
-#include "Define.h"
+#include "../Define.h"
 
 namespace Nc
 {

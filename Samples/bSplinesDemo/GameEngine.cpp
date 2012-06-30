@@ -1,7 +1,7 @@
 
 #include <Nc/Core/Engine/Manager.h>
-#include <Nc/GUI/FPSWidget.h>
-#include <Nc/GUI/Console.h>
+#include <Nc/GUI/Widget/FPSWidget.h>
+#include <Nc/GUI/Widget/Console.h>
 
 #include "GameEngine.h"
 

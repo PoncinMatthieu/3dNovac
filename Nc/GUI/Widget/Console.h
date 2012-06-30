@@ -24,8 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_GUI_CONSOLE_H_
-#define NC_GUI_CONSOLE_H_
+#ifndef NC_GUI_WIDGET_CONSOLE_H_
+#define NC_GUI_WIDGET_CONSOLE_H_
 
 #include <list>
 #include "WindowBox.h"
@@ -87,7 +87,7 @@ namespace Nc
                 static ListMsg                      _listMsg;           ///< The message list
                 static System::Mutex                _mutexMsg;          ///< Protect the acces of the message list
                 static ListMsg::reverse_iterator    _itCurrentMsg;      ///< the current message, to scroll the messages
-				static std::string					_currentWritingMsg;	///< The message that is save between a Write and a flush
+                static std::string					_currentWritingMsg;	///< The message that is save between a Write and a flush
 
                 std::list<Graphic::String*>         _listFont;          ///< list of string used to render the messages
                 Label                               *_labelPrompt;      ///< the label used to render the prompt

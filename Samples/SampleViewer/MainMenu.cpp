@@ -24,11 +24,11 @@
 
 -----------------------------------------------------------------------------*/
 
-#include <Nc/GUI/ScrollArea.h>
-#include <Nc/GUI/ScrollBar.h>
-#include <Nc/GUI/ComboBox.h>
-#include <Nc/GUI/Looks.h>
-#include <Nc/GUI/SubWindow.h>
+#include <Nc/GUI/Widget/ScrollArea.h>
+#include <Nc/GUI/Widget/ScrollBar.h>
+#include <Nc/GUI/Widget/ComboBox.h>
+#include <Nc/GUI/Look/Looks.h>
+#include <Nc/GUI/Widget/SubWindow.h>
 
 #include "MainMenu.h"
 #include "GameEngine.h"
