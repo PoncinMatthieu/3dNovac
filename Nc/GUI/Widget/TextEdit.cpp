@@ -37,8 +37,26 @@ TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &align
     SetView(_textDocument);
 }
 
+TextEdit::TextEdit(const TextEdit &edit)
+{
+    Copy(edit);
+}
+
+TextEdit &TextEdit::operator = (const TextEdit &edit)
+{
+    delete _textDocument;
+    Copy(edit);
+    return *this;
+}
+
 TextEdit::~TextEdit()
 {
+    delete _textDocument;
+}
+
+void TextEdit::Copy(const TextEdit &edit)
+{
+    _textDocument = static_cast<TextDocument*>(edit._textDocument->Clone());
 }
 
 void TextEdit::RenderChildsEnd(Graphic::SceneGraph *scene)

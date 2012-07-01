@@ -41,19 +41,26 @@ namespace Nc
 
             public:
                 TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
-                ~TextEdit();
+                TextEdit(const TextEdit &edit);
+                TextEdit &operator = (const TextEdit &edit);
+                virtual ~TextEdit();
 
-                /** \return the attached text document */
+                virtual ISceneNode  *Clone() const          {return new TextEdit(*this);}
+
+                /** \return the attached text document. */
                 TextDocument        *GetTextDocument()      {return _textDocument;}
 
             protected:
-                /** Render the textArea before disabling the stencil */
+                /** Render the textArea before disabling the stencil. */
                 virtual void        RenderChildsEnd(Graphic::SceneGraph *scene);
-                /** Render the scroll area */
+                /** Render the scroll area. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
             private:
-                TextDocument    *_textDocument;
+                void                Copy(const TextEdit &edit);
+
+            private:
+                TextDocument    *_textDocument;     ///< text document used to display the text.
         };
     }
 }
