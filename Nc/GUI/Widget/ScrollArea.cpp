@@ -32,8 +32,10 @@ using namespace Nc::GUI;
 ScrollArea::ScrollArea(const AlignmentMask &alignment, const Vector2i &size)
     : Widget(alignment, size), _view(NULL)
 {
-    _scrollBarH = new ScrollBar(Left | Bottom, size[0], Horizontal);
-    _scrollBarV = new ScrollBar(Right | Top, size[1], Vertical);
+    _scrollBarH = new ScrollBar(Left | Bottom, Horizontal);
+    _scrollBarH->Percent(Vector2f(100, 0));
+    _scrollBarV = new ScrollBar(Right | Top, Vertical);
+    _scrollBarV->Percent(Vector2f(0, 100));
     AddComposedWidget(_scrollBarH);
     AddComposedWidget(_scrollBarV);
     _useStencil = true;
@@ -67,8 +69,8 @@ void ScrollArea::Copy(const ScrollArea &sc)
     }
 
     _view = NULL;
-    _scrollBarH = (ScrollBar*)sc._scrollBarH->Clone();
-    _scrollBarV = (ScrollBar*)sc._scrollBarV->Clone();
+    _scrollBarH = static_cast<ScrollBar*>(sc._scrollBarH->Clone());
+    _scrollBarV = static_cast<ScrollBar*>(sc._scrollBarV->Clone());
     AddComposedWidget(_scrollBarH);
     AddComposedWidget(_scrollBarV);
 }
@@ -82,32 +84,68 @@ ScrollArea::~ScrollArea()
 void ScrollArea::SetView(Widget *view)
 {
     _view = view;
+    Resized();
+}
 
-    _scrollBarH->TotalSize(_view->Size()[0]);
-    _scrollBarH->Position(0);
-    _scrollBarV->TotalSize(_view->Size()[1]);
-    _scrollBarV->Position(0);
+void ScrollArea::Resize()
+{
+    Widget::Resize();
+
+    if (_view != NULL)
+    {
+        _scrollBarH->TotalSize(_view->Size()[0]);
+        _scrollBarH->Position(0);
+        _scrollBarV->TotalSize(_view->Size()[1]);
+        _scrollBarV->Position(0);
+    }
 }
 
 void ScrollArea::Update()
 {
     Widget::Update();
 
+    Vector2i pageSize(_size);
+
     if (_view != NULL)
     {
         Vector2i pos;
         _view->RelativePos(pos);
 
-        // if both scrollbar as to be rendered, reduce the size of the scrollbars
-        if (_view->Size()[0] > _size[0] && _view->Size()[1] > _size[1])
+        // disable the scrollbar which doesn't need to be rendered
+        if (_view->Size()[0] > pageSize[0])
         {
-            _scrollBarH->Size(Vector2i(_size[0] - _scrollBarV->Size()[0], _scrollBarH->Size()[1]));
-            _scrollBarV->Size(Vector2i(_scrollBarV->Size()[0], _size[1] - _scrollBarH->Size()[1]));
+            if (!_scrollBarH->Enabled())
+                _scrollBarH->Enable();
+            pageSize[1] -= _scrollBarH->Size()[1];
+        }
+        else if (_scrollBarH->Enabled())
+            _scrollBarH->Disable();
+        if (_view->Size()[1] > pageSize[1])
+        {
+            if (!_scrollBarV->Enabled())
+                _scrollBarV->Enable();
+            pageSize[0] -= _scrollBarV->Size()[0];
+        }
+        else if (_scrollBarV->Enabled())
+            _scrollBarV->Disable();
+
+        // if both scrollbar as to be rendered, reduce the size of the scrollbars
+        if (_view->Size()[0] > pageSize[0] && _view->Size()[1] > pageSize[1])
+        {
+            _scrollBarH->MarginRight(_scrollBarV->Size()[0]);
+            _scrollBarV->MarginBottom(_scrollBarH->Size()[1]);
+        }
+        else
+        {
+            if (_scrollBarH->MarginRight() != 0)
+                _scrollBarH->MarginRight(0);
+            if (_scrollBarV->MarginBottom() != 0)
+                _scrollBarV->MarginBottom(0);
         }
     }
 
-    _scrollBarH->PageSize(_size[0]);
-    _scrollBarV->PageSize(_size[1]);
+    _scrollBarH->PageSize(pageSize[0]);
+    _scrollBarV->PageSize(pageSize[1]);
 }
 
 void ScrollArea::Draw(Graphic::SceneGraph *scene)
@@ -119,7 +157,6 @@ void ScrollArea::Draw(Graphic::SceneGraph *scene)
             _view->Pos(v);
     }
 
-
     Widget::Draw(scene);
 }
 
@@ -130,16 +167,8 @@ void ScrollArea::RenderBegin(Graphic::SceneGraph *scene)
 
 void ScrollArea::RenderEnd(Graphic::SceneGraph *scene)
 {
-    if (_view != NULL)
-    {
-        Vector2i pos, size;
-        _view->RelativePos(pos);
-
-        if (_view->Size()[0] > _size[0])
-            _scrollBarH->RenderNode(scene);
-        if (_view->Size()[1] > _size[1])
-            _scrollBarV->RenderNode(scene);
-    }
+    _scrollBarH->RenderNode(scene);
+    _scrollBarV->RenderNode(scene);
 
     Widget::RenderEnd(scene);
 }

@@ -27,7 +27,7 @@
 #ifndef NC_GUI_WIDGET_TEXTAREA_H_
 #define NC_GUI_WIDGET_TEXTAREA_H_
 
-#include "ScrollArea.h"
+#include "Widget.h"
 
 namespace Nc
 {
@@ -37,27 +37,31 @@ namespace Nc
         /**
             \todo the text are is not editable right now.
         */
-        class LGUI TextArea : public ScrollArea
+        class LGUI TextArea : public Widget
         {
             public:
-                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextArea);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::TextArea);
 
             public:
-                TextArea(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
+                TextArea(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
 
                 virtual ISceneNode              *Clone() const          {return new TextArea(*this);}
 
-                /** \return the text */
-                const Utils::Unicode::UTF32     &Text() const           {return _text;}
-
+                /** \return the text. */
+                const Utils::Unicode::UTF32     &Text() const           {return _string->Text();}
+                /** Set the text. */
+                void                            Text(const Utils::Unicode::UTF32 &t);
 
             protected:
-                /** Render the text area */
+                /** Resize the geometry of the text area. */
+                virtual void        Resize();
+                /** Update the geometry of the text area. */
+                virtual void        Update();
+                /** Render the text area. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
 
             private:
-                Utils::Unicode::UTF32   _text;
                 Graphic::String         *_string;
                 bool                    _editable;
         };

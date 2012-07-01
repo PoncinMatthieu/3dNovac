@@ -30,9 +30,9 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::GUI::Visitor;
 
-ResizedAll::ResizedAll()
-	: WidgetVisitor<ResizedAll>(Utils::Metaprog::Seq<Widget>::Type(),
-                                            Utils::Metaprog::Seq<Graphic::Entity, Graphic::Octree>::Type())
+ResizedAll::ResizedAll(Graph::VisitTarget visitTarget)
+	: WidgetVisitor<ResizedAll>(  Utils::Metaprog::Seq<Widget>::Type(),
+                                    Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type(), visitTarget)
 {
 }
 
@@ -41,9 +41,9 @@ void ResizedAll::VisitNode(Widget &w)
 	w.Resized();
 }
 
-ReposedAll::ReposedAll()
-	: WidgetVisitor<ReposedAll>(Utils::Metaprog::Seq<Widget>::Type(),
-											Utils::Metaprog::Seq<Graphic::Entity, Graphic::Octree>::Type())
+ReposedAll::ReposedAll(Graph::VisitTarget visitTarget)
+	: WidgetVisitor<ReposedAll>(  Utils::Metaprog::Seq<Widget>::Type(),
+                                    Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type(), visitTarget)
 {
 }
 
@@ -54,7 +54,7 @@ void ReposedAll::VisitNode(Widget &w)
 
 IsInhibited::IsInhibited()
 	: WidgetVisitor<IsInhibited, true>( Utils::Metaprog::Seq<Widget>::Type(),
-													Utils::Metaprog::Seq<Graphic::Entity, Graphic::Octree>::Type(), Graph::VisitParents),
+                                        Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type(), Graph::VisitParents),
     result(false)
 {
 }
@@ -66,23 +66,26 @@ void IsInhibited::VisitNode(const Widget &w)
 }
 
 CheckFocus::CheckFocus(const Nc::System::Event &e, const Vector2i &mouseP)
-    : WidgetVisitor<CheckFocus>(Utils::Metaprog::Seq<Widget>::Type(),
-                                Utils::Metaprog::Seq<Graphic::Entity, Graphic::Octree>::Type()),
+    : WidgetVisitor<CheckFocus, false, bool>(   Utils::Metaprog::Seq<Widget>::Type(),
+                                                Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type()),
         event(e), mousePos(mouseP), childFocused(NULL)
 {}
 
-void CheckFocus::VisitNode(Widget &w)
+bool CheckFocus::VisitNode(Widget &w)
 {
+    if (childFocused != NULL && childFocused->Childs().empty() && childFocused->_composedWidget.empty())
+        return false;
+
     if (!w.EnabledRecursif() || w.InhibitedRecursif())
-        return;
+        return false;
 
     Vector2i    pos;
-
     w.AbsolutePos(pos);
+
     #ifdef _DEBUG_GUI_FOCUS
     LOG_DEBUG << "Widget    : " << w << std::endl;
     LOG_DEBUG << "ReelPos   = " << pos << std::endl;
-    LOG_DEBUG << "Size      = " << w,Size() << std::endl;
+    LOG_DEBUG << "Size      = " << w.Size() << std::endl;
     LOG_DEBUG << "Mouse     = " << mousePos << std::endl;
     #endif
     if (Math::InRect(pos, w.Size(), mousePos))
@@ -92,15 +95,17 @@ void CheckFocus::VisitNode(Widget &w)
         #ifdef _DEBUG_GUI_FOCUS
         LOG_DEBUG << "OK" << std::endl;
         #endif
+        return true;
     }
     #ifdef _DEBUG_GUI_FOCUS
     LOG << std::endl;
     #endif
+    return false;
 }
 
 GetParentWidget::GetParentWidget(const Widget *w)
     : WidgetVisitor<GetParentWidget, true>( Utils::Metaprog::Seq<Widget, SceneGraph>::Type(),
-                                                        Utils::Metaprog::Seq<Graphic::Entity, Graphic::Octree>::Type(), Graph::VisitParents),
+                                            Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type(), Graph::VisitParents),
         widget(w), parent(NULL), parentSceneGraph(NULL)
 {}
 
@@ -117,8 +122,8 @@ void GetParentWidget::VisitNode(const SceneGraph &s)
 }
 
 ChangeStates::ChangeStates()
-    : WidgetVisitor<ChangeStates>(Utils::Metaprog::Seq<Widget>::Type(),
-                                                Utils::Metaprog::Seq<Graphic::Entity, Graphic::Octree>::Type())
+    : WidgetVisitor<ChangeStates>(  Utils::Metaprog::Seq<Widget>::Type(),
+                                    Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type())
 {}
 
 void ChangeStates::VisitNode(Widget &w)

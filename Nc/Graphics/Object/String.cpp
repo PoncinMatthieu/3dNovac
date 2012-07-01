@@ -172,8 +172,6 @@ void String::UpdateGeometry()
         UInt32          curChar = _text[i];
         const Glyph     *curGlyph = _font->GetGlyph(curChar);
 
-        if (curGlyph == NULL)  // move away, if the glyph is null
-            continue;
 
         // If we're using the underlined style and there's a new line,
         // we keep track of the previous line to draw it later
@@ -191,12 +189,13 @@ void String::UpdateGeometry()
         // Handle special characters
         switch (curChar)
         {
-            case L' ' :  X += curGlyph->Add;        break;
-            case L'\n' : Y += baseSize; X = 0;      break;
-            //case L'\t' : X += (baseSize * 4);     break;
-            case L'\t' : X += (curGlyph->Add * 4);  break;
-            case L'\v' : Y += (baseSize * 4);       break;
+            case L' ' :  X += (curGlyph) ? curGlyph->Add : _charSize;                break;
+            case L'\n' : Y -= _charSize; X = 0;                                      break;
+            case L'\t' : X += (curGlyph) ? (curGlyph->Add * 4) : (_charSize * 4);    break;
         }
+
+        if (curGlyph == NULL)  // move away, if the glyph is null
+            continue;
 
         // Draw a textured quad for the current character
         vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])), Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
@@ -287,24 +286,22 @@ void String::RecomputeSize()
         UInt32          curChar  = _text[i];
         const Glyph     *curGlyph = _font->GetGlyph(curChar);
 
-        if (curGlyph == NULL)  // move away, if the glyph is null
-            continue;
-
         // Handle special characters
         switch (curChar)
         {
-            case L' ' :  curWidth += curGlyph->Add * factor;            break;
-            //case L'\t' : curWidth += _charSize * 4;                     break;
-            case L'\t' : curWidth += (curGlyph->Add * factor) * 4;      break;
-            case L'\v' : height   += _charSize * 4; curHeight = 0;      break;
+            case L' ' :  curWidth += (curGlyph) ? curGlyph->Add * factor : _charSize;                   break;
+            case L'\t' : curWidth += (curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4);       break;
             case L'\n' :
-                height += _charSize;
+                height += curHeight;
                 curHeight = 0;
                 if (curWidth > width)
                     width = curWidth;
                 curWidth = 0;
                 break;
         }
+
+        if (curGlyph == NULL)  // move away, if the glyph is null
+            continue;
 
         // Advance to the next character
         curWidth += curGlyph->Add * factor;

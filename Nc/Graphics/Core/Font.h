@@ -40,7 +40,7 @@ namespace Nc
         {
             UInt16          Add;        ///< offset to the next character
             Vector2i        Size;       ///< size of the character
-            Vector2i        Pos;        ///< relative position for caracters like `p` who begin lower than 'a'
+            Vector2i        Pos;        ///< relative position for caracters (for example, `p` begin lower than 'a')
             Box2f           Coord;      ///< coord of the character in the texture
         };
 
@@ -66,22 +66,22 @@ namespace Nc
                 /** Load the font from a file using the FontLoaderFreeType */
                 void    LoadFromFile(const Utils::FileName &file, unsigned int baseSize, const Utils::Unicode::UTF32 &charset = _defaultCharset);
 
-                /** Return the base size used to load the font */
+                /** \return the base size used to load the font */
                 unsigned int        BaseSize() const                {return _baseSize;}
                 /** Set the base size */
                 void                BaseSize(unsigned int size)     {_baseSize = size;}
-                /** Return the bitmap */
+                /** \return the bitmap */
                 const GL::Texture   &Bitmap()                       {return _bitmap;}
 
-                /** Return the glyph associated to the given caractere */
-                const Glyph         *GetGlyph(UInt32 c) const               {MapGlyph::const_iterator it = _glyphs.find(c); return ((it != _glyphs.end()) ? &it->second : NULL);}
+                /** \return the glyph associated to the given caractere */
+                const Glyph         *GetGlyph(UInt32 c) const       {MapGlyph::const_iterator it = _glyphs.find(c); return ((it != _glyphs.end()) ? &it->second : NULL);}
 
             private:
-                unsigned int        _baseSize;                  ///< the base size of the characters
-                MapGlyph            _glyphs;                    ///< the glyphs of the font with their conected UTF32 value
-                GL::Texture         _bitmap;                    ///< the OpenGL texture of the font
+                unsigned int        _baseSize;                  ///< the base size of the characters.
+                MapGlyph            _glyphs;                    ///< the glyphs of the font with their conected UTF32 value.
+                GL::Texture         _bitmap;                    ///< the OpenGL texture of the font.
 
-                static UInt32   _defaultCharset[];              ///< a default charset to load a font
+                static UInt32   _defaultCharset[];              ///< a default charset to load a font.
 
                 friend class FontLoaderFreeType;
         };

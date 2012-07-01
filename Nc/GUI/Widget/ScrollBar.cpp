@@ -38,7 +38,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
-ScrollBar::ScrollBar(const AlignmentMask &alignment, int length, Orientation orientation, const std::string &lookName)
+ScrollBar::ScrollBar(const AlignmentMask &alignment, Orientation orientation, const std::string &lookName)
     : Widget(alignment, Vector2i(0,0)), _orientation(orientation), _totalSize(0), _pageSize(0), _position(0), _buttonLeftPressed(false), _buttonRightPressed(false), _buttonSliderPressed(false)
 {
     // load and configure every sprites
@@ -60,8 +60,8 @@ ScrollBar::ScrollBar(const AlignmentMask &alignment, int length, Orientation ori
     NC_GUI_LOAD_SCROLLBAR_SPRITE(_spriteSliderExpand2Pressed, lookName + StyleSheet::Name::ScrollBarSliderExpand + "Pressed");
 
     // set the real size of the scroll bar
-    _size = (orientation == Vertical)   ? Vector2i(_spriteLeftButton->TextureBox().Length()[1], length)
-                                        : Vector2i(length, _spriteLeftButton->TextureBox().Length()[1]);
+    _size = (orientation == Vertical)   ? Vector2i(_spriteLeftButton->TextureBox().Length()[1], 0)
+                                        : Vector2i(0, _spriteLeftButton->TextureBox().Length()[1]);
 }
 
 ScrollBar::~ScrollBar()
@@ -254,9 +254,9 @@ float   ScrollBar::GetSliderSize()
 {
     float s;
     if (_orientation == Vertical)
-        s = _size[1] - _spriteLeftButton->Size()[0]  - _spriteRightButton->Size()[0];
+        s = _size[1] - _spriteLeftButton->Size()[0] - _spriteRightButton->Size()[0];
     else
-        s = _size[0] - _spriteLeftButton->Size()[0]  - _spriteRightButton->Size()[0];
+        s = _size[0] - _spriteLeftButton->Size()[0] - _spriteRightButton->Size()[0];
 
     if (_totalSize != 0 && _pageSize != 0)
         s = _pageSize * s / _totalSize;
@@ -299,13 +299,22 @@ void ScrollBar::Update()
     float s = GetSliderSize();
     float t = GetSliderTranslation(_position);
 
-    float s2 = s - _spriteSliderLeft->Size()[0] - _spriteSliderMiddle->Size()[0] - _spriteSliderRight->Size()[0];
+    float s2 = s - _spriteSliderLeft->Size()[0] - _spriteSliderMiddle->TextureBox().Length(0) - _spriteSliderRight->Size()[0];
     s2 /= 2;
 
     if (_orientation == Vertical)
     {
         _spriteSliderBackground->Size(Vector2f(_size[1] - _spriteRightButton->Size()[0] - _spriteLeftButton->Size()[0], _spriteSliderBackground->Size()[1]));
         _spriteSliderBackground->Matrix.Translation(0, _size[1] - _spriteLeftButton->Size()[0], 0);
+
+        if (s2 < 0)
+        {
+            _spriteSliderMiddle->Size(Vector2f(_spriteSliderMiddle->TextureBox().Length(0) + (s2*2), _spriteSliderMiddle->Size()[1]));
+            if (_spriteSliderMiddle->Size()[0] < 0)
+                _spriteSliderMiddle->Size(Vector2f(0, _spriteSliderMiddle->Size()[1]));
+        }
+        else
+            _spriteSliderMiddle->Size(Vector2f(_spriteSliderMiddle->TextureBox().Length(0), _spriteSliderMiddle->TextureBox().Length(1)));
 
         _spriteSliderLeft->Matrix.Translation(0, _size[1] - _spriteLeftButton->Size()[0] - t, 0);
         _spriteLeftButton->Matrix.Translation(0, _size[1], 0);
@@ -334,7 +343,17 @@ void ScrollBar::Update()
         _spriteSliderBackground->Size(Vector2f(_size[0] - _spriteLeftButton->Size()[0]  - _spriteRightButton->Size()[0], _spriteSliderBackground->Size()[1]));
         _spriteSliderBackground->Matrix.Translation(_spriteLeftButton->Size()[0], 0, 0);
 
+        if (s2 < 0)
+        {
+            _spriteSliderMiddle->Size(Vector2f(_spriteSliderMiddle->TextureBox().Length(0) + (s2*2), _spriteSliderMiddle->Size()[1]));
+            if (_spriteSliderMiddle->Size()[0] < 0)
+                _spriteSliderMiddle->Size(Vector2f(0, _spriteSliderMiddle->Size()[1]));
+        }
+        else
+            _spriteSliderMiddle->Size(Vector2f(_spriteSliderMiddle->TextureBox().Length(0), _spriteSliderMiddle->TextureBox().Length(1)));
+
         _spriteSliderLeft->Matrix.Translation(_spriteLeftButton->Size()[0] + t, 0, 0);
+
 
         if (s2 > _spriteSliderExpand1->TextureBox().Length()[0])
             _spriteSliderExpand1->Size(Vector2f(s2, _spriteSliderExpand1->Size()[1]));

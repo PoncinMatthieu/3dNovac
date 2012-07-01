@@ -82,7 +82,7 @@ namespace Nc
 
             protected:
                 /**
-                    Render the drawables with the material and render also the childs of the object.
+                    Call the Draw method and render the childs of the object.
                     Call the RenderBegin and RenderEnd method before and after the rendering.
                 */
                 virtual void        Render(SceneGraph *scene);

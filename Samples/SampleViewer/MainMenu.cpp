@@ -52,8 +52,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     _GUI->AddChild(mainLayout);
 
     // create the description window
-    Widget *descriptionWindow = CreateDescriptionSampleWindow(mainLayout);
-    descriptionWindow->Percent(Vector2f(0, 90));
+    CreateDescriptionPannel(mainLayout);
 
     // create the sample window used to render the samples
     _widgetSampleWindow = new Widget(Center);
@@ -62,8 +61,6 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     _widgetSampleWindow->PaddingV(5);
     _widgetSampleWindow->Percent(Vector2f(100, 90));
     mainLayout->AddChild(_widgetSampleWindow);
-
-    // set the auto resizing
     mainLayout->SetExpandRatio(_widgetSampleWindow, 100);
 
     // create the fps widget on top of the main layout
@@ -82,34 +79,45 @@ void    MainMenu::AddSample(const std::string &name)
     _sampleComboBox->AddItem(new Item(name));
 }
 
-Widget  *MainMenu::CreateDescriptionSampleWindow(Layout *parent)
+Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
 {
-    Layout *descriptionLayout = new Layout(Layout::Vertical, Center, Vector2i(300, 0));
-    descriptionLayout->PaddingH(5);
-    descriptionLayout->PaddingV(5);
-    parent->AddChild(descriptionLayout);
+    Layout *pannelDescriptionLayout = new Layout(Layout::Vertical, Center, Vector2i(300, 0));
+    pannelDescriptionLayout->PaddingH(5);
+    pannelDescriptionLayout->PaddingV(5);
+    pannelDescriptionLayout->Percent(Vector2f(0, 90));
+    parent->AddChild(pannelDescriptionLayout);
 
     // create the select window with the combobox and the button
-    Widget *windowSelectSample = CreateSelectSampleWindow(descriptionLayout);
+    Widget *windowSelectSample = CreateSelectSampleWindow(pannelDescriptionLayout);
     windowSelectSample->Percent(Vector2f(100, 0));
 
     // create the window description area
     WindowBox *winDescArea = new WindowBox("Description", CenterH | Top);
     winDescArea->MarginTop(5);
     winDescArea->Percent(Vector2f(100, 100));
-    descriptionLayout->AddChild(winDescArea);
-    descriptionLayout->SetExpandRatio(winDescArea, 100);
+    pannelDescriptionLayout->AddChild(winDescArea);
+    pannelDescriptionLayout->SetExpandRatio(winDescArea, 100);
 
+    Layout *layoutWinDesc = new Layout(Layout::Vertical, CenterH | Center);
+    layoutWinDesc->Percent(Vector2f(100, 100));
+    winDescArea->AddChild(layoutWinDesc);
+
+    // create the image widget to show an image of the sample
     _sampleImage = new GUI::Image(CenterH | Top, Vector2i(0, 150));
     _sampleImage->Percent(Vector2f(100, 0));
-    winDescArea->AddChild(_sampleImage);
+    layoutWinDesc->AddChild(_sampleImage);
 
     // create the text area to describe the selected sample
-    _descriptionTextArea = new TextArea(CenterH | Bottom);
+    Utils::Unicode::UTF32 text(L"Lorem ipsum dolor sit amet, consectetur adipiscing elit. \nProin tempor nulla vitae justo pharetra feugiat. \nPhasellus eget erat velit, id dictum felis. \nVestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; \nUt eget sapien nunc, id pharetra sem. Sed mollis lobortis sem nec ullamcorper. Nullam eget nisi elit, sit amet faucibus quam. Integer dictum varius nulla id aliquet. Vestibulum in tincidunt velit. Aenean egestas hendrerit quam, eu rutrum justo lobortis vitae. Donec vehicula, enim et faucibus commodo, nibh nulla facilisis nisl, ac dapibus enim est ut mauris. Nam urna massa, tincidunt at tempor eu, lacinia sed tortor. Curabitur pretium, nisi et tincidunt tempor, nunc mi interdum elit, vitae lacinia purus tortor ac dolor.\n\nNulla at dolor magna. Sed erat nulla, tincidunt et gravida quis, placerat ut sapien. Cras laoreet tempus rhoncus. Ut ligula lacus, egestas in rhoncus a, molestie ut nulla. Fusce euismod elit sit amet lectus eleifend hendrerit. Maecenas molestie aliquet nisi eu tempor. Fusce quam metus, ullamcorper ac condimentum eget, interdum in velit. Aenean quis enim leo. Quisque mi felis, tristique sit amet tristique at, luctus in erat. In sit amet libero a metus viverra blandit. Phasellus ut porta dui. In hac habitasse platea dictumst. \nSed vitae mauris eros, vitae malesuada sapien. \nMorbi non arcu et lacus bibendum lobortis. \nPellentesque placerat leo sit amet eros pellentesque ultrices. ");
+    _descriptionTextArea = new TextEdit(text, CenterH | Bottom);
+    _descriptionTextArea->MarginTop(5);
     _descriptionTextArea->Percent(Vector2f(100, 100));
-    winDescArea->AddChild(_descriptionTextArea);
+    _descriptionTextArea->UseLook(new BoxLook());
+    _descriptionTextArea->GetTextArea()->UseLook(new BoxLook());
+    layoutWinDesc->AddChild(_descriptionTextArea);
+    layoutWinDesc->SetExpandRatio(_descriptionTextArea, 100);
 
-    return descriptionLayout;
+    return pannelDescriptionLayout;
 }
 
 Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)

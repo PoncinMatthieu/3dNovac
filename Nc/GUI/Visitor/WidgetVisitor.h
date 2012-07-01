@@ -35,77 +35,80 @@ namespace Nc
 {
     namespace GUI
     {
-        template<typename VisitorType, bool IsConst, typename ReturnType>
-        class WidgetVisitor : public Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>
+        namespace Visitor
         {
-            public:
-                template<typename ToVisitList, typename VisitableList>
-                WidgetVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, Graph::VisitMethod visitMethod = Graph::VisitChilds, bool postVisits = true, bool direction = true)
-                    : Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>(toVisitList, visitableList, visitMethod, postVisits, direction)
-                {}
+            template<typename VisitorType, bool IsConst, typename ReturnType>
+            class WidgetVisitor : public Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>
+            {
+                public:
+                    template<typename ToVisitList, typename VisitableList>
+                    WidgetVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, Graph::VisitTarget visitTarget = Graph::VisitChilds, bool postVisits = true, bool direction = true)
+                        : Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>(toVisitList, visitableList, visitTarget, postVisits, direction)
+                    {}
 
-                template<typename T>
-                void InvokeChilds(T &n)
-                {
-                    Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeChilds(n);
-                }
+                    template<typename T>
+                    void InvokeChilds(T &n)
+                    {
+                        Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeChilds(n);
+                    }
 
-                void InvokeChilds(Widget &n)
-                {
-                    Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeChilds(n);
-                    for (ListPWidget::iterator it = n._composedWidget.begin(); it != n._composedWidget.end(); ++it)
-                        (*this)(**it);
-                }
+                    void InvokeChilds(Widget &n)
+                    {
+                        Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeChilds(n);
+                        for (ListPWidget::iterator it = n._composedWidget.begin(); it != n._composedWidget.end(); ++it)
+                            (*this)(**it);
+                    }
 
-                template<class T>
-                void InvokeParents(T &n)
-                {
-                    Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeParents(n);
-                }
+                    template<class T>
+                    void InvokeParents(T &n)
+                    {
+                        Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeParents(n);
+                    }
 
-                void InvokeParents(Widget &n)
-                {
-                    Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeParents(n);
-                    if (n._owner != NULL)
-                        (*this)(*n._owner);
-                }
-        };
+                    void InvokeParents(Widget &n)
+                    {
+                        Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeParents(n);
+                        if (n._owner != NULL)
+                            (*this)(*n._owner);
+                    }
+            };
 
-        template<typename VisitorType, typename ReturnType>
-        class WidgetVisitor<VisitorType, true, ReturnType> : public Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>
-        {
-            public:
-                template<typename ToVisitList, typename VisitableList>
-                WidgetVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, Graph::VisitMethod visitMethod = Graph::VisitChilds, bool postVisits = true, bool direction = true)
-                    : Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>(toVisitList, visitableList, visitMethod, postVisits, direction)
-                {}
+            template<typename VisitorType, typename ReturnType>
+            class WidgetVisitor<VisitorType, true, ReturnType> : public Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>
+            {
+                public:
+                    template<typename ToVisitList, typename VisitableList>
+                    WidgetVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, Graph::VisitTarget visitTarget = Graph::VisitChilds, bool postVisits = true, bool direction = true)
+                        : Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>(toVisitList, visitableList, visitTarget, postVisits, direction)
+                    {}
 
-                template<typename T>
-                void InvokeChilds(const T &n)
-                {
-                    Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeChilds(n);
-                }
+                    template<typename T>
+                    void InvokeChilds(const T &n)
+                    {
+                        Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeChilds(n);
+                    }
 
-                void InvokeChilds(const Widget &n)
-                {
-                    Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeChilds(n);
-                    for (ListPWidget::const_iterator it = n._composedWidget.begin(); it != n._composedWidget.end(); ++it)
-                        (*this)(**it);
-                }
+                    void InvokeChilds(const Widget &n)
+                    {
+                        Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeChilds(n);
+                        for (ListPWidget::const_iterator it = n._composedWidget.begin(); it != n._composedWidget.end(); ++it)
+                            (*this)(**it);
+                    }
 
-                template<class T>
-                void InvokeParents(const T &n)
-                {
-                    Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeParents(n);
-                }
+                    template<class T>
+                    void InvokeParents(const T &n)
+                    {
+                        Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeParents(n);
+                    }
 
-                void InvokeParents(const Widget &n)
-                {
-                    Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeParents(n);
-                    if (n._owner != NULL)
-                        (*this)(*n._owner);
-                }
-        };
+                    void InvokeParents(const Widget &n)
+                    {
+                        Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeParents(n);
+                        if (n._owner != NULL)
+                            (*this)(*n._owner);
+                    }
+            };
+        }
     }
 }
 

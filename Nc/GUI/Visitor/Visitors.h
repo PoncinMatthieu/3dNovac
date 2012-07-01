@@ -39,13 +39,13 @@ namespace Nc
         {
             struct LGUI ResizedAll : public WidgetVisitor<ResizedAll>
             {
-                ResizedAll();
+                ResizedAll(Graph::VisitTarget visitTarget = Graph::VisitChilds);
                 void VisitNode(Widget &w);
             };
 
             struct LGUI ReposedAll : public WidgetVisitor<ReposedAll>
             {
-                ReposedAll();
+                ReposedAll(Graph::VisitTarget visitTarget = Graph::VisitChilds);
                 void VisitNode(Widget &w);
             };
 
@@ -57,10 +57,10 @@ namespace Nc
                 bool    result;
             };
 
-            struct LGUI CheckFocus : public WidgetVisitor<CheckFocus>
+            struct LGUI CheckFocus : public WidgetVisitor<CheckFocus, false, bool>
             {
                 CheckFocus(const Nc::System::Event &e, const Vector2i &mouseP);
-                void VisitNode(Widget &w);
+                bool VisitNode(Widget &w);
 
                 const Nc::System::Event     &event;
                 const Vector2i              &mousePos;

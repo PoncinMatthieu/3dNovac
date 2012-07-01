@@ -40,7 +40,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ScrollBar);
 
             public:
-                ScrollBar(const AlignmentMask &alignment = Left | Top, int length = 0, Orientation orientation = Vertical, const std::string &lookName = "");
+                ScrollBar(const AlignmentMask &alignment = Left | Top, Orientation orientation = Vertical, const std::string &lookName = "");
                 ScrollBar(const ScrollBar &sc);
                 ScrollBar &operator = (const ScrollBar &sc);
                 ~ScrollBar();

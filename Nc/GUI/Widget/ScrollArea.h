@@ -55,6 +55,8 @@ namespace Nc
                 void                SetView(Widget *view);
 
             protected:
+                /** Resize the geometry of the scroll area */
+                virtual void        Resize();
                 /** Update the geometry of the scroll area */
                 virtual void        Update();
                 /** Check the state and update the matrix before rendering */

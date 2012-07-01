@@ -19,49 +19,35 @@
     You should have received a copy of the GNU Lesser General Public License
     along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
 
-    File Created At:        28/06/2012
+    File Created At:        30/06/2012
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
 
-#include "TextArea.h"
-#include "../Visitor/Visitors.h"
+#include "TextEdit.h"
 
 using namespace Nc;
 using namespace Nc::GUI;
 
-TextArea::TextArea(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf)
-    : Widget(alignment, size)
+TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf)
+    : ScrollArea(alignment, size)
 {
-    _editable = false;
-    _string = new Graphic::String("", 16, Color(1, 1, 1), ttf);
-    Text(text);
-
-/// a sup
-    Resize();
+    _textArea = new TextArea(text, Left | Top, size, ttf);
+    AddComposedWidget(_textArea);
+    SetView(_textArea);
 }
 
-void    TextArea::Text(const Utils::Unicode::UTF32 &t)
+TextEdit::~TextEdit()
 {
-    _string->Text(t);
-    Resized();
 }
 
-void    TextArea::Resize()
+void TextEdit::RenderChildsEnd(Graphic::SceneGraph *scene)
 {
-    if (_size != _string->Size())
-    {
-        _size = _string->Size();
-    }
+    _textArea->RenderNode(scene);
+    ScrollArea::RenderChildsEnd(scene);
 }
 
-void    TextArea::Update()
+void    TextEdit::Draw(Graphic::SceneGraph *scene)
 {
-    Widget::Update();
-}
-
-void    TextArea::Draw(Graphic::SceneGraph *scene)
-{
-    Widget::Draw(scene);
-    _string->RenderNode(scene);
+    ScrollArea::Draw(scene);
 }

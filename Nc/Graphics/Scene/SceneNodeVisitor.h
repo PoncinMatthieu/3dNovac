@@ -39,8 +39,8 @@ namespace Nc
         {
             public:
                 template<typename ToVisitList, typename VisitableList>
-                SceneNodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, Graph::VisitMethod visitMethod = Graph::VisitChilds, bool postVisits = true, bool direction = true)
-                    : Graph::NodeVisitor<VisitorType, ReturnType, System::Object>(toVisitList, visitableList, visitMethod, postVisits, direction)
+                SceneNodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, Graph::VisitTarget visitTarget = Graph::VisitChilds, bool postVisits = true, bool direction = true)
+                    : Graph::NodeVisitor<VisitorType, ReturnType, System::Object>(toVisitList, visitableList, visitTarget, postVisits, direction)
                 {}
 
                 void InvokeChilds(Entity &n)
@@ -68,8 +68,8 @@ namespace Nc
         {
             public:
                 template<typename ToVisitList, typename VisitableList>
-                SceneNodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, Graph::VisitMethod visitMethod = Graph::VisitChilds, bool postVisits = true, bool direction = true)
-                    : Graph::NodeVisitor<VisitorType, ReturnType, const System::Object>(toVisitList, visitableList, visitMethod, postVisits, direction)
+                SceneNodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, Graph::VisitTarget visitTarget = Graph::VisitChilds, bool postVisits = true, bool direction = true)
+                    : Graph::NodeVisitor<VisitorType, ReturnType, const System::Object>(toVisitList, visitableList, visitTarget, postVisits, direction)
                 {}
 
                 void InvokeChilds(const Entity &n)

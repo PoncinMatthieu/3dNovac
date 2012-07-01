@@ -29,7 +29,7 @@
 
 #include <Nc/GUI/GUI.h>
 #include <Nc/GUI/Widget/SubWindow.h>
-#include <Nc/GUI/Widget/TextArea.h>
+#include <Nc/GUI/Widget/TextEdit.h>
 
 namespace SampleViewer
 {
@@ -50,14 +50,14 @@ namespace SampleViewer
             void                        CloseSampleWindow();
 
         private:
-            Nc::GUI::Widget             *CreateDescriptionSampleWindow(Nc::GUI::Layout *parent);
+            Nc::GUI::Widget             *CreateDescriptionPannel(Nc::GUI::Layout *parent);
             Nc::GUI::Widget             *CreateSelectSampleWindow(Nc::GUI::Layout *parent);
 
         private:
             Nc::GUI::SceneGraph         *_GUI;
             Nc::GUI::ComboBox           *_sampleComboBox;
             Nc::GUI::Image              *_sampleImage;
-            Nc::GUI::TextArea           *_descriptionTextArea;
+            Nc::GUI::TextEdit           *_descriptionTextArea;
 
             Nc::GUI::Widget             *_widgetSampleWindow;
             Nc::GUI::SubWindow          *_currentSampleWindow;

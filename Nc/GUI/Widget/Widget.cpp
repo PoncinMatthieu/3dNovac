@@ -135,7 +135,10 @@ void Widget::Resize()
     if (_resizable && (_percent[0] != 0 || _percent[1] != 0))
     {
         Visitor::GetParentWidget v(this);
-        v(*this);
+        if (_owner != NULL)
+            v.parent = _owner;
+        else
+            v(*this);
 
         Vector2i newSize = Size();
 
@@ -151,7 +154,7 @@ void Widget::Resize()
         }
         else
         {
-            throw Utils::Exception("Widget", "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
+            throw Utils::Exception(Utils::Convert::ToString(*this), "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
         }
 
         if (_percent[0] != 0)
@@ -316,7 +319,12 @@ void    Widget::RelativePos(Vector2i &relativePos) const
     relativePos = _pos;
 
     Visitor::GetParentWidget v(this);
-    v(*this);
+
+    // if the widget is a composed widget, we'll take it's owner as parent
+    if (_owner != NULL)
+        v.parent = _owner;
+    else
+        v(*this);
     if (v.parent != NULL) // get the size of the widget parent
     {
         parentSize = v.parent->Size();
@@ -337,7 +345,7 @@ void    Widget::RelativePos(Vector2i &relativePos) const
     }
     else
     {
-        throw Utils::Exception("Widget", "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
+        throw Utils::Exception(Utils::Convert::ToString(*this), "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
     }
 
     // check horizontal alignment
@@ -345,16 +353,16 @@ void    Widget::RelativePos(Vector2i &relativePos) const
         relativePos.Data[0] = parentSize.Data[0] - _size.Data[0] - MarginRight() - padding.right - relativePos.Data[0];
     else if (_alignment.Enabled(Left))
         relativePos.Data[0] += MarginLeft() + padding.left;
-    else if (_alignment.Enabled(CenterH)) // do not put the padding if center (position with the padding will be automatically computed with the size marged (at function: SizeChild) )
-        relativePos.Data[0] += (parentSize[0] / 2.0) - (_size.Data[0] / 2.0);
+    else if (_alignment.Enabled(CenterH))
+        relativePos.Data[0] += (parentSize[0] / 2.0) - (_size.Data[0] / 2.0) + ((padding.left - padding.right) / 2);
 
     // check vertical alignment
     if (_alignment.Enabled(Top))
         relativePos.Data[1] = parentSize.Data[1] - _size.Data[1] - MarginTop() - padding.top - relativePos.Data[1];
     else if (_alignment.Enabled(Bottom))
         relativePos.Data[1] += MarginBottom() + padding.bottom;
-    else if (_alignment.Enabled(CenterV)) // do not put the padding if center (position with the padding will be automatically computed with the size marged (at function: SizeChild) )
-        relativePos.Data[1] += (parentSize.Data[1] / 2.0) - (_size.Data[1] / 2.0);
+    else if (_alignment.Enabled(CenterV))
+        relativePos.Data[1] += (parentSize.Data[1] / 2.0) - (_size.Data[1] / 2.0) + ((padding.bottom - padding.top) / 2);
     relativePos += parentTranslate;
 }
 

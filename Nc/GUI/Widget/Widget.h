@@ -43,7 +43,7 @@ namespace Nc
         class LGUI  Widget : public Graphic::Object, public Engine::Handler
         {
             public:
-                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::GUI::Widget);
+                NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Graphic::Object, System::Object, System::Object, Nc::GUI::Widget);
 
             public:
                 Widget(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0));
@@ -288,7 +288,10 @@ namespace Nc
                 BoxEdges                _padding;                   ///< Used to space out widgets, padding correspond of the space inside the widget in which the childs are spaced out. To access the property you should call the methods "PaddingLeft / PaddingRight / PaddingTop / PaddingBottom"
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
-                friend class WidgetVisitor;
+                friend class Visitor::WidgetVisitor;
+
+                /** \todo to delete after adding an InvokationMethode on visitors */
+                friend class Visitor::CheckFocus;
         };
     }
 }
