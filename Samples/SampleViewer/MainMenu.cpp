@@ -44,6 +44,8 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     : _GUI(gui)
 {
     _currentSampleWindow = NULL;
+    _currentItemSelected = NULL;
+    imageHeight = 150;
 
     // create the main layout
     Layout *mainLayout = new Layout(Layout::Horizontal, Center);
@@ -59,7 +61,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     _widgetSampleWindow->UseLook(new BoxLook());
     _widgetSampleWindow->PaddingH(5);
     _widgetSampleWindow->PaddingV(5);
-    _widgetSampleWindow->Percent(Vector2f(100, 90));
+    _widgetSampleWindow->Percent(Vector2f(100, 100));
     mainLayout->AddChild(_widgetSampleWindow);
     mainLayout->SetExpandRatio(_widgetSampleWindow, 100);
 
@@ -84,7 +86,7 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     Layout *pannelDescriptionLayout = new Layout(Layout::Vertical, Center, Vector2i(300, 0));
     pannelDescriptionLayout->PaddingH(5);
     pannelDescriptionLayout->PaddingV(5);
-    pannelDescriptionLayout->Percent(Vector2f(0, 90));
+    pannelDescriptionLayout->Percent(Vector2f(0, 100));
     parent->AddChild(pannelDescriptionLayout);
 
     // create the select window with the combobox and the button
@@ -98,24 +100,25 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     pannelDescriptionLayout->AddChild(winDescArea);
     pannelDescriptionLayout->SetExpandRatio(winDescArea, 100);
 
-    Layout *layoutWinDesc = new Layout(Layout::Vertical, CenterH | Center);
-    layoutWinDesc->Percent(Vector2f(100, 100));
-    winDescArea->AddChild(layoutWinDesc);
+    _layoutWinDesc = new Layout(Layout::Vertical, CenterH | Center);
+    _layoutWinDesc->Percent(Vector2f(100, 100));
+    winDescArea->AddChild(_layoutWinDesc);
 
     // create the image widget to show an image of the sample
-    _sampleImage = new GUI::Image(CenterH | Top, Vector2i(0, 150));
+    _sampleImage = new GUI::Image(CenterH | Top, Vector2i(0, imageHeight));
     _sampleImage->Percent(Vector2f(100, 0));
-    layoutWinDesc->AddChild(_sampleImage);
+    _layoutWinDesc->AddChild(_sampleImage);
 
     // create the text area to describe the selected sample
     Utils::Unicode::UTF32 text(L"Lorem ipsum dolor sit amet, consectetur adipiscing elit. \nProin tempor nulla vitae justo pharetra feugiat. \nPhasellus eget erat velit, id dictum felis. \nVestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; \nUt eget sapien nunc, id pharetra sem. Sed mollis lobortis sem nec ullamcorper. Nullam eget nisi elit, sit amet faucibus quam. Integer dictum varius nulla id aliquet. Vestibulum in tincidunt velit. Aenean egestas hendrerit quam, eu rutrum justo lobortis vitae. Donec vehicula, enim et faucibus commodo, nibh nulla facilisis nisl, ac dapibus enim est ut mauris. Nam urna massa, tincidunt at tempor eu, lacinia sed tortor. Curabitur pretium, nisi et tincidunt tempor, nunc mi interdum elit, vitae lacinia purus tortor ac dolor.\n\nNulla at dolor magna. Sed erat nulla, tincidunt et gravida quis, placerat ut sapien. Cras laoreet tempus rhoncus. Ut ligula lacus, egestas in rhoncus a, molestie ut nulla. Fusce euismod elit sit amet lectus eleifend hendrerit. Maecenas molestie aliquet nisi eu tempor. Fusce quam metus, ullamcorper ac condimentum eget, interdum in velit. Aenean quis enim leo. Quisque mi felis, tristique sit amet tristique at, luctus in erat. In sit amet libero a metus viverra blandit. Phasellus ut porta dui. In hac habitasse platea dictumst. \nSed vitae mauris eros, vitae malesuada sapien. \nMorbi non arcu et lacus bibendum lobortis. \nPellentesque placerat leo sit amet eros pellentesque ultrices. ");
+    //Utils::Unicode::UTF32 text(L"bSplinesDemo");
     _descriptionTextArea = new TextEdit(text, CenterH | Bottom);
     _descriptionTextArea->MarginTop(5);
     _descriptionTextArea->Percent(Vector2f(100, 100));
     _descriptionTextArea->UseLook(new BoxLook());
     _descriptionTextArea->GetTextDocument()->UseLook(new BoxLook());
-    layoutWinDesc->AddChild(_descriptionTextArea);
-    layoutWinDesc->SetExpandRatio(_descriptionTextArea, 100);
+    _layoutWinDesc->AddChild(_descriptionTextArea);
+    _layoutWinDesc->SetExpandRatio(_descriptionTextArea, 100);
 
     return pannelDescriptionLayout;
 }
@@ -164,13 +167,23 @@ void    MainMenu::CloseSampleWindow()
 
 void    MainMenu::SampleSelected()
 {
-    if (_sampleComboBox->CurrentItem() != NULL)
+    if (_sampleComboBox->CurrentItem() != NULL && _sampleComboBox->CurrentItem() != _currentItemSelected)
     {
+        _currentItemSelected = _sampleComboBox->CurrentItem();
+
         // unset the sprite
         _sampleImage->Sprite(NULL);
 
         // create the sprite used for the description of the sample
-        Sprite *sp = new Sprite(Vector2i(0,0), GL::Texture("Nc:Image:Samples/" + _sampleComboBox->CurrentItem()->Data() + ".png"), 100);
-        _sampleImage->Sprite(sp);
+        Utils::FileName pictureFile = "Nc:Image:Samples/" + _currentItemSelected->Data() + ".png";
+        if (pictureFile.IsReadable())
+        {
+            Sprite *sp = new Sprite(Vector2i(0,0), GL::Texture(pictureFile), 100);
+            _sampleImage->Sprite(sp);
+            _sampleImage->Size(Vector2i(0, imageHeight));
+        }
+        else
+            _sampleImage->Size(Vector2i(0, 0));
+        _layoutWinDesc->Resized();
     }
 }

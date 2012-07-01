@@ -42,6 +42,7 @@ Image::~Image()
 
 void    Image::Sprite(Graphic::Sprite *sp)
 {
+    System::Locker l(&_spriteMutex);
     if (_sprite != NULL)
         delete _sprite;
     _sprite = sp;
@@ -115,6 +116,7 @@ void    Image::Update()
 void    Image::Draw(Graphic::SceneGraph *scene)
 {
     Widget::Draw(scene);
+    System::Locker l(&_spriteMutex);
     if (_sprite != NULL)
         _sprite->RenderNode(scene);
 }

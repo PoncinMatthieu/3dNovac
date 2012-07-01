@@ -99,11 +99,14 @@ void WindowBox::Update()
     Widget::Update();
 
     if (_titleAlignment.Enabled(Left))
-        _title->Matrix.Translation(PaddingLeft(), _size.Data[1] - static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] + (_title->Size()[1] / 2), 0);
+        _title->Matrix.Translation(PaddingLeft(),
+                                   _size.Data[1] - (static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] - ((static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] / 2) - (_title->Size()[1] / 2))), 0);
     else if (_titleAlignment.Enabled(CenterH))
-        _title->Matrix.Translation((_size.Data[0] / 2) - (_title->Size()[0] / 2), _size.Data[1] - static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] + (_title->Size()[1] / 2), 0);
+        _title->Matrix.Translation((_size.Data[0] / 2) - (_title->Size()[0] / 2),
+                                   _size.Data[1] - (static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] - ((static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] / 2) - (_title->Size()[1] / 2))), 0);
     else
-        _title->Matrix.Translation(_size.Data[0] - PaddingRight() - _title->Size()[0], _size.Data[1] - static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] + (_title->Size()[1] / 2), 0);
+        _title->Matrix.Translation(_size.Data[0] - PaddingRight() - _title->Size()[0],
+                                   _size.Data[1] - (static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] - ((static_cast<BoxLook*>(_widgetLook)->spriteTopEdge->Size()[1] / 2) - (_title->Size()[1] / 2))), 0);
 }
 
 void WindowBox::Draw(Graphic::SceneGraph *scene)

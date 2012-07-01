@@ -138,6 +138,10 @@ namespace Nc
                 void                MarginTop(int m);
                 /** \return the margin bottom. */
                 void                MarginBottom(int m);
+                /** \return MarginLeft() + MarginRight() */
+                unsigned int        MarginH() const;
+                /** \return MarginTop() + MarginBottom() */
+                unsigned int        MarginV() const;
                 /** \return the margin left. */
                 unsigned int        MarginLeft() const;
                 /** \return the margin right. */
@@ -161,6 +165,10 @@ namespace Nc
                 void                PaddingTop(int p);
                 /** \return the padding bottom. */
                 void                PaddingBottom(int p);
+                /** \return PaddingLeft() + PaddingRight() */
+                unsigned int        PaddingH() const;
+                /** \return PaddingTop() + PaddingBottom() */
+                unsigned int        PaddingV() const;
                 /** \return the padding left, the result correspond to the padding property plus the size of the widget look edge. */
                 unsigned int        PaddingLeft() const;
                 /** \return the padding right, the result correspond to the padding property plus the size of the widget look edge. */

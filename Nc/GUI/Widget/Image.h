@@ -67,6 +67,7 @@ namespace Nc
                 AlignmentMask       _spriteAlignment;   ///< alignment of the sprite inside the widget.
                 bool                _spriteResizable;   ///< if true, we will try to resize the sprite to the size of the widget.
                 bool                _keepRatio;         ///< if true, we will keep the initial ratio of the sprite while resizing it.
+                System::Mutex       _spriteMutex;       ///< protect the sprite acess.
         };
     }
 }

@@ -114,11 +114,14 @@ void    ComboBox::Draw(Graphic::SceneGraph *scene)
 
     if (!_listUnrolled)
     {
-        scene->PushModelMatrix();
-        scene->ModelMatrix().AddTranslation(static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0], (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2, 0);
         if (_currentItem != NULL)
+        {
+            scene->PushModelMatrix();
+            scene->ModelMatrix().AddTranslation(static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0],
+                                                (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] / 2) - (_currentItem->second->Size()[1] / 2) - ((_spriteList->Size()[1] / 2) - (_currentItem->second->Size()[1] / 2)), 0);
             _currentItem->second->RenderNode(scene);
-        scene->PopModelMatrix();
+            scene->PopModelMatrix();
+        }
     }
 }
 
@@ -151,7 +154,7 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
 void    ComboBox::AddItem(Item *item)
 {
     Graphic::String *s = new Graphic::String(item->Data(), _fontSize, _fontColor, _fontName);
-    s->Matrix.AddTranslation(PaddingLeft(), s->Size()[1] / 2, 0);
+    s->Matrix.AddTranslation(PaddingLeft(), (_spriteList->Size()[1] / 2) - (s->Size()[1] / 2), 0);
 
     _itemList.push_back(std::pair<Item*, Graphic::String*>(item, s));
     _currentItem = &(*_itemList.begin());

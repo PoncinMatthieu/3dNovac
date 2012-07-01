@@ -57,10 +57,14 @@ namespace SampleViewer
             Nc::GUI::SceneGraph         *_GUI;
             Nc::GUI::ComboBox           *_sampleComboBox;
             Nc::GUI::Image              *_sampleImage;
+            unsigned int                imageHeight;
             Nc::GUI::TextEdit           *_descriptionTextArea;
+            Nc::GUI::Layout             *_layoutWinDesc;
 
             Nc::GUI::Widget             *_widgetSampleWindow;
             Nc::GUI::SubWindow          *_currentSampleWindow;
+
+            Nc::GUI::Item               *_currentItemSelected;
     };
 }
 

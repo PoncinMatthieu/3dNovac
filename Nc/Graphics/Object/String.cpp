@@ -156,11 +156,8 @@ void String::UpdateGeometry()
         thickness = (_style.Enabled(Bold)) ? 3.f : 2.f;
     }
 
-    _matrixText.Translation(0.f, -baseSize, 0.f);
-    _matrixText.AddScale(factor, factor, 1.f);
-
 	// Initialize the rendering coordinates
-    float X = 0.f, Y = baseSize;
+    float X = 0.f, Y = baseSize, posOffsetLastLine = 0;
 
     // Compute the shearing to apply if we're using the italic style
     float italicCoeff = (_style.Enabled(Italic)) ? 0.208f : 0.f; // 12 degrees
@@ -187,30 +184,64 @@ void String::UpdateGeometry()
         }
 
         // Handle special characters
-        switch (curChar)
+        if (curChar == L' ')
         {
-            case L' ' :  X += (curGlyph) ? curGlyph->Add : _charSize;                break;
-            case L'\n' : Y -= _charSize; X = 0;                                      break;
-            case L'\t' : X += (curGlyph) ? (curGlyph->Add * 4) : (_charSize * 4);    break;
+            X += (curGlyph) ? curGlyph->Add : baseSize;
+            continue;
         }
-
-        if (curGlyph == NULL)  // move away, if the glyph is null
+        else if (curChar == L'\t')
+        {
+            X += (curGlyph) ? (curGlyph->Add * 4) : (baseSize * 4);
+            continue;
+        }
+        else if (curChar == L'\n')
+        {
+            Y -= baseSize;
+            X = 0;
+            posOffsetLastLine = 0;
+            continue;
+        }
+        else if (curGlyph == NULL)  // move away, if the glyph is null
             continue;
 
-        // Draw a textured quad for the current character
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])), Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                        curGlyph->Coord.Max(0), curGlyph->Coord.Min(1), _color);
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])), Y - curGlyph->Pos.Data[1],
-                                        curGlyph->Coord.Max(0), curGlyph->Coord.Max(1), _color);
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])), Y - curGlyph->Pos.Data[1],
-                                        curGlyph->Coord.Min(0), curGlyph->Coord.Max(1), _color);
+        // we compute the offset of the last line to add to the matrix so that the rendering will match exactly with the box size of the string.
+        if (posOffsetLastLine < curGlyph->Pos.Data[1])
+            posOffsetLastLine = curGlyph->Pos.Data[1];
 
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])), Y - curGlyph->Pos.Data[1],
-                                        curGlyph->Coord.Min(0), curGlyph->Coord.Max(1), _color);
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])), Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                        curGlyph->Coord.Min(0), curGlyph->Coord.Min(1), _color);
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])), Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                        curGlyph->Coord.Max(0), curGlyph->Coord.Min(1), _color);
+        // Draw a textured quad for the current character
+        // first triangle
+        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])),
+                                        Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
+                                        curGlyph->Coord.Max(0),
+                                        curGlyph->Coord.Min(1),
+                                        _color);
+        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])),
+                                        Y - curGlyph->Pos.Data[1],
+                                        curGlyph->Coord.Max(0),
+                                        curGlyph->Coord.Max(1),
+                                        _color);
+        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])),
+                                        Y - curGlyph->Pos.Data[1],
+                                        curGlyph->Coord.Min(0),
+                                        curGlyph->Coord.Max(1),
+                                        _color);
+
+        // second triangle
+        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])),
+                                        Y - curGlyph->Pos.Data[1],
+                                        curGlyph->Coord.Min(0),
+                                        curGlyph->Coord.Max(1),
+                                        _color);
+        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])),
+                                        Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
+                                        curGlyph->Coord.Min(0),
+                                        curGlyph->Coord.Min(1),
+                                        _color);
+        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])),
+                                        Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
+                                        curGlyph->Coord.Max(0),
+                                        curGlyph->Coord.Min(1),
+                                        _color);
 
         // If we're using the bold style, we must render the character 4 more times,
         // slightly offseted, to simulate a higher weight
@@ -238,6 +269,11 @@ void String::UpdateGeometry()
 
         X += curGlyph->Add;        // Advance to the next character
     }
+
+    // setup the matrix so the rendering will match the box size
+    _matrixText.Translation(0.f, -Y + posOffsetLastLine, 0.f);
+    _matrixText.AddScale(factor, factor, 1.f);
+
     l.Unlock();
 
     // Add the last line (which was not finished with a \n)
@@ -289,34 +325,38 @@ void String::RecomputeSize()
         // Handle special characters
         switch (curChar)
         {
-            case L' ' :  curWidth += (curGlyph) ? curGlyph->Add * factor : _charSize;                   break;
-            case L'\t' : curWidth += (curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4);       break;
+            case L' ' :
+                curWidth += (curGlyph) ? (curGlyph->Add * factor) : _charSize;
+                break;
+            case L'\t' :
+                curWidth += (curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4);
+                break;
             case L'\n' :
-                height += curHeight;
-                curHeight = 0;
+                height += _charSize;
                 if (curWidth > width)
                     width = curWidth;
                 curWidth = 0;
                 break;
+            default: // every other caracters.
+                if (curGlyph != NULL)
+                    curWidth += curGlyph->Add * factor;
+                break;
         }
 
-        if (curGlyph == NULL)  // move away, if the glyph is null
-            continue;
-
-        // Advance to the next character
-        curWidth += curGlyph->Add * factor;
-
         // Update the maximum height
-        float charHeight = (curGlyph->Size.Data[1]) * factor;
-        if (Math::Abs(charHeight) > Math::Abs(curHeight))
-            curHeight = charHeight;
+        if (curGlyph != NULL)
+        {
+            float charHeight = (curGlyph->Size.Data[1] - curGlyph->Pos.Data[1]) * factor;
+            if (Math::Abs(charHeight) > Math::Abs(curHeight))
+                curHeight = charHeight;
+        }
     }
     l.Unlock();
 
     // Update the last line
     if (curWidth > width)
         width = curWidth;
-    height += curHeight;
+    height += Math::Abs(curHeight);
 
     // Add a slight width / height if we're using the bold style
     if (_style.Enabled(Bold))

@@ -122,8 +122,8 @@ void Button::Update()
         _font->CharSize(_charSize);
     while (!st && _font->CharSize() > 0)
     {
-        if (_font->Size().Data[0] > (_size.Data[0] - PaddingLeft() - PaddingRight()) ||
-            _font->Size().Data[1] > (_size.Data[1] - PaddingTop() - PaddingBottom()))
+        if (_font->Size().Data[0] > (_size.Data[0] - PaddingH()) ||
+            _font->Size().Data[1] > (_size.Data[1] - PaddingV()))
             _font->CharSize(_font->CharSize() - 1);
         else
             st = true;
@@ -131,7 +131,8 @@ void Button::Update()
 
     // center the font
     const Vector2f &fontSize = _font->Size();
-    _font->Matrix.Translation((_size.Data[0] / 2.f) - (fontSize.Data[0] / 2.f), (_size.Data[1] / 2.f) - (fontSize.Data[1] / 2.f), 0);
+    _font->Matrix.Translation(PaddingLeft() + ((_size.Data[0] - PaddingH()) / 2.f) - (fontSize.Data[0] / 2.f),
+                              PaddingTop() + ((_size.Data[1] - PaddingV()) / 2.f) - (fontSize.Data[1] / 2.f), 0);
 }
 
 void Button::Draw(Graphic::SceneGraph *scene)

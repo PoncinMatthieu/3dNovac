@@ -206,29 +206,15 @@ void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
         AbsolutePos(pos);
 
         if (_alignment.Enabled(Left))
-            pos[0] += _padding.left;
+            pos[0] += PaddingLeft();
         else
-            pos[0] += _padding.right;
+            pos[0] += PaddingRight();
         if (_alignment.Enabled(Top))
-            pos[1] += _padding.top;
+            pos[1] += PaddingTop();
         else
-            pos[1] += _padding.bottom;
-        size[0] -= (_padding.left + _padding.right);
-        size[1] -= (_padding.top + _padding.bottom);
-
-        if (_widgetLook != NULL)
-        {
-            if (_alignment.Enabled(Left))
-                pos[0] += _widgetLook->edges.left;
-            else
-                pos[0] += _widgetLook->edges.right;
-            if (_alignment.Enabled(Top))
-                pos[1] += _widgetLook->edges.top;
-            else
-                pos[1] += _widgetLook->edges.bottom;
-            size[0] -= (_widgetLook->edges.left + _widgetLook->edges.right);
-            size[1] -= (_widgetLook->edges.top + _widgetLook->edges.bottom);
-        }
+            pos[1] += PaddingBottom();
+        size[0] -= PaddingH();
+        size[1] -= PaddingV();
 
         scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
     }
@@ -507,6 +493,16 @@ void    Widget::MarginBottom(int m)
     _stateChanged = true;
 }
 
+unsigned int    Widget::MarginH() const
+{
+    return MarginLeft() + MarginRight();
+}
+
+unsigned int    Widget::MarginV() const
+{
+    return MarginTop() + MarginBottom();
+}
+
 unsigned int    Widget::MarginLeft() const
 {
     return _margin.left;
@@ -569,6 +565,16 @@ void    Widget::PaddingBottom(int p)
 {
     _padding.bottom = p;
     _stateChanged = true;
+}
+
+unsigned int    Widget::PaddingH() const
+{
+    return PaddingLeft() + PaddingRight();
+}
+
+unsigned int    Widget::PaddingV() const
+{
+    return PaddingTop() + PaddingBottom();
 }
 
 unsigned int    Widget::PaddingLeft() const

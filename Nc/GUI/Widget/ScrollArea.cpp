@@ -105,6 +105,8 @@ void ScrollArea::Update()
     Widget::Update();
 
     Vector2i pageSize(_size);
+    pageSize[0] -= PaddingH();
+    pageSize[1] -= PaddingV();
 
     if (_view != NULL)
     {
