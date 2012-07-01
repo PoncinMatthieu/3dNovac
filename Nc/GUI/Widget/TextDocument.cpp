@@ -24,13 +24,13 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "TextArea.h"
+#include "TextDocument.h"
 #include "../Visitor/Visitors.h"
 
 using namespace Nc;
 using namespace Nc::GUI;
 
-TextArea::TextArea(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf)
+TextDocument::TextDocument(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf)
     : Widget(alignment, size)
 {
     _editable = false;
@@ -41,13 +41,13 @@ TextArea::TextArea(const Utils::Unicode::UTF32 &text, const AlignmentMask &align
     Resize();
 }
 
-void    TextArea::Text(const Utils::Unicode::UTF32 &t)
+void    TextDocument::Text(const Utils::Unicode::UTF32 &t)
 {
     _string->Text(t);
     Resized();
 }
 
-void    TextArea::Resize()
+void    TextDocument::Resize()
 {
     if (_size != _string->Size())
     {
@@ -55,12 +55,12 @@ void    TextArea::Resize()
     }
 }
 
-void    TextArea::Update()
+void    TextDocument::Update()
 {
     Widget::Update();
 }
 
-void    TextArea::Draw(Graphic::SceneGraph *scene)
+void    TextDocument::Draw(Graphic::SceneGraph *scene)
 {
     Widget::Draw(scene);
     _string->RenderNode(scene);

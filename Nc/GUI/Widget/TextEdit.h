@@ -28,7 +28,7 @@
 #define NC_GUI_WIDGET_TEXTEDIT_H_
 
 #include "ScrollArea.h"
-#include "TextArea.h"
+#include "TextDocument.h"
 
 namespace Nc
 {
@@ -43,8 +43,8 @@ namespace Nc
                 TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
                 ~TextEdit();
 
-                /** \return the attached text area */
-                TextArea    *GetTextArea()   {return _textArea;}
+                /** \return the attached text document */
+                TextDocument        *GetTextDocument()      {return _textDocument;}
 
             protected:
                 /** Render the textArea before disabling the stencil */
@@ -53,7 +53,7 @@ namespace Nc
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
             private:
-                TextArea    *_textArea;
+                TextDocument    *_textDocument;
         };
     }
 }

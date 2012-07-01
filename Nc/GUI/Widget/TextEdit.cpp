@@ -32,9 +32,9 @@ using namespace Nc::GUI;
 TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf)
     : ScrollArea(alignment, size)
 {
-    _textArea = new TextArea(text, Left | Top, size, ttf);
-    AddComposedWidget(_textArea);
-    SetView(_textArea);
+    _textDocument = new TextDocument(text, Left | Top, size, ttf);
+    AddComposedWidget(_textDocument);
+    SetView(_textDocument);
 }
 
 TextEdit::~TextEdit()
@@ -43,7 +43,7 @@ TextEdit::~TextEdit()
 
 void TextEdit::RenderChildsEnd(Graphic::SceneGraph *scene)
 {
-    _textArea->RenderNode(scene);
+    _textDocument->RenderNode(scene);
     ScrollArea::RenderChildsEnd(scene);
 }
 

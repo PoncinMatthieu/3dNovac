@@ -113,7 +113,7 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     _descriptionTextArea->MarginTop(5);
     _descriptionTextArea->Percent(Vector2f(100, 100));
     _descriptionTextArea->UseLook(new BoxLook());
-    _descriptionTextArea->GetTextArea()->UseLook(new BoxLook());
+    _descriptionTextArea->GetTextDocument()->UseLook(new BoxLook());
     layoutWinDesc->AddChild(_descriptionTextArea);
     layoutWinDesc->SetExpandRatio(_descriptionTextArea, 100);
 
