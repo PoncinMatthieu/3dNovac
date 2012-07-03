@@ -76,11 +76,8 @@ namespace Nc
             protected:
                 /** Render the text. Recompute the drawables if needed. */
                 virtual void        Render(SceneGraph *scene);
-                /** Transform the matrix with the matrix text. */
-                virtual void        TransformModelMatrixToRender(SceneGraph *scene);
 
             protected:
-                TMatrix                 _matrixText;        ///< the matrix used to render the text.
                 Utils::Unicode::UTF32   _text;              ///< store the plain text.
                 Core::ITextFormater     *_textFormater;     ///< the text formater used to compute the size and the drawables.
                 Vector2f                _size;              ///< the size of the string (computed with RecomputeSize).

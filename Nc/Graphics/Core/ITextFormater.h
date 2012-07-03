@@ -37,15 +37,21 @@ namespace Nc
         {
             /// Interface used to format text.
             /**
+                <div class="title">Definning you own formater:</div>
                 To create your own text formater, you should redefine the following methods:
                     - Clone: To be able to create a new copy of your formater.
                     - ComputeSize: To retreive the expected size of the text.
                     - InitDrawable: To create and initialize the drawables used to render the text.
                     - ComputeDrawables: To update the drawables used to render the text.
 
-                By creating your own formater you should be able to render structured rich text documents.
+                To be able to render structured rich text documents, you can define your own text formater by inheriting from ITextFormater.
+                The ComputeSize method is used to positionate the String in the space.
+                Your own formater should always return a valid size corresponding to the rendered text.
+                We use the booleans _sizeChanged and _drawablesChanges to know if we should recompute the size or drawables,
+                those are obviously important for perfomance issue, and should be updated in your own formater.
 
-                \sa PlainTextFormater, Correspond to the default text formater allowing the creation of stylised and aligned text.
+                \sa
+                    - PlainTextFormater, Correspond to the default text formater allowing the creation of stylised and aligned text.
             */
             class ITextFormater
             {
@@ -69,11 +75,8 @@ namespace Nc
                     /** Init drawables array, to avoid to recreate the drawables after each modification of the text. */
                     virtual void    InitDrawables(DrawableArray &drawableArray) = 0;
 
-                    /**
-                        Create every Drawables for the given \p text and add them to the given \p drawableArray.
-                        Compute also a matrix to use to transform the drawables so they will match the computed size.
-                    */
-                    virtual void    ComputeDrawables(DrawableArray &drawableArray, TMatrix &matrix, const Utils::Unicode::UTF32 &text) = 0;
+                    /** Create every Drawables for the given \p text and add them to the given \p drawableArray. */
+                    virtual void    ComputeDrawables(DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text) = 0;
 
                 protected:
                     bool        _sizeChanged;           ///< true if the size must be recompute since the last computation.

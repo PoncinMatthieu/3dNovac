@@ -25,7 +25,6 @@
 -----------------------------------------------------------------------------*/
 
 #include "PlainTextFormater.h"
-#include "DefaultVertexType.h"
 #include "Drawable.h"
 
 using namespace Nc;
@@ -119,7 +118,8 @@ void    PlainTextFormater::ComputeSize(Vector2f &textSize, const Utils::Unicode:
     float factor    = _charSize / (float)_font->BaseSize();
 
     // Go through each character
-    for (size_t i = 0; i < text.size(); ++i)
+    std::size_t textSizeCar = text.size();
+    for (std::size_t i = 0; i < textSizeCar; ++i)
     {
         // Get the current character and its corresponding glyph
         UInt32          curChar  = text[i];
@@ -222,69 +222,58 @@ void    PlainTextFormater::InitDrawables(DrawableArray &drawableArray)
     TextChanged();
 }
 
-void    PlainTextFormater::ComputeDrawables(DrawableArray &drawableArray, TMatrix &matrix, const Utils::Unicode::UTF32 &text)
+void    PlainTextFormater::ComputeDrawables(DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text)
 {
     // Set the scaling factor to get the actual size
+    std::size_t         textSize = text.size();
     float               baseSize = _font->BaseSize();
     float               factor   = _charSize / baseSize;
-    unsigned int        nbVertices = 6 * text.size(), noVertice = 0, noBackSlashN = 0;
+    unsigned int        nbVertices = 6 * textSize;
+    unsigned int        noVertice = 0, noUnderline = 0;
     float               thickness = 0;
 
+    // build the vertice tabs with an estimated maximum size.
     if (_style.Enabled(Bold))
-        nbVertices += 6 * 4 * text.size();
+        nbVertices += 6 * 4 * textSize;
 
-    // construit les arrays de vertices
     Array<DefaultVertexType::Textured2d>      vertices(nbVertices);
     Array<DefaultVertexType::Colored2d>       underlines;
 
-    // Holds the lines to draw later, for underlined style
     if (_style.Enabled(Underlined))
     {
-        underlines.InitSize((text.CharCount('\n') + 1) * 6);
+        if (_documentSize == 0)
+            underlines.InitSize((text.CharCount('\n') + 1) * 6);
+        else
+            underlines.InitSize(((text.CharCount('\n') + 1) * 6) + ((textSize * _charSize) / _documentSize));
         thickness = (_style.Enabled(Bold)) ? 3.f : 2.f;
     }
 
 	// Initialize the rendering coordinates
-    float X = 0.f, Y = baseSize, posOffsetLastLine = 0;
-
-    // Compute the shearing to apply if we're using the italic style
+    float X = 0.f, Y = _charSize, posOffsetLastLine = 0;
     float italicCoeff = (_style.Enabled(Italic)) ? 0.208f : 0.f; // 12 degrees
 
-    // Draw one quad for each character
-    for (std::size_t i = 0; i < text.size(); ++i)
+    for (std::size_t i = 0; i < textSize; ++i)
     {
         // Get the current character and its corresponding glyph
         UInt32              curChar = text[i];
         const Core::Glyph   *curGlyph = _font->GetGlyph(curChar);
 
-
-        // If we're using the underlined style and there's a new line,
-        // we keep track of the previous line to draw it later
-        if ((curChar == L'\n') && (_style.Enabled(Underlined)))
-        {
-            underlines.Data[noBackSlashN++].Fill(0, Y - 2, _color);
-            underlines.Data[noBackSlashN++].Fill(0, Y - 2 + thickness, _color);
-            underlines.Data[noBackSlashN++].Fill(X, Y - 2 + thickness, _color);
-
-            underlines.Data[noBackSlashN++].Fill(X, Y - 2 + thickness, _color);
-            underlines.Data[noBackSlashN++].Fill(X, Y - 2, _color);
-            underlines.Data[noBackSlashN++].Fill(0, Y - 2, _color);
-        }
-
         // Handle special characters
         if (curChar == L' ')
         {
-            X += (curGlyph) ? curGlyph->Add : baseSize;
+            X += (curGlyph) ? curGlyph->Add * factor : _charSize;
             continue;
         }
         else if (curChar == L'\t')
         {
-            X += (curGlyph) ? (curGlyph->Add * 4) : (baseSize * 4);
+            X += (curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4);
             continue;
         }
         else if (curChar == L'\n')
         {
-            Y -= baseSize;
+            if (_style.Enabled(Underlined))
+                DrawUnderlines(underlines, noUnderline, X, Y, thickness);
+            Y -= _charSize;
             X = 0;
             posOffsetLastLine = 0;
             continue;
@@ -296,9 +285,11 @@ void    PlainTextFormater::ComputeDrawables(DrawableArray &drawableArray, TMatri
         {
             if (_alignment == Left)
             {
-                if (((X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0]) * factor) > _documentSize)
+                if ((X + ((curGlyph->Pos.Data[0] + curGlyph->Size.Data[0]) * factor)) > _documentSize)
                 {
-                    Y -= baseSize;
+                    if (_style.Enabled(Underlined))
+                        DrawUnderlines(underlines, noUnderline, X, Y, thickness);
+                    Y -= _charSize;
                     X = 0;
                     posOffsetLastLine = 0;
                 }
@@ -306,93 +297,134 @@ void    PlainTextFormater::ComputeDrawables(DrawableArray &drawableArray, TMatri
         }
 
         // we compute the offset of the last line to add to the matrix so that the rendering will match exactly with the box size of the string.
-        if (posOffsetLastLine < curGlyph->Pos.Data[1])
-            posOffsetLastLine = curGlyph->Pos.Data[1];
+        if (posOffsetLastLine < (curGlyph->Pos.Data[1] * factor))
+            posOffsetLastLine = curGlyph->Pos.Data[1] * factor;
 
-        // Draw a textured quad for the current character
-        // first triangle
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])),
-                                        Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                        curGlyph->Coord.Max(0),
-                                        curGlyph->Coord.Min(1),
-                                        _color);
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])),
-                                        Y - curGlyph->Pos.Data[1],
-                                        curGlyph->Coord.Max(0),
-                                        curGlyph->Coord.Max(1),
-                                        _color);
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])),
-                                        Y - curGlyph->Pos.Data[1],
-                                        curGlyph->Coord.Min(0),
-                                        curGlyph->Coord.Max(1),
-                                        _color);
+        DrawVertices(vertices, noVertice, X, Y, thickness, italicCoeff, curGlyph, factor);
 
-        // second triangle
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])),
-                                        Y - curGlyph->Pos.Data[1],
-                                        curGlyph->Coord.Min(0),
-                                        curGlyph->Coord.Max(1),
-                                        _color);
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])),
-                                        Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                        curGlyph->Coord.Min(0),
-                                        curGlyph->Coord.Min(1),
-                                        _color);
-        vertices.Data[noVertice++].Fill(X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])),
-                                        Y - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                        curGlyph->Coord.Max(0),
-                                        curGlyph->Coord.Min(1),
-                                        _color);
-
-        // If we're using the bold style, we must render the character 4 more times,
-        // slightly offseted, to simulate a higher weight
-        if (_style.Enabled(Bold))
-        {
-            static const float OffsetsX[] = {-0.5f, 0.5f, 0.f, 0.f};
-            static const float OffsetsY[] = {0.f, 0.f, -0.5f, 0.5f};
-            for (int j = 0; j < 4; ++j)
-            {
-                vertices.Data[noVertice++].Fill(X + OffsetsX[j] + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])), Y + OffsetsY[j] - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                                curGlyph->Coord.Max(0), curGlyph->Coord.Min(1), _color);
-                vertices.Data[noVertice++].Fill(X + OffsetsX[j] + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])), Y + OffsetsY[j] - curGlyph->Pos.Data[1],
-                                                curGlyph->Coord.Max(0), curGlyph->Coord.Max(1), _color);
-                vertices.Data[noVertice++].Fill(X + OffsetsX[j] + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])), Y + OffsetsY[j] - curGlyph->Pos.Data[1],
-                                                curGlyph->Coord.Min(0), curGlyph->Coord.Max(1), _color);
-
-                vertices.Data[noVertice++].Fill(X + OffsetsX[j] + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1])), Y + OffsetsY[j] - curGlyph->Pos.Data[1],
-                                                curGlyph->Coord.Min(0), curGlyph->Coord.Max(1), _color);
-                vertices.Data[noVertice++].Fill(X + OffsetsX[j] + curGlyph->Pos.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])), Y + OffsetsY[j] - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                                curGlyph->Coord.Min(0), curGlyph->Coord.Min(1), _color);
-                vertices.Data[noVertice++].Fill(X + OffsetsX[j] + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0] + (italicCoeff * (-curGlyph->Pos.Data[1] - curGlyph->Size.Data[1])), Y + OffsetsY[j] - curGlyph->Pos.Data[1] - curGlyph->Size.Data[1],
-                                                curGlyph->Coord.Max(0), curGlyph->Coord.Min(1), _color);
-            }
-        }
-
-        X += curGlyph->Add;        // Advance to the next character
+        // Advance to the next character
+        X += curGlyph->Add * factor;
     }
-
-    // setup the matrix so the rendering will match the box size
-    matrix.Translation(0.f, -Y + posOffsetLastLine, 0.f);
-    matrix.AddScale(factor, factor, 1.f);
 
     // Add the last line (which was not finished with a \n)
     if (_style.Enabled(Underlined))
-    {
-        underlines.Data[noBackSlashN++].Fill(0, Y - 2, _color);
-        underlines.Data[noBackSlashN++].Fill(0, Y - 2 + thickness, _color);
-        underlines.Data[noBackSlashN++].Fill(X, Y - 2 + thickness, _color);
+        DrawUnderlines(underlines, noUnderline, X, Y, thickness);
 
-        underlines.Data[noBackSlashN++].Fill(X, Y - 2 + thickness, _color);
-        underlines.Data[noBackSlashN++].Fill(X, Y - 2, _color);
-        underlines.Data[noBackSlashN++].Fill(0, Y - 2, _color);
+    // translate every caracter to it's final position (according to the computed size)
+    TranslateCaraters(vertices, noVertice, underlines, noUnderline, 0.f, -Y + posOffsetLastLine);
 
-        underlines.UnderSize(noBackSlashN); // resize the buffer, to be sure that we render the good number of vertices
-        GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(drawableArray[1]->Geometry);
-        geo->VBO().UpdateData(underlines, GL::Enum::DataBuffer::StaticDraw);
-    }
-
+    // update the geometry
     vertices.UnderSize(noVertice); // resize the buffer, to be sure that we render the good number of vertices
     GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d,false>*>(drawableArray[0]->Geometry);
     geo->VBO().UpdateData(vertices, GL::Enum::DataBuffer::StaticDraw);
+
+    if (_style.Enabled(Underlined))
+    {
+        underlines.UnderSize(noUnderline); // resize the buffer, to be sure that we render the good number of vertices
+        GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(drawableArray[1]->Geometry);
+        geo->VBO().UpdateData(underlines, GL::Enum::DataBuffer::StaticDraw);
+    }
     _drawablesChanged = false;
+}
+
+
+void    PlainTextFormater::DrawUnderlines(Array<DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float X, float Y, float thickness)
+{
+// If we're using the underlined style and there's a new line,
+// we keep track of the previous line to draw it later
+
+    // check the size of the underlines tab... we double the size of the tab if that's too small.
+    if (underlines.Size() < (noUnderline + 6))
+        underlines.Resize(noUnderline * 2);
+
+    underlines.Data[noUnderline++].Fill(0, Y - 2, _color);
+    underlines.Data[noUnderline++].Fill(0, Y - 2 + thickness, _color);
+    underlines.Data[noUnderline++].Fill(X, Y - 2 + thickness, _color);
+
+    underlines.Data[noUnderline++].Fill(X, Y - 2 + thickness, _color);
+    underlines.Data[noUnderline++].Fill(X, Y - 2, _color);
+    underlines.Data[noUnderline++].Fill(0, Y - 2, _color);
+}
+
+void    PlainTextFormater::DrawVertices(Array<DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice, float X, float Y, float thickness, float italicCoeff, const Core::Glyph *curGlyph, float factor)
+{
+    float glyphPosX = curGlyph->Pos.Data[0] * factor;
+    float glyphPosY = curGlyph->Pos.Data[1] * factor;
+    float glyphSizeX = curGlyph->Size.Data[0] * factor;
+    float glyphSizeY = curGlyph->Size.Data[1] * factor;
+
+    // Draw a textured quad for the current character
+    // first triangle
+    vertices.Data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)),
+                                    Y - glyphPosY - glyphSizeY,
+                                    curGlyph->Coord.Max(0),
+                                    curGlyph->Coord.Min(1),
+                                    _color);
+    vertices.Data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY)),
+                                    Y - glyphPosY,
+                                    curGlyph->Coord.Max(0),
+                                    curGlyph->Coord.Max(1),
+                                    _color);
+    vertices.Data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY)),
+                                    Y - glyphPosY,
+                                    curGlyph->Coord.Min(0),
+                                    curGlyph->Coord.Max(1),
+                                    _color);
+
+    // second triangle
+    vertices.Data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY)),
+                                    Y - glyphPosY,
+                                    curGlyph->Coord.Min(0),
+                                    curGlyph->Coord.Max(1),
+                                    _color);
+    vertices.Data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY - glyphSizeY)),
+                                    Y - glyphPosY - glyphSizeY,
+                                    curGlyph->Coord.Min(0),
+                                    curGlyph->Coord.Min(1),
+                                    _color);
+    vertices.Data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)),
+                                    Y - glyphPosY - glyphSizeY,
+                                    curGlyph->Coord.Max(0),
+                                    curGlyph->Coord.Min(1),
+                                    _color);
+
+    // If we're using the bold style, we must render the character 4 more times,
+    // slightly offseted, to simulate a higher weight
+    if (_style.Enabled(Bold))
+    {
+        static const float OffsetsX[] = {-0.5f, 0.5f, 0.f, 0.f};
+        static const float OffsetsY[] = {0.f, 0.f, -0.5f, 0.5f};
+        for (int j = 0; j < 4; ++j)
+        {
+            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
+                                            curGlyph->Coord.Max(0), curGlyph->Coord.Min(1), _color);
+            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
+                                            curGlyph->Coord.Max(0), curGlyph->Coord.Max(1), _color);
+            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
+                                            curGlyph->Coord.Min(0), curGlyph->Coord.Max(1), _color);
+
+            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
+                                            curGlyph->Coord.Min(0), curGlyph->Coord.Max(1), _color);
+            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
+                                            curGlyph->Coord.Min(0), curGlyph->Coord.Min(1), _color);
+            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
+                                            curGlyph->Coord.Max(0), curGlyph->Coord.Min(1), _color);
+        }
+    }
+}
+
+void    PlainTextFormater::TranslateCaraters(Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int noVertice,
+                                             Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int noUnderline, float offsetX, float offsetY)
+{
+    for (unsigned int i = 0; i < noVertice; ++i)
+    {
+        vertices.Data[i].coord[0] += offsetX;
+        vertices.Data[i].coord[1] += offsetY;
+    }
+
+    for (unsigned int i = 0; i < noUnderline; ++i)
+    {
+        underlines.Data[i].coord[0] += offsetX;
+        underlines.Data[i].coord[1] += offsetY;
+    }
 }

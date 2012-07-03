@@ -95,12 +95,6 @@ void    Text::Formater(Core::ITextFormater *f)
     }
 }
 
-void    Text::TransformModelMatrixToRender(SceneGraph *scene)
-{
-    if (!_text.empty())
-        scene->ModelMatrix() *= Matrix * _matrixText;
-}
-
 void    Text::Render(SceneGraph *scene)
 {
     if (!_text.empty())    // No text, no rendering :)
@@ -108,7 +102,7 @@ void    Text::Render(SceneGraph *scene)
         if (_textFormater->DrawablesChanged())
         {
             System::Locker l(&_mutex);
-            _textFormater->ComputeDrawables(_drawables, _matrixText, _text);
+            _textFormater->ComputeDrawables(_drawables, _text);
         }
         Object::Render(scene);
     }

@@ -30,6 +30,7 @@
 #include <Nc/Core/Utils/Mask.h>
 #include "Font.h"
 #include "ITextFormater.h"
+#include "DefaultVertexType.h"
 
 /**
     \todo We create the font by using the following charSize. Find a better way to manage fonts and it's baseSize.
@@ -114,14 +115,18 @@ namespace Nc
                     /** Init drawables array, to avoid to recreate the drawables after each modification of the text */
                     virtual void        InitDrawables(DrawableArray &drawableArray);
 
-                    /**
-                        Create every Drawables for the given \p text and add them to the given \p drawableArray.
-                        Compute also a matrix to use to transform the drawables so they will match the computed size.
-                    */
-                    virtual void        ComputeDrawables(DrawableArray &drawableArray, TMatrix &matrix, const Utils::Unicode::UTF32 &text);
+                    /** Create every Drawables for the given \p text and add them to the given \p drawableArray. */
+                    virtual void        ComputeDrawables(DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text);
 
                     /** Destroy the font, to call at the end of the program to avoid memory leak. */
                     static void         DestroyFonts();
+
+                private:
+                    void                DrawVertices(Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice, float X, float Y, float thickness, float italicCoeff, const Core::Glyph *curGlyph, float factor);
+                    void                DrawUnderlines(Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float X, float Y, float thickness);
+
+                    void                TranslateCaraters(Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int noVertice,
+                                                          Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int noUnderline, float offsetX, float offsetY);
 
                 protected:
                     Font                    *_font;                 ///< the instance of the used font.

@@ -120,6 +120,9 @@ namespace Nc
                 \warning the \p data is an array and it shoud be allocated of the size of our Array
             */
             void InitData(const T *data);
+            /**
+                Resize the container by creating a new one and recopying the datas of the previous one.
+            */
             void Resize(unsigned int s);
 
             // accessor
