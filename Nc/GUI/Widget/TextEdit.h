@@ -34,29 +34,51 @@ namespace Nc
 {
     namespace GUI
     {
+        /**
+            \todo make the text edit editable.
+        */
         class TextEdit : public ScrollArea
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextEdit);
 
+            private:
+                struct TextDocument : public Widget
+                {
+                    NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::TextEdit::TextDocument);
+
+                    TextDocument(TextEdit *editor, const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<Graphic::Core::PlainTextFormater::Style> &s);
+
+                    virtual ISceneNode      *Clone() const          {return new TextDocument(*this);}
+
+                    /** Resize the geometry of the text. */
+                    virtual void        Resize();
+                    /** Update the geometry of the text. */
+                    virtual void        Update();
+                    /** Render the text area. */
+                    virtual void        Draw(Graphic::SceneGraph *scene);
+
+                    Graphic::Text       *text;
+                    TextEdit            *_editor;
+                };
+
             public:
-                TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial");
+                TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &ttf = "arial", const Utils::Mask<Graphic::Core::PlainTextFormater::Style> &s = Graphic::Core::PlainTextFormater::Regular);
                 TextEdit(const TextEdit &edit);
                 TextEdit &operator = (const TextEdit &edit);
                 virtual ~TextEdit();
 
-                virtual ISceneNode  *Clone() const          {return new TextEdit(*this);}
+                virtual ISceneNode              *Clone() const          {return new TextEdit(*this);}
 
-                /** \return the attached text document. */
-                TextDocument        *GetTextDocument()      {return _textDocument;}
-
-            protected:
-                /** Render the textArea before disabling the stencil. */
-                virtual void        RenderChildsEnd(Graphic::SceneGraph *scene);
-                /** Render the scroll area. */
-                virtual void        Draw(Graphic::SceneGraph *scene);
+                /** \return the text. */
+                const Utils::Unicode::UTF32     &PlainText() const      {return _textDocument->text->PlainText();}
+                /** Set the text. */
+                void                            PlainText(const Utils::Unicode::UTF32 &t);
 
             private:
+                /** Render the textArea before disabling the stencil. */
+                virtual void        RenderChildsEnd(Graphic::SceneGraph *scene);
+
                 void                Copy(const TextEdit &edit);
 
             private:

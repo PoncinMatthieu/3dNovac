@@ -28,9 +28,8 @@
 #define NOVAC_GRAPHIC_OBJECT_H_
 
 #include "../Scene/SceneNode.h"
-#include "../Material/Drawable.h"
+#include "../Core/Drawable.h"
 #include "../Material/DefaultMaterials.h"
-#include "../Material/DefaultVertexType.h"
 
 namespace Nc
 {
@@ -41,9 +40,6 @@ namespace Nc
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, System::Object, Nc::Graphic::Object);
-
-                typedef Entity                      NodeType;
-                typedef std::vector<Drawable*>      DrawableArray;
 
             public:
             // construct
@@ -76,9 +72,9 @@ namespace Nc
                 inline void         UseSceneMaterial(bool state)        {_useSceneMaterial = state;}
 
                 /** \return the drawables */
-                DrawableArray       &Drawables()                        {return _drawables;}
+                Core::DrawableArray     &Drawables()                    {return _drawables;}
                 /** Configure the drawables by using the current Material */
-                void                ReconfigureDrawables();
+                void                    ReconfigureDrawables();
 
             protected:
                 /**
@@ -128,8 +124,8 @@ namespace Nc
 
             // fields
             protected:
-                DrawableArray   _drawables;                 ///< the array of drawbles
-                bool            _useSceneMaterial;          ///< if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true
+                Core::DrawableArray     _drawables;                 ///< the array of drawbles
+                bool                    _useSceneMaterial;          ///< if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true
 
             private:
                 IMaterial       *_material;                 ///< pointer to the material used to render the drawables

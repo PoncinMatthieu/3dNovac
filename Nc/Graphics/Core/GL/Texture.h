@@ -68,7 +68,7 @@ namespace Nc
                     /** Load the texture from a file */
                     void            LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true);
                     /** Load the texture from a given Image */
-                    void            LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true, const std::string &name = "");
+                    void            LoadFromImage(const Core::Image &image, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true, const std::string &name = "");
                     /** Load a Cube map (to display a SkyBox) */
                     void            LoadCubeMap(const Utils::FileName Names[6]);
                     /** Generate a 3d sphere map (to create a light map in the DefaultLightingMaterial class) */

@@ -25,14 +25,21 @@
 -----------------------------------------------------------------------------*/
 
 #include "TextEdit.h"
+#include "../Look/Looks.h"
+#include "../Visitor/Visitors.h"
 
 using namespace Nc;
+using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
-TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf)
+TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<Core::PlainTextFormater::Style> &s)
     : ScrollArea(alignment, size)
 {
-    _textDocument = new TextDocument(text, Left | Top, size, ttf);
+    _textDocument = new TextDocument(this, text, Left | Top, size, ttf, s);
+
+    _textDocument->UseLook(new BoxLook());
+
+    _textDocument->Percent(Vector2f(100, 0));
     AddComposedWidget(_textDocument);
     SetView(_textDocument);
 }
@@ -65,7 +72,38 @@ void TextEdit::RenderChildsEnd(Graphic::SceneGraph *scene)
     ScrollArea::RenderChildsEnd(scene);
 }
 
-void    TextEdit::Draw(Graphic::SceneGraph *scene)
+void    TextEdit::PlainText(const Utils::Unicode::UTF32 &t)
 {
-    ScrollArea::Draw(scene);
+    _textDocument->text->PlainText(t);
+    Resized();
+}
+
+TextEdit::TextDocument::TextDocument(TextEdit *editor, const Utils::Unicode::UTF32 &t, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<Core::PlainTextFormater::Style> &s)
+    : Widget(alignment, size), _editor(editor)
+{
+    text = new Graphic::Text(t, 16, Color(1, 1, 1), ttf, s);
+    Resize();
+}
+
+void    TextEdit::TextDocument::Resize()
+{
+    Widget::Resize();
+    if (static_cast<Graphic::Core::PlainTextFormater*>(text->Formater())->GetDocumentSize() != (_size[0] - PaddingH()))
+    {
+        static_cast<Graphic::Core::PlainTextFormater*>(text->Formater())->SetDocumentSize(_size[0] - PaddingH());
+        _size[1] = text->Size()[1];
+        _editor->Resize();
+    }
+}
+
+void    TextEdit::TextDocument::Update()
+{
+    Widget::Update();
+    text->Matrix.Translation(PaddingLeft(), PaddingBottom(), 0);
+}
+
+void    TextEdit::TextDocument::Draw(Graphic::SceneGraph *scene)
+{
+    Widget::Draw(scene);
+    text->RenderNode(scene);
 }

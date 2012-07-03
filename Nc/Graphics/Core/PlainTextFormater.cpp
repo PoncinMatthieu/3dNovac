@@ -19,61 +19,41 @@
     You should have received a copy of the GNU Lesser General Public License
     along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
 
-    File Created At:        06/09/2010
+    File Created At:        01/07/2012
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
 
-#include "String.h"
+#include "PlainTextFormater.h"
+#include "DefaultVertexType.h"
+#include "Drawable.h"
 
-using namespace std;
-using namespace Nc::Graphic;
 using namespace Nc;
+using namespace Nc::Graphic::Core;
 
-String::MapFont         String::_mapFont;
-System::Mutex           String::_mutex;
+FontMap         PlainTextFormater::_mapFont;
 
-String::String(const Utils::Unicode::UTF32 &text, float charSize, const Color &color, const std::string &ttf, const Utils::Mask<Style> &style)
-    : Object(), _needUpdate(true), _needUpdateSize(true), _text(text), _style(style), _charSize(charSize), _color(color)
+PlainTextFormater::PlainTextFormater(float charSize, const Color &color, const std::string &ttf, const Utils::Mask<Style> &s)
+    : _style(s), _charSize(charSize), _color(color), _documentSize(0), _alignment(Left)
 {
     // search the font in the map
-    MapFont::iterator it = _mapFont.find(ttf);
+    FontMap::iterator it = _mapFont.find(ttf);
     if (it == _mapFont.end()) // si on ne la pas, on creer la font
     {
         Utils::FileName s = CONFIG->Block("RessourcesPath")->Line("Font")->Param("path") + ttf + ".ttf";
-        _mapFont[ttf] = _font = new Font();
+        _mapFont[ttf] = _font = new Core::Font();
         _font->LoadFromFile(s, CHAR_SIZE);
     }
     else
         _font = it->second;
-
-    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo1 = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL::Enum::Triangles);
-    geo1->VBO().Init();// force la creation du buffer, pour eviter que ce soit fait dans l'update geometry
-
-    MaterialConfig *conf1 = new MaterialConfig(GL::Blend::Alpha);
-    conf1->Textures.InitSize(1);
-    conf1->Textures[0] = _font->Bitmap();
-
-    _drawables.resize((_style.Enabled(Underlined)) ? 2 : 1);
-    _drawables[0] = new Drawable(geo1, conf1);
-
-    // geometry pour l'underline
-    if (_style.Enabled(Underlined))
-    {
-        GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d,false>(GL::Enum::Triangles);
-        geo2->VBO().Init();// force la creation du buffer, pour eviter que ce soit fait dans l'update geometry
-        _drawables[1] = new Drawable(geo2, new MaterialConfig());
-    }
-    ChooseDefaultMaterial();
-
-    _useSceneMaterial = false;
 }
 
-String::~String()
+PlainTextFormater::~PlainTextFormater()
 {
+
 }
 
-void String::DestroyFonts()
+void PlainTextFormater::DestroyFonts()
 {
     while (!_mapFont.empty())
     {
@@ -82,68 +62,176 @@ void String::DestroyFonts()
     }
 }
 
-void    String::Text(const Utils::Unicode::UTF32 &text)
+void    PlainTextFormater::SetColor(const Color &color)
 {
-    _needUpdate = _needUpdateSize = true;
-    _text = text;
-}
-
-void    String::SetColor(const Color &color)
-{
-    _needUpdate = true;
-    _color = color;
-}
-
-const Vector2f      &String::Size()
-{
-    if (_needUpdateSize)
-        RecomputeSize();
-    return _size;
-}
-
-void    String::CharSize(float size)
-{
-    _charSize = size;
-    _needUpdate = _needUpdateSize = true;
-}
-
-void    String::TransformModelMatrixToRender(SceneGraph *scene)
-{
-    if (!_text.empty())
-        scene->ModelMatrix() *= Matrix * _matrixText;
-}
-
-
-void    String::Render(SceneGraph *scene)
-{
-    if (!_text.empty())    // No text, no rendering :)
+    if (_color != color)
     {
-        if (_needUpdate)
-            UpdateGeometry();
-        Object::Render(scene);
+        _color = color;
+        _drawablesChanged = true;
     }
 }
 
-Vector2f String::GetCharSize(UInt32 c) const
+void    PlainTextFormater::SetCharSize(float size)
+{
+    if (_charSize != size)
+    {
+        _charSize = size;
+        _drawablesChanged = _sizeChanged = true;
+    }
+}
+
+Vector2f PlainTextFormater::GetCharSize(UInt32 c) const
 {
     float           factor = _charSize / _font->BaseSize();
     const Glyph     *r = _font->GetGlyph(c);
     return (r != NULL) ? Vector2f(r->Size.Data[0] * factor, r->Size.Data[1] * factor) : Vector2f(0, _charSize);
 }
 
-void String::UpdateGeometry()
+void    PlainTextFormater::SetDocumentSize(float size)
 {
-    System::Locker l(&_mutex);
-    _needUpdate = false;
+    if (_documentSize != size)
+    {
+        _documentSize = size;
+        _drawablesChanged = _sizeChanged = true;
+    }
+}
 
+void    PlainTextFormater::SetAlignment(Alignment align)
+{
+    if (_alignment != align)
+    {
+        _alignment = align;
+        _drawablesChanged = true;
+    }
+}
+
+void    PlainTextFormater::ComputeSize(Vector2f &textSize, const Utils::Unicode::UTF32 &text)
+{
+    // No text, empty box :)
+    if (text.empty())
+    {
+        textSize = Vector2f(0, _charSize);
+        return;
+    }
+
+    // Initial values
+    float curWidth = 0, curHeight = 0, width = 0, height = 0;
+    float factor    = _charSize / (float)_font->BaseSize();
+
+    // Go through each character
+    for (size_t i = 0; i < text.size(); ++i)
+    {
+        // Get the current character and its corresponding glyph
+        UInt32          curChar  = text[i];
+        const Glyph     *curGlyph = _font->GetGlyph(curChar);
+
+        // Handle special characters
+        switch (curChar)
+        {
+            case L' ' :
+                curWidth += (curGlyph) ? (curGlyph->Add * factor) : _charSize;
+                break;
+            case L'\t' :
+                curWidth += (curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4);
+                break;
+            case L'\n' :
+                height += _charSize;
+                if (curWidth > width)
+                    width = curWidth;
+                curWidth = 0;
+                break;
+            default: // every other caracters.
+                if (curGlyph != NULL)
+                    curWidth += curGlyph->Add * factor;
+                break;
+        }
+
+        if (_documentSize > 0)
+        {
+            if (_alignment == Left)
+            {
+                if (curWidth > _documentSize)
+                {
+                    height += _charSize;
+                    curWidth = (curGlyph != NULL) ? curGlyph->Add * factor : 0;
+                }
+            }
+        }
+
+        // Update the maximum height
+        if (curGlyph != NULL)
+        {
+            float charHeight = (curGlyph->Size.Data[1] - curGlyph->Pos.Data[1]) * factor;
+            if (Math::Abs(charHeight) > Math::Abs(curHeight))
+                curHeight = charHeight;
+        }
+    }
+
+    // Update the last line
+    if (curWidth > width)
+        width = curWidth;
+    height += Math::Abs(curHeight);
+
+    // Add a slight width / height if we're using the bold style
+    if (_style.Enabled(Bold))
+    {
+        width  += 1 * factor;
+        height += 1 * factor;
+    }
+
+    // Add a slight width if we're using the italic style
+    if (_style.Enabled(Italic))
+        width += 0.208f * _charSize;
+
+    // Add a slight height if we're using the underlined style
+    if ((_style.Enabled(Underlined)) && (Math::Abs(curHeight) < _charSize + 4 * factor))
+        height += 4 * factor;
+
+    if (_documentSize > 0)
+    {
+        if (_alignment == Left)
+        {
+            width = _documentSize;
+        }
+    }
+
+    // Finally update the size
+    textSize = Vector2f(width, Math::Abs(height));
+    _sizeChanged = false;
+}
+
+void    PlainTextFormater::InitDrawables(DrawableArray &drawableArray)
+{
+    // there is 2 drawables, one for the text and the other one for the underlined style.
+    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo1 = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL::Enum::Triangles);
+    geo1->VBO().Init();// init the buffer to force it's creation and avoid it's done while we update the geometry
+
+    MaterialConfig *conf1 = new MaterialConfig(GL::Blend::Alpha);
+    conf1->Textures.InitSize(1);
+    conf1->Textures[0] = _font->Bitmap();
+
+    drawableArray.resize((_style.Enabled(Underlined)) ? 2 : 1);
+    drawableArray[0] = new Drawable(geo1, conf1);
+
+    if (_style.Enabled(Underlined))
+    {
+        GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo2 = new GL::GeometryBuffer<DefaultVertexType::Colored2d,false>(GL::Enum::Triangles);
+        geo2->VBO().Init();// init the buffer to force it's creation and avoid it's done while we update the geometry
+        drawableArray[1] = new Drawable(geo2, new MaterialConfig());
+    }
+    TextChanged();
+}
+
+void    PlainTextFormater::ComputeDrawables(DrawableArray &drawableArray, TMatrix &matrix, const Utils::Unicode::UTF32 &text)
+{
     // Set the scaling factor to get the actual size
     float               baseSize = _font->BaseSize();
     float               factor   = _charSize / baseSize;
-    unsigned int        nbVertices = 6 * _text.size(), noVertice = 0, noBackSlashN = 0;
+    unsigned int        nbVertices = 6 * text.size(), noVertice = 0, noBackSlashN = 0;
     float               thickness = 0;
 
     if (_style.Enabled(Bold))
-        nbVertices += 6 * 4 * _text.size();
+        nbVertices += 6 * 4 * text.size();
 
     // construit les arrays de vertices
     Array<DefaultVertexType::Textured2d>      vertices(nbVertices);
@@ -152,7 +240,7 @@ void String::UpdateGeometry()
     // Holds the lines to draw later, for underlined style
     if (_style.Enabled(Underlined))
     {
-        underlines.InitSize((_text.CharCount('\n') + 1) * 6);
+        underlines.InitSize((text.CharCount('\n') + 1) * 6);
         thickness = (_style.Enabled(Bold)) ? 3.f : 2.f;
     }
 
@@ -163,11 +251,11 @@ void String::UpdateGeometry()
     float italicCoeff = (_style.Enabled(Italic)) ? 0.208f : 0.f; // 12 degrees
 
     // Draw one quad for each character
-    for (std::size_t i = 0; i < _text.size(); ++i)
+    for (std::size_t i = 0; i < text.size(); ++i)
     {
         // Get the current character and its corresponding glyph
-        UInt32          curChar = _text[i];
-        const Glyph     *curGlyph = _font->GetGlyph(curChar);
+        UInt32              curChar = text[i];
+        const Core::Glyph   *curGlyph = _font->GetGlyph(curChar);
 
 
         // If we're using the underlined style and there's a new line,
@@ -203,6 +291,19 @@ void String::UpdateGeometry()
         }
         else if (curGlyph == NULL)  // move away, if the glyph is null
             continue;
+
+        if (_documentSize > 0)
+        {
+            if (_alignment == Left)
+            {
+                if (((X + curGlyph->Pos.Data[0] + curGlyph->Size.Data[0]) * factor) > _documentSize)
+                {
+                    Y -= baseSize;
+                    X = 0;
+                    posOffsetLastLine = 0;
+                }
+            }
+        }
 
         // we compute the offset of the last line to add to the matrix so that the rendering will match exactly with the box size of the string.
         if (posOffsetLastLine < curGlyph->Pos.Data[1])
@@ -271,10 +372,8 @@ void String::UpdateGeometry()
     }
 
     // setup the matrix so the rendering will match the box size
-    _matrixText.Translation(0.f, -Y + posOffsetLastLine, 0.f);
-    _matrixText.AddScale(factor, factor, 1.f);
-
-    l.Unlock();
+    matrix.Translation(0.f, -Y + posOffsetLastLine, 0.f);
+    matrix.AddScale(factor, factor, 1.f);
 
     // Add the last line (which was not finished with a \n)
     if (_style.Enabled(Underlined))
@@ -288,92 +387,12 @@ void String::UpdateGeometry()
         underlines.Data[noBackSlashN++].Fill(0, Y - 2, _color);
 
         underlines.UnderSize(noBackSlashN); // resize the buffer, to be sure that we render the good number of vertices
-        GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(_drawables[1]->Geometry);
+        GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(drawableArray[1]->Geometry);
         geo->VBO().UpdateData(underlines, GL::Enum::DataBuffer::StaticDraw);
     }
 
     vertices.UnderSize(noVertice); // resize the buffer, to be sure that we render the good number of vertices
-    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d,false>*>(_drawables[0]->Geometry);
+    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d,false>*>(drawableArray[0]->Geometry);
     geo->VBO().UpdateData(vertices, GL::Enum::DataBuffer::StaticDraw);
+    _drawablesChanged = false;
 }
-
-void String::RecomputeSize()
-{
-    System::Locker l(&_mutex);
-
-    // Reset the "need update" state
-    _needUpdateSize = false;
-
-    // No text, empty box :)
-    if (_text.empty())
-    {
-        _size = Vector2f(0, _charSize);
-        return;
-    }
-
-    // Initial values
-    float curWidth = 0, curHeight = 0, width = 0, height = 0;
-    float factor    = _charSize / (float)_font->BaseSize();
-
-    // Go through each character
-    for (size_t i = 0; i < _text.size(); ++i)
-    {
-        // Get the current character and its corresponding glyph
-        UInt32          curChar  = _text[i];
-        const Glyph     *curGlyph = _font->GetGlyph(curChar);
-
-        // Handle special characters
-        switch (curChar)
-        {
-            case L' ' :
-                curWidth += (curGlyph) ? (curGlyph->Add * factor) : _charSize;
-                break;
-            case L'\t' :
-                curWidth += (curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4);
-                break;
-            case L'\n' :
-                height += _charSize;
-                if (curWidth > width)
-                    width = curWidth;
-                curWidth = 0;
-                break;
-            default: // every other caracters.
-                if (curGlyph != NULL)
-                    curWidth += curGlyph->Add * factor;
-                break;
-        }
-
-        // Update the maximum height
-        if (curGlyph != NULL)
-        {
-            float charHeight = (curGlyph->Size.Data[1] - curGlyph->Pos.Data[1]) * factor;
-            if (Math::Abs(charHeight) > Math::Abs(curHeight))
-                curHeight = charHeight;
-        }
-    }
-    l.Unlock();
-
-    // Update the last line
-    if (curWidth > width)
-        width = curWidth;
-    height += Math::Abs(curHeight);
-
-    // Add a slight width / height if we're using the bold style
-    if (_style.Enabled(Bold))
-    {
-        width  += 1 * factor;
-        height += 1 * factor;
-    }
-
-    // Add a slight width if we're using the italic style
-    if (_style.Enabled(Italic))
-        width += 0.208f * _charSize;
-
-    // Add a slight height if we're using the underlined style
-    if ((_style.Enabled(Underlined)) && (Math::Abs(curHeight) < _charSize + 4 * factor))
-        height += 4 * factor;
-
-    // Finally update the rectangle
-    _size = Vector2f(width, Math::Abs(height));
-}
-

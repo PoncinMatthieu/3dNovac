@@ -74,7 +74,7 @@ namespace Nc
                 Add a Graphic::String controled with a Billboard effect to the given \p entity as child at the given \p position.
                 \return the created Graphic::String
             */
-            LGRAPHICS String *AddLabel(const std::string &text, float caracterSize, const Color &color, const std::string &fontName, bool centerText, Entity *entity, const Vector3f &position = Vector3f(0,0,0));
+            LGRAPHICS Text *AddLabel(const std::string &text, float caracterSize, const Color &color, const std::string &fontName, bool centerText, Entity *entity, const Vector3f &position = Vector3f(0,0,0));
         }
     }
 }

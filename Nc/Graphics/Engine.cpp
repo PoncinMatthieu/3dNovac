@@ -85,11 +85,12 @@ void Graphic::Engine::ReleaseContent()
 
 void Graphic::Engine::LoadContent()
 {
-    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Colored2d> >();
-    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Colored> >();
-    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Textured> >();
-    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Textured2d> >();
-    FactoryDefaultMaterials::Instance().AddDefaultMaterial<DefaultMaterial<DefaultVertexType::Textured3d> >();
+    FactoryDefaultMaterials &factory = FactoryDefaultMaterials::Instance();
+    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Colored2d> >();
+    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Colored> >();
+    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Textured> >();
+    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Textured2d> >();
+    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Textured3d> >();
 }
 
 void Graphic::Engine::Execute(float runningTime)

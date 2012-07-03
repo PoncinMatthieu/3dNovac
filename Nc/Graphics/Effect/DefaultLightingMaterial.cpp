@@ -25,12 +25,12 @@
 -----------------------------------------------------------------------------*/
 
 #include "DefaultLightingMaterial.h"
-#include "../Material/Drawable.h"
+#include "../Core/Drawable.h"
 #include "LightingEffect.h"
 #include "../Scene/Visitors.h"
 
 using namespace Nc::Graphic;
-using namespace Nc::Graphic::DefaultVertexType;
+using namespace Nc::Graphic::Core::DefaultVertexType;
 
 DefaultLightingMaterial::DefaultLightingMaterial() : ILightingMaterial("DefaultLightingMaterial")
 {
@@ -67,7 +67,7 @@ DefaultLightingMaterial::~DefaultLightingMaterial()
 {
 }
 
-bool    DefaultLightingMaterial::Configure(Drawable &drawable)
+bool    DefaultLightingMaterial::Configure(Core::Drawable &drawable)
 {
     GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
     _program.Enable();
@@ -90,7 +90,7 @@ bool    DefaultLightingMaterial::Configure(Drawable &drawable)
 
 #ifdef _DEBUG
 // Draw the normals of the given geometry with a geometry shader
-void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Drawable &drawable)
+void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Core::Drawable &drawable)
 {
     static GL::Program              normalProgram;
     static unsigned int             uniformMatrix;
@@ -139,7 +139,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Drawable &drawable)
 }
 #endif
 
-void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
+void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable)
 {
     if (_currentLightingEffect == NULL)
         return;

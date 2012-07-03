@@ -35,57 +35,60 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// To Load and manage image
-        /**
-            The images is stored in RGBA mode with 32 bit per pixel.
-
-            Images are loaded by the `ImageLoader` class.
-
-            \sa
-                - ImageLoader
-                - ImageLoaderPng
-        */
-        class LGRAPHICS  Image
+        namespace Core
         {
-            public:
-                Image();
-                ~Image();
+            /// To Load and manage image
+            /**
+                The images is stored in RGBA mode with 32 bit per pixel.
 
-                /** Init the size of the image, /!\ the data is lost */
-                inline void     InitSize(const Vector2ui &size)                                 {_size = size; _pixels.InitSize(size.Data[0] * size.Data[1]);}
-                /** Resize the image */
-                inline void     Resize(const Vector2ui &size)                                   {_size = size; _pixels.Resize(size.Data[0] * size.Data[1]);}
+                Images are loaded by the `ImageLoader` class.
 
-                // Loading
-                /** Load an image from a file */
-                void            LoadFromFile(const Utils::FileName &file);
+                \sa
+                    - ImageLoader
+                    - ImageLoaderPng
+            */
+            class LGRAPHICS  Image
+            {
+                public:
+                    Image();
+                    ~Image();
 
-                // transform
-                /** Reverse the image, usefull to create an OpenGL Texture */
-                void            Reverse();
-                /** Swap two componant of the image, usefull to create a BGRA format or other */
-                void            SwapComponants(unsigned char c1, unsigned char c2);
+                    /** Init the size of the image, /!\ the data is lost */
+                    inline void     InitSize(const Vector2ui &size)                                 {_size = size; _pixels.InitSize(size.Data[0] * size.Data[1]);}
+                    /** Resize the image */
+                    inline void     Resize(const Vector2ui &size)                                   {_size = size; _pixels.Resize(size.Data[0] * size.Data[1]);}
 
-                // accessors
-                /** Set the pixel at the given position */
-                inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)    {_pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]] = p;}
-                /** \return the pixel from the given position */
-                inline const Pixel<>        &GetPixel(const Vector2ui &pos) const               {return _pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]];}
-                /** \return the pixel from the given position */
-                inline const Pixel<>        &GetPixel(unsigned int x, unsigned int y) const     {return _pixels[(y * _size.Data[0]) + x];}
-                /** \return the pixels in char * */
-                inline const unsigned char  *GetPixels() const                                  {return reinterpret_cast<const unsigned char*>(_pixels.Data);}
-                /** \return the array of pixels */
-                inline Pixel<>              *GetPixelsArray()                                   {return _pixels.Data;}
-                /** \return the size of the image */
-                inline const Vector2ui      &Size() const                                       {return _size;}
+                    // Loading
+                    /** Load an image from a file */
+                    void            LoadFromFile(const Utils::FileName &file);
 
-            private:
-                Vector2ui           _size;          ///< the size of the image
-                Array<Pixel<> >     _pixels;        ///< the array of pixels
+                    // transform
+                    /** Reverse the image, usefull to create an OpenGL Texture */
+                    void            Reverse();
+                    /** Swap two componant of the image, usefull to create a BGRA format or other */
+                    void            SwapComponants(unsigned char c1, unsigned char c2);
 
-                friend class ImageLoaderPng;
-        };
+                    // accessors
+                    /** Set the pixel at the given position */
+                    inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)    {_pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]] = p;}
+                    /** \return the pixel from the given position */
+                    inline const Pixel<>        &GetPixel(const Vector2ui &pos) const               {return _pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]];}
+                    /** \return the pixel from the given position */
+                    inline const Pixel<>        &GetPixel(unsigned int x, unsigned int y) const     {return _pixels[(y * _size.Data[0]) + x];}
+                    /** \return the pixels in char * */
+                    inline const unsigned char  *GetPixels() const                                  {return reinterpret_cast<const unsigned char*>(_pixels.Data);}
+                    /** \return the array of pixels */
+                    inline Pixel<>              *GetPixelsArray()                                   {return _pixels.Data;}
+                    /** \return the size of the image */
+                    inline const Vector2ui      &Size() const                                       {return _size;}
+
+                private:
+                    Vector2ui           _size;          ///< the size of the image
+                    Array<Pixel<> >     _pixels;        ///< the array of pixels
+
+                    friend class ImageLoaderPng;
+            };
+        }
     }
 }
 

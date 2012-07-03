@@ -32,11 +32,11 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::GUI;
 
-Label::Label(const Utils::Unicode::UTF32 &label, float charSize, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, Graphic::String::Style s)
+Label::Label(const Utils::Unicode::UTF32 &label, float charSize, const Color &c, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, Graphic::Core::PlainTextFormater::Style s)
     : Widget(alignment, size), _label(NULL), _labelAlignment(Left | CenterV)
 {
     PaddingH(5);
-    CreateLabel(label, charSize, ttf, s);
+    CreateLabel(label, charSize, c, ttf, s);
 }
 
 Label::~Label()
@@ -63,20 +63,20 @@ Label &Label::operator = (const Label &w)
 
 void    Label::Copy(const Label &w)
 {
-    _label = new Graphic::String(*w._label);
+    _label = new Graphic::Text(*w._label);
 }
 
 void Label::ToString(std::ostream &os) const
 {
     Widget::ToString(os);
-    os << " Label: " << _label->Text();
+    os << " Label: " << _label->PlainText();
 }
 
-void Label::CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const std::string &ttf, Graphic::String::Style s)
+void Label::CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::Core::PlainTextFormater::Style s)
 {
     if (_label)
         delete _label;
-    _label = new Graphic::String(l, charSize, Color(), ttf, s);
+    _label = new Graphic::Text(l, charSize, c, ttf, s);
     _stateChanged = true;
 }
 

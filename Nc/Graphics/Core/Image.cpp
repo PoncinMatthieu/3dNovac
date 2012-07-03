@@ -28,7 +28,7 @@
 #include "ImageLoaderPng.h"
 
 using namespace Nc;
-using namespace Nc::Graphic;
+using namespace Nc::Graphic::Core;
 
 Image::Image()
 {

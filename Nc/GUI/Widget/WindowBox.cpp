@@ -42,7 +42,7 @@ WindowBox::WindowBox(const std::string &title, const AlignmentMask &alignment, c
 void WindowBox::ToString(std::ostream &os) const
 {
     Widget::ToString(os);
-    os << " Title: " << _title->Text();
+    os << " Title: " << _title->PlainText();
 }
 
 void  WindowBox::Init(const std::string &title, float charSize, const std::string &ttf, const AlignmentMask &mask, const std::string &looksName)
@@ -80,7 +80,7 @@ WindowBox &WindowBox::operator = (const WindowBox &w)
 void    WindowBox::Copy(const WindowBox &w)
 {
     //_dragable = w._dragable;
-    _title = new Graphic::String(*w._title);
+    _title = new Graphic::Text(*w._title);
     _titleAlignment = w._titleAlignment;
     _stateChanged = true;
 }
@@ -89,7 +89,7 @@ void WindowBox::ChangeTitle(const std::string &title, float charSize, const std:
 {
     if (_title != NULL)
         delete _title;
-    _title = new Graphic::String(title.c_str(), charSize, Color(0, 0, 0), ttf);
+    _title = new Graphic::Text(title.c_str(), charSize, Color(0, 0, 0), ttf);
     _titleAlignment = mask;
     _stateChanged = true;
 }

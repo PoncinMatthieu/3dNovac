@@ -77,7 +77,7 @@ void    ComboBox::Copy(const ComboBox &cb)
     _spriteList = new Sprite(*cb._spriteList);
 
     for (ListItem::const_iterator it = cb._itemList.begin(); it != cb._itemList.end(); ++it)
-        _itemList.push_back(std::pair<Item*, Graphic::String*>(it->first->Clone(), new Graphic::String(*it->second)));
+        _itemList.push_back(std::pair<Item*, Graphic::Text*>(it->first->Clone(), new Graphic::Text(*it->second)));
     _currentItem = (!_itemList.empty()) ? &(*_itemList.begin()) : NULL;
     _listUnrolled = false;
     _currentUnfoldList = NULL;
@@ -153,10 +153,10 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
 
 void    ComboBox::AddItem(Item *item)
 {
-    Graphic::String *s = new Graphic::String(item->Data(), _fontSize, _fontColor, _fontName);
+    Graphic::Text *s = new Graphic::Text(item->Data(), _fontSize, _fontColor, _fontName);
     s->Matrix.AddTranslation(PaddingLeft(), (_spriteList->Size()[1] / 2) - (s->Size()[1] / 2), 0);
 
-    _itemList.push_back(std::pair<Item*, Graphic::String*>(item, s));
+    _itemList.push_back(std::pair<Item*, Graphic::Text*>(item, s));
     _currentItem = &(*_itemList.begin());
     _stateChanged = true;
 }

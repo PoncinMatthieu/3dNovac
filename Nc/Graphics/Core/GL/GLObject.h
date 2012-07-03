@@ -35,7 +35,6 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// This namespace reference every classes that abstract the OpenGL librairy
         namespace GL
         {
             /// Interface to manage an OpenGL Object, manage the opengl ressource like a smart pointer

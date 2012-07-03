@@ -63,7 +63,7 @@ const std::string   StyleSheet::Name::ScrollBarSliderExpand = "ScrollBarSliderEx
 
 StyleSheet::StyleSheet()
 {
-    _spriteSheet = new SpriteSheet(Utils::FileName(CONFIG->Block("GUI")->Line("StyleSheet")->Param("SpriteSheet")));
+    _spriteSheet = new Core::SpriteSheet(Utils::FileName(CONFIG->Block("GUI")->Line("StyleSheet")->Param("SpriteSheet")));
 }
 
 StyleSheet::~StyleSheet()

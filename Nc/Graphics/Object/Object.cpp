@@ -31,7 +31,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 Object::Object()
-    : NodeType(),
+    : Entity(),
       _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
@@ -39,7 +39,7 @@ Object::Object()
 }
 
 Object::Object(const TMatrix &m)
-    : NodeType(m),
+    : Entity(m),
       _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
@@ -47,7 +47,7 @@ Object::Object(const TMatrix &m)
 }
 
 Object::Object(const Box3f &box)
-    : NodeType(box),
+    : Entity(box),
       _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
@@ -55,7 +55,7 @@ Object::Object(const Box3f &box)
 }
 
 Object::Object(const Box3f &box, const TMatrix &m)
-    : NodeType(box, m),
+    : Entity(box, m),
       _useSceneMaterial(true),
       _material(NULL),
       _lastConfiguredMaterial(NULL)
@@ -63,19 +63,19 @@ Object::Object(const Box3f &box, const TMatrix &m)
 }
 
 Object::Object(const Object &o)
-    : NodeType(o),
+    : Entity(o),
       _drawables(o._drawables.size()),
       _useSceneMaterial(o._useSceneMaterial),
       _material(o._material),
       _lastConfiguredMaterial(NULL)
 {
     for (unsigned int i = 0; i < _drawables.size(); ++i)
-        _drawables[i] = new Drawable(*o._drawables[i]);
+        _drawables[i] = new Core::Drawable(*o._drawables[i]);
 }
 
 Object &Object::operator = (const Object &o)
 {
-    NodeType::operator = (o);
+    Entity::operator = (o);
     _useSceneMaterial = o._useSceneMaterial;
     _material = o._material;
     _lastConfiguredMaterial = NULL;
@@ -84,7 +84,7 @@ Object &Object::operator = (const Object &o)
         delete _drawables[i];
     _drawables.resize(o._drawables.size());
     for (unsigned int i = 0; i < _drawables.size(); ++i)
-        _drawables[i] = new Drawable(*o._drawables[i]);
+        _drawables[i] = new Core::Drawable(*o._drawables[i]);
     return *this;
 }
 
@@ -161,7 +161,7 @@ void    Object::Render(SceneGraph *scene)
 
     // rendering childs
     RenderChildsBegin(scene);
-    NodeType::RenderChilds(scene);
+    Entity::RenderChilds(scene);
     RenderChildsEnd(scene);
 
     RenderEnd(scene);

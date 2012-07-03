@@ -128,14 +128,14 @@ void    Texture::GenerateMipmaps()
 void Texture::LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
 {
 // Load the image and reverse it
-    Image image;
+    Core::Image image;
     image.LoadFromFile(file);
     image.Reverse();
 
     LoadFromImage(image, magnifyingFilter, mignifyingFilter, generateMipmap, file);
 }
 
-void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap, const std::string &name)
+void Texture::LoadFromImage(const Core::Image &image, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap, const std::string &name)
 {
     NewRef();
 
@@ -176,7 +176,7 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
 {
     NewRef();
 
-    Image image;
+    Core::Image image;
     GLenum target[6] =
     {
         GL_TEXTURE_CUBE_MAP_NEGATIVE_X,

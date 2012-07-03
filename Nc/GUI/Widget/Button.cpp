@@ -75,33 +75,30 @@ void    Button::Initialize(const std::string &text, const Vector2i &size, const 
     _colorDisable = Color(0.2f, 0.2f, 0.2f);
     _buttonPressed = false;
     _charSize = size.Data[1] - (PaddingTop() + PaddingBottom());
-    _font = new Graphic::String(text, _charSize, Color(1, 1, 1), ttf);
+    _font = new Graphic::Text(text, _charSize, Color(1, 1, 1), ttf);
 }
 
 void    Button::Copy(const Button &w)
 {
-    _font = new Graphic::String(*w._font);
+    _font = new Graphic::Text(*w._font);
     _buttonPressed = w._buttonPressed;
 }
 
 void Button::ToString(std::ostream &os) const
 {
     Widget::ToString(os);
-    os << " Text: " << _font->Text();
+    os << " Text: " << _font->PlainText();
 }
 
 void Button::Update()
 {
+    Graphic::Core::PlainTextFormater *formater = static_cast<Graphic::Core::PlainTextFormater*>(_font->Formater());
+
     // update the color
     Color c(1, 1, 1);
     if (InhibitedRecursif())
-    {
         c = _colorDisable;
-        _font->SetColor(_colorDisable);
-    }
-
-    if (_font->GetColor() != c)
-        _font->SetColor(c);
+    formater->SetColor(c);
 
     if (_widgetLook != NULL)
         _widgetLook->color = c;
@@ -118,13 +115,12 @@ void Button::Update()
     // update the size of the title
     // we have to reduce the size of the text if it's too large
     bool st = false;
-    if (_font->CharSize() != _charSize)
-        _font->CharSize(_charSize);
-    while (!st && _font->CharSize() > 0)
+    formater->SetCharSize(_charSize);
+    while (!st && formater->GetCharSize() > 0)
     {
         if (_font->Size().Data[0] > (_size.Data[0] - PaddingH()) ||
             _font->Size().Data[1] > (_size.Data[1] - PaddingV()))
-            _font->CharSize(_font->CharSize() - 1);
+            formater->SetCharSize(formater->GetCharSize() - 1);
         else
             st = true;
     }

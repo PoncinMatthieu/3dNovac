@@ -56,10 +56,10 @@ namespace Nc
 				inline const GL::Program	&GetProgram() const		{return _program;}
 
                 /** Configure the given goemetry */
-                virtual bool        Configure(Drawable &drawable);
+                virtual bool        Configure(Core::Drawable &drawable);
 
                 /** Render the given drawable with the given model matrix */
-                virtual void        Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable);
+                virtual void        Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable);
 
                 /** Fetch the attribute location by using the given \p attribName and set it for the given \p componentName */
                 void                SetAttrib(const std::string &componentName, const char *attribName);

@@ -42,8 +42,8 @@ LineEdit::LineEdit(const AlignmentMask &alignment, const Vector2i &size, const s
     _fontUnderscoreDisplayed = false;
     //MarginH(5);
     PaddingV(5);
-    _font = new Graphic::String("", size[1] - (PaddingTop() + PaddingBottom()), Color(), ttf);
-    _fontUnderscore = new Graphic::String("|", size[1] - (PaddingTop() + PaddingBottom()), Color(), ttf);
+    _font = new Graphic::Text("", size[1] - (PaddingTop() + PaddingBottom()), Color(), ttf);
+    _fontUnderscore = new Graphic::Text("|", size[1] - (PaddingTop() + PaddingBottom()), Color(), ttf);
 }
 
 LineEdit::~LineEdit()
@@ -67,8 +67,8 @@ LineEdit &LineEdit::operator = (const LineEdit &w)
 
 void    LineEdit::Copy(const LineEdit &w)
 {
-    _font = static_cast<String*>(w._font->Clone());
-    _fontUnderscore = static_cast<String*>(w._fontUnderscore->Clone());
+    _font = static_cast<Text*>(w._font->Clone());
+    _fontUnderscore = static_cast<Text*>(w._fontUnderscore->Clone());
     _fontUnderscoreDisplayed = false;
     _editable = w._editable;
 }
@@ -76,18 +76,21 @@ void    LineEdit::Copy(const LineEdit &w)
 void    LineEdit::ToString(std::ostream &os) const
 {
     Widget::ToString(os);
-    os << " Text: " << _font->Text();
+    os << " Text: " << _font->PlainText();
 }
 
 void    LineEdit::Update()
 {
     Widget::Update();
 
+    Core::PlainTextFormater *formater = static_cast<Core::PlainTextFormater*>(_font->Formater());
+    Core::PlainTextFormater *formaterUnderscore = static_cast<Core::PlainTextFormater*>(_fontUnderscore->Formater());
+
     float charSize = _size[1] - (PaddingTop() + PaddingBottom());
-    if (charSize != _font->CharSize())
+    if (charSize != formater->GetCharSize())
     {
-        _font->CharSize(charSize);
-        _fontUnderscore->CharSize(charSize);
+        formater->SetCharSize(charSize);
+        formaterUnderscore->SetCharSize(charSize);
     }
     _font->Matrix.Translation(PaddingLeft(), (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
 
@@ -120,20 +123,21 @@ void LineEdit::KeyboardEvent(const System::Event &event)
 {
     if (_editable && event.type == System::Event::KeyPressed)
     {
-        if (event.key.code == System::Key::Back && !_font->Text().empty()) // suppression du dernier caractere
+        if (event.key.code == System::Key::Back && !_font->PlainText().empty()) // suppression du dernier caractere
         {
-            Utils::Unicode::UTF32 s = _font->Text();
+            Utils::Unicode::UTF32 s = _font->PlainText();
             s.erase(s.end() - 1);
-            _font->Text(s);
+            _font->PlainText(s);
         }
         else
         {
             UInt32 c = (UInt32)static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
-            if (c != '\0' && _font->Size().Data[0] + _font->GetCharSize(c).Data[0] < _size.Data[0]) // ajout du caractere dans la string)
+            Core::PlainTextFormater *formater = static_cast<Core::PlainTextFormater*>(_font->Formater());
+            if (c != '\0' && _font->Size().Data[0] + formater->GetCharSize(c).Data[0] < _size.Data[0]) // ajout du caractere dans la string)
             {
-                Utils::Unicode::UTF32 s = _font->Text();
+                Utils::Unicode::UTF32 s = _font->PlainText();
                 s += c;
-                _font->Text(s);
+                _font->PlainText(s);
             }
         }
         _stateChanged = true;

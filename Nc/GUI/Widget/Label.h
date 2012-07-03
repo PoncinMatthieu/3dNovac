@@ -42,8 +42,8 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Label);
 
             public:
-                Label(  const Utils::Unicode::UTF32 &label, float charSize, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0),
-                        const std::string &ttf = "arial", Graphic::String::Style s = Graphic::String::Regular);
+                Label(  const Utils::Unicode::UTF32 &label, float charSize, const Color &c, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0),
+                        const std::string &ttf = "arial", Graphic::Core::PlainTextFormater::Style s = Graphic::Core::PlainTextFormater::Regular);
                 Label(const Label &w);
                 Label &operator = (const Label &w);
                 virtual ~Label();
@@ -55,19 +55,15 @@ namespace Nc
                 void                            AddBuddy(Widget *w);
 
                 /** Create the label with a text, a font and a style. */
-                virtual void                    CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const std::string &ttf, Graphic::String::Style s);
-                /** Set the char size of the label. */
-                inline void                     CharSize(int charSize)                          {_label->CharSize(charSize);}
+                virtual void                    CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::Core::PlainTextFormater::Style s);
                 /** \return the label size. */
-                inline const Vector2f           &LabelSize()                                    {return _label->Size();}
+                inline const Vector2f           &GetTextSize()                                  {return _label->Size();}
                 /** Set the label text. */
-                inline void                     Text(const Utils::Unicode::UTF32 &text)         {_label->Text(text); UpdateLabel(); _stateChanged = true;}
-                /** Set the label color. */
-                inline void                     TextColor(const Color &color)                   {_label->SetColor(color); _stateChanged = true;}
+                inline void                     PlainText(const Utils::Unicode::UTF32 &text)    {_label->PlainText(text); UpdateLabel(); _stateChanged = true;}
                 /** \return the label. */
-                inline const Graphic::String    *GetLabel() const                               {return _label;}
+                inline const Graphic::Text      *GetLabel() const                               {return _label;}
                 /** \return the label. */
-                inline Graphic::String          *GetLabel()                                     {return _label;}
+                inline Graphic::Text            *GetLabel()                                     {return _label;}
 
                 /** \return the alignment mask of the label. */
                 inline const AlignmentMask      &LabelAlignment() const                         {return _labelAlignment;}
@@ -95,7 +91,7 @@ namespace Nc
                 void                Copy(const Label &w);
 
             protected:
-                Graphic::String     *_label;            ///< the label (string).
+                Graphic::Text       *_label;            ///< the label (string).
                 AlignmentMask       _labelAlignment;    ///< describe the alignment of the label.
         };
     }

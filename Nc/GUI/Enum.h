@@ -66,6 +66,11 @@ namespace Nc
                 : left(l), right(r), top(t), bottom(b)
             {}
 
+            bool operator != (const BoxEdges &b)
+            {
+                return (left != b.left || right != b.right || top != b.top || bottom != b.bottom);
+            }
+
             void Init(int left, int right, int top, int bottom)
             {
                 this->left = left;

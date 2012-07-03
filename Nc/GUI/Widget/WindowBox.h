@@ -70,7 +70,7 @@ namespace Nc
             protected:
                 //bool                _dragable;
 
-                Graphic::String     *_title;            ///< the title of the window.
+                Graphic::Text       *_title;            ///< the title of the window.
                 AlignmentMask       _titleAlignment;    ///< define the alignment of the title (Left || CenterH || Right).
         };
     }

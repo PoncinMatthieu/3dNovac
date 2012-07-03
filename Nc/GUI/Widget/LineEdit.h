@@ -49,9 +49,9 @@ namespace Nc
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the text box. */
-                void                                Text(const Utils::Unicode::UTF32 &t)        {_font->Text(t);}
+                void                                PlainText(const Utils::Unicode::UTF32 &t)   {_font->PlainText(t);}
                 /** Return the text of the text box. */
-                inline const Utils::Unicode::UTF32  &Text() const                               {return _font->Text();}
+                inline const Utils::Unicode::UTF32  &PlainText() const                          {return _font->PlainText();}
 
             protected:
                 /** update the geometry of the text box. */
@@ -67,9 +67,9 @@ namespace Nc
                 void        Copy(const LineEdit &w);
 
             protected:
-                Graphic::String     *_font;                     ///< the text in the text box.
+                Graphic::Text       *_font;                     ///< the text in the text box.
                 bool                _editable;                  ///< if true, the linedit will receive events from the keyboard.
-                Graphic::String     *_fontUnderscore;           ///< store the undescore draw next to the editable text.
+                Graphic::Text       *_fontUnderscore;           ///< store the undescore draw next to the editable text.
                 bool                _fontUnderscoreDisplayed;   ///< if true, the underscore is displayed.
                 Utils::Clock        _clock;                     ///< clock used to draw the underscore next to the editable text and make it blink.
         };

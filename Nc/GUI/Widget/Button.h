@@ -54,7 +54,7 @@ namespace Nc
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the widget */
-                inline void         Text(const std::string &t)  {_font->Text(t);}
+                inline void         SetText(const Utils::Unicode::UTF32 &t)     {_font->PlainText(t);}
 
             protected:
                 /** Update the geometry of the button */
@@ -76,7 +76,7 @@ namespace Nc
             private:
                 StripLook           *_buttonLook;           ///< look used to render the button in it's normal state
                 StripLook           *_buttonLookPressed;    ///< look used to render the button pressed
-                Graphic::String     *_font;                 ///< The text of the button
+                Graphic::Text       *_font;                 ///< The text of the button
                 float               _charSize;              ///< Recorde the charsize used for the font
                 bool                _buttonPressed;         ///< Mark if the button is pressed
                 Color               _colorDisable;          ///< The color of the disabled button

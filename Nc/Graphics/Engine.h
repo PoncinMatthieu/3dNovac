@@ -37,7 +37,6 @@
 
 namespace Nc
 {
-    /// Base namespace of the 3dNovac Graphical Engine
     namespace Graphic
     {
         /// The threaded GraphicEngine of 3dNovac

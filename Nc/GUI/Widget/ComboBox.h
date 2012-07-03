@@ -39,7 +39,7 @@ namespace Nc
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(GUI::Widget, System::Object, Nc::GUI::ComboBox);
-                typedef std::pair<Item*, Graphic::String*>      StringItem;
+                typedef std::pair<Item*, Graphic::Text*>        StringItem;
                 typedef std::list<StringItem>                   ListItem;
 
             private:

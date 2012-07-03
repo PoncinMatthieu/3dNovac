@@ -52,23 +52,36 @@
             #define LGRAPHICS
         #endif
     #else                                                       // othes os (do nothing)
-        #define LGRAPHICS       ///< Linking option of Nc-Graphics module
+        #define LGRAPHICS       ///< Linking option of Nc-Graphics module.
     #endif
 
     namespace Nc
     {
+        /// Base namespace of the 3dNovac Graphical Engine
         namespace Graphic
         {
+            /// This namespace reference every classes that abstract the OpenGL librairy.
+            namespace GL
+            {
+                class IGeometryBuffer;
+            }
+
+            /// This namespace reference classes that helps for laoding or displaying entity, like loading of image, or fonts.
+            namespace Core
+            {
+                class Font;
+                struct Drawable;
+                class MaterialConfig;
+
+                typedef std::map<std::string, Font*>    FontMap;
+                typedef std::vector<Drawable*>          DrawableArray;
+            }
+
             // definition of the classes to typedef the diferrent types
             // material definition
             class IMaterial;
             template<typename VertexType>
             class DefaultMaterial;
-
-            // drawable
-            class IGeometryBuffer;
-            class MaterialConfig;
-            struct Drawable;
 
 
             // SceneNodes
@@ -90,7 +103,7 @@
 
             // Graphical objects
                 class Object;
-                class String;
+                class Text;
                 class Sprite;
                 class BoundingBox;
                 class SkyBox;

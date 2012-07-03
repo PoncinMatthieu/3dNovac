@@ -30,9 +30,8 @@ using namespace Nc;
 using namespace Nc::GUI;
 
 FPSWidget::FPSWidget(const AlignmentMask &alignment)
-    : Label("000", 20, alignment)
+    : Label("000", 20, Color(1,1,1), alignment)
 {
-    TextColor(Color(1,1,1));
 }
 
 void FPSWidget::Update()
@@ -55,7 +54,7 @@ void FPSWidget::Draw(Graphic::SceneGraph *scene)
         std::ostringstream FPS;
         //frequency = moyFps / frequency;
         FPS << (moyFps / i);
-        Text(FPS.str());
+        PlainText(FPS.str());
         moyFps = 0;
         i = 0;
     }

@@ -27,7 +27,7 @@
 #include "Drawable.h"
 
 using namespace Nc;
-using namespace Nc::Graphic;
+using namespace Nc::Graphic::Core;
 
 Drawable::Drawable(GL::IGeometryBuffer *geometry)
 {

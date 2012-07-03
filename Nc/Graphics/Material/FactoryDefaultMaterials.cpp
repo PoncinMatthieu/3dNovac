@@ -38,7 +38,7 @@ FactoryDefaultMaterials::~FactoryDefaultMaterials()
     }
 }
 
-IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const std::vector<Drawable*> &drawables)
+IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const Core::DrawableArray &drawables)
 {
     if (drawables.size() == 0)
         return NULL;
@@ -55,7 +55,7 @@ IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const std::vector<
     return GetBestMaterial(descriptor);
 }
 
-IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const Drawable *drawable)
+IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const Core::Drawable *drawable)
 {
     return GetBestMaterial(&drawable->Geometry->Descriptor());
 }

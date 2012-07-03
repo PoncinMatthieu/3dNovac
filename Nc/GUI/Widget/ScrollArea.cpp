@@ -25,6 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "ScrollArea.h"
+#include "../Visitor/Visitors.h"
 
 using namespace Nc;
 using namespace Nc::GUI;
@@ -34,8 +35,12 @@ ScrollArea::ScrollArea(const AlignmentMask &alignment, const Vector2i &size)
 {
     _scrollBarH = new ScrollBar(Left | Bottom, Horizontal);
     _scrollBarH->Percent(Vector2f(100, 0));
+    _scrollBarH->Pos(Vector2f(0, -_scrollBarH->Size()[1]));
+
     _scrollBarV = new ScrollBar(Right | Top, Vertical);
     _scrollBarV->Percent(Vector2f(0, 100));
+    _scrollBarV->Pos(Vector2f(-_scrollBarV->Size()[0], 0));
+
     AddComposedWidget(_scrollBarH);
     AddComposedWidget(_scrollBarV);
     _useStencil = true;
@@ -110,39 +115,53 @@ void ScrollArea::Update()
 
     if (_view != NULL)
     {
-        Vector2i pos;
-        _view->RelativePos(pos);
-
         // disable the scrollbar which doesn't need to be rendered
+        // with set a padding when a scroll bar is rendered
+        bool _scrollBarHState = _scrollBarH->Enabled();
+        bool _scrollBarVState = _scrollBarV->Enabled();
         if (_view->Size()[0] > pageSize[0])
         {
-            if (!_scrollBarH->Enabled())
-                _scrollBarH->Enable();
+            _scrollBarH->Enable();
             pageSize[1] -= _scrollBarH->Size()[1];
-        }
-        else if (_scrollBarH->Enabled())
-            _scrollBarH->Disable();
-        if (_view->Size()[1] > pageSize[1])
-        {
-            if (!_scrollBarV->Enabled())
-                _scrollBarV->Enable();
-            pageSize[0] -= _scrollBarV->Size()[0];
-        }
-        else if (_scrollBarV->Enabled())
-            _scrollBarV->Disable();
-
-        // if both scrollbar as to be rendered, reduce the size of the scrollbars
-        if (_view->Size()[0] > pageSize[0] && _view->Size()[1] > pageSize[1])
-        {
-            _scrollBarH->MarginRight(_scrollBarV->Size()[0]);
-            _scrollBarV->MarginBottom(_scrollBarH->Size()[1]);
+            PaddingBottom(_scrollBarH->Size()[1]);
         }
         else
         {
-            if (_scrollBarH->MarginRight() != 0)
+            _scrollBarH->Disable();
+            PaddingBottom(0);
+        }
+
+        if (_view->Size()[1] > pageSize[1])
+        {
+            _scrollBarV->Enable();
+            pageSize[0] -= _scrollBarV->Size()[0];
+            PaddingRight(_scrollBarV->Size()[0]);
+        }
+        else
+        {
+            _scrollBarV->Disable();
+            PaddingRight(0);
+        }
+
+        // if the state of the scrollbars changed
+        if (_scrollBarHState != _scrollBarH->Enabled() ||
+            _scrollBarVState != _scrollBarV->Enabled())
+        {
+            // if both scrollbar as to be rendered, reduce the size of the scrollbars
+            if (_scrollBarH->Enabled() && _scrollBarV->Enabled())
+            {
+                _scrollBarH->MarginRight(_scrollBarV->Size()[0]);
+                _scrollBarV->MarginBottom(_scrollBarH->Size()[1]);
+            }
+            else
+            {
                 _scrollBarH->MarginRight(0);
-            if (_scrollBarV->MarginBottom() != 0)
                 _scrollBarV->MarginBottom(0);
+            }
+
+            // notify the changement to every child
+            Visitor::ResizedAll resizedAll;
+            resizedAll(*this);
         }
     }
 
@@ -153,11 +172,7 @@ void ScrollArea::Update()
 void ScrollArea::Draw(Graphic::SceneGraph *scene)
 {
     if (_view != NULL)
-    {
-        Vector2i v = Vector2i(-_scrollBarH->Position(), -_scrollBarV->Position());
-        if (v != _view->Pos())
-            _view->Pos(v);
-    }
+        _view->Pos(Vector2i(-_scrollBarH->Position(), -_scrollBarV->Position()));
 
     Widget::Draw(scene);
 }

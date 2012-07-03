@@ -27,7 +27,7 @@
 #include "DefaultVertexType.h"
 
 using namespace Nc::Graphic;
-using namespace Nc::Graphic::DefaultVertexType;
+using namespace Nc::Graphic::Core::DefaultVertexType;
 using namespace Nc::Graphic::GL;
 
 const GL::VertexDescriptor   &Colored::GetDescriptor()

@@ -81,7 +81,7 @@ namespace Nc
                 ~StyleSheet();
 
             private:
-                Graphic::SpriteSheet    *_spriteSheet;          ///< sprite sheet of the GUI
+                Graphic::Core::SpriteSheet      *_spriteSheet;          ///< sprite sheet of the GUI
 
                 friend class Utils::Singleton<StyleSheet>;
         };

@@ -38,8 +38,7 @@
     #include "Window/Input/WindowInput.h"
 
 // Object
-    #include "Object/String.h"
-    #include "Object/SkyBox.h"
+    #include "Object/Text.h"
 
 // Scene
     #include "Scene/SceneGraph.h"

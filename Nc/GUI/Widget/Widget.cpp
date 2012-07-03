@@ -216,7 +216,7 @@ void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
         size[0] -= PaddingH();
         size[1] -= PaddingV();
 
-        scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
+//        scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
     }
 }
 
@@ -272,24 +272,30 @@ void Widget::CheckFocus(const Event &event)
 
 void    Widget::Size(const Vector2i &size)
 {
-    _size = size;
+    if (_size != size)
+    {
+        _size = size;
 
-    // notify the changement to every child
-    Visitor::ResizedAll resizedAll;
-    resizedAll(*this);
+        // notify the changement to every child
+        Visitor::ResizedAll resizedAll;
+        resizedAll(*this);
 
-    _stateChanged = true;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::Pos(const Vector2i &pos)
 {
-    _pos = pos;
+    if (_pos != pos)
+    {
+        _pos = pos;
 
-    // notify the changement to every child
-    Visitor::ReposedAll reposedAll;
-    reposedAll(*this);
+        // notify the changement to every child
+        Visitor::ReposedAll reposedAll;
+        reposedAll(*this);
 
-    _stateChanged = true;
+        _stateChanged = true;
+    }
 }
 
 void Widget::Reposed()
@@ -413,11 +419,14 @@ void Widget::ChangeChildsStateRecursive()
 
 void Widget::Percent(const Vector2f &percent)
 {
-    _percent = percent;
+    if (_percent != percent)
+    {
+        _percent = percent;
 
-    // notify the changement to every childs
-    Visitor::ResizedAll resizedAll;
-    resizedAll(*this);
+        // notify the changement to every childs
+        Visitor::ResizedAll resizedAll;
+        resizedAll(*this);
+    }
 }
 
 void Widget::Resized()
@@ -451,46 +460,59 @@ void    Widget::SizeChild(const Widget *w, Vector2i &size) const
 
 void    Widget::Margin(const BoxEdges &margin)
 {
-    _margin = margin;
-    _stateChanged = true;
+    if (_margin != margin)
+    {
+        _margin = margin;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::MarginH(int m)
 {
-    _margin.left = m;
-    _margin.right = m;
-    _stateChanged = true;
+    MarginLeft(m);
+    MarginRight(m);
 }
 
 void    Widget::MarginV(int m)
 {
-    _margin.top = m;
-    _margin.bottom = m;
-    _stateChanged = true;
+    MarginTop(m);
+    MarginBottom(m);
 }
 
 void    Widget::MarginLeft(int m)
 {
-    _margin.left = m;
-    _stateChanged = true;
+    if (_margin.left != m)
+    {
+        _margin.left = m;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::MarginRight(int m)
 {
-    _margin.right = m;
-    _stateChanged = true;
+    if (_margin.right != m)
+    {
+        _margin.right = m;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::MarginTop(int m)
 {
-    _margin.top = m;
-    _stateChanged = true;
+    if (_margin.top != m)
+    {
+        _margin.top = m;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::MarginBottom(int m)
 {
-    _margin.bottom = m;
-    _stateChanged = true;
+    if (_margin.bottom != m)
+    {
+        _margin.bottom = m;
+        _stateChanged = true;
+    }
 }
 
 unsigned int    Widget::MarginH() const
@@ -525,46 +547,59 @@ unsigned int    Widget::MarginBottom() const
 
 void    Widget::Padding(const BoxEdges &padding)
 {
-    _padding = padding;
-    _stateChanged = true;
+    if (_padding != padding)
+    {
+        _padding = padding;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::PaddingH(int p)
 {
-    _padding.left = p;
-    _padding.right = p;
-    _stateChanged = true;
+    PaddingLeft(p);
+    PaddingRight(p);
 }
 
 void    Widget::PaddingV(int p)
 {
-    _padding.top = p;
-    _padding.bottom = p;
-    _stateChanged = true;
+    PaddingTop(p);
+    PaddingBottom(p);
 }
 
 void    Widget::PaddingLeft(int p)
 {
-    _padding.left = p;
-    _stateChanged = true;
+    if (_padding.left != p)
+    {
+        _padding.left = p;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::PaddingRight(int p)
 {
-    _padding.right = p;
-    _stateChanged = true;
+    if (_padding.right != p)
+    {
+        _padding.right = p;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::PaddingTop(int p)
 {
-    _padding.top = p;
-    _stateChanged = true;
+    if (_padding.top != p)
+    {
+        _padding.top = p;
+        _stateChanged = true;
+    }
 }
 
 void    Widget::PaddingBottom(int p)
 {
-    _padding.bottom = p;
-    _stateChanged = true;
+    if (_padding.bottom != p)
+    {
+        _padding.bottom = p;
+        _stateChanged = true;
+    }
 }
 
 unsigned int    Widget::PaddingH() const
@@ -633,19 +668,28 @@ void    Widget::UseStencil(bool state)
 
 void    Widget::Enable(bool status)
 {
-    Object::Enable(status);
-    ChangeChildsStateRecursive();
+    if (Enabled() != status)
+    {
+        Object::Enable(status);
+        ChangeChildsStateRecursive();
+    }
 }
 
 void    Widget::Enable()
 {
-    Object::Enable();
-    ChangeChildsStateRecursive();
+    if (!Enabled())
+    {
+        Object::Enable();
+        ChangeChildsStateRecursive();
+    }
 }
 
 void    Widget::Disable()
 {
-    Object::Disable();
-    ChangeChildsStateRecursive();
+    if (Enabled())
+    {
+        Object::Disable();
+        ChangeChildsStateRecursive();
+    }
 }
 

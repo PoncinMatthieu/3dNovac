@@ -89,7 +89,7 @@ namespace Nc
                 static ListMsg::reverse_iterator    _itCurrentMsg;      ///< the current message, to scroll the messages
                 static std::string					_currentWritingMsg;	///< The message that is save between a Write and a flush
 
-                std::list<Graphic::String*>         _listFont;          ///< list of string used to render the messages
+                std::list<Graphic::Text*>           _listFont;          ///< list of string used to render the messages
                 Label                               *_labelPrompt;      ///< the label used to render the prompt
                 Label                               *_labelWrite;       ///< the label used to render the command text
                 Label                               *_labelCursor;      ///< the label used to render the cursor
