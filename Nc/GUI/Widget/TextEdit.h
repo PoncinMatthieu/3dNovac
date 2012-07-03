@@ -28,7 +28,6 @@
 #define NC_GUI_WIDGET_TEXTEDIT_H_
 
 #include "ScrollArea.h"
-#include "TextDocument.h"
 
 namespace Nc
 {
