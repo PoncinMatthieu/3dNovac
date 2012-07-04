@@ -55,7 +55,7 @@ namespace Nc
 
                 \todo We create the font into the PlainTextFormater and store it into a static map. Find a better way to create and store fonts.
                 \todo the constructor takes the name of the font to retreive/create the font dynamically. Find a better way to create and store fonts.
-                \todo implement Center, Right and Justify alignments.
+                \todo implement Justify alignment.
             */
             class PlainTextFormater : public ITextFormater
             {
@@ -73,10 +73,10 @@ namespace Nc
                     enum Alignment
                     {
                         Left,           ///< Align the text to the left.
-/*                        Center,         ///< Center the text.
+                        Center,         ///< Center the text.
                         Right,          ///< Align the text to the right.
-                        Justify         ///< Align the text to both left and right, adding extra space between words as necessary.
-*/                    };
+//                        Justify         ///< Align the text to both left and right, adding extra space between words as necessary.
+                    };
 
                 public:
                     PlainTextFormater(float charSize, const Color &color, const std::string &ttf, const Utils::Mask<Style> &s);
@@ -128,9 +128,9 @@ namespace Nc
                     void    TranslateCaraters(Core::DefaultVertexType::Textured2d *vertices, unsigned int noVertice, float offsetX, float offsetY);
                     void    TranslateUnderlines(Core::DefaultVertexType::Colored2d *underlines, unsigned int noUnderline, float offsetX, float offsetY);
 
-                    void    ManageAlignment(bool &endWord, bool &newLine, float &X, float &Y, float thickness, float &curCharWidth, float &curWordWidth, float &sizeBetweenWords, float &lastCharSizeBetweenWords, unsigned int &indexWordBegin, float &posOffsetLastLine,
+                    void    ManageAlignment(bool &endWord, bool &newLine, float &X, float &Y, float thickness, float &curCharWidth, float &curWordWidth, float &sizeBetweenWords, float &lastCharSizeBetweenWords, unsigned int &indexLineBegin, unsigned int &indexWordBegin, float &posOffsetLastLine,
                                             Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice,
-                                            Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float &height);
+                                            Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline);
 
                 protected:
                     Font                    *_font;                 ///< the instance of the used font.

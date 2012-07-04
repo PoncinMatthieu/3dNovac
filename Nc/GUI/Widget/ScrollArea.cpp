@@ -128,6 +128,13 @@ void ScrollArea::Resize()
             PaddingRight(0);
         }
 
+        // if the state of the scrollbars changed notify the changement to every child
+        if (_scrollBarHState != _scrollBarH->Enabled() || _scrollBarVState != _scrollBarV->Enabled())
+        {
+            Visitor::ResizedAll resizedAll;
+            resizedAll(*this);
+        }
+
         _scrollBarH->TotalSize(_view->Size()[0]);
         _scrollBarH->Position(0);
         _scrollBarV->TotalSize(_view->Size()[1]);

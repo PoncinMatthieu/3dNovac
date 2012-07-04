@@ -153,13 +153,13 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
     }
 
 	// Initialize the rendering coordinates
-    float           X = 0.f, Y = _charSize;
-    float           height = 0, width = 0, curHeight = 0;
+    float           X = 0.f, Y = 0;
+    float           width = 0, curHeight = 0;
     float           posOffsetLastLine = 0, curWordWidth = 0;
     float           sizeBetweenWords = 0, lastSizeBetweenWords = 0;
     float           curCharWidth = 0;
     float           italicCoeff = (_style.Enabled(Italic)) ? 0.208f : 0.f; // 12 degrees
-    unsigned int    indexWordBegin = 0;
+    unsigned int    indexWordBegin = 0, indexLineBegin = 0;
     bool            endWord = false;
     bool            endLine = false;
 
@@ -199,8 +199,8 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
 
         // manage the alignment if we are at the end of a word
         ManageAlignment(endWord, endLine, X, Y, thickness, curCharWidth, curWordWidth, sizeBetweenWords, lastSizeBetweenWords,
-                        indexWordBegin, posOffsetLastLine,
-                        vertices, noVertice, underlines, noUnderline, height);
+                        indexLineBegin, indexWordBegin, posOffsetLastLine,
+                        vertices, noVertice, underlines, noUnderline);
 
         if (endWord)
         {
@@ -222,8 +222,7 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
             curWordWidth += curCharWidth;
             if (width < X)
                 width = X;
-
-            float charHeight = (curGlyph->Size.Data[1] * factor) - (curGlyph->Pos.Data[1] * factor);
+            float charHeight = (float)(curGlyph->Size.Data[1] - curGlyph->Pos.Data[1]) * factor;
             if (Math::Abs(charHeight) > Math::Abs(curHeight))
                 curHeight = charHeight;
             curCharWidth = 0;
@@ -232,14 +231,15 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
 
     // manage alignment for last line
     endWord = true;
+    endLine = true;
     ManageAlignment(endWord, endLine, X, Y, thickness, curCharWidth, curWordWidth, sizeBetweenWords, lastSizeBetweenWords,
-                    indexWordBegin, posOffsetLastLine,
-                    vertices, noVertice, underlines, noUnderline, height);
+                    indexLineBegin, indexWordBegin, posOffsetLastLine,
+                    vertices, noVertice, underlines, noUnderline);
+    Y += _charSize;
 
     // Add the last line (which was not finished with a \n)
     if (_style.Enabled(Underlined))
     {
-        DrawUnderlines(underlines, noUnderline, X - sizeBetweenWords, Y, thickness);
         if (posOffsetLastLine < thickness)
             posOffsetLastLine = thickness;
     }
@@ -263,9 +263,7 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
 
     if (_documentSize > 0)
         width = _documentSize;
-    height += Math::Abs(curHeight) + posOffsetLastLine;
-
-    textSize = Vector2f(width, height);
+    textSize = Vector2f(width,  -Y + posOffsetLastLine - curHeight);
     _needUpdate = false;
 }
 
@@ -374,14 +372,14 @@ void    PlainTextFormater::TranslateUnderlines(Core::DefaultVertexType::Colored2
 }
 
 void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &X, float &Y, float thickness, float &curCharWidth, float &curWordWidth, float &sizeBetweenWords, float &lastSizeBetweenWords,
-                                            unsigned int &indexWordBegin, float &posOffsetLastLine,
+                                            unsigned int &indexLineBegin, unsigned int &indexWordBegin, float &posOffsetLastLine,
                                             Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice,
-                                            Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float &height)
+                                            Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline)
 {
     bool wordTooLong = false;
 
     // if the word is too long, treat the next as a new word
-    if (!endWord && (_documentSize > 0 && (X + curCharWidth) > _documentSize))
+    if (!endWord && (_documentSize > 0 && X > _documentSize))
     {
         wordTooLong = true;
         endWord = true;
@@ -397,25 +395,51 @@ void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &
     {
         if (endLine || (_documentSize > 0 && (X - sizeBetweenWords) > _documentSize))
         {
-            if (_documentSize == 0 || (X - sizeBetweenWords) < _documentSize)
+            if (_documentSize == 0)
             {
                 if (_style.Enabled(Underlined))
                     DrawUnderlines(underlines, noUnderline, X - lastSizeBetweenWords, Y, thickness);
                 X = 0;
             }
-            else if (_alignment == Left)
+            else
             {
-                if (_style.Enabled(Underlined))
-                    DrawUnderlines(underlines, noUnderline, X - curWordWidth - sizeBetweenWords - lastSizeBetweenWords, Y, thickness);
+                float lineWidth = X - sizeBetweenWords;
+                if ((X - sizeBetweenWords) > _documentSize)
+                {
+                    lineWidth -= (curWordWidth + lastSizeBetweenWords);
 
-                // translate the word to the next line
-                TranslateCaraters(vertices.Data + indexWordBegin, noVertice - indexWordBegin,
-                                  -X + sizeBetweenWords + curWordWidth, -_charSize);
-                X = curWordWidth + sizeBetweenWords;
+                    // translate the word to the next line
+                    TranslateCaraters(vertices.Data + indexWordBegin, noVertice - indexWordBegin,
+                                      -X + sizeBetweenWords + curWordWidth, -_charSize);
+                    X = curWordWidth + sizeBetweenWords;
+                    endLine = true;
+                }
+                else
+                {
+                    X = 0;
+                    indexWordBegin = noVertice;
+                    endLine = false;
+                }
+
+                if (_style.Enabled(Underlined))
+                    DrawUnderlines(underlines, noUnderline, lineWidth, Y, thickness);
+
+                float translateLine = 0;
+                if (_alignment == Center)
+                    translateLine = (_documentSize - lineWidth) / 2;
+                else if (_alignment == Right)
+                    translateLine = (_documentSize - lineWidth);
+
+                if (translateLine > 0)
+                {
+                    TranslateCaraters(vertices.Data + indexLineBegin, (noVertice - indexLineBegin) - (noVertice - indexWordBegin), translateLine, 0);
+                    TranslateUnderlines(underlines.Data + (noUnderline - 6), 6, translateLine, 0);
+                }
             }
+
             Y -= _charSize;
-            height += _charSize;
             posOffsetLastLine = 0;
+            indexLineBegin = indexWordBegin;
             endLine = false;
         }
         if (wordTooLong == 0)
