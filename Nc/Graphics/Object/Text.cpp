@@ -69,6 +69,13 @@ void    Text::PlainText(const Utils::Unicode::UTF32 &text)
     _textFormater->TextChanged();
 }
 
+void    Text::TransformModelMatrixToRender(SceneGraph *scene)
+{
+// this function shouldn't exist see todo on Billboard class
+    if (!_text.empty())
+        scene->ModelMatrix() *= Matrix;
+}
+
 const Vector2f      &Text::Size()
 {
     System::Locker l(&_mutex);

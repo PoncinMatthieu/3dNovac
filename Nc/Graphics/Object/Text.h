@@ -77,6 +77,8 @@ namespace Nc
                 /** Render the text. Recompute the drawables if needed. */
                 virtual void        Render(SceneGraph *scene);
 
+                virtual void        TransformModelMatrixToRender(SceneGraph *scene);
+
             protected:
                 Utils::Unicode::UTF32   _text;              ///< store the plain text.
                 Core::ITextFormater     *_textFormater;     ///< the text formater used to compute the size and the drawables.
