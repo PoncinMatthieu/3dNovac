@@ -22,7 +22,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-  delete _sceneGUI;
   delete _scene3d;
   delete _lightingMaterial;
 }
@@ -73,12 +72,6 @@ void GameEngine::LoadContent()
   _light->Matrix.Translation(0, 0, 3);
   leffect->Lights().push_back(_light);
   _camera->AddChild(_light);
-
-  // creation de la gui avec le fps widget
-  _sceneGUI = new GUI::SceneGraph(_window);
-  _sceneGUI->AddChild(new Camera2d(_window));
-  _sceneGUI->AddChild(new GUI::FPSWidget());
-  _window->SceneManager()->AddScene(_sceneGUI);
 }
 
 void GameEngine::Update(float runningTime)
@@ -94,7 +87,6 @@ void GameEngine::ManageWindowEvent(System::Event &event)
         _fbEffect->Resized();
     }
     MainEngine::ManageWindowEvent(event);
-    _sceneGUI->ManageWindowEvent(event);
 }
 
 void    GameEngine::KeyboardEvent(System::Event &event)

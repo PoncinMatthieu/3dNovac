@@ -59,7 +59,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
 
     // create the sample window used to render the samples
     _widgetSampleWindow = new Widget(Center);
-    _widgetSampleWindow->UseLook(new BoxLook());
+    _widgetSampleWindow->UseLook(new BoxLook("Small"));
     _widgetSampleWindow->PaddingH(5);
     _widgetSampleWindow->PaddingV(5);
     _widgetSampleWindow->Percent(Vector2f(100, 100));
@@ -67,7 +67,10 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     mainLayout->SetExpandRatio(_widgetSampleWindow, 100);
 
     // create the fps widget on top of the main layout
-    _GUI->AddChild(new FPSWidget(Right | Top));
+    FPSWidget *fps = new FPSWidget(Right | Top);
+    fps->MarginTop(8);
+    fps->MarginRight(8);
+    _GUI->AddChild(fps);
 
     //_console = new GUI::Console();
     //_scene->AddChild(_console);
@@ -121,7 +124,7 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     _descriptionTextArea = new TextEdit(text, CenterH | Bottom, Vector2i(0, 0), "arial", Core::PlainTextFormater::Regular);
     _descriptionTextArea->MarginTop(5);
     _descriptionTextArea->Percent(Vector2f(100, 100));
-    _descriptionTextArea->UseLook(new BoxLook());
+    _descriptionTextArea->UseLook(new BoxLook("Small"));
     _layoutWinDesc->AddChild(_descriptionTextArea);
     _layoutWinDesc->SetExpandRatio(_descriptionTextArea, 100);
 

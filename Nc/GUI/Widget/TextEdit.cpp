@@ -36,9 +36,6 @@ TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &align
     : ScrollArea(alignment, size)
 {
     _textDocument = new TextDocument(this, text, Left | Top, size, ttf, s);
-
-    _textDocument->UseLook(new BoxLook());
-
     _textDocument->Percent(Vector2f(100, 0));
     AddComposedWidget(_textDocument);
     SetView(_textDocument);

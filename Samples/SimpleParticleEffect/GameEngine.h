@@ -33,7 +33,6 @@ namespace SimpleParticleEffect
         void		CreateGUI();
 
             Nc::Graphic::SceneGraph			*_scene;
-            Nc::GUI::SceneGraph			    *_sceneGUI;
             Nc::Graphic::StandardCamera3d   *_camera;
 
             ParticleEffect				    *_particleEffect;

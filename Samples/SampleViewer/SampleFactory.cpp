@@ -17,7 +17,7 @@ SampleFactory::SampleFactory(Nc::Engine::Manager *manager)
     _sampleNames.push_back("bSplinesDemo");
     _sampleNames.push_back("FBEffectsDemo");
     _sampleNames.push_back("FrustumDemo");
-    _sampleNames.push_back("GUIDemo");
+//    _sampleNames.push_back("GUIDemo");
     _sampleNames.push_back("LightDemo");
     _sampleNames.push_back("SimpleParticleEffect");
     _sampleNames.push_back("SokobanDemo");
@@ -32,8 +32,8 @@ Nc::Contrib::GameEngine     *SampleFactory::CreateSample(const std::string &name
         engine = new FBEffectsDemo::GameEngine(_manager);
     else if (name == "FrustumDemo")
         engine = new FrustumDemo::GameEngine(_manager);
-    else if (name == "GUIDemo")
-        engine = new GUIDemo::GameEngine(_manager);
+//    else if (name == "GUIDemo")
+//        engine = new GUIDemo::GameEngine(_manager);
     else if (name == "LightDemo")
         engine = new LightDemo::GameEngine(_manager);
     else if (name == "SimpleParticleEffect")

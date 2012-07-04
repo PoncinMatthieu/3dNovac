@@ -222,7 +222,7 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
             curWordWidth += curCharWidth;
             if (width < X)
                 width = X;
-            float charHeight = (float)(curGlyph->Size.Data[1] - curGlyph->Pos.Data[1]) * factor;
+            float charHeight = (float)(curGlyph->Size.Data[1] + curGlyph->Pos.Data[1]) * factor;
             if (Math::Abs(charHeight) > Math::Abs(curHeight))
                 curHeight = charHeight;
             curCharWidth = 0;
@@ -379,7 +379,7 @@ void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &
     bool wordTooLong = false;
 
     // if the word is too long, treat the next as a new word
-    if (!endWord && (_documentSize > 0 && X > _documentSize))
+    if (!endWord && (_documentSize > 0 && (X + curCharWidth) > _documentSize))
     {
         wordTooLong = true;
         endWord = true;
@@ -393,7 +393,7 @@ void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &
 
     if (endWord)
     {
-        if (endLine || (_documentSize > 0 && (X - sizeBetweenWords) > _documentSize))
+        if (endLine || (_documentSize > 0 && (X + curCharWidth - sizeBetweenWords) > _documentSize))
         {
             if (_documentSize == 0)
             {
@@ -404,7 +404,7 @@ void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &
             else
             {
                 float lineWidth = X - sizeBetweenWords;
-                if ((X - sizeBetweenWords) > _documentSize)
+                if ((X + curCharWidth - sizeBetweenWords) > _documentSize)
                 {
                     lineWidth -= (curWordWidth + lastSizeBetweenWords);
 

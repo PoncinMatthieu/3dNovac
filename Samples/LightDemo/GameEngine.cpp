@@ -24,7 +24,6 @@ void GameEngine::ReleaseContent()
 {
     delete _lightingMaterial;
     delete _scene;
-    delete _sceneGUI;
 }
 
 void GameEngine::CreateWindow(Window *win)
@@ -85,15 +84,6 @@ void GameEngine::LoadContent()
   lightEffect->Lights().push_back(light3);
 
   lightEffect->AddChild(_sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
-
-  // creation de la gui avec le fps widget
-  _sceneGUI = new GUI::SceneGraph(_window);
-  _sceneGUI->AddChild(new Camera2d(_window));
-  _sceneGUI->AddChild(new GUI::FPSWidget());
-  _window->SceneManager()->AddScene(_sceneGUI);
-
-  // no need to active/disable the context at each loop
-  //_pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)
@@ -114,7 +104,6 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
     if (send)
         MainEngine::ManageWindowEvent(event);
-    _sceneGUI->ManageWindowEvent(event);
 }
 
 void GameEngine::KeyboardEvent(System::Event &event)

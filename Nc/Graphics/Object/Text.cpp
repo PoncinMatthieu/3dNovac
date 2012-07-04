@@ -46,8 +46,8 @@ Text::Text(const Utils::Unicode::UTF32 &text, float charSize, const Color &color
 }
 
 Text::Text(const Text &text)
+    : Object(), _text(text._text), _textFormater(NULL)
 {
-    _text = text._text;
     Formater(text._textFormater->Clone());
 }
 
@@ -71,9 +71,9 @@ void    Text::PlainText(const Utils::Unicode::UTF32 &text)
 
 const Vector2f      &Text::Size()
 {
+    System::Locker l(&_mutex);
     if (_textFormater->NeedUpdate())
     {
-        System::Locker l(&_mutex);
         _textFormater->ComputeDrawables(_size, _drawables, _text);
 
     }
@@ -82,6 +82,7 @@ const Vector2f      &Text::Size()
 
 void    Text::Formater(Core::ITextFormater *f)
 {
+    System::Locker l(&_mutex);
     if (_textFormater != NULL && _textFormater != f)
     {
         delete _textFormater;
@@ -100,9 +101,9 @@ void    Text::Render(SceneGraph *scene)
 {
     if (!_text.empty())    // No text, no rendering :)
     {
+        System::Locker l(&_mutex);
         if (_textFormater->NeedUpdate())
         {
-            System::Locker l(&_mutex);
             _textFormater->ComputeDrawables(_size, _drawables, _text);
         }
         Object::Render(scene);
