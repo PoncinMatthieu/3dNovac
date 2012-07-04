@@ -57,8 +57,6 @@ namespace Nc
             protected:
                 /** Resize the geometry of the scroll area */
                 virtual void        Resize();
-                /** Update the geometry of the scroll area */
-                virtual void        Update();
                 /** Check the state and update the matrix before rendering */
                 virtual void        RenderBegin(Graphic::SceneGraph *scene);
                 /** draw Debug GUI and update the matrix before rendering */

@@ -205,18 +205,12 @@ void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
         Vector2i pos, size(_size);
         AbsolutePos(pos);
 
-        if (_alignment.Enabled(Left))
-            pos[0] += PaddingLeft();
-        else
-            pos[0] += PaddingRight();
-        if (_alignment.Enabled(Top))
-            pos[1] += PaddingTop();
-        else
-            pos[1] += PaddingBottom();
+        pos[0] += PaddingLeft();
+        pos[1] += PaddingBottom();
         size[0] -= PaddingH();
         size[1] -= PaddingV();
 
-//        scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
+        scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
     }
 }
 

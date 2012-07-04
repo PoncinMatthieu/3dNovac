@@ -66,7 +66,7 @@ void    PlainTextFormater::SetColor(const Color &color)
     if (_color != color)
     {
         _color = color;
-        _drawablesChanged = true;
+        _needUpdate = true;
     }
 }
 
@@ -75,7 +75,7 @@ void    PlainTextFormater::SetCharSize(float size)
     if (_charSize != size)
     {
         _charSize = size;
-        _drawablesChanged = _sizeChanged = true;
+        _needUpdate = true;
     }
 }
 
@@ -91,7 +91,7 @@ void    PlainTextFormater::SetDocumentSize(float size)
     if (_documentSize != size)
     {
         _documentSize = size;
-        _drawablesChanged = _sizeChanged = true;
+        _needUpdate = true;
     }
 }
 
@@ -100,104 +100,8 @@ void    PlainTextFormater::SetAlignment(Alignment align)
     if (_alignment != align)
     {
         _alignment = align;
-        _drawablesChanged = true;
+        _needUpdate = true;
     }
-}
-
-void    PlainTextFormater::ComputeSize(Vector2f &textSize, const Utils::Unicode::UTF32 &text)
-{
-    // No text, empty box :)
-    if (text.empty())
-    {
-        textSize = Vector2f(0, _charSize);
-        return;
-    }
-
-    // Initial values
-    float curWidth = 0, curHeight = 0, width = 0, height = 0;
-    float factor    = _charSize / (float)_font->BaseSize();
-
-    // Go through each character
-    std::size_t textSizeCar = text.size();
-    for (std::size_t i = 0; i < textSizeCar; ++i)
-    {
-        // Get the current character and its corresponding glyph
-        UInt32          curChar  = text[i];
-        const Glyph     *curGlyph = _font->GetGlyph(curChar);
-
-        // Handle special characters
-        switch (curChar)
-        {
-            case L' ' :
-                curWidth += (curGlyph) ? (curGlyph->Add * factor) : _charSize;
-                break;
-            case L'\t' :
-                curWidth += (curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4);
-                break;
-            case L'\n' :
-                height += _charSize;
-                if (curWidth > width)
-                    width = curWidth;
-                curWidth = 0;
-                break;
-            default: // every other caracters.
-                if (curGlyph != NULL)
-                    curWidth += curGlyph->Add * factor;
-                break;
-        }
-
-        if (_documentSize > 0)
-        {
-            if (_alignment == Left)
-            {
-                if (curWidth > _documentSize)
-                {
-                    height += _charSize;
-                    curWidth = (curGlyph != NULL) ? curGlyph->Add * factor : 0;
-                }
-            }
-        }
-
-        // Update the maximum height
-        if (curGlyph != NULL)
-        {
-            float charHeight = (curGlyph->Size.Data[1] - curGlyph->Pos.Data[1]) * factor;
-            if (Math::Abs(charHeight) > Math::Abs(curHeight))
-                curHeight = charHeight;
-        }
-    }
-
-    // Update the last line
-    if (curWidth > width)
-        width = curWidth;
-    height += Math::Abs(curHeight);
-
-    // Add a slight width / height if we're using the bold style
-    if (_style.Enabled(Bold))
-    {
-        width  += 1 * factor;
-        height += 1 * factor;
-    }
-
-    // Add a slight width if we're using the italic style
-    if (_style.Enabled(Italic))
-        width += 0.208f * _charSize;
-
-    // Add a slight height if we're using the underlined style
-    if ((_style.Enabled(Underlined)) && (Math::Abs(curHeight) < _charSize + 4 * factor))
-        height += 4 * factor;
-
-    if (_documentSize > 0)
-    {
-        if (_alignment == Left)
-        {
-            width = _documentSize;
-        }
-    }
-
-    // Finally update the size
-    textSize = Vector2f(width, Math::Abs(height));
-    _sizeChanged = false;
 }
 
 void    PlainTextFormater::InitDrawables(DrawableArray &drawableArray)
@@ -219,22 +123,22 @@ void    PlainTextFormater::InitDrawables(DrawableArray &drawableArray)
         geo2->VBO().Init();// init the buffer to force it's creation and avoid it's done while we update the geometry
         drawableArray[1] = new Drawable(geo2, new MaterialConfig());
     }
-    TextChanged();
+    _needUpdate = true;
 }
 
-void    PlainTextFormater::ComputeDrawables(DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text)
+void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text)
 {
     // Set the scaling factor to get the actual size
-    std::size_t         textSize = text.size();
+    std::size_t         textCharSize = text.size();
     float               baseSize = _font->BaseSize();
     float               factor   = _charSize / baseSize;
-    unsigned int        nbVertices = 6 * textSize;
+    unsigned int        nbVertices = 6 * textCharSize;
     unsigned int        noVertice = 0, noUnderline = 0;
     float               thickness = 0;
 
     // build the vertice tabs with an estimated maximum size.
     if (_style.Enabled(Bold))
-        nbVertices += 6 * 4 * textSize;
+        nbVertices += 6 * 4 * textCharSize;
 
     Array<DefaultVertexType::Textured2d>      vertices(nbVertices);
     Array<DefaultVertexType::Colored2d>       underlines;
@@ -244,15 +148,22 @@ void    PlainTextFormater::ComputeDrawables(DrawableArray &drawableArray, const 
         if (_documentSize == 0)
             underlines.InitSize((text.CharCount('\n') + 1) * 6);
         else
-            underlines.InitSize(((text.CharCount('\n') + 1) * 6) + ((textSize * _charSize) / _documentSize));
+            underlines.InitSize(((text.CharCount('\n') + 1) * 6) + ((textCharSize * _charSize) / _documentSize));
         thickness = (_style.Enabled(Bold)) ? 3.f : 2.f;
     }
 
 	// Initialize the rendering coordinates
-    float X = 0.f, Y = _charSize, posOffsetLastLine = 0;
-    float italicCoeff = (_style.Enabled(Italic)) ? 0.208f : 0.f; // 12 degrees
+    float           X = 0.f, Y = _charSize;
+    float           height = 0, width = 0, curHeight = 0;
+    float           posOffsetLastLine = 0, curWordWidth = 0;
+    float           sizeBetweenWords = 0, lastSizeBetweenWords = 0;
+    float           curCharWidth = 0;
+    float           italicCoeff = (_style.Enabled(Italic)) ? 0.208f : 0.f; // 12 degrees
+    unsigned int    indexWordBegin = 0;
+    bool            endWord = false;
+    bool            endLine = false;
 
-    for (std::size_t i = 0; i < textSize; ++i)
+    for (std::size_t i = 0; i < textCharSize; ++i)
     {
         // Get the current character and its corresponding glyph
         UInt32              curChar = text[i];
@@ -261,70 +172,101 @@ void    PlainTextFormater::ComputeDrawables(DrawableArray &drawableArray, const 
         // Handle special characters
         if (curChar == L' ')
         {
-            X += (curGlyph) ? curGlyph->Add * factor : _charSize;
-            continue;
+            curCharWidth = ((curGlyph) ? curGlyph->Add * factor : _charSize);
+            X += curCharWidth;
+            sizeBetweenWords += curCharWidth;
+            endWord = true;
         }
         else if (curChar == L'\t')
         {
-            X += (curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4);
-            continue;
+            curCharWidth = ((curGlyph) ? (curGlyph->Add * factor * 4) : (_charSize * 4));
+            X += curCharWidth;
+            sizeBetweenWords += curCharWidth;
+            endWord = true;
         }
         else if (curChar == L'\n')
         {
-            if (_style.Enabled(Underlined))
-                DrawUnderlines(underlines, noUnderline, X, Y, thickness);
-            Y -= _charSize;
-            X = 0;
-            posOffsetLastLine = 0;
-            continue;
+            lastSizeBetweenWords = sizeBetweenWords;
+            curCharWidth = 0;
+            endWord = true;
+            endLine = true;
         }
-        else if (curGlyph == NULL)  // move away, if the glyph is null
-            continue;
-
-        if (_documentSize > 0)
+        else if (curGlyph != NULL)
         {
-            if (_alignment == Left)
-            {
-                if ((X + ((curGlyph->Pos.Data[0] + curGlyph->Size.Data[0]) * factor)) > _documentSize)
-                {
-                    if (_style.Enabled(Underlined))
-                        DrawUnderlines(underlines, noUnderline, X, Y, thickness);
-                    Y -= _charSize;
-                    X = 0;
-                    posOffsetLastLine = 0;
-                }
-            }
+            curCharWidth = curGlyph->Add * factor;
+            sizeBetweenWords = 0;
         }
 
-        // we compute the offset of the last line to add to the matrix so that the rendering will match exactly with the box size of the string.
-        if (posOffsetLastLine < (curGlyph->Pos.Data[1] * factor))
-            posOffsetLastLine = curGlyph->Pos.Data[1] * factor;
+        // manage the alignment if we are at the end of a word
+        ManageAlignment(endWord, endLine, X, Y, thickness, curCharWidth, curWordWidth, sizeBetweenWords, lastSizeBetweenWords,
+                        indexWordBegin, posOffsetLastLine,
+                        vertices, noVertice, underlines, noUnderline, height);
 
-        DrawVertices(vertices, noVertice, X, Y, thickness, italicCoeff, curGlyph, factor);
+        if (endWord)
+        {
+            lastSizeBetweenWords = sizeBetweenWords;
+            endWord = false;
+            curGlyph = NULL;
+        }
 
-        // Advance to the next character
-        X += curGlyph->Add * factor;
+        if (curGlyph != NULL)
+        {
+            // we compute the offset of the last line to add to the matrix so that the rendering will match exactly with the box size of the string.
+            if (posOffsetLastLine < (curGlyph->Pos.Data[1] * factor))
+                posOffsetLastLine = curGlyph->Pos.Data[1] * factor;
+
+            DrawVertices(vertices, noVertice, X, Y, thickness, italicCoeff, curGlyph, factor);
+
+            // Advance to the next character
+            X += curCharWidth;
+            curWordWidth += curCharWidth;
+            if (width < X)
+                width = X;
+
+            float charHeight = (curGlyph->Size.Data[1] * factor) - (curGlyph->Pos.Data[1] * factor);
+            if (Math::Abs(charHeight) > Math::Abs(curHeight))
+                curHeight = charHeight;
+            curCharWidth = 0;
+        }
     }
+
+    // manage alignment for last line
+    endWord = true;
+    ManageAlignment(endWord, endLine, X, Y, thickness, curCharWidth, curWordWidth, sizeBetweenWords, lastSizeBetweenWords,
+                    indexWordBegin, posOffsetLastLine,
+                    vertices, noVertice, underlines, noUnderline, height);
 
     // Add the last line (which was not finished with a \n)
     if (_style.Enabled(Underlined))
-        DrawUnderlines(underlines, noUnderline, X, Y, thickness);
+    {
+        DrawUnderlines(underlines, noUnderline, X - sizeBetweenWords, Y, thickness);
+        if (posOffsetLastLine < thickness)
+            posOffsetLastLine = thickness;
+    }
 
-    // translate every caracter to it's final position (according to the computed size)
-    TranslateCaraters(vertices, noVertice, underlines, noUnderline, 0.f, -Y + posOffsetLastLine);
 
     // update the geometry
+    // translate every caracter to it's final position (according to the computed size)
+    TranslateCaraters(vertices.Data, noVertice, 0.f, -Y + posOffsetLastLine);
     vertices.UnderSize(noVertice); // resize the buffer, to be sure that we render the good number of vertices
     GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d,false>*>(drawableArray[0]->Geometry);
     geo->VBO().UpdateData(vertices, GL::Enum::DataBuffer::StaticDraw);
 
     if (_style.Enabled(Underlined))
     {
+        // translate every underline to it's final position (according to the computed size)
+        TranslateUnderlines(underlines.Data, noUnderline, 0.f, -Y + posOffsetLastLine);
         underlines.UnderSize(noUnderline); // resize the buffer, to be sure that we render the good number of vertices
         GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(drawableArray[1]->Geometry);
         geo->VBO().UpdateData(underlines, GL::Enum::DataBuffer::StaticDraw);
     }
-    _drawablesChanged = false;
+
+    if (_documentSize > 0)
+        width = _documentSize;
+    height += Math::Abs(curHeight) + posOffsetLastLine;
+
+    textSize = Vector2f(width, height);
+    _needUpdate = false;
 }
 
 
@@ -413,18 +355,76 @@ void    PlainTextFormater::DrawVertices(Array<DefaultVertexType::Textured2d> &ve
     }
 }
 
-void    PlainTextFormater::TranslateCaraters(Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int noVertice,
-                                             Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int noUnderline, float offsetX, float offsetY)
+void    PlainTextFormater::TranslateCaraters(Core::DefaultVertexType::Textured2d *vertices, unsigned int noVertice, float offsetX, float offsetY)
 {
     for (unsigned int i = 0; i < noVertice; ++i)
     {
-        vertices.Data[i].coord[0] += offsetX;
-        vertices.Data[i].coord[1] += offsetY;
+        vertices[i].coord[0] += offsetX;
+        vertices[i].coord[1] += offsetY;
     }
+}
 
+void    PlainTextFormater::TranslateUnderlines(Core::DefaultVertexType::Colored2d *underlines, unsigned int noUnderline, float offsetX, float offsetY)
+{
     for (unsigned int i = 0; i < noUnderline; ++i)
     {
-        underlines.Data[i].coord[0] += offsetX;
-        underlines.Data[i].coord[1] += offsetY;
+        underlines[i].coord[0] += offsetX;
+        underlines[i].coord[1] += offsetY;
     }
+}
+
+void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &X, float &Y, float thickness, float &curCharWidth, float &curWordWidth, float &sizeBetweenWords, float &lastSizeBetweenWords,
+                                            unsigned int &indexWordBegin, float &posOffsetLastLine,
+                                            Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice,
+                                            Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float &height)
+{
+    bool wordTooLong = false;
+
+    // if the word is too long, treat the next as a new word
+    if (!endWord && (_documentSize > 0 && (X + curCharWidth) > _documentSize))
+    {
+        wordTooLong = true;
+        endWord = true;
+        if (X == curWordWidth)
+        {
+            indexWordBegin = noVertice;
+            curWordWidth = 0;
+            lastSizeBetweenWords = 0;
+        }
+    }
+
+    if (endWord)
+    {
+        if (endLine || (_documentSize > 0 && (X - sizeBetweenWords) > _documentSize))
+        {
+            if (_documentSize == 0 || (X - sizeBetweenWords) < _documentSize)
+            {
+                if (_style.Enabled(Underlined))
+                    DrawUnderlines(underlines, noUnderline, X - lastSizeBetweenWords, Y, thickness);
+                X = 0;
+            }
+            else if (_alignment == Left)
+            {
+                if (_style.Enabled(Underlined))
+                    DrawUnderlines(underlines, noUnderline, X - curWordWidth - sizeBetweenWords - lastSizeBetweenWords, Y, thickness);
+
+                // translate the word to the next line
+                TranslateCaraters(vertices.Data + indexWordBegin, noVertice - indexWordBegin,
+                                  -X + sizeBetweenWords + curWordWidth, -_charSize);
+                X = curWordWidth + sizeBetweenWords;
+            }
+            Y -= _charSize;
+            height += _charSize;
+            posOffsetLastLine = 0;
+            endLine = false;
+        }
+        if (wordTooLong == 0)
+        {
+            curWordWidth = 0;
+            indexWordBegin = noVertice;
+        }
+    }
+
+    if (wordTooLong != 0)
+        endWord = false;
 }

@@ -71,10 +71,11 @@ void    Text::PlainText(const Utils::Unicode::UTF32 &text)
 
 const Vector2f      &Text::Size()
 {
-    if (_textFormater->SizeChanged())
+    if (_textFormater->NeedUpdate())
     {
         System::Locker l(&_mutex);
-        _textFormater->ComputeSize(_size, _text);
+        _textFormater->ComputeDrawables(_size, _drawables, _text);
+
     }
     return _size;
 }
@@ -99,10 +100,10 @@ void    Text::Render(SceneGraph *scene)
 {
     if (!_text.empty())    // No text, no rendering :)
     {
-        if (_textFormater->DrawablesChanged())
+        if (_textFormater->NeedUpdate())
         {
             System::Locker l(&_mutex);
-            _textFormater->ComputeDrawables(_drawables, _text);
+            _textFormater->ComputeDrawables(_size, _drawables, _text);
         }
         Object::Render(scene);
     }

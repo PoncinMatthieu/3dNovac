@@ -109,24 +109,28 @@ namespace Nc
                     /** Set the alignment method used according to the document size. */
                     void                SetAlignment(Alignment align);
 
-                    /** Compute the size of the given \p text and return the corresponding size into the vector \p textSize */
-                    virtual void        ComputeSize(Vector2f &textSize, const Utils::Unicode::UTF32 &text);
-
                     /** Init drawables array, to avoid to recreate the drawables after each modification of the text */
                     virtual void        InitDrawables(DrawableArray &drawableArray);
 
-                    /** Create every Drawables for the given \p text and add them to the given \p drawableArray. */
-                    virtual void        ComputeDrawables(DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text);
+                    /**
+                        Create every Drawables for the given \p text and add them to the given \p drawableArray.
+                        \return the computed size of the text.
+                    */
+                    virtual void        ComputeDrawables(Vector2f &textSize, DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text);
 
                     /** Destroy the font, to call at the end of the program to avoid memory leak. */
                     static void         DestroyFonts();
 
                 private:
-                    void                DrawVertices(Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice, float X, float Y, float thickness, float italicCoeff, const Core::Glyph *curGlyph, float factor);
-                    void                DrawUnderlines(Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float X, float Y, float thickness);
+                    void    DrawVertices(Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice, float X, float Y, float thickness, float italicCoeff, const Core::Glyph *curGlyph, float factor);
+                    void    DrawUnderlines(Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float X, float Y, float thickness);
 
-                    void                TranslateCaraters(Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int noVertice,
-                                                          Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int noUnderline, float offsetX, float offsetY);
+                    void    TranslateCaraters(Core::DefaultVertexType::Textured2d *vertices, unsigned int noVertice, float offsetX, float offsetY);
+                    void    TranslateUnderlines(Core::DefaultVertexType::Colored2d *underlines, unsigned int noUnderline, float offsetX, float offsetY);
+
+                    void    ManageAlignment(bool &endWord, bool &newLine, float &X, float &Y, float thickness, float &curCharWidth, float &curWordWidth, float &sizeBetweenWords, float &lastCharSizeBetweenWords, unsigned int &indexWordBegin, float &posOffsetLastLine,
+                                            Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice,
+                                            Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float &height);
 
                 protected:
                     Font                    *_font;                 ///< the instance of the used font.
