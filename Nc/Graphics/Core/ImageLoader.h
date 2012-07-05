@@ -39,24 +39,27 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to load an image
-        /**
-            Actually only the png file format is supported.
-
-            \sa
-                - ImageLoaderPng
-        */
-        class LGRAPHICS  ImageLoader
+        namespace Core
         {
-            public:
-                ImageLoader()           {}
-                virtual ~ImageLoader()  {}
+            /// Interface to load an image
+            /**
+                Actually only the png file format is supported.
 
-                /** Load the given image */
-                virtual void        Load(const Utils::FileName &file, Image &image) = 0;
-                /** Save the given image */
-                virtual void        Save(const Utils::FileName &file, Image &image) = 0;
-        };
+                \sa
+                    - ImageLoaderPng
+            */
+            class LGRAPHICS  ImageLoader
+            {
+                public:
+                    ImageLoader()           {}
+                    virtual ~ImageLoader()  {}
+
+                    /** Load the given image */
+                    virtual void        Load(const Utils::FileName &file, Image &image) = 0;
+                    /** Save the given image */
+                    virtual void        Save(const Utils::FileName &file, Image &image) = 0;
+            };
+        }
     }
 }
 

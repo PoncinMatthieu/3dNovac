@@ -35,7 +35,7 @@
 #ifndef NC_GRAPHICS_OBJECT_BOUNDING_BOX_H_
 #define NC_GRAPHICS_OBJECT_BOUNDING_BOX_H_
 
-#include "../Material/DefaultVertexType.h"
+#include "../Core/DefaultVertexType.h"
 #include "Object.h"
 
 namespace Nc
@@ -72,7 +72,7 @@ namespace Nc
                 static void             CreateGeometry();
 
                 static Color            _color;         ///< the color of the box
-                static Drawable         *_drawable;     ///< the static drawable, static because we use the same drawable for all boxs
+                static Core::Drawable   *_drawable;     ///< the static drawable, static because we use the same drawable for all boxs
                 static IDefaultMaterial *_material;     ///< the static material instance used to render the drawables
         };
     }

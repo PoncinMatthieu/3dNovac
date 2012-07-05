@@ -28,7 +28,8 @@
 #define SAMPLEVIEWER_MAINMENU_H_
 
 #include <Nc/GUI/GUI.h>
-#include <Nc/GUI/WidgetSubWindow.h>
+#include <Nc/GUI/Widget/SubWindow.h>
+#include <Nc/GUI/Widget/TextEdit.h>
 
 namespace SampleViewer
 {
@@ -40,21 +41,30 @@ namespace SampleViewer
 
             void                        AddSample(const std::string &name);
 
-            const std::string           *Sample() const         {return (_comboBox->CurrentItem()) ? &_comboBox->CurrentItem()->Data() : NULL;}
+            void                        SampleSelected();
 
-            Nc::GUI::WidgetSubWindow    *CreateSampleWindow(Nc::Graphic::Window *windowParent);
+            const std::string           *Sample() const         {return (_sampleComboBox->CurrentItem()) ? &_sampleComboBox->CurrentItem()->Data() : NULL;}
+
+            Nc::GUI::SubWindow          *CreateSampleWindow(Nc::Graphic::Window *windowParent);
 
             void                        CloseSampleWindow();
 
         private:
+            Nc::GUI::Widget             *CreateDescriptionPannel(Nc::GUI::Layout *parent);
             Nc::GUI::Widget             *CreateSelectSampleWindow(Nc::GUI::Layout *parent);
 
         private:
             Nc::GUI::SceneGraph         *_GUI;
-            Nc::GUI::ComboBox           *_comboBox;
+            Nc::GUI::ComboBox           *_sampleComboBox;
+            Nc::GUI::Image              *_sampleImage;
+            unsigned int                imageHeight;
+            Nc::GUI::TextEdit           *_descriptionTextArea;
+            Nc::GUI::Layout             *_layoutWinDesc;
 
             Nc::GUI::Widget             *_widgetSampleWindow;
-            Nc::GUI::WidgetSubWindow    *_currentSampleWindow;
+            Nc::GUI::SubWindow          *_currentSampleWindow;
+
+            Nc::GUI::Item               *_currentItemSelected;
     };
 }
 

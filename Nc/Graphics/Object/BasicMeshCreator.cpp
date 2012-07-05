@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "BasicMeshCreator.h"
-#include "String.h"
+#include "Text.h"
 #include "../Effect/Billboard.h"
 #include "../Effect/CameraEffect.h"
 #include "../Scene/RenderingController.h"
@@ -42,8 +42,8 @@ Object *BasicMeshCreator::Axis(float scale, bool withLegend, const Vector3f &cen
 
 Object *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, const Vector3f &center)
 {
-	Array<DefaultVertexType::Colored, 4>  vertices;
-    Array<unsigned int, 3*2>            indices;
+	Array<Core::DefaultVertexType::Colored, 4>  vertices;
+    Array<unsigned int, 3*2>                    indices;
 
     vertices[0].Fill(center.Data[0], center.Data[1], center.Data[2], Color(1, 1, 1));
     vertices[1].Fill(center.Data[0] + scale.Data[0], center.Data[1], center.Data[2], Color(1, 0, 0));
@@ -56,7 +56,7 @@ Object *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, const Vec
 
     // creation du mesh
     Object *obj = new Object(Box3f(center, center + Vector3f(scale.Data[0], scale.Data[1], scale.Data[2])));
-	obj->Drawables().push_back(new Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines));
+	obj->Drawables().push_back(new Core::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines));
     obj->ChooseDefaultMaterial();
     obj->UseSceneMaterial(false);
 
@@ -144,14 +144,14 @@ Entity *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, bool inCo
     return effect;
 }
 
-String  *BasicMeshCreator::AddLabel(const std::string &text, float caracterSize, const Color &color, const std::string &fontName, bool centerText, Entity *entity, const Vector3f &position)
+Text  *BasicMeshCreator::AddLabel(const std::string &text, float caracterSize, const Color &color, const std::string &fontName, bool centerText, Entity *entity, const Vector3f &position)
 {
     // create the billboard
     Billboard *billboard = new Billboard();
     billboard->Matrix.Translation(position);
 
     // create the label
-    String *label = new String(text, caracterSize, color, fontName);
+    Text *label = new Text(text, caracterSize, color, fontName);
     if (centerText)
     {
         Vector2f size = label->Size();

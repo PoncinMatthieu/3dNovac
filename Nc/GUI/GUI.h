@@ -33,15 +33,15 @@
 #define NC_GUI_GUI_H_
 
 #include "SceneGraph.h"
-#include "WidgetLabeled.h"
-#include "Button.h"
-#include "LineEdit.h"
-#include "WindowBox.h"
-#include "ComboBox.h"
-#include "Console.h"
-#include "SpriteWidget.h"
-#include "ProgressBar.h"
-#include "FPSWidget.h"
-#include "Layout.h"
+#include "Widget/Label.h"
+#include "Widget/Button.h"
+#include "Widget/LineEdit.h"
+#include "Widget/WindowBox.h"
+#include "Widget/ComboBox.h"
+#include "Widget/Console.h"
+#include "Widget/Image.h"
+#include "Widget/ProgressBar.h"
+#include "Widget/FPSWidget.h"
+#include "Widget/Layout.h"
 
 #endif

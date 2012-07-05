@@ -211,7 +211,7 @@ void XWindow::ChooseBestVisualInfo()
 
 bool XWindow::SetIcon(const Utils::FileName &f)
 {
-    Image image;
+    Core::Image image;
     Utils::FileName filename = f;
     if (f.empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
         return false;

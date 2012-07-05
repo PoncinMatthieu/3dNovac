@@ -1,7 +1,7 @@
 
 #include <Nc/Core/Engine/Manager.h>
-#include <Nc/GUI/FPSWidget.h>
-#include <Nc/GUI/Console.h>
+#include <Nc/GUI/Widget/FPSWidget.h>
+#include <Nc/GUI/Widget/Console.h>
 
 #include "GameEngine.h"
 
@@ -38,7 +38,7 @@ void GameEngine::LoadContent()
 
   // GUI :
   //    scene2d->AddWidget(new GUI::Console());
-  _scene2d->AddChild(new GUI::FPSWidget(GUI::Center, GUI::Top));
+  _scene2d->AddChild(new GUI::FPSWidget(GUI::CenterH | GUI::Top));
 
   _current = 0;
   CreateSplines1();  // splines et nurbs 1

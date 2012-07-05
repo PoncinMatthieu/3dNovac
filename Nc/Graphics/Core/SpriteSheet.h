@@ -32,32 +32,35 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Allow to read a sprite sheet description, load the associated texture, load boxes and associated sprite names of the sprite sheet.
-        class LGRAPHICS SpriteSheet
+        namespace Core
         {
-            public:
-                typedef std::map<std::string, Box2i>    SpriteMap;
+            /// Allow to read a sprite sheet description, load the associated texture, load boxes and associated sprite names of the sprite sheet.
+            class LGRAPHICS SpriteSheet
+            {
+                public:
+                    typedef std::map<std::string, Box2i>    SpriteMap;
 
-            public:
-                SpriteSheet(const Utils::FileName &path);
-                ~SpriteSheet();
+                public:
+                    SpriteSheet(const Utils::FileName &path);
+                    ~SpriteSheet();
 
-                /** \return the sprite map */
-                inline const SpriteMap  &Sprites() const                    {return _spriteMap;}
+                    /** \return the sprite map */
+                    inline const SpriteMap  &Sprites() const                    {return _spriteMap;}
 
-                /** \return the texture used for every sprites */
-                inline const GL::Texture &Texture() const                   {return _texture;}
+                    /** \return the texture used for every sprites */
+                    inline const GL::Texture &Texture() const                   {return _texture;}
 
-                /** \return the box associated to the given sprite name */
-                inline const Box2i      &SpriteBox(const std::string &s)    {return _spriteMap[s];}
+                    /** \return the box associated to the given sprite name */
+                    inline const Box2i      &SpriteBox(const std::string &s)    {return _spriteMap[s];}
 
-                /** \return true if the given sprite name exist */
-                bool                    SpriteExist(const std::string &s) const;
+                    /** \return true if the given sprite name exist */
+                    bool                    SpriteExist(const std::string &s) const;
 
-            private:
-                GL::Texture     _texture;           ///< texture of the sprite sheet
-                SpriteMap       _spriteMap;         ///< box coordinated with associated names in the sprite sheet
-        };
+                private:
+                    GL::Texture     _texture;           ///< texture of the sprite sheet
+                    SpriteMap       _spriteMap;         ///< box coordinated with associated names in the sprite sheet
+            };
+        }
     }
 }
 

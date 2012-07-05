@@ -202,7 +202,7 @@ void    Plugin::ReadEffect(domEffectRef lib)
         return;
 
     LOG << "Create new Effect (MaterialConfig) " << lib->getId() << std::endl;
-    MaterialConfig *config = &_mapMaterialConfig[lib->getId()];
+    Core::MaterialConfig *config = &_mapMaterialConfig[lib->getId()];
 
     // Get a pointer to the effect element
     domEffect *EffectElement = (domEffect*)(domElement*)lib;
@@ -255,13 +255,13 @@ void    Plugin::ReadEffect(domEffectRef lib)
     }
 }
 
-void Plugin::ReadConstant(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant)
+void Plugin::ReadConstant(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant)
 {
     // TODO
     LOG << "Technique Constant not implemented" << std::endl;
 }
 
-void Plugin::ReadLambert(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert)
+void Plugin::ReadLambert(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert)
 {
     // TODO: take only the texture from diffuse for now
     if (lambert->getDiffuse())
@@ -270,7 +270,7 @@ void Plugin::ReadLambert(MaterialConfig &config, std::map<std::string, domCommon
     }
 }
 
-void Plugin::ReadPhong(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong)
+void Plugin::ReadPhong(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong)
 {
     // TODO: take only the texture from diffuse for now
     if (phong->getDiffuse())
@@ -279,7 +279,7 @@ void Plugin::ReadPhong(MaterialConfig &config, std::map<std::string, domCommon_n
     }
 }
 
-void Plugin::ReadBlinn(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn)
+void Plugin::ReadBlinn(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn)
 {
     // TODO: take only the texture from diffuse for now
     if (blinn->getDiffuse())
@@ -288,7 +288,7 @@ void Plugin::ReadBlinn(MaterialConfig &config, std::map<std::string, domCommon_n
     }
 }
 
-void Plugin::ReadTextureFromTechniqueEffect(MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader)
+void Plugin::ReadTextureFromTechniqueEffect(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader)
 {
     domCommon_color_or_texture_type::domTexture *textureElement = shader->getTexture();
     if (textureElement != NULL)
@@ -546,7 +546,7 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
         //LOG << "Create new Triangles Drawable `" << domTriangles->getName() << "`" << std::endl;
 
         _mapDrawable[domTriangles];
-        Drawable *newDrawable = _mapDrawable[domTriangles]; // creation du drawable
+        Core::Drawable *newDrawable = _mapDrawable[domTriangles]; // creation du drawable
         Box3f b = BuildTriangles(domTriangles, newDrawable);
         mesh->SetBox(mesh->GetBox() + b);
         mesh->Drawables().push_back(newDrawable);
@@ -594,23 +594,23 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
 */
 }
 
-Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Drawable *&drawable)
+Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Core::Drawable *&drawable)
 {
     LOG << "triangle count: " << domTriangles->getCount() << std::endl;
 
     daeString str_material = domTriangles->getMaterial();
-    MaterialConfig *config;
+    Core::MaterialConfig *config;
     if (str_material)
     {
         LOG << "Attaching material " << str_material << " to the drawable" << std::endl;
         config = _mapMaterialConfig[_mapMaterial[str_material]].Clone();
     }
     else
-        config = new MaterialConfig();
+        config = new Core::MaterialConfig();
 
-    Array<DefaultVertexType::Textured>  vertices(domTriangles->getCount() * 3);
-    Array<unsigned int>                 indices(domTriangles->getCount() * 3);
-    Box3f                               box;
+    Array<Core::DefaultVertexType::Textured>    vertices(domTriangles->getCount() * 3);
+    Array<unsigned int>                         indices(domTriangles->getCount() * 3);
+    Box3f                                       box;
 
     // prepare data
     domInputLocalOffset_Array &inputs = domTriangles->getInput_array();
@@ -705,7 +705,7 @@ Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Drawable *&drawable)
 
         box += Vector3f(vertices[ivertex].coord[0], vertices[ivertex].coord[1], vertices[ivertex].coord[2]);
     }
-    drawable = new Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, indices, 3, GL::Enum::Triangles, config);
+    drawable = new Core::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, indices, 3, GL::Enum::Triangles, config);
     return box;
 }
 

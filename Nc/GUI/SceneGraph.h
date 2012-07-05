@@ -30,7 +30,7 @@
 #include <list>
 #include <Nc/Graphics/Camera/Camera2d.h>
 #include "Define.h"
-#include "Widget.h"
+#include "Widget/Widget.h"
 
 namespace Nc
 {
@@ -73,8 +73,8 @@ namespace Nc
                 void RemoveWidget(Widget *w);
 
             private:
-                Widget                  *_widgetFocused;    ///< the current focused widget
-                Graphic::Window         *_attachedWindow;   ///< the attached window
+                Widget              *_widgetFocused;    ///< the current focused widget
+                Graphic::Window     *_attachedWindow;   ///< the attached window
         };
     }
 }

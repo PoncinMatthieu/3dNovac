@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// to manipulate a bit mask easily
+        /// To manipulate a bit mask easily and secure a enum flags
         /**
             The bit field used a type T which should be an enum and D to specify the sizeof of the mask.
 

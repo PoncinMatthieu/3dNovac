@@ -30,7 +30,7 @@
 
 using namespace std;
 using namespace Nc;
-using namespace Nc::Graphic;
+using namespace Nc::Graphic::Core;
 using namespace Nc::Utils;
 
 struct GliphCmp

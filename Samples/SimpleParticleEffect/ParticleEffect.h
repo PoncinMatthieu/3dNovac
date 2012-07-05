@@ -46,7 +46,7 @@ namespace SimpleParticleEffect
 
     private:
         Nc::Graphic::ProgrammableMaterial	*_material;
-        Nc::Graphic::Drawable			    *_drawable;
+        Nc::Graphic::Core::Drawable		    *_drawable;
         Nc::Utils::Clock			        _clock;
 
         bool                                _started;

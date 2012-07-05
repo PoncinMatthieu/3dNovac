@@ -28,14 +28,14 @@
 
 using namespace Nc;
 using namespace Nc::Graphic;
-using namespace Nc::Graphic::DefaultVertexType;
+using namespace Nc::Graphic::Core::DefaultVertexType;
 using namespace Nc::Graphic::DefaultSources;
 
 DefaultMaterialColored::DefaultMaterialColored(const std::string &name)
     : IDefaultMaterial(name)
 {}
 
-bool    DefaultMaterialColored::Configure(Drawable &drawable)
+bool    DefaultMaterialColored::Configure(Core::Drawable &drawable)
 {
     GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
     _program.Enable();
@@ -51,7 +51,7 @@ bool    DefaultMaterialColored::Configure(Drawable &drawable)
     return true;
 }
 
-void    DefaultMaterialColored::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
+void    DefaultMaterialColored::Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable)
 {
     drawable.Enable();
     _program.Enable(); // enable the shader
@@ -66,7 +66,7 @@ DefaultMaterialTextured::DefaultMaterialTextured(const std::string &name)
     : IDefaultMaterial(name)
 {}
 
-bool    DefaultMaterialTextured::Configure(Drawable &drawable)
+bool    DefaultMaterialTextured::Configure(Core::Drawable &drawable)
 {
     GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
     _program.Enable();
@@ -84,7 +84,7 @@ bool    DefaultMaterialTextured::Configure(Drawable &drawable)
     return true;
 }
 
-void    DefaultMaterialTextured::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
+void    DefaultMaterialTextured::Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable)
 {
     drawable.Enable();
     _program.Enable(); // enable the shader
@@ -193,7 +193,7 @@ void    DefaultMaterial<Textured3d>::Initialize()
     IDefaultMaterial::Initialize();
 }
 
-void    DefaultMaterial<Textured3d>::Render(SceneGraph *scene, const TMatrix &modelMatrix, Drawable &drawable)
+void    DefaultMaterial<Textured3d>::Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable)
 {
     drawable.Enable();
     _program.Enable(); // enable the shader

@@ -29,8 +29,9 @@
 
 using namespace Nc;
 using namespace Nc::System;
+using namespace Nc::Graphic::Core;
 
-UInt32 Graphic::Font::_defaultCharset[] =
+UInt32 Font::_defaultCharset[] =
 {
     // Printable characters in ASCII range
     0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
@@ -50,15 +51,15 @@ UInt32 Graphic::Font::_defaultCharset[] =
     0x00
 };
 
-Graphic::Font::Font()
+Font::Font()
 {
 }
 
-Graphic::Font::~Font()
+Font::~Font()
 {
 }
 
-void Graphic::Font::LoadFromFile(const Utils::FileName &file, unsigned int baseSize, const Utils::Unicode::UTF32 &charset)
+void Font::LoadFromFile(const Utils::FileName &file, unsigned int baseSize, const Utils::Unicode::UTF32 &charset)
 {
     _baseSize = baseSize;
 

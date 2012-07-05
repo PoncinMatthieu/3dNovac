@@ -27,7 +27,7 @@
 #include "SpriteSheet.h"
 
 using namespace Nc;
-using namespace Nc::Graphic;
+using namespace Nc::Graphic::Core;
 using namespace Nc::Utils;
 
 SpriteSheet::SpriteSheet(const Utils::FileName &path)

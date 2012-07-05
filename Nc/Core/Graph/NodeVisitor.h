@@ -40,13 +40,13 @@ namespace Nc
         {
             public:
                 template<typename ToVisitList, typename VisitableList>
-                NodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, VisitMethod visitMethod = VisitChilds, bool postVisits = true, bool direction = true)
-                    : AbstractNodeVisitor<VisitorType, ReturnType, Base>(toVisitList, visitableList, visitMethod, postVisits), _direction(direction)
+                NodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, VisitTarget visitTarget = VisitChilds, bool postVisits = true, bool direction = true)
+                    : AbstractNodeVisitor<VisitorType, ReturnType, Base>(toVisitList, visitableList, visitTarget, postVisits), _direction(direction)
                 {}
 
                 template<typename VisitedList>
-                NodeVisitor(const VisitedList &visitedList, VisitMethod visitMethod = VisitChilds, bool postVisits = true, bool direction = true)
-                    : AbstractNodeVisitor<VisitorType, ReturnType, Base>(visitedList, visitedList, visitMethod, postVisits), _direction(direction)
+                NodeVisitor(const VisitedList &visitedList, VisitTarget visitTarget = VisitChilds, bool postVisits = true, bool direction = true)
+                    : AbstractNodeVisitor<VisitorType, ReturnType, Base>(visitedList, visitedList, visitTarget, postVisits), _direction(direction)
                 {}
 
                 template<typename T, class NodeType, bool Graph, class Allocator>

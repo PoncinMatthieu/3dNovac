@@ -43,15 +43,15 @@ Sprite::Sprite(const Vector2f &size, const GL::Texture &t, float percentBox, con
 
 void Sprite::Initialize(const GL::Texture &t, const GL::Blend::Pattern &blendPattern)
 {
-    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = new GL::GeometryBuffer<DefaultVertexType::Textured2d,false>(GL::Enum::TriangleStrip);
+    GL::GeometryBuffer<Core::DefaultVertexType::Textured2d,false> *geo = new GL::GeometryBuffer<Core::DefaultVertexType::Textured2d,false>(GL::Enum::TriangleStrip);
     geo->VBO().Init(4, GL::Enum::DataBuffer::StaticDraw);
 
-    MaterialConfig *conf = new MaterialConfig(blendPattern);
+    Core::MaterialConfig *conf = new Core::MaterialConfig(blendPattern);
     conf->Textures.InitSize(1);
     conf->Textures[0] = t;
 
     _drawables.resize(1);
-    _drawables[0] = new Drawable(geo, conf);
+    _drawables[0] = new Core::Drawable(geo, conf);
     ChooseDefaultMaterial();
 
     _useSceneMaterial = false;
@@ -73,13 +73,13 @@ void Sprite::UpdateGeometry()
     float           xh = (float)_textureBox.Max(0) / (float)size.Data[0];
     float           yh = (float)_textureBox.Max(1) / (float)size.Data[1];
 
-    Array<DefaultVertexType::Textured2d, 4>   vertices;
+    Array<Core::DefaultVertexType::Textured2d, 4>   vertices;
     vertices[0].Fill(0, 0, xb, yb, _color);
     vertices[1].Fill(_spriteSize[0], 0, xh, yb, _color);
     vertices[2].Fill(0, _spriteSize[1], xb, yh, _color);
     vertices[3].Fill(_spriteSize[0], _spriteSize[1], xh, yh, _color);
 
-    GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d,false>*>(_drawables[0]->Geometry);
+    GL::GeometryBuffer<Core::DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Textured2d,false>*>(_drawables[0]->Geometry);
     geo->VBO().UpdateData(vertices.Data);
     _needUpdate = false;
 }

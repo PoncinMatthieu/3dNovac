@@ -19,7 +19,8 @@ namespace SampleViewer
         public:
             enum IndexCmd
             {
-                StartSample = 0
+                StartSample = 0,
+                SampleSelected
             };
 
         public:
@@ -31,6 +32,7 @@ namespace SampleViewer
             virtual void    ReleaseContent();
 
             void            StartSampleCmd(Nc::Engine::IEvent *e);
+            void            SampleSelectedCmd(Nc::Engine::IEvent *e);
 
         protected:
             virtual void    Update(float runningTime);

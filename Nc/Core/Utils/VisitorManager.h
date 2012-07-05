@@ -44,6 +44,8 @@ namespace Nc
             The Visitor Manager implement two visitor.
             The first one allow you to visit an object by using a vtable and resolving the type and calling the visit method if you want to visit the true type by initialize the type you want to visit with a typelist.
             And the second allow you like the first to visit an object but use a second vtable to call methods which should use to recall the visitor itself to visit a structure like a graph or a tree.
+
+            \todo Specialize the InvokableVisitor for (ReturnType == bool) to setup some Invokation method (for exemple to stop the visitation when result == false).
         */
         class VisitorManager
         {

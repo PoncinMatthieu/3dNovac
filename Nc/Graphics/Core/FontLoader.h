@@ -34,16 +34,19 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to load font files
-        class LGRAPHICS FontLoader
+        namespace Core
         {
-            public:
-                FontLoader()            {}
-                virtual ~FontLoader()   {}
+            /// Interface to load font files
+            class LGRAPHICS FontLoader
+            {
+                public:
+                    FontLoader()            {}
+                    virtual ~FontLoader()   {}
 
-                /** Load a font from a file using a charset */
-                virtual void        LoadFromFile(const Utils::FileName &file, const Utils::Unicode::UTF32 &charset, Font &font) = 0;
-        };
+                    /** Load a font from a file using a charset */
+                    virtual void        LoadFromFile(const Utils::FileName &file, const Utils::Unicode::UTF32 &charset, Font &font) = 0;
+            };
+        }
     }
 }
 

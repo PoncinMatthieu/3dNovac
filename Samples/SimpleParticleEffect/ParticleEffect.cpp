@@ -1,5 +1,5 @@
 
-#include <Nc/Graphics/Material/Drawable.h>
+#include <Nc/Graphics/Core/Drawable.h>
 #include "ParticleEffect.h"
 
 using namespace Nc;
@@ -37,7 +37,7 @@ ParticleEffect::ParticleEffect()
         vertices[i].lifeTime = 5.0 * (Rand(0.f, 1.f) * 0.3 + 0.3);
     }
 
-    _drawable = new Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, GL::Enum::Points);
+    _drawable = new Core::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, GL::Enum::Points);
     _drawable->Config->SetBlend(GL::Blend::Add);
     _drawable->Config->RasterMode().SetDepthTest(false);
 

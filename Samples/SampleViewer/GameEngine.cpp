@@ -13,6 +13,7 @@ GameEngine::GameEngine(Nc::Engine::Manager *manager)
     _sampleFactory = new SampleFactory(manager);
 
     AddNewCmd(StartSample,      (Nc::Engine::CmdFunction)&GameEngine::StartSampleCmd);
+    AddNewCmd(SampleSelected,   (Nc::Engine::CmdFunction)&GameEngine::SampleSelectedCmd);
 }
 
 GameEngine::~GameEngine()
@@ -46,6 +47,7 @@ void GameEngine::LoadContent()
 
     for (std::list<std::string>::const_iterator it = _sampleFactory->SampleNames().begin(); it != _sampleFactory->SampleNames().end(); ++it)
         _menu->AddSample(*it);
+    _menu->SampleSelected();
 }
 
 void GameEngine::Update(float runningTime)
@@ -91,6 +93,11 @@ void GameEngine::MouseMotionEvent(System::Event &)
 {
 }
 
+void GameEngine::SampleSelectedCmd(Nc::Engine::IEvent *)
+{
+    _menu->SampleSelected();
+}
+
 void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
 {
     if (!_menu->Sample())
@@ -111,11 +118,11 @@ void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
         throw Utils::Exception("StartSampleCmd", "Failed to create the new GameEngine.");
 
     // create the widget sub window
-    GUI::WidgetSubWindow *w = _menu->CreateSampleWindow(_window);
+    GUI::SubWindow *w = _menu->CreateSampleWindow(_window);
 
     // init the sample game engine
     engine->LimitFrameRate(60);
-    engine->SetWindow(w->SubWindow());
+    engine->SetWindow(w->GetSubWindow());
     _manager->AddEngine(engine);
 
     // start the sample game engine

@@ -213,7 +213,7 @@ namespace Nc
         };
 
         /// Define a visiting method
-        enum VisitMethod
+        enum VisitTarget
         {
             VisitOnlyCurrentNode,
             VisitParents,
@@ -233,9 +233,9 @@ namespace Nc
 
             public:
                 template<typename ToVisitList, typename VisitableList>
-                AbstractNodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, VisitMethod visitMethod = VisitChilds, bool postVisits = true)
+                AbstractNodeVisitor(const ToVisitList &toVisitList, const VisitableList &visitableList, VisitTarget visitTarget = VisitChilds, bool postVisits = true)
                     :   Utils::VisitorManager::InvokableVisitor<VisitorType, Base, ReturnType>(postVisits),
-                        _visitMethod(visitMethod)
+                        _visitMethod(visitTarget)
                 {
                     InitVTableInvokable(visitableList, NodeInvoker());
                     InitVTable(toVisitList, NodeVisiter());
@@ -294,7 +294,7 @@ namespace Nc
                 }
 
             protected:
-                VisitMethod     _visitMethod;
+                VisitTarget     _visitMethod;
         };
     }
 }

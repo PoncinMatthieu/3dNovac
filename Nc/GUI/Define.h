@@ -65,13 +65,19 @@
         {
             // definitions
             struct ILook;
-            class Widget;
 
-            template<typename VisitorType, bool IsConst = false, typename ReturnType = void>
-            class WidgetVisitor;
+            class Widget;
 
             // typedef
             typedef std::list<Widget*>      ListPWidget;
+
+            namespace Visitor
+            {
+                template<typename VisitorType, bool IsConst = false, typename ReturnType = void>
+                class WidgetVisitor;
+
+                class CheckFocus;
+            }
         }
     }
 

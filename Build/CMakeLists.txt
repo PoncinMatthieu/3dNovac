@@ -25,7 +25,7 @@ if(UNIX)
     link_directories(../extlibs/Collada/lib/)
     link_directories(../extlibs/Collada/extlibs/)
 else()
-	include_directories(../extlibs/Collada/extlibs/boost/)	
+	include_directories(../extlibs/Collada/extlibs/boost/)
 	link_directories(../extlibs/)
 	link_directories(../extlibs/SFML/lib/)
 	link_directories(../extlibs/Collada/lib/)
@@ -98,9 +98,18 @@ else()
 endif()
 
 # Set the Nc-GUI / Nc-Contrib / Nc-Audio sources path
-file(GLOB Nc-GUI-sources 		../Nc/GUI/*.cpp 		../Nc/GUI/*.h)
-file(GLOB Nc-Contrib-sources	../Nc/Contrib/*.cpp 	../Nc/Contrib/*.h)
-file(GLOB Nc-Audio-sources		../Nc/Audio/*.cpp 		../Nc/Audio/*.h)
+file(GLOB_RECURSE Nc-GUI-sources
+  ../Nc/GUI/*.cpp
+  ../Nc/GUI/*.h
+)
+file(GLOB Nc-Contrib-sources
+  ../Nc/Contrib/*.cpp
+  ../Nc/Contrib/*.h
+)
+file(GLOB Nc-Audio-sources
+  ../Nc/Audio/*.cpp
+  ../Nc/Audio/*.h
+)
 
 # Set the ColladaPlugin sources path
 file(GLOB PluginFileFormatCollada-sources	../Plugin/FileFormatCollada/*.cpp ../Plugin/FileFormatCollada/*.h)
