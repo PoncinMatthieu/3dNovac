@@ -57,7 +57,7 @@ namespace Nc
                 \todo the constructor takes the name of the font to retreive/create the font dynamically. Find a better way to create and store fonts.
                 \todo implement Justify alignment.
             */
-            class PlainTextFormater : public ITextFormater
+            class LGRAPHICS PlainTextFormater : public ITextFormater
             {
                 public:
                     /** Define the style of the text. */

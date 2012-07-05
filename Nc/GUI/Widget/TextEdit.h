@@ -36,7 +36,7 @@ namespace Nc
         /**
             \todo Make the text edit editable.
         */
-        class TextEdit : public ScrollArea
+        class LGUI TextEdit : public ScrollArea
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextEdit);

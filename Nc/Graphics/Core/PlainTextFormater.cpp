@@ -286,7 +286,7 @@ void    PlainTextFormater::DrawUnderlines(Array<DefaultVertexType::Colored2d> &u
     underlines.Data[noUnderline++].Fill(0, Y - 2, _color);
 }
 
-void    PlainTextFormater::DrawVertices(Array<DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice, float X, float Y, float thickness, float italicCoeff, const Core::Glyph *curGlyph, float factor)
+void    PlainTextFormater::DrawVertices(Array<DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice, float X, float Y, float thickness, float italicCoeff, const Glyph *curGlyph, float factor)
 {
     float glyphPosX = curGlyph->Pos.Data[0] * factor;
     float glyphPosY = curGlyph->Pos.Data[1] * factor;
@@ -353,7 +353,7 @@ void    PlainTextFormater::DrawVertices(Array<DefaultVertexType::Textured2d> &ve
     }
 }
 
-void    PlainTextFormater::TranslateCaraters(Core::DefaultVertexType::Textured2d *vertices, unsigned int noVertice, float offsetX, float offsetY)
+void    PlainTextFormater::TranslateCaraters(DefaultVertexType::Textured2d *vertices, unsigned int noVertice, float offsetX, float offsetY)
 {
     for (unsigned int i = 0; i < noVertice; ++i)
     {
@@ -362,7 +362,7 @@ void    PlainTextFormater::TranslateCaraters(Core::DefaultVertexType::Textured2d
     }
 }
 
-void    PlainTextFormater::TranslateUnderlines(Core::DefaultVertexType::Colored2d *underlines, unsigned int noUnderline, float offsetX, float offsetY)
+void    PlainTextFormater::TranslateUnderlines(DefaultVertexType::Colored2d *underlines, unsigned int noUnderline, float offsetX, float offsetY)
 {
     for (unsigned int i = 0; i < noUnderline; ++i)
     {
@@ -373,8 +373,8 @@ void    PlainTextFormater::TranslateUnderlines(Core::DefaultVertexType::Colored2
 
 void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &X, float &Y, float thickness, float &curCharWidth, float &curWordWidth, float &sizeBetweenWords, float &lastSizeBetweenWords,
                                             unsigned int &indexLineBegin, unsigned int &indexWordBegin, float &posOffsetLastLine,
-                                            Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice,
-                                            Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline)
+                                            Array<DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice,
+                                            Array<DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline)
 {
     bool wordTooLong = false;
 

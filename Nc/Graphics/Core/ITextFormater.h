@@ -50,7 +50,7 @@ namespace Nc
                 \sa
                     - PlainTextFormater, Correspond to the default text formater allowing the creation of stylised and aligned text.
             */
-            class ITextFormater
+            class LGRAPHICS ITextFormater
             {
                 public:
                     ITextFormater() : _needUpdate(true) {}
