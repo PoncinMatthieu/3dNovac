@@ -140,7 +140,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
     if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
         throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer which is not enabled.");
 
-    glFramebufferTexture(_target, attachPoint, texture.GetIndex(), level);
+    glFramebufferTexture2D(_target, attachPoint, texture.GetTarget(), texture.GetIndex(), level);
     _attachedBuffers[attachPoint] = texture.Clone();
 }
 

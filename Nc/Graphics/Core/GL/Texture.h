@@ -54,10 +54,12 @@ namespace Nc
                     virtual Object          *Clone() const              {return new Texture(*this);}
 
                     // Texture Opengl Object manip
-                    /** Return the name of the texture */
+                    /** \return the name of the texture */
                     std::string                     &Name()             {return _name;}
-                    /** Return the index of the gl texture */
+                    /** \return the index of the gl texture. */
                     virtual inline unsigned int		GetIndex() const    {return _texture;}
+					/** \return the target of the gl texture. */
+					Enum::Texture::Target			GetTarget() const	{return _target;}
 
                     /** Bind the texture */
                     virtual void					Enable() const;

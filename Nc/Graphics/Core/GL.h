@@ -54,7 +54,7 @@
 	#define glDeleteFramebuffers				EXT.glDeleteFramebuffers
 	#define glBindFramebuffer					EXT.glBindFramebuffer
 	#define glFramebufferRenderbuffer			EXT.glFramebufferRenderbuffer
-	#define glFramebufferTexture				EXT.glFramebufferTexture
+	#define glFramebufferTexture2D				EXT.glFramebufferTexture2D
 	#define glCheckFramebufferStatus			EXT.glCheckFramebufferStatus
 	#define glBlitFramebuffer					EXT.glBlitFramebuffer
 	#define glGenRenderbuffers					EXT.glGenRenderbuffers

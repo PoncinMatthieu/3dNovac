@@ -101,7 +101,7 @@ namespace Nc
 					PFNGLDELETEFRAMEBUFFERSPROC				glDeleteFramebuffers;
 					PFNGLBINDFRAMEBUFFERPROC				glBindFramebuffer;
 					PFNGLFRAMEBUFFERRENDERBUFFERPROC		glFramebufferRenderbuffer;
-					PFNGLFRAMEBUFFERTEXTUREPROC				glFramebufferTexture;
+					PFNGLFRAMEBUFFERTEXTURE2DPROC			glFramebufferTexture2D;
 					PFNGLCHECKFRAMEBUFFERSTATUSPROC			glCheckFramebufferStatus;
 					PFNGLBLITFRAMEBUFFERPROC				glBlitFramebuffer;
 					PFNGLGENRENDERBUFFERSPROC				glGenRenderbuffers;
