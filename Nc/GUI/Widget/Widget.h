@@ -39,6 +39,8 @@ namespace Nc
             A widget can receive window events and interact concequently.
             A widget use it's parents widget to calculate it's relative positions.
             And The relative position is computed with the defined Corner for X position and Y position.
+
+            \todo Think about a whole new event system for the widgets, a widget should be able to send a particular event to a parametized target.
         */
         class LGUI  Widget : public Graphic::Object, public Engine::Handler
         {

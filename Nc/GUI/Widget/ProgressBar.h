@@ -35,7 +35,7 @@ namespace Nc
     {
         /// To manage a progress bar
         /**
-            \todo Recode the progress bar to use the Looks class.
+            \todo Recode the progress bar to use the Widget Looks.
         */
         class LGUI  ProgressBar : public Widget
         {

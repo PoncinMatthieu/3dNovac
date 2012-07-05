@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Abstract class to define 3d Camera
+        /// Abstract class to define 3d Camera.
         /**
             A 3d Camera needs to have the routines to manage the events and to update the mouvement of the camera.
             The camera is composed by an Eye, a Center and a vector Up.
@@ -51,67 +51,67 @@ namespace Nc
                 Camera3d(Window *attachedWindow, float ratioAspect, float nearf, float farf, float fieldOfView);
                 virtual ~Camera3d() {};
 
-                /** Set the projection parameters */
+                /** Set the projection parameters. */
                 void            SetProjection(float ratioAspect, float nearf, float farf, float fieldOfView);
-                /** Update the projectionMatrix to a perspective projection */
+                /** Update the projectionMatrix to a perspective projection. */
                 virtual void    UpdateProjection(SceneGraph *scene);
                 /**
                     Fix the camera. Set the View Matrix of the scene by using the property _viewMatrix.
-                    To avoid any useless compute, this matrix is compute at the call of the method, "UpdateViewMatrix"
+                    To avoid any useless compute, this matrix is compute at the call of the method, "UpdateViewMatrix".
                 */
                 virtual void    Fix(SceneGraph *scene);
 
-                /** Update the ratio aspect of the projection */
+                /** Update the ratio aspect of the projection. */
                 inline void     Resized(const System::Event &event)         {Resized(Vector2ui(event.size.width, event.size.height));}
-                /** Update the ratio aspect of the projection */
+                /** Update the ratio aspect of the projection. */
                 virtual void    Resized(const Vector2ui &size);
 
                 //Vector3f        Get3dCoordinateFromProjection(int x, int y);
 
-                /** Update the eye of the camera */
+                /** Update the eye of the camera. */
                 virtual void    MajEye() = 0;
 
                 // accesseurs
-                /** \return the eye of the camera */
+                /** \return the eye of the camera. */
                 inline const Vector3f   &Eye() const                    {return _eye;}
-                /** Set the eye of the camera */
+                /** Set the eye of the camera. */
                 inline void             Eye(const Vector3f &eye)        {_eye = eye;}
-                /** \return the center of the camera */
+                /** \return the center of the camera. */
                 inline const Vector3f   &Center() const                 {return _center;}
-                /** Set the center of the camera, maybe you will need to call "MajEye" after */
+                /** Set the center of the camera, maybe you will need to call "MajEye" after. */
                 inline void             Center(const Vector3f &pos)     {_center = pos;}
-                /** \return the up vector of the camera */
+                /** \return the up vector of the camera. */
                 inline const Vector3f   &Up() const                     {return _up;}
-                /** Set the up vector of the camera */
+                /** Set the up vector of the camera. */
                 inline void             Up(const Vector3f &up)          {_up = up;}
 
-                /** Compute the view matrix used to render a scene */
+                /** Compute the view matrix used to render a scene. */
                 virtual void            UpdateViewMatrix();
-                /** Compute the projection frustum */
+                /** Compute the projection frustum. */
                 virtual void            UpdateProjectionFrustum();
-                /** Compute the view frustum */
+                /** Compute the view frustum. */
                 virtual void            UpdateViewFrustum();
 
-                /** \return true if the given \p point is the frustum */
+                /** \return true if the given \p point is the frustum. */
                 virtual bool            PointInFrustum(const Vector3f &point);
-                /** \return true if the given \p box is the frustum */
+                /** \return true if the given \p box is the frustum. */
                 virtual bool            BoxInFrustum(const Vector3f &center, float size);
 
             protected:
-                /** To update the mouvement of the camera with the keystates of WindowInput */
+                /** To update the mouvement of the camera with the keystates of WindowInput. */
                 virtual void    Update(float RunningTime) = 0; // Running Time in second
 
             protected:
                 // eye properties
-                Vector3f        _eye;               ///< Vector to define the eye of the camera
-                Vector3f        _center;            ///< Vector to define the center of the camera
-                Vector3f        _up;                ///< Vector to define the up of the camera
+                Vector3f        _eye;               ///< Vector to define the eye of the camera.
+                Vector3f        _center;            ///< Vector to define the center of the camera.
+                Vector3f        _up;                ///< Vector to define the up of the camera.
 
                 // projection properties
-                float           _ratioAspect;       ///< define the ratio of the perspective projection
-                float           _near;              ///< define the near value of the perspective projection
-                float           _far;               ///< define the far value of the perspective projection
-                float           _fieldOfView;       ///< define the fieldOfView of the perspective projection
+                float           _ratioAspect;       ///< define the ratio of the perspective projection.
+                float           _near;              ///< define the near value of the perspective projection.
+                float           _far;               ///< define the far value of the perspective projection.
+                float           _fieldOfView;       ///< define the fieldOfView of the perspective projection.
 
                 // frustum information
                 float           _hNear;
@@ -130,11 +130,12 @@ namespace Nc
                 Vector3f        _frustumFTR;
                 Vector3f        _frustumFBR;
                 Vector3f        _frustumFBL;
-                Planef          _planes[6];         ///< the six planes of the frustum
+                Planef          _planes[6];         ///< the six planes of the frustum.
 
             private:
-                bool            _viewMatrixUpdated; ///< statement to avoid to update the scene View Matrix each time
+                bool            _viewMatrixUpdated; ///< statement to avoid to update the scene View Matrix each time.
                 TMatrix         _viewMatrix;        ///< the view matrix which correspond to the vectors _eye / _center / _up. This matrix is used to set the View Matrix of the scene at the call of the method "Fix".
+                System::Mutex   _mutexViewMatrix;   ///< protect against concurrent access the viewMatrix.
         };
     }
 }

@@ -44,6 +44,8 @@ namespace Nc
             Helps you to create and manage a rendering thread.
             The engine has a Window instance and to create it you will need to set the pointer to a member function of the "Main" engine    <br\>
             The rendering is done with the SceneGraphManager.
+
+            \todo Think about removing the static elapsedTime. Statics are evil :D
         */
         class LGRAPHICS   Engine : public Nc::Engine::IEngine
         {

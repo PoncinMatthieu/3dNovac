@@ -34,7 +34,7 @@ namespace Nc
     namespace GUI
     {
         /**
-            \todo make the text edit editable.
+            \todo Make the text edit editable.
         */
         class TextEdit : public ScrollArea
         {

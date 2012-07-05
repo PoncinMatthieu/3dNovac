@@ -31,15 +31,17 @@ namespace SokobanDemo
       virtual void	MouseButtonEvent(Nc::System::Event &event);
       virtual void	MouseMotionEvent(Nc::System::Event &event);
 
+      void          MovePlayer(Nc::System::Event &event);
+
      private:
-      Nc::Graphic::SceneGraph		*_scene3d;	///< our scene 3d, displayed by the graphic engine
-      Nc::Graphic::StandardCamera3d		*_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
+      Nc::Graphic::SceneGraph		        *_scene3d;	///< our scene 3d, displayed by the graphic engine
+      Nc::Graphic::StandardCamera3d		    *_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
 
       Nc::Graphic::SceneNodeFormatManager	_sceneNodeFormatManager;
 
-      Map					*_map;
+      Map					                *_map;
       Nc::Graphic::DefaultLightingMaterial	*_lightingMaterial;
-      Nc::Graphic::Light			*_light;
+      Nc::Graphic::Light			        *_light;
     };
 }
 

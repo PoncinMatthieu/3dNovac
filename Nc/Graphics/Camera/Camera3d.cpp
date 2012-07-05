@@ -80,6 +80,7 @@ void    Camera3d::UpdateProjection(SceneGraph *scene)
 
 void    Camera3d::Fix(SceneGraph *scene)
 {
+    System::Locker l(&_mutexViewMatrix);
     Camera::Fix(scene);
     if (_viewMatrixUpdated)
         scene->ViewMatrix() = _viewMatrix;
@@ -93,6 +94,7 @@ void    Camera3d::Resized(const Vector2ui &size)
 
 void Camera3d::UpdateViewMatrix()
 {
+    System::Locker l(&_mutexViewMatrix);
     _viewMatrix.SetLookAt(_eye, _center, _up);
     _viewMatrixUpdated = true;
 }

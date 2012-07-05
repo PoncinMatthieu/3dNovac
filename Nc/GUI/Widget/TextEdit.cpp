@@ -36,6 +36,8 @@ TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &align
     : ScrollArea(alignment, size)
 {
     _textDocument = new TextDocument(this, text, Left | Top, size, ttf, s);
+    _textDocument->PaddingH(5);
+    _textDocument->PaddingV(5);
     _textDocument->Percent(Vector2f(100, 0));
     AddComposedWidget(_textDocument);
     SetView(_textDocument);
@@ -85,12 +87,20 @@ TextEdit::TextDocument::TextDocument(TextEdit *editor, const Utils::Unicode::UTF
 void    TextEdit::TextDocument::Resize()
 {
     Widget::Resize();
+
+    bool resized = false;
     if (static_cast<Graphic::Core::PlainTextFormater*>(text->Formater())->GetDocumentSize() != (_size[0] - PaddingH()))
     {
         static_cast<Graphic::Core::PlainTextFormater*>(text->Formater())->SetDocumentSize(_size[0] - PaddingH());
-        _size[1] = text->Size()[1];
-        _editor->Resize();
+        resized = true;
     }
+    if (_size[1] != text->Size()[1] + PaddingV())
+    {
+        _size[1] = text->Size()[1] + PaddingV();
+        resized = true;
+    }
+    if (resized)
+        _editor->Resize();
 }
 
 void    TextEdit::TextDocument::Update()
