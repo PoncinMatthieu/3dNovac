@@ -47,7 +47,7 @@ void GameEngine::LoadContent()
     _scene3d = new SceneGraph();
 
     // creation de la camera
-    _camera = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40);
+    _camera = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40, 70);
     _camera->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
     _scene3d->AddChild(_camera);
 
@@ -76,7 +76,7 @@ void GameEngine::LoadContent()
     _camera2->InibitMovement();
     _scene3d->AddChild(_camera2);
     // creation d'une troisieme camera pour fake la vue de l'octree
-    _camera3 = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40);
+    _camera3 = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40, 70);
     _camera3->InibitMovement();
     _camera3->SetFixState(false);
     _camera3->DrawFrustum(true);
@@ -102,8 +102,11 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     if (event.type == System::Event::Resized)
       {
         _camera->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
+        _camera->SetProjection((_window->Width() / 2.f) / _window->Height(), 0.5, 40, 70);
         _camera2->SetViewport(_window->Width() / 2.f, 0, _window->Width() / 2.f, _window->Height());
+        _camera2->SetProjection((_window->Width() / 2.f) / _window->Height(), 0.1f, 1000, 70);
         _camera3->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
+        _camera3->SetProjection((_window->Width() / 2.f) / _window->Height(), 0.5, 40, 70);
       }
     if (event.type == System::Event::KeyPressed)
     {
