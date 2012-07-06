@@ -113,28 +113,25 @@ void    Entity::Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)
     }
 
     // insert
-    Lock();
-    Entity *entity = dynamic_cast<Entity*>(node);
-    if (entity != NULL)
-    {
-        if (at < 0)
-            AddChild(entity);
-        else
-            InsertChild(entity, at);
-    }
-    else
-    {
-        Unlock();
-        throw Utils::Exception("Entity::Move", "Can't move the node. The types are incompatible.");
-    }
-    Unlock();
+	{
+		System::Locker l(&GetMutex());
+		Entity *entity = dynamic_cast<Entity*>(node);
+		if (entity != NULL)
+		{
+			if (at < 0)
+				AddChild(entity);
+			else
+				InsertChild(entity, at);
+		}
+		else
+			throw Utils::Exception("Entity::Move", "Can't move the node. The types are incompatible.");
+	}
 
     // remove
     if (oldParentEntity != NULL)
     {
-        oldParent->Lock();
+		System::Locker l(&oldParent->GetMutex());
         oldParentEntity->RemoveChild((oldAt > at && oldParentEntity == this) ? (oldAt + 1) : oldAt);
-        oldParent->Unlock();
     }
 }
 

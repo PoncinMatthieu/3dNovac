@@ -27,6 +27,7 @@
 #include "MainMenu.h"
 #include "GameEngine.h"
 
+using namespace Nc;
 using namespace Nc::Utils;
 using namespace Nc::System;
 using namespace Nc::GUI;
@@ -70,7 +71,7 @@ void MainMenu::UpdateMode(Pattern mode)
 {
     _pattern = mode;
 
-    _GUI->Lock();
+    System::Locker l(&_GUI->GetMutex());
     _selectModeWindow->Enable(false);
 //    _multiModeWindow->Enable(false);
 //    _inGameWindow->Enable(false);
@@ -106,5 +107,4 @@ void MainMenu::UpdateMode(Pattern mode)
             break;
         }
 */    }
-    _GUI->Unlock();
 }

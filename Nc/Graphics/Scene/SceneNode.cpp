@@ -35,18 +35,13 @@ using namespace Nc::Graphic;
 
 ISceneNode::ISceneNode()
     :   System::Object(),
-        _locker(NULL), _enabled(true),
+        _enabled(true),
         _updatingController(NULL), _renderingController(NULL)
 {
 }
 
 ISceneNode::~ISceneNode()
 {
-    if (_locker != NULL)
-    {
-        delete _locker;
-        _locker = NULL;
-    }
 }
 
 bool    ISceneNode::EnabledRecursif() const
@@ -58,7 +53,6 @@ bool    ISceneNode::EnabledRecursif() const
 
 void    ISceneNode::UpdateNode(float elapsedTime)
 {
-    //Lock();
     if (_enabled)
     {
         if (_updatingController != NULL)
@@ -68,35 +62,25 @@ void    ISceneNode::UpdateNode(float elapsedTime)
         }
         Update(elapsedTime);
     }
-    //Unlock();
 }
 
 void    ISceneNode::RenderNode(SceneGraph *scene)
 {
-    try
+	System::Locker l(&_mutex);
+    if (_enabled)
     {
-        Lock();
-        if (_enabled)
+        if (_renderingController != NULL)
         {
-            if (_renderingController != NULL)
-            {
-                _renderingController->Scene(scene);
-                _renderingController->CurrentStade(IRenderingController::Begin);
-                (*_renderingController)(*this);
+            _renderingController->Scene(scene);
+            _renderingController->CurrentStade(IRenderingController::Begin);
+            (*_renderingController)(*this);
 
-                Render(scene);
+            Render(scene);
 
-                _renderingController->CurrentStade(IRenderingController::End);
-                (*_renderingController)(*this);
-            }
-            else
-                Render(scene);
+            _renderingController->CurrentStade(IRenderingController::End);
+            (*_renderingController)(*this);
         }
-        Unlock();
-    }
-    catch (...)
-    {
-        Unlock();
-        throw;
+        else
+            Render(scene);
     }
 }
