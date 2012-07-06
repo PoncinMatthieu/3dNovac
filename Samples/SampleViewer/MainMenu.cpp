@@ -1,7 +1,7 @@
 
 /*-----------------------------------------------------------------------------
 
-	3dNovac GUIDemo
+	3dNovac SampleViewer
 	Copyright (C) 2010-2011, The 3dNovac Team
 
     This file is part of 3dNovac.

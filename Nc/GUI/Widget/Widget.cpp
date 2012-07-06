@@ -64,7 +64,7 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
 }
 
 Widget::Widget(const Widget &w)
-    : Object(w), Handler(w)
+    : Object(w), Handler(w), _widgetLook(NULL)
 {
     Copy(w);
 }
@@ -97,6 +97,9 @@ void Widget::Copy(const Widget &w)
     _padding = w._padding;
     _percent = w._percent;
     _useStencil = w._useStencil;
+
+	if (_widgetLook)
+        delete _widgetLook;
     _widgetLook = (w._widgetLook) ? w._widgetLook->Clone() : NULL;
 
     _owner = NULL;

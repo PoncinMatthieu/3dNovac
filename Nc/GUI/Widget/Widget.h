@@ -301,7 +301,7 @@ namespace Nc
                 friend class Visitor::WidgetVisitor;
 
                 /** \todo to delete after adding an InvokationMethode on visitors */
-                friend class Visitor::CheckFocus;
+                friend struct Visitor::CheckFocus;
         };
     }
 }

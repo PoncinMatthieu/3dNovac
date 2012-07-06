@@ -57,10 +57,9 @@ void SceneGraph::BringToFront(Widget *w)
 {
     if (w != NULL)
     {
-        Lock();
+        System::Locker l(&GetMutex());
         AddChild(w);        // add to the end
         RemoveChild(w);     // remove the first occurence
-        Unlock();
     }
 }
 
