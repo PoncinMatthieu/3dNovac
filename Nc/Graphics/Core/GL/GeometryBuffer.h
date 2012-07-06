@@ -288,7 +288,7 @@ namespace Nc
                                 {
                                     for (unsigned int k = 0; k < componentSize; ++k)
                                     {
-                                        coords.Data[(j*componentSize)+k] = ((T*)((char*)data + offset + (reelSize * j)))[k];
+                                        coords.data[(j*componentSize)+k] = ((T*)((char*)data + offset + (reelSize * j)))[k];
                                     }
                                 }
                             }

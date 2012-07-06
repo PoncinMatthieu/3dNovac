@@ -64,8 +64,8 @@ void    Camera::Fix(SceneGraph *scene)
 
 bool    Camera::InViewport(const Vector2ui pos)
 {
-    return (pos.Data[0] >= _viewportX && pos.Data[1] >= _viewportY &&
-            pos.Data[0] < (_viewportX + _viewportWidth) && pos.Data[1] < (_viewportY + _viewportHeight));
+    return (pos.data[0] >= _viewportX && pos.data[1] >= _viewportY &&
+            pos.data[0] < (_viewportX + _viewportWidth) && pos.data[1] < (_viewportY + _viewportHeight));
 }
 
 void    Camera::Render(SceneGraph *scene)

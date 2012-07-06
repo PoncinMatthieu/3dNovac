@@ -65,9 +65,9 @@ namespace Nc
                 /** Set the UTF32 plain text. */
                 void                            PlainText(const Utils::Unicode::UTF32 &text);
 
-                /** \return the text formater */
+                /** \return the text formater. */
                 Core::ITextFormater             *Formater() const   {return _textFormater;}
-                /** Set the text formater */
+                /** Set the text formater. */
                 void                            Formater(Core::ITextFormater *f);
 
                 /** \return the size of the string. Will compute the size by using the textFormater if the text has changed. */

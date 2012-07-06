@@ -135,7 +135,7 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
         char        *x_data, *x_mask;
 
         // Mix the mask and the data
-        clen = (size.Data[0]/8)*size.Data[1];
+        clen = (size.data[0]/8)*size.data[1];
         x_data = (char *)malloc(clen);
         x_mask = (char *)malloc(clen);
         for ( i=0; i<clen; ++i )
@@ -145,16 +145,16 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
         }
 
         // Create the data image
-        data_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_data, size.Data[0], size.Data[1], 8, size.Data[0]/8);
+        data_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_data, size.data[0], size.data[1], 8, size.data[0]/8);
         data_image->byte_order = MSBFirst;
         data_image->bitmap_bit_order = MSBFirst;
-        data_pixmap = XCreatePixmap(_win->_display, _win->_xwin, size.Data[0], size.Data[1], 1);
+        data_pixmap = XCreatePixmap(_win->_display, _win->_xwin, size.data[0], size.data[1], 1);
 
         // Create the data mask
-        mask_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_mask, size.Data[0], size.Data[1], 8, size.Data[0]/8);
+        mask_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_mask, size.data[0], size.data[1], 8, size.data[0]/8);
         mask_image->byte_order = MSBFirst;
         mask_image->bitmap_bit_order = MSBFirst;
-        mask_pixmap = XCreatePixmap(_win->_display, _win->_xwin, size.Data[0], size.Data[1], 1);
+        mask_pixmap = XCreatePixmap(_win->_display, _win->_xwin, size.data[0], size.data[1], 1);
 
         // Create the graphics context
         GCvalues.function = GXcopy;
@@ -164,8 +164,8 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
         GCcursor = XCreateGC(_win->_display, data_pixmap, (GCFunction|GCForeground|GCBackground|GCPlaneMask), &GCvalues);
 
         // Blit the images to the pixmaps
-        XPutImage(_win->_display, data_pixmap, GCcursor, data_image, 0, 0, 0, 0, size.Data[0], size.Data[1]);
-        XPutImage(_win->_display, mask_pixmap, GCcursor, mask_image, 0, 0, 0, 0, size.Data[0], size.Data[1]);
+        XPutImage(_win->_display, data_pixmap, GCcursor, data_image, 0, 0, 0, 0, size.data[0], size.data[1]);
+        XPutImage(_win->_display, mask_pixmap, GCcursor, mask_image, 0, 0, 0, 0, size.data[0], size.data[1]);
         XFreeGC(_win->_display, GCcursor);
         // These free the x_data and x_mask memory pointers
         XDestroyImage(data_image);
@@ -177,7 +177,7 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
         if (_cursor == NULL)
             _cursor = new ::Cursor;
         *_cursor = XCreatePixmapCursor(_win->_display, data_pixmap, mask_pixmap,
-                                       &black, &white, posCenter.Data[0], posCenter.Data[1]);
+                                       &black, &white, posCenter.data[0], posCenter.data[1]);
         XFreePixmap(_win->_display, data_pixmap);
         XFreePixmap(_win->_display, mask_pixmap);
     }
@@ -190,34 +190,34 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
 
 
 /*
-    char *x_data = (char*)malloc(sizeof(char) * size.Data[0] * size.Data[1] / 8);
-    char *x_mask = (char*)malloc(sizeof(char) * size.Data[0] * size.Data[1] / 8);
+    char *x_data = (char*)malloc(sizeof(char) * size.data[0] * size.data[1] / 8);
+    char *x_mask = (char*)malloc(sizeof(char) * size.data[0] * size.data[1] / 8);
 
-    memcpy(x_data, data, size.Data[0] * size.Data[1] / 8);
-    memset(x_data, 0xFF, size.Data[0] * size.Data[1] / 8);
+    memcpy(x_data, data, size.data[0] * size.data[1] / 8);
+    memset(x_data, 0xFF, size.data[0] * size.data[1] / 8);
 
 	// Create the data image
     LOG << "create image" << std::endl;
-//	XImage *data_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, const_cast<char*>(data), size.Data[0], size.Data[1], 32, size.Data[0] * 4);
-	XImage *data_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_data, size.Data[0], size.Data[1], 8, size.Data[0] / 8);
+//	XImage *data_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, const_cast<char*>(data), size.data[0], size.data[1], 32, size.data[0] * 4);
+	XImage *data_image = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_data, size.data[0], size.data[1], 8, size.data[0] / 8);
     if (data_image == NULL)
         throw Utils::Exception("XCursor", "Failed to create the data XImage.");
     LOG << "create image end" << std::endl;
 	data_image->byte_order = MSBFirst;
 	data_image->bitmap_bit_order = MSBFirst;
     LOG << "create pixmap" << std::endl;
-	Pixmap dataPixmap = XCreatePixmap(_win->_display, _win->_xwin, size.Data[0], size.Data[1], 1);
+	Pixmap dataPixmap = XCreatePixmap(_win->_display, _win->_xwin, size.data[0], size.data[1], 1);
 
 
-	XImage *data_mask = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_mask, size.Data[0], size.Data[1], 8, size.Data[0] / 8);
-//	XImage *data_mask = XCreateImage(_win->_display, v, depth, XYBitmap, 0, x_mask, size.Data[0], size.Data[1], 8, (size.Data[0] + 7) / 8);
+	XImage *data_mask = XCreateImage(_win->_display, DefaultVisual(_win->_display, _win->_screen), 1, XYBitmap, 0, x_mask, size.data[0], size.data[1], 8, size.data[0] / 8);
+//	XImage *data_mask = XCreateImage(_win->_display, v, depth, XYBitmap, 0, x_mask, size.data[0], size.data[1], 8, (size.data[0] + 7) / 8);
     if (data_mask == NULL)
         throw Utils::Exception("XCursor", "Failed to create the mask XImage.");
     LOG << "create image end" << std::endl;
 	data_mask->byte_order = MSBFirst;
 	data_mask->bitmap_bit_order = MSBFirst;
     LOG << "create pixmap" << std::endl;
-	Pixmap maskPixmap = XCreatePixmap(_win->_display, _win->_xwin, size.Data[0], size.Data[1], 1);
+	Pixmap maskPixmap = XCreatePixmap(_win->_display, _win->_xwin, size.data[0], size.data[1], 1);
 
 
 	// Create the graphics context
@@ -232,8 +232,8 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
 
 	// Blit the images to the pixmaps and free the image and graphic context
     LOG << "put image" << std::endl;
-	XPutImage(_win->_display, dataPixmap, graphicsContext, data_image, 0, 0, 0, 0, size.Data[0], size.Data[1]);
-	XPutImage(_win->_display, maskPixmap, graphicsContext, data_mask, 0, 0, 0, 0, size.Data[0], size.Data[1]);
+	XPutImage(_win->_display, dataPixmap, graphicsContext, data_image, 0, 0, 0, 0, size.data[0], size.data[1]);
+	XPutImage(_win->_display, maskPixmap, graphicsContext, data_mask, 0, 0, 0, 0, size.data[0], size.data[1]);
     XFreeGC(_win->_display, graphicsContext);
     LOG << "destroy image" << std::endl;
 	XDestroyImage(data_image);
@@ -242,7 +242,7 @@ void Graphic::Cursor::LoadFromData(const unsigned char *data, const unsigned cha
 	XColor black = { 0, 0, 0, 0 };
 	XColor white = { 0xffff, 0xffff, 0xffff, 0xffff };
     LOG << "create pixmap cursor" << std::endl;
-    _cursor = new ::Cursor(XCreatePixmapCursor(_win->_display, dataPixmap, maskPixmap, &black, &white, posCenter.Data[0], posCenter.Data[1]));
+    _cursor = new ::Cursor(XCreatePixmapCursor(_win->_display, dataPixmap, maskPixmap, &black, &white, posCenter.data[0], posCenter.data[1]));
     LOG << "create pixmap cursor end" << std::endl;
 
     // We don't need the pixmap any longer, free it
@@ -312,8 +312,8 @@ void Graphic::Cursor::LoadFromXpm(const char *xpm[])
     Array<char>                 colorsChar;
 
     // read size, and malloc the data tab
-    sscanf(xpm[0], "%d %d %d", &size.Data[0], &size.Data[1], &nbColors);
-    unsigned char *data = new unsigned char[4 * size.Data[0] * size.Data[1]];
+    sscanf(xpm[0], "%d %d %d", &size.data[0], &size.data[1], &nbColors);
+    unsigned char *data = new unsigned char[4 * size.data[0] * size.data[1]];
 
 LOG << "read colors" << std::endl;
     // read colors
@@ -344,35 +344,35 @@ LOG << "read colors" << std::endl;
     }
 LOG << "read data" << std::endl;
     // read data
-    for (unsigned int i = 0; i < size.Data[1]; ++i)
+    for (unsigned int i = 0; i < size.data[1]; ++i)
     {
-        for (unsigned int j = 0; j < size.Data[0]; ++j)
+        for (unsigned int j = 0; j < size.data[0]; ++j)
         {
             for (unsigned int k = 0; k < nbColors; ++k)
                 if (xpm[i + nbColors + 1][j] == colorsChar[k])
                 {
                     for (unsigned int l = 0; l < 4; ++l)
-                        data[(i*size.Data[0]*4) + (j*4) + l] = colors[k][l];
+                        data[(i*size.data[0]*4) + (j*4) + l] = colors[k][l];
 LOG << k;
                 }
         }
 LOG << std::endl;
     }
 
-    for (unsigned int i = 0; i < size.Data[1]; ++i)
+    for (unsigned int i = 0; i < size.data[1]; ++i)
     {
-        for (unsigned int j = 0; j < size.Data[0]; ++j)
+        for (unsigned int j = 0; j < size.data[0]; ++j)
         {
             LOG << "[";
             for (unsigned int l = 0; l < 4; ++l)
-                LOG << (int)data[(i*size.Data[0]*4) + (j*4) + l];
+                LOG << (int)data[(i*size.data[0]*4) + (j*4) + l];
             LOG << "] ";
         }
         LOG << std::endl;
     }
 
 
-    sscanf(xpm[size.Data[1] + nbColors + 1], "%d,%d", &posCenter.Data[0], &posCenter.Data[1]);
+    sscanf(xpm[size.data[1] + nbColors + 1], "%d,%d", &posCenter.data[0], &posCenter.data[1]);
 LOG << "load from dada" << std::endl;
     LoadFromData(data, size, posCenter, 1);
     delete[] data;

@@ -33,8 +33,8 @@ namespace Nc
     {
         Vector3f Normal(const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, bool normalize)
         {
-            Vector3f v1(p2.Data[0] - p1.Data[0], p2.Data[1] - p1.Data[1], p2.Data[2] - p1.Data[2]);
-            Vector3f v2(p3.Data[0] - p1.Data[0], p3.Data[1] - p1.Data[1], p3.Data[2] - p1.Data[2]);
+            Vector3f v1(p2.data[0] - p1.data[0], p2.data[1] - p1.data[1], p2.data[2] - p1.data[2]);
+            Vector3f v2(p3.data[0] - p1.data[0], p3.data[1] - p1.data[1], p3.data[2] - p1.data[2]);
             Vector3f v3;
             v1.Cross(v2, v3);
             if (normalize)
@@ -53,10 +53,10 @@ namespace Nc
         bool InRect(const Vector2i &RectPos, const Vector2i &RectSize, const Vector2i &pointTest)
         {
             Vector2f posRectSize = RectPos + RectSize;
-            if ((pointTest.Data[0] > RectPos.Data[0] && pointTest.Data[0] < posRectSize.Data[0] && posRectSize.Data[0] > RectPos.Data[0]) ||
-                (pointTest.Data[0] < RectPos.Data[0] && pointTest.Data[0] > posRectSize.Data[0] && posRectSize.Data[0] < RectPos.Data[0]))
-                if ((pointTest.Data[1] > RectPos.Data[1] && pointTest.Data[1] < posRectSize.Data[1] && posRectSize.Data[1] > RectPos.Data[1]) ||
-                    (pointTest.Data[1] < RectPos.Data[1] && pointTest.Data[1] > posRectSize.Data[1] && posRectSize.Data[1] < RectPos.Data[1]))
+            if ((pointTest.data[0] > RectPos.data[0] && pointTest.data[0] < posRectSize.data[0] && posRectSize.data[0] > RectPos.data[0]) ||
+                (pointTest.data[0] < RectPos.data[0] && pointTest.data[0] > posRectSize.data[0] && posRectSize.data[0] < RectPos.data[0]))
+                if ((pointTest.data[1] > RectPos.data[1] && pointTest.data[1] < posRectSize.data[1] && posRectSize.data[1] > RectPos.data[1]) ||
+                    (pointTest.data[1] < RectPos.data[1] && pointTest.data[1] > posRectSize.data[1] && posRectSize.data[1] < RectPos.data[1]))
                         return true;
             return false;
         }

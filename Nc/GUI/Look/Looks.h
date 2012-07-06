@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// Define the interface of a drawable object used to render the look of a widget
+        /// Define the interface of a drawable object used to render the look of a widget.
         struct LGUI ILook
         {
 			ILook();

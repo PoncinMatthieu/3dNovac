@@ -43,17 +43,17 @@ namespace Nc
 
         enum Pattern
 		{
-			Nop = 									0,			///< do nothing
-			Synchronized =                          1 << 0,     ///< define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other
-			HasAContext =                           1 << 1,     ///< define if we need to create and call `Active/DisableContext` at each loop
-			ContextIsLoaded =                       1 << 2,     ///< informe that the context is loaded, /!\ DON'T USE OUTSIDE OF THE CLASS
-			WaitingLoadContentsOfOthersEngines =    1 << 3,     ///< force the waiting of the others engines afers to have loaded the contents
-			DontWaitOthersContext =                 1 << 4      ///< don't wait the others context (used by the graphic engine for displaying while the loading)
+			Nop = 									0,			///< do nothing.
+			Synchronized =                          1 << 0,     ///< define if we need to lock/unlock a mutex in the loop to synchronize the engine with an other.
+			HasAContext =                           1 << 1,     ///< define if we need to create and call `Active/DisableContext` at each loop.
+			ContextIsLoaded =                       1 << 2,     ///< informe that the context is loaded, /!\ DON'T USE OUTSIDE OF THE CLASS.
+			WaitingLoadContentsOfOthersEngines =    1 << 3,     ///< force the waiting of the others engines afers to have loaded the contents.
+			DontWaitOthersContext =                 1 << 4      ///< don't wait the others context (used by the graphic engine for displaying while the loading).
         };
 
-        /// Interface to define a Threaded Engine
+        /// Interface to define a Threaded Engine.
         /**
-            Inherite of EventManager, so an engine has a set of routine to receive events from another Engine (Thread)
+            Inherite of EventManager, so an engine has a set of routine to receive events from another Engine (Thread).
 
 			To create your own engine, you should at least redefine the method Execute.
 			And usualy you will have to redefine the following methods:
@@ -83,48 +83,48 @@ namespace Nc
                 IEngine(Manager *manager, const Utils::Mask<Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority);
                 virtual ~IEngine();
 
-                /** Set the manager */
+                /** Set the manager. */
                 inline void             SetManager(Manager *m)          {_manager = m;}
 
-                /** Call the methods `Loading` and `MainLoop` of the engine */
+                /** Call the methods `Loading` and `MainLoop` of the engine. */
                 virtual void            Run();
-                /** Sleep the engine */
+                /** Sleep the engine. */
                 void                    Sleep();
-                /** Wake up the engine */
+                /** Wake up the engine. */
                 void                    WakeUp();
-                /** Stop the engine without stoping the manager */
+                /** Stop the engine without stoping the manager. */
                 void                    Stop();
 
-                /** Set the limit frame rate of the thread. If the limit is not null, the thread will be sleeped to have good frame rate */
+                /** Set the limit frame rate of the thread. If the limit is not null, the thread will be sleeped to have good frame rate. */
                 inline void             LimitFrameRate(unsigned int limit)     {_limitFPS = limit;}
 
-                /** Load the contents of the thread before entering in the `MainLoop` */
+                /** Load the contents of the thread before entering in the `MainLoop`. */
                 virtual inline void     LoadContent()                   {}
-				/** Release the contents of the thread just after the `MainLoop` */
+				/** Release the contents of the thread just after the `MainLoop`. */
                 virtual inline void     ReleaseContent()				{}
 
-                /** Execute the engine, to be redefine */
+                /** Execute the engine, to be redefine. */
                 virtual void            Execute(float runningTime) = 0;
 
-                /** \return true if the context is loaded or if there are no context */
+                /** \return true if the context is loaded or if there are no context. */
                 inline bool             ContextLoaded()                 {return (_pattern.Disabled(HasAContext) || _pattern.Enabled(ContextIsLoaded));}
-                /** \return true if the engine is loaded */
+                /** \return true if the engine is loaded. */
                 inline bool             Loaded() const                  {return _loaded;}
-				/** \return true if the content of the engine has been released */
+				/** \return true if the content of the engine has been released. */
 				inline bool				Released() const				{return _released;}
-				/** \return the priority delete */
+				/** \return the priority delete. */
                 unsigned char           DeletePriority()                {return _deletePriority;}
-                /** \return the context priority loading */
+                /** \return the context priority loading. */
                 unsigned char           LoadingContextPriority()        {return _loadingContextPriority;}
-                /** \return the priority loading */
+                /** \return the priority loading. */
                 unsigned char           LoadingPriority()               {return _loadingPriority;}
 
             protected:
-                /** Before to entering in the main loop, load contents and create context by using the engine manager priorities*/
+                /** Before to entering in the main loop, load contents and create context by using the engine manager priorities. */
                 virtual void            Loading();
-                /** Just after the main loop, delete the contents by using the engine manager priorities */
+                /** Just after the main loop, delete the contents by using the engine manager priorities. */
                 virtual void            Releasing();
-                /** The main loop of the thread which call the `Process` method until the Manager will stoped */
+                /** The main loop of the thread which call the `Process` method until the Manager will stoped. */
                 virtual void            MainLoop();
                 /**
 					Process the engine.
@@ -136,33 +136,33 @@ namespace Nc
 				*/
                 virtual void            Process();
 
-                /** Create the context, to redefine */
+                /** Create the context, to redefine. */
                 virtual inline void     CreateContext()     {}
-                /** Active the context, to redefine */
+                /** Active the context, to redefine. */
                 virtual inline void     ActiveContext()     {}
-                /** Disable the context, to redefine */
+                /** Disable the context, to redefine. */
                 virtual inline void     DisableContext()    {}
 
             protected:
-                Manager                 *_manager;                  ///< The instance of the engine Manager
-                bool                    _loaded;                    ///< true if the engine is loaded
-				bool					_released;					///< true if the engine has been released
+                Manager                 *_manager;                  ///< The instance of the engine Manager.
+                bool                    _loaded;                    ///< true if the engine is loaded.
+				bool					_released;					///< true if the engine has been released.
 
-                Utils::Mask<Pattern>    _pattern;                   ///< To detemine the pattern (comportement) of the engine
-                unsigned char           _deletePriority;            ///< if the priority is null, the manager will not delete the Engine but the contents will be even deleted at the end of the thread
-                unsigned char           _loadingContextPriority;    ///< if the priority is null, no context loading
-                unsigned char           _loadingPriority;           ///< if the priority is null, no content loading
+                Utils::Mask<Pattern>    _pattern;                   ///< To detemine the pattern (comportement) of the engine.
+                unsigned char           _deletePriority;            ///< if the priority is null, the manager will not delete the Engine but the contents will be even deleted at the end of the thread.
+                unsigned char           _loadingContextPriority;    ///< if the priority is null, no context loading.
+                unsigned char           _loadingPriority;           ///< if the priority is null, no content loading.
 
             private:
                 /** limit the fps if the limit is >0 */
                 void                    LimitFrameRate();
 
-                float                   _elapsedTime;               ///< Elapsed time between 2 frame (Execute) in second
-                unsigned int            _limitFPS;                  ///< if > 0, used to sleep the thread with the good values to have the good number of seconds
-                Utils::Clock            _clock;                     ///< the clock used to compute the elapsed time and the fps sleep if the limit is set
-                System::Mutex           _sleepMutex;                ///< mutex used to sleep the engine
-                System::Locker          *_sleepLocker;              ///< locker used to sleep the engine
-                bool                    _stop;                      ///< a boolean to stop the engine
+                float                   _elapsedTime;               ///< Elapsed time between 2 frame (Execute) in second.
+                unsigned int            _limitFPS;                  ///< if > 0, used to sleep the thread with the good values to have the good number of seconds.
+                Utils::Clock            _clock;                     ///< the clock used to compute the elapsed time and the fps sleep if the limit is set.
+                System::Mutex           _sleepMutex;                ///< mutex used to sleep the engine.
+                System::Locker          *_sleepLocker;              ///< locker used to sleep the engine.
+                bool                    _stop;                      ///< a boolean to stop the engine.
         };
     }
 }

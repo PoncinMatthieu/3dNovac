@@ -332,7 +332,7 @@ namespace Nc
         {
             // left to right
             if (!HasChilds())
-                leafs.push_back(NodePolitic::Data);
+                leafs.push_back(NodePolitic::data);
             if (_left != NULL)
                 _left->ExtractLeaf(leafs);
             if (_right != NULL)
@@ -345,7 +345,7 @@ namespace Nc
             // left first, next this, and finally right
             if (_left != NULL)
                 _left->ExtractChilds(childs);
-            childs.push_back(NodePolitic::Data);
+            childs.push_back(NodePolitic::data);
             if (_right != NULL)
                 _right->ExtractChilds(childs);
         }
@@ -360,9 +360,9 @@ namespace Nc
         template<typename T, class NodeType, class Allocator>
         NodeType    *BinaryNodePolitic<T,NodeType,Allocator>::Search(const T &key)
         {
-            if (key == NodePolitic::Data)
+            if (key == NodePolitic::data)
                 return static_cast<NodeType*>(this);
-            else if (key < NodePolitic::Data)
+            else if (key < NodePolitic::data)
                 return (_left != NULL) ? _left->Search(key) : NULL;
             else
                 return (_right != NULL) ? _right->Search(key) : NULL;
@@ -371,7 +371,7 @@ namespace Nc
         template<typename T, class NodeType, class Allocator>
         NodeType    *BinaryNodePolitic<T,NodeType,Allocator>::Insert(NodeType *newNode)
         {
-            if (newNode->Data <= NodePolitic::Data)
+            if (newNode->data <= NodePolitic::data)
             {
                 if (!_left) // leaf insertion
                 {
@@ -397,7 +397,7 @@ namespace Nc
         template<typename T, class NodeType, class Allocator>
         NodeType    *BinaryNodePolitic<T,NodeType,Allocator>::Remove(const T &key, NodeType *&removedNode)
         {
-            if (key == NodePolitic::Data)
+            if (key == NodePolitic::data)
             {
                 NodeType *replacementNode = NULL;
                 removedNode = static_cast<NodeType*>(this);
@@ -492,7 +492,7 @@ namespace Nc
                 removedNode->_right = NULL;
                 return replacementNode;
             }
-            else if (key < NodePolitic::Data)   // next
+            else if (key < NodePolitic::data)   // next
                 return (_left != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Remove(key, removedNode) : NULL;
             else // next
                 return (_right != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_right)->Remove(key, removedNode) : NULL;

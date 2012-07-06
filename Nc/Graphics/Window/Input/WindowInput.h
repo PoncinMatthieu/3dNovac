@@ -38,7 +38,7 @@ namespace Nc
         class Window;
         class SubWindow;
 
-        /// Interface to manage the window inputs (keyboard/mouse/etc)
+        /// Interface to manage the window inputs (keyboard/mouse/etc).
         /**
             Manage all the input associated to the window.
 
@@ -54,37 +54,37 @@ namespace Nc
                 WindowInput(Window *win);
                 virtual ~WindowInput();
 
-                /** Create and init the input */
+                /** Create and init the input. */
                 virtual void Create() = 0;
-                /** Check the events of the input */
+                /** Check the events of the input. */
 				virtual void CheckEvents()                                                  {}
 
-                /** \return the attached window */
+                /** \return the attached window. */
                 Window  *AttachedWindow() const                                             {return _win;}
 
-                /** Generate a resize event */
+                /** Generate a resize event. */
                 void GenereResizeEvent(unsigned int x, unsigned int y);
 
-                /** Generate an event */
+                /** Generate an event. */
                 void GenereEvent(const System::Event &e);
 
                 // return input state
-                /** \return the mouse position with the top/left ref point */
+                /** \return the mouse position with the top/left ref point. */
                 const Math::Vector2i        &MousePosition() const                          {return _mousePosition;}
 
-                /** \return true if the mouse is in the window... This statement is changed by the events MouseEntered and MouseLeft */
+                /** \return true if the mouse is in the window... This statement is changed by the events MouseEntered and MouseLeft. */
                 bool                        MouseIn() const                                 {return _mouseIn;}
 
-                /** \return the mouse position with the bottom/left ref point */
+                /** \return the mouse position with the bottom/left ref point. */
                 Math::Vector2i              MousePositionInGLCoord() const;
 
-                /** \return true if the key is enabled */
+                /** \return true if the key is enabled. */
                 bool                        KeyState(System::Key::Code code) const          {return _keyStates[code];}
 
-                /** \return true if the mouse button is enabled */
+                /** \return true if the mouse button is enabled. */
                 bool                        MouseButtonState(System::Mouse::Button code) const {return _mouseButtonStates[code];}
 
-                /** \return the corresponding char */
+                /** \return the corresponding char. */
                 char                        ToChar(System::Key::Code key) const;
 
             protected:
@@ -92,12 +92,12 @@ namespace Nc
                 void                        UpdateMousePositionSubWindow(SubWindow *subWindow, int &newX, int &newY, const int &oldX, const int &oldY);
 
             protected:
-                bool                    _keyStates[System::Key::Count];             ///< Store the key states
-                bool                    _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states
-                Math::Vector2i          _mousePosition;                             ///< Store the current position of the mouse
-                bool                    _mouseIn;                                   ///< statement used to know if the mouse is in or out of the window
-                bool                    _keyRepeat;                                 ///< true if the key are repeating
-                Window                  *_win;                                      ///< instance to the attached windows
+                bool                    _keyStates[System::Key::Count];             ///< Store the key states.
+                bool                    _mouseButtonStates[System::Mouse::Count];   ///< Store the mouse button states.
+                Math::Vector2i          _mousePosition;                             ///< Store the current position of the mouse.
+                bool                    _mouseIn;                                   ///< statement used to know if the mouse is in or out of the window.
+                bool                    _keyRepeat;                                 ///< true if the key are repeating.
+                Window                  *_win;                                      ///< instance to the attached windows.
         };
     }
 }

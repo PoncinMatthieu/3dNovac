@@ -34,20 +34,20 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Define an octree used to store nodes and apply some rendering / tree search like Frustum culling
+        /// Define an octree used to store nodes and apply some rendering / tree search like Frustum culling.
         /**
-            An octree can have 8 childs and has a list of ISceneNode as subtrees
+            An octree can have 8 childs and has a list of ISceneNode as subtrees.
         */
         class LGRAPHICS Octree : public SubTree<Graph::OctreeNodePolitic>
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(ISceneNode, System::Object, System::Object, Nc::Graphic::Octree);
 
-                /** The pattern define the comportement of the octree */
+                /** The pattern define the comportement of the octree. */
                 enum Pattern
                 {
-                    Nop,                ///< Nothing special
-                    FrustumCulling      ///< The octree node will be rendered with frustum culling by using the current camera frustum of the scene
+                    Nop,                ///< Nothing special.
+                    FrustumCulling      ///< The octree node will be rendered with frustum culling by using the current camera frustum of the scene.
                 };
 
             public:
@@ -55,43 +55,43 @@ namespace Nc
                 Octree(const Box3f &box);
                 Octree(const Octree &oct);
                 Octree &operator = (const Octree &oct);
-                ~Octree()                                                   {Utils::DeleteContainer(Data);}
+                ~Octree()                                                   {Utils::DeleteContainer(data);}
 
                 virtual ISceneNode      *Clone() const                      {return new Octree(*this);}
 
-                /** \return the number of subtree (ISceneNode) into the node */
-                virtual unsigned int    SubTreeCount() const                {return Data.size();}
-                /** \return the subtree corresponding to the given index */
+                /** \return the number of subtree (ISceneNode) into the node. */
+                virtual unsigned int    SubTreeCount() const                {return data.size();}
+                /** \return the subtree corresponding to the given index. */
                 virtual const ISceneNode *SubTree(unsigned int i) const;
 
-                /** Render the childs and subtree by using the pattern */
+                /** Render the childs and subtree by using the pattern. */
                 void                    RenderChilds(SceneGraph *scene);
 
-                /** Update all children and subtree */
+                /** Update all children and subtree. */
                 void                    UpdateChilds(float elapsedTime);
 
-                /** Set the draw lines statement (if true, then the outlines lines of the nodes would be displayed) */
+                /** Set the draw lines statement (if true, then the outlines lines of the nodes would be displayed). */
                 void                    DrawOutlines(bool state);
-                /** \return the draw lines statement */
+                /** \return the draw lines statement. */
                 inline bool             DrawOutlines() const                {return _drawOutlines;}
 
-                /** Insert a list of nodes with their calculated box into the octree (create subnode if needed function by the depthMax) */
+                /** Insert a list of nodes with their calculated box into the octree (create subnode if needed function by the depthMax). */
                 void                    Insert(const std::list<std::pair<Math::Box3f,ISceneNode*> > &datasToInsert, unsigned int depthMax);
 
-                /** Set the pattern of the octree node */
+                /** Set the pattern of the octree node. */
                 void                    SetPattern(Pattern p)               {_pattern = p;}
 
             protected:
-                /** Update all children and subtree */
+                /** Update all children and subtree. */
                 virtual void            Update(float elapsedTime)           {UpdateChilds(elapsedTime);}
-                /** Render childrens and subtree by using the patten */
+                /** Render childrens and subtree by using the patten. */
                 virtual void            Render(SceneGraph *scene)           {RenderChilds(scene);}
 
             private:
-                bool                    _drawOutlines;          ///< draw outlines statement
-                Pattern                 _pattern;               ///< the pattern of the node
+                bool                    _drawOutlines;          ///< draw outlines statement.
+                Pattern                 _pattern;               ///< the pattern of the node.
 
-                static BoundingBox      *_boundingBoxObject;    ///< a static box to draw the outlines of the octrees
+                static BoundingBox      *_boundingBoxObject;    ///< a static box to draw the outlines of the octrees.
         };
     }
 }

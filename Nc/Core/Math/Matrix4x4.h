@@ -289,7 +289,7 @@ namespace Nc
         template<typename T>
         void Matrix4x4<T>::SetLookAt(const Vector3D<T> &eye, const Vector3D<T> &center, const Vector3D<T> &up)
         {
-            Vector3D<T>     vForward(center.Data[0] - eye.Data[0], center.Data[1] - eye.Data[1], center.Data[2] - eye.Data[2]);
+            Vector3D<T>     vForward(center.data[0] - eye.data[0], center.data[1] - eye.data[1], center.data[2] - eye.data[2]);
             Vector3D<T>     vSide, vUp;
 
             vForward.Normalize();
@@ -302,19 +302,19 @@ namespace Nc
             vSide.Cross(vForward, vUp);
 
             #define M(col,row) Matrix<T,4,4>::_data[(row*4)+col]
-            M(0, 0) = vSide.Data[0];
-            M(1, 0) = vSide.Data[1];
-            M(2, 0) = vSide.Data[2];
+            M(0, 0) = vSide.data[0];
+            M(1, 0) = vSide.data[1];
+            M(2, 0) = vSide.data[2];
             M(3, 0) = 0;
 
-            M(0, 1) = vUp.Data[0];
-            M(1, 1) = vUp.Data[1];
-            M(2, 1) = vUp.Data[2];
+            M(0, 1) = vUp.data[0];
+            M(1, 1) = vUp.data[1];
+            M(2, 1) = vUp.data[2];
             M(3, 1) = 0;
 
-            M(0, 2) = -vForward.Data[0];
-            M(1, 2) = -vForward.Data[1];
-            M(2, 2) = -vForward.Data[2];
+            M(0, 2) = -vForward.data[0];
+            M(1, 2) = -vForward.data[1];
+            M(2, 2) = -vForward.data[2];
             M(3, 2) = 0;
 
             M(0, 3) = 0;
@@ -325,9 +325,9 @@ namespace Nc
 
             // ajoute la translation de l'eye
             #define M(row,col) Matrix<T,4,4>::_data[(row*4)+col]
-                M(0,3) = M(0,0) * -eye.Data[0] + M(0,1) * -eye.Data[1] + M(0,2) * -eye.Data[2];
-                M(1,3) = M(1,0) * -eye.Data[0] + M(1,1) * -eye.Data[1] + M(1,2) * -eye.Data[2];
-                M(2,3) = M(2,0) * -eye.Data[0] + M(2,1) * -eye.Data[1] + M(2,2) * -eye.Data[2];
+                M(0,3) = M(0,0) * -eye.data[0] + M(0,1) * -eye.data[1] + M(0,2) * -eye.data[2];
+                M(1,3) = M(1,0) * -eye.data[0] + M(1,1) * -eye.data[1] + M(1,2) * -eye.data[2];
+                M(2,3) = M(2,0) * -eye.data[0] + M(2,1) * -eye.data[1] + M(2,2) * -eye.data[2];
             #undef M
             _isIdentity = false;
         }
@@ -443,9 +443,9 @@ namespace Nc
         {
             if (!_isIdentity)
                 SetIdentity();
-            Matrix<T,4,4>::_data[(0 * 4) + 3] = v.Data[0];
-            Matrix<T,4,4>::_data[(1 * 4) + 3] = v.Data[1];
-            Matrix<T,4,4>::_data[(2 * 4) + 3] = v.Data[2];
+            Matrix<T,4,4>::_data[(0 * 4) + 3] = v.data[0];
+            Matrix<T,4,4>::_data[(1 * 4) + 3] = v.data[1];
+            Matrix<T,4,4>::_data[(2 * 4) + 3] = v.data[2];
             _isIdentity = false;
         }
 
@@ -454,8 +454,8 @@ namespace Nc
         {
             if (!_isIdentity)
                 SetIdentity();
-            Matrix<T,4,4>::_data[(0 * 4) + 3] = v.Data[0];
-            Matrix<T,4,4>::_data[(1 * 4) + 3] = v.Data[1];
+            Matrix<T,4,4>::_data[(0 * 4) + 3] = v.data[0];
+            Matrix<T,4,4>::_data[(1 * 4) + 3] = v.data[1];
             _isIdentity = false;
         }
 
@@ -502,9 +502,9 @@ namespace Nc
         {
             if (!_isIdentity)
                 SetIdentity();
-            Matrix<T,4,4>::_data[(3 * 4) + 0] = v.Data[0];
-            Matrix<T,4,4>::_data[(3 * 4) + 1] = v.Data[1];
-            Matrix<T,4,4>::_data[(3 * 4) + 2] = v.Data[2];
+            Matrix<T,4,4>::_data[(3 * 4) + 0] = v.data[0];
+            Matrix<T,4,4>::_data[(3 * 4) + 1] = v.data[1];
+            Matrix<T,4,4>::_data[(3 * 4) + 2] = v.data[2];
             _isIdentity = false;
         }
 
@@ -513,8 +513,8 @@ namespace Nc
         {
             if (!_isIdentity)
                 SetIdentity();
-            Matrix<T,4,4>::_data[(3 * 4) + 0] = v.Data[0];
-            Matrix<T,4,4>::_data[(3 * 4) + 1] = v.Data[1];
+            Matrix<T,4,4>::_data[(3 * 4) + 0] = v.data[0];
+            Matrix<T,4,4>::_data[(3 * 4) + 1] = v.data[1];
             _isIdentity = false;
         }
 
@@ -561,9 +561,9 @@ namespace Nc
         {
             if (!_isIdentity)
                 SetIdentity();
-            Matrix<T,4,4>::_data[0] = v.Data[0];
-            Matrix<T,4,4>::_data[(1 * 4) + 1] = v.Data[1];
-            Matrix<T,4,4>::_data[(2 * 4) + 2] = v.Data[2];
+            Matrix<T,4,4>::_data[0] = v.data[0];
+            Matrix<T,4,4>::_data[(1 * 4) + 1] = v.data[1];
+            Matrix<T,4,4>::_data[(2 * 4) + 2] = v.data[2];
             _isIdentity = false;
         }
 
@@ -588,15 +588,15 @@ namespace Nc
 
             if (!_isIdentity)
                 SetIdentity();
-            Matrix<T,4,4>::_data[0] =           (axe.Data[0] * axe.Data[0] * (1-Cos)) + Cos;
-            Matrix<T,4,4>::_data[1] =           (axe.Data[0] * axe.Data[1] * (1-Cos)) - (axe.Data[2] * Sin);
-            Matrix<T,4,4>::_data[2] =           (axe.Data[0] * axe.Data[2] * (1-Cos)) + (axe.Data[1] * Sin);
-            Matrix<T,4,4>::_data[(1 * 4) + 0] = (axe.Data[1] * axe.Data[0] * (1-Cos)) + (axe.Data[2] * Sin);
-            Matrix<T,4,4>::_data[(1 * 4) + 1] = (axe.Data[1] * axe.Data[1] * (1-Cos)) + Cos;
-            Matrix<T,4,4>::_data[(1 * 4) + 2] = (axe.Data[1] * axe.Data[2] * (1-Cos)) - (axe.Data[0] * Sin);
-            Matrix<T,4,4>::_data[(2 * 4) + 0] = (axe.Data[2] * axe.Data[0] * (1-Cos)) - (axe.Data[1] * Sin);
-            Matrix<T,4,4>::_data[(2 * 4) + 1] = (axe.Data[2] * axe.Data[1] * (1-Cos)) + (axe.Data[0] * Sin);
-            Matrix<T,4,4>::_data[(2 * 4) + 2] = (axe.Data[2] * axe.Data[2] * (1-Cos)) + Cos;
+            Matrix<T,4,4>::_data[0] =           (axe.data[0] * axe.data[0] * (1-Cos)) + Cos;
+            Matrix<T,4,4>::_data[1] =           (axe.data[0] * axe.data[1] * (1-Cos)) - (axe.data[2] * Sin);
+            Matrix<T,4,4>::_data[2] =           (axe.data[0] * axe.data[2] * (1-Cos)) + (axe.data[1] * Sin);
+            Matrix<T,4,4>::_data[(1 * 4) + 0] = (axe.data[1] * axe.data[0] * (1-Cos)) + (axe.data[2] * Sin);
+            Matrix<T,4,4>::_data[(1 * 4) + 1] = (axe.data[1] * axe.data[1] * (1-Cos)) + Cos;
+            Matrix<T,4,4>::_data[(1 * 4) + 2] = (axe.data[1] * axe.data[2] * (1-Cos)) - (axe.data[0] * Sin);
+            Matrix<T,4,4>::_data[(2 * 4) + 0] = (axe.data[2] * axe.data[0] * (1-Cos)) - (axe.data[1] * Sin);
+            Matrix<T,4,4>::_data[(2 * 4) + 1] = (axe.data[2] * axe.data[1] * (1-Cos)) + (axe.data[0] * Sin);
+            Matrix<T,4,4>::_data[(2 * 4) + 2] = (axe.data[2] * axe.data[2] * (1-Cos)) + Cos;
             _isIdentity = false;
         }
 
@@ -661,15 +661,15 @@ namespace Nc
 
             if (!_isIdentity)
                 SetIdentity();
-            Matrix<T,4,4>::_data[0] =           (axe.Data[0] * axe.Data[0] * (1-Cos)) + Cos;
-            Matrix<T,4,4>::_data[(1 * 4) + 1] = (axe.Data[0] * axe.Data[1] * (1-Cos)) - (axe.Data[2] * Sin);
-            Matrix<T,4,4>::_data[(2 * 4) + 2] = (axe.Data[0] * axe.Data[2] * (1-Cos)) + (axe.Data[1] * Sin);
-            Matrix<T,4,4>::_data[(1 * 4) + 0] = (axe.Data[1] * axe.Data[0] * (1-Cos)) + (axe.Data[2] * Sin);
-            Matrix<T,4,4>::_data[1] =           (axe.Data[1] * axe.Data[1] * (1-Cos)) + Cos;
-            Matrix<T,4,4>::_data[(2 * 4) + 1] = (axe.Data[1] * axe.Data[2] * (1-Cos)) - (axe.Data[0] * Sin);
-            Matrix<T,4,4>::_data[(2 * 4) + 0] = (axe.Data[2] * axe.Data[0] * (1-Cos)) - (axe.Data[1] * Sin);
-            Matrix<T,4,4>::_data[(1 * 4) + 2] = (axe.Data[2] * axe.Data[1] * (1-Cos)) + (axe.Data[0] * Sin);
-            Matrix<T,4,4>::_data[2] =           (axe.Data[2] * axe.Data[2] * (1-Cos)) + Cos;
+            Matrix<T,4,4>::_data[0] =           (axe.data[0] * axe.data[0] * (1-Cos)) + Cos;
+            Matrix<T,4,4>::_data[(1 * 4) + 1] = (axe.data[0] * axe.data[1] * (1-Cos)) - (axe.data[2] * Sin);
+            Matrix<T,4,4>::_data[(2 * 4) + 2] = (axe.data[0] * axe.data[2] * (1-Cos)) + (axe.data[1] * Sin);
+            Matrix<T,4,4>::_data[(1 * 4) + 0] = (axe.data[1] * axe.data[0] * (1-Cos)) + (axe.data[2] * Sin);
+            Matrix<T,4,4>::_data[1] =           (axe.data[1] * axe.data[1] * (1-Cos)) + Cos;
+            Matrix<T,4,4>::_data[(2 * 4) + 1] = (axe.data[1] * axe.data[2] * (1-Cos)) - (axe.data[0] * Sin);
+            Matrix<T,4,4>::_data[(2 * 4) + 0] = (axe.data[2] * axe.data[0] * (1-Cos)) - (axe.data[1] * Sin);
+            Matrix<T,4,4>::_data[(1 * 4) + 2] = (axe.data[2] * axe.data[1] * (1-Cos)) + (axe.data[0] * Sin);
+            Matrix<T,4,4>::_data[2] =           (axe.data[2] * axe.data[2] * (1-Cos)) + Cos;
             _isIdentity = false;
         }
 
@@ -743,9 +743,9 @@ namespace Nc
         void Matrix4x4<T>::AddTranslation(const Vector3D<T> &v)
         {
             #define M(row,col)  Matrix<T,4,4>::_data[(row*4) + col]
-            M(0,3) += v.Data[0];
-            M(1,3) += v.Data[1];
-            M(2,3) += v.Data[2];
+            M(0,3) += v.data[0];
+            M(1,3) += v.data[1];
+            M(2,3) += v.data[2];
             #undef M
             _isIdentity = false;
         }
@@ -754,8 +754,8 @@ namespace Nc
         void Matrix4x4<T>::AddTranslation(const Vector2D<T> &v)
         {
             #define M(row,col)  Matrix<T,4,4>::_data[(row*4) + col]
-            M(0,3) += v.Data[0];
-            M(1,3) += v.Data[1];
+            M(0,3) += v.data[0];
+            M(1,3) += v.data[1];
             #undef M
             _isIdentity = false;
         }
@@ -774,13 +774,13 @@ namespace Nc
         template<typename T>
         void Matrix4x4<T>::AddTTranslation(const Vector3D<T> &v)
         {
-            AddTTranslation(v.Data[0], v.Data[1], v.Data[2]);
+            AddTTranslation(v.data[0], v.data[1], v.data[2]);
         }
 
         template<typename T>
         void Matrix4x4<T>::AddTTranslation(const Vector2D<T> &v)
         {
-            AddTTranslation(v.Data[0], v.Data[1], 0);
+            AddTTranslation(v.data[0], v.data[1], 0);
         }
 
         template<typename T>
@@ -838,13 +838,13 @@ namespace Nc
         template<typename T>
         void Matrix4x4<T>::Transform(Vector<T,3> &v) const
         {
-            Transform(v.Data[0], v.Data[1], v.Data[2]);
+            Transform(v.data[0], v.data[1], v.data[2]);
         }
 
         template<typename T>
         void Matrix4x4<T>::Transform(Vector<T,4> &v) const
         {
-            Transform(v.Data[0], v.Data[1], v.Data[2], v.Data[3]);
+            Transform(v.data[0], v.data[1], v.data[2], v.data[3]);
         }
 
         template<typename T>

@@ -39,9 +39,9 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Implementation of a Window for an X11 server
+        /// Implementation of a Window for an X11 server.
         /**
-            For more detail, please see the Window documentation
+            For more detail, please see the Window documentation.
         */
         class XWindow : public Window
         {

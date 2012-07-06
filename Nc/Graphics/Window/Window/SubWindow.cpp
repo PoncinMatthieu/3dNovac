@@ -56,9 +56,9 @@ void    SubWindow::Create(const Math::Vector2ui &size)
 {
 	if (_isCreate)
 		System::Config::Error("SubWindow", "The window has already been created.");
-	
-	_width = size.Data[0];
-    _height = size.Data[1];
+
+	_width = size.data[0];
+    _height = size.data[1];
     _context = _parent->Context();
     _own = _parent->IsOwn();
     _antialiasingLevel = _parent->AntialiasingLevel();
@@ -84,8 +84,8 @@ void    SubWindow::Create(const std::string &, const Math::Vector2ui &size, unsi
 
 void    SubWindow::UseExistingWindow(void *, int, const Math::Vector2ui &size, unsigned int)
 {
-    _width = size.Data[0];
-    _height = size.Data[1];
+    _width = size.data[0];
+    _height = size.data[1];
 }
 
 void    SubWindow::Resize(unsigned int width, unsigned int height)

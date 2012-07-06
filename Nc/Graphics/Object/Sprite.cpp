@@ -68,10 +68,10 @@ void Sprite::UpdateGeometry()
 {
     const Vector2i  &size = _drawables[0]->Config->Textures[0].Size();
 
-    float           xb = (float)_textureBox.Min(0) / (float)size.Data[0];
-    float           yb = (float)_textureBox.Min(1) / (float)size.Data[1];
-    float           xh = (float)_textureBox.Max(0) / (float)size.Data[0];
-    float           yh = (float)_textureBox.Max(1) / (float)size.Data[1];
+    float           xb = (float)_textureBox.Min(0) / (float)size.data[0];
+    float           yb = (float)_textureBox.Min(1) / (float)size.data[1];
+    float           xh = (float)_textureBox.Max(0) / (float)size.data[0];
+    float           yh = (float)_textureBox.Max(1) / (float)size.data[1];
 
     Array<Core::DefaultVertexType::Textured2d, 4>   vertices;
     vertices[0].Fill(0, 0, xb, yb, _color);
@@ -80,7 +80,7 @@ void Sprite::UpdateGeometry()
     vertices[3].Fill(_spriteSize[0], _spriteSize[1], xh, yh, _color);
 
     GL::GeometryBuffer<Core::DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Textured2d,false>*>(_drawables[0]->Geometry);
-    geo->VBO().UpdateData(vertices.Data);
+    geo->VBO().UpdateData(vertices.data);
     _needUpdate = false;
 }
 

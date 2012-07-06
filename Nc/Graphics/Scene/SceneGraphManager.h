@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Provide a way to organise the rendering in a scene
+        /// Provide a way to organise the rendering in a scene.
         /**
             The SceneGraphManager class, is used to define a complete scene. Contains a list of SceneGraph.
 
@@ -46,33 +46,33 @@ namespace Nc
                 SceneGraphManager();
                 virtual ~SceneGraphManager();
 
-                /** Init some opengl statements */
+                /** Init some opengl statements. */
                 void            Init(bool multisampling);
 
-                /** \return the scenes */
+                /** \return the scenes. */
                 inline ListPScene           &Scenes()                       {return _listScene;}
-                /** \return the scenes */
+                /** \return the scenes. */
                 inline const ListPScene     &Scenes() const                 {return _listScene;}
 
-                /** Add a scene to the scene manager */
+                /** Add a scene to the scene manager. */
                 virtual void        AddScene(SceneGraph *scene);
-                /** Remove the given scene */
+                /** Remove the given scene. */
                 virtual void        RemoveScene(SceneGraph *scene);
 
-                /** Bring the given scene to front (these scene would be displayed at the end) */
+                /** Bring the given scene to front (these scene would be displayed at the end). */
                 void                BringToFront(SceneGraph *scene);
 
-                /** Render the scenes by using the given GLContext */
+                /** Render the scenes by using the given GLContext. */
                 void                Render(GLContext *context);
 
-                /** Update the scenes */
+                /** Update the scenes. */
                 void                Update(float elapsedTime);
 
             protected:
-                ListPScene                  _listScene;         ///< the list of scene which will be rendered
-                GL::State::BufferBitMask    _clearMask;         ///< the clear mask (defaul: GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-                Color                       _clearColor;        ///< the clear color of the scene
-                System::Mutex               _mutex;             ///< a mutex used to protect the scene
+                ListPScene                  _listScene;         ///< the list of scene which will be rendered.
+                GL::State::BufferBitMask    _clearMask;         ///< the clear mask (defaul: GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT).
+                Color                       _clearColor;        ///< the clear color of the scene.
+                System::Mutex               _mutex;             ///< a mutex used to protect the scene.
         };
     }
 }

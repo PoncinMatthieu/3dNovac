@@ -176,7 +176,7 @@ void Widget::RenderBegin(Graphic::SceneGraph *scene)
     Vector2i reelPos;
     RelativePos(reelPos);
     scene->PushModelMatrix();
-    scene->ModelMatrix().AddTranslation(reelPos.Data[0], reelPos.Data[1], 0.f); // translation sur la position relative au Corner
+    scene->ModelMatrix().AddTranslation(reelPos.data[0], reelPos.data[1], 0.f); // translation sur la position relative au Corner
 }
 
 void Widget::RenderEnd(Graphic::SceneGraph *scene)
@@ -191,7 +191,7 @@ void Widget::RenderEnd(Graphic::SceneGraph *scene)
     Vector2i reelSize;
     GetReelSize(reelSize);
     TMatrix m;
-    m.Scale(reelSize.Data[0], reelSize.Data[1], 0);
+    m.Scale(reelSize.data[0], reelSize.data[1], 0);
     scene->ModelMatrix() *= m;
     repere->RenderNode(scene);
     #endif
@@ -339,19 +339,19 @@ void    Widget::RelativePos(Vector2i &relativePos) const
 
     // check horizontal alignment
     if (_alignment.Enabled(Right))
-        relativePos.Data[0] = parentSize.Data[0] - _size.Data[0] - MarginRight() - padding.right - relativePos.Data[0];
+        relativePos.data[0] = parentSize.data[0] - _size.data[0] - MarginRight() - padding.right - relativePos.data[0];
     else if (_alignment.Enabled(Left))
-        relativePos.Data[0] += MarginLeft() + padding.left;
+        relativePos.data[0] += MarginLeft() + padding.left;
     else if (_alignment.Enabled(CenterH))
-        relativePos.Data[0] += (parentSize[0] / 2.0) - (_size.Data[0] / 2.0) + ((padding.left - padding.right) / 2);
+        relativePos.data[0] += (parentSize[0] / 2.0) - (_size.data[0] / 2.0) + ((padding.left - padding.right) / 2);
 
     // check vertical alignment
     if (_alignment.Enabled(Top))
-        relativePos.Data[1] = parentSize.Data[1] - _size.Data[1] - MarginTop() - padding.top - relativePos.Data[1];
+        relativePos.data[1] = parentSize.data[1] - _size.data[1] - MarginTop() - padding.top - relativePos.data[1];
     else if (_alignment.Enabled(Bottom))
-        relativePos.Data[1] += MarginBottom() + padding.bottom;
+        relativePos.data[1] += MarginBottom() + padding.bottom;
     else if (_alignment.Enabled(CenterV))
-        relativePos.Data[1] += (parentSize.Data[1] / 2.0) - (_size.Data[1] / 2.0) + ((padding.bottom - padding.top) / 2);
+        relativePos.data[1] += (parentSize.data[1] / 2.0) - (_size.data[1] / 2.0) + ((padding.bottom - padding.top) / 2);
     relativePos += parentTranslate;
 }
 

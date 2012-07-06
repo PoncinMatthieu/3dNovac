@@ -65,10 +65,10 @@ namespace Nc
         t.Insert(3);
 
         for (BinaryTree<int>::NodeType *n = t.NodeMini(); n != NULL; n = n->Next())
-            LOG << n->Data << " ";
+            LOG << n->data << " ";
         LOG << std::endl;
         for (BinaryTree<int>::NodeType *n = t.NodeMaxi(); n != NULL; n = n->Prev())
-            LOG << n->Data << " ";
+            LOG << n->data << " ";
         LOG << std::endl;
 
         LOG << "print" << std::endl;
@@ -152,7 +152,7 @@ namespace Nc
             if (_root != NULL)
             {
                 NodeType *n = _root->Search(key);
-                return ((n) ? n->Data : NULL);
+                return ((n) ? n->data : NULL);
             }
             else
                 return NULL;
@@ -173,7 +173,7 @@ namespace Nc
                 NodeType *n = NULL;
                 _root = _root->Remove(key, n);
                 if (data != NULL && n != NULL)
-                    *data = n->Data;
+                    *data = n->data;
                 if (n != NULL)
                 {
                     delete n;

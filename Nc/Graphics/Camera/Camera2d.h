@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Implementation of a 2d Camera which used an orthonormal projection
+        /// Implementation of a 2d Camera which used an orthonormal projection.
         class LGRAPHICS Camera2d : public Camera
         {
             public:
@@ -44,25 +44,25 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const                              {return new Camera2d(*this);}
 
-                /** To reception the mouse motion event */
+                /** To reception the mouse motion event. */
                 virtual void    MouseMotionEvent(const Nc::System::Event &)     {}
-                /** To reception the mouse button event */
+                /** To reception the mouse button event. */
                 virtual void    MouseButtonEvent(const Nc::System::Event &)     {}
-                /** To reception the keybord event */
+                /** To reception the keybord event. */
                 virtual void    KeyboardEvent(const Nc::System::Event &)        {}
 
-                /** Update the projection Matrix to an orthonormal projection */
+                /** Update the projection Matrix to an orthonormal projection. */
                 virtual void    UpdateProjection(SceneGraph *scene);
 
-                /** Fix the camera */
+                /** Fix the camera. */
                 virtual void    Fix(SceneGraph *scene);
 
-                /** \return true if the given \p point is in the frustum */
+                /** \return true if the given \p point is in the frustum. */
                 virtual bool    PointInFrustum(const Vector3f &point);
-                /** \return true if the given \p box is in the frustum */
+                /** \return true if the given \p box is in the frustum. */
                 virtual bool    BoxInFrustum(const Vector3f &center, float size);
         };
     }
 }
 
-#endif // NC_CAMERA_CAMERA2D_H_
+#endif

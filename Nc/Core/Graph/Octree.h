@@ -63,14 +63,14 @@ namespace Nc
             unsigned int sizeBy2 = _size / 2;
             switch (index)
             {
-                case 0:     return Math::Vector3f(_center.Data[0] - sizeBy2, _center.Data[1] - sizeBy2, _center.Data[2] - sizeBy2);
-                case 1:     return Math::Vector3f(_center.Data[0] + sizeBy2, _center.Data[1] - sizeBy2, _center.Data[2] - sizeBy2);
-                case 2:     return Math::Vector3f(_center.Data[0] - sizeBy2, _center.Data[1] + sizeBy2, _center.Data[2] - sizeBy2);
-                case 3:     return Math::Vector3f(_center.Data[0] + sizeBy2, _center.Data[1] + sizeBy2, _center.Data[2] - sizeBy2);
-                case 4:     return Math::Vector3f(_center.Data[0] - sizeBy2, _center.Data[1] - sizeBy2, _center.Data[2] + sizeBy2);
-                case 5:     return Math::Vector3f(_center.Data[0] + sizeBy2, _center.Data[1] - sizeBy2, _center.Data[2] + sizeBy2);
-                case 6:     return Math::Vector3f(_center.Data[0] - sizeBy2, _center.Data[1] + sizeBy2, _center.Data[2] + sizeBy2);
-                case 7:     return Math::Vector3f(_center.Data[0] + sizeBy2, _center.Data[1] + sizeBy2, _center.Data[2] + sizeBy2);
+                case 0:     return Math::Vector3f(_center.data[0] - sizeBy2, _center.data[1] - sizeBy2, _center.data[2] - sizeBy2);
+                case 1:     return Math::Vector3f(_center.data[0] + sizeBy2, _center.data[1] - sizeBy2, _center.data[2] - sizeBy2);
+                case 2:     return Math::Vector3f(_center.data[0] - sizeBy2, _center.data[1] + sizeBy2, _center.data[2] - sizeBy2);
+                case 3:     return Math::Vector3f(_center.data[0] + sizeBy2, _center.data[1] + sizeBy2, _center.data[2] - sizeBy2);
+                case 4:     return Math::Vector3f(_center.data[0] - sizeBy2, _center.data[1] - sizeBy2, _center.data[2] + sizeBy2);
+                case 5:     return Math::Vector3f(_center.data[0] + sizeBy2, _center.data[1] - sizeBy2, _center.data[2] + sizeBy2);
+                case 6:     return Math::Vector3f(_center.data[0] - sizeBy2, _center.data[1] + sizeBy2, _center.data[2] + sizeBy2);
+                case 7:     return Math::Vector3f(_center.data[0] + sizeBy2, _center.data[1] + sizeBy2, _center.data[2] + sizeBy2);
                 default:    return Math::Vector3f::Null;
             }
         }

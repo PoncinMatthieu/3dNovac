@@ -67,8 +67,8 @@ void    SubWindow::Resize()
 
     // genere a resize event
     System::Event e(_subWindow->Input(), System::Event::Resized);
-    e.size.width = _size.Data[0];
-    e.size.height = _size.Data[1];
+    e.size.width = _size.data[0];
+    e.size.height = _size.data[1];
     _subWindow->Input()->GenereEvent(e);
 
     _sprite->Size(Vector2i(e.size.width, e.size.height));

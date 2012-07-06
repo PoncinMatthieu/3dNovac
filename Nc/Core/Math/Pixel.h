@@ -43,18 +43,18 @@ namespace Nc
         template<typename T>
         struct  Pixel
         {
-            Pixel(const T &r = 0, const T &g = 0, const T &b = 0, const T &a = 0)
-                : R(r), G(g), B(b), A(a) {}
+            Pixel(const T &red = 0, const T &green = 0, const T &blue = 0, const T &alpha = 0)
+                : r(red), g(green), b(blue), a(alpha) {}
             ~Pixel() {}
 
-            inline void Init(const T &r = 0, const T &g = 0, const T &b = 0, const T &a = 0)    {R = r; G = g; B = b; A = a;}
-            inline bool operator == (const Pixel& v) const                                      {return (R == v.R && G == v.G && B == v.B && A == v.A);}
-            inline bool operator != (const Pixel& v) const                                      {return (R != v.R || G != v.G || B != v.B || A != v.A);}
-            inline T &operator [] (const T &i)                                                  {return ((i == 0) ? R : ((i == 1) ? G : ((i == 2) ? B : A)));}
+            inline void Init(const T &red = 0, const T &green = 0, const T &blue = 0, const T &alpha = 0)    {r = red; g = green; b = blue; a = alpha;}
+            inline bool operator == (const Pixel& v) const                                      {return (r == v.r && g == v.g && b == v.b && a == v.a);}
+            inline bool operator != (const Pixel& v) const                                      {return (r != v.r || g != v.g || b != v.b || a != v.a);}
+            inline T &operator [] (const T &i)                                                  {return ((i == 0) ? r : ((i == 1) ? g : ((i == 2) ? b : a)));}
 
-            inline void operator = (unsigned int v)                                             {R = (v >> 16) & 0xff; G = (v >> 8) & 0xff; B = v & 0xff; A = (v >> 24) & 0xff;}
-            inline bool operator == (unsigned int v) const                                      {return (R == ((v >> 16) & 0xff) && G == ((v >> 8) & 0xff) && B == (v & 0xff) && A == ((v >> 24) & 0xff));}
-            inline bool operator != (unsigned int v) const                                      {return (R != ((v >> 16) & 0xff) || G != ((v >> 8) & 0xff) || B != (v & 0xff) || A != ((v >> 24) & 0xff));}
+            inline void operator = (unsigned int v)                                             {r = (v >> 16) & 0xff; g = (v >> 8) & 0xff; b = v & 0xff; a = (v >> 24) & 0xff;}
+            inline bool operator == (unsigned int v) const                                      {return (r == ((v >> 16) & 0xff) && g == ((v >> 8) & 0xff) && b == (v & 0xff) && a == ((v >> 24) & 0xff));}
+            inline bool operator != (unsigned int v) const                                      {return (r != ((v >> 16) & 0xff) || g != ((v >> 8) & 0xff) || b != (v & 0xff) || a != ((v >> 24) & 0xff));}
 
             inline Pixel operator + (const Pixel& c) const
             {
@@ -65,32 +65,32 @@ namespace Nc
 
             inline Pixel &operator += (const Pixel& c)
             {
-                R += c.R;
-                G += c.G;
-                B += c.B;
-                A += c.A;
+                r += c.r;
+                g += c.g;
+                b += c.b;
+                a += c.a;
                 return *this;
             }
 
-            inline Pixel &operator *= (const T &a)
+            inline Pixel &operator *= (const T &m)
             {
-                R *= a;
-                G *= a;
-                B *= a;
-                A *= a;
+                r *= m;
+                g *= m;
+                b *= m;
+                a *= m;
                 return *this;
             }
 
             friend /*LCORE*/ std::ostream& operator << (std::ostream& os, const Pixel& v)
             {
-                os<< "R = " << (unsigned int)v.R << "\tG = " << (unsigned int)v.G << "\tB = " << (unsigned int)v.B << "\tA = " << (unsigned int)v.A;
+                os<< "R = " << (unsigned int)v.r << "\tG = " << (unsigned int)v.g << "\tB = " << (unsigned int)v.b << "\tA = " << (unsigned int)v.a;
                 return os;
             }
 
-            T   R;      ///< Red componant
-            T   G;      ///< Green componant
-            T   B;      ///< Blue componant
-            T   A;      ///< Alpha componant
+            T   r;      ///< Red componant
+            T   g;      ///< Green componant
+            T   b;      ///< Blue componant
+            T   a;      ///< Alpha componant
         };
 
 		template struct Pixel<float>;		///< explicit instanciation of a Pixel defined with floating values

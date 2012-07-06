@@ -37,7 +37,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to define a scene node
+        /// Interface to define a scene node.
         /**
             \todo we should delete the methods Lock/Unlock and use the RAII patern.
         */
@@ -58,8 +58,8 @@ namespace Nc
                 virtual ~ISceneNode();
 
                 /**
-                    \return a copy of the node
-                    This method should be redefined in all inherited child
+                    \return a copy of the node.
+                    This method should be redefined in all inherited child.
                 */
                 virtual ISceneNode          *Clone() const = 0;
 
@@ -75,76 +75,76 @@ namespace Nc
                  */
                 void                        RenderNode(SceneGraph *scene);
 
-                /** \return the number of childs */
+                /** \return the number of childs. */
                 virtual unsigned int        ChildCount() const = 0;
-                /** \return the good child with the given \p index */
+                /** \return the good child with the given \p index. */
                 virtual const ISceneNode    *Child(unsigned int i) const = 0;
                 /**
                     Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given ]p oldAt.
-                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible)
+                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible).
                 */
                 virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt) = 0;
 
-                /** \return the number of subtree */
+                /** \return the number of subtree. */
                 virtual unsigned int        SubTreeCount() const = 0;
-                /** \return the good subtree with the given \p index */
+                /** \return the good subtree with the given \p index. */
                 virtual const ISceneNode    *SubTree(unsigned int i) const = 0;
 
-                /** \return the type of the string */
+                /** \return the type of the string. */
                 std::string                 NodeTypeToString() const                        {return ResolvedClassName();}
-                /** \return Save the scene node hierarchie in a dot file */
+                /** \return Save the scene node hierarchie in a dot file. */
                 void                        SaveDot(const Utils::FileName &file) const      {Graph::DotGraph<ISceneNode,true>::Save(file, *this);}
 
 				/** \return the mutex associated to the scene node. */
 				inline System::Mutex		&GetMutex() throw()								{return _mutex;}
 
-                /** Set the enable statement of the node */
+                /** Set the enable statement of the node. */
                 virtual void                Enable(bool status)                             {_enabled = status;}
-                /** Enable the node */
+                /** Enable the node. */
                 virtual void                Enable()                                        {_enabled = true;}
-                /** Disable the node */
+                /** Disable the node. */
                 virtual void                Disable()                                       {_enabled = false;}
-                /** \return the enable statement */
+                /** \return the enable statement. */
                 virtual bool                Enabled() const                                 {return _enabled;}
 
-                /** \return false if the object or one of its parents has the enable statement to false */
+                /** \return false if the object or one of its parents has the enable statement to false. */
                 bool                        EnabledRecursif() const;
 
-                /** \return the rendering controller */
+                /** \return the rendering controller. */
                 inline const IRenderingController   *GetRenderingController() const                             {return _renderingController;}
-                /** \return the rendering controller */
+                /** \return the rendering controller. */
                 inline IRenderingController         *GetRenderingController()                                   {return _renderingController;}
-                /** Set the rendering controller */
+                /** Set the rendering controller. */
                 inline void                         SetRenderingController(IRenderingController *controller)    {_renderingController = controller;}
 
-                /** \return the rendering controller */
+                /** \return the rendering controller. */
                 inline const IUpdatingController    *GetUpdatingController() const                              {return _updatingController;}
-                /** \return the rendering controller */
+                /** \return the rendering controller. */
                 inline IUpdatingController          *GetUpdatingController()                                    {return _updatingController;}
-                /** Set the rendering controller */
+                /** Set the rendering controller. */
                 inline void                         SetUpdatingController(IUpdatingController *controller)      {_updatingController = controller;}
 
             private:
                 /**
-                    Update the node and it's childs
+                    Update the node and it's childs.
                     \sa UpdateNode
                  */
                 virtual void                Update(float elapsedTime) = 0;
                 /**
-                    Render the node and it's childs
+                    Render the node and it's childs.
                     \sa RenderNode
                  */
                 virtual void                Render(SceneGraph *scene) = 0;
 
             private:
-                System::Mutex           _mutex;                 ///< a mutex used to protect the node, (this mutex is lock at the render pass)
-                bool                    _enabled;               ///< an enable statement
+                System::Mutex           _mutex;                 ///< a mutex used to protect the node, (this mutex is lock at the render pass).
+                bool                    _enabled;               ///< an enable statement.
 
-                IUpdatingController     *_updatingController;   ///< controller called at the updating time
-                IRenderingController    *_renderingController;  ///< controller called at the rendering time
+                IUpdatingController     *_updatingController;   ///< controller called at the updating time.
+                IRenderingController    *_renderingController;  ///< controller called at the rendering time.
         };
 
-        /// Define an abstract scene node
+        /// Define an abstract scene node.
         template<template<typename,class,class> class P>
         class AbstractSceneNode : public ISceneNode, public Graph::AbstractNode<ISceneNode*, P, AbstractSceneNode<P>, ISceneNode::Allocator>
         {
@@ -158,9 +158,9 @@ namespace Nc
                 AbstractSceneNode() : ISceneNode(), NodePolitic()           {}
                 virtual ~AbstractSceneNode()                                {}
 
-                /** \return the number of childs */
+                /** \return the number of childs. */
                 virtual unsigned int        ChildCount() const              {return NodePolitic::ChildCount();}
-                /** \return the good child with the given \p index */
+                /** \return the good child with the given \p index. */
                 virtual const ISceneNode    *Child(unsigned int i) const    {return NodePolitic::Child(i);}
 
                 friend LGRAPHICS std::ostream& operator << (std::ostream& Out, const AbstractSceneNode<P>& o)

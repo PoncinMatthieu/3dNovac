@@ -92,9 +92,9 @@ void    LineEdit::Update()
         formater->SetCharSize(charSize);
         formaterUnderscore->SetCharSize(charSize);
     }
-    _font->Matrix.Translation(PaddingLeft(), (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
+    _font->Matrix.Translation(PaddingLeft(), (_size.data[1] / 2.f) - (_font->Size().data[1] / 2.f), 0);
 
-    _fontUnderscore->Matrix.Translation(PaddingLeft() + _font->Size()[0], (_size.Data[1] / 2.f) - (_font->Size().Data[1] / 2.f), 0);
+    _fontUnderscore->Matrix.Translation(PaddingLeft() + _font->Size()[0], (_size.data[1] / 2.f) - (_font->Size().data[1] / 2.f), 0);
 }
 
 void LineEdit::Draw(Graphic::SceneGraph *scene)
@@ -133,7 +133,7 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         {
             UInt32 c = (UInt32)static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
             Core::PlainTextFormater *formater = static_cast<Core::PlainTextFormater*>(_font->Formater());
-            if (c != '\0' && _font->Size().Data[0] + formater->GetCharSize(c).Data[0] < _size.Data[0]) // ajout du caractere dans la string)
+            if (c != '\0' && _font->Size().data[0] + formater->GetCharSize(c).data[0] < _size.data[0]) // ajout du caractere dans la string)
             {
                 Utils::Unicode::UTF32 s = _font->PlainText();
                 s += c;

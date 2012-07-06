@@ -57,12 +57,12 @@ namespace Nc
         template<typename T>
         Box3D<T>::Box3D(const T &xmin, const T &ymin, const T &zmin, const T &xmax, const T &ymax, const T &zmax)
         {
-            Box<T,3>::_min.Data[0] = xmin;
-            Box<T,3>::_max.Data[0] = xmax;
-            Box<T,3>::_min.Data[1] = ymin;
-            Box<T,3>::_max.Data[1] = ymax;
-            Box<T,3>::_min.Data[2] = zmin;
-            Box<T,3>::_max.Data[2] = zmax;
+            Box<T,3>::_min.data[0] = xmin;
+            Box<T,3>::_max.data[0] = xmax;
+            Box<T,3>::_min.data[1] = ymin;
+            Box<T,3>::_max.data[1] = ymax;
+            Box<T,3>::_min.data[2] = zmin;
+            Box<T,3>::_max.data[2] = zmax;
         }
 
         template<typename T>

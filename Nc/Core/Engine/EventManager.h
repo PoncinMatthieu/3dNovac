@@ -53,7 +53,7 @@ namespace Nc
         */
         typedef void (EventManager::*CmdFunctionString)(EventString *e);
 
-        /// Interface to define an engine event
+        /// Interface to define an engine event.
         struct LCORE IEvent
         {
             virtual ~IEvent()       {}
@@ -70,27 +70,27 @@ namespace Nc
             virtual const std::type_info    &GetDataTypeId() = 0;
         };
 
-        /// Define an event, simple container used to stock a data with an event
+        /// Define an event, simple container used to stock a data with an event.
         template<typename T>
         struct Event : public IEvent
         {
-            Event(const T &d)  : Data(d)   {}
+            Event(const T &d)  : data(d)   {}
 
             /** \return the typeid of the event data, to debug and know what type of event you received. */
             virtual const std::type_info    &GetDataTypeId();
 
-            T   Data;           ///< data of type T
+            T   data;           ///< data of type T
         };
 
-        /// Define an event containing a string
+        /// Define an event containing a string.
         /**
-            Used to send event which contain a string. Principaly used to manage the console events
+            Used to send event which contain a string. Principaly used to manage the console events.
         */
         struct LCORE EventString : public IEvent
         {
             EventString(const std::string &s)    : args(s)     {}
 
-            /** Split the argument of the event with the given delimiter, to get a sub string argument */
+            /** Split the argument of the event with the given delimiter, to get a sub string argument. */
             template<typename T>
             void NextArg(T &arg, const std::string delimit = " ");
 
@@ -100,7 +100,7 @@ namespace Nc
             std::string     args;           ///< the string argument of the event
         };
 
-        /// Define a Cmd handler which have an id and a member function pointer
+        /// Define a Cmd handler which have an id and a member function pointer.
 		/**
 			The id to identify the event, and call the function.
 		*/
@@ -108,21 +108,21 @@ namespace Nc
         {
             Cmd(unsigned int i, CmdFunction f) : id(i), function(f)    {}
 
-            unsigned int        id;             ///< Id of the command
-            CmdFunction         function;       ///< The member function pointer to excute the handler event
+            unsigned int        id;             ///< Id of the command.
+            CmdFunction         function;       ///< The member function pointer to excute the handler event.
         };
 
-        /// Define a CmdString handler which have a name, a comment to describe the cmd and a member function pointer
+        /// Define a CmdString handler which have a name, a comment to describe the cmd and a member function pointer.
         struct LCORE CmdString
         {
             CmdString(const std::string &n, const std::string &c, CmdFunctionString f) : name(n), comment(c), function(f)    {}
 
-            std::string         name;           ///< Name of the command
-            std::string         comment;        ///< Comment of the command
-            CmdFunctionString   function;       ///< The member function pointer to excute the handler event
+            std::string         name;           ///< Name of the command.
+            std::string         comment;        ///< Comment of the command.
+            CmdFunctionString   function;       ///< The member function pointer to excute the handler event.
         };
 
-        /// Base class used to manage events, can receive events and execute them
+        /// Base class used to manage events, can receive events and execute them.
 		/**
 			To receive events, you have to add a new command by using the method "AddNewCmd" which will take an id corresponding to the event and a pointer to a member function of your engine to be called if the EventManager receive an event with the same id.
 			And next, you can push events from the Manager, the corresponding member function pointer will be called.
@@ -142,46 +142,46 @@ namespace Nc
                 EventManager();
                 virtual ~EventManager();
 
-                /** Push an EventString without arg */
+                /** Push an EventString without arg. */
                 void    PushEvent(const std::string &cmdName);
-                /** Push an EventString with an argument string */
+                /** Push an EventString with an argument string. */
                 void    PushEvent(const std::string &cmdName, const std::string &args);
 
-                /** Push an IEvent* */
+                /** Push an IEvent. */
                 void    PushEvent(unsigned int id, IEvent *e = NULL);
-                /** Push an Event<T> with an argument */
+                /** Push an Event<T> with an argument. */
                 template<typename T>
                 void    PushEvent(unsigned int id, const T &arg);
 
             protected:
-                /** Execute all event present in the event queues */
+                /** Execute all event present in the event queues. */
                 void    ExecuteEvents();
 
-                /** Create a new command to receive events */
+                /** Create a new command to receive events. */
                 void    AddNewCmd(unsigned int id, CmdFunction function);
-                /** Create a new command string to receive events */
+                /** Create a new command string to receive events. */
                 void    AddNewCmd(const std::string &name, const std::string &comment, CmdFunctionString function);
 
-                bool    _execEvents;        ///< to pause the execution of events in the event queue
-                bool    _receiveEvents;     ///< to bypass events (stop the reception of events)
+                bool    _execEvents;        ///< to pause the execution of events in the event queue.
+                bool    _receiveEvents;     ///< to bypass events (stop the reception of events).
 
             private:
-                /** Execute an event */
+                /** Execute an event. */
                 void    ExecuteEvent(unsigned int id, IEvent *e);
-                /** Execute an event string */
+                /** Execute an event string. */
                 void    ExecuteEvent(const std::string &name, EventString *e);
 
-                /** Display the list of commands string */
+                /** Display the list of commands string. */
                 void    Help(EventString *);
 
 
-                QueueEvent              _queueEvent;                ///< Queue of IEvent to execute when we call `ExecuteEvents`
-                QueueEventString        _queueEventString;          ///< Queue of EventString to execute when we call `ExecuteEvents`
+                QueueEvent              _queueEvent;                ///< Queue of IEvent to execute when we call `ExecuteEvents`.
+                QueueEventString        _queueEventString;          ///< Queue of EventString to execute when we call `ExecuteEvents`.
 
-                ListCmd                 _listCmd;                   ///< List of Event handler to use for the management of events
-                ListCmdString           _listCmdString;             ///< List of EventString handler to use for the management of event strings
+                ListCmd                 _listCmd;                   ///< List of Event handler to use for the management of events.
+                ListCmdString           _listCmdString;             ///< List of EventString handler to use for the management of event strings.
 
-                System::Mutex           _mutexQueue;                ///< Protect the mutex queue
+                System::Mutex           _mutexQueue;                ///< Protect the mutex queue.
 
                 friend LCORE std::ostream& operator << (std::ostream& Out, const EventManager& o);
         };
@@ -196,7 +196,7 @@ namespace Nc
             Event<T> *e = dynamic_cast<Event<T>*>(this);
             if (e == NULL)
                 throw Utils::Exception("IEvent:GetData", "Bad param, Event<" + std::string(typeid(T).name()) + "> expected");
-            return e->Data;
+            return e->data;
         }
 
         template<typename T>

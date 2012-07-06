@@ -124,7 +124,7 @@ void Engine::LoadDescFileCmd(Nc::Engine::IEvent *e)
     if (es == NULL)
         throw Utils::Exception("AudioEngine", "Function LoadDescFileCmd: bad argument. Event<Utils::FileName> is expecting");
 
-    LdDescFile(es->Data);
+    LdDescFile(es->data);
 }
 
 void Engine::LoadMusicCmd(Nc::Engine::IEvent *e)

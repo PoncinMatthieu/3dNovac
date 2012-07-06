@@ -24,13 +24,13 @@ public:
   /** Read the data from the socket, and parse the incoming data */
   void Read()
   {
-    int r = Nc::Network::SocketTcp::Read(_buffer.Data, BUFF_SIZE);
+    int r = Nc::Network::SocketTcp::Read(_buffer.data, BUFF_SIZE);
 
     if (r <= 0)
       Close();
     else
       {
-	_buffer.Data[r] = '\0';
+	_buffer.data[r] = '\0';
 	LOG << _buffer << std::endl;
       }
   }

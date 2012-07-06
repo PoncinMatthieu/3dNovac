@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Define a Graphical object entity
+        /// Define a Graphical object entity.
         class LGRAPHICS Object : public Entity
         {
             public:
@@ -53,9 +53,9 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const                      {return new Object(*this);}
 
-                /** \return the material used to render the drawables */
+                /** \return the material used to render the drawables. */
                 inline IMaterial    *GetMaterial()                      {return _material;}
-                /** \return the material used to render the drawables */
+                /** \return the material used to render the drawables. */
                 inline const IMaterial *GetMaterial() const             {return _material;}
                 /**
                     Set the material, reconfigure the drawables.
@@ -63,17 +63,17 @@ namespace Nc
                     \return true the material transfer succeed.
                 */
                 bool                SetMaterial(IMaterial *newMaterial);
-                /** Choose the best default material to display the drawables */
+                /** Choose the best default material to display the drawables. */
                 void                ChooseDefaultMaterial();
 
-                /** \return the useMaterial statement, if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true */
+                /** \return the useMaterial statement, if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true. */
                 inline bool         UseSceneMaterial() const            {return _useSceneMaterial;}
-                /** Set the useMaterial statement, if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true  */
+                /** Set the useMaterial statement, if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true. */
                 inline void         UseSceneMaterial(bool state)        {_useSceneMaterial = state;}
 
-                /** \return the drawables */
+                /** \return the drawables. */
                 Core::DrawableArray     &Drawables()                    {return _drawables;}
-                /** Configure the drawables by using the current Material */
+                /** Configure the drawables by using the current Material. */
                 void                    ReconfigureDrawables();
 
             protected:
@@ -119,17 +119,17 @@ namespace Nc
                 */
                 virtual void        TransformModelMatrixToRender(SceneGraph *scene);
 
-                /** Configure the drawables by using the given \p material */
+                /** Configure the drawables by using the given \p material. */
                 void                ConfigureDrawables(IMaterial *material);
 
             // fields
             protected:
-                Core::DrawableArray     _drawables;                 ///< the array of drawbles
-                bool                    _useSceneMaterial;          ///< if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true
+                Core::DrawableArray     _drawables;                 ///< the array of drawbles.
+                bool                    _useSceneMaterial;          ///< if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true.
 
             private:
-                IMaterial       *_material;                 ///< pointer to the material used to render the drawables
-                IMaterial       *_lastConfiguredMaterial;   ///< pointer to the last configured material
+                IMaterial       *_material;                 ///< pointer to the material used to render the drawables.
+                IMaterial       *_lastConfiguredMaterial;   ///< pointer to the last configured material.
         };
     }
 }

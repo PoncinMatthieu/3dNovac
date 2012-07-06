@@ -104,11 +104,11 @@ void Label::UpdateLabel()
     }
     else if (_labelAlignment.Enabled(CenterH))
     {
-        _label->Matrix.Translation((_size.Data[0] / 2.f) - (_label->Size().Data[0] / 2.f), 0, 0);
+        _label->Matrix.Translation((_size.data[0] / 2.f) - (_label->Size().data[0] / 2.f), 0, 0);
     }
     else if (_labelAlignment.Enabled(Right))
     {
-        _label->Matrix.Translation(_size.Data[0] - _label->Size().Data[0], 0, 0);
+        _label->Matrix.Translation(_size.data[0] - _label->Size().data[0], 0, 0);
     }
 
     // manage vertical alignment
@@ -118,11 +118,11 @@ void Label::UpdateLabel()
     }
     else if (_labelAlignment.Enabled(CenterV))
     {
-        _label->Matrix.AddTranslation(0, (_size.Data[1] / 2.f) - (_label->Size().Data[1] / 2.f), 0);
+        _label->Matrix.AddTranslation(0, (_size.data[1] / 2.f) - (_label->Size().data[1] / 2.f), 0);
     }
     else if (_labelAlignment.Enabled(Top))
     {
-        _label->Matrix.AddTranslation(0, _size.Data[1] - _label->Size().Data[1], 0);
+        _label->Matrix.AddTranslation(0, _size.data[1] - _label->Size().data[1], 0);
     }
 }
 

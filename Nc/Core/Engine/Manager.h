@@ -40,14 +40,14 @@ namespace Nc
 {
     /// Provide a creation and management system to use threaded engine, like a GraphicalEngine, GameEngine, AudioEngine, and NetworkEngine, or whatever...
     /**
-        \todo Add an option to do not make threads or to synchronize an engine with an other(s) (for instance it would be very intersting to make some benchmark with and without multithreaded opengl contexts - to see if it's really good to use a dedicated rendering thread with an other shared context)
+        \todo Add an option to do not make threads or to synchronize an engine with an other(s) (for instance it would be very intersting to make some benchmark with and without multithreaded opengl contexts - to see if it's really good to use a dedicated rendering thread with an other shared context).
     */
     namespace Engine
     {
         class   IEngine;
         struct  IEvent;
 
-        /// Manage Engines
+        /// Manage Engines.
         /**
             Manage the launching of the threads (engines) and dispatch events between them.
             Store a map of engine associated to a permission mask.
@@ -55,7 +55,7 @@ namespace Nc
         class LCORE Manager : public Utils::NonCopyable
         {
             public:
-                /// Define the engines permissions
+                /// Define the engines permissions.
                 enum Permission
                 {
                     Nop,
@@ -63,7 +63,7 @@ namespace Nc
                 };
                 typedef Utils::Mask<Permission>             Permissions;
 
-				/// store an engine with it's permissions
+				/// store an engine with it's permissions.
                 struct AllowedEngine
                 {
                     AllowedEngine()                                     {}
@@ -77,59 +77,59 @@ namespace Nc
                 typedef std::map<std::string, AllowedEngine>        MapEngine;
 
             public:
-                /** \param confFile allow you to load automatically the 3dNovac System::Config file, it will be closed in the destructor. If the param stay empty, it won't load the confFile */
+                /** \param confFile allow you to load automatically the 3dNovac System::Config file, it will be closed in the destructor. If the param stay empty, it won't load the confFile. */
                 Manager(const Utils::FileName &confFile = "");
                 virtual ~Manager();
 
-                /** Add an engine */
+                /** Add an engine. */
                 virtual void            AddEngine(IEngine *engine, const Permissions &permissions = Exit);
-                /** Remove the engine with the given name, delete it if del is true */
+                /** Remove the engine with the given name, delete it if del is true. */
                 virtual void            RemoveEngine(const std::string &name, bool del = true);
-                /** \return the corresponding engine */
+                /** \return the corresponding engine. */
                 static IEngine          *GetEngine(const std::string &name);
-                /** \return the engines managed by the Manager */
+                /** \return the engines managed by the Manager. */
                 static const MapEngine  &GetEngines()                   {return _mapEngine;}
 
-                /** \return true if the engines is launch */
+                /** \return true if the engines is launch. */
                 inline bool             IsLaunched()                    {return _isLaunched;}
 
-                /** Start the engines */
+                /** Start the engines. */
                 virtual void            Start();
-                /** Stop the engines if the current thread has been allowed to did it */
+                /** Stop the engines if the current thread has been allowed to did it. */
                 void                    Stop();
-                /** Wait the engines until they are stoped */
+                /** Wait the engines until they are stoped. */
                 virtual void            Wait();
 
-                /** \return the mutex which is used to protect and synchronize the engines */
+                /** \return the mutex which is used to protect and synchronize the engines. */
                 inline System::Mutex    &MutexGlobal()                  {return _mutexGlobal;}
 
-                /** Wait until all the engine as been started */
+                /** Wait until all the engine as been started. */
                 void                    WaitAllEngineStarted();
-                /** Wait until the given \p priority is good for loading the engine context */
+                /** Wait until the given \p priority is good for loading the engine context. */
                 void                    WaitLoadingContextPriority(unsigned char priority);
-                /** Wait until the given \p priority is good for loading the engine */
+                /** Wait until the given \p priority is good for loading the engine. */
                 void                    WaitLoadingPriority(unsigned char priority);
-                /** Wait until all engine contexts are loaded */
+                /** Wait until all engine contexts are loaded. */
                 void                    WaitEnginesContextLoading();
-                /** Wait until all engines are loaded */
+                /** Wait until all engines are loaded. */
                 void                    WaitEnginesLoading();
-				/** Wait until the engine as the priority to delete it's contents */
+				/** Wait until the engine as the priority to delete it's contents. */
 				void					WaitReleasePriority(unsigned int priority);
 
-                /** Dispatch events to the corresponding engine */
+                /** Dispatch events to the corresponding engine. */
                 template<typename T>
                 static void             PushEvent(const std::string &engineName, unsigned int id, const T &arg);
-                /** Dispatch events to the corresponding engine */
+                /** Dispatch events to the corresponding engine. */
                 static void             PushEvent(const std::string &engineName, unsigned int id);
-                /** Dispatch events to the corresponding engine */
+                /** Dispatch events to the corresponding engine. */
                 static void             PushEvent(const std::string &engineName, unsigned int id, IEvent *e);
-                /** Dispatch string events to the corresponding engine */
+                /** Dispatch string events to the corresponding engine. */
                 static void             PushEvent(const std::string &engineName, const std::string &cmdName, const std::string &args);
-                /** Dispatch string events to the corresponding engine */
+                /** Dispatch string events to the corresponding engine. */
                 static void             PushEvent(const std::string &engineName, const std::string &cmdName);
 
             protected:
-                static MapEngine        _mapEngine;             ///< Engine map container
+                static MapEngine        _mapEngine;             ///< Engine map container.
 
                 #ifdef SYSTEM_LINUX
                 /** this function is called when a signal SIGSEGV is catch, only in unix system. */
@@ -142,7 +142,7 @@ namespace Nc
 
             private:
                 unsigned int        _mainThreadId;
-                bool                _confFileOpened;        ///< true, if the Config file of 3dNovac has been loaded by the Manager, in this case it will be closed be the Manager
+                bool                _confFileOpened;        ///< true, if the Config file of 3dNovac has been loaded by the Manager, in this case it will be closed be the Manager.
         };
     }
 }

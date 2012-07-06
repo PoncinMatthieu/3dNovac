@@ -81,11 +81,11 @@ namespace Nc
                     /** Set the given uniform \p index */
                     static void             SetUniform(unsigned int location, float f1, float f2)                           {glUniform2f(location, f1, f2);}
                     /** Set the given uniform \p index */
-                    static void             SetUniform(unsigned int location, const Vector2f &v)                            {glUniform2f(location, v.Data[0], v.Data[1]);}
+                    static void             SetUniform(unsigned int location, const Vector2f &v)                            {glUniform2f(location, v.data[0], v.data[1]);}
                     /** Set the given uniform \p index */
                     static void             SetUniform(unsigned int location, float f1, float f2, float f3)                 {glUniform3f(location, f1, f2, f3);}
                     /** Set the given uniform \p index */
-                    static void             SetUniform(unsigned int location, const Vector3f &v)                            {glUniform3f(location, v.Data[0], v.Data[1], v.Data[2]);}
+                    static void             SetUniform(unsigned int location, const Vector3f &v)                            {glUniform3f(location, v.data[0], v.data[1], v.data[2]);}
                     /** Set the given uniform \p index */
                     static void             SetUniform(unsigned int location, float f1, float f2, float f3, float f4)       {glUniform4f(location, f1, f2, f3, f4);}
 

@@ -45,17 +45,17 @@ void    Camera2d::Fix(SceneGraph *scene)
 bool    Camera2d::PointInFrustum(const Vector3f &point)
 {
     // in 2 dimensions, we have just to test the collision with the viewport
-    return (point.Data[0] >= _viewportX &&
-            point.Data[1] >= _viewportY &&
-            point.Data[0] < _viewportWidth &&
-            point.Data[1] < _viewportHeight);
+    return (point.data[0] >= _viewportX &&
+            point.data[1] >= _viewportY &&
+            point.data[0] < _viewportWidth &&
+            point.data[1] < _viewportHeight);
 }
 
 bool    Camera2d::BoxInFrustum(const Vector3f &center, float size)
 {
     // in 2 dimensions, we have just to test the collision with the viewport
-    return (center.Data[0] - size >= _viewportX &&
-            center.Data[1] - size >= _viewportY &&
-            center.Data[0] - size < _viewportWidth &&
-            center.Data[1] - size < _viewportHeight);
+    return (center.data[0] - size >= _viewportX &&
+            center.data[1] - size >= _viewportY &&
+            center.data[0] - size < _viewportWidth &&
+            center.data[1] - size < _viewportHeight);
 }

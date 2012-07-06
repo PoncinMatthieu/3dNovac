@@ -47,11 +47,11 @@ Octree::Octree(const Box3f &box)
     Vector3f s = box.Length();
 
 #ifndef WIN32
-    unsigned int size = std::max(s.Data[0], s.Data[1]);
-    size = std::max(size, (unsigned int)s.Data[2]);
+    unsigned int size = std::max(s.data[0], s.data[1]);
+    size = std::max(size, (unsigned int)s.data[2]);
 #else
-	unsigned int size = max(s.Data[0], s.Data[1]);
-    size = max(size, (unsigned int)s.Data[2]);
+	unsigned int size = max(s.data[0], s.data[1]);
+    size = max(size, (unsigned int)s.data[2]);
 #endif
 
     Init(box.Center(), Math::NearestPowerOf2(size));
@@ -61,26 +61,26 @@ Octree::Octree(const Octree &oct)
     : Graphic::SubTree<Graph::OctreeNodePolitic>(oct),
       _drawOutlines(oct._drawOutlines), _pattern(oct._pattern)
 {
-    Data.clear();
-    for (std::list<ISceneNode*>::const_iterator it = oct.Data.begin(); it != oct.Data.end(); ++it)
-        Data.push_back((*it)->Clone());
+    data.clear();
+    for (std::list<ISceneNode*>::const_iterator it = oct.data.begin(); it != oct.data.end(); ++it)
+        data.push_back((*it)->Clone());
 }
 
 Octree &Octree::operator = (const Octree &oct)
 {
     _drawOutlines = oct._drawOutlines;
     _pattern = oct._pattern;
-    for (std::list<ISceneNode*>::iterator it = Data.begin(); it != Data.end(); ++it)
+    for (std::list<ISceneNode*>::iterator it = data.begin(); it != data.end(); ++it)
         delete (*it);
-    Data.clear();
-    for (std::list<ISceneNode*>::const_iterator it = oct.Data.begin(); it != oct.Data.end(); ++it)
-        Data.push_back((*it)->Clone());
+    data.clear();
+    for (std::list<ISceneNode*>::const_iterator it = oct.data.begin(); it != oct.data.end(); ++it)
+        data.push_back((*it)->Clone());
     return *this;
 }
 
 const ISceneNode *Octree::SubTree(unsigned int i) const
 {
-    for (std::list<ISceneNode*>::const_iterator it = Data.begin(); it != Data.end(); ++it, --i)
+    for (std::list<ISceneNode*>::const_iterator it = data.begin(); it != data.end(); ++it, --i)
         if (i == 0)
             return *it;
     return NULL;
@@ -108,7 +108,7 @@ void        Octree::RenderChilds(SceneGraph *scene)
             _boundingBoxObject->RenderNode(scene);
         }
 
-        for (std::list<ISceneNode*>::iterator it = Data.begin(); it != Data.end(); ++it)
+        for (std::list<ISceneNode*>::iterator it = data.begin(); it != data.end(); ++it)
             (*it)->RenderNode(scene);
         for (unsigned int i = 0; i < 8; ++i)
         {
@@ -120,7 +120,7 @@ void        Octree::RenderChilds(SceneGraph *scene)
 
 void        Octree::UpdateChilds(float elapsedTime)
 {
-    for (std::list<ISceneNode*>::iterator it = Data.begin(); it != Data.end(); ++it)
+    for (std::list<ISceneNode*>::iterator it = data.begin(); it != data.end(); ++it)
         (*it)->UpdateNode(elapsedTime);
     for (unsigned int i = 0; i < 8; ++i)
     {
@@ -135,7 +135,7 @@ void    Octree::Insert(const std::list<std::pair<Math::Box3f,ISceneNode*> > &dat
     if (depthMax == 0)
     {
         for (std::list<std::pair<Math::Box3f,ISceneNode*> >::const_iterator it = datasToInsert.begin(); it != datasToInsert.end(); ++it)
-            Data.push_back(it->second);
+            data.push_back(it->second);
         return;
     }
 
@@ -152,33 +152,33 @@ void    Octree::Insert(const std::list<std::pair<Math::Box3f,ISceneNode*> > &dat
         // and if the box is crossing the box of the childs
         if (box.Length(0) > childsSize || box.Length(1) > childsSize || box.Length(2) > childsSize)
         {
-            Data.push_back(it->second);
+            data.push_back(it->second);
         }
         else
         {
             // identify the position of the data, to put it in the good list
             int noToInsert = -1;
-            if (box.Min(0) < _center[0] && box.Min(1) < _center[1] && box.Min(2) < _center.Data[2])
+            if (box.Min(0) < _center[0] && box.Min(1) < _center[1] && box.Min(2) < _center.data[2])
                 noToInsert = 0;
-            if (box.Max(0) > _center[0] && box.Min(1) < _center[1] && box.Min(2) < _center.Data[2])
+            if (box.Max(0) > _center[0] && box.Min(1) < _center[1] && box.Min(2) < _center.data[2])
                 noToInsert = (noToInsert == -1) ? 1 : -1;
-            if (box.Min(0) < _center[0] && box.Max(1) > _center[1] && box.Min(2) < _center.Data[2])
+            if (box.Min(0) < _center[0] && box.Max(1) > _center[1] && box.Min(2) < _center.data[2])
                 noToInsert = (noToInsert == -1) ? 2 : -1;
-            if (box.Max(0) > _center[0] && box.Max(1) > _center[1] && box.Min(2) < _center.Data[2])
+            if (box.Max(0) > _center[0] && box.Max(1) > _center[1] && box.Min(2) < _center.data[2])
                 noToInsert = (noToInsert == -1) ? 3 : -1;
-            if (box.Min(0) < _center[0] && box.Min(1) < _center[1] && box.Min(2) > _center.Data[2])
+            if (box.Min(0) < _center[0] && box.Min(1) < _center[1] && box.Min(2) > _center.data[2])
                 noToInsert = (noToInsert == -1) ? 4 : -1;
-            if (box.Max(0) > _center[0] && box.Min(1) < _center[1] && box.Min(2) > _center.Data[2])
+            if (box.Max(0) > _center[0] && box.Min(1) < _center[1] && box.Min(2) > _center.data[2])
                 noToInsert = (noToInsert == -1) ? 5 : -1;
-            if (box.Min(0) < _center[0] && box.Max(1) > _center[1] && box.Min(2) > _center.Data[2])
+            if (box.Min(0) < _center[0] && box.Max(1) > _center[1] && box.Min(2) > _center.data[2])
                 noToInsert = (noToInsert == -1) ? 6 : -1;
-            if (box.Max(0) > _center[0] && box.Max(1) > _center[1] && box.Min(2) > _center.Data[2])
+            if (box.Max(0) > _center[0] && box.Max(1) > _center[1] && box.Min(2) > _center.data[2])
                 noToInsert = (noToInsert == -1) ? 7 : -1;
 
             if (noToInsert != -1)
                 newDatasToInsert[noToInsert].push_back(std::pair<Math::Box3f,ISceneNode*>(box, it->second));
             else
-                Data.push_back(it->second);
+                data.push_back(it->second);
         }
     }
 

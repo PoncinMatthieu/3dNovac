@@ -75,11 +75,11 @@ void    RenderBuffer::Init(Enum::RenderBuffer::ColorFormat internalFormat, const
 
     if (samples == 0)
     {
-        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.data[0], size.data[1]);
     }
     else
     {
-        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.data[0], size.data[1]);
     }
     _type = ColorBuffer;
 }
@@ -91,11 +91,11 @@ void    RenderBuffer::Init(Enum::RenderBuffer::DepthFormat internalFormat, const
 
     if (samples == 0)
     {
-        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.data[0], size.data[1]);
     }
     else
     {
-        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.data[0], size.data[1]);
     }
     _type = DepthBuffer;
 }
@@ -107,11 +107,11 @@ void    RenderBuffer::Init(Enum::RenderBuffer::StencilFormat internalFormat, con
 
     if (samples == 0)
     {
-        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.data[0], size.data[1]);
     }
     else
     {
-        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.data[0], size.data[1]);
     }
     _type = StencilBuffer;
 }
@@ -123,11 +123,11 @@ void    RenderBuffer::Init(Enum::RenderBuffer::DepthStencilFormat internalFormat
 
     if (samples == 0)
     {
-        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorage(Enum::RenderBuffer::RenderBuffer, internalFormat, size.data[0], size.data[1]);
     }
     else
     {
-        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.Data[0], size.Data[1]);
+        glRenderbufferStorageMultisample(Enum::RenderBuffer::RenderBuffer, samples, internalFormat, size.data[0], size.data[1]);
     }
     _type = DepthStencilBuffer;
 }

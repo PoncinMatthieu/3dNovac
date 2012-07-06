@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Factory of DefaultMaterial, used to create/intialize/choose the best material for a set of drawables
+        /// Factory of DefaultMaterial, used to create/intialize/choose the best material for a set of drawables.
         class FactoryDefaultMaterials : public Utils::Singleton<FactoryDefaultMaterials>
         {
             public:
@@ -44,12 +44,12 @@ namespace Nc
                 FactoryDefaultMaterials()       {}
                 ~FactoryDefaultMaterials();
 
-                /** \return the best material for a set of drawables */
+                /** \return the best material for a set of drawables. */
                 IDefaultMaterial        *GetBestMaterial(const Core::DrawableArray &drawables);
-                /** \return the best material for the given \p drawable */
+                /** \return the best material for the given \p drawable. */
                 IDefaultMaterial        *GetBestMaterial(const Core::Drawable *drawable);
 
-                /** Create, Add and return a DefaultMaterial with the given type of DefaulMaterial */
+                /** Create, Add and return a DefaultMaterial with the given type of DefaulMaterial. */
                 template<typename DefaultMaterialType>
                 DefaultMaterialType     *AddDefaultMaterial()
                 {
@@ -60,7 +60,7 @@ namespace Nc
                 }
 
             private:
-                /** \return the best default material for the given vertex descriptor */
+                /** \return the best default material for the given vertex descriptor. */
                 IDefaultMaterial        *GetBestMaterial(GL::VertexDescriptor *descriptor);
 
                 // ordre decroissant
@@ -69,7 +69,7 @@ namespace Nc
                     return (first.first > second.first);
                 }
 
-                PriorityMaterialList        _materials;     ///< a list of priority for each default material
+                PriorityMaterialList        _materials;     ///< a list of priority for each default material.
         };
     }
 }

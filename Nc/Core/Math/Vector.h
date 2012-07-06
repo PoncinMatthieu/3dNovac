@@ -105,11 +105,11 @@ namespace Nc
                 {
                     char c = 'x';
                     for (unsigned char i = 0; i < D; ++i, ++c)
-                        os << c << " = " << V.Data[i] << "  ";
+                        os << c << " = " << V.data[i] << "  ";
                     return os;
                 }
 
-                T   Data[D];                                ///< public data, for acces performance reason
+                T   data[D];                                ///< public data, for acces performance reason
 
                 static const Vector<T,D>    Null;           ///< static const vector null
         };
@@ -121,14 +121,14 @@ namespace Nc
         Vector<T,D>::Vector()
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] = 0;
+                data[i] = 0;
         }
 
         template<typename T, unsigned char D>
         Vector<T,D>::Vector(const Vector &v)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] = v.Data[i];
+                data[i] = v.data[i];
         }
 
         template<typename T, unsigned char D>
@@ -136,7 +136,7 @@ namespace Nc
         Vector<T,D>::Vector(const Vector<U,D> &v)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] = v.Data[i];
+                data[i] = v.data[i];
         }
 
         template<typename T, unsigned char D>
@@ -145,16 +145,16 @@ namespace Nc
         {
             unsigned char i = 0;
             for (; i < D && i < D2; ++i)
-                Data[i] = v.Data[i];
+                data[i] = v.data[i];
             for (; i < D; ++i)
-                Data[i] = 0;
+                data[i] = 0;
         }
 
         template<typename T, unsigned char D>
         Vector<T,D> &Vector<T,D>::operator = (const Vector &v)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] = v.Data[i];
+                data[i] = v.data[i];
             return *this;
         }
 
@@ -163,7 +163,7 @@ namespace Nc
         Vector<T,D> &Vector<T,D>::operator = (const Vector<U,D> &v)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] = v.Data[i];
+                data[i] = v.data[i];
             return *this;
         }
 
@@ -173,9 +173,9 @@ namespace Nc
         {
             unsigned char i = 0;
             for (; i < D && i < D2; ++i)
-                Data[i] = v.Data[i];
+                data[i] = v.data[i];
             for (; i < D; ++i)
-                Data[i] = 0;
+                data[i] = 0;
             return *this;
         }
 
@@ -184,7 +184,7 @@ namespace Nc
         {
             if (i >= D)
                 throw Utils::Exception("Math::Vector", "Overflow in the operator[] of class Vector");
-            return Data[i];
+            return data[i];
         }
 
         template<typename T, unsigned char D>
@@ -192,7 +192,7 @@ namespace Nc
         {
             if (i >= D)
                 throw Utils::Exception("Math::Vector", "Overflow in the operator[] of class Vector");
-            return Data[i];
+            return data[i];
         }
 
         template<typename T, unsigned char D>
@@ -200,7 +200,7 @@ namespace Nc
         bool Vector<T,D>::operator == (const Vector<U,D> &v) const
         {
             for (unsigned char i = 0; i < D; ++i)
-                if (Data[i] != v.Data[i])
+                if (data[i] != v.data[i])
                     return false;
             return true;
         }
@@ -210,7 +210,7 @@ namespace Nc
         bool Vector<T,D>::operator != (const Vector<U,D> &v) const
         {
             for (unsigned char i = 0; i < D; ++i)
-                if (Data[i] != v.Data[i])
+                if (data[i] != v.data[i])
                     return true;
             return false;
         }
@@ -220,7 +220,7 @@ namespace Nc
         Vector<T,D> &Vector<T,D>::operator += (const Vector<U,D> &v)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] += v.Data[i];
+                data[i] += v.data[i];
             return *this;
         }
 
@@ -229,7 +229,7 @@ namespace Nc
         Vector<T,D> &Vector<T,D>::operator -= (const Vector<U,D> &v)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] -= v.Data[i];
+                data[i] -= v.data[i];
             return *this;
         }
 
@@ -238,7 +238,7 @@ namespace Nc
         Vector<T,D> &Vector<T,D>::operator *= (const Vector<U,D> &v)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] *= v.Data[i];
+                data[i] *= v.data[i];
             return *this;
         }
 
@@ -247,7 +247,7 @@ namespace Nc
         Vector<T,D> &Vector<T,D>::operator /= (const Vector<U,D> &v)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] /= v.Data[i];
+                data[i] /= v.data[i];
             return *this;
         }
 
@@ -256,7 +256,7 @@ namespace Nc
         Vector<T,D> &Vector<T,D>::operator *= (const U &a)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] *= a;
+                data[i] *= a;
             return *this;
         }
 
@@ -265,7 +265,7 @@ namespace Nc
         Vector<T,D> &Vector<T,D>::operator /= (const U &a)
         {
             for (unsigned char i = 0; i < D; ++i)
-                Data[i] /= a;
+                data[i] /= a;
             return *this;
         }
 
@@ -293,7 +293,7 @@ namespace Nc
         {
             Vector<T,D> r;
             for (unsigned char i = 0; i < D; ++i)
-                r.Data[i] = -Data[i];
+                r.data[i] = -data[i];
             return r;
         }
 
@@ -338,7 +338,7 @@ namespace Nc
         bool    Vector<T,D>::Equal(const Vector &v, float precision) const
         {
             for (unsigned char i = 0; i < D; ++i)
-                if (fabs(Data[i] - v.Data[i]) > precision)
+                if (fabs(data[i] - v.data[i]) > precision)
                     return false;
             return true;
         }
@@ -346,9 +346,9 @@ namespace Nc
         template<typename T, unsigned char D>
         T Vector<T,D>::Length() const
         {
-            T   r = Data[0] * Data[0];
+            T   r = data[0] * data[0];
             for (unsigned int i = 1; i < D; ++i)
-                r += Data[i] * Data[i];
+                r += data[i] * data[i];
             return sqrt(r);
         }
 
@@ -371,9 +371,9 @@ namespace Nc
         template<typename U>
         T   Vector<T,D>::Dot(const Vector<U,D> &u) const
         {
-            T   r = Data[0] * u.Data[0];
+            T   r = data[0] * u.data[0];
             for (unsigned char i = 1; i < D; ++i)
-                r += Data[i] * u.Data[i];
+                r += data[i] * u.data[i];
             return r;
         }
 
@@ -381,7 +381,7 @@ namespace Nc
         void  Vector<T,D>::Inverse(Vector<T,D> &v) const
         {
             for (unsigned char i = 0; i < D; ++i)
-                v.Data[i] = -Data[i];
+                v.data[i] = -data[i];
         }
 
         template<typename T, unsigned char D>

@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Provide a Sprite Animation Frame to render and manage an animation of sprites `SpriteAnim`
+        /// Provide a Sprite Animation Frame to render and manage an animation of sprites `SpriteAnim`.
         /**
             It's simply a container of sprite, a frame is composed of one sprite, so the Animation class will animate his collection of frames.
         */
@@ -61,13 +61,13 @@ namespace Nc
                 }
 
             protected:
-                /** Update the sprite */
+                /** Update the sprite. */
                 virtual void Update(float runningTime);
-                /** Render the sprite */
+                /** Render the sprite. */
                 virtual void Render(SceneGraph *scene);
 
             public:
-                Sprite      *sprite;        ///< the sprite of the frame
+                Sprite      *sprite;        ///< the sprite of the frame.
         };
     }
 }

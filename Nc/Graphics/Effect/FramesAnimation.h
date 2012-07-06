@@ -51,29 +51,29 @@ namespace Nc
             public:
                 typedef std::list<T>                        ListFrame;
 
-                /// Enum to define the comportement of an Animation
+                /// Enum to define the comportement of an Animation.
                 enum Pattern
                 {
-                    Loop = 0,       ///< return to the first frame at the end of the animation and continu
-                    Infinite,       ///< The anim continu at the end with the last frame
-                    DieAtEnd        ///< kill (_alive = false) the anim at the end of the animation, and display nothing
+                    Loop = 0,       ///< return to the first frame at the end of the animation and continu.
+                    Infinite,       ///< The anim continu at the end with the last frame.
+                    DieAtEnd        ///< kill (_alive = false) the anim at the end of the animation, and display nothing.
                 };
 
-                /// Abstract class used to define a frame in an `Animation` process
+                /// Abstract class used to define a frame in an `Animation` process.
                 /**
-                    Inherite of it to create your own animation
-                    It's possible to send a signal to a frame, call the function Animation::Signal() to send a signal to the current frame
+                    Inherite of it to create your own animation.
+                    It's possible to send a signal to a frame, call the function Animation::Signal() to send a signal to the current frame.
                 */
                 class LGRAPHICS Frame : public Effect
                 {
                     public:
                         NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::Frame);
 
-                        /// The pattern of the frame
+                        /// The pattern of the frame.
                         enum Pattern
                         {
                             Nop = 0,
-                            WaitSignal              ///< wait a signal or wait the delay to pass the next frame
+                            WaitSignal              ///< wait a signal or wait the delay to pass the next frame.
                         };
 
                     public:
@@ -84,15 +84,15 @@ namespace Nc
                         virtual ISceneNode      *Clone() const = 0;
 
                     protected:
-                        /** Update the frame */
+                        /** Update the frame. */
                         virtual void            Update(float runningTime) = 0;
-                        /** Render the frame */
+                        /** Render the frame. */
                         virtual void            Render(SceneGraph *scene) = 0;
 
                     public:
-                        Pattern             pattern;        ///< the pattern of the frame
-                        double              delay;          ///< duration of the frame. If it's < 0, the delay is infinite
-                        bool                signaled;       ///< set the signal at true to tell that the animation has received a signal
+                        Pattern             pattern;        ///< the pattern of the frame.
+                        double              delay;          ///< duration of the frame. If it's < 0, the delay is infinite.
+                        bool                signaled;       ///< set the signal at true to tell that the animation has received a signal.
                 };
 
             public:
@@ -107,54 +107,54 @@ namespace Nc
 
                 virtual ISceneNode      *Clone() const                      {return new FramesAnimation(*this);}
 
-                /** \return the frame list */
+                /** \return the frame list. */
                 inline ListFrame        &GetListFrame()                     {return _frames;}
-                /** \return the frame list */
+                /** \return the frame list. */
                 inline const ListFrame  &GetListFrame() const               {return _frames;}
-                /** Push a new frame */
+                /** Push a new frame. */
                 void                    PushBack(const T &frame)            {_totalDelay += frame.delay; GetListFrame().push_back(frame);}
 
-                /** Recompute the total delay of the animation, could be invalid if a frame as an Infinite delay (<0) */
+                /** Recompute the total delay of the animation, could be invalid if a frame as an Infinite delay (<0). */
                 void        ResetTotalDelay();
 
-                /** Reset the animation, return to the first frame and stop the anim */
+                /** Reset the animation, return to the first frame and stop the anim. */
                 virtual void Reset();
-                /** Start the anim */
-                virtual void Start();                                                   ///< Start the animation
-                /** Stop the anim */
-                virtual void Stop()                                         {_isPlaying = false;}   ///< Stop the animation
-                /** true if the anim is started */
+                /** Start the anim. */
+                virtual void Start();
+                /** Stop the anim. */
+                virtual void Stop()                                         {_isPlaying = false;}
+                /** true if the anim is started. */
                 virtual bool Started() const                                {return _isPlaying && _alive;}
-                /** \return the current frame */
+                /** \return the current frame. */
                 const T      &CurrentFrame()                                {return *_itCurrentFrame;}
 
-                /** Send a signal to the current frame */
+                /** Send a signal to the current frame. */
                 virtual void Signal(unsigned int i = 0);
 
             protected:
-                /** Update the animation, manage the pattern and call the virtual function `UpdateFrame` */
+                /** Update the animation, manage the pattern and call the virtual function `UpdateFrame`. */
                 virtual void Update(float runningTime);
-                /** Render the current frame, so call the virtual function `RenderFrame` */
+                /** Render the current frame, so call the virtual function `RenderFrame`. */
                 virtual void Render(SceneGraph *scene);
 
-                /** Update the current frame */
+                /** Update the current frame. */
                 virtual void UpdateFrame(float runningTime)                 {_itCurrentFrame->UpdateNode(runningTime);}
-                /** Render the current frame */
+                /** Render the current frame. */
                 virtual void RenderFrame(SceneGraph *scene);
 
             protected:
-                Pattern                         _pattern;               ///< define the pattern of the animation
-                bool                            _isPlaying;             ///< if this statement is false, no Update and no Display
-                double                          _totalDelay;            ///< the total delay of the animations (all frames)
+                Pattern                         _pattern;               ///< define the pattern of the animation.
+                bool                            _isPlaying;             ///< if this statement is false, no Update and no Display.
+                double                          _totalDelay;            ///< the total delay of the animations (all frames).
 
-                unsigned int                    _indexCurrentFrame;     ///< the index of the current frame
-                typename ListFrame::iterator    _itCurrentFrame;        ///< the iterator if the current frame
-                ListFrame                       _frames;                ///< the frames of the animation
-                Utils::Clock                    _clock;                 ///< the clock to manage time between two frames
-                double                          _lastTime;              ///< the last time of the last frame
+                unsigned int                    _indexCurrentFrame;     ///< the index of the current frame.
+                typename ListFrame::iterator    _itCurrentFrame;        ///< the iterator if the current frame.
+                ListFrame                       _frames;                ///< the frames of the animation.
+                Utils::Clock                    _clock;                 ///< the clock to manage time between two frames.
+                double                          _lastTime;              ///< the last time of the last frame.
 
             private:
-                static const std::string        _uniqueClassName;     ///< the static class name used to has a unique class name between the diferent templates.
+                static const std::string        _uniqueClassName;     ///< the static class name used to has a unique class name between the diferent templates..
         };
     }
 }

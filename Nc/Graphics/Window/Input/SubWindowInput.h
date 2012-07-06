@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Define an input to be used with a SubWindow
+        /// Define an input to be used with a SubWindow.
         /**
             \sa
                 - WindowInput
@@ -49,7 +49,7 @@ namespace Nc
                 virtual void Create();
 
             private:
-                WindowInput     *_parent;       ///< parent of the SubWindowInput
+                WindowInput     *_parent;       ///< parent of the SubWindowInput.
         };
     }
 }

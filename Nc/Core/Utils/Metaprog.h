@@ -144,7 +144,7 @@ namespace Nc
 
             /// container of type T
             template<typename T>
-            struct Container    { T   Data; };
+            struct Container    { T   data; };
 
             /// Just a struct which do and store nothing
             struct Nop {};

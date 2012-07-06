@@ -54,11 +54,11 @@ namespace Nc
                 void        Cross(const Vector3D &v, Vector3D<T> &result) const;
 
                 /** \return X */
-                const T     &X() const    {return Vector<T,3>::Data[0];}
+                const T     &X() const    {return Vector<T,3>::data[0];}
                 /** \return Y */
-                const T     &Y() const    {return Vector<T,3>::Data[1];}
+                const T     &Y() const    {return Vector<T,3>::data[1];}
                 /** \return Z */
-                const T     &Z() const    {return Vector<T,3>::Data[2];}
+                const T     &Z() const    {return Vector<T,3>::data[2];}
         };
 
         template<typename T>
@@ -85,17 +85,17 @@ namespace Nc
         template<typename T>
         void Vector3D<T>::Init(const T &x, const T &y, const T &z)
         {
-            Vector<T,3>::Data[0] = x;
-            Vector<T,3>::Data[1] = y;
-            Vector<T,3>::Data[2] = z;
+            Vector<T,3>::data[0] = x;
+            Vector<T,3>::data[1] = y;
+            Vector<T,3>::data[2] = z;
         }
 
         template<typename T>
         void Vector3D<T>::Cross(const Vector3D<T> &v, Vector3D<T> &result) const
         {
-            result.Data[0] = (Vector<T,3>::Data[1] * v.Data[2]) - (Vector<T,3>::Data[2] * v.Data[1]);
-            result.Data[1] = (Vector<T,3>::Data[2] * v.Data[0]) - (Vector<T,3>::Data[0] * v.Data[2]);
-            result.Data[2] = (Vector<T,3>::Data[0] * v.Data[1]) - (Vector<T,3>::Data[1] * v.Data[0]);
+            result.data[0] = (Vector<T,3>::data[1] * v.data[2]) - (Vector<T,3>::data[2] * v.data[1]);
+            result.data[1] = (Vector<T,3>::data[2] * v.data[0]) - (Vector<T,3>::data[0] * v.data[2]);
+            result.data[2] = (Vector<T,3>::data[0] * v.data[1]) - (Vector<T,3>::data[1] * v.data[0]);
         }
     }
 }

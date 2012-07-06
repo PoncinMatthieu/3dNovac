@@ -84,16 +84,16 @@ int Texture::MaxSize()
 void Texture::CheckSize(const Vector2ui &size)
 {
     int maxSize = MaxSize();
-    if ((size.Data[0] > static_cast<unsigned int>(maxSize)) || (size.Data[1] > static_cast<unsigned int>(maxSize)))
+    if ((size.data[0] > static_cast<unsigned int>(maxSize)) || (size.data[1] > static_cast<unsigned int>(maxSize)))
         throw Utils::Exception("Texture", "Failed to create texture, internal size too high (" +
-                                Utils::Convert::ToString(size.Data[0]) + "x" + Utils::Convert::ToString(size.Data[1]) +
+                                Utils::Convert::ToString(size.data[0]) + "x" + Utils::Convert::ToString(size.data[1]) +
                                 "), maxLargerSize:" + Utils::Convert::ToString(maxSize));
 
-    if (!Math::IsAPowerOf2(size.Data[0]) || !Math::IsAPowerOf2(size.Data[1]))
+    if (!Math::IsAPowerOf2(size.data[0]) || !Math::IsAPowerOf2(size.data[1]))
     {
         if (EXT.NonPowerOf2Supported())
             System::Config::Warning("GL::Texture",  "To increse performance, please use a texture size of power of 2. " + _name + ":" +
-                                                    Utils::Convert::ToString(size.Data[0]) + "/" + Utils::Convert::ToString(size.Data[1]));
+                                                    Utils::Convert::ToString(size.data[0]) + "/" + Utils::Convert::ToString(size.data[1]));
         else
             throw Utils::Exception("Texture", "Can't create the texture: Texturing with a non power of two size is not supported on this plateform.");
     }
@@ -114,7 +114,7 @@ void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat
     if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture which is not enabled.");
     CheckSize(size);
-    glTexImage2D(_target, level, internalFormat, size.Data[0], size.Data[1], 0, pixelFormat, pixelType, pixelData);
+    glTexImage2D(_target, level, internalFormat, size.data[0], size.data[1], 0, pixelFormat, pixelType, pixelData);
     _size = size;
 }
 
@@ -162,7 +162,7 @@ void Texture::LoadFromImage(const Core::Image &image, Enum::Texture::Filter magn
     //glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     //glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, (generateMipmap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
 
-    glTexImage2D(_target, 0, GL_RGBA8, image.Size().Data[0], image.Size().Data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
+    glTexImage2D(_target, 0, GL_RGBA8, image.Size().data[0], image.Size().data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
 
     if(generateMipmap)
         glGenerateMipmap(_target);
@@ -208,7 +208,7 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
         image.Reverse(); // and reverse it
         const unsigned char *pixels = image.GetPixels();
 
-        glTexImage2D(target[i], 0, GL_RGBA8, image.Size().Data[0], image.Size().Data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
+        glTexImage2D(target[i], 0, GL_RGBA8, image.Size().data[0], image.Size().data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
     }
     Disable();
 

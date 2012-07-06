@@ -39,7 +39,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface used to define a default material for vertex types
+        /// Interface used to define a default material for vertex types.
         class LGRAPHICS IDefaultMaterial : public IMaterial
         {
             public:
@@ -47,54 +47,54 @@ namespace Nc
                     : IMaterial(name), _initialized(false)  {}
                 virtual ~IDefaultMaterial()                 {}
 
-                /** Initialize the material */
+                /** Initialize the material. */
                 virtual void    Initialize()                {_initialized = true;}
-                /** \return the init statement */
+                /** \return the init statement. */
                 bool            Initialized()               {return _initialized;}
 
             private:
-                bool    _initialized;       ///< the init statement
+                bool    _initialized;       ///< the init statement.
         };
 
-        /// Interface to define a default colored material
+        /// Interface to define a default colored material.
         class DefaultMaterialColored : public IDefaultMaterial
         {
             public:
                 DefaultMaterialColored(const std::string &name);
 
-                /** Initialize the material */
+                /** Initialize the material. */
                 virtual void    Initialize() = 0;
 
-                /** configure the goemetry to render it with the good attributes */
+                /** configure the goemetry to render it with the good attributes. */
                 virtual bool    Configure(Core::Drawable &drawable);
 
-                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
+                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix. */
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable);
 
             protected:
-                GL::Program     _program;            ///< the shader used to render the drawable
+                GL::Program     _program;            ///< the shader used to render the drawable.
                 unsigned int    _uniformMVP;
                 unsigned int    _attribCoord;
                 unsigned int    _attribColor;
         };
 
-        /// Interface to define a default textured material
+        /// Interface to define a default textured material.
         class DefaultMaterialTextured : public IDefaultMaterial
         {
             public:
                 DefaultMaterialTextured(const std::string &name);
 
-                /** Initialize the material */
+                /** Initialize the material. */
                 virtual void    Initialize() = 0;
 
-                /** configure the goemetry to render it with the good attributes */
+                /** configure the goemetry to render it with the good attributes. */
                 virtual bool    Configure(Core::Drawable &drawable);
 
-                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
+                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix. */
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable);
 
             protected:
-                GL::Program     _program;            ///< the shader used to render the drawable
+                GL::Program     _program;            ///< the shader used to render the drawable.
                 unsigned int    _uniformMVP;
                 unsigned int    _uniformTextured;
                 unsigned int    _uniformTexturedId;
@@ -103,11 +103,11 @@ namespace Nc
                 unsigned int    _attribColor;
         };
 
-        /** Template Base class of a Default Material, this class specialized with the different vertex types */
+        /** Template Base class of a Default Material, this class specialized with the different vertex types. */
         template<typename VertexType>
         class DefaultMaterial   {};
 
-        /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored.
         template<>
         class DefaultMaterial<Core::DefaultVertexType::Colored> : public DefaultMaterialColored
         {
@@ -115,14 +115,14 @@ namespace Nc
                 DefaultMaterial()
                     : DefaultMaterialColored("DefaultMaterial<Colored>")      {}
 
-                /** \return the descriptor priority used to determine the best default material */
+                /** \return the descriptor priority used to determine the best default material. */
                 static unsigned int    GetDescriptorPriority()          {return Core::DefaultVertexType::Colored::GetDescriptorPriority();}
 
-                /** Initialize the material */
+                /** Initialize the material. */
                 virtual void    Initialize();
         };
 
-        /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored2d
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Colored2d.
         template<>
         class DefaultMaterial<Core::DefaultVertexType::Colored2d> : public DefaultMaterialColored
         {
@@ -130,14 +130,14 @@ namespace Nc
                 DefaultMaterial()
                     : DefaultMaterialColored("DefaultMaterial<Colored2d>")      {}
 
-                /** \return the descriptor priority used to determine the best default material */
+                /** \return the descriptor priority used to determine the best default material. */
                 static unsigned int    GetDescriptorPriority()         {return Core::DefaultVertexType::Colored2d::GetDescriptorPriority();}
 
-                /** Initialize the material */
+                /** Initialize the material. */
                 virtual void    Initialize();
         };
 
-        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured.
         template<>
         class DefaultMaterial<Core::DefaultVertexType::Textured> : public DefaultMaterialTextured
         {
@@ -145,14 +145,14 @@ namespace Nc
                 DefaultMaterial()
                     : DefaultMaterialTextured("DefaultMaterial<Textured>")      {}
 
-                /** \return the descriptor priority used to determine the best default material */
+                /** \return the descriptor priority used to determine the best default material. */
                 static unsigned int    GetDescriptorPriority()         {return Core::DefaultVertexType::Textured::GetDescriptorPriority();}
 
-                /** Initialize the material */
+                /** Initialize the material. */
                 virtual void    Initialize();
         };
 
-        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured2d
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured2d.
         template<>
         class DefaultMaterial<Core::DefaultVertexType::Textured2d> : public DefaultMaterialTextured
         {
@@ -160,14 +160,14 @@ namespace Nc
                 DefaultMaterial()
                     : DefaultMaterialTextured("DefaultMaterial<Textured2d>")      {}
 
-                /** \return the descriptor priority used to determine the best default material */
+                /** \return the descriptor priority used to determine the best default material. */
                 static unsigned int    GetDescriptorPriority()         {return Core::DefaultVertexType::Textured2d::GetDescriptorPriority();}
 
-                /** Initialize the material */
+                /** Initialize the material. */
                 virtual void    Initialize();
         };
 
-        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured3d
+        /// Specialisation of the DefaultMaterial for a BasicVertexType::Textured3d.
         template<>
         class DefaultMaterial<Core::DefaultVertexType::Textured3d> : public DefaultMaterialTextured
         {
@@ -175,13 +175,13 @@ namespace Nc
                 DefaultMaterial()
                     : DefaultMaterialTextured("DefaultMaterial<Textured3d>")      {}
 
-                /** \return the descriptor priority used to determine the best default material */
+                /** \return the descriptor priority used to determine the best default material. */
                 static unsigned int    GetDescriptorPriority()         {return Core::DefaultVertexType::Textured3d::GetDescriptorPriority();}
 
-                /** Initialize the material */
+                /** Initialize the material. */
                 virtual void    Initialize();
 
-                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix */
+                /** Render the drawable (couple of GeometryBuffer and MaterialConfig) with the given scene and model matrix. */
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable);
         };
     }

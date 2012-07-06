@@ -125,7 +125,7 @@ void GameEngine::KeyboardEvent(System::Event &event)
     {
       if (event.key.code == System::Key::Space)
 	{
-	  Octree *oct = _entity->Data->As<Octree>();
+	  Octree *oct = _entity->data->As<Octree>();
 	  if (oct->DrawOutlines() == false)
 	    oct->DrawOutlines(true);
 	  else
@@ -166,7 +166,7 @@ void GameEngine::Generate(Entity *node, Graphic::Object *obj)
   Octree	*oct = new Octree(Box3f(Vector3f(0,0,0),Vector3f(50,50,50)));
   Box3f		box;
 
-  node->Data = oct;
+  node->data = oct;
   std::list<std::pair<Box3f,ISceneNode*> > listToInsert;
   for (unsigned int i = 0; i < size[0]; ++i)
     {

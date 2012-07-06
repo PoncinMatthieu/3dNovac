@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Define a Material which could be directly configurable outside of the class
+        /// Define a Material which could be directly configurable outside of the class.
         /**
             This class helps to create materials quickly without inheritance of the IMaterial class.
 
@@ -55,17 +55,17 @@ namespace Nc
 
 				inline const GL::Program	&GetProgram() const		{return _program;}
 
-                /** Configure the given goemetry */
+                /** Configure the given goemetry. */
                 virtual bool        Configure(Core::Drawable &drawable);
 
-                /** Render the given drawable with the given model matrix */
+                /** Render the given drawable with the given model matrix. */
                 virtual void        Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable);
 
-                /** Fetch the attribute location by using the given \p attribName and set it for the given \p componentName */
+                /** Fetch the attribute location by using the given \p attribName and set it for the given \p componentName. */
                 void                SetAttrib(const std::string &componentName, const char *attribName);
 
                 /**
-                    \return the uniform linked with the given uniform name
+                    \return the uniform linked with the given uniform name.
                     If the uniform don't already exist, the uniform location will be fetch and the Uniform object created with the given template parameters.
                     For exemple if the uniform is a vec3 in the shader, the template Nb should be 3, and the type T should be float.
                     If the uniform already exist, the uniform object will be dynamically cast by using the template parameters. So you should try to avoid any unecessary call of this function.
@@ -81,26 +81,26 @@ namespace Nc
                 /** Unset the texture unit location. */
                 void                UnsetDrawableTextureUnitUniform(unsigned int unit);
 
-                /** Set the uniform MVP matrix location */
+                /** Set the uniform MVP matrix location. */
                 void                SetMVPMatrixUniform(const char *name);
-                /** Set the uniform MVP matrix location */
+                /** Set the uniform MVP matrix location. */
                 void                SetMMatrixUniform(const char *name);
-                /** Set the uniform MVP matrix location */
+                /** Set the uniform MVP matrix location. */
                 void                SetVPMatrixUniform(const char *name);
-                /** Set the uniform normal matrix location */
+                /** Set the uniform normal matrix location. */
                 void                SetNormalMatrixUniform(const char *name);
 
                 friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const ProgrammableMaterial &m);
 
             protected:
-                GL::Program                         _program;                       ///< the program used to render the drawables
-                UniformMap                          _uniforms;                      ///< the uniforms used to configure the program
-                int                                 _uniformMVPMatrix;              ///< the uniform of the matrix mvp
-                int                                 _uniformMMatrix;                ///< the uniform of the matrix m if the mvp is not set
-                int                                 _uniformVPMatrix;               ///< the uniform of the matrix vp if the mvp is not set
-                int                                 _uniformNormalMatrix;           ///< the uniform of the normal matrix
-                UniformDrawablesTextureUnitMap      _drawablesTextureUnitUniforms;  ///< the uniforns used to set the textures of the drawables
-                AttribMap                           _attribs;                       ///< the attributes used to set the vertex attributes by using their descriptor
+                GL::Program                         _program;                       ///< the program used to render the drawables.
+                UniformMap                          _uniforms;                      ///< the uniforms used to configure the program.
+                int                                 _uniformMVPMatrix;              ///< the uniform of the matrix mvp.
+                int                                 _uniformMMatrix;                ///< the uniform of the matrix m if the mvp is not set.
+                int                                 _uniformVPMatrix;               ///< the uniform of the matrix vp if the mvp is not set.
+                int                                 _uniformNormalMatrix;           ///< the uniform of the normal matrix.
+                UniformDrawablesTextureUnitMap      _drawablesTextureUnitUniforms;  ///< the uniforns used to set the textures of the drawables.
+                AttribMap                           _attribs;                       ///< the attributes used to set the vertex attributes by using their descriptor.
         };
 
         template<typename T, unsigned int Nb>

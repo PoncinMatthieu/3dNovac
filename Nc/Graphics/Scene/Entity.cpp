@@ -51,8 +51,8 @@ Entity::Entity(const Entity &n)
 {
     Matrix = n.Matrix;
     _box = n._box;
-    if (NodePolitic::Data != NULL)
-        NodePolitic::Data = n.Data->Clone();
+    if (NodePolitic::data != NULL)
+        NodePolitic::data = n.data->Clone();
 }
 
 Entity &Entity::operator = (const Entity &n)
@@ -60,23 +60,23 @@ Entity &Entity::operator = (const Entity &n)
     NodePolitic::operator = (n);
     Matrix = n.Matrix;
     _box = n._box;
-    if (NodePolitic::Data != NULL)
-        NodePolitic::Data = n.Data->Clone();
+    if (NodePolitic::data != NULL)
+        NodePolitic::data = n.data->Clone();
     return *this;
 }
 
 Entity::~Entity()
 {
-    if (Data != NULL)
-        delete Data;
+    if (data != NULL)
+        delete data;
 }
 
 void    Entity::RenderChilds(SceneGraph *scene)
 {
     try
     {
-        if (NodeType::Data != NULL)
-            NodeType::Data->RenderNode(scene);
+        if (NodeType::data != NULL)
+            NodeType::data->RenderNode(scene);
         for (ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
             (*it)->RenderNode(scene);
     }
@@ -90,8 +90,8 @@ void    Entity::UpdateChilds(float elapsedTime)
 {
     try
     {
-        if (NodeType::Data != NULL)
-            NodeType::Data->UpdateNode(elapsedTime);
+        if (NodeType::data != NULL)
+            NodeType::data->UpdateNode(elapsedTime);
         for (ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
             (*it)->UpdateNode(elapsedTime);
     }
@@ -168,7 +168,7 @@ void    Entity::CenterBase(const Vector3f &centerBase)
     b.Transform(Matrix);
 
     Vector3f center = b.Center();
-    center.Data[2] = b.Min(2);
+    center.data[2] = b.Min(2);
     Matrix.AddTranslation(centerBase - center);
 }
 

@@ -54,9 +54,9 @@ namespace Nc
                     ~Image();
 
                     /** Init the size of the image, /!\ the data is lost */
-                    inline void     InitSize(const Vector2ui &size)                                 {_size = size; _pixels.InitSize(size.Data[0] * size.Data[1]);}
+                    inline void     InitSize(const Vector2ui &size)                                 {_size = size; _pixels.InitSize(size.data[0] * size.data[1]);}
                     /** Resize the image */
-                    inline void     Resize(const Vector2ui &size)                                   {_size = size; _pixels.Resize(size.Data[0] * size.Data[1]);}
+                    inline void     Resize(const Vector2ui &size)                                   {_size = size; _pixels.Resize(size.data[0] * size.data[1]);}
 
                     // Loading
                     /** Load an image from a file */
@@ -70,15 +70,15 @@ namespace Nc
 
                     // accessors
                     /** Set the pixel at the given position */
-                    inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)    {_pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]] = p;}
+                    inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)    {_pixels[(pos.data[1] * _size.data[0]) + pos.data[0]] = p;}
                     /** \return the pixel from the given position */
-                    inline const Pixel<>        &GetPixel(const Vector2ui &pos) const               {return _pixels[(pos.Data[1] * _size.Data[0]) + pos.Data[0]];}
+                    inline const Pixel<>        &GetPixel(const Vector2ui &pos) const               {return _pixels[(pos.data[1] * _size.data[0]) + pos.data[0]];}
                     /** \return the pixel from the given position */
-                    inline const Pixel<>        &GetPixel(unsigned int x, unsigned int y) const     {return _pixels[(y * _size.Data[0]) + x];}
+                    inline const Pixel<>        &GetPixel(unsigned int x, unsigned int y) const     {return _pixels[(y * _size.data[0]) + x];}
                     /** \return the pixels in char * */
-                    inline const unsigned char  *GetPixels() const                                  {return reinterpret_cast<const unsigned char*>(_pixels.Data);}
+                    inline const unsigned char  *GetPixels() const                                  {return reinterpret_cast<const unsigned char*>(_pixels.data);}
                     /** \return the array of pixels */
-                    inline Pixel<>              *GetPixelsArray()                                   {return _pixels.Data;}
+                    inline Pixel<>              *GetPixelsArray()                                   {return _pixels.data;}
                     /** \return the size of the image */
                     inline const Vector2ui      &Size() const                                       {return _size;}
 

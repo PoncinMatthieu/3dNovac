@@ -79,18 +79,18 @@ void Colored::Fill(float coordX, float coordY, float coordZ, const Color &c)
     coord[0] = coordX;
     coord[1] = coordY;
     coord[2] = coordZ;
-    color[0] = c.R;
-    color[1] = c.G;
-    color[2] = c.B;
+    color[0] = c.r;
+    color[1] = c.g;
+    color[2] = c.b;
 }
 
 void Colored2d::Fill(float coordX, float coordY, const Color &c)
 {
     coord[0] = coordX;
     coord[1] = coordY;
-    color[0] = c.R;
-    color[1] = c.G;
-    color[2] = c.B;
+    color[0] = c.r;
+    color[1] = c.g;
+    color[2] = c.b;
 }
 
 void Textured::Fill(float coordX, float coordY, float coordZ, float texCoordX, float texCoordY, float normalX, float normalY, float normalZ, const Color &c)
@@ -100,9 +100,9 @@ void Textured::Fill(float coordX, float coordY, float coordZ, float texCoordX, f
     coord[2] = coordZ;
     texCoord[0] = texCoordX;
     texCoord[1] = texCoordY;
-    color[0] = c.R;
-    color[1] = c.G;
-    color[2] = c.B;
+    color[0] = c.r;
+    color[1] = c.g;
+    color[2] = c.b;
     normal[0] = normalX;
     normal[1] = normalY;
     normal[2] = normalZ;
@@ -114,9 +114,9 @@ void Textured2d::Fill(float coordX, float coordY, float texCoordX, float texCoor
     coord[1] = coordY;
     texCoord[0] = texCoordX;
     texCoord[1] = texCoordY;
-    color[0] = c.R;
-    color[1] = c.G;
-    color[2] = c.B;
+    color[0] = c.r;
+    color[1] = c.g;
+    color[2] = c.b;
 }
 
 void Textured3d::Fill(float coordX, float coordY, float coordZ, float texCoordX, float texCoordY, float texCoordZ, const Color &c)
@@ -127,7 +127,7 @@ void Textured3d::Fill(float coordX, float coordY, float coordZ, float texCoordX,
     texCoord[0] = texCoordX;
     texCoord[1] = texCoordY;
     texCoord[2] = texCoordZ;
-    color[0] = c.R;
-    color[1] = c.G;
-    color[2] = c.B;
+    color[0] = c.r;
+    color[1] = c.g;
+    color[2] = c.b;
 }

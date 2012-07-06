@@ -141,12 +141,12 @@ void MemoryManager::Free(void* Ptr, bool aType)
 
 void MemoryManager::CurrentFree(FileName aFile, int aLine)
 {
-    DataMemory Data;
-    Data.File = aFile;
-    Data.Line = aLine;
+    DataMemory data;
+    data.File = aFile;
+    data.Line = aLine;
 
     System::Locker l(&_mutex);
-    _stackCurrentFree.push(Data);
+    _stackCurrentFree.push(data);
 }
 
 

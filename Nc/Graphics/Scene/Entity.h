@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Define an entity node
+        /// Define an entity node.
         /**
             An entity is define by a Matrix and can contain only one subtree and a list of childs.
         */
@@ -54,47 +54,47 @@ namespace Nc
 
                 virtual ISceneNode          *Clone() const                                      {return new Entity(*this);}
 
-                /** \return the number of subtree which can contain a least one subtree */
-                virtual unsigned int        SubTreeCount() const                                {return ((Data == NULL) ? 0 : 1);}
-                /** \return the subtree */
-                virtual const ISceneNode    *SubTree(unsigned int) const                        {return Data;}
+                /** \return the number of subtree which can contain a least one subtree. */
+                virtual unsigned int        SubTreeCount() const                                {return ((data == NULL) ? 0 : 1);}
+                /** \return the subtree. */
+                virtual const ISceneNode    *SubTree(unsigned int) const                        {return data;}
 
                 /**
                     Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given \p oldAt.
 
-                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible)
+                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible).
                 */
                 virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt);
 
-                /** Render the childs and the subtrees */
+                /** Render the childs and the subtrees. */
                 void                        RenderChilds(SceneGraph *scene);
-                /** Update the childs and the subtrees */
+                /** Update the childs and the subtrees. */
                 void                        UpdateChilds(float elapsedTime);
 
-                /** Set the box */
+                /** Set the box. */
                 inline void         SetBox(const Box3f &box)            {_box = box;}
-                /** \return the box (the box is not modified by the matrix, so if you want the reel box call the method GetReelBox) */
+                /** \return the box (the box is not modified by the matrix, so if you want the reel box call the method GetReelBox). */
                 inline const Box3f  &GetBox() const                     {return _box;}
-                /** \param box filled by the box transformed by the model matrix */
+                /** \param box filled by the box transformed by the model matrix. */
                 void                GetReelBox(Box3f &box) const;
 
                 // operations sur la matrice
-                /** Scale the object with the given height */
+                /** Scale the object with the given height. */
                 void                HeightScale(float height); // /!\ metre a jour la bounding box avant
-                /** Translate the model Matrix to the given vector using the xy center of the box */
+                /** Translate the model Matrix to the given vector using the xy center of the box. */
                 void                CenterBase(const Vector3f &centerBase);
 
             protected:
-                /** Render the node */
+                /** Render the node. */
                 virtual void                Render(SceneGraph *scene);
-                /** Update the node */
+                /** Update the node. */
                 virtual void                Update(float elapsedTime);
 
             public:
-                TMatrix                     Matrix;                 ///< the matrix of the entity
+                TMatrix                     Matrix;                 ///< the matrix of the entity.
 
             protected:
-                Box3f                       _box;                   ///< the box of the entity
+                Box3f                       _box;                   ///< the box of the entity.
         };
     }
 }

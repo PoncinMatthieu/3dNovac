@@ -50,19 +50,19 @@ Console::Console(Window *attachedWindow, const std::string &engineName, Pattern 
     _prompt = "[" + engineName + "]> ";
     _engineName = engineName;
 
-    _size.Data[0] = _attachedWindow->Width() - 1;
-    _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
+    _size.data[0] = _attachedWindow->Width() - 1;
+    _size.data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
     _pos[0] = 1; // pour voir tous les bord de la console, on se decale de 1
 
     _labelPrompt = new Label(_prompt, 17, Color(1, 1, 1), Left | Bottom, Vector2f(0, 17), "Prototype");
     AddChild(_labelPrompt);
 
     _labelWrite = new Label("", 17, Color(1, 1, 1), Left | Bottom, Vector2f(0, 17), "Prototype");
-    _labelWrite->Pos(Vector2f(_size.Data[0], 0));
+    _labelWrite->Pos(Vector2f(_size.data[0], 0));
     AddChild(_labelWrite);
 
     _labelCursor = new Label("_", 17, Color(0, 1, 0), Left | Bottom, Vector2f(0, 17), "arial");
-    _labelCursor->Pos(Vector2f(_size.Data[0], 0));
+    _labelCursor->Pos(Vector2f(_size.data[0], 0));
     AddChild(_labelCursor);
 
     #ifndef _DEBUG_GUI_DISABLE_CONSOLE_LOGGING
@@ -98,7 +98,7 @@ void Console::GetReelPos(Vector2i &pos) const
 {
     WindowBox::GetReelPos(pos);
     if (_pattern == TranslateAtFocus && !_focus)
-        pos.Data[1] -= _size.Data[1] /*- _titleHeight*//*;
+        pos.data[1] -= _size.data[1] /*- _titleHeight*//*;
 }
 */
 void Console::Update()
@@ -106,20 +106,20 @@ void Console::Update()
     WindowBox::Update();
     // met a jour la taille de la console en fonction de la taille de la fenetre
     unsigned short  percent = 15; // hauteur de la console en poucentage
-    _size.Data[0] = _attachedWindow->Width() - 1;
-    _size.Data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
+    _size.data[0] = _attachedWindow->Width() - 1;
+    _size.data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
 
     // met a jour les string de message
     if ((_pattern == TranslateAtFocus && _focus) || (_pattern == Nop))
     {
         TMatrix         m;
         float           textHeight1 = 17, textHeight2 = 14;
-        unsigned int    nbMsg = (((float)(_size.Data[1] /*- _titleHeight*/ - textHeight1)) / textHeight2);
+        unsigned int    nbMsg = (((float)(_size.data[1] /*- _titleHeight*/ - textHeight1)) / textHeight2);
 
         if (nbMsg != _listFont.size())
         {
             DeleteListFont();
-            m.AddTranslation(10., (double)textHeight1 + PaddingTop() + _pos.Data[1], 0.);
+            m.AddTranslation(10., (double)textHeight1 + PaddingTop() + _pos.data[1], 0.);
             for (unsigned int i = 0; i < nbMsg; i++)
             {
                 Text *newString = new Text("", textHeight2, Color(0.8f, 0.8f, 0.8f), "arial");
@@ -181,7 +181,7 @@ void Console::KeyboardEvent(const Event &event)
                     {
                         cmd = *_itCurrentMsg;
                         _labelWrite->PlainText(cmd);
-                        _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
+                        _labelCursor->Pos(Vector2f(_labelWrite->Size().data[0] + _labelPrompt->Size().data[0], 0));
                     }
                 }
             }
@@ -193,7 +193,7 @@ void Console::KeyboardEvent(const Event &event)
                     {
                         cmd = lastcmd;
                         _labelWrite->PlainText(cmd);
-                        _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
+                        _labelCursor->Pos(Vector2f(_labelWrite->Size().data[0] + _labelPrompt->Size().data[0], 0));
                         lastcmdSet = false;
                     }
                 }
@@ -202,7 +202,7 @@ void Console::KeyboardEvent(const Event &event)
                     --_itCurrentMsg;
                     cmd = *_itCurrentMsg;
                     _labelWrite->PlainText(cmd);
-                    _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
+                    _labelCursor->Pos(Vector2f(_labelWrite->Size().data[0] + _labelPrompt->Size().data[0], 0));
                 }
             }
         }
@@ -217,13 +217,13 @@ void Console::KeyboardEvent(const Event &event)
             cmd.clear();
             _labelWrite->PlainText("");
             lastcmdSet = false;
-            _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
+            _labelCursor->Pos(Vector2f(_labelWrite->Size().data[0] + _labelPrompt->Size().data[0], 0));
         }
         else if (event.key.code == Key::Back && !cmd.empty()) // suppression du dernier caractere
         {
             cmd.erase(cmd.end() - 1);
             _labelWrite->PlainText(cmd);
-            _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
+            _labelCursor->Pos(Vector2f(_labelWrite->Size().data[0] + _labelPrompt->Size().data[0], 0));
             lastcmdSet = false;
         }
         else    // sinon on peut recuperer le caractere et le push dans le label
@@ -233,7 +233,7 @@ void Console::KeyboardEvent(const Event &event)
             {
                 cmd += c;
                 _labelWrite->PlainText(cmd);
-                _labelCursor->Pos(Vector2f(_labelWrite->Size().Data[0] + _labelPrompt->Size().Data[0], 0));
+                _labelCursor->Pos(Vector2f(_labelWrite->Size().data[0] + _labelPrompt->Size().data[0], 0));
             }
             lastcmdSet = false;
         }

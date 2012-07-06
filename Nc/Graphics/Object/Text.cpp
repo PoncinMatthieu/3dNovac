@@ -53,6 +53,7 @@ Text::Text(const Text &text)
 
 Text &Text::operator = (const Text &text)
 {
+    Object::operator = (text);
     _text = text._text;
     Formater(text._textFormater->Clone());
     return *this;

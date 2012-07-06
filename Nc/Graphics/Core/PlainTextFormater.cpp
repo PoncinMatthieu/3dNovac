@@ -83,7 +83,7 @@ Vector2f PlainTextFormater::GetCharSize(UInt32 c) const
 {
     float           factor = _charSize / _font->BaseSize();
     const Glyph     *r = _font->GetGlyph(c);
-    return (r != NULL) ? Vector2f(r->Size.Data[0] * factor, r->Size.Data[1] * factor) : Vector2f(0, _charSize);
+    return (r != NULL) ? Vector2f(r->Size.data[0] * factor, r->Size.data[1] * factor) : Vector2f(0, _charSize);
 }
 
 void    PlainTextFormater::SetDocumentSize(float size)
@@ -212,8 +212,8 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
         if (curGlyph != NULL)
         {
             // we compute the offset of the last line to add to the matrix so that the rendering will match exactly with the box size of the string.
-            if (posOffsetLastLine < (curGlyph->Pos.Data[1] * factor))
-                posOffsetLastLine = curGlyph->Pos.Data[1] * factor;
+            if (posOffsetLastLine < (curGlyph->Pos.data[1] * factor))
+                posOffsetLastLine = curGlyph->Pos.data[1] * factor;
 
             DrawVertices(vertices, noVertice, X, Y, thickness, italicCoeff, curGlyph, factor);
 
@@ -222,7 +222,7 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
             curWordWidth += curCharWidth;
             if (width < X)
                 width = X;
-            float charHeight = (float)(curGlyph->Size.Data[1] + curGlyph->Pos.Data[1]) * factor;
+            float charHeight = (float)(curGlyph->Size.data[1] + curGlyph->Pos.data[1]) * factor;
             if (Math::Abs(charHeight) > Math::Abs(curHeight))
                 curHeight = charHeight;
             curCharWidth = 0;
@@ -247,7 +247,7 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
 
     // update the geometry
     // translate every caracter to it's final position (according to the computed size)
-    TranslateCaraters(vertices.Data, noVertice, 0.f, -Y + posOffsetLastLine);
+    TranslateCaraters(vertices.data, noVertice, 0.f, -Y + posOffsetLastLine);
     vertices.UnderSize(noVertice); // resize the buffer, to be sure that we render the good number of vertices
     GL::GeometryBuffer<DefaultVertexType::Textured2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Textured2d,false>*>(drawableArray[0]->Geometry);
     geo->VBO().UpdateData(vertices, GL::Enum::DataBuffer::StaticDraw);
@@ -255,7 +255,7 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, DrawableArray &d
     if (_style.Enabled(Underlined))
     {
         // translate every underline to it's final position (according to the computed size)
-        TranslateUnderlines(underlines.Data, noUnderline, 0.f, -Y + posOffsetLastLine);
+        TranslateUnderlines(underlines.data, noUnderline, 0.f, -Y + posOffsetLastLine);
         underlines.UnderSize(noUnderline); // resize the buffer, to be sure that we render the good number of vertices
         GL::GeometryBuffer<DefaultVertexType::Colored2d,false> *geo = static_cast<GL::GeometryBuffer<DefaultVertexType::Colored2d,false>*>(drawableArray[1]->Geometry);
         geo->VBO().UpdateData(underlines, GL::Enum::DataBuffer::StaticDraw);
@@ -277,52 +277,52 @@ void    PlainTextFormater::DrawUnderlines(Array<DefaultVertexType::Colored2d> &u
     if (underlines.Size() < (noUnderline + 6))
         underlines.Resize(noUnderline * 2);
 
-    underlines.Data[noUnderline++].Fill(0, Y - 2, _color);
-    underlines.Data[noUnderline++].Fill(0, Y - 2 + thickness, _color);
-    underlines.Data[noUnderline++].Fill(X, Y - 2 + thickness, _color);
+    underlines.data[noUnderline++].Fill(0, Y - 2, _color);
+    underlines.data[noUnderline++].Fill(0, Y - 2 + thickness, _color);
+    underlines.data[noUnderline++].Fill(X, Y - 2 + thickness, _color);
 
-    underlines.Data[noUnderline++].Fill(X, Y - 2 + thickness, _color);
-    underlines.Data[noUnderline++].Fill(X, Y - 2, _color);
-    underlines.Data[noUnderline++].Fill(0, Y - 2, _color);
+    underlines.data[noUnderline++].Fill(X, Y - 2 + thickness, _color);
+    underlines.data[noUnderline++].Fill(X, Y - 2, _color);
+    underlines.data[noUnderline++].Fill(0, Y - 2, _color);
 }
 
 void    PlainTextFormater::DrawVertices(Array<DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice, float X, float Y, float thickness, float italicCoeff, const Glyph *curGlyph, float factor)
 {
-    float glyphPosX = curGlyph->Pos.Data[0] * factor;
-    float glyphPosY = curGlyph->Pos.Data[1] * factor;
-    float glyphSizeX = curGlyph->Size.Data[0] * factor;
-    float glyphSizeY = curGlyph->Size.Data[1] * factor;
+    float glyphPosX = curGlyph->Pos.data[0] * factor;
+    float glyphPosY = curGlyph->Pos.data[1] * factor;
+    float glyphSizeX = curGlyph->Size.data[0] * factor;
+    float glyphSizeY = curGlyph->Size.data[1] * factor;
 
     // Draw a textured quad for the current character
     // first triangle
-    vertices.Data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)),
+    vertices.data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)),
                                     Y - glyphPosY - glyphSizeY,
                                     curGlyph->Coord.Max(0),
                                     curGlyph->Coord.Min(1),
                                     _color);
-    vertices.Data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY)),
+    vertices.data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY)),
                                     Y - glyphPosY,
                                     curGlyph->Coord.Max(0),
                                     curGlyph->Coord.Max(1),
                                     _color);
-    vertices.Data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY)),
+    vertices.data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY)),
                                     Y - glyphPosY,
                                     curGlyph->Coord.Min(0),
                                     curGlyph->Coord.Max(1),
                                     _color);
 
     // second triangle
-    vertices.Data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY)),
+    vertices.data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY)),
                                     Y - glyphPosY,
                                     curGlyph->Coord.Min(0),
                                     curGlyph->Coord.Max(1),
                                     _color);
-    vertices.Data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY - glyphSizeY)),
+    vertices.data[noVertice++].Fill(X + glyphPosX + (italicCoeff * (-glyphPosY - glyphSizeY)),
                                     Y - glyphPosY - glyphSizeY,
                                     curGlyph->Coord.Min(0),
                                     curGlyph->Coord.Min(1),
                                     _color);
-    vertices.Data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)),
+    vertices.data[noVertice++].Fill(X + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)),
                                     Y - glyphPosY - glyphSizeY,
                                     curGlyph->Coord.Max(0),
                                     curGlyph->Coord.Min(1),
@@ -336,18 +336,18 @@ void    PlainTextFormater::DrawVertices(Array<DefaultVertexType::Textured2d> &ve
         static const float OffsetsY[] = {0.f, 0.f, -0.5f, 0.5f};
         for (int j = 0; j < 4; ++j)
         {
-            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
+            vertices.data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
                                             curGlyph->Coord.Max(0), curGlyph->Coord.Min(1), _color);
-            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
+            vertices.data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
                                             curGlyph->Coord.Max(0), curGlyph->Coord.Max(1), _color);
-            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
+            vertices.data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
                                             curGlyph->Coord.Min(0), curGlyph->Coord.Max(1), _color);
 
-            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
+            vertices.data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY)), Y + OffsetsY[j] - glyphPosY,
                                             curGlyph->Coord.Min(0), curGlyph->Coord.Max(1), _color);
-            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
+            vertices.data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
                                             curGlyph->Coord.Min(0), curGlyph->Coord.Min(1), _color);
-            vertices.Data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
+            vertices.data[noVertice++].Fill(X + OffsetsX[j] + glyphPosX + glyphSizeX + (italicCoeff * (-glyphPosY - glyphSizeY)), Y + OffsetsY[j] - glyphPosY - glyphSizeY,
                                             curGlyph->Coord.Max(0), curGlyph->Coord.Min(1), _color);
         }
     }
@@ -409,7 +409,7 @@ void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &
                     lineWidth -= (curWordWidth + lastSizeBetweenWords);
 
                     // translate the word to the next line
-                    TranslateCaraters(vertices.Data + indexWordBegin, noVertice - indexWordBegin,
+                    TranslateCaraters(vertices.data + indexWordBegin, noVertice - indexWordBegin,
                                       -X + sizeBetweenWords + curWordWidth, -_charSize);
                     X = curWordWidth + sizeBetweenWords;
                     endLine = true;
@@ -432,8 +432,8 @@ void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &
 
                 if (translateLine > 0)
                 {
-                    TranslateCaraters(vertices.Data + indexLineBegin, (noVertice - indexLineBegin) - (noVertice - indexWordBegin), translateLine, 0);
-                    TranslateUnderlines(underlines.Data + (noUnderline - 6), 6, translateLine, 0);
+                    TranslateCaraters(vertices.data + indexLineBegin, (noVertice - indexLineBegin) - (noVertice - indexWordBegin), translateLine, 0);
+                    TranslateUnderlines(underlines.data + (noUnderline - 6), 6, translateLine, 0);
                 }
             }
 

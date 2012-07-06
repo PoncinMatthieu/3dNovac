@@ -94,7 +94,7 @@ namespace Nc
             template<typename T>
             template<unsigned int D>
             VertexBuffer<T>::VertexBuffer(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage)
-                : DataBuffer<T>(Enum::DataBuffer::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.Data),
+                : DataBuffer<T>(Enum::DataBuffer::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.data),
                   Descriptor(T::GetDescriptor()), _needUpdate(true)
             {
             }
@@ -123,14 +123,14 @@ namespace Nc
             void VertexBuffer<T>::UpdateData(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage)
             {
                 if (!DataBuffer<T>::IsValid())
-                    DataBuffer<T>::Init(Enum::DataBuffer::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.Data);
+                    DataBuffer<T>::Init(Enum::DataBuffer::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.data);
                 else
                 {
                     DataBuffer<T>::Enable();
                     if (tabVertices.Size() == DataBuffer<T>::_size)
-                        DataBuffer<T>::UpdateData((T*)tabVertices.Data);
+                        DataBuffer<T>::UpdateData((T*)tabVertices.data);
                     else
-                        DataBuffer<T>::UpdateData(tabVertices.Size(), 0, usage, (T*)tabVertices.Data);
+                        DataBuffer<T>::UpdateData(tabVertices.Size(), 0, usage, (T*)tabVertices.data);
                     DataBuffer<T>::Disable();
                 }
                 _needUpdate = true;

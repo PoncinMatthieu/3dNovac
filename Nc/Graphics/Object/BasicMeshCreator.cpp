@@ -45,17 +45,17 @@ Object *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, const Vec
 	Array<Core::DefaultVertexType::Colored, 4>  vertices;
     Array<unsigned int, 3*2>                    indices;
 
-    vertices[0].Fill(center.Data[0], center.Data[1], center.Data[2], Color(1, 1, 1));
-    vertices[1].Fill(center.Data[0] + scale.Data[0], center.Data[1], center.Data[2], Color(1, 0, 0));
-    vertices[2].Fill(center.Data[0], center.Data[1] + scale.Data[1], center.Data[2], Color(0, 0, 1));
-    vertices[3].Fill(center.Data[0], center.Data[1], center.Data[2] + scale.Data[2], Color(0, 1, 0));
+    vertices[0].Fill(center.data[0], center.data[1], center.data[2], Color(1, 1, 1));
+    vertices[1].Fill(center.data[0] + scale.data[0], center.data[1], center.data[2], Color(1, 0, 0));
+    vertices[2].Fill(center.data[0], center.data[1] + scale.data[1], center.data[2], Color(0, 0, 1));
+    vertices[3].Fill(center.data[0], center.data[1], center.data[2] + scale.data[2], Color(0, 1, 0));
 
     indices[0] = 0; indices[1] = 1;
     indices[2] = 0; indices[3] = 2;
     indices[4] = 0; indices[5] = 3;
 
     // creation du mesh
-    Object *obj = new Object(Box3f(center, center + Vector3f(scale.Data[0], scale.Data[1], scale.Data[2])));
+    Object *obj = new Object(Box3f(center, center + Vector3f(scale.data[0], scale.data[1], scale.data[2])));
 	obj->Drawables().push_back(new Core::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines));
     obj->ChooseDefaultMaterial();
     obj->UseSceneMaterial(false);

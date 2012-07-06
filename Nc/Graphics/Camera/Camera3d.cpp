@@ -88,7 +88,7 @@ void    Camera3d::Fix(SceneGraph *scene)
 
 void    Camera3d::Resized(const Vector2ui &size)
 {
-    _ratioAspect = (float)size.Data[0]/(float)size.Data[1];
+    _ratioAspect = (float)size.data[0]/(float)size.data[1];
     Camera::Resized(size);
 }
 
@@ -174,15 +174,15 @@ bool Camera3d::BoxInFrustum(const Vector3f &center, float size)
 
         for (unsigned int j = 0; j < 3; ++j)
         {
-            if (normal.Data[j] > 0)
+            if (normal.data[j] > 0)
             {
-                p.Data[j] += size;
-                //n.Data[j] -= size;
+                p.data[j] += size;
+                //n.data[j] -= size;
             }
             else
             {
-                p.Data[j] -= size;
-                //n.Data[j] += size;
+                p.data[j] -= size;
+                //n.data[j] += size;
             }
         }
 

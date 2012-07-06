@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to create plugins which would be used to import and export SceneNode's
+        /// Interface to create plugins which would be used to import and export SceneNodes.
         class LGRAPHICS ISceneNodeFormatPlugin
         {
             public:
@@ -44,9 +44,9 @@ namespace Nc
                 /** \return the supported extensions in this format: "dae;obj;3ds" */
                 inline const std::string   &GetAssociatedExtension()                {return _extension;}
 
-                /** Load the given \p file */
+                /** Load the given \p file. */
                 virtual ISceneNode          *Load(const Utils::FileName &file) = 0;
-                /** Save the given \p file */
+                /** Save the given \p file. */
                 virtual void                Save(const Utils::FileName &file, ISceneNode *node) = 0;
 
             protected:

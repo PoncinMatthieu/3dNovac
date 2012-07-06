@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Engine
     {
-        /// Abstract class to help the implementation of a Main Engine which receive events from an InputListener
+        /// Abstract class to help the implementation of a Main Engine which receive events from an InputListener.
 		/**
 			Inherite from System::InputListener to be able to receive input events.
 			So a MainEngine can receive two types of events:
@@ -67,44 +67,44 @@ namespace Nc
                 void            Quit();
 
                 /**
-                    Can be redefined, to make something before exiting
-                    \return true if we want to stop the engines, otherwise the engines will not be powered off
+                    Can be redefined, to make something before exiting.
+                    \return true if we want to stop the engines, otherwise the engines will not be powered off.
                 */
                 virtual bool    ExitEvent()			{return true;}
 
                 /**
-                    Called at each execution of the MainEngine. To redefine
-                    \param runningTime in second
+                    Called at each execution of the MainEngine. To redefine.
+                    \param runningTime in second.
                  */
                 virtual void    Update(float runningTime) = 0;
 
                 /**
-                    Called at each input evenement received, and call the associated funciton `KeyboardEvent`, `MouseButtonEvent`, `MouseMotionEvent`
+                    Called at each input evenement received, and call the associated funciton `KeyboardEvent`, `MouseButtonEvent`, `MouseMotionEvent`.
                 */
                 virtual void    ManageWindowEvent(System::Event &event);
 
                 /**
-                    Called at each keyboard input received. To redefine
+                    Called at each keyboard input received. To redefine.
                  */
                 virtual void    KeyboardEvent(System::Event &event) = 0;
 
                 /**
-                    Called at each mouse button input received. To redefine
+                    Called at each mouse button input received. To redefine.
                  */
                 virtual void    MouseButtonEvent(System::Event &event) = 0;
 
                 /**
-                    Called at each mouse motion input received. To redefine
+                    Called at each mouse motion input received. To redefine.
                  */
                 virtual void    MouseMotionEvent(System::Event &event) = 0;
 
             private:
-                /** Retreive the events and call the function `ManageWindowEvent` */
+                /** Retreive the events and call the function `ManageWindowEvent`. */
                 void            ManageWindowEvents();
 
                 /**
-                    Manage the event and Update the engine
-                    \param runningTime in second
+                    Manage the event and Update the engine.
+                    \param runningTime in second.
                 */
                 void Execute(float runningTime);
         };

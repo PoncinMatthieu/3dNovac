@@ -63,7 +63,7 @@ namespace Nc
             {
                 if (i >= D)
                     throw Utils::Exception("Math::Array", "Overflow in the operator[] of class Array");
-                return Data[i];
+                return data[i];
             }
 
             /** The accessor will throw an exception if the given index \p i is too long */
@@ -71,18 +71,18 @@ namespace Nc
             {
                 if (i >= D)
                     throw Utils::Exception("Math::Array", "Overflow in the operator[] of class Array");
-                return Data[i];
+                return data[i];
             }
 
             friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Array<T,D> &a)
             {
                 for (unsigned int i = 0; i < D; ++i)
-                    os << a.Data[i] << " ";
+                    os << a.data[i] << " ";
                 return os;
             }
 
             // array
-            T               Data[D];            ///< data of type T. Could be directly accessed insteed of using the operator []
+            T               data[D];            ///< data of type T. Could be directly accessed insteed of using the operator []
         };
 
         /// Manipulate an array of Type T, This array is dynamic, It's a simplified alternative to the class std::vector
@@ -138,12 +138,12 @@ namespace Nc
             friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Array<T,0> &a)
             {
                 for (unsigned int i = 0; i < a._size; ++i)
-                    os << a.Data[i] << " ";
+                    os << a.data[i] << " ";
                 return os;
             }
 
             // array
-            T               *Data;      ///< data of type T Dynamically allocated. Could be directly accessed insteed of using the operator [].
+            T               *data;      ///< data of type T Dynamically allocated. Could be directly accessed insteed of using the operator [].
 
             private:
                 unsigned int    _size;  ///< The size of the array
@@ -155,13 +155,13 @@ namespace Nc
         template<typename T, unsigned int D>
         Array<T,D>::Array(const Array<T,D> &a)
         {
-            Utils::Memcpy(Data, a.Data, ((D <= a.Size()) ? D : a.Size()));
+            Utils::Memcpy(data, a.data, ((D <= a.Size()) ? D : a.Size()));
         }
 
         template<typename T, unsigned int D>
         Array<T,D> &Array<T,D>::operator = (const Array<T,D> &a)
         {
-            Utils::Memcpy(Data, a.Data, ((D <= a.Size()) ? D : a.Size()));
+            Utils::Memcpy(data, a.data, ((D <= a.Size()) ? D : a.Size()));
             return *this;
         }
 
@@ -169,51 +169,51 @@ namespace Nc
         template<unsigned int D2>
         Array<T,D>::Array(const Array<T,D2> &a)
         {
-            Utils::Memcpy(Data, a.Data, ((D <= a.Size()) ? D : a.Size()));
+            Utils::Memcpy(data, a.data, ((D <= a.Size()) ? D : a.Size()));
         }
 
         template<typename T, unsigned int D>
         template<unsigned int D2>
         Array<T,D> &Array<T,D>::operator = (const Array<T,D2> &a)
         {
-            Utils::Memcpy(Data, a.Data, ((D <= a.Size()) ? D : a.Size()));
+            Utils::Memcpy(data, a.data, ((D <= a.Size()) ? D : a.Size()));
             return *this;
         }
 
         template<typename T, unsigned int D>
-        void Array<T,D>::Init(const T &data)
+        void Array<T,D>::Init(const T &d)
         {
             for (unsigned int i = 0; i < D; ++i)
-                Data[i] = data;
+                data[i] = d;
         }
 
         template<typename T>
         Array<T,0>::Array()
         {
             _size = 0;
-            Data = NULL;
+            data = NULL;
         }
 
         template<typename T>
         Array<T,0>::Array(unsigned int size)
         {
             _size = size;
-            Data = new T[size];
+            data = new T[size];
         }
 
         template<typename T>
         Array<T,0>::~Array()
         {
-            if (Data != NULL)
-                delete[] Data;
+            if (data != NULL)
+                delete[] data;
         }
 
         template<typename T>
         Array<T,0>::Array(const Array &a)
         {
             _size = a.Size();
-            Data = new T[_size];
-            Utils::Memcpy(Data, a.Data, _size);
+            data = new T[_size];
+            Utils::Memcpy(data, a.data, _size);
         }
 
         template<typename T>
@@ -221,19 +221,19 @@ namespace Nc
         Array<T,0>::Array(const Array<U,D2> &a)
         {
             _size = a.Size();
-            Data = new T[_size];
-            Utils::Memcpy(Data, a.Data, _size);
+            data = new T[_size];
+            Utils::Memcpy(data, a.data, _size);
         }
 
         template<typename T>
         Array<T,0> &Array<T,0>::operator = (const Array<T,0> &a)
         {
-            if (Data != NULL && _size != a._size) // delete si la taille est differente
-                delete[] Data;
-            if (Data == NULL || _size != a._size) // malloc si la taille est differente
-                Data = new T[a._size];
+            if (data != NULL && _size != a._size) // delete si la taille est differente
+                delete[] data;
+            if (data == NULL || _size != a._size) // malloc si la taille est differente
+                data = new T[a._size];
             _size = a.Size();
-            Utils::Memcpy(Data, a.Data, _size);
+            Utils::Memcpy(data, a.data, _size);
             return *this;
         }
 
@@ -242,10 +242,10 @@ namespace Nc
         Array<T,0> &Array<T,0>::operator = (const Array<U,D2> &a)
         {
             _size = a.Size();
-            if (Data != NULL)
-                delete[] Data;
-            Data = new T[_size];
-            Utils::Memcpy(Data, a.Data, _size);
+            if (data != NULL)
+                delete[] data;
+            data = new T[_size];
+            Utils::Memcpy(data, a.data, _size);
             return *this;
         }
 
@@ -255,12 +255,12 @@ namespace Nc
             if (s != _size)
             {
                 _size = s;
-                if (Data != NULL)
-                    delete[] Data;
+                if (data != NULL)
+                    delete[] data;
                 if (_size > 0)
-                    Data = new T[_size];
+                    data = new T[_size];
                 else
-                    Data = NULL;
+                    data = NULL;
             }
         }
 
@@ -272,27 +272,27 @@ namespace Nc
         }
 
         template<typename T>
-        void Array<T,0>::InitData(const T &data) // init de la data
+        void Array<T,0>::InitData(const T &d) // init de la data
         {
             for (unsigned int i = 0; i < _size; ++i)
-                Data[i] = data;
+                data[i] = d;
         }
 
         template<typename T>
-        void Array<T,0>::InitData(const T *data) // init de la data avec un array
+        void Array<T,0>::InitData(const T *d) // init de la data avec un array
         {
-            Utils::Memcpy(Data, data, _size);
+            Utils::Memcpy(data, d, _size);
         }
 
         template<typename T>
         void Array<T,0>::Resize(unsigned int s)
         {
-            T *oldData = Data;
+            T *oldData = data;
 
-            Data = new T[s];
-            if (Data != NULL)
+            data = new T[s];
+            if (data != NULL)
             {
-                Utils::Memcpy(Data, oldData, ((s <= _size) ? s : _size));
+                Utils::Memcpy(data, oldData, ((s <= _size) ? s : _size));
                 delete[] oldData;
             }
             _size = s;
@@ -303,7 +303,7 @@ namespace Nc
         {
             if (i >= _size)
                 throw Utils::Exception("Math::Array", "Overflow in the operator[] of class Array");
-            return Data[i];
+            return data[i];
         }
 
         template<typename T>
@@ -311,7 +311,7 @@ namespace Nc
         {
             if (i >= _size)
                 throw Utils::Exception("Math::Array", "Overflow in the operator[] of class Array");
-            return Data[i];
+            return data[i];
         }
     }
 }

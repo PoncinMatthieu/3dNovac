@@ -130,7 +130,7 @@ namespace Nc
                     Uniform(unsigned int location)
                         : IUniform(location)                            {}
 
-                    inline Uniform &operator = (const Vector2D<T> &v)   {value1 = v.Data[0]; value2 = v.Data[1]; return *this;}
+                    inline Uniform &operator = (const Vector2D<T> &v)   {value1 = v.data[0]; value2 = v.data[1]; return *this;}
 
                     /** Set the value to the current shader program */
                     virtual void Set()                                  {if (_location != -1) Program::SetUniform(_location, value1, value2);}
@@ -146,7 +146,7 @@ namespace Nc
                     Uniform(unsigned int location)
                         : IUniform(location)                            {}
 
-                    inline Uniform &operator = (const Vector3D<T> &v)   {value1 = v.Data[0]; value2 = v.Data[1]; value3 = v.Data[2]; return *this;}
+                    inline Uniform &operator = (const Vector3D<T> &v)   {value1 = v.data[0]; value2 = v.data[1]; value3 = v.data[2]; return *this;}
 
                     /** Set the value to the current shader program */
                     virtual void Set()                                  {if (_location != -1) Program::SetUniform(_location, value1, value2, value3);}
@@ -163,7 +163,7 @@ namespace Nc
                     Uniform(unsigned int location)
                         : IUniform(location)                        {}
 
-                    inline Uniform &operator = (const Color &c)     {value1 = c.R; value2 = c.G; value3 = c.B; value4 = c.A; return *this;}
+                    inline Uniform &operator = (const Color &c)     {value1 = c.r; value2 = c.g; value3 = c.b; value4 = c.a; return *this;}
 
                     /** Set the value to the current shader program */
                     virtual void Set()                              {if (_location != -1) Program::SetUniform(_location, value1, value2, value3, value4);}

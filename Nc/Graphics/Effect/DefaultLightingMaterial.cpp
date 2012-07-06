@@ -115,7 +115,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Core::Drawable &drawable)
     Array<unsigned int>     lastAttribs(desc.Size());
     for (unsigned int i = 0; i < desc.Size(); ++i)
     {
-        lastAttribs.Data[i] = desc[i].IndexAttrib;
+        lastAttribs.data[i] = desc[i].IndexAttrib;
         if (desc[i].Name == ComponentsName::Coord)
             desc[i].IndexAttrib = attribs[0];
         else if (desc[i].Name == ComponentsName::Color)
@@ -135,7 +135,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Core::Drawable &drawable)
 
     // restore the index attribs
     for (unsigned int i = 0; i < desc.Size(); ++i)
-        desc[i].IndexAttrib = lastAttribs.Data[i];
+        desc[i].IndexAttrib = lastAttribs.data[i];
 }
 #endif
 
@@ -167,7 +167,7 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
     _program.SetUniform(_uniforms[UniformNormalMatrix], normalMatrix, false);
 
     // set the ambiant color light
-    _program.SetUniform(_uniforms[UniformLightColor], ambiantColor.R, ambiantColor.G, ambiantColor.B, ambiantColor.A);
+    _program.SetUniform(_uniforms[UniformLightColor], ambiantColor.r, ambiantColor.g, ambiantColor.b, ambiantColor.a);
 
     // Texture unit 0 --> the diffuse
     if (drawable.Config->Textures.Size() > 0 &&
@@ -227,8 +227,8 @@ void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelM
             matrixLight.Init();
             visitor(**it); /// \todo To obtain the light position, we need to caculate recursively it's matrix, this could decrease the perf
             matrixLight.Transform(pos);
-            _program.SetUniform(_uniforms[UniformLight], pos.Data[0], pos.Data[1], pos.Data[2], 1.0f / ((*it)->radius));
-            _program.SetUniform(_uniforms[UniformLightColor], (*it)->color.R, (*it)->color.G, (*it)->color.B, (*it)->color.A);
+            _program.SetUniform(_uniforms[UniformLight], pos.data[0], pos.data[1], pos.data[2], 1.0f / ((*it)->radius));
+            _program.SetUniform(_uniforms[UniformLightColor], (*it)->color.r, (*it)->color.g, (*it)->color.b, (*it)->color.a);
 
             // rendering pass for the current light
             drawable.Render();

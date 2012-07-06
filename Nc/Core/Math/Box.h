@@ -130,10 +130,10 @@ namespace Nc
         {
             for (unsigned char i = 0; i < D; ++i)
             {
-                if (_min.Data[i] > b._min.Data[i])
-                    _min.Data[i] = b._min.Data[i];
-                if (_max.Data[i] < b._max.Data[i])
-                    _max.Data[i] = b._max.Data[i];
+                if (_min.data[i] > b._min.data[i])
+                    _min.data[i] = b._min.data[i];
+                if (_max.data[i] < b._max.data[i])
+                    _max.data[i] = b._max.data[i];
             }
             return *this;
         }
@@ -144,10 +144,10 @@ namespace Nc
         {
             for (unsigned char i = 0; i < D; ++i)
             {
-                if (_min.Data[i] > p.Data[i])
-                    _min.Data[i] = p.Data[i];
-                if (_max.Data[i] < p.Data[i])
-                    _max.Data[i] = p.Data[i];
+                if (_min.data[i] > p.data[i])
+                    _min.data[i] = p.data[i];
+                if (_max.data[i] < p.data[i])
+                    _max.data[i] = p.data[i];
             }
             return *this;
         }
@@ -156,19 +156,19 @@ namespace Nc
         template<typename U>
         Box<T,D> &Box<T,D>::operator += (const U coord[])
         {
-            if (_min.Data[0] > coord[0])
-                _min.Data[0] = coord[0];
-            if (_min.Data[1] > coord[1])
-                _min.Data[1] = coord[1];
-            if (_min.Data[2] > coord[2])
-                _min.Data[2] = coord[2];
+            if (_min.data[0] > coord[0])
+                _min.data[0] = coord[0];
+            if (_min.data[1] > coord[1])
+                _min.data[1] = coord[1];
+            if (_min.data[2] > coord[2])
+                _min.data[2] = coord[2];
 
-            if (_max.Data[0] < coord[0])
-                _max.Data[0] = coord[0];
-            if (_max.Data[1] < coord[1])
-                _max.Data[1] = coord[1];
-            if (_max.Data[2] < coord[2])
-                _max.Data[2] = coord[2];
+            if (_max.data[0] < coord[0])
+                _max.data[0] = coord[0];
+            if (_max.data[1] < coord[1])
+                _max.data[1] = coord[1];
+            if (_max.data[2] < coord[2])
+                _max.data[2] = coord[2];
             return *this;
         }
 
@@ -186,7 +186,7 @@ namespace Nc
         {
             if (dimension >= D)
                 throw Utils::Exception("Math::Box", "Overflow in an accesseur of class Box");
-            return _min.Data[dimension];
+            return _min.data[dimension];
         }
 
         template<typename T, unsigned char D>
@@ -194,7 +194,7 @@ namespace Nc
         {
             if (dimension >= D)
                 throw Utils::Exception("Math::Box", "Overflow in an accesseur of class Box");
-            return _max.Data[dimension];
+            return _max.data[dimension];
         }
 
         template<typename T, unsigned char D>
@@ -202,7 +202,7 @@ namespace Nc
         {
             if (dimension >= D)
                 throw Utils::Exception("Math::Box", "Overflow in an accesseur of class Box");
-            _min.Data[dimension] = v;
+            _min.data[dimension] = v;
         }
 
         template<typename T, unsigned char D>
@@ -210,7 +210,7 @@ namespace Nc
         {
             if (dimension >= D)
                 throw Utils::Exception("Math::Box", "Overflow in an accesseur of class Box");
-            _max.Data[dimension] = v;
+            _max.data[dimension] = v;
         }
 
         template<typename T, unsigned char D>
@@ -224,7 +224,7 @@ namespace Nc
         {
             if (dimension >= D)
                 throw Utils::Exception("Math::Box", "Overflow in an accessor of class Box");
-            return _max.Data[dimension] - _min.Data[dimension];
+            return _max.data[dimension] - _min.data[dimension];
         }
 
         template<typename T, unsigned char D>
@@ -248,7 +248,7 @@ namespace Nc
         {
             Vector<T,D> v;
             for (unsigned char i = 0; i < D; ++i)
-                v.Data[i] = Length(i);
+                v.data[i] = Length(i);
             return v;
         }
 
@@ -271,8 +271,8 @@ namespace Nc
         {
             for (unsigned int i = 0; i < D; ++i)
             {
-                _min.Data[i] = center.Data[i] - size;
-                _max.Data[i] = center.Data[i] + size;
+                _min.data[i] = center.data[i] - size;
+                _max.data[i] = center.data[i] + size;
             }
         }
 

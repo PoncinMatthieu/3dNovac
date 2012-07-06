@@ -113,7 +113,7 @@ namespace Nc
                 int reelSize = src.Size() * sizeof(T);
                 for (int len = 0; len < reelSize; len += sent)
                 {
-					sent = send(_descriptor, static_cast<const char*>(src.Data) + len, reelSize - len, 0);
+					sent = send(_descriptor, static_cast<const char*>(src.data) + len, reelSize - len, 0);
 					if (sent <= 0)
 						return false;
 				}
@@ -129,7 +129,7 @@ namespace Nc
 			int r = 0;
 			if (dst.Size() > 0)
 			{
-				r = recv(_descriptor, static_cast<char*>(dst.Data), static_cast<int>(dst.Size() * sizeof(T)), 0);
+				r = recv(_descriptor, static_cast<char*>(dst.data), static_cast<int>(dst.Size() * sizeof(T)), 0);
                 if (r != 0)
                     r /= sizeof(T);
 			}

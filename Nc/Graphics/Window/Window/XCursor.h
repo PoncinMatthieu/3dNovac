@@ -37,15 +37,15 @@ namespace Nc
     {
         class XWindow;
 
-        /// Implementation of a ICursor for an X11 system
+        /// Implementation of a ICursor for an X11 system.
         /**
             The cursor is actually loading the data with only 1 bit per pixel.
 
             To create a cursor you will need to have an XWindow but you shouldn't create directly a cursor, the best way is to use the method Window::NewCursor().
 
-            \todo We have disabled cursor management when the window is created by using an existing window. Because cursor management cause freese bug with Qt
-            \todo Implement cursor loading with more than 1 bit per pixel (it's a problem on X11)
-            \todo Implement a load from image method
+            \todo We have disabled cursor management when the window is created by using an existing window. Because cursor management cause freese bug with Qt.
+            \todo Implement cursor loading with more than 1 bit per pixel (it's a problem on X11).
+            \todo Implement a load from image method.
         */
         class Cursor : public ICursor
         {
@@ -54,19 +54,19 @@ namespace Nc
                 Cursor(const Cursor &c);
                 virtual ~Cursor();
 
-                /** \return a clone of the current cursor */
+                /** \return a clone of the current cursor. */
                 virtual ICursor     *Clone() const                  {return new Cursor(*this);}
 
-                /** Enable the cursor */
+                /** Enable the cursor. */
                 virtual void Enable();
 
-                /** Disable the cursor */
+                /** Disable the cursor. */
                 virtual void Disable();
 
-                /** Load from an Xpm (for more detail show the detailed description of ICursor) */
+                /** Load from an Xpm (for more detail show the detailed description of ICursor). */
                 virtual void LoadFromXpm(const char *xpm[]);
 
-                /** Load Data, with 1 bit per pixel */
+                /** Load Data, with 1 bit per pixel. */
                 virtual void LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter);
 
             private:

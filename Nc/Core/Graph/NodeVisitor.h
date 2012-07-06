@@ -71,16 +71,16 @@ namespace Nc
                     {
                         for (unsigned int i = 0; i < NbChilds; ++i)
                         {
-                            if (n.Childs().Data[i] != NULL)
-                                (*this)(n.Childs().Data[i]);
+                            if (n.Childs().data[i] != NULL)
+                                (*this)(n.Childs().data[i]);
                         }
                     }
                     else
                     {
                         for (unsigned int i = NbChilds - 1; i >= 0; --i)
                         {
-                            if (n.Childs().Data[i] != NULL)
-                                (*this)(*n.Childs().Data[i]);
+                            if (n.Childs().data[i] != NULL)
+                                (*this)(*n.Childs().data[i]);
                         }
                     }
                 }

@@ -68,7 +68,7 @@ void FontLoaderFreeType::LoadFromFile(const Utils::FileName &file, const Utils::
     CreateBitmapFont(face, charset, bitmap, font);
     FT_Done_Face(face);
 
-    if (bitmap.Size().Data[0] > 0 && bitmap.Size().Data[1] > 0)
+    if (bitmap.Size().data[0] > 0 && bitmap.Size().data[1] > 0)
         font._bitmap.LoadFromImage(bitmap, GL::Enum::Texture::Linear, GL::Enum::Texture::Linear, false, file);
 }
 
@@ -86,7 +86,7 @@ void FontLoaderFreeType::CreateBitmapFont(FT_Face &face, const Utils::Unicode::U
     unsigned int left = 0, top = 0;
     // if non power of two textures is not supported, change the size
     bitmap.InitSize(Vector2ui((EXT.NonPowerOf2Supported()) ? font._baseSize * nbChars : Math::NearestPowerOf2(font._baseSize * nbChars), font._baseSize * nbChars));
-    std::vector<unsigned int> tops(bitmap.Size().Data[0], 0);
+    std::vector<unsigned int> tops(bitmap.Size().data[0], 0);
 
     // Setup the font size
     if (FT_Set_Pixel_Sizes(face, font._baseSize, font._baseSize))
@@ -137,7 +137,7 @@ void FontLoaderFreeType::CreateBitmapFont(FT_Face &face, const Utils::Unicode::U
         FT_Bitmap               &bt = bitmapGlyph->bitmap;
 
         // Make sure we don't go over the texture width
-        if (left + bt.width + 1 >= bitmap.Size().Data[0])
+        if (left + bt.width + 1 >= bitmap.Size().data[0])
             left = 0;
 
         // Compute the top coordinate
@@ -147,14 +147,14 @@ void FontLoaderFreeType::CreateBitmapFont(FT_Face &face, const Utils::Unicode::U
         top++;
 
         // Make sure we don't go over the texture height -- resize it if we need more space
-        if (top + bt.rows + 1 >= bitmap.Size().Data[1])
+        if (top + bt.rows + 1 >= bitmap.Size().data[1])
             bitmap.Resize(bitmap.Size() * 2);
 
         // Store the character's position and size
-        curGlyph.Pos.Data[0] = bitmapGlyph->left;
-        curGlyph.Pos.Data[1] = bt.rows - bitmapGlyph->top;
-        curGlyph.Size.Data[0] = bt.width;
-        curGlyph.Size.Data[1] = -bt.rows;
+        curGlyph.Pos.data[0] = bitmapGlyph->left;
+        curGlyph.Pos.data[1] = bt.rows - bitmapGlyph->top;
+        curGlyph.Size.data[0] = bt.width;
+        curGlyph.Size.data[1] = -bt.rows;
         curGlyph.Add = bitmapGlyph->root.advance.x >> 16;
 
         // Texture size may change, so let the texture coordinates be calculated later
@@ -167,11 +167,11 @@ void FontLoaderFreeType::CreateBitmapFont(FT_Face &face, const Utils::Unicode::U
         {
             for (int x = 0; x < bt.width; ++x)
             {
-                size_t index = x + left + 1 + (y + top + 1) * bitmap.Size().Data[0];
-                bitmapPixel[index].R = 255;
-                bitmapPixel[index].G = 255;
-                bitmapPixel[index].B = 255;
-                bitmapPixel[index].A = pixels[x];
+                size_t index = x + left + 1 + (y + top + 1) * bitmap.Size().data[0];
+                bitmapPixel[index].r = 255;
+                bitmapPixel[index].g = 255;
+                bitmapPixel[index].b = 255;
+                bitmapPixel[index].a = pixels[x];
             }
             pixels += bt.pitch;
         }
@@ -188,16 +188,16 @@ void FontLoaderFreeType::CreateBitmapFont(FT_Face &face, const Utils::Unicode::U
     }
 
     // Create the font's texture
-    bitmap.Resize(Vector2ui(bitmap.Size().Data[0], maxHeight + 1));
+    bitmap.Resize(Vector2ui(bitmap.Size().data[0], maxHeight + 1));
 
     // Now that the texture is created, we can precompute texture coordinates
     for (size_t i = 0; i < charset.size(); ++i)
     {
         UInt32  curChar = charset[i];
         Box2i   &box = coords[curChar];
-        font._glyphs[curChar].Coord.Min(0, (float)box.Min(0) / (float)bitmap.Size().Data[0]);
-        font._glyphs[curChar].Coord.Min(1, (float)box.Min(1) / (float)bitmap.Size().Data[1]);
-        font._glyphs[curChar].Coord.Max(0, (float)box.Max(0) / (float)bitmap.Size().Data[0]);
-        font._glyphs[curChar].Coord.Max(1, (float)box.Max(1) / (float)bitmap.Size().Data[1]);
+        font._glyphs[curChar].Coord.Min(0, (float)box.Min(0) / (float)bitmap.Size().data[0]);
+        font._glyphs[curChar].Coord.Min(1, (float)box.Min(1) / (float)bitmap.Size().data[1]);
+        font._glyphs[curChar].Coord.Max(0, (float)box.Max(0) / (float)bitmap.Size().data[0]);
+        font._glyphs[curChar].Coord.Max(1, (float)box.Max(1) / (float)bitmap.Size().data[1]);
     }
 }

@@ -54,7 +54,7 @@ namespace Nc
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the widget. */
-                inline void         SetText(const Utils::Unicode::UTF32 &t)     {_font->PlainText(t);}
+                inline void         PlainText(const Utils::Unicode::UTF32 &t)     {_font->PlainText(t);}
 
             protected:
                 /** Update the geometry of the button. */

@@ -40,18 +40,18 @@ Image::~Image()
 
 void    Image::Reverse()
 {
-    unsigned int pitch = _size.Data[0] * 4;
+    unsigned int pitch = _size.data[0] * 4;
     Array<Pixel<> > oldPixels(_pixels);    // recopy of the old pixels
 
     // reverse the old pixels to the actual pixels
-    for (unsigned int i = 0; i < _size.Data[1]; ++i)
-        memcpy((unsigned char*)(_pixels.Data) + (i * pitch), (unsigned char*)(oldPixels.Data) + ((_size.Data[1] - 1 - i) * pitch), pitch);
+    for (unsigned int i = 0; i < _size.data[1]; ++i)
+        memcpy((unsigned char*)(_pixels.data) + (i * pitch), (unsigned char*)(oldPixels.data) + ((_size.data[1] - 1 - i) * pitch), pitch);
 }
 
 void    Image::SwapComponants(unsigned char c1, unsigned char c2)
 {
-    for (unsigned int i = 0; i < _size.Data[1] * _size.Data[1]; ++i)
-        Math::Swap(_pixels.Data[i][c1], _pixels.Data[i][c2]);
+    for (unsigned int i = 0; i < _size.data[1] * _size.data[1]; ++i)
+        Math::Swap(_pixels.data[i][c1], _pixels.data[i][c2]);
 }
 
 void Image::LoadFromFile(const Utils::FileName &file)

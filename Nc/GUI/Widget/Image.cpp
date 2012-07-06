@@ -59,19 +59,19 @@ void    Image::Update()
             if (_keepRatio)
             {
                 Vector2i initialSize = _sprite->TextureBox().Size();
-                float ratioInitial = (float)initialSize.Data[0] / initialSize.Data[1];
+                float ratioInitial = (float)initialSize.data[0] / initialSize.data[1];
                 float ratioX = (float)_size[0] / initialSize[0];
                 float ratioY = (float)_size[1] / initialSize[1];
 
                 if (ratioX < ratioY)
                 {
-                    initialSize.Data[0] *= ratioX;
-                    initialSize.Data[1] = initialSize.Data[0] / ratioInitial;
+                    initialSize.data[0] *= ratioX;
+                    initialSize.data[1] = initialSize.data[0] / ratioInitial;
                 }
                 else
                 {
-                    initialSize.Data[1] *= ratioY;
-                    initialSize.Data[0] = initialSize.Data[1] * ratioInitial;
+                    initialSize.data[1] *= ratioY;
+                    initialSize.data[0] = initialSize.data[1] * ratioInitial;
                 }
                 _sprite->Size(initialSize);
             }
@@ -91,11 +91,11 @@ void    Image::Update()
         }
         else if (_spriteAlignment.Enabled(CenterH))
         {
-            _sprite->Matrix.Translation((_size.Data[0] / 2.f) - (_sprite->Size().Data[0] / 2.f), 0, 0);
+            _sprite->Matrix.Translation((_size.data[0] / 2.f) - (_sprite->Size().data[0] / 2.f), 0, 0);
         }
         else if (_spriteAlignment.Enabled(Right))
         {
-            _sprite->Matrix.Translation(_size.Data[0] - _sprite->Size().Data[0], 0, 0);
+            _sprite->Matrix.Translation(_size.data[0] - _sprite->Size().data[0], 0, 0);
         }
 
         // manage vertical alignment
@@ -105,11 +105,11 @@ void    Image::Update()
         }
         else if (_spriteAlignment.Enabled(CenterV))
         {
-            _sprite->Matrix.AddTranslation(0, (_size.Data[1] / 2.f) - (_sprite->Size().Data[1] / 2.f), 0);
+            _sprite->Matrix.AddTranslation(0, (_size.data[1] / 2.f) - (_sprite->Size().data[1] / 2.f), 0);
         }
         else if (_spriteAlignment.Enabled(Top))
         {
-            _sprite->Matrix.AddTranslation(0, _size.Data[1] - _sprite->Size().Data[1], 0);
+            _sprite->Matrix.AddTranslation(0, _size.data[1] - _sprite->Size().data[1], 0);
         }
     }
 }

@@ -76,8 +76,8 @@ void XWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
     _screen = DefaultScreen(_display);
 
     // Compute position and size
-    _width = size.Data[0];
-    _height = size.Data[1];
+    _width = size.data[0];
+    _height = size.data[1];
     bool    fullscreen = (pattern & Fullscreen) != 0;
     int     left = (Fullscreen) ? 0 : (DisplayWidth(_display, _screen) - _width)  / 2;
     int     top = (Fullscreen) ? 0 : (DisplayHeight(_display, _screen) - _height) / 2;
@@ -220,8 +220,8 @@ bool XWindow::SetIcon(const Utils::FileName &f)
     // X11 wants BGRA pixels : swap red and blue channels
     // Note : this memory will never be freed, but it seems to cause a bug on exit if I do so
     const unsigned char *pix = image.GetPixels();
-    unsigned char *iconPixels = (unsigned char*)malloc(sizeof(unsigned char) * (image.Size().Data[0] * image.Size().Data[1] * 4));
-    for (std::size_t i = 0; i < image.Size().Data[1] * image.Size().Data[1]; ++i)
+    unsigned char *iconPixels = (unsigned char*)malloc(sizeof(unsigned char) * (image.Size().data[0] * image.Size().data[1] * 4));
+    for (std::size_t i = 0; i < image.Size().data[1] * image.Size().data[1]; ++i)
     {
         iconPixels[i * 4 + 0] = pix[i * 4 + 2];
         iconPixels[i * 4 + 1] = pix[i * 4 + 1];
@@ -232,29 +232,29 @@ bool XWindow::SetIcon(const Utils::FileName &f)
     // Create the icon pixmap
     Visual          *defVisual = DefaultVisual(_display, _screen);
     unsigned int    defDepth  = DefaultDepth(_display, _screen);
-    XImage          *iconImage = XCreateImage(_display, defVisual, defDepth, ZPixmap, 0, (char*)iconPixels, image.Size().Data[0], image.Size().Data[1], 32, 0);
+    XImage          *iconImage = XCreateImage(_display, defVisual, defDepth, ZPixmap, 0, (char*)iconPixels, image.Size().data[0], image.Size().data[1], 32, 0);
     if (!iconImage)
         throw Utils::Exception("XWindow", "Failed to set the window's icon");
-    Pixmap iconPixmap = XCreatePixmap(_display, RootWindow(_display, _screen), image.Size().Data[0], image.Size().Data[1], defDepth);
+    Pixmap iconPixmap = XCreatePixmap(_display, RootWindow(_display, _screen), image.Size().data[0], image.Size().data[1], defDepth);
     XGCValues values;
     GC iconGC = XCreateGC(_display, iconPixmap, 0, &values);
-    XPutImage(_display, iconPixmap, iconGC, iconImage, 0, 0, 0, 0, image.Size().Data[0], image.Size().Data[1]);
+    XPutImage(_display, iconPixmap, iconGC, iconImage, 0, 0, 0, 0, image.Size().data[0], image.Size().data[1]);
     XFreeGC(_display, iconGC);
     XDestroyImage(iconImage);
 
     // Create the mask pixmap (must have 1 bit depth)
-    std::size_t pitch = (image.Size().Data[0] + 7) / 8;
-    static std::vector<unsigned char> maskPixels(pitch * image.Size().Data[1], 0);
-    for (std::size_t j = 0; j < image.Size().Data[1]; ++j)
+    std::size_t pitch = (image.Size().data[0] + 7) / 8;
+    static std::vector<unsigned char> maskPixels(pitch * image.Size().data[1], 0);
+    for (std::size_t j = 0; j < image.Size().data[1]; ++j)
         for (std::size_t i = 0; i < pitch; ++i)
             for (std::size_t k = 0; k < 8; ++k)
-                if (i * 8 + k < image.Size().Data[0])
+                if (i * 8 + k < image.Size().data[0])
                 {
-                    unsigned char opacity = (pix[(i * 8 + k + j * image.Size().Data[0]) * 4 + 3] > 0) ? 1 : 0;
+                    unsigned char opacity = (pix[(i * 8 + k + j * image.Size().data[0]) * 4 + 3] > 0) ? 1 : 0;
                     maskPixels[i + j * pitch] |= (opacity << k);
                 }
 
-    Pixmap maskPixmap = XCreatePixmapFromBitmapData(_display, _xwin, (char*)&maskPixels[0], image.Size().Data[0], image.Size().Data[1], 1, 0, 1);
+    Pixmap maskPixmap = XCreatePixmapFromBitmapData(_display, _xwin, (char*)&maskPixels[0], image.Size().data[0], image.Size().data[1], 1, 0, 1);
 
     // Send our new icon to the window through the WMHints
     XWMHints* hints = XAllocWMHints();
@@ -353,15 +353,15 @@ void XWindow::SwitchToFullscreen(const Vector2ui &size)
             int nbSizes;
             XRRScreenSize* sizesAvailable = XRRConfigSizes(config, &nbSizes);
             for (int i = 0; i < nbSizes && sizesAvailable && !match; ++i)  // Search a compatible resolution
-                if ((unsigned int)sizesAvailable[i].width == size.Data[0] &&
-                    (unsigned int)sizesAvailable[i].height == size.Data[1]) // the size match, Switch to fullscreen mode
+                if ((unsigned int)sizesAvailable[i].width == size.data[0] &&
+                    (unsigned int)sizesAvailable[i].height == size.data[1]) // the size match, Switch to fullscreen mode
                 {
                     XRRSetScreenConfig(_display, config, RootWindow(_display, _screen), i, currentRotation, CurrentTime);
                     match = true;
                 }
             if (!match)
             {
-                LOG_ERROR << "Can't switch to fullscreen mode, the resolution size (" << size.Data[0] << "/" << size.Data[1] << ") don't match." << std::endl;
+                LOG_ERROR << "Can't switch to fullscreen mode, the resolution size (" << size.data[0] << "/" << size.data[1] << ") don't match." << std::endl;
                 LOG_ERROR << "Here the list of compatibles size:" << std::endl;
                 for (int i = 0; i < nbSizes && sizesAvailable && !match; ++i)  // print the compatibles resolutions
                     LOG_ERROR << "\t" << (unsigned int)sizesAvailable[i].width << "/" << sizesAvailable[i].height << std::endl;
@@ -373,8 +373,8 @@ void XWindow::SwitchToFullscreen(const Vector2ui &size)
 
 void XWindow::UseExistingWindow(void *disp, int winId, const Vector2ui &size, unsigned int antialiasingLevel)
 {
-    _width = size.Data[0];
-    _height = size.Data[1];
+    _width = size.data[0];
+    _height = size.data[1];
     _antialiasingLevel = antialiasingLevel;
     int     ret;
     int     doubleBufferAttributes[] =  {   GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,

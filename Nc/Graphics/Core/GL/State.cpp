@@ -229,8 +229,6 @@ namespace Nc {
 
 void    State::CheckGLVersion()
 {
-    float   nbr;
-
     // on a linux system, we check if the graphic acceleration is support and enable
     #ifdef SYSTEM_LINUX
     LOG << "Direct Rendering : \t\t\t\t\t";
@@ -246,15 +244,7 @@ void    State::CheckGLVersion()
 
     // check la version actuel d'opengl
     std::string version((const char*)(GetString(Enum::Version)));
-    LOG << "GL_VERSION = `" << version << "`\t";
-    Utils::Convert::StringTo(version, nbr);
-    if (nbr < VERSION_MIN_OPENGL)
-    {
-        LOG << "Bad" << std::endl;
-        System::Config::Error("GraphicEngine", "Bad OpenGl version, minimum is '" + Utils::Convert::ToString(VERSION_MIN_OPENGL) + "'\nPlease upgrade your opengl driver");
-    }
-    else
-        LOG << "OK" << std::endl;
+    LOG << "GL_VERSION = `" << version << "`" << std::endl;
 	LOG << "GL_VENDOR = `" << GetString(Enum::Vendor) << "`" << std::endl;
     LOG << "GL_RENDERER = `" << GetString(Enum::Renderer) << "`" << std::endl;
     //LOG << "GL_EXTENSIONS = `" << EXT.GetInfo(Enum::Extentions) << "`" << std::endl;
@@ -262,6 +252,15 @@ void    State::CheckGLVersion()
         {LOG << "GL_SHADING_LANGUAGE_VERSION = `" << GetString(Enum::ShadingLanguageVersion) << "`" << std::endl;}
     catch (...)
         {System::Config::Error("GraphicEngine", "Failed to fetch GL_SHADING_LANGUAGE_VERSION, Shaders is probably not supported");}
+
+    float   nbr = 0;
+    Utils::Convert::StringTo(version, nbr);
+    if (nbr < VERSION_MIN_OPENGL)
+    {
+        System::Config::Error("GraphicEngine", "Bad OpenGl version, minimum is '" + Utils::Convert::ToString(VERSION_MIN_OPENGL) + "'\nPlease upgrade your opengl driver");
+    }
+    else
+        LOG << "OpenGL version OK" << std::endl;
 }
 
 void    State::Viewport(int viewportX, int viewportY, int viewportWidth, int viewportHeight)
@@ -281,7 +280,7 @@ void    State::ClearColor(Color c)
 {
     if (_currentClearColor != c)
     {
-        glClearColor(c.R, c.G, c.B, c.A);
+        glClearColor(c.r, c.g, c.b, c.a);
         _currentClearColor = c;
     }
 }

@@ -84,23 +84,23 @@ namespace Nc
                 ICursor(Window *attachedWindow) : _attachedWindow(attachedWindow)   {}
                 virtual ~ICursor()                  {}
 
-                /** \return a clone of the current cursor */
+                /** \return a clone of the current cursor. */
                 virtual ICursor *Clone() const = 0;
 
-                /** Enable the cursor and set the current cursor of the attached window */
+                /** Enable the cursor and set the current cursor of the attached window. */
                 virtual void    Enable() = 0;
-                /** Disable the cursor */
+                /** Disable the cursor. */
                 virtual void    Disable() = 0;
 
-                /** Load the cursor from an Xpm image */
+                /** Load the cursor from an Xpm image. */
                 virtual void    LoadFromXpm(const char *xpm[]) = 0;
 
                 //virtual void LoadFromImage(const Utils::FileName &f) = 0; //todo
 
-                /// load data from 1 bit per pixel
+                /** load data from 1 bit per pixel. */
                 virtual void    LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter) = 0;
 
-                /** Set the attached window, can be call to attach the cursor to a sub window */
+                /** Set the attached window, can be call to attach the cursor to a sub window .*/
                 void            AttachWindow(Window *attachedWindow)    {_attachedWindow = attachedWindow;}
 
             protected:
@@ -110,7 +110,7 @@ namespace Nc
                 }
 
             protected:
-                Window          *_attachedWindow;       ///< instance of the attached window
+                Window          *_attachedWindow;       ///< instance of the attached window.
         };
     }
 }

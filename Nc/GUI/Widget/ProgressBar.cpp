@@ -32,7 +32,7 @@ using namespace Nc::Graphic;
 
 ProgressBar::ProgressBar(const AlignmentMask &alignment, const Vector2i &size, const Utils::FileName &file)
     : Widget(alignment, size),
-    _progressBox(0, 0, size.Data[0], size.Data[1]),
+    _progressBox(0, 0, size.data[0], size.data[1]),
     _percent(0)
 {
     _colorLeft.Init(0, 1, 0);
@@ -66,15 +66,15 @@ void ProgressBar::Update()
     verticesProgress[1].Fill(_progressBox.Min(0) + (_percent * _progressBox.Length(0) / 100.f), _progressBox.Min(1), _colorRight);
     verticesProgress[2].Fill(_progressBox.Min(0), _progressBox.Max(1), _colorLeft);
     verticesProgress[3].Fill(_progressBox.Min(0) + (_percent * _progressBox.Length(0) / 100.f), _progressBox.Max(1), _colorRight);
-    static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable]->Geometry)->VBO().UpdateData(verticesProgress.Data);
+    static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable]->Geometry)->VBO().UpdateData(verticesProgress.data);
 
     Color   c(1,1,1);
     Array<Core::DefaultVertexType::Textured2d, 4>   verticesTexture;
     verticesTexture[0].Fill(0, 0, 0, 0, c);
-    verticesTexture[1].Fill(_size.Data[0], 0, 1, 0, c);
-    verticesTexture[2].Fill(0, _size.Data[1], 0, 1, c);
-    verticesTexture[3].Fill(_size.Data[0], _size.Data[1], 1, 1, c);
-    static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Textured2d, false>*>(_drawables[_indexDrawable+1]->Geometry)->VBO().UpdateData(verticesTexture.Data);
+    verticesTexture[1].Fill(_size.data[0], 0, 1, 0, c);
+    verticesTexture[2].Fill(0, _size.data[1], 0, 1, c);
+    verticesTexture[3].Fill(_size.data[0], _size.data[1], 1, 1, c);
+    static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Textured2d, false>*>(_drawables[_indexDrawable+1]->Geometry)->VBO().UpdateData(verticesTexture.data);
 }
 
 void ProgressBar::Draw(SceneGraph *scene)

@@ -42,7 +42,7 @@ namespace Nc
                     IndexBuffer();
                     template<unsigned int D>
                     IndexBuffer(const Array<unsigned int, D> &tabIndices, unsigned int stride)
-                        : DataBuffer<unsigned int>(Enum::DataBuffer::ElementArrayBuffer, tabIndices.Size() / stride, stride, GL::Enum::DataBuffer::StaticDraw, tabIndices.Data), _nbElements(tabIndices.Size())
+                        : DataBuffer<unsigned int>(Enum::DataBuffer::ElementArrayBuffer, tabIndices.Size() / stride, stride, GL::Enum::DataBuffer::StaticDraw, tabIndices.data), _nbElements(tabIndices.Size())
                     {}
                     virtual ~IndexBuffer();
 
@@ -53,7 +53,7 @@ namespace Nc
                     template<unsigned int D>
                     void    UpdateData(const Array<unsigned int, D> &tabIndices, unsigned int stride, bool keepContent = false)
                     {
-                        DataBuffer<unsigned int>::Init(Enum::DataBuffer::ElementArrayBuffer, tabIndices.Size() / stride, stride, GL::Enum::DataBuffer::StaticDraw, tabIndices.Data, keepContent);
+                        DataBuffer<unsigned int>::Init(Enum::DataBuffer::ElementArrayBuffer, tabIndices.Size() / stride, stride, GL::Enum::DataBuffer::StaticDraw, tabIndices.data, keepContent);
                         _nbElements = tabIndices.Size();
                     }
 

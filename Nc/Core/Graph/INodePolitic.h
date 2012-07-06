@@ -55,20 +55,20 @@ namespace Nc
             template<typename T>
             struct Container
             {
-                Container()                                     {}
-                Container(const T &data)     : Data(data)       {}
+                Container()                                 {}
+                Container(const T &d)       : data(d)       {}
 
-                T       Data;
+                T       data;
             };
 
             /// A base class Container to store the data of a node if needed (specialization for a pointer)
             template<typename T>
             struct Container<T*>
             {
-                Container()             : Data(NULL)       {}
-                Container(T *data)      : Data(data)       {}
+                Container()             : data(NULL)        {}
+                Container(T *d)         : data(d)           {}
 
-                T       *Data;
+                T       *data;
             };
 
             /// Interface used to define a tree node (with a unique parent)
@@ -185,7 +185,7 @@ namespace Nc
                 /** Print the data of the node to the stream */
                 friend /*LCORE*/ std::ostream     &operator << (std::ostream &os, const INodePolitic &n)
                 {
-                    os << n.Data;
+                    os << n.data;
                     return os;
                 }
         };

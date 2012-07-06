@@ -33,9 +33,9 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to define a Subtree SceneNode for partionning space or partitionning objects data
+        /// Interface to define a Subtree SceneNode for partionning space or partitionning objects data.
         /**
-            A subtree is defined by a politic so you need to know the reel type to see the comportement and the structure of the subtree
+            A subtree is defined by a politic so you need to know the reel type to see the comportement and the structure of the subtree.
 
             \sa
                 - Octree
@@ -52,19 +52,19 @@ namespace Nc
                     : MotherType()              {}
                 virtual ~SubTree()              {}
 
-                /** Clone the scene node */
+                /** Clone the scene node. */
                 virtual ISceneNode      *Clone() const = 0;
 
                 /**
                     Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given ]p oldAt.
-                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible)
+                    Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible).
                 */
                 virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)            {throw Utils::Exception("SubTree::Move", "The movement into a subtree is forbiden.");}
 
             protected:
-                /** Update the node with the elapsed time in second */
+                /** Update the node with the elapsed time in second. */
                 virtual void            Update(float elapsedTime) = 0;
-                /** Render the node */
+                /** Render the node. */
                 virtual void            Render(SceneGraph *scene) = 0;
         };
     }

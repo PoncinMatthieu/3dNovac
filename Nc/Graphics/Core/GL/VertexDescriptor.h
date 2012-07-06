@@ -82,7 +82,7 @@ namespace Nc
                     {
                         oss << "Descriptor: " << d._name << std::endl << "Priority = " << d._priority << std::endl;
                         for (unsigned int i = 0; i < d.Size(); ++i)
-                            oss << d.Data[i] << std::endl;
+                            oss << d.data[i] << std::endl;
                         return oss;
                     }
 

@@ -79,7 +79,7 @@ void    Button::Initialize(const std::string &text, const Vector2i &size, const 
 
     _colorDisable = Color(0.2f, 0.2f, 0.2f);
     _buttonPressed = false;
-    _charSize = size.Data[1] - (PaddingTop() + PaddingBottom());
+    _charSize = size.data[1] - (PaddingTop() + PaddingBottom());
     _font = new Graphic::Text(text, _charSize, Color(1, 1, 1), ttf);
 }
 
@@ -129,8 +129,8 @@ void Button::Update()
     formater->SetCharSize(_charSize);
     while (!st && formater->GetCharSize() > 0)
     {
-        if (_font->Size().Data[0] > (_size.Data[0] - PaddingH()) ||
-            _font->Size().Data[1] > (_size.Data[1] - PaddingV()))
+        if (_font->Size().data[0] > (_size.data[0] - PaddingH()) ||
+            _font->Size().data[1] > (_size.data[1] - PaddingV()))
             formater->SetCharSize(formater->GetCharSize() - 1);
         else
             st = true;
@@ -138,8 +138,8 @@ void Button::Update()
 
     // center the font
     const Vector2f &fontSize = _font->Size();
-    _font->Matrix.Translation(PaddingLeft() + ((_size.Data[0] - PaddingH()) / 2.f) - (fontSize.Data[0] / 2.f),
-                              PaddingTop() + ((_size.Data[1] - PaddingV()) / 2.f) - (fontSize.Data[1] / 2.f), 0);
+    _font->Matrix.Translation(PaddingLeft() + ((_size.data[0] - PaddingH()) / 2.f) - (fontSize.data[0] / 2.f),
+                              PaddingTop() + ((_size.data[1] - PaddingV()) / 2.f) - (fontSize.data[1] / 2.f), 0);
 }
 
 void Button::Draw(Graphic::SceneGraph *scene)

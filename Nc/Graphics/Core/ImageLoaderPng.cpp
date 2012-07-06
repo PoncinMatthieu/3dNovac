@@ -57,7 +57,7 @@ void ImageLoaderPng::Load(const Utils::FileName &file, Image &image)
 
     // init png lib
     int bit_depth, color_type;
-    InitPng(file, fp, image._size.Data[0], image._size.Data[1], bit_depth, color_type);
+    InitPng(file, fp, image._size.data[0], image._size.data[1], bit_depth, color_type);
 
     // expand palette images to RGB, low-bit-depth grayscale images to 8 bits,
     // transparency chunks to full alpha channel; strip 16-bit-per-sample
@@ -88,15 +88,15 @@ void ImageLoaderPng::Load(const Utils::FileName &file, Image &image)
     }
 
     // malloc the data pointers
-    image._pixels.InitSize(image._size.Data[0] * image._size.Data[1]);
+    image._pixels.InitSize(image._size.data[0] * image._size.data[1]);
     unsigned char   *image_data;
-    png_bytepp      row_pointers = new png_bytep[image._size.Data[1]];
+    png_bytepp      row_pointers = new png_bytep[image._size.data[1]];
 
-    // if the nbChannel is 3, we need to shift the data, so we save the datas in a tmp array, or nbChannel is 4 and we save directly the data in the _pixels.Data
-    image_data = (nbChannels == 3) ? new unsigned char[rowbytes * image._size.Data[1]] : (unsigned char*)image._pixels.Data;
+    // if the nbChannel is 3, we need to shift the data, so we save the datas in a tmp array, or nbChannel is 4 and we save directly the data in the _pixels.data
+    image_data = (nbChannels == 3) ? new unsigned char[rowbytes * image._size.data[1]] : (unsigned char*)image._pixels.data;
 
     // set the individual row_pointers to point at the correct offsets
-    for (unsigned int i = 0;  i < image._size.Data[1];  ++i)
+    for (unsigned int i = 0;  i < image._size.data[1];  ++i)
         row_pointers[i] = image_data + (i * rowbytes);
 
     // read the image
@@ -111,14 +111,14 @@ void ImageLoaderPng::Load(const Utils::FileName &file, Image &image)
     if (nbChannels == 3)
     {
         unsigned int r = 0;
-        for (unsigned int i = 0; i < image._size.Data[1]; ++i)
+        for (unsigned int i = 0; i < image._size.data[1]; ++i)
         {
-            for (unsigned int j = 0; j < image._size.Data[0]; ++j)
+            for (unsigned int j = 0; j < image._size.data[0]; ++j)
             {
-                image._pixels.Data[(i * image._size.Data[0]) + j].R = image_data[r++];
-                image._pixels.Data[(i * image._size.Data[0]) + j].G = image_data[r++];
-                image._pixels.Data[(i * image._size.Data[0]) + j].B = image_data[r++];
-                image._pixels.Data[(i * image._size.Data[0]) + j].A = 255;
+                image._pixels.data[(i * image._size.data[0]) + j].r = image_data[r++];
+                image._pixels.data[(i * image._size.data[0]) + j].g = image_data[r++];
+                image._pixels.data[(i * image._size.data[0]) + j].b = image_data[r++];
+                image._pixels.data[(i * image._size.data[0]) + j].a = 255;
             }
         }
         delete[] image_data;

@@ -36,7 +36,7 @@ namespace Nc
     {
         class XWindow;
 
-        /// Implementation of a WindowInput for an X11 System
+        /// Implementation of a WindowInput for an X11 System.
         /**
             \sa
                 - WindowInput

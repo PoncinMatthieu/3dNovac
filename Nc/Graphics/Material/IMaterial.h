@@ -34,9 +34,9 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to define a Material which is mandated to render drawables
+        /// Interface to define a Material which is mandated to render drawables.
         /**
-            \todo render the drawables in one time not a call of the material for each drawables of the objects, this would improve the number of matrix compute and Ogl call
+            \todo render the drawables in one time not a call of the material for each drawables of the objects, this would improve the number of matrix compute and Ogl call.
         */
         class LGRAPHICS IMaterial
         {
@@ -45,22 +45,22 @@ namespace Nc
                     : _name(name)                   {}
                 virtual ~IMaterial()                {}
 
-                /** \return the name of the material */
+                /** \return the name of the material. */
                 inline const std::string   &Name()  {return _name;}
 
-                /** \return true if the material is compatible with the given vertex descriptor */
+                /** \return true if the material is compatible with the given vertex descriptor. */
                 virtual bool    IsCompatible(const GL::VertexDescriptor &)          {return true;}
 
-                /** Configure the given goemetry */
+                /** Configure the given goemetry. */
                 virtual bool    Configure(Core::Drawable &drawable) = 0;
 
-                /** Render the given drawable with the model matrix scene */
+                /** Render the given drawable with the model matrix scene. */
                 void            Render(SceneGraph *scene, Core::Drawable &drawable)
                 {
                     Render(scene, scene->ModelMatrix(), drawable);
                 }
 
-                /** Render the given drawable with the given model matrix */
+                /** Render the given drawable with the given model matrix. */
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable) = 0;
 
                 friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const IMaterial &m)
@@ -70,7 +70,7 @@ namespace Nc
                 }
 
             private:
-                std::string     _name;      ///< the name of the material
+                std::string     _name;      ///< the name of the material.
         };
     }
 }

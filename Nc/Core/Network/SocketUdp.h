@@ -124,7 +124,7 @@ namespace Nc
                 int reelSize = src.Size() * sizeof(T);
                 for (int len = 0; len < reelSize; len += sent)
                 {
-                    sent = sendto(_descriptor, reinterpret_cast<const char*>(src.Data) + len, reelSize - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
+                    sent = sendto(_descriptor, reinterpret_cast<const char*>(src.data) + len, reelSize - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
                     if (sent <= 0)
                         return false;
                 }
@@ -156,7 +156,7 @@ namespace Nc
                 #endif
 
                 // Receive a chunk of bytes
-                r = recvfrom(_descriptor, dst.Data, static_cast<int>(dst.Size() * sizeof(T)), 0, reinterpret_cast<sockaddr*>(&sender), &senderSize);
+                r = recvfrom(_descriptor, dst.data, static_cast<int>(dst.Size() * sizeof(T)), 0, reinterpret_cast<sockaddr*>(&sender), &senderSize);
 
                 // Check the number of bytes received and fill the ip/port of the sender
                 if (r > 0)

@@ -40,7 +40,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Implementation of GLContext for an X11 system
+        /// Implementation of GLContext for an X11 system.
         /**
             \sa
                 - GLContext

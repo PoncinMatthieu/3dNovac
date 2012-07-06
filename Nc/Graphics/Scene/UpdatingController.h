@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Help to defines updating controllers in a scene node
+        /// Help to defines updating controllers in a scene node.
         template<typename ControllerType>
         class UpdatingController : public Controller<ControllerType>, public IUpdatingController
         {

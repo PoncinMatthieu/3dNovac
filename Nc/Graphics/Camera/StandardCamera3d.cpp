@@ -186,6 +186,7 @@ StandardCamera3d::StandardCamera3d(const StandardCamera3d &cam)
 
 StandardCamera3d &StandardCamera3d::operator = (const StandardCamera3d &cam)
 {
+    Camera3d::operator = (cam);
     if (_cursorOpen != NULL)
         delete _cursorOpen;
     if (_cursorClose != NULL)
@@ -232,8 +233,8 @@ void StandardCamera3d::MouseMotionEvent(const System::Event &event)
     {
         if (_pattern == Turntable || _pattern == Freefly)
         {
-            _angles.Data[0] += (_lastPosMouse.Data[0] - event.mouseMove.x) * _sensibilityRotate;
-            _angles.Data[1] -= (_lastPosMouse.Data[1] - event.mouseMove.y) * _sensibilityRotate;
+            _angles.data[0] += (_lastPosMouse.data[0] - event.mouseMove.x) * _sensibilityRotate;
+            _angles.data[1] -= (_lastPosMouse.data[1] - event.mouseMove.y) * _sensibilityRotate;
         }
         else
         {
@@ -246,8 +247,8 @@ void StandardCamera3d::MouseMotionEvent(const System::Event &event)
             _lastSpherePoint = _currentSpherePoint;
         else
         {
-            _lastPosMouse.Data[0] = event.mouseMove.x;
-            _lastPosMouse.Data[1] = event.mouseMove.y;
+            _lastPosMouse.data[0] = event.mouseMove.x;
+            _lastPosMouse.data[1] = event.mouseMove.y;
         }
 
 		if (_pattern == Freefly)
@@ -277,8 +278,8 @@ void StandardCamera3d::MouseButtonEvent(const System::Event &event)
 
             if (_pattern == Trackball)
             {
-                MajTrackballPoint(static_cast<WindowInput*>(event.emitter)->MousePosition().Data[0],
-                                  static_cast<WindowInput*>(event.emitter)->MousePosition().Data[1]);
+                MajTrackballPoint(static_cast<WindowInput*>(event.emitter)->MousePosition().data[0],
+                                  static_cast<WindowInput*>(event.emitter)->MousePosition().data[1]);
                 _lastSpherePoint = _currentSpherePoint;
             }
             else
@@ -336,7 +337,7 @@ void StandardCamera3d::Update(float runningTime)
 				_center += (right * _moveSpeed * runningTime);
 			}
             else
-                _angles.Data[0] +=  _sensibilityRotate * 100 * runningTime;
+                _angles.data[0] +=  _sensibilityRotate * 100 * runningTime;
             updateEye = true;
         }
         if (input->KeyState(System::Key::D))
@@ -353,7 +354,7 @@ void StandardCamera3d::Update(float runningTime)
 				_center -= (left * _moveSpeed * runningTime);
 			}
             else
-                _angles.Data[0] -=  _sensibilityRotate * 100 * runningTime;
+                _angles.data[0] -=  _sensibilityRotate * 100 * runningTime;
             updateEye = true;
         }
 
@@ -369,24 +370,24 @@ void StandardCamera3d::MajEye()
     if (_pattern == Turntable)
     {
         // reglage de l'angle
-        if (_angles.Data[0] > 180)
-            _angles.Data[0] -= 360;
-        if (_angles.Data[0] < -180)
-            _angles.Data[0] += 360;
+        if (_angles.data[0] > 180)
+            _angles.data[0] -= 360;
+        if (_angles.data[0] < -180)
+            _angles.data[0] += 360;
 
-        if (_angles.Data[1] > 180)
-            _angles.Data[1] -= 360;
-        if (_angles.Data[1] < -180)
-            _angles.Data[1] += 360;
+        if (_angles.data[1] > 180)
+            _angles.data[1] -= 360;
+        if (_angles.data[1] < -180)
+            _angles.data[1] += 360;
 
         _eye.Init(); // init l'oeil
         TMatrix matriceEye;
         matriceEye.TranslationX(_distance);
-        matriceEye.AddRotation(Vector3f(0, 1, 0), _angles.Data[1], 0);
-        matriceEye.AddRotation(Vector3f(0, 0, 1), _angles.Data[0], 0);
+        matriceEye.AddRotation(Vector3f(0, 1, 0), _angles.data[1], 0);
+        matriceEye.AddRotation(Vector3f(0, 0, 1), _angles.data[0], 0);
         matriceEye.AddTranslation(_center);
         matriceEye.Transform(_eye);
-        _up.Data[2] = (_angles.Data[1] > -90 && _angles.Data[1] < 90) ? 1 : -1;  // inverse le vecteur up, dans le cas ou l'on retourne la camera
+        _up.data[2] = (_angles.data[1] > -90 && _angles.data[1] < 90) ? 1 : -1;  // inverse le vecteur up, dans le cas ou l'on retourne la camera
     }
     else if (_pattern == Trackball)
     {
@@ -404,7 +405,7 @@ void StandardCamera3d::MajEye()
         _eye.Init(_distance, 0, 0);
         _up.Init(0,0,1);
 
-        if (axis.Data[0] != 0 || axis.Data[1] != 0 || axis.Data[2] != 0)
+        if (axis.data[0] != 0 || axis.data[1] != 0 || axis.data[2] != 0)
             _matrixRotationEye.AddRotation(axis, -theta);
         _matrixRotationEye.Transform(_eye);
         _matrixRotationEye.Transform(_up);
@@ -416,15 +417,15 @@ void StandardCamera3d::MajEye()
     else
     {
         // reglage de l'angle
-        if (_angles.Data[0] > 180)
-            _angles.Data[0] -= 360;
-        if (_angles.Data[0] < -180)
-            _angles.Data[0] += 360;
+        if (_angles.data[0] > 180)
+            _angles.data[0] -= 360;
+        if (_angles.data[0] < -180)
+            _angles.data[0] += 360;
 
-        if (_angles.Data[1] > 180)
-            _angles.Data[1] -= 360;
-        if (_angles.Data[1] < -180)
-            _angles.Data[1] += 360;
+        if (_angles.data[1] > 180)
+            _angles.data[1] -= 360;
+        if (_angles.data[1] < -180)
+            _angles.data[1] += 360;
 
         _eye.Init(); // init l'oeil
 
@@ -432,15 +433,15 @@ void StandardCamera3d::MajEye()
         matriceEye.TranslationX(_distance);
 		matriceEye.AddTranslation(_center);
 
-		float r_temp = cos((_angles.Data[1] * M_PI)/180);
-		float X = r_temp * cos((_angles.Data[0] * M_PI) / 180);
-		float Y = r_temp * sin((_angles.Data[0] * M_PI) / 180);
+		float r_temp = cos((_angles.data[1] * M_PI)/180);
+		float X = r_temp * cos((_angles.data[0] * M_PI) / 180);
+		float Y = r_temp * sin((_angles.data[0] * M_PI) / 180);
 
-		Vector3f forward(X, Y, sin(_angles.Data[1]*M_PI/180));
+		Vector3f forward(X, Y, sin(_angles.data[1]*M_PI/180));
 
         _eye = (_center + forward);
 
-        _up.Data[2] = (_angles.Data[1] > -90 && _angles.Data[1] < 90) ? 1 : -1;  // inverse le vecteur up, dans le cas ou l'on retourne la camera
+        _up.data[2] = (_angles.data[1] > -90 && _angles.data[1] < 90) ? 1 : -1;  // inverse le vecteur up, dans le cas ou l'on retourne la camera
     }
     UpdateViewFrustum();
     Matrix.Translation(_center); // positionne la matrice de la camera sur le centre
@@ -452,10 +453,10 @@ void StandardCamera3d::MajEye()
 void StandardCamera3d::MajTrackballPoint(int x, int y)
 {
     //set xy to -1/-1, 1/1 coord
-    _currentSpherePoint.Data[1] = ((float)x / (float)(_window->Width()/2.f)) - 1;
-    _currentSpherePoint.Data[2] = 1 - ((float)y / (float)(_window->Height()/2.f));
-    _currentSpherePoint.Data[0] = 1 - (_currentSpherePoint.Data[1] * _currentSpherePoint.Data[1]) - (_currentSpherePoint.Data[2] * _currentSpherePoint.Data[2]);
-    _currentSpherePoint.Data[0] = (_currentSpherePoint.Data[0] > 0) ? sqrt(_currentSpherePoint.Data[0]) : 0;
+    _currentSpherePoint.data[1] = ((float)x / (float)(_window->Width()/2.f)) - 1;
+    _currentSpherePoint.data[2] = 1 - ((float)y / (float)(_window->Height()/2.f));
+    _currentSpherePoint.data[0] = 1 - (_currentSpherePoint.data[1] * _currentSpherePoint.data[1]) - (_currentSpherePoint.data[2] * _currentSpherePoint.data[2]);
+    _currentSpherePoint.data[0] = (_currentSpherePoint.data[0] > 0) ? sqrt(_currentSpherePoint.data[0]) : 0;
 }
 
 void StandardCamera3d::DrawFrustum(bool state)
@@ -494,7 +495,7 @@ void StandardCamera3d::UpdateViewFrustum()
         vertices[5].Fill(_frustumFBL[0], _frustumFBL[1], _frustumFBL[2], c);
         vertices[6].Fill(_eye[0], _eye[1], _eye[2], c);
         vertices[7].Fill(_frustumFBR[0], _frustumFBR[1], _frustumFBR[2], c);
-        static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored, false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices.Data);
+        static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored, false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices.data);
 
         Color                                   cPlan(0.3f,0.3f,0.3f);
         Array<Core::DefaultVertexType::Colored, 12>   verticesPlan;
@@ -513,7 +514,7 @@ void StandardCamera3d::UpdateViewFrustum()
         verticesPlan[9].Fill(_frustumFTL[0], _frustumFTL[1], _frustumFTL[2], cPlan);
         verticesPlan[10].Fill(_frustumFBR[0], _frustumFBR[1], _frustumFBR[2], cPlan);
         verticesPlan[11].Fill(_frustumFBL[0], _frustumFBL[1], _frustumFBL[2], cPlan);
-        static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored, false>*>(_drawables[1]->Geometry)->VBO().UpdateData(verticesPlan.Data);
+        static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored, false>*>(_drawables[1]->Geometry)->VBO().UpdateData(verticesPlan.data);
     }
 }
 

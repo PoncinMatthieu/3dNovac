@@ -64,10 +64,10 @@ namespace Nc
         template<typename T>
         Box2D<T>::Box2D(const T &xmin, const T &ymin, const T &xmax, const T &ymax)
         {
-            Box<T,2>::_min.Data[0] = xmin;
-            Box<T,2>::_max.Data[0] = xmax;
-            Box<T,2>::_min.Data[1] = ymin;
-            Box<T,2>::_max.Data[1] = ymax;
+            Box<T,2>::_min.data[0] = xmin;
+            Box<T,2>::_max.data[0] = xmax;
+            Box<T,2>::_min.data[1] = ymin;
+            Box<T,2>::_max.data[1] = ymax;
         }
 
         template<typename T>

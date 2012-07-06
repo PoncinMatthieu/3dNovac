@@ -39,7 +39,7 @@ namespace Nc
     {
         class Window;
 
-        /// Interface to provide an OpenGL context for multiarchi
+        /// Interface to provide an OpenGL context for multiarchi.
         /**
             Typically a GLContext is created in 2 ways. With a Window by calling the method Window::CreateGLContext(),
             or with an other context by calling the method GLContext::CreateNewSharedContext().

@@ -57,25 +57,25 @@ Object      *BasicMeshCreator::Plan(const Vector2f &size, const GL::Texture &tex
 Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
 {
 // creation des vertex en fontion de la taille
-    unsigned int    x = size.Data[0], y = size.Data[1];
+    unsigned int    x = size.data[0], y = size.data[1];
     unsigned int    nbVertices = (x * 2) + (y * 2) + 4;
     unsigned int    k = 0;
 
     Array<Core::DefaultVertexType::Colored>     vertices(nbVertices);
     for (unsigned int i = 0; i < x + 1; i++)
     {
-        vertices[k++].Fill(i, 0, size.Data[2], color);
-        vertices[k++].Fill(i, size.Data[1], size.Data[2], color);
+        vertices[k++].Fill(i, 0, size.data[2], color);
+        vertices[k++].Fill(i, size.data[1], size.data[2], color);
     }
     for (unsigned int i = 0; i < y + 1; i++)
     {
-        vertices[k++].Fill(0, i, size.Data[2], color);
-        vertices[k++].Fill(size.Data[0], i, size.Data[2], color);
+        vertices[k++].Fill(0, i, size.data[2], color);
+        vertices[k++].Fill(size.data[0], i, size.data[2], color);
     }
 
 // creation de la box
-    Vector3f bmin(0.f, 0.f, size.Data[2] - 0.1f);
-    Vector3f bmax(size.Data[0], size.Data[1], size.Data[2] + 0.1f);
+    Vector3f bmin(0.f, 0.f, size.data[2] - 0.1f);
+    Vector3f bmax(size.data[0], size.data[1], size.data[2] + 0.1f);
 
 // creation du mesh
     Object *mesh = new Object(Box3f(bmin, bmax));

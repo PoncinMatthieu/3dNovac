@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Manage a list of SceneNodeFormatPlugin and load scene node files
+        /// Manage a list of SceneNodeFormatPlugin and load scene node files.
         /**
             Plugins are loaded with the Xml System::Config file by using the "SceneNodeFormatPlugin" path in the "GameConf".
 
@@ -59,11 +59,11 @@ namespace Nc
                 SceneNodeFormatManager();
                 ~SceneNodeFormatManager();
 
-                /** Load the given \p file and return the loaded SceneNode */
+                /** Load the given \p file and return the loaded SceneNode. */
                 ISceneNode              *Load(const Utils::FileName &file);
 
             private:
-                /** \return the plugin associated to the given \p extension. If no plugin is found, then return */
+                /** \return the plugin associated to the given \p extension. If no plugin is found, then return. */
                 ISceneNodeFormatPlugin  *GetSceneNodeFormatByExtension(const std::string &extension);
 
             private:

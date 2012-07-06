@@ -52,9 +52,9 @@ namespace Nc
                 void Init(const T &u = 0, const T &v = 0);
 
                 /** \return X */
-                const T   &X() const    {return Vector<T,2>::Data[0];}
+                const T   &X() const    {return Vector<T,2>::data[0];}
                 /** \return Z */
-                const T   &Y() const    {return Vector<T,2>::Data[1];}
+                const T   &Y() const    {return Vector<T,2>::data[1];}
         };
 
         template<typename T>
@@ -74,8 +74,8 @@ namespace Nc
         template<typename T>
         void Vector2D<T>::Init(const T &u, const T &v)
         {
-            Vector<T,2>::Data[0] = u;
-            Vector<T,2>::Data[1] = v;
+            Vector<T,2>::data[0] = u;
+            Vector<T,2>::data[1] = v;
         }
     }
 }

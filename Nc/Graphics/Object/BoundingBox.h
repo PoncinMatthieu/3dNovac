@@ -42,9 +42,9 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Basic 3d graphical object used to render an Axis Aligned Bounding Box (AABB)
+        /// Basic 3d graphical object used to render an Axis Aligned Bounding Box (AABB).
         /**
-            \todo put a reference counter here to destroy the static drawable of the box and avoid memory leek
+            \todo put a reference counter here to destroy the static drawable of the box and avoid memory leek.
         */
         class LGRAPHICS BoundingBox : public Object, public Box3f
         {
@@ -61,19 +61,19 @@ namespace Nc
 
                 virtual void            TransformModelMatrixToRender(SceneGraph *scene)    {}
 
-                /** Render the box */
+                /** Render the box. */
                 void                    Draw(SceneGraph *scene);
 
-                /** \return the height of the box */
+                /** \return the height of the box. */
                 inline float            Height() const              {return Length(2);}
 
             private:
-                /** Create the geometry of the box */
+                /** Create the geometry of the box. */
                 static void             CreateGeometry();
 
-                static Color            _color;         ///< the color of the box
-                static Core::Drawable   *_drawable;     ///< the static drawable, static because we use the same drawable for all boxs
-                static IDefaultMaterial *_material;     ///< the static material instance used to render the drawables
+                static Color            _color;         ///< the color of the box.
+                static Core::Drawable   *_drawable;     ///< the static drawable, static because we use the same drawable for all boxs.
+                static IDefaultMaterial *_material;     ///< the static material instance used to render the drawables.
         };
     }
 }

@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Implementation of a standard Camera3d
+        /// Implementation of a standard Camera3d.
         /**
             To manage default freefly, trackball or turntable camera.
         */
@@ -43,7 +43,7 @@ namespace Nc
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Camera3d, System::Object, Nc::Graphic::StandardCamera3d);
 
-                /// To determine the patern of the camera
+                /// To determine the patern of the camera.
                 enum Pattern
                 {
                     Trackball,
@@ -64,83 +64,83 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const                          {return new StandardCamera3d(*this);}
 
-                /** \return the pattern used by camera */
+                /** \return the pattern used by camera. */
                 inline Pattern  GetPattern() const                          {return _pattern;}
-                /** Set the pattern used by the camera */
+                /** Set the pattern used by the camera. */
                 void            SetPattern(Pattern p);
 
-                /** Set the button with active the movement of the camera */
+                /** Set the button with active the movement of the camera. */
                 void            MoveButton(System::Mouse::Button button)    {_mouveButton = button;}
-                /** Set the mouse motion status, if true, the movement of the mous will not be stoped by the move buttons */
+                /** Set the mouse motion status, if true, the movement of the mous will not be stoped by the move buttons. */
                 inline void     MouseMotionAlwaysActif(bool state)          {_mouseMotionAlwaysActif = state;}
-                /** \return the mouse motion status */
+                /** \return the mouse motion status. */
                 inline bool     MouseMotionAlwaysActif() const              {return _mouseMotionAlwaysActif;}
 
-                /** Set the movement speed */
+                /** Set the movement speed. */
                 inline void     MoveSpeed(float v)                          {_moveSpeed = v;}
-                /** \return the movement speed */
+                /** \return the movement speed. */
                 inline float    MoveSpeed() const                           {return _moveSpeed;}
-                /** Set the sensibility of the rotation movements */
+                /** Set the sensibility of the rotation movements. */
                 inline void     SensibilityRotate(float v)                  {_sensibilityRotate = v;}
-                /** \return the sensibility of the translation movements */
+                /** \return the sensibility of the translation movements. */
                 inline float    SensibilityRotate() const                   {return _sensibilityRotate;}
                 /** Set the sensibility of the zoom movements */
                 inline void     SensibilityZoom(float v)                    {_sensibilityZoom = v;}
-                /** \return the sensibility of the translation movements */
+                /** \return the sensibility of the translation movements. */
                 inline float    SensibilityZoom() const                     {return _sensibilityZoom;}
 
-                /** Recompute the eye, center and up vector after a modification */
+                /** Recompute the eye, center and up vector after a modification. */
                 virtual void    MajEye();
 
                 // Manage events
-                /** Manage the mouse motion event */
+                /** Manage the mouse motion event. */
                 virtual void    MouseMotionEvent(const System::Event &event);
-                /** Manage the mouse button event */
+                /** Manage the mouse button event. */
                 virtual void    MouseButtonEvent(const System::Event &event);
-                /** Manage the keyboard event */
+                /** Manage the keyboard event. */
                 virtual void    KeyboardEvent(const System::Event &) {};
 
-                /** Update the geometry which draw the frustum of the camera */
+                /** Update the geometry which draw the frustum of the camera. */
                 virtual void    UpdateViewFrustum();
-                /** Draw the frustum */
+                /** Draw the frustum. */
                 void            DrawFrustum(bool state);
 
-                /** \return the Inihibit movement statement of the camera */
+                /** \return the Inihibit movement statement of the camera. */
                 inline bool     Inibited()                          {return _inhibitMovement;}
-                /** Set the Inihibit movement statement to true */
+                /** Set the Inihibit movement statement to true. */
                 inline void     InibitMovement()                    {_inhibitMovement = true;}
-                /** Set the Inihibit movement statement to false */
+                /** Set the Inihibit movement statement to false. */
                 inline void     UninibitMovement()                  {_inhibitMovement = false;}
 
             protected:
-                /** to compute the actual position */
+                /** to compute the actual position. */
                 virtual void    Update(float runningTime);
 
-                /** Recompute the trackball point with the given mouse position */
+                /** Recompute the trackball point with the given mouse position. */
                 void MajTrackballPoint(int x, int y);
 
-                System::Mouse::Button   _mouveButton;   ///< the button which active the movement of the camera
+                System::Mouse::Button   _mouveButton;   ///< the button which active the movement of the camera.
 
-                Pattern     _pattern;                   ///< the pattern of the camera
-                bool        _inhibitMovement;           ///< if true, the camera will no receive the movements events
-                bool        _mouseMotionAlwaysActif;    ///< if true, the movement of the mous will not be stoped by the move buttons
-                bool        _drawFrustum;               ///< if true, the camera will draw his frustum
-                float       _moveSpeed;                 ///< the speed of the movement of the camera
-                float       _sensibilityRotate;         ///< the rotation sensibility
-                float       _sensibilityZoom;           ///< the zoom sensibility
-                bool        _stateButtonRight;          ///< the button right state
-                bool        _stateButtonLeft;           ///< the button left state
-                float       _distance;                  ///< the distance between the center and the eye
-                Vector2f    _angles;                    ///< the angle of rotation
-                Vector2i    _lastPosMouse;              ///< the last position of the mouse
+                Pattern     _pattern;                   ///< the pattern of the camera.
+                bool        _inhibitMovement;           ///< if true, the camera will no receive the movements events.
+                bool        _mouseMotionAlwaysActif;    ///< if true, the movement of the mous will not be stoped by the move buttons.
+                bool        _drawFrustum;               ///< if true, the camera will draw his frustum.
+                float       _moveSpeed;                 ///< the speed of the movement of the camera.
+                float       _sensibilityRotate;         ///< the rotation sensibility.
+                float       _sensibilityZoom;           ///< the zoom sensibility.
+                bool        _stateButtonRight;          ///< the button right state.
+                bool        _stateButtonLeft;           ///< the button left state.
+                float       _distance;                  ///< the distance between the center and the eye.
+                Vector2f    _angles;                    ///< the angle of rotation.
+                Vector2i    _lastPosMouse;              ///< the last position of the mouse.
 
                 // fo the trackball system
-                TMatrix     _matrixRotationEye;         ///< the current rotation matrix of the eye, for trackball system
-                Vector3f    _currentSpherePoint;        ///< the current sphere point of the trackball
-                Vector3f    _lastSpherePoint;           ///< the last sphere point of the trackball (between a mouse motion event)
+                TMatrix     _matrixRotationEye;         ///< the current rotation matrix of the eye, for trackball system.
+                Vector3f    _currentSpherePoint;        ///< the current sphere point of the trackball.
+                Vector3f    _lastSpherePoint;           ///< the last sphere point of the trackball (between a mouse motion event).
 
-                ICursor     *_cursorOpen;               ///< the cursor when the button mouse is up
-                ICursor     *_cursorClose;              ///< the cursor when the button mouse is down
+                ICursor     *_cursorOpen;               ///< the cursor when the button mouse is up.
+                ICursor     *_cursorClose;              ///< the cursor when the button mouse is down.
         };
     }
 }

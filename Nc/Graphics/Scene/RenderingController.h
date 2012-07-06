@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Help to defines rendering controllers in a scene node
+        /// Help to defines rendering controllers in a scene node.
         template<typename ControllerType>
         class RenderingController : public Controller<ControllerType>, public IRenderingController
         {

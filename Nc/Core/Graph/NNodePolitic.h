@@ -208,13 +208,13 @@ namespace Nc
             _shouldBeDelete = nn._shouldBeDelete;
             for (unsigned int i = 0; i < NbChilds; ++i)
             {
-                if (nn._childs.Data[i] != NULL)
+                if (nn._childs.data[i] != NULL)
                 {
-                    _childs.Data[i] = _alloc.Allocate(*nn._childs.Data[i]);
-                    _childs.Data[i]->SetParent(static_cast<NodeType*>(this));
+                    _childs.data[i] = _alloc.Allocate(*nn._childs.data[i]);
+                    _childs.data[i]->SetParent(static_cast<NodeType*>(this));
                 }
                 else
-                    _childs.Data[i] = NULL;
+                    _childs.data[i] = NULL;
             }
         }
 
@@ -224,19 +224,19 @@ namespace Nc
             _shouldBeDelete = nn._shouldBeDelete;
             for (unsigned int i = 0; i < NbChilds; ++i)
             {
-                if (_childs.Data[i] != NULL)
+                if (_childs.data[i] != NULL)
                 {
-                    _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                    if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
-                        _alloc.Deallocate(_childs.Data[i]);
+                    _childs.data[i]->UnParent(static_cast<NodeType*>(this));
+                    if (_childs.data[i]->_shouldBeDelete && _childs.data[i]->IsRoot())
+                        _alloc.Deallocate(_childs.data[i]);
                 }
-                if (nn._childs.Data[i] != NULL)
+                if (nn._childs.data[i] != NULL)
                 {
-                    _childs.Data[i] = _alloc.Allocate(*nn._childs.Data[i]);
-                    _childs.Data[i]->SetParent(static_cast<NodeType*>(this));
+                    _childs.data[i] = _alloc.Allocate(*nn._childs.data[i]);
+                    _childs.data[i]->SetParent(static_cast<NodeType*>(this));
                 }
                 else
-                    _childs.Data[i] = NULL;
+                    _childs.data[i] = NULL;
             }
             return *this;
         }
@@ -293,11 +293,11 @@ namespace Nc
 
             for (unsigned int i = 0; i < NbChilds; ++i)
             {
-                if (_childs.Data[i] != NULL)
+                if (_childs.data[i] != NULL)
                 {
-                    _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                    if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
-                        _alloc.Deallocate(_childs.Data[i]);
+                    _childs.data[i]->UnParent(static_cast<NodeType*>(this));
+                    if (_childs.data[i]->_shouldBeDelete && _childs.data[i]->IsRoot())
+                        _alloc.Deallocate(_childs.data[i]);
                 }
             }
         }
@@ -362,12 +362,12 @@ namespace Nc
         {
             for (unsigned int i = 0; i < NbChilds; ++i)
             {
-                if (_childs.Data[i] != NULL)
+                if (_childs.data[i] != NULL)
                 {
-                    _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                    if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
-                        _alloc.Deallocate(_childs.Data[i]);
-                    _childs.Data[i] = NULL;
+                    _childs.data[i]->UnParent(static_cast<NodeType*>(this));
+                    if (_childs.data[i]->_shouldBeDelete && _childs.data[i]->IsRoot())
+                        _alloc.Deallocate(_childs.data[i]);
+                    _childs.data[i] = NULL;
                 }
             }
         }
@@ -396,10 +396,10 @@ namespace Nc
                 {
                     if (i == at)
                     {
-                        _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                        if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
-                            _alloc.Deallocate(_childs.Data[i]);
-                        _childs.Data[i] = NULL;
+                        _childs.data[i]->UnParent(static_cast<NodeType*>(this));
+                        if (_childs.data[i]->_shouldBeDelete && _childs.data[i]->IsRoot())
+                            _alloc.Deallocate(_childs.data[i]);
+                        _childs.data[i] = NULL;
                         return true;
                     }
                 }
@@ -414,12 +414,12 @@ namespace Nc
             {
                 for (unsigned int i = 0; i < NbChilds; ++i)
                 {
-                    if (_childs.Data[i] == n)
+                    if (_childs.data[i] == n)
                     {
-                        _childs.Data[i]->UnParent(static_cast<NodeType*>(this));
-                        if (_childs.Data[i]->_shouldBeDelete && _childs.Data[i]->IsRoot())
-                            _alloc.Deallocate(_childs.Data[i]);
-                        _childs.Data[i] = NULL;
+                        _childs.data[i]->UnParent(static_cast<NodeType*>(this));
+                        if (_childs.data[i]->_shouldBeDelete && _childs.data[i]->IsRoot())
+                            _alloc.Deallocate(_childs.data[i]);
+                        _childs.data[i] = NULL;
                         return true;
                     }
                 }
@@ -436,9 +436,9 @@ namespace Nc
                     return true;
                 for (unsigned int i = 0; i < NbChilds; ++i)
                 {
-                    if (_childs.Data[i] != NULL)
+                    if (_childs.data[i] != NULL)
                     {
-                        if (_childs.Data[i]->RemoveChildRecursif(n))
+                        if (_childs.data[i]->RemoveChildRecursif(n))
                             return true;
                     }
                 }
@@ -512,9 +512,9 @@ namespace Nc
             // get back all child height
             for (unsigned int i = 0; i < NbChilds; ++i)
             {
-                if (_childs.Data[i] != NULL)
+                if (_childs.data[i] != NULL)
                 {
-                    heightTmp = 1 + _childs.Data[i]->Height();
+                    heightTmp = 1 + _childs.data[i]->Height();
                     if (height < heightTmp)
                         height = heightTmp;
                 }
@@ -542,33 +542,33 @@ namespace Nc
         void        NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::ExtractLeaf(std::list<T> &leafs) const
         {
             if (!HasChilds())
-                leafs.push_back(NodePolitic::Data);
+                leafs.push_back(NodePolitic::data);
             for (unsigned int i = 0; i < NbChilds; ++i)
-                if (_childs.Data[i] != NULL)
-                _childs.Data[i]->ExtractLeaf(leafs);
+                if (_childs.data[i] != NULL)
+                _childs.data[i]->ExtractLeaf(leafs);
         }
 
         template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
         void        NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::ExtractChilds(std::list<T> &childs) const
         {
-            childs.push_back(NodePolitic::Data);
+            childs.push_back(NodePolitic::data);
             for (unsigned int i = 0; i < NbChilds; ++i)
-                if (_childs.Data[i] != NULL)
-                    _childs.Data[i]->ExtractChilds(childs);
+                if (_childs.data[i] != NULL)
+                    _childs.data[i]->ExtractChilds(childs);
         }
 
         template<typename T, class NodeType, bool Graph, class Allocator>
         void        NNodePolitic<T,NodeType,0,Graph,Allocator>::ExtractLeaf(std::list<T> &leafs) const
         {
             if (!HasChilds())
-                leafs.push_back(NodePolitic::Data);
+                leafs.push_back(NodePolitic::data);
             for (typename ContainerType::const_iterator it = _childs.begin(); it != _childs.end(); ++it)
                 (*it)->ExtractLeaf(leafs);
         }
         template<typename T, class NodeType, bool Graph, class Allocator>
         void        NNodePolitic<T,NodeType,0,Graph,Allocator>::ExtractChilds(std::list<T> &childs) const
         {
-            childs.push_back(NodePolitic::Data);
+            childs.push_back(NodePolitic::data);
             for (typename ContainerType::const_iterator it = _childs.begin(); it != _childs.end(); ++it)
                 (*it)->ExtractChilds(childs);
         }

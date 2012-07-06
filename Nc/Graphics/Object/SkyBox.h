@@ -35,7 +35,7 @@ namespace Nc
     {
         class Camera3d;
 
-        /// To render a skybox in background
+        /// To render a skybox in background.
         /**
             The skybox needs to have a pointer to the Camera3d and a tab of filename like that:
  \code
@@ -62,10 +62,10 @@ namespace Nc
                 virtual ISceneNode      *Clone() const          {return new SkyBox(*this);}
 
             protected:
-                /** Transform the model matrix to be a the eye of the camera */
+                /** Transform the model matrix to be a the eye of the camera. */
                 virtual void    TransformModelMatrixToRender(SceneGraph *scene);
 
-                /** Update the geometry of the drawable */
+                /** Update the geometry of the drawable. */
                 void            UpdateGeometry(const Utils::FileName filenames[]);
         };
     }

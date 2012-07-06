@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Manage the rasterisation parameters to draw simple effects like a wireframe effect
+        /// Manage the rasterisation parameters to draw simple effects like a wireframe effect.
         class LGRAPHICS RasterEffect : public Effect
         {
             public:
@@ -43,11 +43,11 @@ namespace Nc
             public:
                 enum Pattern
                 {
-                    Points,                 ///< draw only the points of primitives
-                    Wireframe,              ///< draw only the edges of primitives
-                    Fill,                   ///< default draw
-                    FillWireframe,          ///< draw a first pass in Fill mode and a second pass in Wireframe mode with an offset
-                    FillWireframeNoDepth    ///< draw a first pass in Fill mode and a second pass in Wireframe mode with an offset and no depth test
+                    Points,                 ///< draw only the points of primitives.
+                    Wireframe,              ///< draw only the edges of primitives.
+                    Fill,                   ///< default draw.
+                    FillWireframe,          ///< draw a first pass in Fill mode and a second pass in Wireframe mode with an offset.
+                    FillWireframeNoDepth    ///< draw a first pass in Fill mode and a second pass in Wireframe mode with an offset and no depth test.
                 };
 
             public:
@@ -55,23 +55,23 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const                                      {return new RasterEffect(*this);}
 
-                /** Set the depth test statement */
+                /** Set the depth test statement. */
                 inline void         SetDepthTest(bool state)                            {_mode.SetDepthTest(state);}
 
-                /** Set the effect mode */
+                /** Set the effect mode. */
                 void                SetPattern(Pattern pattern);
 
-                /** Render the given \p node with the given \p scene */
+                /** Render the given \p node with the given \p scene. */
                 void                Render(Entity *node, SceneGraph *scene);
 
             protected:
-                /** Render the childs with the good effect */
+                /** Render the childs with the good effect. */
                 virtual void        Render(SceneGraph *scene);
 
             private:
                 System::Mutex       _mutex;
-                GL::RasterMode      _mode;      ///< RasterMode used to render the effect
-                GL::RasterMode      _mode2;     ///< a second RasterMode to draw the second pass with an offset
+                GL::RasterMode      _mode;      ///< RasterMode used to render the effect.
+                GL::RasterMode      _mode2;     ///< a second RasterMode to draw the second pass with an offset.
         };
     }
 }

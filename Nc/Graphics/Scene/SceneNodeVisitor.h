@@ -47,18 +47,18 @@ namespace Nc
                 {
                     for (Entity::ContainerType::iterator it = n.Childs().begin(); it != n.Childs().end(); ++it)
                         (*this)(**it);
-                    if (n.Data != NULL)
-                        (*this)(*n.Data);
+                    if (n.data != NULL)
+                        (*this)(*n.data);
                 }
 
                 void InvokeChilds(Octree &n)
                 {
                     for (unsigned int i = 0; i < 8; ++i)
                     {
-                        if (n.Childs().Data[i] != NULL)
-                            (*this)(*n.Childs().Data[i]);
+                        if (n.Childs().data[i] != NULL)
+                            (*this)(*n.Childs().data[i]);
                     }
-                    for (std::list<ISceneNode*>::iterator it = n.Data.begin(); it != n.Data.end(); ++it)
+                    for (std::list<ISceneNode*>::iterator it = n.data.begin(); it != n.data.end(); ++it)
                         (*this)(**it);
                 }
         };
@@ -76,18 +76,18 @@ namespace Nc
                 {
                     for (Entity::ContainerType::const_iterator it = n.Childs().begin(); it != n.Childs().end(); ++it)
                         (*this)(**it);
-                    if (n.Data != NULL)
-                        (*this)(*n.Data);
+                    if (n.data != NULL)
+                        (*this)(*n.data);
                 }
 
                 void InvokeChilds(const Octree &n)
                 {
                     for (unsigned int i = 0; i < 8; ++i)
                     {
-                        if (n.Childs().Data[i] != NULL)
-                            (*this)(*n.Childs().Data[i]);
+                        if (n.Childs().data[i] != NULL)
+                            (*this)(*n.Childs().data[i]);
                     }
-                    for (std::list<ISceneNode*>::const_iterator it = n.Data.begin(); it != n.Data.end(); ++it)
+                    for (std::list<ISceneNode*>::const_iterator it = n.data.begin(); it != n.data.end(); ++it)
                         (*this)(**it);
                 }
         };

@@ -74,22 +74,22 @@ void WindowInput::GenereEvent(const System::Event &e)
         // Mouse moved
         case System::Event::MouseMoved:
         {
-            _mousePosition.Data[0] = e.mouseMove.x;
-            _mousePosition.Data[1] = e.mouseMove.y;
+            _mousePosition.data[0] = e.mouseMove.x;
+            _mousePosition.data[1] = e.mouseMove.y;
             break;
         }
         case System::Event::MouseButtonPressed:
         {
             _mouseButtonStates[e.mouseButton.button] = true;
-            _mousePosition.Data[0] = e.mouseButton.x;
-            _mousePosition.Data[1] = e.mouseButton.y;
+            _mousePosition.data[0] = e.mouseButton.x;
+            _mousePosition.data[1] = e.mouseButton.y;
             break;
         }
         case System::Event::MouseButtonReleased:
         {
             _mouseButtonStates[e.mouseButton.button] = false;
-            _mousePosition.Data[0] = e.mouseButton.x;
-            _mousePosition.Data[1] = e.mouseButton.y;
+            _mousePosition.data[0] = e.mouseButton.x;
+            _mousePosition.data[1] = e.mouseButton.y;
             break;
         }
 
@@ -241,13 +241,13 @@ void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System:
 
 void    WindowInput::UpdateMousePositionSubWindow(SubWindow *subWindow, int &newX, int &newY, const int &oldX, const int &oldY)
 {
-    newX = oldX - subWindow->Pos().Data[0];
-    newY = oldY - (_win->Height() - subWindow->Pos().Data[1] - subWindow->Height());
+    newX = oldX - subWindow->Pos().data[0];
+    newY = oldY - (_win->Height() - subWindow->Pos().data[1] - subWindow->Height());
 }
 
 Vector2i WindowInput::MousePositionInGLCoord() const
 {
-    return Vector2i(_mousePosition.Data[0], _win->Height() - _mousePosition.Data[1]);
+    return Vector2i(_mousePosition.data[0], _win->Height() - _mousePosition.data[1]);
 }
 
 char WindowInput::ToChar(System::Key::Code key) const
