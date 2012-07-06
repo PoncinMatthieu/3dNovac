@@ -34,7 +34,6 @@ namespace FrustumDemo
       void Generate(Nc::Graphic::Entity *node, Nc::Graphic::Object *obj);
 
       Nc::Graphic::SceneGraph		*_scene3d;
-      Nc::GUI::SceneGraph			*_sceneGUI;
       Nc::Graphic::StandardCamera3d		*_camera;
       Nc::Graphic::StandardCamera3d		*_camera2;
       Nc::Graphic::StandardCamera3d		*_camera3;

@@ -45,7 +45,6 @@ void GameEngine::LoadContent()
 
   // GUI :
   _menu = new MainMenu(_sceneGUI);
-  _sceneGUI->AddChild(new GUI::FPSWidget());
   _console = new GUI::Console(_window, GameEngine::ClassName());
   _sceneGUI->AddChild(_console);
 }

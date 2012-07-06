@@ -37,47 +37,44 @@ namespace Nc
         {
             /// Interface used to format text.
             /**
+                <div class="title">Definning you own formater:</div>
                 To create your own text formater, you should redefine the following methods:
                     - Clone: To be able to create a new copy of your formater.
-                    - ComputeSize: To retreive the expected size of the text.
                     - InitDrawable: To create and initialize the drawables used to render the text.
                     - ComputeDrawables: To update the drawables used to render the text.
 
-                By creating your own formater you should be able to render structured rich text documents.
+                To be able to render structured rich text documents, you can define your own text formater by inheriting from ITextFormater.
+                We use the boolean _needUpdate to know if we should recompute the drawables with the size,
+                this boolean is obviously important for perfomance issue, and should be updated in your own formater.
 
-                \sa PlainTextFormater, Correspond to the default text formater allowing the creation of stylised and aligned text.
+                \sa
+                    - PlainTextFormater, Correspond to the default text formater allowing the creation of stylised and aligned text.
             */
-            class ITextFormater
+            class LGRAPHICS ITextFormater
             {
                 public:
-                    ITextFormater() : _sizeChanged(true), _drawablesChanged(true) {}
+                    ITextFormater() : _needUpdate(true) {}
                     virtual ~ITextFormater() {}
 
                     /** \return a copy of the ITextFormater. */
                     virtual ITextFormater   *Clone() const = 0;
 
                     /** Notify to the text formater that the rendered text has changed. */
-                    inline void     TextChanged()           {_sizeChanged = _drawablesChanged = true;}
-                    /** \return true if the size must be recompute. */
-                    inline bool     SizeChanged()           {return _sizeChanged;}
+                    inline void     TextChanged()           {_needUpdate = true;}
                     /** \return true if the drawables must be recompute. */
-                    inline bool     DrawablesChanged()      {return _drawablesChanged;}
-
-                    /** Compute the size of the given \p text and return the corresponding size into the vector \p textSize. */
-                    virtual void    ComputeSize(Vector2f &textSize, const Utils::Unicode::UTF32 &text) = 0;
+                    inline bool     NeedUpdate()            {return _needUpdate;}
 
                     /** Init drawables array, to avoid to recreate the drawables after each modification of the text. */
                     virtual void    InitDrawables(DrawableArray &drawableArray) = 0;
 
                     /**
                         Create every Drawables for the given \p text and add them to the given \p drawableArray.
-                        Compute also a matrix to use to transform the drawables so they will match the computed size.
+                        \return the size of the text.
                     */
-                    virtual void    ComputeDrawables(DrawableArray &drawableArray, TMatrix &matrix, const Utils::Unicode::UTF32 &text) = 0;
+                    virtual void    ComputeDrawables(Vector2f &textSize, DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text) = 0;
 
                 protected:
-                    bool        _sizeChanged;           ///< true if the size must be recompute since the last computation.
-                    bool        _drawablesChanged;      ///< true if the drawables must be recompute since the last computation.
+                    bool        _needUpdate;      ///< true if the drawables must be recompute since the last computation.
             };
         }
     }

@@ -328,9 +328,16 @@ void Parser::GetParamsAndName(Token &token, std::string &name, map<std::string, 
         key = key.substr(tmpPos + 1, string::npos);
 
         // recup la value
+        value = "";
         pos = token.data.find_first_of("\"'", pos + 1) + 1;
-        tmpPos = token.data.find_first_of("\"'", pos);
-        value = token.data.substr(pos, tmpPos - pos);
+        if (pos != string::npos && (pos - 1) > 0)
+        {
+            if (token.data[pos - 1] == '"')
+                tmpPos = token.data.find_first_of("\"", pos);
+            else
+                tmpPos = token.data.find_first_of("'", pos);
+            value = token.data.substr(pos, tmpPos - pos);
+        }
         param[key] = value;
 
         pos = token.data.find("=", tmpPos);

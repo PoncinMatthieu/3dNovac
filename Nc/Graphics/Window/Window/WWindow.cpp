@@ -212,7 +212,7 @@ bool	WWindow::SetIcon(const Utils::FileName &f)
     if (f.empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
         return false;
 
-	Image image;
+	Core::Image image;
     image.LoadFromFile(filename);
 
     // First destroy the previous one

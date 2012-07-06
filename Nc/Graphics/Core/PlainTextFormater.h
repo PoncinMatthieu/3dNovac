@@ -30,6 +30,7 @@
 #include <Nc/Core/Utils/Mask.h>
 #include "Font.h"
 #include "ITextFormater.h"
+#include "DefaultVertexType.h"
 
 /**
     \todo We create the font by using the following charSize. Find a better way to manage fonts and it's baseSize.
@@ -54,9 +55,9 @@ namespace Nc
 
                 \todo We create the font into the PlainTextFormater and store it into a static map. Find a better way to create and store fonts.
                 \todo the constructor takes the name of the font to retreive/create the font dynamically. Find a better way to create and store fonts.
-                \todo implement Center, Right and Justify alignments.
+                \todo implement Justify alignment.
             */
-            class PlainTextFormater : public ITextFormater
+            class LGRAPHICS PlainTextFormater : public ITextFormater
             {
                 public:
                     /** Define the style of the text. */
@@ -72,10 +73,10 @@ namespace Nc
                     enum Alignment
                     {
                         Left,           ///< Align the text to the left.
-/*                        Center,         ///< Center the text.
+                        Center,         ///< Center the text.
                         Right,          ///< Align the text to the right.
-                        Justify         ///< Align the text to both left and right, adding extra space between words as necessary.
-*/                    };
+//                        Justify         ///< Align the text to both left and right, adding extra space between words as necessary.
+                    };
 
                 public:
                     PlainTextFormater(float charSize, const Color &color, const std::string &ttf, const Utils::Mask<Style> &s);
@@ -108,20 +109,28 @@ namespace Nc
                     /** Set the alignment method used according to the document size. */
                     void                SetAlignment(Alignment align);
 
-                    /** Compute the size of the given \p text and return the corresponding size into the vector \p textSize */
-                    virtual void        ComputeSize(Vector2f &textSize, const Utils::Unicode::UTF32 &text);
-
                     /** Init drawables array, to avoid to recreate the drawables after each modification of the text */
                     virtual void        InitDrawables(DrawableArray &drawableArray);
 
                     /**
                         Create every Drawables for the given \p text and add them to the given \p drawableArray.
-                        Compute also a matrix to use to transform the drawables so they will match the computed size.
+                        \return the computed size of the text.
                     */
-                    virtual void        ComputeDrawables(DrawableArray &drawableArray, TMatrix &matrix, const Utils::Unicode::UTF32 &text);
+                    virtual void        ComputeDrawables(Vector2f &textSize, DrawableArray &drawableArray, const Utils::Unicode::UTF32 &text);
 
                     /** Destroy the font, to call at the end of the program to avoid memory leak. */
                     static void         DestroyFonts();
+
+                private:
+                    void    DrawVertices(Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice, float X, float Y, float thickness, float italicCoeff, const Core::Glyph *curGlyph, float factor);
+                    void    DrawUnderlines(Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline, float X, float Y, float thickness);
+
+                    void    TranslateCaraters(Core::DefaultVertexType::Textured2d *vertices, unsigned int noVertice, float offsetX, float offsetY);
+                    void    TranslateUnderlines(Core::DefaultVertexType::Colored2d *underlines, unsigned int noUnderline, float offsetX, float offsetY);
+
+                    void    ManageAlignment(bool &endWord, bool &newLine, float &X, float &Y, float thickness, float &curCharWidth, float &curWordWidth, float &sizeBetweenWords, float &lastCharSizeBetweenWords, unsigned int &indexLineBegin, unsigned int &indexWordBegin, float &posOffsetLastLine,
+                                            Array<Core::DefaultVertexType::Textured2d> &vertices, unsigned int &noVertice,
+                                            Array<Core::DefaultVertexType::Colored2d> &underlines, unsigned int &noUnderline);
 
                 protected:
                     Font                    *_font;                 ///< the instance of the used font.

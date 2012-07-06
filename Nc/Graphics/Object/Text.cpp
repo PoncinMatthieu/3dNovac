@@ -46,8 +46,8 @@ Text::Text(const Utils::Unicode::UTF32 &text, float charSize, const Color &color
 }
 
 Text::Text(const Text &text)
+    : Object(), _text(text._text), _textFormater(NULL)
 {
-    _text = text._text;
     Formater(text._textFormater->Clone());
 }
 
@@ -69,18 +69,27 @@ void    Text::PlainText(const Utils::Unicode::UTF32 &text)
     _textFormater->TextChanged();
 }
 
+void    Text::TransformModelMatrixToRender(SceneGraph *scene)
+{
+// this function shouldn't exist see todo on Billboard class
+    if (!_text.empty())
+        scene->ModelMatrix() *= Matrix;
+}
+
 const Vector2f      &Text::Size()
 {
-    if (_textFormater->SizeChanged())
+    System::Locker l(&_mutex);
+    if (_textFormater->NeedUpdate())
     {
-        System::Locker l(&_mutex);
-        _textFormater->ComputeSize(_size, _text);
+        _textFormater->ComputeDrawables(_size, _drawables, _text);
+
     }
     return _size;
 }
 
 void    Text::Formater(Core::ITextFormater *f)
 {
+    System::Locker l(&_mutex);
     if (_textFormater != NULL && _textFormater != f)
     {
         delete _textFormater;
@@ -95,20 +104,14 @@ void    Text::Formater(Core::ITextFormater *f)
     }
 }
 
-void    Text::TransformModelMatrixToRender(SceneGraph *scene)
-{
-    if (!_text.empty())
-        scene->ModelMatrix() *= Matrix * _matrixText;
-}
-
 void    Text::Render(SceneGraph *scene)
 {
     if (!_text.empty())    // No text, no rendering :)
     {
-        if (_textFormater->DrawablesChanged())
+        System::Locker l(&_mutex);
+        if (_textFormater->NeedUpdate())
         {
-            System::Locker l(&_mutex);
-            _textFormater->ComputeDrawables(_drawables, _matrixText, _text);
+            _textFormater->ComputeDrawables(_size, _drawables, _text);
         }
         Object::Render(scene);
     }

@@ -37,6 +37,7 @@ namespace Nc
     {
         /// To manage a console
         /**
+            \deprecated The console is now obsololete.
             \todo Recode the console
         */
         class LGUI  Console : public WindowBox, Utils::NonCopyable

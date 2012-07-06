@@ -61,7 +61,7 @@ Extension::Extension()
 	glDeleteFramebuffers = NULL;
 	glBindFramebuffer = NULL;
 	glFramebufferRenderbuffer = NULL;
-	glFramebufferTexture = NULL;
+	glFramebufferTexture2D = NULL;
 	glCheckFramebufferStatus = NULL;
 	glBlitFramebuffer = NULL;
 	glGenRenderbuffers = NULL;
@@ -149,7 +149,7 @@ bool Extension::Init()
 	LOAD_FUNC(r, glDeleteFramebuffers, PFNGLDELETEFRAMEBUFFERSPROC);
 	LOAD_FUNC(r, glBindFramebuffer, PFNGLBINDFRAMEBUFFERPROC);
 	LOAD_FUNC(r, glFramebufferRenderbuffer, PFNGLFRAMEBUFFERRENDERBUFFERPROC);
-	LOAD_FUNC(r, glFramebufferTexture, PFNGLFRAMEBUFFERTEXTUREPROC);
+	LOAD_FUNC(r, glFramebufferTexture2D, PFNGLFRAMEBUFFERTEXTURE2DPROC);
 	LOAD_FUNC(r, glCheckFramebufferStatus, PFNGLCHECKFRAMEBUFFERSTATUSPROC);
 	LOAD_FUNC(r, glBlitFramebuffer, PFNGLBLITFRAMEBUFFERPROC);
 	LOAD_FUNC(r, glGenRenderbuffers, PFNGLGENRENDERBUFFERSPROC);

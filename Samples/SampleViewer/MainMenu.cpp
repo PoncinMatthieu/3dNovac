@@ -29,6 +29,7 @@
 #include <Nc/GUI/Widget/ComboBox.h>
 #include <Nc/GUI/Look/Looks.h>
 #include <Nc/GUI/Widget/SubWindow.h>
+#include <Nc/GUI/Visitor/Visitors.h>
 
 #include "MainMenu.h"
 #include "GameEngine.h"
@@ -58,7 +59,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
 
     // create the sample window used to render the samples
     _widgetSampleWindow = new Widget(Center);
-    _widgetSampleWindow->UseLook(new BoxLook());
+    _widgetSampleWindow->UseLook(new BoxLook("Small"));
     _widgetSampleWindow->PaddingH(5);
     _widgetSampleWindow->PaddingV(5);
     _widgetSampleWindow->Percent(Vector2f(100, 100));
@@ -66,7 +67,10 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     mainLayout->SetExpandRatio(_widgetSampleWindow, 100);
 
     // create the fps widget on top of the main layout
-    _GUI->AddChild(new FPSWidget(Right | Top));
+    FPSWidget *fps = new FPSWidget(Right | Top);
+    fps->MarginTop(8);
+    fps->MarginRight(8);
+    _GUI->AddChild(fps);
 
     //_console = new GUI::Console();
     //_scene->AddChild(_console);
@@ -110,13 +114,10 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     _layoutWinDesc->AddChild(_sampleImage);
 
     // create the text area to describe the selected sample
-    //Utils::Unicode::UTF32 text(L"Lorem ipsum dolor sit amet, consectetur adipiscing elit. \nProin tempor nulla vitae justo pharetra feugiat. \nPhasellus eget erat velit, id dictum felis. \nVestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; \nUt eget sapien nunc, id pharetra sem. Sed mollis lobortis sem nec ullamcorper. Nullam eget nisi elit, sit amet faucibus quam. Integer dictum varius nulla id aliquet. Vestibulum in tincidunt velit. Aenean egestas hendrerit quam, eu rutrum justo lobortis vitae. Donec vehicula, enim et faucibus commodo, nibh nulla facilisis nisl, ac dapibus enim est ut mauris. Nam urna massa, tincidunt at tempor eu, lacinia sed tortor. Curabitur pretium, nisi et tincidunt tempor, nunc mi interdum elit, vitae lacinia purus tortor ac dolor.\n\nNulla at dolor magna. Sed erat nulla, tincidunt et gravida quis, placerat ut sapien. Cras laoreet tempus rhoncus. Ut ligula lacus, egestas in rhoncus a, molestie ut nulla. Fusce euismod elit sit amet lectus eleifend hendrerit. Maecenas molestie aliquet nisi eu tempor. Fusce quam metus, ullamcorper ac condimentum eget, interdum in velit. Aenean quis enim leo. Quisque mi felis, tristique sit amet tristique at, luctus in erat. In sit amet libero a metus viverra blandit. Phasellus ut porta dui. In hac habitasse platea dictumst. \nPellentesque placerat leo sit amet eros pellentesque ultrices. ");
-    //Utils::Unicode::UTF32 text(L"bSplinesDemo");
-    Utils::Unicode::UTF32 text(L"3dNovac is a free multimedia C++ Framework. Its main goal is to provide the necessary tools for creating games of all types, while remaining portable and lightweight.\nThe framework will therefore manage the main features required for the development of a complete game (Real-time display, environmental management, network management, audio management).\nWritten in C++ object-oriented, The 3D engine uses only OpenGL and GLSL for rendering and uses only low-level library, to be the most independent and lightest possible.\nTo know more about 3dNovac, you can visit the features page.\nIf you have any questions, comments or remarks, feel free to contact a member of the team by email.");
-    _descriptionTextArea = new TextEdit(text, CenterH | Bottom, Vector2i(0, 0), "arial", Core::PlainTextFormater::Regular);
+    _descriptionTextArea = new TextEdit("", CenterH | Bottom, Vector2i(0, 0), "arial", Core::PlainTextFormater::Regular);
     _descriptionTextArea->MarginTop(5);
+    _descriptionTextArea->UseLook(new BoxLook("Small"));
     _descriptionTextArea->Percent(Vector2f(100, 100));
-    _descriptionTextArea->UseLook(new BoxLook());
     _layoutWinDesc->AddChild(_descriptionTextArea);
     _layoutWinDesc->SetExpandRatio(_descriptionTextArea, 100);
 
@@ -156,6 +157,7 @@ GUI::SubWindow      *MainMenu::CreateSampleWindow(Window *windowParent)
     _currentSampleWindow = new GUI::SubWindow(windowParent, Center);
     _currentSampleWindow->Percent(Vector2f(100, 100));
     _widgetSampleWindow->AddChild(_currentSampleWindow);
+    _currentSampleWindow->Resize();
     return _currentSampleWindow;
 }
 
@@ -184,6 +186,11 @@ void    MainMenu::SampleSelected()
         }
         else
             _sampleImage->Size(Vector2i(0, 0));
-        _layoutWinDesc->Resized();
+
+        // set the description
+        _descriptionTextArea->PlainText(CONFIG->Block("SampleDescriptions")->Block(_currentItemSelected->Data())->Data());
+
+        GUI::Visitor::ResizedAll resized;
+        resized(*_layoutWinDesc);
     }
 }

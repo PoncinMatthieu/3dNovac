@@ -59,18 +59,19 @@ void    Image::Update()
             if (_keepRatio)
             {
                 Vector2i initialSize = _sprite->TextureBox().Size();
+                float ratioInitial = (float)initialSize.Data[0] / initialSize.Data[1];
+                float ratioX = (float)_size[0] / initialSize[0];
+                float ratioY = (float)_size[1] / initialSize[1];
 
-                int diff1 = _size[0] - initialSize.Data[0];
-                int diff2 = _size[1] - initialSize.Data[1];
-                if (diff1 <= diff2)
+                if (ratioX < ratioY)
                 {
-                    initialSize.Data[0] += diff1;
-                    initialSize.Data[1] += diff1;
+                    initialSize.Data[0] *= ratioX;
+                    initialSize.Data[1] = initialSize.Data[0] / ratioInitial;
                 }
                 else
                 {
-                    initialSize.Data[0] += diff2;
-                    initialSize.Data[1] += diff2;
+                    initialSize.Data[1] *= ratioY;
+                    initialSize.Data[0] = initialSize.Data[1] * ratioInitial;
                 }
                 _sprite->Size(initialSize);
             }

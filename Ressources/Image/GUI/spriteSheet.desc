@@ -9,7 +9,16 @@
   <Sprite name="BoxLeftBottom"		topX="8" topY="6" bottomX="10" bottomY="8" />
   <Sprite name="BoxRightBottom"		topX="14" topY="6" bottomX="16" bottomY="8" />
 
-  <Sprite name="BackgroundBoxMiddle"		topX="0" topY="0" bottomX="8" bottomY="8" />
+  <Sprite name="BackgroundBoxMiddle"	topX="0" topY="0" bottomX="8" bottomY="8" />
+
+  <Sprite name="SmallBoxLeftEdge"		topX="16" topY="2" bottomX="18" bottomY="5" />
+  <Sprite name="SmallBoxTopEdge"		topX="18" topY="0" bottomX="21" bottomY="2" />
+  <Sprite name="SmallBoxRightEdge"		topX="21" topY="2" bottomX="23" bottomY="5" />
+  <Sprite name="SmallBoxBottomEdge"		topX="18" topY="5" bottomX="21" bottomY="7" />
+  <Sprite name="SmallBoxLeftTop"		topX="16" topY="0" bottomX="18" bottomY="2" />
+  <Sprite name="SmallBoxRightTop"		topX="21" topY="0" bottomX="23" bottomY="2" />
+  <Sprite name="SmallBoxLeftBottom"		topX="16" topY="5" bottomX="18" bottomY="7" />
+  <Sprite name="SmallBoxRightBottom"	topX="21" topY="5" bottomX="23" bottomY="7" />
 
   <Sprite name="WidgetBoxLeftEdge"			topX="0" topY="77" bottomX="10" bottomY="93" />
   <Sprite name="WidgetBoxTopEdge"			topX="9" topY="64" bottomX="26" bottomY="74" />

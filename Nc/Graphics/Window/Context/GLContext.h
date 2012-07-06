@@ -43,6 +43,8 @@ namespace Nc
         /**
             Typically a GLContext is created in 2 ways. With a Window by calling the method Window::CreateGLContext(),
             or with an other context by calling the method GLContext::CreateNewSharedContext().
+
+            \todo [Performance] Find a way to stop Enabling/Disabling the context at each look... we already tried once, but it doesn't seem to work on linux (with an nvidia) and window (with an ati) even if according to the opengl specification it should work. See branch '_StopEnabling'.
         */
         class LGRAPHICS GLContext : public Utils::NonCopyable
         {
@@ -53,29 +55,29 @@ namespace Nc
                 GLContext(Window *win);
                 virtual ~GLContext();
 
-                /** Create the context opengl */
+                /** Create the context opengl. */
                 virtual void        Create(GLContext *sharedContext = NULL) = 0;
 
-                /** Create a new shared OpenGL context with the current */
+                /** Create a new shared OpenGL context with the current. */
                 virtual GLContext  *CreateNewSharedContext() = 0;
 
-                /** Active the opengl context */
+                /** Active the opengl context. */
                 virtual void        Active() = 0;
 
-                /** Disable the opengl context */
+                /** Disable the opengl context. */
                 virtual void        Disable() = 0;
 
-                /** swap the buffers, (for a double buffered appli) */
+                /** swap the buffers, (for a double buffered appli). */
                 virtual void        SwapBuffers() = 0;
 
-                /** \return the attached window to the context */
+                /** \return the attached window to the context. */
                 inline Window       *AttachedWindow()                   {return _win;}
 
             protected:
-                Window			*_win;				///< The instance of the associated window
-                bool			_isCreate;			///< Statement to define if the context is create
-                bool			_isShared;			///< Statement to define if the context is shared
-				unsigned int	_currentThreadId;	///< Register the thread id in which the context is currently bound
+                Window			*_win;				///< The instance of the associated window.
+                bool			_isCreate;			///< Statement to define if the context is create.
+                bool			_isShared;			///< Statement to define if the context is shared.
+				unsigned int	_currentThreadId;	///< Register the thread id in which the context is currently bound.
 		};
     }
 }

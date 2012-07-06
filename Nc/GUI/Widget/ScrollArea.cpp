@@ -98,23 +98,10 @@ void ScrollArea::Resize()
 
     if (_view != NULL)
     {
-        _scrollBarH->TotalSize(_view->Size()[0]);
-        _scrollBarH->Position(0);
-        _scrollBarV->TotalSize(_view->Size()[1]);
-        _scrollBarV->Position(0);
-    }
-}
+        Vector2i pageSize(_size);
+        pageSize[0] -= PaddingH();
+        pageSize[1] -= PaddingV();
 
-void ScrollArea::Update()
-{
-    Widget::Update();
-
-    Vector2i pageSize(_size);
-    pageSize[0] -= PaddingH();
-    pageSize[1] -= PaddingV();
-
-    if (_view != NULL)
-    {
         // disable the scrollbar which doesn't need to be rendered
         // with set a padding when a scroll bar is rendered
         bool _scrollBarHState = _scrollBarH->Enabled();
@@ -122,7 +109,6 @@ void ScrollArea::Update()
         if (_view->Size()[0] > pageSize[0])
         {
             _scrollBarH->Enable();
-            pageSize[1] -= _scrollBarH->Size()[1];
             PaddingBottom(_scrollBarH->Size()[1]);
         }
         else
@@ -134,7 +120,6 @@ void ScrollArea::Update()
         if (_view->Size()[1] > pageSize[1])
         {
             _scrollBarV->Enable();
-            pageSize[0] -= _scrollBarV->Size()[0];
             PaddingRight(_scrollBarV->Size()[0]);
         }
         else
@@ -143,31 +128,22 @@ void ScrollArea::Update()
             PaddingRight(0);
         }
 
-        // if the state of the scrollbars changed
-        if (_scrollBarHState != _scrollBarH->Enabled() ||
-            _scrollBarVState != _scrollBarV->Enabled())
+        // if the state of the scrollbars changed notify the changement to every child
+        if (_scrollBarHState != _scrollBarH->Enabled() || _scrollBarVState != _scrollBarV->Enabled())
         {
-            // if both scrollbar as to be rendered, reduce the size of the scrollbars
-            if (_scrollBarH->Enabled() && _scrollBarV->Enabled())
-            {
-                _scrollBarH->MarginRight(_scrollBarV->Size()[0]);
-                _scrollBarV->MarginBottom(_scrollBarH->Size()[1]);
-            }
-            else
-            {
-                _scrollBarH->MarginRight(0);
-                _scrollBarV->MarginBottom(0);
-            }
-
-            // notify the changement to every child
             Visitor::ResizedAll resizedAll;
             resizedAll(*this);
         }
-    }
 
-    _scrollBarH->PageSize(pageSize[0]);
-    _scrollBarV->PageSize(pageSize[1]);
+        _scrollBarH->TotalSize(_view->Size()[0]);
+        _scrollBarH->Position(0);
+        _scrollBarV->TotalSize(_view->Size()[1]);
+        _scrollBarV->Position(0);
+        _scrollBarH->PageSize(pageSize[0]);
+        _scrollBarV->PageSize(pageSize[1]);
+    }
 }
+
 
 void ScrollArea::Draw(Graphic::SceneGraph *scene)
 {

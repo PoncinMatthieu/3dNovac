@@ -23,7 +23,6 @@ GameEngine::~GameEngine()
 
 void GameEngine::ReleaseContent()
 {
-  delete _sceneGUI;
   delete _scene3d;
 }
 
@@ -48,7 +47,7 @@ void GameEngine::LoadContent()
     _scene3d = new SceneGraph();
 
     // creation de la camera
-    _camera = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40);
+    _camera = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40, 70);
     _camera->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
     _scene3d->AddChild(_camera);
 
@@ -77,24 +76,13 @@ void GameEngine::LoadContent()
     _camera2->InibitMovement();
     _scene3d->AddChild(_camera2);
     // creation d'une troisieme camera pour fake la vue de l'octree
-    _camera3 = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40);
+    _camera3 = new StandardCamera3d(_window, (_window->Width() / 2.f) / _window->Height(), 0.5, 40, 70);
     _camera3->InibitMovement();
     _camera3->SetFixState(false);
     _camera3->DrawFrustum(true);
     _scene3d->AddChild(_camera3);
     _scene3d->AddChild(_entity); // ajout d'octree
     _window->SceneManager()->AddScene(_scene3d);
-
-    // creation de la gui avec le fps widget
-    _sceneGUI = new GUI::SceneGraph(_window);
-    _sceneGUI->AddChild(new Camera2d(_window));
-    _sceneGUI->AddChild(new GUI::FPSWidget());
-    _window->SceneManager()->AddScene(_sceneGUI);
-
-    _pattern.Disable(Nc::Engine::HasAContext);
-
-    // no need to active/disable the context at each loop
-    _pattern.Disable(Nc::Engine::HasAContext);
 }
 
 void GameEngine::Update(float runningTime)
@@ -105,10 +93,7 @@ void GameEngine::Update(float runningTime)
     _camera3->Eye(_camera->Eye());
     _camera3->Center(_camera->Center());
     _camera3->Up(_camera->Up());
-
-    ActiveContext();
     _camera3->UpdateViewFrustum();
-    DisableContext();
 }
 
 void GameEngine::ManageWindowEvent(System::Event &event)
@@ -117,8 +102,11 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     if (event.type == System::Event::Resized)
       {
         _camera->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
+        _camera->SetProjection((_window->Width() / 2.f) / _window->Height(), 0.5, 40, 70);
         _camera2->SetViewport(_window->Width() / 2.f, 0, _window->Width() / 2.f, _window->Height());
+        _camera2->SetProjection((_window->Width() / 2.f) / _window->Height(), 0.1f, 1000, 70);
         _camera3->SetViewport(0, 0, _window->Width() / 2.f, _window->Height());
+        _camera3->SetProjection((_window->Width() / 2.f) / _window->Height(), 0.5, 40, 70);
       }
     if (event.type == System::Event::KeyPressed)
     {
@@ -128,7 +116,6 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
     if (send)
         MainEngine::ManageWindowEvent(event);
-    _sceneGUI->ManageWindowEvent(event);
 }
 
 void GameEngine::KeyboardEvent(System::Event &event)

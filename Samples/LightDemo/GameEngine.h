@@ -31,7 +31,6 @@ namespace LightDemo
             virtual void    MouseMotionEvent(Nc::System::Event &event);
 
             Nc::Graphic::SceneGraph			        *_scene;
-            Nc::GUI::SceneGraph			            *_sceneGUI;
             Nc::Graphic::StandardCamera3d           *_camera;
             Nc::Graphic::SceneNodeFormatManager     _sceneNodeFormatManager;
 

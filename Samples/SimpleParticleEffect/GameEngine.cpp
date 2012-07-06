@@ -23,7 +23,6 @@ GameEngine::~GameEngine()
 void GameEngine::ReleaseContent()
 {
     delete _scene;
-    delete _sceneGUI;
 }
 
 void GameEngine::CreateWindow(Window *win)
@@ -67,20 +66,8 @@ void GameEngine::LoadContent()
     particleEffect2->Start();
     _scene->AddChild(particleEffect2);
 
-    // create the GUI
-    CreateGUI();
-
     // no need to active/disable the context at each loop
     _pattern.Disable(Nc::Engine::HasAContext);
-}
-
-void GameEngine::CreateGUI()
-{
-    // creation de la gui avec le fps widget
-    _sceneGUI = new GUI::SceneGraph(_window);
-    _sceneGUI->AddChild(new Camera2d(_window));
-    _sceneGUI->AddChild(new GUI::FPSWidget());
-    _window->SceneManager()->AddScene(_sceneGUI);
 }
 
 void GameEngine::Update(float runningTime)
@@ -101,7 +88,6 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
     if (send)
         MainEngine::ManageWindowEvent(event);
-    _sceneGUI->ManageWindowEvent(event);
 }
 
 void GameEngine::KeyboardEvent(System::Event &event)
