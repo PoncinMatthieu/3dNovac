@@ -21,16 +21,17 @@ void CreateEngines(Nc::Engine::Manager *manager)
 
 int main()
 {
-	try
-	{
-	  Nc::Engine::Manager GUITest("3dNovac.conf");
-	  CreateEngines(&GUITest);
-	  GUITest.Start();
-	  GUITest.Wait();
-	}
-	catch (const std::exception &e)
-	{
-		LOG << "Fatal error: " << e.what() << std::endl;
-	}
-  return 0;
+    try
+    {
+        Nc::Engine::Manager GUITest("3dNovac.conf");
+        CreateEngines(&GUITest);
+        GUITest.Start();
+        GUITest.Wait();
+    }
+    catch (const std::exception &e)
+    {
+        LOG << "Fatal error: " << e.what() << std::endl;
+    }
+    Nc::Utils::Logger::DeleteInstance();
+    return 0;
 }

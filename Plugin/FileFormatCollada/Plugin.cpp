@@ -31,7 +31,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 
-Plugin::Plugin() : ISceneNodeFormatPlugin("dae")
+Plugin::Plugin()
+    : ISceneNodeFormatPlugin("dae"), _dae(NULL), _root(NULL)
 {
 }
 
@@ -45,7 +46,7 @@ ISceneNode   *Plugin::Load(const Utils::FileName &file)
 
     _dae = new DAE();
     if (_dae->load(file.c_str()) != DAE_OK)
-        throw Utils::Exception("Error loading the COLLADA file `" + file + "` make sure it is COLLADA 1.4 or greater");
+        throw Utils::Exception("Error loading the COLLADA file `" + file + "` make sure it is COLLADA 1.4 or greater.");
 
     // !!!GAC The dom (beta 10 and up) now identifies a collection by a full URI rather than the base file name.
     // !!!GAC getDOM automatically resolves relative URIs before searching, "nameOnly" should probably be replaced
@@ -67,11 +68,11 @@ ISceneNode   *Plugin::Load(const Utils::FileName &file)
         switch(up->getValue())
         {
             case UPAXISTYPE_X_UP:
-                LOG << "X Axis is Up axis!  The ModelMatrix will be adjusted" << std::endl;
+                LOG << "X Axis is Up axis!  The ModelMatrix will be adjusted." << std::endl;
                 _globalMatrix.RotationY(90, false);
                 break;
             case UPAXISTYPE_Y_UP:
-                LOG << "Y Axis is Up axis!  The ModelMatrix will be adjusted" << std::endl;
+                LOG << "Y Axis is Up axis!  The ModelMatrix will be adjusted." << std::endl;
                 _globalMatrix.RotationX(90, false);
                 break;
             case UPAXISTYPE_Z_UP:
@@ -82,17 +83,17 @@ ISceneNode   *Plugin::Load(const Utils::FileName &file)
     }
 
     // Load all the image libraries
-    LOG << "Load image libraries\nThere are " << dom->getLibrary_images_array().getCount() << " images libraries" << std::endl;
+    LOG << "Load image libraries\nThere are " << dom->getLibrary_images_array().getCount() << " images libraries." << std::endl;
     for (unsigned int i = 0; i < dom->getLibrary_images_array().getCount(); i++)
         ReadImageLibrary(dom->getLibrary_images_array()[i]);
 
     // Load all the effect libraries
-    LOG << "Load effect libraries\nThere are " << dom->getLibrary_effects_array().getCount() << " effect libraries" << std::endl;
+    LOG << "Load effect libraries\nThere are " << dom->getLibrary_effects_array().getCount() << " effect libraries." << std::endl;
     for (unsigned int i = 0; i < dom->getLibrary_effects_array().getCount(); i++)
         ReadEffectLibrary(dom->getLibrary_effects_array()[i]);
 
     // Load all the material libraries
-    LOG << "Load material libraries\nThere are " << dom->getLibrary_materials_array().getCount() << " material libraries" << std::endl;
+    LOG << "Load material libraries\nThere are " << dom->getLibrary_materials_array().getCount() << " material libraries." << std::endl;
     for (unsigned int i = 0; i < dom->getLibrary_materials_array().getCount(); i++)
         ReadMaterialLibrary(dom->getLibrary_materials_array()[i]);
 
@@ -112,14 +113,24 @@ ISceneNode   *Plugin::Load(const Utils::FileName &file)
 
     ISceneNode *finalNode = GetFinalNode();
 
+    // clear before to return the finalNode
+    ClearMemory();
+    return finalNode;
+}
+
+void Plugin::ClearMemory()
+{
     _mapTexture.clear();
     _mapNormalMap.clear();
     _mapMaterialConfig.clear();
     _mapDrawable.clear();
+    _mapMaterial.clear();
     _mapNode.clear();
     _globalMatrix.SetIdentity();
-    delete _dae;
-    return finalNode;
+    _root = NULL;
+    if (_dae != NULL)
+        delete _dae;
+    _dae = NULL;
 }
 
 ISceneNode *Plugin::GetFinalNode()

@@ -47,6 +47,9 @@ namespace Nc
                     NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::TextEdit::TextDocument);
 
                     TextDocument(TextEdit *editor, const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<Graphic::Core::PlainTextFormater::Style> &s);
+                    TextDocument(const TextDocument &textDocument);
+                    TextDocument &operator = (const TextDocument &textDocument);
+                    virtual ~TextDocument();
 
                     virtual ISceneNode      *Clone() const          {return new TextDocument(*this);}
 

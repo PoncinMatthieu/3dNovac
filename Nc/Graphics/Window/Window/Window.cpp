@@ -47,6 +47,8 @@ Graphic::Window::Window(SceneGraphManager *sceneGraphManager)
 
 Graphic::Window::~Window()
 {
+    if (_sceneGraphManager != NULL)
+        delete _sceneGraphManager;
     if (_defaultCursor != NULL)
         delete _defaultCursor;
 }

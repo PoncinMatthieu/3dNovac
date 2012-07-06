@@ -53,6 +53,9 @@ namespace Nc
  \code
     MySingleton::Instance()->function();
  \endcode
+
+
+            \todo [Feature] Add a ISingleton class to register every instances of Singleton<T> and be able to delete every singleton at exit to clean the memory.
         */
         template <typename T>
         class   Singleton

@@ -151,6 +151,7 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
 
 GUI::SubWindow      *MainMenu::CreateSampleWindow(Window *windowParent)
 {
+    System::Locker l(&_widgetSampleWindow->GetMutex());
     if (_currentSampleWindow != NULL)
         _widgetSampleWindow->RemoveWidget(_currentSampleWindow);
 

@@ -90,11 +90,11 @@ void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type
     if ((_shader = glCreateShader(type)) == 0)
         throw Utils::Exception("Shader", "Can't create the shader !");
     glShaderSource(_shader, 1, (const GLchar**)&source, NULL);
+	delete[] source;
     LOG_DEBUG << "Shader " << _shader << " CREATED" << std::endl;
 
     // compile the source
     Compile(source, type, filename);
-	delete source;
 }
 
 void Shader::LoadFromMemory(const char *source, Enum::ShaderType type, const Utils::FileName &name)

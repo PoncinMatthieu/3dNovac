@@ -29,7 +29,8 @@
 
 using namespace Nc;
 
-Triangulate::Triangulate(DAE *dae) : _dae(dae)
+Triangulate::Triangulate(DAE *dae)
+    : _dae(dae)
 {
 }
 

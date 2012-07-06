@@ -43,13 +43,7 @@ Button::Button(const std::string &text, const AlignmentMask &alignment, const Ve
 
 Button::~Button()
 {
-    delete _font;
-
-    if (_widgetLook != NULL && (_widgetLook == _buttonLook || _widgetLook == _buttonLookPressed))
-        _widgetLook = NULL;
-
-    delete _buttonLook;
-    delete _buttonLookPressed;
+    DeleteButton();
 }
 
 Button::Button(const Button &w)
@@ -60,11 +54,22 @@ Button::Button(const Button &w)
 
 Button &Button::operator = (const Button &w)
 {
+    DeleteButton();
     Widget::operator = (w);
     Copy(w);
     return *this;
 }
 
+void    Button::DeleteButton()
+{
+    delete _font;
+
+    if (_widgetLook != NULL && (_widgetLook == _buttonLook || _widgetLook == _buttonLookPressed))
+        _widgetLook = NULL;
+
+    delete _buttonLook;
+    delete _buttonLookPressed;
+}
 
 void    Button::Initialize(const std::string &text, const Vector2i &size, const std::string &ttf, const std::string &lookName)
 {
@@ -80,8 +85,14 @@ void    Button::Initialize(const std::string &text, const Vector2i &size, const 
 
 void    Button::Copy(const Button &w)
 {
-    _font = new Graphic::Text(*w._font);
+    _buttonLook = static_cast<StripLook*>(w._buttonLook->Clone());
+    _buttonLookPressed = static_cast<StripLook*>(w._buttonLookPressed->Clone());
+    UseLook(_buttonLook);
+
+    _colorDisable = w._colorDisable;
     _buttonPressed = w._buttonPressed;
+    _font = new Graphic::Text(*w._font);
+    _charSize = w._charSize;
 }
 
 void Button::ToString(std::ostream &os) const

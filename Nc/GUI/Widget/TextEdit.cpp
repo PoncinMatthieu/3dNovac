@@ -44,12 +44,14 @@ TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &align
 }
 
 TextEdit::TextEdit(const TextEdit &edit)
+    : ScrollArea(edit)
 {
     Copy(edit);
 }
 
 TextEdit &TextEdit::operator = (const TextEdit &edit)
 {
+    ScrollArea::operator = (edit);
     delete _textDocument;
     Copy(edit);
     return *this;
@@ -82,6 +84,25 @@ TextEdit::TextDocument::TextDocument(TextEdit *editor, const Utils::Unicode::UTF
 {
     text = new Graphic::Text(t, 16, Color(1, 1, 1), ttf, s);
     Resize();
+}
+
+TextEdit::TextDocument::TextDocument(const TextDocument &textDocument)
+    : Widget(textDocument)
+{
+    text = static_cast<Graphic::Text*>(textDocument.text->Clone());
+}
+
+TextEdit::TextDocument &TextEdit::TextDocument::operator = (const TextDocument &textDocument)
+{
+    Widget::operator = (textDocument);
+    delete text;
+    text = static_cast<Graphic::Text*>(textDocument.text->Clone());
+    return *this;
+}
+
+TextEdit::TextDocument::~TextDocument()
+{
+    delete text;
 }
 
 void    TextEdit::TextDocument::Resize()

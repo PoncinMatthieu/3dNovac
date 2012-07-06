@@ -64,7 +64,7 @@ namespace Nc
 					/** \return the gl sting according to the given type. */
                     static const GLubyte		*GetString(Enum::ImplementationDescription type);
 					/** \return the gl current error, a call to this function reset the current ogl error (call glGetError). */
-					static const char			*GetError();
+					static std::string          GetError();
 
                     static inline bool  IsSet()                                 {return (_current != NULL);}
                     /**

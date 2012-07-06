@@ -160,7 +160,8 @@ StandardCamera3d::StandardCamera3d(Window *attachedWindow, Pattern p)
 StandardCamera3d::StandardCamera3d(const StandardCamera3d &cam)
     : Camera3d(cam),
       _mouveButton(cam._mouveButton), _pattern(cam._pattern),
-      _inhibitMovement(false), _angles(cam._angles)
+      _inhibitMovement(false), _drawFrustum(false),
+      _angles(cam._angles)
 {
 	if (cam._pattern != StandardCamera3d::Freefly)
 	{
@@ -212,14 +213,17 @@ StandardCamera3d &StandardCamera3d::operator = (const StandardCamera3d &cam)
     _stateButtonLeft = cam._stateButtonLeft;
     _mouseMotionAlwaysActif = cam._mouseMotionAlwaysActif;
     _distance = cam._distance;
+    _drawFrustum = cam._drawFrustum;
     MajEye();
     return *this;
 }
 
 StandardCamera3d::~StandardCamera3d()
 {
-    if (_cursorOpen != NULL) delete _cursorOpen;
-    if (_cursorClose != NULL) delete _cursorClose;
+    if (_cursorOpen != NULL)
+        delete _cursorOpen;
+    if (_cursorClose != NULL)
+        delete _cursorClose;
 }
 
 void StandardCamera3d::MouseMotionEvent(const System::Event &event)

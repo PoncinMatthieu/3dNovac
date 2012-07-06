@@ -98,7 +98,7 @@ namespace Nc
 
             template <typename T>
             DataBuffer<T>::DataBuffer()
-                : _index(0), _dataTab(NULL)
+                : _index(0), _size(0), _stride(1), _target(Enum::DataBuffer::ArrayBuffer), _usage(Enum::DataBuffer::StaticDraw), _dataTab(NULL)
             {
             }
 

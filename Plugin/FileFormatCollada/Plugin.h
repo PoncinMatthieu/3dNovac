@@ -87,7 +87,9 @@ namespace Nc
             void    ParseGeometry(domGeometry *domGeometry, Graphic::Object *mesh);
             Box3f   BuildTriangles(domTriangles *domTriangles, Graphic::Core::Drawable *&drawable);
 
+            void    ClearMemory();
 
+        private:
             DAE                     *_dae;
             MapMaterialConfig       _mapMaterialConfig;
             MapMaterial             _mapMaterial;

@@ -24,6 +24,7 @@ void GameEngine::ReleaseContent()
 {
     delete _scene;
 	delete _menu;
+	delete _sampleFactory;
 }
 
 void GameEngine::CreateWindow(Window *win)

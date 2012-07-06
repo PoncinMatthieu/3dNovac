@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To manage a button
+        /// To manage a button.
         /**
             Display and manage a button.
         */
@@ -53,33 +53,35 @@ namespace Nc
                 virtual ISceneNode  *Clone() const                  {return new Button(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
-                /** Set the text of the widget */
+                /** Set the text of the widget. */
                 inline void         SetText(const Utils::Unicode::UTF32 &t)     {_font->PlainText(t);}
 
             protected:
-                /** Update the geometry of the button */
+                /** Update the geometry of the button. */
                 virtual void        Update();
-                /** Render the button */
+                /** Render the button. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
-                /** The mouse button handler */
+                /** The mouse button handler. */
                 virtual void		MouseButtonEvent(const System::Event &event);
-                /** Send an event to the good engine */
+                /** Send an event to the good engine. */
                 virtual void        ExecHanle();
 
             private:
-                /** Initialise the widget */
+                /** Initialise the widget. */
                 void                Initialize(const std::string &text, const Vector2i &size, const std::string &ttf, const std::string &lookName);
-                /** Copy the widget */
+                /** Copy the button. */
                 void                Copy(const Button &w);
+                /** Delete the button. */
+                void                DeleteButton();
 
             private:
-                StripLook           *_buttonLook;           ///< look used to render the button in it's normal state
-                StripLook           *_buttonLookPressed;    ///< look used to render the button pressed
-                Graphic::Text       *_font;                 ///< The text of the button
-                float               _charSize;              ///< Recorde the charsize used for the font
-                bool                _buttonPressed;         ///< Mark if the button is pressed
-                Color               _colorDisable;          ///< The color of the disabled button
+                StripLook           *_buttonLook;           ///< look used to render the button in it's normal state.
+                StripLook           *_buttonLookPressed;    ///< look used to render the button pressed.
+                Graphic::Text       *_font;                 ///< The text of the button.
+                float               _charSize;              ///< Recorde the charsize used for the font.
+                bool                _buttonPressed;         ///< Mark if the button is pressed.
+                Color               _colorDisable;          ///< The color of the disabled button.
         };
     }
 }

@@ -66,6 +66,10 @@ void    State::InitContext(Graphic::GLContext *context)
     _currentViewportY = 0;
     _currentViewportWidth = win->Width();
     _currentViewportHeight = win->Height();
+    _currentScissorX = 0;
+    _currentScissorY = 0;
+    _currentScissorWidth = win->Width();
+    _currentScissorHeight = win->Height();
     _currentClearColor.Init(0,0,0,0);
     _currentDepthMask = true;
     _currentDepthFunc = Enum::Less;
@@ -138,18 +142,18 @@ const GLubyte *State::GetString(Enum::ImplementationDescription type)
     return s;
 }
 
-const char	*State::GetError()
+std::string State::GetError()
 {
     GLenum e = glGetError();
     switch (e)
     {
-        case GL_NO_ERROR:                       return "No error has been recorded";
-        case GL_INVALID_ENUM:                   return "An unacceptable value is specified for an enumerated argument";
-        case GL_INVALID_VALUE:                  return "A numeric argument is out of range";
-        case GL_INVALID_OPERATION:              return "The specified operation is not allowed in the current state";
-        case GL_INVALID_FRAMEBUFFER_OPERATION:  return "The framebuffer object is not complete";
-        case GL_OUT_OF_MEMORY:                  return "There is not enough memory left to execute the command";
-        default:                                return "Unknown error";
+        case GL_NO_ERROR:                       return "[GL_NO_ERROR] No error has been recorded.";
+        case GL_INVALID_ENUM:                   return "[GL_INVALID_ENUM] An unacceptable value is specified for an enumerated argument.";
+        case GL_INVALID_VALUE:                  return "[GL_INVALID_VALUE] A numeric argument is out of range.";
+        case GL_INVALID_OPERATION:              return "[GL_INVALID_OPERATION] The specified operation is not allowed in the current state.";
+        case GL_INVALID_FRAMEBUFFER_OPERATION:  return "[GL_INVALID_FRAMEBUFFER_OPERATION] The framebuffer object is not complete.";
+        case GL_OUT_OF_MEMORY:                  return "[GL_OUT_OF_MEMORY] There is not enough memory left to execute the command.";
+        default:                                return "[" + Utils::Convert::ToString(e) + "] Unknown error.";
     }
 }
 
@@ -161,10 +165,11 @@ namespace Nc {
             {
                 oss << "GL::State: using context                " << s._context << std::endl;
                 oss << "Viewport:                               " << s._currentViewportX << "\t" << s._currentViewportY << "\t" << s._currentViewportWidth << "\t" << s._currentViewportHeight << std::endl;
+                oss << "Scissor:                                " << s._currentScissorX << "\t" << s._currentScissorY << "\t" << s._currentScissorWidth << "\t" << s._currentScissorHeight << std::endl;
                 oss << "ClearColor:                             " << s._currentClearColor << std::endl;
                 oss << "DepthMask:                              " << ((s._currentDepthMask) ? "True" : "False") << std::endl;
                 oss << "DepthFunc:                              " << s._currentDepthFunc << std::endl;
-                oss << "BlendFactor:                            S: " << s._currentBlendSFactor << "\tD: " << s._currentBlendDFactor << std::endl;
+                oss << "BlendFactor:                            " << s._currentBlendSFactor << "\tD: " << s._currentBlendDFactor << std::endl;
                 oss << "PolygonFace:                            " << s._currentPolygonFace << std::endl;
                 oss << "PolygonMode:                            " << s._currentPolygonMode << std::endl;
                 oss << "PointSize:                              " << s._currentPointSize << std::endl;
