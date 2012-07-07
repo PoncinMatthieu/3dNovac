@@ -59,7 +59,7 @@ namespace Nc
                 /** Create the sub window by defining it's initial size. */
                 virtual void        Create(const Math::Vector2ui &size);
                 /** Create the sub window by defining it's initial size. Every other parameters are ignored. */
-                virtual void        Create(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel);
+                virtual void        Create(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icon, unsigned int antialiasingLevel);
                 /** Create the sub window by defining it's initial size. Every other parameters are ignored. */
                 virtual void        UseExistingWindow(void *disp, int winId, const Math::Vector2ui &size, unsigned int antialiasingLevel);
 

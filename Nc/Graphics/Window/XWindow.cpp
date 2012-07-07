@@ -52,14 +52,14 @@ XWindow::XWindow(SceneGraphManager *sceneGraphManager)
     _xwin = 0;
 }
 
-XWindow::XWindow(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager)
+XWindow::XWindow(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager)
     : Window(sceneGraphManager)
 {
     _display = NULL;
     _vInfo = NULL;
     _fbConfig = NULL;
     _xwin = 0;
-    Create(title, size, pattern, icone, antialiasingLevel);
+    Create(title, size, style, icone, antialiasingLevel);
 }
 
 XWindow::~XWindow()
@@ -73,7 +73,7 @@ static Bool WaitForNotify(Display *dpy, XEvent *event, XPointer arg)
     return (event->type == MapNotify) && (event->xmap.window == (::Window)arg);
 }
 
-void XWindow::Create(const std::string &title, const Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel)
+void XWindow::Create(const std::string &title, const Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icon, unsigned int antialiasingLevel)
 {
     // init XLib support for concurrent thread support
     if (XInitThreads() == 0)
@@ -88,9 +88,9 @@ void XWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
     // Compute position and size
     _width = size.data[0];
     _height = size.data[1];
-    bool    fullscreen = (pattern & Fullscreen) != 0;
-    int     left = (Fullscreen) ? 0 : (DisplayWidth(_display, _screen) - _width)  / 2;
-    int     top = (Fullscreen) ? 0 : (DisplayHeight(_display, _screen) - _height) / 2;
+    bool    fullscreen = style.Enabled(Fullscreen);
+    int     left = (fullscreen) ? 0 : (DisplayWidth(_display, _screen) - _width)  / 2;
+    int     top = (fullscreen) ? 0 : (DisplayHeight(_display, _screen) - _height) / 2;
 
     // Switch to fullscreen if necessary
     if (fullscreen)
@@ -114,7 +114,7 @@ void XWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
 
     XStoreName(_display, _xwin, title.c_str()); // set the window title
 
-    SetWindowStyle(pattern); // set the window style
+    SetWindowStyle(style); // set the window style
 
     // initialize the inputs of the window
     _input = new XWindowInput(this);
@@ -278,9 +278,9 @@ bool XWindow::SetIcon(const Utils::FileName &f)
     return true;
 }
 
-void XWindow::SetWindowStyle(unsigned long pattern)
+void XWindow::SetWindowStyle(const Utils::Mask<Style> &style)
 {
-    if (!(pattern & Fullscreen))
+    if (style.Disabled(Fullscreen))
     {
         Atom WMHintsAtom = XInternAtom(_display, "_MOTIF_WM_HINTS", true);
         if (WMHintsAtom != None)
@@ -308,17 +308,17 @@ void XWindow::SetWindowStyle(unsigned long pattern)
             hints.Decorations = 0;
             hints.Functions   = 0;
 
-            if (pattern & Titlebar)
+            if (style.Enabled(Titlebar))
             {
                 hints.Decorations |= MWM_DECOR_BORDER | MWM_DECOR_TITLE | MWM_DECOR_MINIMIZE | MWM_DECOR_MENU;
                 hints.Functions   |= MWM_FUNC_MOVE | MWM_FUNC_MINIMIZE;
             }
-            if (pattern & Resizeable)
+            if (style.Enabled(Resizeable))
             {
                 hints.Decorations |= MWM_DECOR_MAXIMIZE | MWM_DECOR_RESIZEH;
                 hints.Functions   |= MWM_FUNC_MAXIMIZE | MWM_FUNC_RESIZE;
             }
-            if (pattern & Closeable)
+            if (style.Enabled(Closeable))
             {
                 hints.Decorations |= 0;
                 hints.Functions   |= MWM_FUNC_CLOSE;
@@ -329,7 +329,7 @@ void XWindow::SetWindowStyle(unsigned long pattern)
         }
 
         // This is a hack to force some windows managers to disable resizing
-        if (!(pattern & Resizeable))
+        if (style.Disabled(Resizeable))
         {
             XSizeHints XSizeHints;
             XSizeHints.flags      = PMinSize | PMaxSize;

@@ -32,8 +32,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 
-SubWindow::SubWindow(IWindow *parent, SceneGraphManager *sceneGraphManager)
-    : IWindow(sceneGraphManager), _parent(parent)
+SubWindow::SubWindow(Window *parent, SceneGraphManager *sceneGraphManager)
+    : Window(sceneGraphManager), _parent(parent)
 {
 }
 
@@ -77,7 +77,7 @@ void    SubWindow::Create(const Math::Vector2ui &size)
     _isCreate = true;
 }
 
-void    SubWindow::Create(const std::string &, const Math::Vector2ui &size, unsigned long, const Utils::FileName &, unsigned int)
+void    SubWindow::Create(const std::string &, const Math::Vector2ui &size, const Utils::Mask<Style> &, const Utils::FileName &, unsigned int)
 {
     Create(size);
 }

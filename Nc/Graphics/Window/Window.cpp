@@ -32,7 +32,7 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-IWindow::IWindow(SceneGraphManager *sceneGraphManager)
+Window::Window(SceneGraphManager *sceneGraphManager)
 	: _sceneGraphManager(sceneGraphManager), _isCreate(false), _isEnable(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)
 {
     _antialiasingLevel = 0;
@@ -46,7 +46,7 @@ IWindow::IWindow(SceneGraphManager *sceneGraphManager)
         _sceneGraphManager = new SceneGraphManager();
 }
 
-IWindow::~IWindow()
+Window::~Window()
 {
     if (_sceneGraphManager != NULL)
         delete _sceneGraphManager;
@@ -54,12 +54,12 @@ IWindow::~IWindow()
         delete _defaultCursor;
 }
 
-void    IWindow::InitSceneGraphManager()
+void    Window::InitSceneGraphManager()
 {
     _sceneGraphManager->Init((_antialiasingLevel > 0));
 }
 
-void    IWindow::Render(GLContext *context)
+void    Window::Render(GLContext *context)
 {
     // Render the scene graph manager
     _sceneGraphManager->Render(_context);
@@ -73,18 +73,18 @@ void    IWindow::Render(GLContext *context)
     }
 }
 
-Graphic::GLContext   *IWindow::CreateSharedContext()
+Graphic::GLContext   *Window::CreateSharedContext()
 {
     return _context->CreateNewSharedContext();
 }
 
-void    IWindow::RemoveSubWindow(SubWindow *w)
+void    Window::RemoveSubWindow(SubWindow *w)
 {
     System::Locker l(&_mutexListSubWindow);
     _listSubWindow.remove(w);
 }
 
-void    IWindow::AddSubWindow(SubWindow *w)
+void    Window::AddSubWindow(SubWindow *w)
 {
     System::Locker l(&_mutexListSubWindow);
     _listSubWindow.push_back(w);

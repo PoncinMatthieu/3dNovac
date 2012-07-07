@@ -29,6 +29,7 @@
 
 #include <iostream>
 #include <Nc/Core/Math/Math.h>
+#include <Nc/Core/Utils/Mask.h>
 #include "../Define.h"
 
 namespace Nc
@@ -48,7 +49,7 @@ namespace Nc
         class LGRAPHICS Window : public Utils::NonCopyable
         {
             public:
-                enum PATTERN
+                enum Style
                 {
                     Resizeable  =   1 << 0,         ///< set the window resizable.
                     Fullscreen  =   1 << 1,         ///< fullscreen mode.
@@ -66,7 +67,7 @@ namespace Nc
                 virtual bool        IsCreate() const  {return _isCreate;}
 
                 /** Interface to create the window with the suitable attributes. */
-                virtual void        Create(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel) = 0;
+                virtual void        Create(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icon, unsigned int antialiasingLevel) = 0;
 
                 /** Interface to create a Window instance using an existing window (for Qt by exemple). */
                 virtual void        UseExistingWindow(void *disp, int winId, const Math::Vector2ui &size, unsigned int antialiasingLevel) = 0;

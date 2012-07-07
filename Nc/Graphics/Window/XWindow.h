@@ -47,10 +47,10 @@ namespace Nc
         {
             public:
                 XWindow(SceneGraphManager *sceneGraphManager = NULL);
-                XWindow(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager = NULL);
+                XWindow(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager = NULL);
                 virtual ~XWindow();
 
-                virtual void            Create(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icone, unsigned int antialiasingLevel);
+                virtual void            Create(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icone, unsigned int antialiasingLevel);
                 virtual void            UseExistingWindow(void *disp, int winId, const Math::Vector2ui &size, unsigned int antialiasingLevel);
                 virtual GLContext      *CreateGLContext();
                 virtual void            Close();
@@ -63,7 +63,7 @@ namespace Nc
 
             private:
                 void                    SwitchToFullscreen(const Math::Vector2ui &size);
-                void                    SetWindowStyle(unsigned long pattern);
+                void                    SetWindowStyle(const Utils::Mask<Style> &style);
                 void                    ChooseBestVisualInfo();
 
                 Display         *_display;
