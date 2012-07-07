@@ -64,18 +64,14 @@
             namespace GL
             {
                 class IGeometryBuffer;
-            }
-
-            /// This namespace reference classes that helps for laoding or displaying entity, like loading of image, or fonts.
-            namespace Core
-            {
-                class Font;
                 struct Drawable;
                 class MaterialConfig;
 
-                typedef std::map<std::string, Font*>    FontMap;
-                typedef std::vector<Drawable*>          DrawableArray;
+                typedef std::vector<Drawable*>      DrawableArray;
             }
+
+            class Font;
+            typedef std::map<std::string, Font*>    FontMap;
 
             // definition of the classes to typedef the diferrent types
             // material definition
@@ -134,7 +130,7 @@
     using namespace Nc::Math;
 
 // includes interne
-    #include "Window/Window/Window.h"
+    #include "Window/Window.h"
 
 // define
     #ifdef  _DEBUG

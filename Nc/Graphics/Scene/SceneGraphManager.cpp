@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 #include "SceneGraphManager.h"
-#include "../Window/Context/GLContext.h"
+#include "../Context/GLContext.h"
 #include "SceneGraph.h"
 
 using namespace Nc::Graphic;

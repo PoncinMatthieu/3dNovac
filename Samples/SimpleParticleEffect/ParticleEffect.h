@@ -2,7 +2,7 @@
 #ifndef SIMPLEPARTICLEEFFECT_PARTICLEEFFECT_H_
 #define SIMPLEPARTICLEEFFECT_PARTICLEEFFECT_H_
 
-#include <Nc/Graphics/Core/GL/VertexDescriptor.h>
+#include <Nc/Graphics/GL/VertexDescriptor.h>
 #include <Nc/Graphics/Effect/Animation.h>
 #include <Nc/Graphics/Material/ProgrammableMaterial.h>
 
@@ -46,7 +46,7 @@ namespace SimpleParticleEffect
 
     private:
         Nc::Graphic::ProgrammableMaterial	*_material;
-        Nc::Graphic::Core::Drawable		    *_drawable;
+        Nc::Graphic::GL::Drawable		    *_drawable;
         Nc::Utils::Clock			        _clock;
 
         bool                                _started;

@@ -23,22 +23,22 @@ SampleFactory::SampleFactory(Nc::Engine::Manager *manager)
     _sampleNames.push_back("bSplinesDemo");
 }
 
-Nc::Contrib::GameEngine     *SampleFactory::CreateSample(const std::string &name)
+Nc::Contrib::GameEngine     *SampleFactory::CreateSample(Graphic::Window *window, const std::string &name)
 {
     Nc::Contrib::GameEngine *engine = NULL;
     if (name == "bSplinesDemo")
-        engine = new bSplinesDemo::GameEngine(_manager);
+        engine = new bSplinesDemo::GameEngine(window, _manager);
     else if (name == "FBEffectsDemo")
-        engine = new FBEffectsDemo::GameEngine(_manager);
+        engine = new FBEffectsDemo::GameEngine(window, &_sceneNodeFormatManager, _manager);
     else if (name == "FrustumDemo")
-        engine = new FrustumDemo::GameEngine(_manager);
+        engine = new FrustumDemo::GameEngine(window, &_sceneNodeFormatManager, _manager);
 //    else if (name == "GUIDemo")
-//        engine = new GUIDemo::GameEngine(_manager);
+//        engine = new GUIDemo::GameEngine(window, _manager);
     else if (name == "LightDemo")
-        engine = new LightDemo::GameEngine(_manager);
+        engine = new LightDemo::GameEngine(window, &_sceneNodeFormatManager, _manager);
     else if (name == "SimpleParticleEffect")
-        engine = new SimpleParticleEffect::GameEngine(_manager);
+        engine = new SimpleParticleEffect::GameEngine(window, _manager);
     else if (name == "SokobanDemo")
-        engine = new SokobanDemo::GameEngine(_manager);
+        engine = new SokobanDemo::GameEngine(window, &_sceneNodeFormatManager, _manager);
     return engine;
 }

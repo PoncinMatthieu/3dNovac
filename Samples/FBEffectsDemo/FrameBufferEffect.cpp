@@ -12,8 +12,8 @@ FrameBufferEffect::FrameBufferEffect(Graphic::Window *window)
 
 	_postProcessMaterial = new ProgrammableMaterial("postProcessEffect", "Nc:Shader:postProcessEffect.vs", "Nc:Shader:postProcessEffect.fs");
 
-	_postProcessMaterial->SetAttrib(Core::DefaultVertexType::ComponentsName::Coord, "InCoord");
-	_postProcessMaterial->SetAttrib(Core::DefaultVertexType::ComponentsName::TexCoord, "InTexCoord");
+	_postProcessMaterial->SetAttrib(GL::DefaultVertexType::ComponentsName::Coord, "InCoord");
+	_postProcessMaterial->SetAttrib(GL::DefaultVertexType::ComponentsName::TexCoord, "InTexCoord");
 
 	_postProcessMaterial->SetMVPMatrixUniform("MVPMatrix");
 	_postProcessMaterial->SetDrawableTextureUnitUniform(0, "Frame");

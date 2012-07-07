@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace SokobanDemo;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
-  : Nc::Contrib::GameEngine(manager)
+GameEngine::GameEngine(Nc::Graphic::Window *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager)
+  : Nc::Contrib::GameEngine(window, manager), _sceneNodeFormatManager(sceneNodeFormatManager)
 {
 }
 
@@ -25,14 +25,14 @@ void GameEngine::ReleaseContent()
     delete _scene3d;
     delete _lightingMaterial;
 }
-
+/*
 void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 {
     // create the window
     win->Create("Sokoban", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
     SetWindow(win);
 }
-
+*/
 void GameEngine::LoadContent()
 {
     // create the camera, scene and set it to the SceneGraphManager of the Graphic engine
@@ -59,7 +59,7 @@ void GameEngine::LoadContent()
     _scene3d->AddChild(leffect);
 
     // creation de la map
-    _map = new Map("Nc:Ressources:Sokoban.map", _sceneNodeFormatManager);
+    _map = new Map("Nc:Ressources:Sokoban.map", *_sceneNodeFormatManager);
     leffect->AddChild(_map);
 
     // centre la camera

@@ -27,7 +27,7 @@
 #ifndef NC_GRAPHICS_EFFECT_RASTEREFFECT_H_
 #define NC_GRAPHICS_EFFECT_RASTEREFFECT_H_
 
-#include "../Core/GL/RasterMode.h"
+#include "../GL/RasterMode.h"
 #include "Effect.h"
 
 namespace Nc

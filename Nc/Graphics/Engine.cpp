@@ -25,16 +25,10 @@
 -----------------------------------------------------------------------------*/
 
 #include <Nc/Core/Engine/Manager.h>
+#include <Nc/Graphics/Input/WindowInput.h>
 
 #include "Engine.h"
 #include "Material/FactoryDefaultMaterials.h"
-
-#ifdef SYSTEM_WINDOWS
-    #include "Window/Window/WWindow.h"
-#else
-    #include "Window/Window/XWindow.h"
-#endif
-
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
 
 using namespace std;
@@ -43,27 +37,18 @@ using namespace Nc::Graphic;
 
 double      Graphic::Engine::_elapsedTime = 0;
 
-Graphic::Engine::Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func)
+Graphic::Engine::Engine(Window *attachedWindow, Nc::Engine::Manager *manager)
 	: Engine::IEngine(manager, Nc::Engine::HasAContext | Nc::Engine::WaitingLoadContentsOfOthersEngines | Nc::Engine::Synchronized, 0xff, 0xff, 0xff),
-      _createWinFunction(func), _win(NULL), _context(NULL), _mainEngineClassName(mainEngineClassName)
+      _win(attachedWindow), _context(NULL)
 {
 }
 
 Graphic::Engine::~Engine()
 {
-    if (_win)
-        delete _win;
 }
 
 void Graphic::Engine::CreateContext()
 {
-	// creation de la fenetre et du renderer
-#ifdef SYSTEM_WINDOWS
-    _win = new WWindow();
-#else
-    _win = new XWindow();
-#endif
-    (static_cast<Nc::Engine::MainEngine*>(_manager->GetEngine(_mainEngineClassName))->*_createWinFunction)(_win);
     _context = _win->CreateGLContext();
 
     // initialize opengl context
@@ -86,11 +71,11 @@ void Graphic::Engine::ReleaseContent()
 void Graphic::Engine::LoadContent()
 {
     FactoryDefaultMaterials &factory = FactoryDefaultMaterials::Instance();
-    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Colored2d> >();
-    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Colored> >();
-    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Textured> >();
-    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Textured2d> >();
-    factory.AddDefaultMaterial<DefaultMaterial<Core::DefaultVertexType::Textured3d> >();
+    factory.AddDefaultMaterial<DefaultMaterial<GL::DefaultVertexType::Colored2d> >();
+    factory.AddDefaultMaterial<DefaultMaterial<GL::DefaultVertexType::Colored> >();
+    factory.AddDefaultMaterial<DefaultMaterial<GL::DefaultVertexType::Textured> >();
+    factory.AddDefaultMaterial<DefaultMaterial<GL::DefaultVertexType::Textured2d> >();
+    factory.AddDefaultMaterial<DefaultMaterial<GL::DefaultVertexType::Textured3d> >();
 }
 
 void Graphic::Engine::Execute(float runningTime)

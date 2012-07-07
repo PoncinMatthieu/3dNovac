@@ -27,7 +27,7 @@
 #ifndef NC_GRAPHICS_2D_SPRITE_H_
 #define NC_GRAPHICS_2D_SPRITE_H_
 
-#include "../Core/GL/Texture.h"
+#include "../GL/Texture.h"
 #include "Object.h"
 
 namespace Nc

@@ -24,12 +24,12 @@
 -----------------------------------------------------------------------------*/
 
 #include "StandardCamera3d.h"
-#include "../Window/Window/ICursor.h"
+#include "../Window/ICursor.h"
 
 #ifdef SYSTEM_WINDOWS
-    #include "../Window/Window/WCursor.h"
+    #include "../Window/WCursor.h"
 #else
-    #include "../Window/Window/XCursor.h"
+    #include "../Window/XCursor.h"
 #endif
 
 #include <Nc/Core/Utils/Debug/OverloadAlloc.h>
@@ -194,8 +194,8 @@ StandardCamera3d &StandardCamera3d::operator = (const StandardCamera3d &cam)
 
 	if (cam._pattern != StandardCamera3d::Freefly)
 	{
-		_cursorOpen = new Graphic::Cursor(*(Cursor*)cam._cursorOpen);
-		_cursorClose = new Graphic::Cursor(*(Cursor*)cam._cursorClose);
+		_cursorOpen = new Cursor(*(Cursor*)cam._cursorOpen);
+		_cursorClose = new Cursor(*(Cursor*)cam._cursorClose);
 	}
 	else
 	{
@@ -466,12 +466,12 @@ void StandardCamera3d::DrawFrustum(bool state)
     {
         if (_drawables.size() == 0)
         {
-            GL::GeometryBuffer<Core::DefaultVertexType::Colored, false> *geometry = new GL::GeometryBuffer<Core::DefaultVertexType::Colored, false>(GL::Enum::Lines);
+            GL::GeometryBuffer<GL::DefaultVertexType::Colored, false> *geometry = new GL::GeometryBuffer<GL::DefaultVertexType::Colored, false>(GL::Enum::Lines);
             geometry->VBO().Init(8, GL::Enum::DataBuffer::StreamDraw);
-            _drawables.push_back(new Core::Drawable(geometry));
-            GL::GeometryBuffer<Core::DefaultVertexType::Colored, false> *geometryPlan = new GL::GeometryBuffer<Core::DefaultVertexType::Colored, false>(GL::Enum::Triangles);
+            _drawables.push_back(new GL::Drawable(geometry));
+            GL::GeometryBuffer<GL::DefaultVertexType::Colored, false> *geometryPlan = new GL::GeometryBuffer<GL::DefaultVertexType::Colored, false>(GL::Enum::Triangles);
             geometryPlan->VBO().Init(12, GL::Enum::DataBuffer::StreamDraw);
-            Core::Drawable *drawablePlan = new Core::Drawable(geometryPlan);
+            GL::Drawable *drawablePlan = new GL::Drawable(geometryPlan);
             drawablePlan->Config->SetBlend(GL::Blend::Multiply);
             _drawables.push_back(drawablePlan);
             ChooseDefaultMaterial();
@@ -486,7 +486,7 @@ void StandardCamera3d::UpdateViewFrustum()
     if (_drawFrustum && _drawables.size() > 0)
     {
         Color                                   c(1,1,1);
-        Array<Core::DefaultVertexType::Colored, 8>   vertices;
+        Array<GL::DefaultVertexType::Colored, 8>   vertices;
         vertices[0].Fill(_eye[0], _eye[1], _eye[2], c);
         vertices[1].Fill(_frustumFTL[0], _frustumFTL[1], _frustumFTL[2], c);
         vertices[2].Fill(_eye[0], _eye[1], _eye[2], c);
@@ -495,10 +495,10 @@ void StandardCamera3d::UpdateViewFrustum()
         vertices[5].Fill(_frustumFBL[0], _frustumFBL[1], _frustumFBL[2], c);
         vertices[6].Fill(_eye[0], _eye[1], _eye[2], c);
         vertices[7].Fill(_frustumFBR[0], _frustumFBR[1], _frustumFBR[2], c);
-        static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored, false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices.data);
+        static_cast<GL::GeometryBuffer<GL::DefaultVertexType::Colored, false>*>(_drawables[0]->Geometry)->VBO().UpdateData(vertices.data);
 
         Color                                   cPlan(0.3f,0.3f,0.3f);
-        Array<Core::DefaultVertexType::Colored, 12>   verticesPlan;
+        Array<GL::DefaultVertexType::Colored, 12>   verticesPlan;
         verticesPlan[0].Fill(_frustumNTL[0], _frustumNTL[1], _frustumNTL[2], cPlan);
         verticesPlan[1].Fill(_frustumNTR[0], _frustumNTR[1], _frustumNTR[2], cPlan);
         verticesPlan[2].Fill(_frustumNBR[0], _frustumNBR[1], _frustumNBR[2], cPlan);
@@ -514,7 +514,7 @@ void StandardCamera3d::UpdateViewFrustum()
         verticesPlan[9].Fill(_frustumFTL[0], _frustumFTL[1], _frustumFTL[2], cPlan);
         verticesPlan[10].Fill(_frustumFBR[0], _frustumFBR[1], _frustumFBR[2], cPlan);
         verticesPlan[11].Fill(_frustumFBL[0], _frustumFBL[1], _frustumFBL[2], cPlan);
-        static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored, false>*>(_drawables[1]->Geometry)->VBO().UpdateData(verticesPlan.data);
+        static_cast<GL::GeometryBuffer<GL::DefaultVertexType::Colored, false>*>(_drawables[1]->Geometry)->VBO().UpdateData(verticesPlan.data);
     }
 }
 

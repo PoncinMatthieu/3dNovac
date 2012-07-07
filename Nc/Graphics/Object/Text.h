@@ -27,7 +27,7 @@
 #ifndef NC_GRAPHICS_OBJECT_TEXT_H_
 #define NC_GRAPHICS_OBJECT_TEXT_H_
 
-#include "../Core/PlainTextFormater.h"
+#include "../Data/PlainTextFormater.h"
 #include "Object.h"
 
 
@@ -51,9 +51,9 @@ namespace Nc
 
             public:
                 /** Constructor with an instance of textFormater, the textFormater will be deleted in the destructor. */
-                Text(const Utils::Unicode::UTF32 &text, Core::ITextFormater *textFormater);
+                Text(const Utils::Unicode::UTF32 &text, ITextFormater *textFormater);
                 /** Constructor used to create the text with a PlainTextFormater. */
-                Text(const Utils::Unicode::UTF32 &text, float charSize, const Color &color, const std::string &ttf, const Utils::Mask<Core::PlainTextFormater::Style> &s = Core::PlainTextFormater::Regular);
+                Text(const Utils::Unicode::UTF32 &text, float charSize, const Color &color, const std::string &ttf, const Utils::Mask<PlainTextFormater::Style> &s = PlainTextFormater::Regular);
                 Text(const Text &text);
                 Text &operator = (const Text &text);
                 virtual ~Text();
@@ -66,9 +66,9 @@ namespace Nc
                 void                            PlainText(const Utils::Unicode::UTF32 &text);
 
                 /** \return the text formater. */
-                Core::ITextFormater             *Formater() const   {return _textFormater;}
+                ITextFormater                   *Formater() const   {return _textFormater;}
                 /** Set the text formater. */
-                void                            Formater(Core::ITextFormater *f);
+                void                            Formater(ITextFormater *f);
 
                 /** \return the size of the string. Will compute the size by using the textFormater if the text has changed. */
                 const Vector2f      &Size();
@@ -81,7 +81,7 @@ namespace Nc
 
             protected:
                 Utils::Unicode::UTF32   _text;              ///< store the plain text.
-                Core::ITextFormater     *_textFormater;     ///< the text formater used to compute the size and the drawables.
+                ITextFormater           *_textFormater;     ///< the text formater used to compute the size and the drawables.
                 Vector2f                _size;              ///< the size of the string (computed with RecomputeSize).
 
                 System::Mutex           _mutex;             ///< the mutex used to protect the string.

@@ -33,9 +33,9 @@
 #define NC_GRAPHICS_GRAPHICS_H_
 
 // Window
-    #include "Window/Window/Window.h"
-    #include "Window/Context/GLContext.h"
-    #include "Window/Input/WindowInput.h"
+    #include "Window/Window.h"
+    #include "Context/GLContext.h"
+    #include "Input/WindowInput.h"
 
 // Object
     #include "Object/Text.h"

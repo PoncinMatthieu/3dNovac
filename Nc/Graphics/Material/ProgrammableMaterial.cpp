@@ -24,7 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "../Core/Drawable.h"
+#include "../GL/Drawable.h"
 #include "ProgrammableMaterial.h"
 
 using namespace Nc;
@@ -47,7 +47,7 @@ ProgrammableMaterial::~ProgrammableMaterial()
 {
 }
 
-bool    ProgrammableMaterial::Configure(Core::Drawable &drawable)
+bool    ProgrammableMaterial::Configure(GL::Drawable &drawable)
 {
 	GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
     _program.Enable();
@@ -68,7 +68,7 @@ bool    ProgrammableMaterial::Configure(Core::Drawable &drawable)
 	return true;
 }
 
-void    ProgrammableMaterial::Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable)
+void    ProgrammableMaterial::Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable)
 {
     drawable.Enable();
     _program.Enable(); // enable the shader

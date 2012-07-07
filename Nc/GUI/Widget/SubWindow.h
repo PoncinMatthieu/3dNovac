@@ -27,7 +27,7 @@
 #ifndef NC_GUI_WIDGET_SUBWINDOW_H_
 #define NC_GUI_WIDGET_SUBWINDOW_H_
 
-#include <Nc/Graphics/Window/Window/SubWindow.h>
+#include <Nc/Graphics/Window/SubWindow.h>
 #include "Widget.h"
 
 namespace Nc
@@ -55,17 +55,17 @@ namespace Nc
                 virtual void            Reposed();
 
                 /** \return the SubWindow */
-                Graphic::SubWindow      *GetSubWindow() const          {return _subWindow;}
+                Graphic::SubWindow      *GetSubWindow() const       {return _subWindow;}
                 /** Enable the sub window for rendering */
-                void					EnableSubWindow()			{_subWindow->Enable(true);}
+                void			        EnableSubWindow()			{_subWindow->Enable(true);}
 
             protected:
                 /** Draw the result of the render off screen from the sub window */
                 virtual void            Draw(Graphic::SceneGraph *scene);
 
             protected:
-                Graphic::SubWindow                  *_subWindow;    ///< SubWindow used to simulate a virtual window
-                Graphic::Sprite                     *_sprite;       ///< sprite used to render the result off screen of the sub window
+                Graphic::SubWindow      *_subWindow;    ///< SubWindow used to simulate a virtual window
+                Graphic::Sprite         *_sprite;       ///< sprite used to render the result off screen of the sub window
         };
     }
 }

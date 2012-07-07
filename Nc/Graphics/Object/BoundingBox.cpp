@@ -31,7 +31,7 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Core::Drawable      *BoundingBox::_drawable = NULL;
+GL::Drawable        *BoundingBox::_drawable = NULL;
 IDefaultMaterial    *BoundingBox::_material = NULL;
 Color               BoundingBox::_color(1,1,1);
 
@@ -59,7 +59,7 @@ BoundingBox::~BoundingBox()
 
 void BoundingBox::CreateGeometry()
 {
-    Array<Core::DefaultVertexType::Colored, 8>  vertices;
+    Array<GL::DefaultVertexType::Colored, 8>    vertices;
     Array<unsigned int, 12*2>                   indices;
 
     vertices[0].Fill(0, 0, 0, _color);
@@ -84,7 +84,7 @@ void BoundingBox::CreateGeometry()
     indices[20] = 6;    indices[21] = 7;
     indices[22] = 4;    indices[23] = 7;
 
-    _drawable = new Core::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines);
+    _drawable = new GL::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines);
 }
 
 void BoundingBox::Draw(SceneGraph *scene)

@@ -4,6 +4,7 @@
 
 #include <Nc/Core/Engine/Manager.h>
 #include <Nc/Graphics/Engine.h>
+#include <Nc/Graphics/Scene/SceneNodeFormatManager.h>
 #include <Nc/Contrib/GameEngine.h>
 
 namespace SampleViewer
@@ -15,11 +16,12 @@ namespace SampleViewer
 
             inline const std::list<std::string>     &SampleNames() const                        {return _sampleNames;}
 
-            Nc::Contrib::GameEngine                 *CreateSample(const std::string &name);
+            Nc::Contrib::GameEngine                 *CreateSample(Nc::Graphic::Window *window, const std::string &name);
 
         private:
-            Nc::Engine::Manager         *_manager;
-            std::list<std::string>      _sampleNames;
+            Nc::Engine::Manager                     *_manager;
+            std::list<std::string>                  _sampleNames;
+            Nc::Graphic::SceneNodeFormatManager	    _sceneNodeFormatManager;
     };
 }
 

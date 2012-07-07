@@ -32,7 +32,7 @@ using namespace Nc::Graphic;
 
 Object      *BasicMeshCreator::Plan(const Vector2f &size, const GL::Texture &texture)
 {
-    Array<Core::DefaultVertexType::Textured, 4>     vertices;
+    Array<GL::DefaultVertexType::Textured, 4>     vertices;
     Color color(1, 1, 1);
 
 // creation des vertex en fontion de la taille de la map
@@ -47,7 +47,7 @@ Object      *BasicMeshCreator::Plan(const Vector2f &size, const GL::Texture &tex
 // creation du mesh
     Object *mesh = new Object(box);
     mesh->Drawables().resize(1);
-    mesh->Drawables()[0] = new Core::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::TriangleStrip);
+    mesh->Drawables()[0] = new GL::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::TriangleStrip);
     mesh->Drawables()[0]->Config->Textures.InitSize(1);
     mesh->Drawables()[0]->Config->Textures[0] = texture;
     mesh->ChooseDefaultMaterial();
@@ -61,7 +61,7 @@ Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
     unsigned int    nbVertices = (x * 2) + (y * 2) + 4;
     unsigned int    k = 0;
 
-    Array<Core::DefaultVertexType::Colored>     vertices(nbVertices);
+    Array<GL::DefaultVertexType::Colored>     vertices(nbVertices);
     for (unsigned int i = 0; i < x + 1; i++)
     {
         vertices[k++].Fill(i, 0, size.data[2], color);
@@ -80,7 +80,7 @@ Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
 // creation du mesh
     Object *mesh = new Object(Box3f(bmin, bmax));
     mesh->Drawables().resize(1);
-    mesh->Drawables()[0] = new Core::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::Lines);
+    mesh->Drawables()[0] = new GL::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::Lines);
     mesh->ChooseDefaultMaterial();
     mesh->UseSceneMaterial(false);
     return mesh;

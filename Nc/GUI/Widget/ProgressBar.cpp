@@ -41,13 +41,13 @@ ProgressBar::ProgressBar(const AlignmentMask &alignment, const Vector2i &size, c
 
     // creation des drawable
     _indexDrawable = _drawables.size();
-    GL::GeometryBuffer<Core::DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<Core::DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
+    GL::GeometryBuffer<GL::DefaultVertexType::Colored2d, false> *geometry1 = new GL::GeometryBuffer<GL::DefaultVertexType::Colored2d, false>(GL::Enum::TriangleStrip);
     geometry1->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
-    _drawables.push_back(new Core::Drawable(geometry1));
+    _drawables.push_back(new GL::Drawable(geometry1));
 
-    GL::GeometryBuffer<Core::DefaultVertexType::Textured2d, false> *geometry2 = new GL::GeometryBuffer<Core::DefaultVertexType::Textured2d, false>(GL::Enum::TriangleStrip);
+    GL::GeometryBuffer<GL::DefaultVertexType::Textured2d, false> *geometry2 = new GL::GeometryBuffer<GL::DefaultVertexType::Textured2d, false>(GL::Enum::TriangleStrip);
     geometry2->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
-    Core::Drawable *dr = new Core::Drawable(geometry2);
+    GL::Drawable *dr = new GL::Drawable(geometry2);
     dr->Config->Textures.InitSize(1);
     dr->Config->Textures[0].LoadFromFile(file);
     dr->Config->SetBlend(GL::Blend::Alpha);
@@ -61,20 +61,20 @@ ProgressBar::~ProgressBar()
 
 void ProgressBar::Update()
 {
-    Array<Core::DefaultVertexType::Colored2d, 4>   verticesProgress;
+    Array<GL::DefaultVertexType::Colored2d, 4>   verticesProgress;
     verticesProgress[0].Fill(_progressBox.Min(0), _progressBox.Min(1), _colorLeft);
     verticesProgress[1].Fill(_progressBox.Min(0) + (_percent * _progressBox.Length(0) / 100.f), _progressBox.Min(1), _colorRight);
     verticesProgress[2].Fill(_progressBox.Min(0), _progressBox.Max(1), _colorLeft);
     verticesProgress[3].Fill(_progressBox.Min(0) + (_percent * _progressBox.Length(0) / 100.f), _progressBox.Max(1), _colorRight);
-    static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable]->Geometry)->VBO().UpdateData(verticesProgress.data);
+    static_cast<GL::GeometryBuffer<GL::DefaultVertexType::Colored2d, false>*>(_drawables[_indexDrawable]->Geometry)->VBO().UpdateData(verticesProgress.data);
 
     Color   c(1,1,1);
-    Array<Core::DefaultVertexType::Textured2d, 4>   verticesTexture;
+    Array<GL::DefaultVertexType::Textured2d, 4>   verticesTexture;
     verticesTexture[0].Fill(0, 0, 0, 0, c);
     verticesTexture[1].Fill(_size.data[0], 0, 1, 0, c);
     verticesTexture[2].Fill(0, _size.data[1], 0, 1, c);
     verticesTexture[3].Fill(_size.data[0], _size.data[1], 1, 1, c);
-    static_cast<GL::GeometryBuffer<Core::DefaultVertexType::Textured2d, false>*>(_drawables[_indexDrawable+1]->Geometry)->VBO().UpdateData(verticesTexture.data);
+    static_cast<GL::GeometryBuffer<GL::DefaultVertexType::Textured2d, false>*>(_drawables[_indexDrawable+1]->Geometry)->VBO().UpdateData(verticesTexture.data);
 }
 
 void ProgressBar::Draw(SceneGraph *scene)

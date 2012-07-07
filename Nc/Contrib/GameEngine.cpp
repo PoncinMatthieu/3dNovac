@@ -24,26 +24,27 @@
 
 -----------------------------------------------------------------------------*/
 
-#include <Nc/Graphics/Window/Input/WindowInput.h>
+#include <Nc/Graphics/Input/WindowInput.h>
 #include "GameEngine.h"
 
 using namespace Nc;
+using namespace Nc::Graphic;
 using namespace Nc::Contrib;
 
-GameEngine::GameEngine(Engine::Manager *manager)
-    : Engine::MainEngine(manager), _context(NULL)
+GameEngine::GameEngine(Window *window, Engine::Manager *manager,
+                        unsigned int pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
+    : Engine::MainEngine(manager, pattern, deletePriority, loadingContextPriority, loadingPriority), _window(NULL), _context(NULL)
 {
+    if (window != NULL)
+    {
+        _window = window;
+        AddInput(_window->Input());
+    }
 }
 
 GameEngine::~GameEngine()
 {
     delete _context;
-}
-
-void    GameEngine::SetWindow(Nc::Graphic::Window *win)
-{
-    _window = win;
-    AddInput(_window->Input());
 }
 
 void    GameEngine::CreateContext()

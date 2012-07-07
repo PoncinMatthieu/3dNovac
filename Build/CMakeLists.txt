@@ -36,51 +36,38 @@ link_directories(../lib/${CMAKE_CFG_INTDIR})
 
 # Set the Nc-Core sources path only the API folder is not set
 # we use a global and not a global recurse to avoid the svn directories and because some folder shouldn't be added to the compilation process
-file(GLOB Nc-Core-sources
-  ../Nc/*.h
-  ../Nc/Core/*.cpp							../Nc/Core/*.h
-  ../Nc/Core/Utils/*.cpp					../Nc/Core/Utils/*.h
-  ../Nc/Core/Utils/Debug/*.cpp				../Nc/Core/Utils/Debug/*.h
-  ../Nc/Core/Utils/Xml/*.cpp				../Nc/Core/Utils/Xml/*.h
-  ../Nc/Core/System/*.cpp					../Nc/Core/System/*.h
-  ../Nc/Core/System/API/*.cpp				../Nc/Core/System/API/*.h
-  ../Nc/Core/System/Input/*.cpp				../Nc/Core/System/Input/*.h
-  ../Nc/Core/Math/*.cpp						../Nc/Core/Math/*.h
-  ../Nc/Core/Graph/*.cpp					../Nc/Core/Graph/*.h
-  ../Nc/Core/Engine/*.cpp					../Nc/Core/Engine/*.h
-  ../Nc/Core/Network/*.cpp					../Nc/Core/Network/*.h
+file(GLOB_RECURSE Nc-Core-sources
+  ../Nc/Define.h
+  ../Nc/Core/*.cpp
+  ../Nc/Core/*.h
 )
 
+file(GLOB Nc-Core-sources-api-specific
+  ../Nc/Core/System/API/Unix/*
+  ../Nc/Core/System/API/Windows/*
+)
+
+list(REMOVE_ITEM Nc-Core-sources ${Nc-Core-sources-api-specific})
+
 # Set the Nc-Graphics sources path
-file(GLOB Nc-Graphics-sources
-  ../Nc/Graphics/*.cpp						../Nc/Graphics/*.h
-  ../Nc/Graphics/Camera/*.cpp				../Nc/Graphics/Camera/*.h
-  ../Nc/Graphics/Core/*.cpp					../Nc/Graphics/Core/*.h
-  ../Nc/Graphics/Core/GL/*.cpp				../Nc/Graphics/Core/GL/*.h
-  ../Nc/Graphics/Effect/*.cpp				../Nc/Graphics/Effect/*.h
-  ../Nc/Graphics/Material/*.cpp				../Nc/Graphics/Material/*.h
-  ../Nc/Graphics/Object/*.cpp				../Nc/Graphics/Object/*.h
-  ../Nc/Graphics/Scene/*.cpp				../Nc/Graphics/Scene/*.h
-  ../Nc/Graphics/SpacePartitioning/*.cpp	../Nc/Graphics/SpacePartitioning/*.h
-  ../Nc/Graphics/Window/*.cpp				../Nc/Graphics/Window/*.h
-  ../Nc/Graphics/Window/Window/*.cpp		../Nc/Graphics/Window/Window/*.h
-  ../Nc/Graphics/Window/Context/*.cpp		../Nc/Graphics/Window/Context/*.h
-  ../Nc/Graphics/Window/Input/*.cpp			../Nc/Graphics/Window/Input/*.h
+file(GLOB_RECURSE Nc-Graphics-sources
+  ../Nc/Graphics/*.cpp
+  ../Nc/Graphics/*.h
 )
 
 # Identify the Nc-Graphics linux dependant sources path
 file(GLOB Linux_CPP
-  ../Nc/Graphics/Window/Window/X*.cpp		../Nc/Graphics/Window/Window/X*.h
-  ../Nc/Graphics/Window/Context/GLX*.cpp	../Nc/Graphics/Window/Context/GLX*.h
-  ../Nc/Graphics/Window/Input/XW*.cpp		../Nc/Graphics/Window/Input/XW*.h
+  ../Nc/Graphics/Window/X*.cpp		../Nc/Graphics/Window/X*.h
+  ../Nc/Graphics/Context/GLX*.cpp	../Nc/Graphics/Context/GLX*.h
+  ../Nc/Graphics/Input/XW*.cpp		../Nc/Graphics/Input/XW*.h
 )
 
 # Identify the Nc-Graphics windows dependant sources path
 file(GLOB Win32_CPP
-  ../Nc/Graphics/Window/Window/WW*.cpp		../Nc/Graphics/Window/Window/WW*.h
-  ../Nc/Graphics/Window/Window/WC*.cpp		../Nc/Graphics/Window/Window/WC*.h
-  ../Nc/Graphics/Window/Context/WGL*.cpp	../Nc/Graphics/Window/Context/WGL*.h
-  ../Nc/Graphics/Window/Input/WW*.cpp		../Nc/Graphics/Window/Input/WW*.h
+  ../Nc/Graphics/Window/WW*.cpp		../Nc/Graphics/Window/WW*.h
+  ../Nc/Graphics/Window/WC*.cpp		../Nc/Graphics/Window/WC*.h
+  ../Nc/Graphics/Context/WGL*.cpp	../Nc/Graphics/Context/WGL*.h
+  ../Nc/Graphics/Input/WW*.cpp		../Nc/Graphics/Input/WW*.h
 )
 
 # So If we are on windows, just remove the linux dependant files and compile directly the libpng in the Nc-Graphics to avoid another dll

@@ -8,11 +8,8 @@
 class GameEngine : public Nc::Engine::MainEngine
 {
  public:
-  GameEngine(Nc::Engine::Manager *manager);
+  GameEngine(Nc::Graphic::Window *window, Nc::Engine::Manager *manager);
   virtual ~GameEngine();
-
-  /** To create the window (called by the graphic engine) */
-  void		CreateWindow(Nc::Graphic::Window *win);
 
  protected:
   virtual void	LoadContent();

@@ -70,7 +70,7 @@ Object::Object(const Object &o)
       _lastConfiguredMaterial(NULL)
 {
     for (unsigned int i = 0; i < _drawables.size(); ++i)
-        _drawables[i] = new Core::Drawable(*o._drawables[i]);
+        _drawables[i] = new GL::Drawable(*o._drawables[i]);
 }
 
 Object &Object::operator = (const Object &o)
@@ -84,7 +84,7 @@ Object &Object::operator = (const Object &o)
         delete _drawables[i];
     _drawables.resize(o._drawables.size());
     for (unsigned int i = 0; i < _drawables.size(); ++i)
-        _drawables[i] = new Core::Drawable(*o._drawables[i]);
+        _drawables[i] = new GL::Drawable(*o._drawables[i]);
     return *this;
 }
 

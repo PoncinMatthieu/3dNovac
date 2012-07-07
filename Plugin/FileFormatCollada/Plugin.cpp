@@ -42,7 +42,7 @@ Plugin::~Plugin()
 
 ISceneNode   *Plugin::Load(const Utils::FileName &file)
 {
-    LOG << "COLLADA_DOM Load Started " << file << std::endl;
+    LOG_DEBUG << "COLLADA_DOM Load Started " << file << std::endl;
 
     _dae = new DAE();
     if (_dae->load(file.c_str()) != DAE_OK)
@@ -68,11 +68,11 @@ ISceneNode   *Plugin::Load(const Utils::FileName &file)
         switch(up->getValue())
         {
             case UPAXISTYPE_X_UP:
-                LOG << "X Axis is Up axis!  The ModelMatrix will be adjusted." << std::endl;
+                LOG_DEBUG << "X Axis is Up axis!  The ModelMatrix will be adjusted." << std::endl;
                 _globalMatrix.RotationY(90, false);
                 break;
             case UPAXISTYPE_Y_UP:
-                LOG << "Y Axis is Up axis!  The ModelMatrix will be adjusted." << std::endl;
+                LOG_DEBUG << "Y Axis is Up axis!  The ModelMatrix will be adjusted." << std::endl;
                 _globalMatrix.RotationX(90, false);
                 break;
             case UPAXISTYPE_Z_UP:
@@ -83,17 +83,17 @@ ISceneNode   *Plugin::Load(const Utils::FileName &file)
     }
 
     // Load all the image libraries
-    LOG << "Load image libraries\nThere are " << dom->getLibrary_images_array().getCount() << " images libraries." << std::endl;
+    LOG_DEBUG << "Load image libraries\nThere are " << dom->getLibrary_images_array().getCount() << " images libraries." << std::endl;
     for (unsigned int i = 0; i < dom->getLibrary_images_array().getCount(); i++)
         ReadImageLibrary(dom->getLibrary_images_array()[i]);
 
     // Load all the effect libraries
-    LOG << "Load effect libraries\nThere are " << dom->getLibrary_effects_array().getCount() << " effect libraries." << std::endl;
+    LOG_DEBUG << "Load effect libraries\nThere are " << dom->getLibrary_effects_array().getCount() << " effect libraries." << std::endl;
     for (unsigned int i = 0; i < dom->getLibrary_effects_array().getCount(); i++)
         ReadEffectLibrary(dom->getLibrary_effects_array()[i]);
 
     // Load all the material libraries
-    LOG << "Load material libraries\nThere are " << dom->getLibrary_materials_array().getCount() << " material libraries." << std::endl;
+    LOG_DEBUG << "Load material libraries\nThere are " << dom->getLibrary_materials_array().getCount() << " material libraries." << std::endl;
     for (unsigned int i = 0; i < dom->getLibrary_materials_array().getCount(); i++)
         ReadMaterialLibrary(dom->getLibrary_materials_array()[i]);
 
@@ -144,7 +144,7 @@ ISceneNode *Plugin::GetFinalNode()
 
 void        Plugin::Save(const Utils::FileName &file, ISceneNode *node)
 {
-    LOG << "Can't save the object, function not implemented" << std::endl;
+    LOG_ERROR << "Can't save the object, function not implemented" << std::endl;
 }
 
 void Plugin::ReadImageLibrary(domLibrary_imagesRef lib)
@@ -162,7 +162,7 @@ Graphic::GL::Texture    *Plugin::ReadImage(domImageRef lib)
     if (it != _mapTexture.end()) // if already exist
         return &it->second;
 
-    LOG << "Create new image " << lib->getId() << std::endl;
+    LOG_DEBUG << "Create new image " << lib->getId() << std::endl;
     domImage *imageElement = (domImage*)(domElement*)lib;
     if (imageElement)
     {
@@ -189,7 +189,7 @@ Graphic::GL::Texture    *Plugin::ReadNormalMap(domImageRef lib)
         f.SetShortFilename(f.ShortFilename() + "Normal");
         if (!f.IsReadable())
             return NULL;
-        LOG << "Create new NormalMap " << f << std::endl;
+        LOG_DEBUG << "Create new NormalMap " << f << std::endl;
         GL::Texture *texture = &_mapNormalMap[imageElement->getId()];
         texture->LoadFromFile(f);
         return texture;
@@ -212,8 +212,8 @@ void    Plugin::ReadEffect(domEffectRef lib)
     if (it != _mapMaterialConfig.end())   // material config is found
         return;
 
-    LOG << "Create new Effect (MaterialConfig) " << lib->getId() << std::endl;
-    Core::MaterialConfig *config = &_mapMaterialConfig[lib->getId()];
+    LOG_DEBUG << "Create new Effect (MaterialConfig) " << lib->getId() << std::endl;
+    GL::MaterialConfig *config = &_mapMaterialConfig[lib->getId()];
 
     // Get a pointer to the effect element
     domEffect *EffectElement = (domEffect*)(domElement*)lib;
@@ -222,7 +222,7 @@ void    Plugin::ReadEffect(domEffectRef lib)
         // even if we could have many profile, we take only the first
         // How many profiles are there
         int numProfiles = (int) EffectElement->getFx_profile_abstract_array().getCount();
-        LOG << "There are " << numProfiles << " profiles and only one is supported" << std::endl;
+        LOG_DEBUG << "There are " << numProfiles << " profiles and only one is supported" << std::endl;
         // Scan the profiles to find the profile_COMMON
         if (numProfiles > 0)
         //for (int p = 0; p < numProfiles;  p ++)
@@ -258,21 +258,21 @@ void    Plugin::ReadEffect(domEffectRef lib)
                         ReadBlinn(*config, newParams, blinn);
                 }
                 else
-                    LOG << "There are no technique attached to the effect" << std::endl;
+                    LOG_DEBUG << "There are no technique attached to the effect" << std::endl;
             }
             else
-                LOG << typeName << " is not supported" << std::endl;
+                LOG_DEBUG << typeName << " is not supported" << std::endl;
         }
     }
 }
 
-void Plugin::ReadConstant(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant)
+void Plugin::ReadConstant(GL::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domConstant *constant)
 {
     // TODO
-    LOG << "Technique Constant not implemented" << std::endl;
+    LOG_DEBUG << "Technique Constant not implemented" << std::endl;
 }
 
-void Plugin::ReadLambert(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert)
+void Plugin::ReadLambert(GL::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domLambert *lambert)
 {
     // TODO: take only the texture from diffuse for now
     if (lambert->getDiffuse())
@@ -281,7 +281,7 @@ void Plugin::ReadLambert(Core::MaterialConfig &config, std::map<std::string, dom
     }
 }
 
-void Plugin::ReadPhong(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong)
+void Plugin::ReadPhong(GL::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domPhong *phong)
 {
     // TODO: take only the texture from diffuse for now
     if (phong->getDiffuse())
@@ -290,7 +290,7 @@ void Plugin::ReadPhong(Core::MaterialConfig &config, std::map<std::string, domCo
     }
 }
 
-void Plugin::ReadBlinn(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn)
+void Plugin::ReadBlinn(GL::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domProfile_COMMON::domTechnique::domBlinn *blinn)
 {
     // TODO: take only the texture from diffuse for now
     if (blinn->getDiffuse())
@@ -299,7 +299,7 @@ void Plugin::ReadBlinn(Core::MaterialConfig &config, std::map<std::string, domCo
     }
 }
 
-void Plugin::ReadTextureFromTechniqueEffect(Core::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader)
+void Plugin::ReadTextureFromTechniqueEffect(GL::MaterialConfig &config, std::map<std::string, domCommon_newparam_type*> &newParams, domCommon_color_or_texture_type *shader)
 {
     domCommon_color_or_texture_type::domTexture *textureElement = shader->getTexture();
     if (textureElement != NULL)
@@ -321,12 +321,12 @@ void Plugin::ReadTextureFromTechniqueEffect(Core::MaterialConfig &config, std::m
             config.Textures.InitSize(nbTextures);
             if (t != NULL)
             {
-                LOG << "attach texture " << sampler2D_SID << " to material config" << std::endl;
+                LOG_DEBUG << "attach texture " << sampler2D_SID << " to material config" << std::endl;
                 config.Textures[0] = *t;
             }
             if (n != NULL)
             {
-                LOG << "attach normal texture to material config" << std::endl;
+                LOG_DEBUG << "attach normal texture to material config" << std::endl;
                 config.Textures[1] = *n;
             }
         }
@@ -348,12 +348,12 @@ void Plugin::ReadTextureFromTechniqueEffect(Core::MaterialConfig &config, std::m
                 config.Textures.InitSize(nbTextures);
                 if (t != NULL)
                 {
-                    LOG << "attach texture " << sampler2D_SID << " to material config" << std::endl;
+                    LOG_DEBUG << "attach texture " << sampler2D_SID << " to material config" << std::endl;
                     config.Textures[0] = *t;
                 }
                 if (n != NULL)
                 {
-                    LOG << "attach normal texture to material config" << std::endl;
+                    LOG_DEBUG << "attach normal texture to material config" << std::endl;
                     config.Textures[1] = *n;
                 }
             }
@@ -386,14 +386,14 @@ void Plugin::ReadMaterial(domMaterialRef lib)
         if (element == NULL || ((domEffect*)element)->getId() == NULL)
             return;
 
-        LOG << "Attaching effect " << ((domEffect*)element)->getId() << " to Material " << lib->getId() << std::endl;
+        LOG_DEBUG << "Attaching effect " << ((domEffect*)element)->getId() << " to Material " << lib->getId() << std::endl;
         _mapMaterial[lib->getId()] = ((domEffect*)element)->getId();
     }
 }
 
 void Plugin::ReadScene(domVisual_sceneRef scene)
 {
-    LOG << "Reading Collada Scene " << scene->getName() << std::endl;
+    LOG_DEBUG << "Reading Collada Scene " << scene->getName() << std::endl;
 
     // recurse through the scene, read and add nodes
     _root = (scene->getNode_array().getCount() > 1) ? new Object() : NULL;
@@ -434,7 +434,7 @@ void    Plugin::ReadNode(domNodeRef node, ISceneNode *parentNode)
     if (it != _mapNode.end())
         return;
 
-    LOG << "Reading Scene Node " << node->getId() << std::endl;
+    LOG_DEBUG << "Reading Scene Node " << node->getId() << std::endl;
 
     Object *newNode = new Object(Box3f(), _globalMatrix);
     if (parentNode != NULL)
@@ -501,13 +501,13 @@ void    Plugin::ReadDrawable(domGeometry *lib, Object *mesh)
     domSpline           *splineElement          = lib->getSpline();
 
     if(assetElement)
-        LOG << "Item " << lib->getId() << " has an <asset> which RT doesn't support reading, skipped it." << std::endl;
+        LOG_DEBUG << "Item " << lib->getId() << " has an <asset> which RT doesn't support reading, skipped it." << std::endl;
     else if (convexMeshElement)
-        LOG << "Item " << lib->getId() << " has an <convex_mesh> which RT doesn't support reading, skipped it." << std::endl;
+        LOG_DEBUG << "Item " << lib->getId() << " has an <convex_mesh> which RT doesn't support reading, skipped it." << std::endl;
     else if (extraElement.getCount())
-        LOG << "Item " << lib->getId() << " has an <extra> which RT doesn't support reading, skipped it." << std::endl;
+        LOG_DEBUG << "Item " << lib->getId() << " has an <extra> which RT doesn't support reading, skipped it." << std::endl;
     else if (splineElement)
-        LOG << "Item " << lib->getId() << " has an <spline> which RT doesn't support reading, skipped it." << std::endl;
+        LOG_DEBUG << "Item " << lib->getId() << " has an <spline> which RT doesn't support reading, skipped it." << std::endl;
     if (meshElement == NULL)
         return;
 
@@ -524,7 +524,7 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
     //not sure if we should get primitives by groups or by whatever comes first, I think it shouldn't matter, let's confirm later.
     int numPolylistGroups = (int)meshElement->getPolylist_array().getCount();
     if (numPolylistGroups != 0)
-        LOG << "there are " << numPolylistGroups << " PolylistGroups, but the reader does not supported this type of geometry" << std::endl;
+        LOG_DEBUG << "there are " << numPolylistGroups << " PolylistGroups, but the reader does not supported this type of geometry" << std::endl;
 /*
     for (int i=0; i< numPolylistGroups; i++)
     {
@@ -534,7 +534,7 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
 */
     int numPolygonGroups = (int)meshElement->getPolygons_array().getCount();
     if (numPolygonGroups != 0)
-        LOG << "there are " << numPolygonGroups << " PolygonGroups, but the reader does not supported this type of geometry" << std::endl;
+        LOG_DEBUG << "there are " << numPolygonGroups << " PolygonGroups, but the reader does not supported this type of geometry" << std::endl;
 /*
     for (int i=0; i< numPolygonGroups; i++)
     {
@@ -554,10 +554,10 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
             mesh->Drawables()[i] = it->second; // init le nombre de drawable
             continue;
         }
-        //LOG << "Create new Triangles Drawable `" << domTriangles->getName() << "`" << std::endl;
+        //LOG_DEBUG << "Create new Triangles Drawable `" << domTriangles->getName() << "`" << std::endl;
 
         _mapDrawable[domTriangles];
-        Core::Drawable *newDrawable = _mapDrawable[domTriangles]; // creation du drawable
+        GL::Drawable *newDrawable = _mapDrawable[domTriangles]; // creation du drawable
         Box3f b = BuildTriangles(domTriangles, newDrawable);
         mesh->SetBox(mesh->GetBox() + b);
         mesh->Drawables().push_back(newDrawable);
@@ -565,7 +565,7 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
 
     int numTriStripsGroups = (int)meshElement->getTristrips_array().getCount();
     if (numTriStripsGroups != 0)
-        LOG << "there are " << numTriStripsGroups << " TriStripsGroups, but the reader does not supported this type of geometry" << std::endl;
+        LOG_DEBUG << "there are " << numTriStripsGroups << " TriStripsGroups, but the reader does not supported this type of geometry" << std::endl;
 /*
     for (int i=0; i< numTriStripsGroups ; i++)
     {
@@ -575,7 +575,7 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
 */
     int numTriFansGroups = (int)meshElement->getTrifans_array().getCount();
     if (numTriFansGroups != 0)
-        LOG << "there are " << numTriFansGroups << " TriFansGroups, but the reader does not supported this type of geometry" << std::endl;
+        LOG_DEBUG << "there are " << numTriFansGroups << " TriFansGroups, but the reader does not supported this type of geometry" << std::endl;
 /*
     for (int i=0; i< numTriFansGroups ; i++)
     {
@@ -585,7 +585,7 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
 */
     int numLinesGroups = (int)meshElement->getLines_array().getCount();
     if (numLinesGroups != 0)
-        LOG << "there are " << numLinesGroups << " LinesGroups, but the reader does not supported this type of geometry" << std::endl;
+        LOG_DEBUG << "there are " << numLinesGroups << " LinesGroups, but the reader does not supported this type of geometry" << std::endl;
 /*
     for (int i=0; i< numLinesGroups ; i++)
     {
@@ -595,7 +595,7 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
 */
     int numLineStripsGroups = (int)meshElement->getLinestrips_array().getCount();
     if (numLineStripsGroups != 0)
-        LOG << "there are " << numLineStripsGroups << " LineStripsGroups, but the reader does not supported this type of geometry" << std::endl;
+        LOG_DEBUG << "there are " << numLineStripsGroups << " LineStripsGroups, but the reader does not supported this type of geometry" << std::endl;
 /*
     for (int i=0; i< numLineStripsGroups ; i++)
     {
@@ -605,21 +605,21 @@ void Plugin::ParseGeometry(domGeometry *dom_geometry, Object *mesh)
 */
 }
 
-Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Core::Drawable *&drawable)
+Box3f Plugin::BuildTriangles(domTriangles *domTriangles, GL::Drawable *&drawable)
 {
-    LOG << "triangle count: " << domTriangles->getCount() << std::endl;
+    LOG_DEBUG << "triangle count: " << domTriangles->getCount() << std::endl;
 
     daeString str_material = domTriangles->getMaterial();
-    Core::MaterialConfig *config;
+    GL::MaterialConfig *config;
     if (str_material)
     {
-        LOG << "Attaching material " << str_material << " to the drawable" << std::endl;
+        LOG_DEBUG << "Attaching material " << str_material << " to the drawable" << std::endl;
         config = _mapMaterialConfig[_mapMaterial[str_material]].Clone();
     }
     else
-        config = new Core::MaterialConfig();
+        config = new GL::MaterialConfig();
 
-    Array<Core::DefaultVertexType::Textured>    vertices(domTriangles->getCount() * 3);
+    Array<GL::DefaultVertexType::Textured>    vertices(domTriangles->getCount() * 3);
     Array<unsigned int>                         indices(domTriangles->getCount() * 3);
     Box3f                                       box;
 
@@ -716,7 +716,7 @@ Box3f Plugin::BuildTriangles(domTriangles *domTriangles, Core::Drawable *&drawab
 
         box += Vector3f(vertices[ivertex].coord[0], vertices[ivertex].coord[1], vertices[ivertex].coord[2]);
     }
-    drawable = new Core::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, indices, 3, GL::Enum::Triangles, config);
+    drawable = new GL::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, indices, 3, GL::Enum::Triangles, config);
     return box;
 }
 
@@ -736,7 +736,7 @@ void Plugin::ReadNodeTranforms(Object *node, domNodeRef domNode, Object *)
             domRotateRef rotateArray = (domRotate*)(domElement*)domNode->getContents()[i];
 
             if (rotateArray->getValue().getCount() != 4)
-                LOG << "something wrong when we load the rotation matrix transformation" << std::endl;
+                LOG_DEBUG << "something wrong when we load the rotation matrix transformation" << std::endl;
             else
             {
                 node->Matrix.AddRotation(Vector3f((float)rotateArray->getValue()[0], (float)rotateArray->getValue()[1], (float)rotateArray->getValue()[2]),
@@ -758,7 +758,7 @@ void Plugin::ReadNodeTranforms(Object *node, domNodeRef domNode, Object *)
             domTranslateRef translateArray = (domTranslate*)(domElement*)domNode->getContents()[i];
 
             if (translateArray->getValue().getCount() != 3)
-                LOG << "something wrong when we load the rotation matrix transformation" << std::endl;
+                LOG_DEBUG << "something wrong when we load the rotation matrix transformation" << std::endl;
             else
             {
                 // get the transation data
@@ -772,7 +772,7 @@ void Plugin::ReadNodeTranforms(Object *node, domNodeRef domNode, Object *)
             domScaleRef scaleArray = (domScale*)(domElement*)domNode->getContents()[i];
 
             if (scaleArray->getValue().getCount() != 3)
-                LOG << "something wrong when we load the rotation matrix transformation" << std::endl;
+                LOG_DEBUG << "something wrong when we load the rotation matrix transformation" << std::endl;
             else
             {
                 // get the rotation data

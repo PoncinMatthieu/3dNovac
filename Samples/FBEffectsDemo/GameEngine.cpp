@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace FBEffectsDemo;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
-  : Nc::Contrib::GameEngine(manager)
+GameEngine::GameEngine(Nc::Graphic::Window *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager)
+  : Nc::Contrib::GameEngine(window, manager), _sceneNodeFormatManager(sceneNodeFormatManager)
 {
 }
 
@@ -25,14 +25,14 @@ void GameEngine::ReleaseContent()
   delete _scene3d;
   delete _lightingMaterial;
 }
-
+/*
 void GameEngine::CreateWindow(Nc::Graphic::Window *win)
 {
     // create the window
     win->Create("FBEffects", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
     SetWindow(win);
 }
-
+*/
 void GameEngine::LoadContent()
 {
   // create the scene
@@ -64,7 +64,7 @@ void GameEngine::LoadContent()
   _fbEffect->AddChild(leffect);
 
   // loading de la scene
-  Graphic::Object *scene = _sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>();
+  Graphic::Object *scene = _sceneNodeFormatManager->Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>();
   leffect->AddChild(scene);
 
   // creation d'une light

@@ -28,7 +28,7 @@
 #define NC_GRAPHIC_MATERIAL_IMATERIAL_H_
 
 #include "../Scene/SceneGraph.h"
-#include "../Core/GL/VertexDescriptor.h"
+#include "../GL/VertexDescriptor.h"
 
 namespace Nc
 {
@@ -52,16 +52,16 @@ namespace Nc
                 virtual bool    IsCompatible(const GL::VertexDescriptor &)          {return true;}
 
                 /** Configure the given goemetry. */
-                virtual bool    Configure(Core::Drawable &drawable) = 0;
+                virtual bool    Configure(GL::Drawable &drawable) = 0;
 
                 /** Render the given drawable with the model matrix scene. */
-                void            Render(SceneGraph *scene, Core::Drawable &drawable)
+                void            Render(SceneGraph *scene, GL::Drawable &drawable)
                 {
                     Render(scene, scene->ModelMatrix(), drawable);
                 }
 
                 /** Render the given drawable with the given model matrix. */
-                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable) = 0;
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable) = 0;
 
                 friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const IMaterial &m)
                 {

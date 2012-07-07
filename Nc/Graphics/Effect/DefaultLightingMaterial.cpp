@@ -25,12 +25,12 @@
 -----------------------------------------------------------------------------*/
 
 #include "DefaultLightingMaterial.h"
-#include "../Core/Drawable.h"
+#include "../GL/Drawable.h"
 #include "LightingEffect.h"
 #include "../Scene/Visitors.h"
 
 using namespace Nc::Graphic;
-using namespace Nc::Graphic::Core::DefaultVertexType;
+using namespace Nc::Graphic::GL::DefaultVertexType;
 
 DefaultLightingMaterial::DefaultLightingMaterial() : ILightingMaterial("DefaultLightingMaterial")
 {
@@ -67,7 +67,7 @@ DefaultLightingMaterial::~DefaultLightingMaterial()
 {
 }
 
-bool    DefaultLightingMaterial::Configure(Core::Drawable &drawable)
+bool    DefaultLightingMaterial::Configure(GL::Drawable &drawable)
 {
     GL::VertexDescriptor  &desc = drawable.Geometry->Descriptor();
     _program.Enable();
@@ -139,7 +139,7 @@ void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Core::Drawable &drawable)
 }
 #endif
 
-void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable)
+void    DefaultLightingMaterial::Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable)
 {
     if (_currentLightingEffect == NULL)
         return;

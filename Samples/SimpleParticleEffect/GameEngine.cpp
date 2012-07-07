@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace SimpleParticleEffect;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(manager)
+GameEngine::GameEngine(Nc::Graphic::Window *window, Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(window, manager)
 {
 }
 
@@ -24,7 +24,7 @@ void GameEngine::ReleaseContent()
 {
     delete _scene;
 }
-
+/*
 void GameEngine::CreateWindow(Window *win)
 {
     bool            fullscreen = false;
@@ -39,7 +39,7 @@ void GameEngine::CreateWindow(Window *win)
     win->Create("Simple Particle Effect", winSize, pattern, "Nc:Image:icone.png", 3);
     SetWindow(win);
 }
-
+*/
 void GameEngine::LoadContent()
 {
     // creation de la camera

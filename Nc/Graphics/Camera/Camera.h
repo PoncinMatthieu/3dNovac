@@ -27,11 +27,11 @@
 #ifndef NC_GRAPHICS_CAMERA_CAMERA_H_
 #define NC_GRAPHICS_CAMERA_CAMERA_H_
 
-#include "../Core/GL.h"
+#include "../GL/GL.h"
 #include <Nc/Core/System/Input/Event.h>
 #include "../Define.h"
-#include "../Window/Window/Window.h"
-#include "../Window/Input/WindowInput.h"
+#include "../Window/Window.h"
+#include "../Input/WindowInput.h"
 #include "../Object/Object.h"
 
 namespace Nc
