@@ -5,7 +5,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace FBEffectsDemo;
 
-FrameBufferEffect::FrameBufferEffect(Graphic::Window *window)
+FrameBufferEffect::FrameBufferEffect(Graphic::IWindow *window)
   : Effect(), _window(window), _postProcessActivated(true)
 {
 	_camera2d = new Camera2d(_window);

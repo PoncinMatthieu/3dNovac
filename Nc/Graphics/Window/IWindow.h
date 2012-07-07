@@ -40,13 +40,14 @@ namespace Nc
         class WindowInput;
         class ICursor;
         class SubWindow;
+        class SceneGraphManager;
 
         /// Interface to create and manage a window for multiarchi.
         /**
             The window takes a SceneGraphManager in it's constructor, however if you gives a null pointer, the window will create a new instance of SceneGraphManager.
             This allow you to define your own scene manager. But be carefull, The scene manager will be deleted in the destructor of the window.
         */
-        class LGRAPHICS Window : public Utils::NonCopyable
+        class LGRAPHICS IWindow : public Utils::NonCopyable
         {
             public:
                 enum Style
@@ -60,10 +61,10 @@ namespace Nc
                 typedef std::list<SubWindow*>       ListSubWindow;
 
             public:
-                Window(SceneGraphManager *sceneGraphManager = NULL);
-                virtual ~Window();
+                IWindow(SceneGraphManager *sceneGraphManager = NULL);
+                virtual ~IWindow();
 
-                /** \return true if the Window is create. */
+                /** \return true if the IWindow is create. */
                 virtual bool        IsCreate() const  {return _isCreate;}
 
                 /** Interface to create the window with the suitable attributes. */
@@ -174,6 +175,8 @@ namespace Nc
                 friend class SubWindow;
                 friend class ICursor;
         };
+
+        typedef Utils::Mask<IWindow::Style>      WindowStyle;
     }
 }
 

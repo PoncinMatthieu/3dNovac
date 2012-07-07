@@ -7,7 +7,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace SampleViewer;
 
-GameEngine::GameEngine(Nc::Graphic::Window *window, Nc::Engine::Manager *manager)
+GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(window, manager)
 {
     _sampleFactory = new SampleFactory(manager);

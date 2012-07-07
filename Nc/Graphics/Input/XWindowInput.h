@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        class XWindow;
+        class Window;
 
         /// Implementation of a WindowInput for an X11 System.
         /**
@@ -44,7 +44,7 @@ namespace Nc
         class LCORE XWindowInput : public WindowInput
         {
             public:
-                XWindowInput(XWindow *win);
+                XWindowInput(Window *win);
                 virtual ~XWindowInput();
 
                 void Create();

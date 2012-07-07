@@ -12,7 +12,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace FrustumDemo;
 
-GameEngine::GameEngine(Nc::Graphic::Window *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager)
+GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(window, manager), _sceneNodeFormatManager(sceneNodeFormatManager)
 {
 }
@@ -25,22 +25,7 @@ void GameEngine::ReleaseContent()
 {
   delete _scene3d;
 }
-/*
-void GameEngine::CreateWindow(Window *win)
-{
-    bool            fullscreen = false;
-    unsigned long   pattern = Window::Titlebar | Window::Closeable | Window::Resizeable;
-    Vector2ui       winSize(1600, 600);
 
-    if (fullscreen)
-    {
-        pattern |= Window::Fullscreen;
-        winSize = Vector2i(1680, 1050);
-    }
-    win->Create("Frustum Demo", winSize, pattern, "Nc:Image:icone.png", 3);
-    SetWindow(win);
-}
-*/
 void GameEngine::LoadContent()
 {
     // creation de la scene

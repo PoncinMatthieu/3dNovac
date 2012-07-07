@@ -5,17 +5,17 @@
 
 using namespace Nc;
 
-void CreateEngines(Engine::Manager &manager)
+void CreateEngines(Engine::Manager &manager, Graphic::Window &window)
 {
   // create the graphic engine, by using the CreateWindow member function of our game engine
-  Graphic::Engine *graphic = new Graphic::Engine(SimpleParticleEffect::GameEngine::ClassName(), &manager, (Graphic::Engine::CreateWindowFunc)&SimpleParticleEffect::GameEngine::CreateWindow);
+  Graphic::Engine *graphic = new Graphic::Engine(&window, &manager);
   // limit its frame rate to 60 frame by second, and add the engine to the manager
 //  graphic->LimitFrameRate(60);
   manager.AddEngine(graphic);
   LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << std::endl;
 
   // create our game engine
-  SimpleParticleEffect::GameEngine *game = new SimpleParticleEffect::GameEngine(&manager);
+  SimpleParticleEffect::GameEngine *game = new SimpleParticleEffect::GameEngine(&window, &manager);
   // limit its frame rate to 60 frame by second to avoid to take 100% of the CPU, and add the engine to the manager
   game->LimitFrameRate(60);
   manager.AddEngine(game);
@@ -26,21 +26,25 @@ void CreateEngines(Engine::Manager &manager)
 
 int main()
 {
-  try
-    {
-      // create the game engine with the config file name
-      Engine::Manager game("3dNovac.conf");
+    Graphic::WindowStyle    style = Graphic::Window::Titlebar | Graphic::Window::Closeable | Graphic::Window::Resizeable;
+    Vector2ui               winSize(800, 600);
 
-      // create the engines
-      CreateEngines(game);
-
-      // start the engines and wait it
-      game.Start();
-      game.Wait();
-    }
-  catch (const std::exception &e)
+    try
     {
-      LOG << "Fatal error: " << e.what() << std::endl;
+        // create the game engine with the config file name
+        Engine::Manager game("3dNovac.conf");
+        Graphic::Window window("Simple Particle Effect", winSize, style, "Nc:Image:icone.png", 3);
+
+        // create the engines
+        CreateEngines(game, window);
+
+        // start the engines and wait it
+        game.Start();
+        game.Wait();
     }
-  return 0;
+    catch (const std::exception &e)
+    {
+        LOG << "Fatal error: " << e.what() << std::endl;
+    }
+    return 0;
 }

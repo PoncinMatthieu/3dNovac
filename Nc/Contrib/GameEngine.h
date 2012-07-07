@@ -44,7 +44,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::MainEngine, Nc::Contrib::GameEngine);
 
             public:
-                GameEngine(Graphic::Window *window, Engine::Manager *manager, unsigned int pattern = Engine::HasAContext | Engine::WaitingLoadContentsOfOthersEngines,
+                GameEngine(Graphic::IWindow *window, Engine::Manager *manager, unsigned int pattern = Engine::HasAContext | Engine::WaitingLoadContentsOfOthersEngines,
                            unsigned char deletePriority = 2, unsigned char loadingContextPriority = 2, unsigned int loadingPriority = 2);
                 virtual ~GameEngine();
 
@@ -57,7 +57,7 @@ namespace Nc
                 virtual void    DisableContext();
 
             protected:
-                Graphic::Window         *_window;       ///< instance of the window used to render
+                Graphic::IWindow         *_window;       ///< instance of the window used to render
                 Graphic::GLContext      *_context;      ///< instance of the context shared with the context of the graphic engine
         };
     }

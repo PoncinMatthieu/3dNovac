@@ -13,7 +13,7 @@ namespace SokobanDemo
             NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, SokobanDemo::GameEngine);
 
      public:
-      GameEngine(Nc::Graphic::Window *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager);
+      GameEngine(Nc::Graphic::IWindow *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager);
       ~GameEngine();
 
      private:

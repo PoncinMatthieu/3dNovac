@@ -130,7 +130,7 @@
     using namespace Nc::Math;
 
 // includes interne
-    #include "Window/Window.h"
+    #include "Window/IWindow.h"
 
 // define
     #ifdef  _DEBUG

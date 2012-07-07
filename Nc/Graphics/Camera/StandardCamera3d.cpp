@@ -95,7 +95,7 @@ const char *StandardCamera3d::XpmHandClose[] =
     "0,0"
 };
 
-StandardCamera3d::StandardCamera3d(Window *attachedWindow, float ratioAspect, float nearD, float farD, float fielOfView, Pattern p)
+StandardCamera3d::StandardCamera3d(IWindow *attachedWindow, float ratioAspect, float nearD, float farD, float fielOfView, Pattern p)
     : Camera3d(attachedWindow, ratioAspect, nearD, farD, fielOfView),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),
@@ -126,7 +126,7 @@ StandardCamera3d::StandardCamera3d(Window *attachedWindow, float ratioAspect, fl
     MajEye();
 }
 
-StandardCamera3d::StandardCamera3d(Window *attachedWindow, Pattern p)
+StandardCamera3d::StandardCamera3d(IWindow *attachedWindow, Pattern p)
     : Camera3d(attachedWindow, (float)attachedWindow->Width()/(float)attachedWindow->Height(), 0.1f, 1000.f, 70.f),
       _mouveButton(System::Mouse::Right), _pattern(p),
       _inhibitMovement(false), _drawFrustum(false),

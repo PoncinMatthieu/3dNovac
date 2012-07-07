@@ -4,15 +4,16 @@
 #include "GameEngine.h"
 
 using namespace std;
+using namespace Nc;
 
-void CreateEngines(Nc::Engine::Manager *manager)
+void CreateEngines(Engine::Manager *manager, Graphic::Window &window, Graphic::SceneNodeFormatManager &sceneNodeformatManager)
 {
-    Nc::Graphic::Engine *graphic = new Nc::Graphic::Engine(FrustumDemo::GameEngine::ClassName(), manager, (Nc::Graphic::Engine::CreateWindowFunc)&FrustumDemo::GameEngine::CreateWindow);
+    Graphic::Engine *graphic = new Graphic::Engine(&window, manager);
 //    graphic->LimitFrameRate(60);
     manager->AddEngine(graphic);
     LOG << "Creation of " << *graphic << "\t\t\t\tDONE" << endl;
 
-    FrustumDemo::GameEngine *game = new FrustumDemo::GameEngine(manager);
+    FrustumDemo::GameEngine *game = new FrustumDemo::GameEngine(&window, &sceneNodeformatManager, manager);
     game->LimitFrameRate(60);
     manager->AddEngine(game);
     LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << endl;
@@ -21,16 +22,22 @@ void CreateEngines(Nc::Engine::Manager *manager)
 
 int main()
 {
-	try
+    Graphic::WindowStyle    style = Graphic::Window::Titlebar | Graphic::Window::Closeable | Graphic::Window::Resizeable;
+    Vector2ui               winSize(1600, 600);
+
+    try
 	{
-	  Nc::Engine::Manager demo("3dNovac.conf");
-	  CreateEngines(&demo);
-	  demo.Start();
-	  demo.Wait();
+        Engine::Manager demo("3dNovac.conf");
+        Graphic::Window window("Frustum Demo", winSize, style, "Nc:Image:icone.png", 3);
+        Graphic::SceneNodeFormatManager sceneNodeformatManager;
+
+        CreateEngines(&demo, window, sceneNodeformatManager);
+        demo.Start();
+        demo.Wait();
 	}
 	catch (const std::exception &e)
 	{
 		LOG << "Fatal error: " << e.what() << std::endl;
 	}
-  return 0;
+    return 0;
 }

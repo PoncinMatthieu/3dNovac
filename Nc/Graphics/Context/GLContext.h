@@ -37,11 +37,11 @@ namespace Nc
 {
     namespace Graphic
     {
-        class Window;
+        class IWindow;
 
         /// Interface to provide an OpenGL context for multiarchi.
         /**
-            Typically a GLContext is created in 2 ways. With a Window by calling the method Window::CreateGLContext(),
+            Typically a GLContext is created in 2 ways. With a Window by calling the method IWindow::CreateGLContext(),
             or with an other context by calling the method GLContext::CreateNewSharedContext().
 
             \todo [Performance] Find a way to stop Enabling/Disabling the context at each look... we already tried once, but it doesn't seem to work on linux (with an nvidia) and window (with an ati) even if according to the opengl specification it should work. See branch '_StopEnabling'.
@@ -52,7 +52,7 @@ namespace Nc
                 typedef std::map<unsigned int, GLContext*>	MapPIDContext;
 
             public:
-                GLContext(Window *win);
+                GLContext(IWindow *win);
                 virtual ~GLContext();
 
                 /** Create the context opengl. */
@@ -71,10 +71,10 @@ namespace Nc
                 virtual void        SwapBuffers() = 0;
 
                 /** \return the attached window to the context. */
-                inline Window       *AttachedWindow()                   {return _win;}
+                inline IWindow       *AttachedWindow()                   {return _win;}
 
             protected:
-                Window			*_win;				///< The instance of the associated window.
+                IWindow			*_win;				///< The instance of the associated window.
                 bool			_isCreate;			///< Statement to define if the context is create.
                 bool			_isShared;			///< Statement to define if the context is shared.
                 unsigned int	_currentThreadId;	///< Register the thread id in which the context is currently bound.

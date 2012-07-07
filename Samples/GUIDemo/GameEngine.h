@@ -23,7 +23,7 @@ namespace GUIDemo
             };
 
         public:
-            GameEngine(Nc::Graphic::Window *window, Nc::Engine::Manager *manager);
+            GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager);
             virtual ~GameEngine();
 
             virtual void    LoadContent();

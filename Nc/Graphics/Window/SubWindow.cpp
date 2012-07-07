@@ -32,8 +32,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 
 
-SubWindow::SubWindow(Window *parent, SceneGraphManager *sceneGraphManager)
-    : Window(sceneGraphManager), _parent(parent)
+SubWindow::SubWindow(IWindow *parent, SceneGraphManager *sceneGraphManager)
+    : IWindow(sceneGraphManager), _parent(parent)
 {
 }
 
@@ -146,7 +146,7 @@ void    SubWindow::Render(GLContext *context)
 		InitFbo();
 
     _fbo.Enable();
-    Window::Render(context);
+    IWindow::Render(context);
     _fbo.Disable();
 }
 

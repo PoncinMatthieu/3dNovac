@@ -37,7 +37,7 @@ using namespace Nc::Graphic;
 
 double      Graphic::Engine::_elapsedTime = 0;
 
-Graphic::Engine::Engine(Window *attachedWindow, Nc::Engine::Manager *manager)
+Graphic::Engine::Engine(IWindow *attachedWindow, Nc::Engine::Manager *manager)
 	: Engine::IEngine(manager, Nc::Engine::HasAContext | Nc::Engine::WaitingLoadContentsOfOthersEngines | Nc::Engine::Synchronized, 0xff, 0xff, 0xff),
       _win(attachedWindow), _context(NULL)
 {

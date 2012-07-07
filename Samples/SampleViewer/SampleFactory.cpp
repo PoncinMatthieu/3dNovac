@@ -23,7 +23,7 @@ SampleFactory::SampleFactory(Nc::Engine::Manager *manager)
     _sampleNames.push_back("bSplinesDemo");
 }
 
-Nc::Contrib::GameEngine     *SampleFactory::CreateSample(Graphic::Window *window, const std::string &name)
+Nc::Contrib::GameEngine     *SampleFactory::CreateSample(Graphic::IWindow *window, const std::string &name)
 {
     Nc::Contrib::GameEngine *engine = NULL;
     if (name == "bSplinesDemo")

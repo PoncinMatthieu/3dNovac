@@ -44,7 +44,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Widget, System::Object, System::Object, Nc::GUI::SubWindow);
 
             public:
-                SubWindow(Graphic::Window *windowParent, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0));
+                SubWindow(Graphic::IWindow *windowParent, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0));
                 SubWindow(const SubWindow &w);
                 SubWindow &operator = (const SubWindow &w);
                 virtual ~SubWindow();

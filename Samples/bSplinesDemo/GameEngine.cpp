@@ -9,7 +9,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace bSplinesDemo;
 
-GameEngine::GameEngine(Nc::Graphic::Window *window, Nc::Engine::Manager *manager)
+GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(window, manager)
 {
 }
@@ -22,14 +22,7 @@ void GameEngine::ReleaseContent()
 {
     delete _scene2d;
 }
-/*
-void GameEngine::CreateWindow(Nc::Graphic::Window *win)
-{
-    // create the window
-    win->Create("bSpline 2d", Vector2ui(800,600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
-    SetWindow(win);
-}
-*/
+
 void GameEngine::LoadContent()
 {
   _scene2d = new GUI::SceneGraph(_window);

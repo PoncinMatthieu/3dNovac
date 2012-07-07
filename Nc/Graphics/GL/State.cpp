@@ -61,7 +61,7 @@ void    State::InitContext(GLContext *context)
     CheckGLVersion();
 
     // init states
-    Window *win = _context->AttachedWindow();
+    IWindow *win = _context->AttachedWindow();
     _currentViewportX = 0;
     _currentViewportY = 0;
     _currentViewportWidth = win->Width();

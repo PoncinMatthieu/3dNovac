@@ -31,7 +31,7 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-SceneGraph::SceneGraph(Graphic::Window *attachedWindow)
+SceneGraph::SceneGraph(Graphic::IWindow *attachedWindow)
     : Graphic::SceneGraph(true),
       _widgetFocused(NULL), _attachedWindow(attachedWindow)
 {

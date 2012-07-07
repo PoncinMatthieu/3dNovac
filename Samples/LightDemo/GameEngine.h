@@ -16,7 +16,7 @@ namespace LightDemo
             NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, LightDemo::GameEngine);
 
         public:
-            GameEngine(Nc::Graphic::Window *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager);
+            GameEngine(Nc::Graphic::IWindow *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager);
             virtual ~GameEngine();
 
             virtual void    LoadContent();

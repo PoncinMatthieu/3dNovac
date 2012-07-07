@@ -31,7 +31,7 @@
 #include "../GL/GL.h"
 #include <GL/glx.h>
 
-#include "Window.h"
+#include "IWindow.h"
 #include "../Input/XWindowInput.h"
 #include "XCursor.h"
 
@@ -39,18 +39,18 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Implementation of a Window for an X11 server.
+        /// Implementation of a IWindow for an X11 server.
         /**
-            For more detail, please see the Window documentation.
+            For more detail, please see the IWindow documentation.
         */
-        class XWindow : public Window
+        class Window : public IWindow
         {
             public:
-                XWindow(SceneGraphManager *sceneGraphManager = NULL);
-                XWindow(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager = NULL);
-                virtual ~XWindow();
+                Window(SceneGraphManager *sceneGraphManager = NULL);
+                Window(const std::string &title, const Math::Vector2ui &size, const WindowStyle &style, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager = NULL);
+                virtual ~Window();
 
-                virtual void            Create(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icone, unsigned int antialiasingLevel);
+                virtual void            Create(const std::string &title, const Math::Vector2ui &size, const WindowStyle &style, const Utils::FileName &icone, unsigned int antialiasingLevel);
                 virtual void            UseExistingWindow(void *disp, int winId, const Math::Vector2ui &size, unsigned int antialiasingLevel);
                 virtual GLContext      *CreateGLContext();
                 virtual void            Close();
@@ -63,7 +63,7 @@ namespace Nc
 
             private:
                 void                    SwitchToFullscreen(const Math::Vector2ui &size);
-                void                    SetWindowStyle(const Utils::Mask<Style> &style);
+                void                    SetWindowStyle(const WindowStyle &style);
                 void                    ChooseBestVisualInfo();
 
                 Display         *_display;

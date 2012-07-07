@@ -16,7 +16,7 @@ namespace SimpleParticleEffect
             NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, SimpleParticleEffect::GameEngine);
 
         public:
-            GameEngine(Nc::Graphic::Window *window, Nc::Engine::Manager *manager);
+            GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager);
             virtual ~GameEngine();
 
             virtual void    LoadContent();

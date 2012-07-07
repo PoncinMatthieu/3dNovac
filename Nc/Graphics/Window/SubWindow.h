@@ -28,7 +28,7 @@
 #define NC_GRAPHICS_WINDOW_SUBWINDOW_H_
 
 #include "../Define.h"
-#include "Window.h"
+#include "IWindow.h"
 #include "../GL/FrameBuffer.h"
 #include "../GL/Texture.h"
 
@@ -44,16 +44,16 @@ namespace Nc
             A SubWindow will usually be used with a GUI::SubWindow so the sub window can be rendered into the GUI of your application.
 
             \sa
-                - Window
+                - IWindow
                 - GUI::SubWindow
 
             \todo Generate Entered/Left mouse event.
             \todo Change the cursor at Entered/Left mouse event.
         */
-        class LGRAPHICS SubWindow : public Window
+        class LGRAPHICS SubWindow : public IWindow
         {
             public:
-                SubWindow(Window *parent, SceneGraphManager *sceneGraphManager = NULL);
+                SubWindow(IWindow *parent, SceneGraphManager *sceneGraphManager = NULL);
                 virtual ~SubWindow();
 
                 /** Create the sub window by defining it's initial size. */
@@ -90,7 +90,7 @@ namespace Nc
                 virtual ICursor     *NewCursor();
 
                 /** \return the parent of the sub window. */
-                Window              *Parent() const                                     {return _parent;}
+                IWindow              *Parent() const                                     {return _parent;}
 
                 /** \return the sprite used to store the result of the off screen rendering. */
                 const GL::Texture   &RenderingResult() const                            {return _colorTexture;}
@@ -99,7 +99,7 @@ namespace Nc
                 void                InitFbo();
 
             protected:
-                Window              *_parent;           ///< parent of the sub window.
+                IWindow              *_parent;           ///< parent of the sub window.
                 Vector2i            _pos;               ///< position relative to the parent.
                 GL::FrameBuffer     _fbo;               ///< frame buffer used to render off screen.
                 GL::Texture		    _colorTexture;      ///< texture used to store the result of the rendering off screen.

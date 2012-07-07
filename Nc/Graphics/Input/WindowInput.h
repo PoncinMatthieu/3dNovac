@@ -35,23 +35,23 @@ namespace Nc
 {
     namespace Graphic
     {
-        class Window;
+        class IWindow;
         class SubWindow;
 
         /// Interface to manage the window inputs (keyboard/mouse/etc).
         /**
             Manage all the input associated to the window.
 
-            A WindowInput is automatically created with his associated window so to get it call Window::GetInput().
+            A WindowInput is automatically created with his associated window so to get it call IWindow::GetInput().
 
             \sa
-                - Window
+                - IWindow
                 - GLContext
         */
         class LGRAPHICS WindowInput : public System::Input
         {
             public:
-                WindowInput(Window *win);
+                WindowInput(IWindow *win);
                 virtual ~WindowInput();
 
                 /** Create and init the input. */
@@ -60,7 +60,7 @@ namespace Nc
                 virtual void CheckEvents()                                                  {}
 
                 /** \return the attached window. */
-                Window  *AttachedWindow() const                                             {return _win;}
+                IWindow  *AttachedWindow() const                                             {return _win;}
 
                 /** Generate a resize event. */
                 void GenereResizeEvent(unsigned int x, unsigned int y);
@@ -97,7 +97,7 @@ namespace Nc
                 Math::Vector2i          _mousePosition;                             ///< Store the current position of the mouse.
                 bool                    _mouseIn;                                   ///< statement used to know if the mouse is in or out of the window.
                 bool                    _keyRepeat;                                 ///< true if the key are repeating.
-                Window                  *_win;                                      ///< instance to the attached windows.
+                IWindow                  *_win;                                      ///< instance to the attached windows.
         };
     }
 }

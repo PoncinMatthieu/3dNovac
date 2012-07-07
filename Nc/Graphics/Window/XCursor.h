@@ -35,13 +35,13 @@ namespace Nc
 {
     namespace Graphic
     {
-        class XWindow;
+        class Window;
 
         /// Implementation of a ICursor for an X11 system.
         /**
             The cursor is actually loading the data with only 1 bit per pixel.
 
-            To create a cursor you will need to have an XWindow but you shouldn't create directly a cursor, the best way is to use the method Window::NewCursor().
+            To create a cursor you will need to have an XWindow but you shouldn't create directly a cursor, the best way is to use the method IWindow::NewCursor().
 
             \todo We have disabled cursor management when the window is created by using an existing window. Because cursor management cause freese bug with Qt.
             \todo Implement cursor loading with more than 1 bit per pixel (it's a problem on X11).
@@ -50,7 +50,7 @@ namespace Nc
         class Cursor : public ICursor
         {
             public:
-                Cursor(XWindow *w);
+                Cursor(Window *w);
                 Cursor(const Cursor &c);
                 virtual ~Cursor();
 
@@ -72,7 +72,7 @@ namespace Nc
             private:
                 void    CreateHiddenCursor();
 
-                XWindow                         *_win;
+                Window                         *_win;
                 Utils::SmartPointer< ::Cursor>  _cursor;
                 static ::Cursor                 *_hiddenCursor;      // X11 doesn't provide any system to hide the cursor, so we create a transparent one
                 static unsigned int             _nbCursor;

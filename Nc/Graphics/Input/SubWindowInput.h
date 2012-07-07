@@ -42,7 +42,7 @@ namespace Nc
         class LGRAPHICS SubWindowInput : public WindowInput
         {
             public:
-                SubWindowInput(Window *win, WindowInput *parent);
+                SubWindowInput(IWindow *win, WindowInput *parent);
                 virtual ~SubWindowInput();
 
                 /** Create and init the input */

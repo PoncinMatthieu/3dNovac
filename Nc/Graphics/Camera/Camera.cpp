@@ -29,7 +29,7 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Camera::Camera(Window *attachedWindow, bool is2d)
+Camera::Camera(IWindow *attachedWindow, bool is2d)
     : Object(), _window(attachedWindow), _resized(true), _setAsCurrentCamera(true), _fix(true), _is2d(is2d), _useWindowSizeForViewport(true)
 {
 }

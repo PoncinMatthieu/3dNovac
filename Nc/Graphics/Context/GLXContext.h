@@ -48,7 +48,7 @@ namespace Nc
         class LCORE GLXContext : public GLContext
         {
             public:
-                GLXContext(XWindow *win);
+                GLXContext(Window *win);
                 virtual ~GLXContext();
 
                 virtual void        Create(GLContext *sharedContext = NULL);

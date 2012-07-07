@@ -29,7 +29,7 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-SubWindowInput::SubWindowInput(Window *win, WindowInput *parent)
+SubWindowInput::SubWindowInput(IWindow *win, WindowInput *parent)
     : WindowInput(win), _parent(parent)
 {
 

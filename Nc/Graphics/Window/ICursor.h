@@ -81,7 +81,7 @@ namespace Nc
         class LGRAPHICS ICursor
         {
             public:
-                ICursor(Window *attachedWindow) : _attachedWindow(attachedWindow)   {}
+                ICursor(IWindow *attachedWindow) : _attachedWindow(attachedWindow)   {}
                 virtual ~ICursor()                  {}
 
                 /** \return a clone of the current cursor. */
@@ -101,7 +101,7 @@ namespace Nc
                 virtual void    LoadFromData(const unsigned char *data, const unsigned char *mask, const Math::Vector2ui &size, const Math::Vector2ui &posCenter) = 0;
 
                 /** Set the attached window, can be call to attach the cursor to a sub window .*/
-                void            AttachWindow(Window *attachedWindow)    {_attachedWindow = attachedWindow;}
+                void            AttachWindow(IWindow *attachedWindow)    {_attachedWindow = attachedWindow;}
 
             protected:
                 void            SetCurrentCursor(ICursor *cur)
@@ -110,7 +110,7 @@ namespace Nc
                 }
 
             protected:
-                Window          *_attachedWindow;       ///< instance of the attached window.
+                IWindow          *_attachedWindow;       ///< instance of the attached window.
         };
     }
 }

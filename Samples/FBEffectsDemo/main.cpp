@@ -4,16 +4,16 @@
 
 using namespace Nc;
 
-void CreateEngines(Nc::Engine::Manager &manager)
+void CreateEngines(Nc::Engine::Manager &manager, Nc::Graphic::Window &window, Graphic::SceneNodeFormatManager &sceneNodeformatManager)
 {
 	// creation du graphicEngine
-	Graphic::Engine *graphicEngine = new Graphic::Engine(FBEffectsDemo::GameEngine::ClassName(), &manager, (Graphic::Engine::CreateWindowFunc)&FBEffectsDemo::GameEngine::CreateWindow);
+	Graphic::Engine *graphicEngine = new Graphic::Engine(&window, &manager);
 	//graphicEngine->LimitFrameRate(60);
 	manager.AddEngine(graphicEngine);
 	LOG << "Creation of the " << *graphicEngine << "\t\tDONE" << std::endl;
 
 	// creation du gameEngine
-	FBEffectsDemo::GameEngine *gameEngine = new FBEffectsDemo::GameEngine(&manager);
+	FBEffectsDemo::GameEngine *gameEngine = new FBEffectsDemo::GameEngine(&window, &sceneNodeformatManager, &manager);
 	gameEngine->LimitFrameRate(60);
 	manager.AddEngine(gameEngine);
 	LOG << "Creation of the " << *gameEngine << "\t\tDONE" << std::endl;
@@ -21,11 +21,16 @@ void CreateEngines(Nc::Engine::Manager &manager)
 
 int main()
 {
+    Graphic::WindowStyle    style = Graphic::Window::Titlebar | Graphic::Window::Closeable | Graphic::Window::Resizeable;
+    Vector2ui               winSize(800,600);
+
 	try
 	{
 		Nc::Engine::Manager game("3dNovac.conf");
+        Graphic::Window window("FBEffects", winSize, style, "Nc:Image:icone.png", 3);
+        Nc::Graphic::SceneNodeFormatManager sceneNodeformatManager;
 
-		CreateEngines(game);
+		CreateEngines(game, window, sceneNodeformatManager);
 
 		game.Start();
 		game.Wait();

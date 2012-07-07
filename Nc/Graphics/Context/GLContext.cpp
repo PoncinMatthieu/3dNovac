@@ -26,13 +26,13 @@
 
 #include <sys/types.h>
 #include "GLContext.h"
-#include "../Window/Window.h"
+#include "../Window/IWindow.h"
 
 using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic;
 
-GLContext::GLContext(Window *win) : _win(win)
+GLContext::GLContext(IWindow *win) : _win(win)
 {
     if (_win == NULL)
         throw Utils::Exception("GLContext", "Can't create any Renderer if the window is null");

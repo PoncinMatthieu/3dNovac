@@ -24,7 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "../Window/Window.h"
+#include "../Window/IWindow.h"
 #include "../Window/SubWindow.h"
 #include "../Window/ICursor.h"
 #include "WindowInput.h"
@@ -33,7 +33,7 @@ using namespace Nc;
 using namespace Nc::Math;
 using namespace Nc::Graphic;
 
-WindowInput::WindowInput(Window *win)
+WindowInput::WindowInput(IWindow *win)
     : _win(win)
 {
     _keyRepeat = true;
@@ -108,7 +108,7 @@ void WindowInput::GenereEvent(const System::Event &e)
     // forward the event to sub windows
     // and recreate some events like mouse entered/left if needed
     System::Locker l(&_win->_mutexListSubWindow);
-    for (Window::ListSubWindow::iterator it = _win->_listSubWindow.begin(); it != _win->_listSubWindow.end(); ++it)
+    for (IWindow::ListSubWindow::iterator it = _win->_listSubWindow.begin(); it != _win->_listSubWindow.end(); ++it)
         ForwardEventToSubWindow(*it, e);
 }
 

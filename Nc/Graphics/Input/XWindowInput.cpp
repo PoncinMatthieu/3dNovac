@@ -32,7 +32,7 @@ using namespace Nc;
 using namespace Nc::System;
 using namespace Nc::Graphic;
 
-XWindowInput::XWindowInput(XWindow *win) : WindowInput(win)
+XWindowInput::XWindowInput(Window *win) : WindowInput(win)
 {
     _inputContext = NULL;
     _inputMethod = NULL;
@@ -51,18 +51,18 @@ void XWindowInput::Create()
     _lastKeyReleaseEvent.type = -1;
 
     // Get the atom defining the close event
-    _atomClose = XInternAtom(static_cast<XWindow*>(_win)->_display, "WM_DELETE_WINDOW", false);
-    XSetWMProtocols(static_cast<XWindow*>(_win)->_display, static_cast<XWindow*>(_win)->_xwin, &_atomClose, 1);
+    _atomClose = XInternAtom(static_cast<Window*>(_win)->_display, "WM_DELETE_WINDOW", false);
+    XSetWMProtocols(static_cast<Window*>(_win)->_display, static_cast<Window*>(_win)->_xwin, &_atomClose, 1);
     if (!_atomClose)
         throw Utils::Exception("XWindowInput", "Failed to fetch the atom defining the close event");
 
     // Create the input context
-    _inputMethod = XOpenIM(static_cast<XWindow*>(_win)->_display, NULL, NULL, NULL);
+    _inputMethod = XOpenIM(static_cast<Window*>(_win)->_display, NULL, NULL, NULL);
     if (!_inputMethod)
         throw Utils::Exception("XWindowInput", "Failed to create input method");
     _inputContext = XCreateIC( _inputMethod,
-                                XNClientWindow,  static_cast<XWindow*>(_win)->_xwin,
-                                XNFocusWindow,   static_cast<XWindow*>(_win)->_xwin,
+                                XNClientWindow,  static_cast<Window*>(_win)->_xwin,
+                                XNFocusWindow,   static_cast<Window*>(_win)->_xwin,
                                 XNInputStyle,    XIMPreeditNothing | XIMStatusNothing,
                                 NULL);
     if (!_inputContext)
@@ -72,7 +72,7 @@ void XWindowInput::Create()
     unsigned long  eventMask =  FocusChangeMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask |
                                 PointerMotionMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
                                 EnterWindowMask | LeaveWindowMask;
-    XSelectInput(static_cast<XWindow*>(_win)->_display, static_cast<XWindow*>(_win)->_xwin, eventMask);
+    XSelectInput(static_cast<Window*>(_win)->_display, static_cast<Window*>(_win)->_xwin, eventMask);
 }
 
 Bool CheckEvent(Display*, XEvent* event, XPointer userData)
@@ -85,10 +85,10 @@ void XWindowInput::CheckEvents()
 {
     if (_inputContext)
     {
-        //XLockDisplay(static_cast<XWindow*>(_win)->_display);
+        //XLockDisplay(static_cast<Window*>(_win)->_display);
         XEvent Event;
-        while (XCheckIfEvent(static_cast<XWindow*>(_win)->_display, &Event, &CheckEvent,
-                             reinterpret_cast<XPointer>(static_cast<XWindow*>(_win)->_xwin)))
+        while (XCheckIfEvent(static_cast<Window*>(_win)->_display, &Event, &CheckEvent,
+                             reinterpret_cast<XPointer>(static_cast<Window*>(_win)->_xwin)))
         {
             if (!ListenerListEmpty())
             {
@@ -102,7 +102,7 @@ void XWindowInput::CheckEvents()
                         // - KeyPress events are a little bit harder to handle: they depend on the EnableKeyRepeat state,
                         //   and we need to properly forward the first one.
                         char Keys[32];
-                        XQueryKeymap(static_cast<XWindow*>(_win)->_display, Keys);
+                        XQueryKeymap(static_cast<Window*>(_win)->_display, Keys);
                         if (Keys[Event.xkey.keycode >> 3] & (1 << (Event.xkey.keycode % 8)))
                         {
                             // KeyRelease event + key down = repeated event --> discard
@@ -123,7 +123,7 @@ void XWindowInput::CheckEvents()
                 ProcessEvent(Event); // Process the event
             }
         }
-        //XUnlockDisplay(static_cast<XWindow*>(_win)->_display);
+        //XUnlockDisplay(static_cast<Window*>(_win)->_display);
     }
 }
 

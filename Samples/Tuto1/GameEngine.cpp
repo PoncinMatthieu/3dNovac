@@ -8,9 +8,11 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
-  : Nc::Engine::MainEngine(manager)
+GameEngine::GameEngine(Graphic::Window *window, Engine::Manager *manager)
+  : Nc::Engine::MainEngine(manager), _window(window)
 {
+    // add the window Input to the Inputs of the engine
+    AddInput(_window->Input());
 }
 
 GameEngine::~GameEngine()
@@ -22,18 +24,6 @@ void	GameEngine::ReleaseContent()
     // delete the scene and it's childs node
     delete _scene3d;
     delete _context;
-}
-
-void	GameEngine::CreateWindow(Window *win)
-{
-    // create the window
-    win->Create("Tuto 1", Vector2i(800, 600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
-
-    // add the window Input to the Inputs of the engine
-    AddInput(win->Input());
-
-    // set the window
-    _window = win;
 }
 
 void	GameEngine::LoadContent()

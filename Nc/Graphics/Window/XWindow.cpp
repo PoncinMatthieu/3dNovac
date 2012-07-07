@@ -43,8 +43,8 @@ struct WMHints
     unsigned long State;
 };
 
-XWindow::XWindow(SceneGraphManager *sceneGraphManager)
-    : Window(sceneGraphManager)
+Graphic::Window::Window(SceneGraphManager *sceneGraphManager)
+    : IWindow(sceneGraphManager)
 {
     _display = NULL;
     _vInfo = NULL;
@@ -52,8 +52,8 @@ XWindow::XWindow(SceneGraphManager *sceneGraphManager)
     _xwin = 0;
 }
 
-XWindow::XWindow(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager)
-    : Window(sceneGraphManager)
+Graphic::Window::Window(const std::string &title, const Math::Vector2ui &size, const WindowStyle &style, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager)
+    : IWindow(sceneGraphManager)
 {
     _display = NULL;
     _vInfo = NULL;
@@ -62,7 +62,7 @@ XWindow::XWindow(const std::string &title, const Math::Vector2ui &size, const Ut
     Create(title, size, style, icone, antialiasingLevel);
 }
 
-XWindow::~XWindow()
+Graphic::Window::~Window()
 {
     if (_isCreate)
         Close();
@@ -73,7 +73,7 @@ static Bool WaitForNotify(Display *dpy, XEvent *event, XPointer arg)
     return (event->type == MapNotify) && (event->xmap.window == (::Window)arg);
 }
 
-void XWindow::Create(const std::string &title, const Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icon, unsigned int antialiasingLevel)
+void Graphic::Window::Create(const std::string &title, const Vector2ui &size, const WindowStyle &style, const Utils::FileName &icon, unsigned int antialiasingLevel)
 {
     // init XLib support for concurrent thread support
     if (XInitThreads() == 0)
@@ -142,7 +142,7 @@ void XWindow::Create(const std::string &title, const Vector2ui &size, const Util
     _own = true;
 }
 
-void XWindow::ChooseBestVisualInfo()
+void Graphic::Window::ChooseBestVisualInfo()
 {
     // Get all the visuals configs allowed
     int             nbConfigs;
@@ -219,7 +219,7 @@ void XWindow::ChooseBestVisualInfo()
         throw Utils::Exception("XWindow", "Failed to get the Visual Info structure from the fb config");
 }
 
-bool XWindow::SetIcon(const Utils::FileName &f)
+bool Graphic::Window::SetIcon(const Utils::FileName &f)
 {
     Image image;
     Utils::FileName filename = f;
@@ -278,7 +278,7 @@ bool XWindow::SetIcon(const Utils::FileName &f)
     return true;
 }
 
-void XWindow::SetWindowStyle(const Utils::Mask<Style> &style)
+void Graphic::Window::SetWindowStyle(const WindowStyle &style)
 {
     if (style.Disabled(Fullscreen))
     {
@@ -340,7 +340,7 @@ void XWindow::SetWindowStyle(const Utils::Mask<Style> &style)
     }
 }
 
-void XWindow::SwitchToFullscreen(const Vector2ui &size)
+void Graphic::Window::SwitchToFullscreen(const Vector2ui &size)
 {
     // Check if the XRandR extension is present
     int version;
@@ -381,7 +381,7 @@ void XWindow::SwitchToFullscreen(const Vector2ui &size)
     }
 }
 
-void XWindow::UseExistingWindow(void *disp, int winId, const Vector2ui &size, unsigned int antialiasingLevel)
+void Graphic::Window::UseExistingWindow(void *disp, int winId, const Vector2ui &size, unsigned int antialiasingLevel)
 {
     _width = size.data[0];
     _height = size.data[1];
@@ -422,14 +422,14 @@ void XWindow::UseExistingWindow(void *disp, int winId, const Vector2ui &size, un
     _own = false;
 }
 
-GLContext *XWindow::CreateGLContext()
+GLContext *Graphic::Window::CreateGLContext()
 {
     _context = new GLXContext(this);
     _context->Create();
     return _context;
 }
 
-void XWindow::Close()
+void Graphic::Window::Close()
 {
     // Destroy the renderer attach to the window
     if (_context)
@@ -457,7 +457,7 @@ void XWindow::Close()
     _isCreate = false;
 }
 
-void XWindow::Resize(unsigned int width, unsigned int height)
+void Graphic::Window::Resize(unsigned int width, unsigned int height)
 {
     _width = width;
     _height = height;
@@ -466,7 +466,7 @@ void XWindow::Resize(unsigned int width, unsigned int height)
     Resized();
 }
 
-ICursor *XWindow::NewCursor()
+ICursor *Graphic::Window::NewCursor()
 {
     return new Cursor(this);
 }

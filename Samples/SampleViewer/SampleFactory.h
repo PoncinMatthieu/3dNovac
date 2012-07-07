@@ -16,7 +16,7 @@ namespace SampleViewer
 
             inline const std::list<std::string>     &SampleNames() const                        {return _sampleNames;}
 
-            Nc::Contrib::GameEngine                 *CreateSample(Nc::Graphic::Window *window, const std::string &name);
+            Nc::Contrib::GameEngine                 *CreateSample(Nc::Graphic::IWindow *window, const std::string &name);
 
         private:
             Nc::Engine::Manager                     *_manager;

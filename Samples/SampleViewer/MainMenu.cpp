@@ -149,7 +149,7 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
     return windowSelectSample;
 }
 
-GUI::SubWindow      *MainMenu::CreateSampleWindow(Window *windowParent)
+GUI::SubWindow      *MainMenu::CreateSampleWindow(IWindow *windowParent)
 {
     System::Locker l(&_widgetSampleWindow->GetMutex());
     if (_currentSampleWindow != NULL)

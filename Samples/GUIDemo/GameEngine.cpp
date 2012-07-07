@@ -7,7 +7,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace GUIDemo;
 
-GameEngine::GameEngine(Nc::Graphic::Window *window, Nc::Engine::Manager *manager)
+GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(window, manager)
 {
 }
@@ -22,15 +22,13 @@ void GameEngine::ReleaseContent()
 }
 
 /*
-void GameEngine::CreateWindow(Window *win)
+void GameEngine::CreateWindow(IWindow *win)
 {
   bool            fullscreen = false;
-  unsigned long   pattern = Window::Titlebar | Window::Closeable | Window::Resizeable;
-  Vector2ui       winSize(800, 600);
 
   if (fullscreen)
     {
-      pattern |= Window::Fullscreen;
+      pattern |= IWindow::Fullscreen;
       winSize = Vector2i(1680, 1050);
     }
   win->Create("GUI Tests", winSize, pattern, "Nc:Image:icone.png", 3);

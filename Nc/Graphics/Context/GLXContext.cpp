@@ -30,7 +30,7 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Graphic::GLXContext::GLXContext(XWindow *win) : GLContext(win)
+Graphic::GLXContext::GLXContext(Window *win) : GLContext(win)
 {
     _context = 0;
     _display = win->_display;
@@ -65,7 +65,7 @@ void    Graphic::GLXContext::Active()
     else
     {
         // active the context
-        if (glXMakeCurrent(_display, static_cast<XWindow*>(_win)->_xwin, _context) == 0)
+        if (glXMakeCurrent(_display, static_cast<Window*>(_win)->_xwin, _context) == 0)
             System::Config::Error("GLXContext:Active", "Make current failed.");
         _currentThreadId = threadId;
     }
@@ -96,7 +96,7 @@ void    Graphic::GLXContext::Disable()
 
 void    Graphic::GLXContext::SwapBuffers()
 {
-    glXSwapBuffers(_display, static_cast<XWindow*>(_win)->_xwin);
+    glXSwapBuffers(_display, static_cast<Window*>(_win)->_xwin);
 }
 
 
@@ -144,7 +144,7 @@ static int ctxErrorHandler(Display *dpy, XErrorEvent *ev)
 
 void Graphic::GLXContext::Create(GLContext *sharedContext)
 {
-    XWindow *window = static_cast<XWindow*>(_win);
+    Window *window = static_cast<Window*>(_win);
     ::GLXContext sharedContextPtr = (sharedContext != NULL) ? static_cast<GLXContext*>(sharedContext)->_context : NULL;
 
     if (!window->IsCreate())
@@ -258,7 +258,7 @@ Graphic::GLContext *Graphic::GLXContext::CreateNewSharedContext()
     // Create a new opengl context for the current thread
     // Create an other display connection to the Xserver otherwise the glx will crash on Qt with nvidia drivers
     Active();
-    GLXContext   *newSharedRenderer = new GLXContext(static_cast<XWindow*>(_win));
+    GLXContext   *newSharedRenderer = new GLXContext(static_cast<Window*>(_win));
     newSharedRenderer->_display = XOpenDisplay(0);
     newSharedRenderer->Create(this);
     Disable();

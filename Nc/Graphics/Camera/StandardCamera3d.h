@@ -56,8 +56,8 @@ namespace Nc
                 static const char   *XpmHandClose[];
 
             public:
-                StandardCamera3d(Window *attachedWindow, float ratioAspect, float near = 0.1, float far = 1000, float fielOfView = 70, Pattern p = Turntable);
-                StandardCamera3d(Window *attachedWindow, Pattern p = Turntable);
+                StandardCamera3d(IWindow *attachedWindow, float ratioAspect, float near = 0.1, float far = 1000, float fielOfView = 70, Pattern p = Turntable);
+                StandardCamera3d(IWindow *attachedWindow, Pattern p = Turntable);
                 StandardCamera3d(const StandardCamera3d &cam);
                 StandardCamera3d &operator = (const StandardCamera3d &cam);
                 virtual ~StandardCamera3d();
