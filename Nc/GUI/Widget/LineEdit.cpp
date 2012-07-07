@@ -83,8 +83,8 @@ void    LineEdit::Update()
 {
     Widget::Update();
 
-    Core::PlainTextFormater *formater = static_cast<Core::PlainTextFormater*>(_font->Formater());
-    Core::PlainTextFormater *formaterUnderscore = static_cast<Core::PlainTextFormater*>(_fontUnderscore->Formater());
+    PlainTextFormater *formater = static_cast<PlainTextFormater*>(_font->Formater());
+    PlainTextFormater *formaterUnderscore = static_cast<PlainTextFormater*>(_fontUnderscore->Formater());
 
     float charSize = _size[1] - (PaddingTop() + PaddingBottom());
     if (charSize != formater->GetCharSize())
@@ -132,7 +132,7 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         else
         {
             UInt32 c = (UInt32)static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
-            Core::PlainTextFormater *formater = static_cast<Core::PlainTextFormater*>(_font->Formater());
+            PlainTextFormater *formater = static_cast<PlainTextFormater*>(_font->Formater());
             if (c != '\0' && _font->Size().data[0] + formater->GetCharSize(c).data[0] < _size.data[0]) // ajout du caractere dans la string)
             {
                 Utils::Unicode::UTF32 s = _font->PlainText();

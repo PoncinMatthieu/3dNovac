@@ -33,9 +33,13 @@
 #define NC_GRAPHICS_GRAPHICS_H_
 
 // Window
-    #include "Window/Window/Window.h"
-    #include "Window/Context/GLContext.h"
-    #include "Window/Input/WindowInput.h"
+    #ifdef SYSTEM_WINDOWS
+        #include "Window/WWindow.h"
+    #else
+        #include "Window/XWindow.h"
+    #endif
+    #include "Context/GLContext.h"
+    #include "Input/WindowInput.h"
 
 // Object
     #include "Object/Text.h"

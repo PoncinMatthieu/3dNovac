@@ -40,7 +40,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Camera, System::Object, Nc::Graphic::Camera);
 
             public:
-                Camera2d(Window *attachedWindow) : Camera(attachedWindow, true)   {}
+                Camera2d(IWindow *attachedWindow) : Camera(attachedWindow, true)   {}
 
                 virtual ISceneNode  *Clone() const                              {return new Camera2d(*this);}
 

@@ -2,7 +2,7 @@
 #ifndef FBEFFECTSDEMO_FRAMEBUFFEREFFECT_H_
 #define FBEFFECTSDEMO_FRAMEBUFFEREFFECT_H_
 
-#include <Nc/Graphics/Core/GL/FrameBuffer.h>
+#include <Nc/Graphics/GL/FrameBuffer.h>
 #include <Nc/Graphics/Effect/Effect.h>
 #include <Nc/Graphics/Camera/Camera2d.h>
 #include <Nc/Graphics/Object/Sprite.h>
@@ -16,7 +16,7 @@ namespace FBEffectsDemo
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Nc::Graphic::Effect, Nc::System::Object, FBEffectDemo::FrameBufferEffect);
 
             public:
-                FrameBufferEffect(Nc::Graphic::Window *window);
+                FrameBufferEffect(Nc::Graphic::IWindow *window);
                 ~FrameBufferEffect();
 
                 virtual ISceneNode      *Clone() const		{return new FrameBufferEffect(*this);}
@@ -33,7 +33,7 @@ namespace FBEffectsDemo
                 void			InitFbo1();
 
             private:
-                Nc::Graphic::Window                 *_window;
+                Nc::Graphic::IWindow                 *_window;
                 bool                                _fboNeedInit;
 
                 Nc::Graphic::GL::FrameBuffer        _fboPass1;

@@ -16,10 +16,9 @@ namespace LightDemo
             NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, LightDemo::GameEngine);
 
         public:
-            GameEngine(Nc::Engine::Manager *manager);
+            GameEngine(Nc::Graphic::IWindow *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager);
             virtual ~GameEngine();
 
-            void            CreateWindow(Nc::Graphic::Window *win);
             virtual void    LoadContent();
             virtual void    ReleaseContent();
 
@@ -32,7 +31,7 @@ namespace LightDemo
 
             Nc::Graphic::SceneGraph			        *_scene;
             Nc::Graphic::StandardCamera3d           *_camera;
-            Nc::Graphic::SceneNodeFormatManager     _sceneNodeFormatManager;
+            Nc::Graphic::SceneNodeFormatManager     *_sceneNodeFormatManager;
 
             Nc::Graphic::DefaultLightingMaterial    *_lightingMaterial;
             Nc::Graphic::Light                      *_light;

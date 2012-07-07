@@ -54,7 +54,7 @@ void SkyBox::TransformModelMatrixToRender(SceneGraph *scene)
 
 void SkyBox::UpdateGeometry(const Utils::FileName filenames[])
 {
-    Array<Core::DefaultVertexType::Textured3d, 14>  vertices;
+    Array<GL::DefaultVertexType::Textured3d, 14>    vertices;
     Array<unsigned int, 12*3>                       indices;
     Color col(1, 1, 1);
 
@@ -85,11 +85,11 @@ void SkyBox::UpdateGeometry(const Utils::FileName filenames[])
     indices[33] = 1; indices[34] = 4; indices[35] = 0;
 
     // creation du drawable
-    _drawables.push_back(new Core::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 3, GL::Enum::Triangles));
+    _drawables.push_back(new GL::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 3, GL::Enum::Triangles));
 
     // load la cubemap et disable le test de profondeur
     _drawables[0]->Config->Textures.InitSize(1);
     _drawables[0]->Config->Textures[0].LoadCubeMap(filenames);
-    _drawables[0]->Config->RasterMode().SetDepthTest(false);
+    _drawables[0]->Config->GetRasterMode().SetDepthTest(false);
     ChooseDefaultMaterial();
 }

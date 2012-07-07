@@ -42,7 +42,7 @@ Object *BasicMeshCreator::Axis(float scale, bool withLegend, const Vector3f &cen
 
 Object *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, const Vector3f &center)
 {
-	Array<Core::DefaultVertexType::Colored, 4>  vertices;
+	Array<GL::DefaultVertexType::Colored, 4>  vertices;
     Array<unsigned int, 3*2>                    indices;
 
     vertices[0].Fill(center.data[0], center.data[1], center.data[2], Color(1, 1, 1));
@@ -56,7 +56,7 @@ Object *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, const Vec
 
     // creation du mesh
     Object *obj = new Object(Box3f(center, center + Vector3f(scale.data[0], scale.data[1], scale.data[2])));
-	obj->Drawables().push_back(new Core::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines));
+	obj->Drawables().push_back(new GL::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, indices, 2, GL::Enum::Lines));
     obj->ChooseDefaultMaterial();
     obj->UseSceneMaterial(false);
 

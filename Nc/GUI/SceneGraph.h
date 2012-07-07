@@ -44,7 +44,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::SceneGraph, Nc::System::Object, Nc::GUI::SceneGraph);
 
             public:
-                SceneGraph(Graphic::Window *attachedWindow);
+                SceneGraph(Graphic::IWindow *attachedWindow);
                 SceneGraph(const SceneGraph &scene);
                 SceneGraph &operator = (const SceneGraph &scene);
                 virtual ~SceneGraph();
@@ -52,7 +52,7 @@ namespace Nc
                 virtual ISceneNode  *Clone() const              {return new SceneGraph(*this);}
 
                 /** \return the attached window */
-                Graphic::Window     *AttachedWindow() const     {return _attachedWindow;}
+                Graphic::IWindow     *AttachedWindow() const     {return _attachedWindow;}
 
                 /** Return true if a widget is focused */
                 bool Focused()                                  {return (_widgetFocused != NULL);}
@@ -74,7 +74,7 @@ namespace Nc
 
             private:
                 Widget              *_widgetFocused;    ///< the current focused widget
-                Graphic::Window     *_attachedWindow;   ///< the attached window
+                Graphic::IWindow     *_attachedWindow;   ///< the attached window
         };
     }
 }

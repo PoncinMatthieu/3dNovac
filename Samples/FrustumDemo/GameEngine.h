@@ -16,29 +16,28 @@ namespace FrustumDemo
         public:
             NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, FrustumDemo::GameEngine);
 
-     public:
-      GameEngine(Nc::Engine::Manager *manager);
-      virtual ~GameEngine();
+        public:
+            GameEngine(Nc::Graphic::IWindow *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager);
+            virtual ~GameEngine();
 
-      void            CreateWindow(Nc::Graphic::Window *win);
-      virtual void    LoadContent();
-      virtual void    ReleaseContent();
+            virtual void    LoadContent();
+            virtual void    ReleaseContent();
 
-     protected:
-      virtual void    Update(float runningTime);
-      virtual void    ManageWindowEvent(Nc::System::Event &event);
-      virtual void    KeyboardEvent(Nc::System::Event &event);
-      virtual void    MouseButtonEvent(Nc::System::Event &event);
-      virtual void    MouseMotionEvent(Nc::System::Event &event);
+        protected:
+            virtual void    Update(float runningTime);
+            virtual void    ManageWindowEvent(Nc::System::Event &event);
+            virtual void    KeyboardEvent(Nc::System::Event &event);
+            virtual void    MouseButtonEvent(Nc::System::Event &event);
+            virtual void    MouseMotionEvent(Nc::System::Event &event);
 
-      void Generate(Nc::Graphic::Entity *node, Nc::Graphic::Object *obj);
+            void Generate(Nc::Graphic::Entity *node, Nc::Graphic::Object *obj);
 
-      Nc::Graphic::SceneGraph		*_scene3d;
-      Nc::Graphic::StandardCamera3d		*_camera;
-      Nc::Graphic::StandardCamera3d		*_camera2;
-      Nc::Graphic::StandardCamera3d		*_camera3;
-      Nc::Graphic::SceneNodeFormatManager	_sceneNodeFormatManager;
-      Nc::Graphic::Entity			*_entity;
+            Nc::Graphic::SceneGraph		            *_scene3d;
+            Nc::Graphic::StandardCamera3d		    *_camera;
+            Nc::Graphic::StandardCamera3d		    *_camera2;
+            Nc::Graphic::StandardCamera3d		    *_camera3;
+            Nc::Graphic::SceneNodeFormatManager	    *_sceneNodeFormatManager;
+            Nc::Graphic::Entity			            *_entity;
     };
 }
 

@@ -39,7 +39,7 @@ void Triangulate::Process()
     // How many geometry elements are there?
     int geometryElementCount = (int)(_dae->getDatabase()->getElementCount(NULL, "geometry"));
 
-    LOG << "There are " << geometryElementCount << " geometry elements in this file" << std::endl;
+    LOG_DEBUG << "There are " << geometryElementCount << " geometry elements in this file" << std::endl;
 
     for(int currentGeometry = 0; currentGeometry < geometryElementCount; currentGeometry++)
     {
@@ -73,7 +73,7 @@ void Triangulate::Process()
         }
         int polylistElementCount = (int)(thisMesh->getPolylist_array().getCount());
 
-        LOG << "There are " << polylistElementCount << " polylist elements in this file" << std::endl;
+        LOG_DEBUG << "There are " << polylistElementCount << " polylist elements in this file" << std::endl;
 
         for(int currentPolylist = 0; currentPolylist < polylistElementCount; currentPolylist++)
         {

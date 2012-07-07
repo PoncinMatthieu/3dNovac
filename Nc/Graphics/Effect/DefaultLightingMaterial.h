@@ -28,8 +28,8 @@
 #define NC_GRAPHICS_MATERIAL_DEFAULTLIGHTINGMATERIAL_H_
 
 #include <Nc/Core/Utils/Mask.h>
-#include "../Core/GL/Program.h"
-#include "../Core/GL/Texture.h"
+#include "../GL/Program.h"
+#include "../GL/Texture.h"
 #include "LightingEffect.h"
 
 namespace Nc
@@ -74,14 +74,14 @@ namespace Nc
                 ~DefaultLightingMaterial();
 
                 /** Configure the geometry with the suitable attributes according to the shader */
-                virtual bool    Configure(Core::Drawable &drawable);
+                virtual bool    Configure(GL::Drawable &drawable);
 
                 /** \return the pattern */
                 Utils::Mask<MaterialPattern>    &Pattern()      {return _patternMask;}
 
             protected:
                 /** Render the given drawable with the given model matrix */
-                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, Core::Drawable &drawable);
+                virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable);
 
             protected:
                 Utils::Mask<MaterialPattern>    _patternMask;               ///< the pattern mask of the material

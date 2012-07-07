@@ -56,7 +56,7 @@ namespace Nc
                 typedef std::list<Utils::Unicode::UTF32>    ListMsg;    ///< The list of message in UTF-32
 
             public:
-                Console(Graphic::Window *attachedWindow, const std::string &engineName, Pattern p = TranslateAtFocus);
+                Console(Graphic::IWindow *attachedWindow, const std::string &engineName, Pattern p = TranslateAtFocus);
                 virtual ~Console();
 
                 /** Return the reel position of the console */
@@ -99,7 +99,7 @@ namespace Nc
                 unsigned int                        _scroll;            ///< scroll position
                 std::string                         _prompt;            ///< prompt string
                 Pattern                             _pattern;           ///< the pattern of the console
-                Graphic::Window                     *_attachedWindow;   ///< attached window
+                Graphic::IWindow                     *_attachedWindow;   ///< attached window
         };
     }
 }

@@ -25,23 +25,23 @@
 -----------------------------------------------------------------------------*/
 
 #include "Text.h"
-#include "../Core/PlainTextFormater.h"
+#include "../Data/PlainTextFormater.h"
 
 using namespace std;
 using namespace Nc::Graphic;
 using namespace Nc;
 
-Text::Text(const Utils::Unicode::UTF32 &text, Core::ITextFormater *textFormater)
+Text::Text(const Utils::Unicode::UTF32 &text, ITextFormater *textFormater)
     : Object(), _text(text), _textFormater(NULL)
 {
     Formater(textFormater);
     _useSceneMaterial = false;
 }
 
-Text::Text(const Utils::Unicode::UTF32 &text, float charSize, const Color &color, const std::string &ttf, const Utils::Mask<Core::PlainTextFormater::Style> &style)
+Text::Text(const Utils::Unicode::UTF32 &text, float charSize, const Color &color, const std::string &ttf, const Utils::Mask<PlainTextFormater::Style> &style)
     : Object(), _text(text), _textFormater(NULL)
 {
-    Formater(new Core::PlainTextFormater(charSize, color, ttf, style));
+    Formater(new PlainTextFormater(charSize, color, ttf, style));
     _useSceneMaterial = false;
 }
 
@@ -88,7 +88,7 @@ const Vector2f      &Text::Size()
     return _size;
 }
 
-void    Text::Formater(Core::ITextFormater *f)
+void    Text::Formater(ITextFormater *f)
 {
     System::Locker l(&_mutex);
     if (_textFormater != NULL && _textFormater != f)

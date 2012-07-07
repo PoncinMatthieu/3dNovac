@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace LightDemo;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(manager)
+GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(window, manager), _sceneNodeFormatManager(sceneNodeFormatManager)
 {
 }
 
@@ -24,21 +24,6 @@ void GameEngine::ReleaseContent()
 {
     delete _lightingMaterial;
     delete _scene;
-}
-
-void GameEngine::CreateWindow(Window *win)
-{
-    bool            fullscreen = false;
-    unsigned long   pattern = Window::Titlebar | Window::Closeable | Window::Resizeable;
-    Vector2ui       winSize(800, 600);
-
-    if (fullscreen)
-    {
-        pattern |= Window::Fullscreen;
-        winSize = Vector2i(1680, 1050);
-    }
-    win->Create("Light Tests", winSize, pattern, "Nc:Image:icone.png", 3);
-    SetWindow(win);
 }
 
 void GameEngine::LoadContent()
@@ -83,7 +68,7 @@ void GameEngine::LoadContent()
   lightEffect->Lights().push_back(light2);
   lightEffect->Lights().push_back(light3);
 
-  lightEffect->AddChild(_sceneNodeFormatManager.Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
+  lightEffect->AddChild(_sceneNodeFormatManager->Load("Nc:Mesh:scene1/scene1.dae")->As<Graphic::Object>());
 }
 
 void GameEngine::Update(float runningTime)

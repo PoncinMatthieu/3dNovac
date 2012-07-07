@@ -43,7 +43,7 @@ namespace Nc
 
             public:
                 Label(  const Utils::Unicode::UTF32 &label, float charSize, const Color &c, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0),
-                        const std::string &ttf = "arial", Graphic::Core::PlainTextFormater::Style s = Graphic::Core::PlainTextFormater::Regular);
+                        const std::string &ttf = "arial", Graphic::PlainTextFormater::Style s = Graphic::PlainTextFormater::Regular);
                 Label(const Label &w);
                 Label &operator = (const Label &w);
                 virtual ~Label();
@@ -55,7 +55,7 @@ namespace Nc
                 void                            AddBuddy(Widget *w);
 
                 /** Create the label with a text, a font and a style. */
-                virtual void                    CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::Core::PlainTextFormater::Style s);
+                virtual void                    CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s);
                 /** \return the label size. */
                 inline const Vector2f           &GetTextSize()                                  {return _label->Size();}
                 /** Set the label text. */

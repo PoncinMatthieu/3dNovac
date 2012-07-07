@@ -32,7 +32,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
-TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<Core::PlainTextFormater::Style> &s)
+TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<PlainTextFormater::Style> &s)
     : ScrollArea(alignment, size)
 {
     _textDocument = new TextDocument(this, text, Left | Top, size, ttf, s);
@@ -79,7 +79,7 @@ void    TextEdit::PlainText(const Utils::Unicode::UTF32 &t)
     Resized();
 }
 
-TextEdit::TextDocument::TextDocument(TextEdit *editor, const Utils::Unicode::UTF32 &t, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<Core::PlainTextFormater::Style> &s)
+TextEdit::TextDocument::TextDocument(TextEdit *editor, const Utils::Unicode::UTF32 &t, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<PlainTextFormater::Style> &s)
     : Widget(alignment, size), _editor(editor)
 {
     text = new Graphic::Text(t, 16, Color(1, 1, 1), ttf, s);
@@ -110,9 +110,9 @@ void    TextEdit::TextDocument::Resize()
     Widget::Resize();
 
     bool resized = false;
-    if (static_cast<Graphic::Core::PlainTextFormater*>(text->Formater())->GetDocumentSize() != (_size[0] - PaddingH()))
+    if (static_cast<Graphic::PlainTextFormater*>(text->Formater())->GetDocumentSize() != (_size[0] - PaddingH()))
     {
-        static_cast<Graphic::Core::PlainTextFormater*>(text->Formater())->SetDocumentSize(_size[0] - PaddingH());
+        static_cast<Graphic::PlainTextFormater*>(text->Formater())->SetDocumentSize(_size[0] - PaddingH());
         resized = true;
     }
     if (_size[1] != text->Size()[1] + PaddingV())

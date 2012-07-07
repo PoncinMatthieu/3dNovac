@@ -45,9 +45,9 @@ namespace Nc
                 ~FactoryDefaultMaterials();
 
                 /** \return the best material for a set of drawables. */
-                IDefaultMaterial        *GetBestMaterial(const Core::DrawableArray &drawables);
+                IDefaultMaterial        *GetBestMaterial(const GL::DrawableArray &drawables);
                 /** \return the best material for the given \p drawable. */
-                IDefaultMaterial        *GetBestMaterial(const Core::Drawable *drawable);
+                IDefaultMaterial        *GetBestMaterial(const GL::Drawable *drawable);
 
                 /** Create, Add and return a DefaultMaterial with the given type of DefaulMaterial. */
                 template<typename DefaultMaterialType>

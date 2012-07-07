@@ -27,7 +27,7 @@
 #ifndef NC_CORE_SYSTEM_SCENEGRAPHMANAGER_H_
 #define NC_CORE_SYSTEM_SCENEGRAPHMANAGER_H_
 
-#include "../Core/GL.h"
+#include "../GL/GL.h"
 
 namespace Nc
 {

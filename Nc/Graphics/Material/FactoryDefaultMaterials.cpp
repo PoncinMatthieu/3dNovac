@@ -38,7 +38,7 @@ FactoryDefaultMaterials::~FactoryDefaultMaterials()
     }
 }
 
-IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const Core::DrawableArray &drawables)
+IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const GL::DrawableArray &drawables)
 {
     if (drawables.size() == 0)
         return NULL;
@@ -55,7 +55,7 @@ IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const Core::Drawab
     return GetBestMaterial(descriptor);
 }
 
-IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const Core::Drawable *drawable)
+IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const GL::Drawable *drawable)
 {
     return GetBestMaterial(&drawable->Geometry->Descriptor());
 }

@@ -32,8 +32,8 @@
 #include <Nc/Core/Engine/MainEngine.h>
 
 #include "Define.h"
-#include "Window/Context/GLContext.h"
-#include "Core/GL/State.h"
+#include "Context/GLContext.h"
+#include "GL/State.h"
 
 namespace Nc
 {
@@ -52,11 +52,8 @@ namespace Nc
             public:
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::IEngine, Nc::Graphic::Engine);
 
-                /** the typedef of the member function pointer used to create the window */
-                typedef void (Nc::Engine::MainEngine::*CreateWindowFunc)(Window *win);
-
             public:
-                Engine(const std::string &mainEngineClassName, Nc::Engine::Manager *manager, CreateWindowFunc func);
+                Engine(IWindow *attachedWindow, Nc::Engine::Manager *manager);
                 virtual ~Engine();
 
                 /** Load default content, like the DefaultMaterials */
@@ -69,7 +66,7 @@ namespace Nc
 
             // accessor
                 /** \return the window instance used to setup the Window/WindowInput/GLContext */
-                inline Window           *GetWindow()                        {return _win;}
+                inline IWindow           *GetWindow()                        {return _win;}
                 /** \return the current number of frame per second (static, so you can call it at anytime) */
                 static unsigned int     GetFPS()                            {return (unsigned int)(1./_elapsedTime);}
 
@@ -81,13 +78,10 @@ namespace Nc
                 /** To Disable the GLContext, this function is called by the IEngine */
                 virtual inline void     DisableContext()                    {if (_context != NULL) _context->Disable();}
 
-                CreateWindowFunc        _createWinFunction;     ///< The member function pointer of the "Main" engine used to create the window
-                Window                  *_win;                  ///< The instance of the window
+                IWindow                  *_win;                  ///< The instance of the window
                 GLContext               *_context;              ///< The GL context used to render the scene with the scene graph manager
                 GL::State               _renderState;           ///< The render state associated to the rendering context
                 static double           _elapsedTime;           ///< Elapsed Time between 2 frame (in second)
-
-                std::string             _mainEngineClassName;   ///< name of the main engine
         };
     }
 }

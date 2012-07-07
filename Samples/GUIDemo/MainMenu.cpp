@@ -41,7 +41,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     Vector2f    winsizeMode(470, 200);
     Vector2f    winsizeInGame(300, 110);
 
-// selectMode Window
+// selectMode IWindow
     _selectModeWindow = new WindowBox("Main menu", Center, winsizeMode);
 
     Widget *selectModeWidget = new Widget(CenterH | Top, Vector2f(winsizeMode[0] - 20, winsizeMode[1] - 20));

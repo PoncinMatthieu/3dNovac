@@ -13,11 +13,8 @@ namespace SokobanDemo
             NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, SokobanDemo::GameEngine);
 
      public:
-      GameEngine(Nc::Engine::Manager *manager);
+      GameEngine(Nc::Graphic::IWindow *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager);
       ~GameEngine();
-
-      /** To create the window (called by the graphic engine) */
-      void CreateWindow(Nc::Graphic::Window *win);
 
      private:
       virtual void LoadContent();
@@ -37,7 +34,7 @@ namespace SokobanDemo
       Nc::Graphic::SceneGraph		        *_scene3d;	///< our scene 3d, displayed by the graphic engine
       Nc::Graphic::StandardCamera3d		    *_camera;	///< our camera used by our scene. We use it to resize and update it with the window inputs
 
-      Nc::Graphic::SceneNodeFormatManager	_sceneNodeFormatManager;
+      Nc::Graphic::SceneNodeFormatManager	*_sceneNodeFormatManager;
 
       Map					                *_map;
       Nc::Graphic::DefaultLightingMaterial	*_lightingMaterial;

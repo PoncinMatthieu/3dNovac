@@ -4,16 +4,16 @@
 
 using namespace Nc;
 
-void CreateEngines(Nc::Engine::Manager &manager)
+void CreateEngines(Nc::Engine::Manager &manager, Graphic::Window &window, Graphic::SceneNodeFormatManager &sceneNodeformatManager)
 {
   // creation du graphicEngine
-  Graphic::Engine *graphicEngine = new Graphic::Engine(SokobanDemo::GameEngine::ClassName(), &manager, (Graphic::Engine::CreateWindowFunc)&SokobanDemo::GameEngine::CreateWindow);
+  Graphic::Engine *graphicEngine = new Graphic::Engine(&window, &manager);
   graphicEngine->LimitFrameRate(60);
   manager.AddEngine(graphicEngine);
   LOG << "Creation of the " << *graphicEngine << "\t\tDONE" << std::endl;
 
   // creation du gameEngine
-  SokobanDemo::GameEngine *gameEngine = new SokobanDemo::GameEngine(&manager);
+  SokobanDemo::GameEngine *gameEngine = new SokobanDemo::GameEngine(&window, &sceneNodeformatManager, &manager);
   gameEngine->LimitFrameRate(60);
   manager.AddEngine(gameEngine);
   LOG << "Creation of the " << *gameEngine << "\t\tDONE" << std::endl;
@@ -21,16 +21,22 @@ void CreateEngines(Nc::Engine::Manager &manager)
 
 int main()
 {
-	try
+    Graphic::WindowStyle    style = Graphic::Window::Titlebar | Graphic::Window::Closeable | Graphic::Window::Resizeable;
+    Vector2ui               winSize(800, 600);
+
+    try
 	{
-	  Nc::Engine::Manager game("3dNovac.conf");
-	  CreateEngines(game);
-	  game.Start();
-	  game.Wait();
+        Nc::Engine::Manager game("3dNovac.conf");
+        Graphic::Window window("Sokoban Demo", winSize, style, "Nc:Image:icone.png", 3);
+        Graphic::SceneNodeFormatManager sceneNodeformatManager;
+
+        CreateEngines(game, window, sceneNodeformatManager);
+        game.Start();
+        game.Wait();
 	}
 	catch (const std::exception &e)
 	{
 		LOG << "Fatal error: " << e.what() << std::endl;
 	}
-  return 0;
+    return 0;
 }

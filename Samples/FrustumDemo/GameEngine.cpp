@@ -12,8 +12,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace FrustumDemo;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(manager)
+GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Graphic::SceneNodeFormatManager *sceneNodeFormatManager, Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(window, manager), _sceneNodeFormatManager(sceneNodeFormatManager)
 {
 }
 
@@ -24,21 +24,6 @@ GameEngine::~GameEngine()
 void GameEngine::ReleaseContent()
 {
   delete _scene3d;
-}
-
-void GameEngine::CreateWindow(Window *win)
-{
-    bool            fullscreen = false;
-    unsigned long   pattern = Window::Titlebar | Window::Closeable | Window::Resizeable;
-    Vector2ui       winSize(1600, 600);
-
-    if (fullscreen)
-    {
-        pattern |= Window::Fullscreen;
-        winSize = Vector2i(1680, 1050);
-    }
-    win->Create("Frustum Demo", winSize, pattern, "Nc:Image:icone.png", 3);
-    SetWindow(win);
 }
 
 void GameEngine::LoadContent()
@@ -66,7 +51,7 @@ void GameEngine::LoadContent()
 
     // creation de l'octree et des cubes
     _entity = new Entity();
-    Generate(_entity, _sceneNodeFormatManager.Load("Nc:Mesh:cube/cube.dae")->As<Graphic::Object>());
+    Generate(_entity, _sceneNodeFormatManager->Load("Nc:Mesh:cube/cube.dae")->As<Graphic::Object>());
     _scene3d->AddChild(_entity);
 
     // creation de la 2eme camera avec un autre viewport

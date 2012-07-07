@@ -30,7 +30,7 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-SubWindow::SubWindow(Graphic::Window *windowParent, const AlignmentMask &alignment, const Vector2i &size)
+SubWindow::SubWindow(Graphic::IWindow *windowParent, const AlignmentMask &alignment, const Vector2i &size)
     : Widget(alignment, size)
 {
     _subWindow = new Graphic::SubWindow(windowParent);

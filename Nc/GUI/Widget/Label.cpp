@@ -32,7 +32,7 @@ using namespace std;
 using namespace Nc;
 using namespace Nc::GUI;
 
-Label::Label(const Utils::Unicode::UTF32 &label, float charSize, const Color &c, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, Graphic::Core::PlainTextFormater::Style s)
+Label::Label(const Utils::Unicode::UTF32 &label, float charSize, const Color &c, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, Graphic::PlainTextFormater::Style s)
     : Widget(alignment, size), _label(NULL), _labelAlignment(Left | CenterV)
 {
     PaddingH(5);
@@ -72,7 +72,7 @@ void Label::ToString(std::ostream &os) const
     os << " Label: " << _label->PlainText();
 }
 
-void Label::CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::Core::PlainTextFormater::Style s)
+void Label::CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s)
 {
     if (_label)
         delete _label;

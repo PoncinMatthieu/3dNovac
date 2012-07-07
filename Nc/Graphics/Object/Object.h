@@ -28,7 +28,7 @@
 #define NOVAC_GRAPHIC_OBJECT_H_
 
 #include "../Scene/SceneNode.h"
-#include "../Core/Drawable.h"
+#include "../GL/Drawable.h"
 #include "../Material/DefaultMaterials.h"
 
 namespace Nc
@@ -72,7 +72,7 @@ namespace Nc
                 inline void         UseSceneMaterial(bool state)        {_useSceneMaterial = state;}
 
                 /** \return the drawables. */
-                Core::DrawableArray     &Drawables()                    {return _drawables;}
+                GL::DrawableArray       &Drawables()                    {return _drawables;}
                 /** Configure the drawables by using the current Material. */
                 void                    ReconfigureDrawables();
 
@@ -124,7 +124,7 @@ namespace Nc
 
             // fields
             protected:
-                Core::DrawableArray     _drawables;                 ///< the array of drawbles.
+                GL::DrawableArray       _drawables;                 ///< the array of drawbles.
                 bool                    _useSceneMaterial;          ///< if true, the object will be rendered with the current scene material. Otherwise the object is rendered with the object material. Default value:true.
 
             private:

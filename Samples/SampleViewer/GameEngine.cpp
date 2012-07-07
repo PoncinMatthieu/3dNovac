@@ -7,8 +7,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace SampleViewer;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(manager)
+GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(window, manager)
 {
     _sampleFactory = new SampleFactory(manager);
 
@@ -18,22 +18,13 @@ GameEngine::GameEngine(Nc::Engine::Manager *manager)
 
 GameEngine::~GameEngine()
 {
+	delete _sampleFactory;
 }
 
 void GameEngine::ReleaseContent()
 {
     delete _scene;
 	delete _menu;
-	delete _sampleFactory;
-}
-
-void GameEngine::CreateWindow(Window *win)
-{
-    unsigned long   pattern = Window::Titlebar | Window::Closeable | Window::Resizeable;
-    Vector2ui       winSize(1360, 768);
-
-    win->Create("Sample Viewer", winSize, pattern, "Nc:Image:icone.png", 3);
-    SetWindow(win);
 }
 
 void GameEngine::LoadContent()
@@ -113,17 +104,16 @@ void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
     if (!_currentSample.empty())
         _manager->RemoveEngine(_currentSample, true);
 
-    // create the new sample game engine
-    Contrib::GameEngine *engine = _sampleFactory->CreateSample(*_menu->Sample());
-    if (engine == NULL)
-        throw Utils::Exception("StartSampleCmd", "Failed to create the new GameEngine.");
-
     // create the widget sub window
     GUI::SubWindow *w = _menu->CreateSampleWindow(_window);
 
+    // create the new sample game engine
+    Contrib::GameEngine *engine = _sampleFactory->CreateSample(w->GetSubWindow(), *_menu->Sample());
+    if (engine == NULL)
+        throw Utils::Exception("StartSampleCmd", "Failed to create the new GameEngine.");
+
     // init the sample game engine
     engine->LimitFrameRate(60);
-    engine->SetWindow(w->GetSubWindow());
     _manager->AddEngine(engine);
 
     // start the sample game engine

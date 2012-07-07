@@ -103,7 +103,7 @@ void Button::ToString(std::ostream &os) const
 
 void Button::Update()
 {
-    Graphic::Core::PlainTextFormater *formater = static_cast<Graphic::Core::PlainTextFormater*>(_font->Formater());
+    Graphic::PlainTextFormater *formater = static_cast<Graphic::PlainTextFormater*>(_font->Formater());
 
     // update the color
     Color c(1, 1, 1);

@@ -27,7 +27,7 @@
 #ifndef NC_GUI_LOOK_STYLESHEET_H_
 #define NC_GUI_LOOK_STYLESHEET_H_
 
-#include <Nc/Graphics/Core/SpriteSheet.h>
+#include <Nc/Graphics/Data/SpriteSheet.h>
 #include "../Define.h"
 
 namespace Nc
@@ -81,7 +81,7 @@ namespace Nc
                 ~StyleSheet();
 
             private:
-                Graphic::Core::SpriteSheet      *_spriteSheet;          ///< sprite sheet of the GUI
+                Graphic::SpriteSheet    *_spriteSheet;          ///< sprite sheet of the GUI
 
                 friend class Utils::Singleton<StyleSheet>;
         };

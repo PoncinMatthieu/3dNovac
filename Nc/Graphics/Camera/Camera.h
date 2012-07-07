@@ -27,11 +27,11 @@
 #ifndef NC_GRAPHICS_CAMERA_CAMERA_H_
 #define NC_GRAPHICS_CAMERA_CAMERA_H_
 
-#include "../Core/GL.h"
+#include "../GL/GL.h"
 #include <Nc/Core/System/Input/Event.h>
 #include "../Define.h"
-#include "../Window/Window/Window.h"
-#include "../Window/Input/WindowInput.h"
+#include "../Window/IWindow.h"
+#include "../Input/WindowInput.h"
 #include "../Object/Object.h"
 
 namespace Nc
@@ -58,7 +58,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Camera);
 
             public:
-                Camera(Window *attachedWindow, bool is2d);
+                Camera(IWindow *attachedWindow, bool is2d);
                 virtual ~Camera() {}
 
                 /** Clone the camera. */
@@ -127,7 +127,7 @@ namespace Nc
                 virtual void            Render(SceneGraph *scene);
 
             protected:
-                Window                  *_window;                   ///< pointer to the attached window.
+                IWindow                  *_window;                   ///< pointer to the attached window.
 
                 bool                    _resized;                   ///< resize statement.
                 bool                    _setAsCurrentCamera;        ///< if false, the camera will not be set has current camera at the rendering.

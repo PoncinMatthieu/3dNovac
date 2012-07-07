@@ -11,8 +11,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace SimpleParticleEffect;
 
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
-  : Contrib::GameEngine(manager)
+GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager)
+  : Contrib::GameEngine(window, manager)
 {
 }
 
@@ -23,21 +23,6 @@ GameEngine::~GameEngine()
 void GameEngine::ReleaseContent()
 {
     delete _scene;
-}
-
-void GameEngine::CreateWindow(Window *win)
-{
-    bool            fullscreen = false;
-    unsigned long   pattern = Window::Titlebar | Window::Closeable | Window::Resizeable;
-    Vector2ui       winSize(800, 600);
-
-    if (fullscreen)
-    {
-        pattern |= Window::Fullscreen;
-        winSize = Vector2i(1680, 1050);
-    }
-    win->Create("Simple Particle Effect", winSize, pattern, "Nc:Image:icone.png", 3);
-    SetWindow(win);
 }
 
 void GameEngine::LoadContent()

@@ -114,7 +114,7 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     _layoutWinDesc->AddChild(_sampleImage);
 
     // create the text area to describe the selected sample
-    _descriptionTextArea = new TextEdit("", CenterH | Bottom, Vector2i(0, 0), "arial", Core::PlainTextFormater::Regular);
+    _descriptionTextArea = new TextEdit("", CenterH | Bottom, Vector2i(0, 0), "arial", PlainTextFormater::Regular);
     _descriptionTextArea->MarginTop(5);
     _descriptionTextArea->UseLook(new BoxLook("Small"));
     _descriptionTextArea->Percent(Vector2f(100, 100));
@@ -149,7 +149,7 @@ Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
     return windowSelectSample;
 }
 
-GUI::SubWindow      *MainMenu::CreateSampleWindow(Window *windowParent)
+GUI::SubWindow      *MainMenu::CreateSampleWindow(IWindow *windowParent)
 {
     System::Locker l(&_widgetSampleWindow->GetMutex());
     if (_currentSampleWindow != NULL)

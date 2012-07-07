@@ -24,10 +24,9 @@ namespace SampleViewer
             };
 
         public:
-            GameEngine(Nc::Engine::Manager *manager);
+            GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager);
             virtual ~GameEngine();
 
-            void            CreateWindow(Nc::Graphic::Window *win);
             virtual void    LoadContent();
             virtual void    ReleaseContent();
 
