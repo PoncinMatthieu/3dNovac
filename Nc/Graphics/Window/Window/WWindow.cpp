@@ -67,8 +67,8 @@ void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
 
 // Compute position and size
     HDC screenDC = GetDC(NULL);
-    int left   = (GetDeviceCaps(screenDC, HORZRES) - size.Data[0])  / 2;
-    int top    = (GetDeviceCaps(screenDC, VERTRES) - size.Data[1]) / 2;
+    int left   = (GetDeviceCaps(screenDC, HORZRES) - size.data[0])  / 2;
+    int top    = (GetDeviceCaps(screenDC, VERTRES) - size.data[1]) / 2;
     ReleaseDC(NULL, screenDC);
 
     // Choose the window style according to the Style parameter
@@ -87,17 +87,17 @@ void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
     Vector2i winsize(size);
     if ((pattern & Fullscreen) != 0)
     {
-        RECT Rect = {0, 0, winsize.Data[0], winsize.Data[1]};
+        RECT Rect = {0, 0, winsize.data[0], winsize.data[1]};
         AdjustWindowRect(&Rect, _win32Style, false);
-        winsize.Data[0]  = Rect.right - Rect.left;
-        winsize.Data[1] = Rect.bottom - Rect.top;
+        winsize.data[0]  = Rect.right - Rect.left;
+        winsize.data[1] = Rect.bottom - Rect.top;
     }
 
 	_antialiasingLevel = antialiasingLevel;
 
     // Create the window
     _input = new WWindowInput(this);
-    _handle = CreateWindowA(_classNameA, title.c_str(), _win32Style, left, top, winsize.Data[0], winsize.Data[1], NULL, NULL, GetModuleHandle(NULL), _input);
+    _handle = CreateWindowA(_classNameA, title.c_str(), _win32Style, left, top, winsize.data[0], winsize.data[1], NULL, NULL, GetModuleHandle(NULL), _input);
     if (_handle == NULL)
         throw Utils::Exception("WWindow", "Can't create the window");
 
@@ -188,8 +188,8 @@ void	WWindow::SwitchToFullscreen(const Vector2ui &size)
 {
     DEVMODE DevMode;
     DevMode.dmSize       = sizeof(DEVMODE);
-    DevMode.dmPelsWidth  = size.Data[0];
-    DevMode.dmPelsHeight = size.Data[1];
+    DevMode.dmPelsWidth  = size.data[0];
+    DevMode.dmPelsHeight = size.data[1];
     DevMode.dmBitsPerPel = 32;
     DevMode.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
 
@@ -202,7 +202,7 @@ void	WWindow::SwitchToFullscreen(const Vector2ui &size)
     SetWindowLong(_handle, GWL_EXSTYLE, WS_EX_APPWINDOW);
 
     // Resize the window so that it fits the entire screen
-    SetWindowPos(_handle, HWND_TOP, 0, 0, size.Data[0], size.Data[1], SWP_FRAMECHANGED);
+    SetWindowPos(_handle, HWND_TOP, 0, 0, size.data[0], size.data[1], SWP_FRAMECHANGED);
     ShowWindow(_handle, SW_SHOW);
 }
 
@@ -221,8 +221,8 @@ bool	WWindow::SetIcon(const Utils::FileName &f)
 
     // Windows wants BGRA pixels : swap red and blue channels
 	const unsigned char *pix = image.GetPixels();
-    unsigned char *iconPixels = new unsigned char[image.Size().Data[0] * image.Size().Data[1] * 4];
-    for (std::size_t i = 0; i < image.Size().Data[1] * image.Size().Data[1]; ++i)
+    unsigned char *iconPixels = new unsigned char[image.Size().data[0] * image.Size().data[1] * 4];
+    for (std::size_t i = 0; i < image.Size().data[1] * image.Size().data[1]; ++i)
     {
         iconPixels[i * 4 + 0] = pix[i * 4 + 2];
         iconPixels[i * 4 + 1] = pix[i * 4 + 1];
@@ -231,7 +231,7 @@ bool	WWindow::SetIcon(const Utils::FileName &f)
     }
 
     // Create the icon from the pixels array
-    _icon = CreateIcon(GetModuleHandle(NULL), image.Size().Data[0], image.Size().Data[1], 1, 32, NULL, iconPixels);
+    _icon = CreateIcon(GetModuleHandle(NULL), image.Size().data[0], image.Size().data[1], 1, 32, NULL, iconPixels);
 	if (!_icon)
 	{
 		delete[] iconPixels;
