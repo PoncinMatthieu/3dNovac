@@ -29,7 +29,7 @@ int main()
     }
     catch (const std::exception &e)
     {
-        LOG << "Fatal error: " << e.what() << std::endl;
+        LOG_ERROR << "Fatal error: " << e.what() << std::endl;
     }
     Utils::Logger::DeleteInstance();
     return 0;
