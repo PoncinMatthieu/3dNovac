@@ -6,17 +6,6 @@
 using namespace std;
 using namespace Nc;
 
-void CreateEngines(Nc::Engine::Manager *manager, Graphic::IWindow *win)
-{
-    Graphic::Engine *graphic = new Graphic::Engine(win, manager);
-    graphic->LimitFrameRate(60);
-    manager->AddEngine(graphic);
-
-    SampleViewer::GameEngine *game = new SampleViewer::GameEngine(win, manager);
-    game->LimitFrameRate(30);
-    manager->AddEngine(game);
-}
-
 int main()
 {
     Graphic::WindowStyle    style = Graphic::IWindow::Titlebar | Graphic::IWindow::Closeable | Graphic::IWindow::Resizeable;
@@ -24,12 +13,19 @@ int main()
 
     try
     {
-        Engine::Manager GUITest("3dNovac.conf");
-        Graphic::Window win("Sample Viewer", winSize, style, "Nc:Image:icone.png", 3);
+        Engine::Manager manager("3dNovac.conf");
+        Graphic::Window window("Sample Viewer", winSize, style, "Nc:Image:icone.png", 3);
 
-        CreateEngines(&GUITest, &win);
-        GUITest.Start();
-        GUITest.Wait();
+		Graphic::Engine *graphic = new Graphic::Engine(&window, &manager);
+		graphic->LimitFrameRate(60);
+		manager.AddEngine(graphic);
+
+		SampleViewer::GameEngine *game = new SampleViewer::GameEngine(&window, &manager);
+		game->LimitFrameRate(30);
+		manager.AddEngine(game);
+
+		manager.Start();
+        manager.Wait();
     }
     catch (const std::exception &e)
     {

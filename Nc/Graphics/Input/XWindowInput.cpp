@@ -42,8 +42,15 @@ XWindowInput::XWindowInput(Window *win) : WindowInput(win)
 
 XWindowInput::~XWindowInput()
 {
+}
+
+void XWindowInput::Destroy()
+{
     if (_inputContext)
         XDestroyIC(_inputContext);
+	if (_inputMethod)
+		XCloseIM(_inputMethod);
+	_inputContext = NULL;
 }
 
 void XWindowInput::Create()

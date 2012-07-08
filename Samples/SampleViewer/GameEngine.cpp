@@ -29,7 +29,7 @@ void GameEngine::ReleaseContent()
 
 void GameEngine::LoadContent()
 {
-    // creation de la scene
+	// creation de la scene
     _scene = new GUI::SceneGraph(_window);
     _window->SceneManager()->AddScene(_scene);
     _scene->AddChild(new Camera2d(_window));
@@ -83,6 +83,7 @@ void GameEngine::MouseButtonEvent(System::Event &)
 
 void GameEngine::MouseMotionEvent(System::Event &)
 {
+	LOG << "mouse motion event" << std::endl;
 }
 
 void GameEngine::SampleSelectedCmd(Nc::Engine::IEvent *)

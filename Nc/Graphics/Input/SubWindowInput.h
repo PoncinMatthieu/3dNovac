@@ -47,6 +47,8 @@ namespace Nc
 
                 /** Create and init the input */
                 virtual void Create();
+				/** Destroy the input */
+				virtual void Destroy();
 
             private:
                 WindowInput     *_parent;       ///< parent of the SubWindowInput.

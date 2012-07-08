@@ -56,6 +56,8 @@ namespace Nc
 
                 /** Create and init the input. */
                 virtual void Create() = 0;
+				/** Destroy the input */
+				virtual void Destroy() = 0;
                 /** Check the events of the input. */
                 virtual void CheckEvents()                                                  {}
 

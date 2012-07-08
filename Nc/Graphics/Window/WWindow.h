@@ -27,7 +27,7 @@
 #ifndef NC_SYSTEM_WWINDOW_H_
 #define NC_SYSTEM_WWINDOW_H_
 
-#include "Window.h"
+#include "IWindow.h"
 #include "WCursor.h"
 #include "../Input/WWindowInput.h"
 
@@ -39,13 +39,14 @@ namespace Nc
         /**
             For more detail, please see the Window documentation
         */
-        class LGRAPHICS WWindow : public Window
+        class LGRAPHICS Window : public IWindow
         {
             public:
-                WWindow();
-                virtual ~WWindow();
+				Window(SceneGraphManager *sceneGraphManager = NULL);
+				Window(const std::string &title, const Math::Vector2ui &size, const WindowStyle &style, const Utils::FileName &icon, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager = NULL);
+                virtual ~Window();
 
-				virtual void				Create(const std::string &title, const Math::Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel);
+				virtual void				Create(const std::string &title, const Math::Vector2ui &size, const WindowStyle &style, const Utils::FileName &icon, unsigned int antialiasingLevel);
 				virtual void				UseExistingWindow(void *disp, int winId, const Vector2ui &size, unsigned int antialiasingLevel);
                 virtual GLContext			*CreateGLContext();
                 virtual void				Close();
@@ -61,7 +62,7 @@ namespace Nc
                 static const char *_classNameA;
                 HWND          _handle;
                 DWORD         _win32Style;
-                HICON         _icon;
+                HICON         _hicon;
 
                 friend class WGLContext;
                 friend class WWindowInput;

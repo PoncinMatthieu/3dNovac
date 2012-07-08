@@ -36,10 +36,19 @@ link_directories(../lib/${CMAKE_CFG_INTDIR})
 
 # Set the Nc-Core sources path only the API folder is not set
 # we use a global and not a global recurse to avoid the svn directories and because some folder shouldn't be added to the compilation process
-file(GLOB_RECURSE Nc-Core-sources
-  ../Nc/Define.h
-  ../Nc/Core/*.cpp
-  ../Nc/Core/*.h
+file(GLOB Nc-Core-sources
+  ../Nc/*.h
+  ../Nc/Core/*.cpp							../Nc/Core/*.h
+  ../Nc/Core/Utils/*.cpp					../Nc/Core/Utils/*.h
+  ../Nc/Core/Utils/Debug/*.cpp				../Nc/Core/Utils/Debug/*.h
+  ../Nc/Core/Utils/Xml/*.cpp				../Nc/Core/Utils/Xml/*.h
+  ../Nc/Core/System/*.cpp					../Nc/Core/System/*.h
+  ../Nc/Core/System/API/*.cpp				../Nc/Core/System/API/*.h
+  ../Nc/Core/System/Input/*.cpp				../Nc/Core/System/Input/*.h
+  ../Nc/Core/Math/*.cpp						../Nc/Core/Math/*.h
+  ../Nc/Core/Graph/*.cpp					../Nc/Core/Graph/*.h
+  ../Nc/Core/Engine/*.cpp					../Nc/Core/Engine/*.h
+  ../Nc/Core/Network/*.cpp					../Nc/Core/Network/*.h
 )
 
 file(GLOB Nc-Core-sources-api-specific

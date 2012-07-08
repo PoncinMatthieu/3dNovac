@@ -46,12 +46,34 @@ IWindow::IWindow(SceneGraphManager *sceneGraphManager)
         _sceneGraphManager = new SceneGraphManager();
 }
 
+IWindow::IWindow(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icon, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager)
+	: _sceneGraphManager(sceneGraphManager), _isCreate(false), _isEnable(false), _input(NULL), _own(false), _defaultCursor(NULL), _currentCursor(NULL)
+{
+	_title = title;
+	_icon = icon;
+	_style = style;
+	_antialiasingLevel = antialiasingLevel;
+    _depth = 24;
+    _stencil = 8;
+    _bitsPerPixel = 32;
+    _width = size[0];
+    _height = size[1];
+
+    if (_sceneGraphManager == NULL)
+        _sceneGraphManager = new SceneGraphManager();
+}
+
 IWindow::~IWindow()
 {
     if (_sceneGraphManager != NULL)
         delete _sceneGraphManager;
     if (_defaultCursor != NULL)
         delete _defaultCursor;
+}
+
+void	IWindow::Create()
+{
+	Create(_title, Vector2ui(_width, _height), _style, _icon, _antialiasingLevel);
 }
 
 void    IWindow::InitSceneGraphManager()

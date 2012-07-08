@@ -50,22 +50,24 @@ Graphic::Window::Window(SceneGraphManager *sceneGraphManager)
     _vInfo = NULL;
     _fbConfig = NULL;
     _xwin = 0;
+    _input = new XWindowInput(this);
 }
 
-Graphic::Window::Window(const std::string &title, const Math::Vector2ui &size, const WindowStyle &style, const Utils::FileName &icone, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager)
-    : IWindow(sceneGraphManager)
+Graphic::Window::Window(const std::string &title, const Math::Vector2ui &size, const WindowStyle &style, const Utils::FileName &icon, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager)
+    : IWindow(title, size, style, icon, antialiasingLevel, sceneGraphManager)
 {
     _display = NULL;
     _vInfo = NULL;
     _fbConfig = NULL;
     _xwin = 0;
-    Create(title, size, style, icone, antialiasingLevel);
+    _input = new XWindowInput(this);
 }
 
 Graphic::Window::~Window()
 {
     if (_isCreate)
         Close();
+	delete _input;
 }
 
 static Bool WaitForNotify(Display *dpy, XEvent *event, XPointer arg)
@@ -117,7 +119,6 @@ void Graphic::Window::Create(const std::string &title, const Vector2ui &size, co
     SetWindowStyle(style); // set the window style
 
     // initialize the inputs of the window
-    _input = new XWindowInput(this);
     _input->Create();
 
     // Map the window to the screen, and wait for it to appear
@@ -434,11 +435,11 @@ void Graphic::Window::Close()
     // Destroy the renderer attach to the window
     if (_context)
         delete _context;
-
+	_context = NULL;
+		
     // Destroy the input context
-    if (_input)
-        delete _input;
-
+	_input->Destroy();
+		
     if (_vInfo != NULL)
         XFree(_vInfo);
 

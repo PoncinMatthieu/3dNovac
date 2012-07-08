@@ -31,7 +31,7 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::Contrib;
 
-GameEngine::GameEngine(IWindow *window, Engine::Manager *manager,
+GameEngine::GameEngine(IWindow *window, Nc::Engine::Manager *manager,
                         unsigned int pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
     : Engine::MainEngine(manager, pattern, deletePriority, loadingContextPriority, loadingPriority), _window(NULL), _context(NULL)
 {

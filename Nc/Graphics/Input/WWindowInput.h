@@ -44,7 +44,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        class WWindow;
+        class Window;
 
         /// Implementation of a WindowInput for a Win32 System
         /**
@@ -53,11 +53,12 @@ namespace Nc
         class LGRAPHICS WWindowInput : public WindowInput
         {
             public:
-                WWindowInput(WWindow *win);
+                WWindowInput(Graphic::Window *win);
                 virtual ~WWindowInput();
 
                 virtual void Create();
-                virtual void CheckEvents();
+				virtual void Destroy();
+				virtual void CheckEvents();
 
                 static LRESULT CALLBACK GlobalOnEvent(HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam);
 

@@ -29,7 +29,7 @@
 
 using namespace Nc;
 
-Graphic::Cursor::Cursor(WWindow *w)
+Graphic::Cursor::Cursor(Window *w)
     : ICursor(w), _win(w), _cursor(NULL)
 {
 	_cursor = LoadCursor(NULL, IDC_ARROW);

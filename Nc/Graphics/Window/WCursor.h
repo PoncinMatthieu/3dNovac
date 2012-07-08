@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        class WWindow;
+        class Window;
 
         /// Implementation of a ICursor for a Win32 system
         /**
@@ -47,7 +47,7 @@ namespace Nc
         class LGRAPHICS Cursor : public ICursor
         {
             public:
-                Cursor(WWindow *w);
+                Cursor(Window *w);
                 virtual ~Cursor();
 
                 /** \return a clone of the current cursor */
@@ -67,7 +67,7 @@ namespace Nc
             private:
                 void    CreateHiddenCursor();
 
-                WWindow                 *_win;
+                Window					*_win;
                 HCURSOR					_cursor;
         };
     }

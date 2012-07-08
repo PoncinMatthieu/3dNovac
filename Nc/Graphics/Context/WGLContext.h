@@ -42,7 +42,7 @@ namespace Nc
         class LGRAPHICS WGLContext : public GLContext
         {
             public:
-                WGLContext(WWindow *win, HDC drawable = 0);
+                WGLContext(Window *win, HDC drawable = 0);
                 virtual ~WGLContext();
 
                 void            Create(GLContext *sharedContext = NULL);

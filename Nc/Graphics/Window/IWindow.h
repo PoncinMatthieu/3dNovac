@@ -61,12 +61,15 @@ namespace Nc
                 typedef std::list<SubWindow*>       ListSubWindow;
 
             public:
-                IWindow(SceneGraphManager *sceneGraphManager = NULL);
+				IWindow(SceneGraphManager *sceneGraphManager = NULL);
+				IWindow(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icon, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager = NULL);
                 virtual ~IWindow();
 
                 /** \return true if the IWindow is create. */
                 virtual bool        IsCreate() const  {return _isCreate;}
 
+				/** Create the window by using the predefined parameters */
+				void				Create();
                 /** Interface to create the window with the suitable attributes. */
                 virtual void        Create(const std::string &title, const Math::Vector2ui &size, const Utils::Mask<Style> &style, const Utils::FileName &icon, unsigned int antialiasingLevel) = 0;
 
@@ -155,8 +158,11 @@ namespace Nc
 
                 bool                    _isCreate;          ///< true if the window has been created.
                 bool					_isEnable;			///< statement enabling the rendering of the window.
-                unsigned int            _width;             ///< the width of the window.
+				std::string				_title;				///< the title of the window.
+				Utils::FileName			_icon;				///< the path to the icon of the window.
+				unsigned int            _width;             ///< the width of the window.
                 unsigned int            _height;            ///< the height of the window.
+				Utils::Mask<Style>		_style;				///< the style of the window.
                 GLContext               *_context;          ///< the associated OpenGL context.
                 WindowInput             *_input;            ///< the window input associated.
                 bool                    _own;               ///< false if the window use an existing window (Created with the method UseExistingWindow).

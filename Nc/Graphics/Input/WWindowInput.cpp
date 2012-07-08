@@ -27,7 +27,7 @@ using namespace Nc;
 using namespace Nc::System;
 using namespace Nc::Graphic;
 
-WWindowInput::WWindowInput(WWindow *win) : WindowInput(win)
+WWindowInput::WWindowInput(Graphic::Window *win) : WindowInput(win)
 {
     if (_win == NULL)
         throw Utils::Exception("WWindowInput", "Can't create input, window is null");
@@ -36,20 +36,25 @@ WWindowInput::WWindowInput(WWindow *win) : WindowInput(win)
     _callback = NULL;
 }
 
+WWindowInput::~WWindowInput()
+{
+}
+
 void WWindowInput::Create()
 {
     if (!_win->IsOwn())
     {
         // We change the event procedure of the control (it is important to save the old one)
-        SetWindowLongPtr(static_cast<WWindow*>(_win)->_handle, GWLP_USERDATA, reinterpret_cast<long>(this));
-        _callback = SetWindowLongPtr(static_cast<WWindow*>(_win)->_handle, GWLP_WNDPROC, reinterpret_cast<long>(&WWindowInput::GlobalOnEvent));
+        SetWindowLongPtr(static_cast<Graphic::Window*>(_win)->_handle, GWLP_USERDATA, reinterpret_cast<long>(this));
+        _callback = SetWindowLongPtr(static_cast<Graphic::Window*>(_win)->_handle, GWLP_WNDPROC, reinterpret_cast<long>(&WWindowInput::GlobalOnEvent));
     }
 }
 
-WWindowInput::~WWindowInput()
+void WWindowInput::Destroy()
 {
-    if (_callback != 0)
-        SetWindowLongPtr(static_cast<WWindow*>(_win)->_handle, GWLP_WNDPROC, _callback);
+    if (_callback != NULL)
+        SetWindowLongPtr(static_cast<Graphic::Window*>(_win)->_handle, GWLP_WNDPROC, _callback);
+	_callback = NULL;
 }
 
 void WWindowInput::CheckEvents()
@@ -67,7 +72,7 @@ void WWindowInput::CheckEvents()
 
 LRESULT CALLBACK WWindowInput::GlobalOnEvent(HWND handle, UINT message, WPARAM WParam, LPARAM LParam)
 {
-    // Associate handle and Window instance when the creation message is received
+	// Associate handle and Window instance when the creation message is received
     if (message == WM_CREATE)
     {
         // Get WWindowInput instance (it was passed as the last argument of CreateWindow)
@@ -113,8 +118,8 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
             // The mouse has moved, if the cursor is in our window we must refresh the cursor
             if (LOWORD(LParam) == HTCLIENT)
 			{
-				if (static_cast<WWindow*>(_win)->_currentCursor != NULL)
-					static_cast<WWindow*>(_win)->_currentCursor->Enable();
+				if (static_cast<Graphic::Window*>(_win)->_currentCursor != NULL)
+					static_cast<Graphic::Window*>(_win)->_currentCursor->Enable();
 			}
             break;
         }
@@ -138,7 +143,7 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         {
             Event e(this, Event::Resized);
             RECT Rect;
-            GetClientRect(static_cast<WWindow*>(_win)->_handle, &Rect);
+            GetClientRect(static_cast<Graphic::Window*>(_win)->_handle, &Rect);
             e.size.width = Rect.right - Rect.left;
             e.size.height = Rect.bottom - Rect.top;
             GenereEvent(e);
@@ -295,7 +300,7 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
             {
                 TRACKMOUSEEVENT MouseEvent;
                 MouseEvent.cbSize    = sizeof(TRACKMOUSEEVENT);
-                MouseEvent.hwndTrack = static_cast<WWindow*>(_win)->_handle;
+                MouseEvent.hwndTrack = static_cast<Window*>(_win)->_handle;
                 MouseEvent.dwFlags   = TME_LEAVE;
                 TrackMouseEvent(&MouseEvent);
 

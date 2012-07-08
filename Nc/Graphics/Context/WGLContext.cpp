@@ -24,7 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "../../Core/GL.h"
+#include "../GL/GL.h"
 #include "WGLContext.h"
 #include <strsafe.h>
 
@@ -33,7 +33,7 @@ using namespace Nc;
 using namespace Nc::System;
 using namespace Nc::Graphic;
 
-WGLContext::WGLContext(WWindow *win, HDC drawable) : GLContext(win), _drawable(drawable)
+WGLContext::WGLContext(Window *win, HDC drawable) : GLContext(win), _drawable(drawable)
 {
     if (_win == NULL)
         throw Utils::Exception("WGLContext", "Can't create any Renderer if the window is null");
@@ -44,7 +44,7 @@ WGLContext::~WGLContext()
 {
     if (_isCreate)
     {
-        ReleaseDC(static_cast<WWindow*>(_win)->_handle, _drawable);
+        ReleaseDC(static_cast<Window*>(_win)->_handle, _drawable);
         wglDeleteContext(_context);
     }
 }
@@ -118,7 +118,7 @@ void WGLContext::Create(GLContext *sharedContext)
         throw Utils::Exception("WGLContext", "The Renderer is already create");
 
     // Get the device context attached to the window
-    _drawable = GetDC(static_cast<WWindow*>(_win)->_handle);
+    _drawable = GetDC(static_cast<Window*>(_win)->_handle);
     if (_drawable == NULL)
 	{
 		ShowError("WGLContext:Create:GetDC");
@@ -206,7 +206,7 @@ void	WGLContext::ChoosePixelFormat()
                     LOG_ERROR << "Failed to find a pixel format supporting "
                               << _win->AntialiasingLevel() << " antialiasing levels. trying with 2 levels" << std::endl;
 
-                    static_cast<WWindow*>(_win)->_antialiasingLevel = IntAttributes[11] = 2;
+                    static_cast<Window*>(_win)->_antialiasingLevel = IntAttributes[11] = 2;
 	                IsValid = wglChoosePixelFormatARB(_drawable, IntAttributes, FloatAttributes, sizeof(Formats) / sizeof(*Formats), Formats, &NbFormats) != 0;
                 }
 
@@ -214,7 +214,7 @@ void	WGLContext::ChoosePixelFormat()
                 {
                     // Cannot find any pixel format supporting multisampling ; disabling antialiasing
                     LOG_ERROR << "Failed to find a pixel format supporting antialiasing. antialiasing will be disabled" << std::endl;
-                    static_cast<WWindow*>(_win)->_antialiasingLevel = 0;
+                    static_cast<Window*>(_win)->_antialiasingLevel = 0;
                 }
             }
 
@@ -248,7 +248,7 @@ void	WGLContext::ChoosePixelFormat()
         {
             // wglChoosePixelFormatARB not supported; disabling antialiasing
             LOG_ERROR << "Antialiasing is not supported. it will be disabled" << std::endl;
-            static_cast<WWindow*>(_win)->_antialiasingLevel = 0;
+            static_cast<Window*>(_win)->_antialiasingLevel = 0;
         }
 
 		// unset the dummy context
@@ -295,8 +295,8 @@ void	WGLContext::SetPixelFormat()
     attribs.nSize    = sizeof(PIXELFORMATDESCRIPTOR);
     attribs.nVersion = 1;
     DescribePixelFormat(_drawable, _format, sizeof(PIXELFORMATDESCRIPTOR), &attribs);
-    static_cast<WWindow*>(_win)->_depth   = attribs.cDepthBits;
-    static_cast<WWindow*>(_win)->_stencil = attribs.cStencilBits;
+    static_cast<Window*>(_win)->_depth   = attribs.cDepthBits;
+    static_cast<Window*>(_win)->_stencil = attribs.cStencilBits;
 
     // Set the chosen pixel format
     if (!::SetPixelFormat(_drawable, _format, &attribs))
@@ -386,7 +386,7 @@ GLContext *WGLContext::CreateNewSharedContext()
 
 	// create a new opengl context for the current thread
 	Active();
-	WGLContext *newSharedContext = new WGLContext(static_cast<WWindow*>(_win));
+	WGLContext *newSharedContext = new WGLContext(static_cast<Window*>(_win));
 	newSharedContext->Create(this);
 	Disable();
 	return newSharedContext;

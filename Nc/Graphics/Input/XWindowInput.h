@@ -48,6 +48,7 @@ namespace Nc
                 virtual ~XWindowInput();
 
                 void Create();
+				void Destroy();
                 void CheckEvents();
                 void ProcessEvent(XEvent &event);
 

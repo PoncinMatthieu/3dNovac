@@ -90,7 +90,7 @@ bool    DefaultLightingMaterial::Configure(GL::Drawable &drawable)
 
 #ifdef _DEBUG
 // Draw the normals of the given geometry with a geometry shader
-void DrawNormal(SceneGraph *scene, const TMatrix &mvp, Core::Drawable &drawable)
+void DrawNormal(SceneGraph *scene, const TMatrix &mvp, GL::Drawable &drawable)
 {
     static GL::Program              normalProgram;
     static unsigned int             uniformMatrix;

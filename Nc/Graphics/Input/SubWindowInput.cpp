@@ -43,3 +43,7 @@ SubWindowInput::~SubWindowInput()
 void SubWindowInput::Create()
 {
 }
+
+void SubWindowInput::Destroy()
+{
+}

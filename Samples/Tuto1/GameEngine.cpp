@@ -8,7 +8,7 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-GameEngine::GameEngine(Graphic::Window *window, Engine::Manager *manager)
+GameEngine::GameEngine(Graphic::Window *window, Nc::Engine::Manager *manager)
   : Nc::Engine::MainEngine(manager), _window(window)
 {
     // add the window Input to the Inputs of the engine

@@ -49,7 +49,8 @@ Graphic::Engine::~Engine()
 
 void Graphic::Engine::CreateContext()
 {
-    _context = _win->CreateGLContext();
+	_win->Create();
+	_context = _win->CreateGLContext();
 
     // initialize opengl context
     _context->Active();
@@ -82,8 +83,7 @@ void Graphic::Engine::Execute(float runningTime)
 {
 	_elapsedTime = runningTime;
 
-	WindowInput *input = _win->Input();
-	input->CheckEvents();
+	_win->Input()->CheckEvents();
 
 	// display the scene graph
 	_renderState.Enable();

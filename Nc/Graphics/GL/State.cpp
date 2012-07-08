@@ -53,7 +53,7 @@ void    State::Disable()
     _current = NULL;
 }
 
-void    State::InitContext(GLContext *context)
+void    State::InitContext(Graphic::GLContext *context)
 {
     _context = context;
 

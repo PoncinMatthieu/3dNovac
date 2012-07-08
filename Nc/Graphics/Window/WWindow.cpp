@@ -27,29 +27,42 @@
 #include "WWindow.h"
 #include "../Input/WWindowInput.h"
 #include "../Context/WGLContext.h"
-#include "../../Core/Image.h"
+#include "../Data/Image.h"
 
 using namespace Nc;
 using namespace Nc::System;
 using namespace Nc::Graphic;
 
-const char *WWindow::_classNameA = "Nc_Window";
+const char *Graphic::Window::_classNameA = "Nc_Window";
 
-WWindow::WWindow() : Window()
+Graphic::Window::Window(SceneGraphManager *sceneGraphManager) 
+	: IWindow(sceneGraphManager), _handle(NULL)
 {
-    _handle = NULL;
-
     // Choose the window style according to the Style parameter
     _win32Style = WS_VISIBLE;
+
+	// create the window input instance
+    _input = new WWindowInput(this);
 }
 
-WWindow::~WWindow()
+Graphic::Window::Window(const std::string &title, const Math::Vector2ui &size, const WindowStyle &style, const Utils::FileName &icon, unsigned int antialiasingLevel, SceneGraphManager *sceneGraphManager)
+	: IWindow(title, size, style, icon, antialiasingLevel, sceneGraphManager), _handle(NULL)
+{
+    // Choose the window style according to the Style parameter
+    _win32Style = WS_VISIBLE;
+
+	// create the window input instance
+    _input = new WWindowInput(this);
+}
+
+Graphic::Window::~Window()
 {
     if (_isCreate)
         Close();
+	delete _input;
 }
 
-void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned long pattern, const Utils::FileName &icon, unsigned int antialiasingLevel)
+void Graphic::Window::Create(const std::string &title, const Vector2ui &size, const WindowStyle &style, const Utils::FileName &icon, unsigned int antialiasingLevel)
 {
     // register the window class
     WNDCLASSA windowClass;
@@ -72,20 +85,23 @@ void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
     ReleaseDC(NULL, screenDC);
 
     // Choose the window style according to the Style parameter
-    if (pattern == 0)
+	if (style.GetMask() == 0)
     {
         _win32Style |= WS_POPUP;
     }
     else
     {
-        if (pattern & Titlebar)     _win32Style |= WS_CAPTION | WS_MINIMIZEBOX;
-        if (pattern & Resizeable)   _win32Style |= WS_THICKFRAME | WS_MAXIMIZEBOX;
-        if (pattern & Closeable)    _win32Style |= WS_SYSMENU;
+        if (style.Enabled(Titlebar))
+			_win32Style |= WS_CAPTION | WS_MINIMIZEBOX;
+        if (style.Enabled(Resizeable))
+			_win32Style |= WS_THICKFRAME | WS_MAXIMIZEBOX;
+        if (style.Enabled(Closeable))
+			_win32Style |= WS_SYSMENU;
     }
 
     // In windowed mode, adjust width and height so that window will have the requested client area
     Vector2i winsize(size);
-    if ((pattern & Fullscreen) != 0)
+    if (style.Disabled(Fullscreen))
     {
         RECT Rect = {0, 0, winsize.data[0], winsize.data[1]};
         AdjustWindowRect(&Rect, _win32Style, false);
@@ -96,13 +112,12 @@ void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
 	_antialiasingLevel = antialiasingLevel;
 
     // Create the window
-    _input = new WWindowInput(this);
     _handle = CreateWindowA(_classNameA, title.c_str(), _win32Style, left, top, winsize.data[0], winsize.data[1], NULL, NULL, GetModuleHandle(NULL), _input);
     if (_handle == NULL)
         throw Utils::Exception("WWindow", "Can't create the window");
 
     // Switch to fullscreen if requested
-    if ((pattern & Fullscreen) != 0)
+    if (style.Enabled(Fullscreen))
         SwitchToFullscreen(winsize);
 
     // Create the inputs of the window
@@ -124,7 +139,7 @@ void WWindow::Create(const std::string &title, const Vector2ui &size, unsigned l
     _isCreate = true;
 }
 
-void WWindow::UseExistingWindow(void *disp, int winId, const Vector2ui &size, unsigned int antialiasingLevel)
+void Graphic::Window::UseExistingWindow(void *disp, int winId, const Vector2ui &size, unsigned int antialiasingLevel)
 {
     _handle = reinterpret_cast<HWND>(disp);
     if (_handle == NULL)
@@ -143,26 +158,27 @@ void WWindow::UseExistingWindow(void *disp, int winId, const Vector2ui &size, un
     _isCreate = true;
 }
 
-GLContext *WWindow::CreateGLContext()
+GLContext *Graphic::Window::CreateGLContext()
 {
     _context = new WGLContext(this);
     _context->Create();
     return _context;
 }
 
-void WWindow::Close()
+void Graphic::Window::Close()
 {
     // Destroy the renderer attach to the window
     if (_context)
         delete _context;
+	_context = NULL;
 
     // Destroy the input context
-    if (_input)
-        delete _input;
+	_input->Destroy();
 
     // Destroy the custom icon, if any
-  if (_icon)
-      DestroyIcon(_icon);
+  if (_hicon)
+      DestroyIcon(_hicon);
+  _hicon = NULL;
 
     // Destroy the window
     if (_own)
@@ -175,7 +191,7 @@ void WWindow::Close()
     _isCreate = false;
 }
 
-void WWindow::Resize(unsigned int width, unsigned int height)
+void Graphic::Window::Resize(unsigned int width, unsigned int height)
 {
     RECT Rect = {0, 0, width, height};
     AdjustWindowRect(&Rect, _win32Style, false);
@@ -184,7 +200,7 @@ void WWindow::Resize(unsigned int width, unsigned int height)
     Resized();
 }
 
-void	WWindow::SwitchToFullscreen(const Vector2ui &size)
+void	Graphic::Window::SwitchToFullscreen(const Vector2ui &size)
 {
     DEVMODE DevMode;
     DevMode.dmSize       = sizeof(DEVMODE);
@@ -206,18 +222,18 @@ void	WWindow::SwitchToFullscreen(const Vector2ui &size)
     ShowWindow(_handle, SW_SHOW);
 }
 
-bool	WWindow::SetIcon(const Utils::FileName &f)
+bool	Graphic::Window::SetIcon(const Utils::FileName &f)
 {
     Utils::FileName filename = CONFIG->Block("RessourcesPath")->Line("Image")->Param("path") + f;
     if (f.empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
         return false;
 
-	Core::Image image;
+	Image image;
     image.LoadFromFile(filename);
 
     // First destroy the previous one
-    if (_icon)
-        DestroyIcon(_icon);
+    if (_hicon)
+        DestroyIcon(_hicon);
 
     // Windows wants BGRA pixels : swap red and blue channels
 	const unsigned char *pix = image.GetPixels();
@@ -231,16 +247,16 @@ bool	WWindow::SetIcon(const Utils::FileName &f)
     }
 
     // Create the icon from the pixels array
-    _icon = CreateIcon(GetModuleHandle(NULL), image.Size().data[0], image.Size().data[1], 1, 32, NULL, iconPixels);
-	if (!_icon)
+    _hicon = CreateIcon(GetModuleHandle(NULL), image.Size().data[0], image.Size().data[1], 1, 32, NULL, iconPixels);
+	if (!_hicon)
 	{
 		delete[] iconPixels;
 		throw Utils::Exception("WWindow", "Failed to create the icone");
 	}
 
     // Set it as both big and small icon of the window
-	SendMessage(_handle, WM_SETICON, ICON_BIG,   (LPARAM)_icon);
-	SendMessage(_handle, WM_SETICON, ICON_SMALL, (LPARAM)_icon);
+	SendMessage(_handle, WM_SETICON, ICON_BIG,   (LPARAM)_hicon);
+	SendMessage(_handle, WM_SETICON, ICON_SMALL, (LPARAM)_hicon);
 	delete[] iconPixels;
 	return true;
 }

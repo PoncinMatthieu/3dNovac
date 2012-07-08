@@ -32,6 +32,8 @@
 #ifndef NC_GRAPHICS_GRAPHICS_H_
 #define NC_GRAPHICS_GRAPHICS_H_
 
+	#include "Define.h"
+
 // Window
     #ifdef SYSTEM_WINDOWS
         #include "Window/WWindow.h"
