@@ -49,7 +49,7 @@ namespace Nc
 
             public:
                 AbstractNode()                                  : NodePolitic()               {}
-                AbstractNode(NodeType *parent)                  : NodePolitic(parent)         {}
+				AbstractNode(NodeType *parent)                  : NodePolitic(parent)         {}
 
                 /** \return true if the node is root (has no parent) */
                 bool            IsRoot() const                  {return NodePolitic::IsRoot();}
@@ -72,7 +72,7 @@ namespace Nc
         /// Template class Node used to define and manipulate a tree/graph structure using a politic
         /**
             Basically the node use the same terminology of The Graph Theory.
-            The node contained a data of type T and use the Politic P to define it's comportement.
+            The node contain a data of type T and use the Politic P to define it's comportement.
 
             You couldn't create directly a node with this class.
             But you could use a BinaryNode or the specialisation of the node with a NodeType of Utils::Metaprog::Nop
@@ -94,7 +94,8 @@ namespace Nc
 
             public:
                 Node()                                  : NodePolitic()               {}
-                Node(NodeType *parent)                  : NodePolitic(parent)         {}
+				Node(const T *data)						: NodePolitic(parent)         {NodePolitic::data = data;}
+				Node(NodeType *parent)                  : NodePolitic(parent)         {}
         };
 
         /// Specialisation of Node
@@ -142,6 +143,7 @@ namespace Nc
 
             public:
                 Node()                                  : NodePolitic()               {}
+				Node(const T *data)						: NodePolitic(parent)         {NodePolitic::data = data;}
                 Node(NodeType *parent)                  : NodePolitic(parent)         {}
         };
     }
