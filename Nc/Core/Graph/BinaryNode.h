@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graph
     {
-        /// Politic class to define a binary node, has a left/right node
+        /// Politic class to define a binary node, has a left/right node.
         template<typename T, class NodeType, class Allocator = Utils::Metaprog::Allocator<NodeType> >
         class BinaryNodePolitic : public INodePolitic<T,NodeType, false>
         {
@@ -50,74 +50,74 @@ namespace Nc
                 BinaryNodePolitic &operator = (const BinaryNodePolitic &bn);
                 ~BinaryNodePolitic();
 
-                /** \return the left node */
+                /** \return the left node. */
                 NodeType            *Left()                             {return _left;}
-                /** \return the left node */
+                /** \return the left node. */
                 const NodeType      *Left() const                       {return _left;}
-                /** \return the right node */
+                /** \return the right node. */
                 NodeType            *Right()                            {return _right;}
-                /** \return the right node */
+                /** \return the right node. */
                 const NodeType      *Right() const                      {return _right;}
 
-                /** \return the next node (in ascending order) */
+                /** \return the next node (in ascending order). */
                 NodeType            *Next();
-                /** \return the next node (in ascending order) */
+                /** \return the next node (in ascending order). */
                 const NodeType      *Next() const;
-                /** \return the next node (in descending order) */
+                /** \return the next node (in descending order). */
                 NodeType            *Prev();
-                /** \return the next node (in descending order) */
+                /** \return the next node (in descending order). */
                 const NodeType      *Prev() const;
 
-                /** \return the height of the node (length of the longest downward path to a leaf) */
+                /** \return the height of the node (length of the longest downward path to a leaf). */
                 int                 Height() const;
 
-                /** \return true if the node has at least one child */
+                /** \return true if the node has at least one child. */
                 bool                HasChilds() const                   {return (_left != NULL || _right != NULL);}
-                /** \return the number of child nodes */
+                /** \return the number of child nodes. */
                 unsigned int        ChildCount() const                  {unsigned int n = (_left) ? 1 : 0; return n + ((_right) ? 1 : 0);}
-                /** \return the ieme child */
+                /** \return the ieme child. */
                 NodeType            *Child(unsigned int i);
-                /** \return the ieme child */
+                /** \return the ieme child. */
                 const NodeType      *Child(unsigned int i) const;
 
-                /** Extract all data's leafs of the node into the given list */
+                /** Extract all data's leafs of the node into the given list. */
                 void                ExtractLeaf(std::list<T> &leafs) const;
-                /** Extract all data's childs of the node into the given list */
+                /** Extract all data's childs of the node into the given list. */
                 void                ExtractChilds(std::list<T> &childs) const;
 
-                /** \return the node which match with the given key */
+                /** \return the node which match with the given key. */
                 NodeType            *Search(const T &key);
                 /**
-                    Insert the given node
-                    \return the root node
+                    Insert the given node.
+                    \return the root node.
                 */
                 NodeType            *Insert(NodeType *newNode);
                 /**
-                    Remove the node which match with the given key
-                    \param removedNode will be set to the removed node
-                    \return the node which take place insteed of the removedNode
+                    Remove the node which match with the given key.
+                    \param removedNode will be set to the removed node.
+                    \return the node which take place insteed of the removedNode.
                 */
                 NodeType            *Remove(const T &key, NodeType *&removedNode);
 
                 // specific structure method
-                /** \return the balance factor of the node (the Height of the left node minus the Height of the right node) */
+                /** \return the balance factor of the node (the Height of the left node minus the Height of the right node). */
                 int                 BalanceFactor() const;
-                /** \return true if the node is balanced (BalanceFactor need to be equals to -1, 0 or -1) */
+                /** \return true if the node is balanced (BalanceFactor need to be equals to -1, 0 or -1). */
                 bool                Balanced() const                    {int n = BalanceFactor(); return (n > -2 && n < 2);}
 
             protected:
-                /** To rebalance the tree, execute a left rotation of the node */
+                /** To rebalance the tree, execute a left rotation of the node. */
                 NodeType            *LeftRotation();
-                /** To rebalance the tree, execute a right rotation of the node */
+                /** To rebalance the tree, execute a right rotation of the node. */
                 NodeType            *RightRotation();
 
             protected:
-                NodeType    *_left;         ///< the left node
-                NodeType    *_right;        ///< the right node
-                Allocator   _alloc;         ///< the allocator which allocate the left and right node
+                NodeType    *_left;         ///< the left node.
+                NodeType    *_right;        ///< the right node.
+                Allocator   _alloc;         ///< the allocator which allocate the left and right node.
         };
 
-        /** To define a binary search tree using the AVL method */
+        /** To define a binary search tree using the AVL method. */
         template<typename T, class NodeType, class Allocator = Utils::Metaprog::Allocator<NodeType> >
         class BinaryNodeAVLPolitic : public BinaryNodePolitic<T, NodeType, Allocator>
         {
@@ -131,27 +131,27 @@ namespace Nc
                 BinaryNodeAVLPolitic(const T &data, NodeType *parent)      : NodePolitic(data, parent)  {}
 
                 /**
-                    Insert the given node into the tree
-                    \return the root of the tree (the tree has been balanced so the root could have change)
+                    Insert the given node into the tree.
+                    \return the root of the tree (the tree has been balanced so the root could have change).
                 */
                 NodeType        *Insert(NodeType *newNode);
                 /**
-                    Remove the first node which match with the given key, and fill the removed node
-                    \return the root of the tree (the tree has been balanced so the root could have change)
+                    Remove the first node which match with the given key, and fill the removed node.
+                    \return the root of the tree (the tree has been balanced so the root could have change).
                 */
                 NodeType        *Remove(const T &key, NodeType *&removedNode);
 
             private:
                 /**
-                    Rebalance the node
+                    Rebalance the node.
                     \return the root tree, because it could changed after a rebalancing.
                 */
                 NodeType        *Rebalancing();
         };
 
-        /// Template class to define a binary tree structure
+        /// Template class to define a binary tree structure.
         /**
-            Use a Politic to define the comportement of the node
+            Use a Politic to define the comportement of the node.
             \sa
             - BinatyNodeAVLPolitic
             - BinaryNodePolitic

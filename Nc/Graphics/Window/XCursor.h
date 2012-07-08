@@ -43,7 +43,7 @@ namespace Nc
 
             To create a cursor you will need to have an XWindow but you shouldn't create directly a cursor, the best way is to use the method IWindow::NewCursor().
 
-            \todo We have disabled cursor management when the window is created by using an existing window. Because cursor management cause freese bug with Qt.
+            \todo We have disabled cursor management when the window is created by using an existing window. Because cursor management cause deadlock bug with Qt.
             \todo Implement cursor loading with more than 1 bit per pixel (it's a problem on X11).
             \todo Implement a load from image method.
         */

@@ -40,7 +40,7 @@ namespace Nc
 {
     /// Provide a creation and management system to use threaded engine, like a GraphicalEngine, GameEngine, AudioEngine, and NetworkEngine, or whatever...
     /**
-        \todo Add an option to do not make threads or to synchronize an engine with an other(s) (for instance it would be very intersting to make some benchmark with and without multithreaded opengl contexts - to see if it's really good to use a dedicated rendering thread with an other shared context).
+        \todo Add an option to avoid creation of threads or to synchronize an engine with an other(s) (for instance it would be very intersting to make some benchmark with and without multithreaded opengl contexts - to see if it's really good to use a dedicated rendering thread with an other shared context).
     */
     namespace Engine
     {
@@ -49,8 +49,15 @@ namespace Nc
 
         /// Manage Engines.
         /**
-            Manage the launching of the threads (engines) and dispatch events between them.
-            Store a map of engine associated to a permission mask.
+            The Manager allow to manage a list of engines, and schedule the launching of the threads (engines) and will dispatch events between them.
+            It Stores a map of engine associated to a permission mask.
+
+            The Manager act as an intermediate bettween engines and therefore can dispatch events through engines. To send an event to an engine, use the method 'PushEvent' with the engine's name and commmand id.
+            The name of an engine correspond to the result of the method 'ResolvedClassName', so when you define your own engine, you should always redefine this method.
+
+            \sa
+                - IEngine
+                - MainEngine
         */
         class LCORE Manager : public Utils::NonCopyable
         {
@@ -95,7 +102,7 @@ namespace Nc
 
                 /** Start the engines. */
                 virtual void            Start();
-                /** Stop the engines if the current thread has been allowed to did it. */
+                /** Stop the engines if the current thread has been allowed to do it. */
                 void                    Stop();
                 /** Wait the engines until they are stoped. */
                 virtual void            Wait();
@@ -132,7 +139,7 @@ namespace Nc
                 static MapEngine        _mapEngine;             ///< Engine map container.
 
                 #ifdef SYSTEM_LINUX
-                /** this function is called when a signal SIGSEGV is catch, only in unix system. */
+                /** this function is called when a signal SIGSEGV is catch. But only on unix like operating system. */
                 static void             RecieveSegv(int);
                 #endif
                 static void             Terminate();

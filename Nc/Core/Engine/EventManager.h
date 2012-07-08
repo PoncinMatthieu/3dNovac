@@ -70,21 +70,21 @@ namespace Nc
             virtual const std::type_info    &GetDataTypeId() = 0;
         };
 
-        /// Define an event, simple container used to stock a data with an event.
+        /// Define an engine event which simply contain a data of type T.
         template<typename T>
         struct Event : public IEvent
         {
             Event(const T &d)  : data(d)   {}
 
-            /** \return the typeid of the event data, to debug and know what type of event you received. */
+            /** \return the typeid of the event data, can be usefull to debug and know what type of event you received. */
             virtual const std::type_info    &GetDataTypeId();
 
-            T   data;           ///< data of type T
+            T   data;           ///< data of type T.
         };
 
-        /// Define an event containing a string.
+        /// Define an engine event containing a string.
         /**
-            Used to send event which contain a string. Principaly used to manage the console events.
+            Used to send event which contain a string. Mainly used to manage console events.
         */
         struct LCORE EventString : public IEvent
         {
@@ -102,7 +102,8 @@ namespace Nc
 
         /// Define a Cmd handler which have an id and a member function pointer.
 		/**
-			The id to identify the event, and call the function.
+            Cmds will be used to store command handler to be called at event reception.
+			The id is to identify the event, and call the function.
 		*/
         struct LCORE Cmd
         {
@@ -113,6 +114,9 @@ namespace Nc
         };
 
         /// Define a CmdString handler which have a name, a comment to describe the cmd and a member function pointer.
+        /**
+            \sa Cmd
+        */
         struct LCORE CmdString
         {
             CmdString(const std::string &n, const std::string &c, CmdFunctionString f) : name(n), comment(c), function(f)    {}
@@ -124,8 +128,8 @@ namespace Nc
 
         /// Base class used to manage events, can receive events and execute them.
 		/**
-			To receive events, you have to add a new command by using the method "AddNewCmd" which will take an id corresponding to the event and a pointer to a member function of your engine to be called if the EventManager receive an event with the same id.
-			And next, you can push events from the Manager, the corresponding member function pointer will be called.
+            The Event manager allow to create command handlers by using the method 'AddNewCmd' which will take an id corresponding to the event and a pointer to a member function to call.
+            Finnaly, events can be pushed from the Manager class to send events and call a command.
 		*/
         class LCORE EventManager : public System::Object
         {
