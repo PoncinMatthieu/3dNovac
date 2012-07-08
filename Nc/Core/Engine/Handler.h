@@ -35,9 +35,10 @@ namespace Nc
 {
     namespace Engine
     {
-        /// Used to simplify the sending of events to an Engine
+        /// Used to simplify the process of sending events to an Engine
         /**
-            Inherite of this class to use it.
+            Inherite of this class to use it, and call the methods 'HandlerEngineName' and 'HandlerId' to setup an event.
+            Then you can send an event to the predefined engine and with the predefined command id by calling the method 'SendEvent'.
         */
         class LCORE Handler
         {

@@ -53,7 +53,7 @@ namespace Nc
 
         /// Interface to define a Threaded Engine.
         /**
-            Inherite of EventManager, so an engine has a set of routine to receive events from another Engine (Thread).
+            Inherit of EventManager, so an engine has a set of routine to receive events from another Engine (Thread).
 
 			To create your own engine, you should at least redefine the method Execute.
 			And usualy you will have to redefine the following methods:
@@ -64,14 +64,19 @@ namespace Nc
 				- ReleaseContent: to realease your contents before the thread terminate.
 
 			An engine has it's main loop executing forever until you call the Stop method, or the manager ask to stop the engine.
-			You can have a control over the frequency of execution by setting the LimitFrameRate.
+			You can have a control over the frequency of execution by calling the method 'LimitFrameRate'.
 
             An engine can contain a "Context" which will be created by calling the method CreateContext before loading contents.
-			You should redefine the CreateContext method and ActiveContext/DisableContext to put a context on your engine.
+			You should redefine the CreateContext method and ActiveContext/DisableContext methods to put a context on your engine.
 
             An engine has a set of priority in the loading and deleting process.
             So in the loading process, with highest priority, the engine will be loaded at first,
             and in the deleting process, with highest priority, the engine will be the last one to be deleted.
+
+            \sa
+                - Manager, which is used to contain engines, manage them and forward events bettween engines.
+                - MainEngine, which can be used to manage an engine receiving inputs, like a game engine.
+                - EventManager, base class of IEngine used to allow events between engines.
 		*/
         class LCORE IEngine : public EventManager, public System::Thread
         {

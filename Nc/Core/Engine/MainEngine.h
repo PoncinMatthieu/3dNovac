@@ -36,10 +36,10 @@ namespace Nc
     {
         /// Abstract class to help the implementation of a Main Engine which receive events from an InputListener.
 		/**
-			Inherite from System::InputListener to be able to receive input events.
+			Inherit from System::InputListener to be able to receive input events.
 			So a MainEngine can receive two types of events:
-				- Engine::IEvent from another engine, by using the manager has an intermediate.
-				- System::Event from the InputListener.
+				- Engine::IEvent from another engine, through the Engine::Manager.
+				- System::Event from the System::InputListener.
 
 			To redefine your own engine, you should redefine the following methods:
 				- Update which is called at each loop. The method gives you the time elapsed between two Update call.
@@ -61,13 +61,17 @@ namespace Nc
             protected:
                 /**
                     Use this function to stop the engines normally by requesting the Manager to stop every engines.
-                    Call the function `ReleaseContent` to release many contents and check if we really want to stop the execution of all engines.
-                    So if the function `ReleaseContent` return false, the engines won't be stop.
+                    Call the function `ExitEvent` and request to the manager to stop the engines if ExitEvent has returned true.
+
+                    \sa
+                        - ExitEvent
+                        - Manager
                 */
                 void            Quit();
 
                 /**
-                    Can be redefined, to make something before exiting.
+                    Can be redefined, to decide if we should really stop the engine.
+                    This can be usefull to be able to ask for a confirmation to exit the program.
                     \return true if we want to stop the engines, otherwise the engines will not be powered off.
                 */
                 virtual bool    ExitEvent()			{return true;}
@@ -80,6 +84,7 @@ namespace Nc
 
                 /**
                     Called at each input evenement received, and call the associated funciton `KeyboardEvent`, `MouseButtonEvent`, `MouseMotionEvent`.
+                    Can be redefined.
                 */
                 virtual void    ManageWindowEvent(System::Event &event);
 
