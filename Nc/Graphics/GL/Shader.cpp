@@ -155,11 +155,13 @@ void Shader::PrintCompilationError(const char *source, Enum::ShaderType type, co
 		LOG_ERROR << line << "\t: ";
 		for (unsigned int lastLine = line; i < len && lastLine == line;)
 		{
+			LOG_ERROR << source[i];
 			if (source[i] == '\n')
 				++line;
 			else
 				++i;
 		}
+		LOG_ERROR << std::endl;
 	}
 	LOG_ERROR << std::endl;
 	LOG_ERROR << se << std::endl;
