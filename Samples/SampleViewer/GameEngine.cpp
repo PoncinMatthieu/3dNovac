@@ -83,7 +83,6 @@ void GameEngine::MouseButtonEvent(System::Event &)
 
 void GameEngine::MouseMotionEvent(System::Event &)
 {
-	LOG << "mouse motion event" << std::endl;
 }
 
 void GameEngine::SampleSelectedCmd(Nc::Engine::IEvent *)

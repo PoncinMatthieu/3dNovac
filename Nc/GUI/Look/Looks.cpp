@@ -124,9 +124,12 @@ void StripLook::Update(const Vector2i &size)
 
 void StripLook::Draw(Graphic::SceneGraph *scene)
 {
-    spriteLeft->RenderNode(scene);
-    spriteMiddle->RenderNode(scene);
-    spriteRight->RenderNode(scene);
+    if (spriteLeft)
+        spriteLeft->RenderNode(scene);
+    if (spriteMiddle)
+        spriteMiddle->RenderNode(scene);
+    if (spriteRight)
+        spriteRight->RenderNode(scene);
 }
 
 
