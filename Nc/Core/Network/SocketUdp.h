@@ -41,18 +41,17 @@ namespace Nc
 {
     namespace Network
     {
-        /// Define an Udp Socket
+        /// Define an Udp Socket.
 		/**
 			To use a socket UDP you will need to `Create` it before doing anything.
+			And a created socket need to be closed with `Close`.
 
-			A created socket need to be closed with `Close`.
-
-			An UDP socket do not require any connection, but need to be bind to a port to receive data.
-			To send data, you just have to use the method read with the good ip and port.
+			An UDP socket do not require any connection, but need to be `Bind` to a port to receive data.
+			To send/receive data, you just have to use the `Write`/`Read` method with the good ip and port.
 
 			\sa
-				- Network::Ip
-				- Network::Select
+				- Ip
+				- Select
 		*/
         class LCORE SocketUdp : public ISocket
         {
@@ -60,43 +59,43 @@ namespace Nc
                 SocketUdp();
                 ~SocketUdp();
 
-                /** Create the socket descriptor */
+                /** Create the socket descriptor. */
                 virtual void    Create();
-                /** Close the descriptor */
+                /** Close the descriptor. */
                 virtual void    Close();
 
                 /**
-                    Bind the socket to the given port
-                    \return true if no error
+                    Bind the socket to the given port.
+                    \return true if no error.
                 */
                 bool            Bind(unsigned short port);
                 /**
-                    Unbind the socket to its previous port
-                    \return true if no error
+                    Unbind the socket to its previous port.
+                    \return true if no error.
                 */
                 bool            Unbind();
 
                 /**
-                    Write (send) to the descriptor an array of type T to the ip and port specified
-                    \return true if no error
+                    Write (send) to the descriptor an array of type T to the ip and port specified.
+                    \return true if no error.
                 */
                 template<typename T, unsigned int D>
                 bool            Write(const Math::Array<T,D> &src, const Ip &ip, unsigned short port);
                 /**
-                    Write (send) to the descriptor an array of byte to the ip and port specified
-                    \return true if no error
+                    Write (send) to the descriptor an array of byte to the ip and port specified.
+                    \return true if no error.
                 */
                 bool            Write(const char *src, unsigned int size, const Ip &ip, unsigned short port);
 
                 /**
                     Read (receive) from the descriptor an array of type T into \p dst.
-                    \return the received size, and fill the ip/port of the sender
+                    \return the received size, and fill the ip/port of the sender.
                 */
                 template<typename T, unsigned int D>
                 int             Read(Math::Array<T,D> &dst, Ip &ip, unsigned short &port);
                 /**
                     Read (receive) from the descriptor an array of byte into \p dst.
-                    \return the received size, and fill the ip/port of the sender
+                    \return the received size, and fill the ip/port of the sender.
                 */
                 int             Read(char *dst, unsigned int maxSize, Ip &ip, unsigned short &port);
 

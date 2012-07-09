@@ -36,7 +36,7 @@ namespace Nc
     {
         /// Template class to manipulate a box of type T and Dimension D.
         /**
-            A box is defined by 2 extrema Vector<T,D> : Min and Max
+            A box is defined by 2 extrema Vector<T,D> : Min and Max.
         */
         template<typename T, unsigned char D>
         class Box
@@ -55,39 +55,39 @@ namespace Nc
                 template<typename U>    Box operator    +   (const Box<U,D> &b) const;
 
                 // accessor
-                /** \return the minima point of the box */
+                /** \return the minima point of the box. */
                 inline const Vector<T,D>    &Min() const               {return _min;}
-                /** \return the maxima point of the box */
+                /** \return the maxima point of the box. */
                 inline const Vector<T,D>    &Max() const               {return _max;}
-                /** \return the minima coordinate of the given \p dimension */
+                /** \return the minima coordinate of the given \p dimension. */
                 const T                     &Min(unsigned char dimension) const;
-                /** \return the maxima coordinate of the given \p dimension */
+                /** \return the maxima coordinate of the given \p dimension. */
                 const T                     &Max(unsigned char dimension) const;
-                /** \return the minima coordinate of the given \p dimension */
+                /** \return the minima coordinate of the given \p dimension. */
                 void                        Min(unsigned char dimension, const T &v);
-                /** \return the maxima coordinate of the given \p dimension */
+                /** \return the maxima coordinate of the given \p dimension. */
                 void                        Max(unsigned char dimension, const T &v);
 
-                /** \return the center of the box */
+                /** \return the center of the box. */
                 Vector<T,D>                 Center() const;
-                /** \return the lenght of the box for each dimensions */
+                /** \return the lenght of the box for each dimensions. */
                 Vector<T,D>                 Length() const;
-                /** \return the lenght of the given dimension index */
+                /** \return the lenght of the given dimension index. */
                 T                           Length(unsigned char dimension) const;
-                /** \return the size of the box for each dimension */
+                /** \return the size of the box for each dimension. */
                 Vector<T,D>                 Size() const;
-                /** \return the are of the box */
+                /** \return the are of the box. */
                 T                           Area() const;
 
                 // modifier
-                /** Initialize the box */
+                /** Initialize the box. */
                 void                        Init();
-                /** Initialize the box with the given center and size */
+                /** Initialize the box with the given center and size. */
                 void                        Init(const Vector<T,D> &center, const T &size);
-                /** Transform the box with the given matrix */
+                /** Transform the box with the given matrix. */
                 void                        Transform(const TMatrix &m);
 
-                /** Print the Min and Max vector of the box */
+                /** Print the Min and Max vector of the box. */
                 friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Box<T,D> &V)
                 {
                     os << "Min: " << V._min << std::endl;
@@ -96,8 +96,8 @@ namespace Nc
                 }
 
             protected:
-                Vector<T,D>     _min;       ///< minima of the box
-                Vector<T,D>     _max;       ///< maxima of the box
+                Vector<T,D>     _min;       ///< minima of the box.
+                Vector<T,D>     _max;       ///< maxima of the box.
         };
 
         template<typename T, unsigned char D>

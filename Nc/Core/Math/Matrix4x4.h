@@ -37,7 +37,7 @@ namespace Nc
 {
     namespace Math
     {
-        /// To manipulate a matrix of 4 line and 4 row type T and Manipulate basic transformation (rotation/translation/scale)
+        /// To manipulate a matrix of 4 line and 4 row type T and Manipulate basic transformation (rotation/translation/scale).
         template<typename T>
         class Matrix4x4 : public Matrix<T,4,4>
         {
@@ -53,133 +53,133 @@ namespace Nc
                 Matrix4x4   &operator *= (const Matrix4x4 &m);
                 Matrix4x4   operator * (const Matrix4x4 &m) const;
 
-                /** Initilize the matrix */
+                /** Initilize the matrix. */
                 void Init()                                                                         {if (!_isIdentity) SetIdentity();}
-                /** Set the matrix to the identity */
+                /** Set the matrix to the identity. */
                 void SetIdentity();
-                /** Set to the projection matrix for rendering */
+                /** Set to the projection matrix for rendering. */
                 void SetProjection(const T &ratioAspect, const T &nearv, const T &farv, const T &fieldOfView);
-                /** Set the view matrix with eye properties */
+                /** Set the view matrix with eye properties. */
                 void SetLookAt(const Vector3D<T> &eye, const Vector3D<T> &center, const Vector3D<T> &up);
-                /** Set the orthographic matrix */
+                /** Set the orthographic matrix. */
                 void SetOrtho(const T &left, const T &right, const T &bottom, const T &top, const T &nearVal, const T &farVal);
 
-                /** Build the invert matrix */
+                /** Build the invert matrix. */
                 void Inverse();
-                /** Exchange the lines of the matrix */
+                /** Exchange the lines of the matrix. */
                 void ExchangeXY();
-                /** Exchange the lines of the matrix */
+                /** Exchange the lines of the matrix. */
                 void ExchangeYZ();
-                /** Exchange the lines of the matrix */
+                /** Exchange the lines of the matrix. */
                 void ExchangeXZ();
 
-                /** Exchange the lines of the transpose matrix */
+                /** Exchange the lines of the transpose matrix. */
                 void TExchangeXY();
-                /** Exchange the lines of the transpose matrix */
+                /** Exchange the lines of the transpose matrix. */
                 void TExchangeYZ();
-                /** Exchange the lines of the transpose matrix */
+                /** Exchange the lines of the transpose matrix. */
                 void TExchangeXZ();
 
-                /** Set to the Translation matrix */
+                /** Set to the Translation matrix. */
                 void Translation(const Vector3D<T> &v);
-                /** Set to the Translation matrix */
+                /** Set to the Translation matrix. */
                 void Translation(const Vector2D<T> &v);
-                /** Set to the Translation matrix */
+                /** Set to the Translation matrix. */
                 void Translation(const T &X, const T &Y, const T &Z);
-                /** Set to the Translation matrix */
+                /** Set to the Translation matrix. */
                 void TranslationX(const T &X);
-                /** Set to the Translation matrix */
+                /** Set to the Translation matrix. */
                 void TranslationY(const T &Y);
-                /** Set to the Translation matrix */
+                /** Set to the Translation matrix. */
                 void TranslationZ(const T &Z);
 
-                /** Set to the Transpose Translation */
+                /** Set to the Transpose Translation. */
                 void TTranslation(const Vector3D<T> &v);
-                /** Set to the Transpose Translation */
+                /** Set to the Transpose Translation. */
                 void TTranslation(const Vector2D<T> &v);
-                /** Set to the Transpose Translation */
+                /** Set to the Transpose Translation. */
                 void TTranslation(const T &X, const T &Y, const T &Z);
-                /** Set to the Transpose Translation */
+                /** Set to the Transpose Translation. */
                 void TTranslationX(const T &X);
-                /** Set to the Transpose Translation */
+                /** Set to the Transpose Translation. */
                 void TTranslationY(const T &Y);
-                /** Set to the Transpose Translation */
+                /** Set to the Transpose Translation. */
                 void TTranslationZ(const T &Z);
 
-                /** Set to the Scale matrix transformation */
+                /** Set to the Scale matrix transformation. */
                 void Scale(const Vector3D<T> &v);
-                /** Set to the Scale matrix transformation */
+                /** Set to the Scale matrix transformation. */
                 void Scale(const T &X, const T &Y, const T &Z);
 
-                /** Set to the Rotation matrix with an axe, angle and a bool to know if the angle is gived in radian */
+                /** Set to the Rotation matrix with an axe, angle and a bool to know if the angle is gived in radian. */
                 void Rotation(const Vector3D<T> &axe, float angle, bool rad = true);
-                /** Set to the Rotation matrix with an angle and a bool to know if the angle is gived in radian */
+                /** Set to the Rotation matrix with an angle and a bool to know if the angle is gived in radian. */
                 void RotationX(float angle, bool rad = true);
-                /** Set to the Rotation matrix with an angle and a bool to know if the angle is gived in radian */
+                /** Set to the Rotation matrix with an angle and a bool to know if the angle is gived in radian. */
                 void RotationY(float angle, bool rad = true);
-                /** Set to the Rotation matrix with an angle and a bool to know if the angle is gived in radian */
+                /** Set to the Rotation matrix with an angle and a bool to know if the angle is gived in radian. */
                 void RotationZ(float angle, bool rad = true);
 
-                /** Set to the Transpose Rotation matrix with an axe, angle and a bool to know if the angle is gived in radian */
+                /** Set to the Transpose Rotation matrix with an axe, angle and a bool to know if the angle is gived in radian. */
                 void TRotation(const Vector3D<T> &axe, float angle, bool rad = true);
-                /** Set to the Transpose Rotation matrix with an angle and a bool to know if the angle is gived in radian */
+                /** Set to the Transpose Rotation matrix with an angle and a bool to know if the angle is gived in radian. */
                 void TRotationX(float angle, bool rad = true);
-                /** Set to the Transpose Rotation matrix with an angle and a bool to know if the angle is gived in radian */
+                /** Set to the Transpose Rotation matrix with an angle and a bool to know if the angle is gived in radian. */
                 void TRotationY(float angle, bool rad = true);
-                /** Set to the Transpose Rotation matrix with an angle and a bool to know if the angle is gived in radian */
+                /** Set to the Transpose Rotation matrix with an angle and a bool to know if the angle is gived in radian. */
                 void TRotationZ(float angle, bool rad = true);
 
-                /** Add a transformation from an other matrix */
+                /** Add a transformation from an other matrix. */
                 void AddTransformation(const Matrix4x4& m);
-                /** Add a transpose transformation from an other matrix */
+                /** Add a transpose transformation from an other matrix. */
                 void AddTTransformation(const Matrix4x4& m);
 
-                /** Add a Translation to the matrix */
+                /** Add a Translation to the matrix. */
                 void AddTranslation(const Vector3D<T> &v);
-                /** Add a Translation to the matrix */
+                /** Add a Translation to the matrix. */
                 void AddTranslation(const Vector2D<T> &v);
-                /** Add a Translation to the matrix */
+                /** Add a Translation to the matrix. */
                 void AddTranslation(const T &X, const T &Y, const T &Z);
 
-                /** Add a transpose Translation to the matrix */
+                /** Add a transpose Translation to the matrix. */
                 void AddTTranslation(const Vector3D<T> &v);
-                /** Add a transpose Translation to the matrix */
+                /** Add a transpose Translation to the matrix. */
                 void AddTTranslation(const Vector2D<T> &v);
-                /** Add a transpose Translation to the matrix */
+                /** Add a transpose Translation to the matrix. */
                 void AddTTranslation(const T &X, const T &Y, const T &Z);
 
-                /** Add a Scale to the matrix */
+                /** Add a Scale to the matrix. */
                 void AddScale(const Vector3D<T> &v);
-                /** Add a Scale to the matrix */
+                /** Add a Scale to the matrix. */
                 void AddScale(const T &x, const T &y, const T &z);
-                /** Add a Scale to the matrix */
+                /** Add a Scale to the matrix. */
                 void AddScale(const T &s);
 
-                /** Add a Rotation to the matrix */
+                /** Add a Rotation to the matrix. */
                 void AddRotation(const Vector3D<T> &axe, float Angle, bool rad = true);
-                /** Add a transpose Rotation to the matrix */
+                /** Add a transpose Rotation to the matrix. */
                 void AddTRotation(const Vector3D<T> &axe, float Angle, bool rad = true);
 
             // transformations of basic types
-                /** Transform the basic type gived in parameter */
+                /** Transform the basic type gived in parameter. */
                 void Transform(Vector<T,3> &v) const;
-                /** Transform the basic type gived in parameter */
+                /** Transform the basic type gived in parameter. */
                 void Transform(T &x, T &y, T &z) const;
-                /** Transform the basic type gived in parameter */
+                /** Transform the basic type gived in parameter. */
                 void Transform(T xyz[3]) const;
-                /** Transform the basic type gived in parameter */
+                /** Transform the basic type gived in parameter. */
                 void Transform(Vector<T,4> &v) const;
-                /** Transform the basic type gived in parameter */
+                /** Transform the basic type gived in parameter. */
                 void Transform(T &x, T &y, T &z, T &u) const;
 
             // constantes
-                static const Matrix4x4 Identity;                            ///< static const Identity matrix
+                static const Matrix4x4 Identity;                            ///< static const Identity matrix.
 
             private:
                 void ExchangeLine(unsigned char i, unsigned char j);
                 void ExchangeColumn(unsigned char i, unsigned char j);
 
-                bool        _isIdentity;        ///< set to true if the matrix is the identity matrix
+                bool        _isIdentity;        ///< set to true if the matrix is the identity matrix.
         };
 
         template<typename T>

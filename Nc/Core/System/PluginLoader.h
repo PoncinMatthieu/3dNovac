@@ -40,18 +40,18 @@ namespace Nc
 {
     namespace System
     {
-        /// Template class to load a plugin
+        /// Template class to load a plugin.
         /**
             You can load only one plugin by PluginLoader instance.
-            
-			A plugin is a simple .dll on window or .so on linux which should contain the extern C symbol:
+
+			A plugin is a simple .dll on windows or .so on linux which should contain the extern C symbol:
  \code
     T   *GetPlugin();
  \endcode
 
             The PluginLoader delete the instance at the next Load or at the destruction of the PluginLoader.
 
-            If you have already delete the instance yourself, you can call the method `UnsetInstance` to avoid the delete. But the library will be unload in every case.
+            If you have already deleted the instance yourself, you can call the method `UnsetInstance` to avoid the delete. But the library will be unload in every case.
         */
         template<typename T>
         class PluginLoader
@@ -60,27 +60,27 @@ namespace Nc
                 PluginLoader() : _handle(NULL), _instance(NULL)     {}
                 virtual ~PluginLoader()                             {Close();}
 
-                /** \return the instance of the plugin */
+                /** \return the instance of the plugin. */
                 T       *operator -> ()                             {return _instance;}
-                /** \return the instance of the plugin */
+                /** \return the instance of the plugin. */
                 T       *operator * ()                              {return _instance;}
 
-                /** \return the instance of the plugin */
+                /** \return the instance of the plugin. */
                 T       *GetInstance()                              {return _instance;}
-                /** unset the instance of the plugin, to avoid the delete of the instance. But the library will be unload in all case.*/
+                /** Unset the instance of the plugin, to avoid the delete of the instance. But the library will be unload in all case. */
                 void    UnsetInstance()                             {_instance = NULL;}
 
-                /** Load the plugin */
+                /** Load the plugin. */
                 void    Load(const Utils::FileName &file);
 
             protected:
-                /** Open the plugin file */
+                /** Open the plugin file. */
                 void    Open(const Utils::FileName &file);
 
-                /** Close the plugin file */
+                /** Close the plugin file. */
                 void    Close();
 
-                /** Load the given symbol */
+                /** Load the given symbol. */
                 template<typename SYM>
                 SYM     LoadSymbol(const std::string &sym);
 
@@ -88,12 +88,12 @@ namespace Nc
                 typedef T *(*GetPluginFunc)();
 
 				#ifdef SYSTEM_WINDOWS
-					HMODULE	_handle;			///< The handle used to load the library on win32
+					HMODULE	_handle;			///< The handle used to load the library on win32.
 				#else
-					void    *_handle;			///< The handle used to load the library on linux
+					void    *_handle;			///< The handle used to load the library on linux.
 				#endif
 
-				T       *_instance;				///< The plugin instance, loaded with the function "T *GetPlugin();" in the library
+				T       *_instance;				///< The plugin instance, loaded with the function "T *GetPlugin();" in the library.
         };
 
         template<typename T>

@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace System
     {
-        /// Interface to help to use and create a mutex
+        /// Interface to help to use and create a mutex.
 		/**
 			To lock a mutex, you should use a Locker which will lock and unlock the mutex safely by using the RAII patern.
 

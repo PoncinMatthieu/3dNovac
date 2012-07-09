@@ -55,7 +55,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Provide a logging system
+        /// Provide a logging system.
         /**
             Logger base, redefine the method write by inheritance to have your own logging system.
 
@@ -64,13 +64,14 @@ namespace Nc
         class LCORE Logger : public Singleton<Logger>, NonCopyable
         {
             public:
-                /** Prototype a function pointer to have a logging function */
+                /** Prototype a function pointer to have a logging function. */
                 typedef void (*LogFunction)(const std::string, bool);
 
-                /** Set the instance of the logger, to redefine and set your own logger */
+                /** Set the instance of the logger, to redefine and set your own logger. */
                 static void SetLogger(Logger *logger);
 
                 /** \return the instance of the logger, and allow you to call the operator << to log
+
                     By default, status correspond to:
                         - 0 -> simple log
                         - 1 -> error log
@@ -91,7 +92,7 @@ namespace Nc
                 static Logger	&Log(int status);
                 static Logger	&Log(const char* file, int line, int status);
 
-                /** Change the logging filename, the file is open in the write method, to force the reopen, call CloseFile() */
+                /** Change the logging filename, the file is open in the write method, to force the reopen, call CloseFile(). */
                 inline void SetLogFilename(const FileName &f)   {_filename = f;}
 
                 /**
@@ -100,7 +101,7 @@ namespace Nc
                 */
                 inline void SetLoggingFunction(LogFunction f)   {_loggingfunction = f;}
 
-                /** Close the file, with this you can change the conf file and relog, the function log automatically open the file */
+                /** Close the file, with this you can change the conf file and relog, the function log automatically open the file. */
                 inline void CloseFile()                         {_file.close();}
 
                 // surcharge de l'operateur << permettant d'appeler la fonction
@@ -124,11 +125,11 @@ namespace Nc
                     To redefine in your own logger class.
 
                     By default, write the msg, and flush the buffer if `flush` == true.
-                    And call the CheckFile method to open the file, if it's not open
+                    And call the CheckFile method to open the file, if it's not open.
                 */
                 virtual void Write(const std::string msg, bool flush);
 
-                /** Open the file, if it isn't already yet */
+                /** Open the file, if it isn't already yet. */
                 virtual void CheckFile();
 
             protected:

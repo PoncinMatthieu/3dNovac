@@ -84,15 +84,9 @@ endif()
 #------------------------------------------------------------------------------
 #	Tuto_NcCore_Client
 #------------------------------------------------------------------------------
-file(
-  GLOB
-  Tuto_NcCore_Client-sources
-  ../Tuto_NcCore_Client/*.cpp
-  ../Tuto_NcCore_Client/*.h
-)
-
-add_executable(Tuto_NcCore_Client			${Tuto_NcCore_Client-sources})
-add_dependencies(Tuto_NcCore_Client			Nc-Core)
+file(GLOB Tuto_NcCore_Client-sources ../Tuto_NcCore_Client.cpp)
+add_executable(Tuto_NcCore_Client		${Tuto_NcCore_Client-sources})
+add_dependencies(Tuto_NcCore_Client		Nc-Core)
 target_link_libraries(Tuto_NcCore_Client	Nc-Core)
 
 # create the launcher for vs 2010

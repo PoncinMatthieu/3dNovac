@@ -37,10 +37,10 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Propose an exception class base
+        /// Propose an exception class base.
         /**
             provide Exception class in which you can pass a message.
-			
+
             In windows the std::exception implementation can use an std::string in the constructor but not in linux,
             so this class assure you to have the same implementation for each OS.
         */
@@ -68,12 +68,12 @@ namespace Nc
 
 
                 /**
-                    Redefinition of the function what to return the msg, after catching any std::exception
+                    Redefinition of the function what to return the msg, after catching any std::exception.
                 */
                 virtual const char *what() const throw();
 
             private:
-                std::string	_msg;   ///< the message of the exception
+                std::string	_msg;   ///< the message of the exception.
         };
     }
 }

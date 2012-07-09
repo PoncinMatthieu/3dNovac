@@ -37,12 +37,12 @@ namespace Nc
         class VTableManager
         {
             public:
-                /// Define V-Table to indexing new functions to a base class
+                /// Define V-Table to index new functions to a base class.
                 template<typename VTableType, typename Base, typename Func>
                 class VTable
                 {
                     public:
-                        /** Add the given function for the given visitable */
+                        /** Add the given function to the given visitable. */
                         template<typename Visitable>
                         void Add(Func f)
                         {
@@ -59,7 +59,7 @@ namespace Nc
                             _table[index] = f;
                         }
 
-                        /** \return the function which correspond to the given index, null if the function doesn't exist */
+                        /** \return the function which correspond to the given index, null if the function doesn't exist. */
                         Func GetFunc(size_t index) const
                         {
                             if(index >= _table.size())
@@ -68,10 +68,10 @@ namespace Nc
                         }
 
                     private:
-                        std::vector<Func>       _table; ///< function storage
+                        std::vector<Func>       _table; ///< function storage.
                 };
 
-                /// To Create and store the static vtable
+                /// To Create and store the static vtable.
                 template<typename Visitor, typename VisitedList, typename Invoker, typename VTableType,
                 template<typename Visitor, typename VisitedList, typename Invoker, typename VTableType> class Initializer>
                 class GetStaticVtable

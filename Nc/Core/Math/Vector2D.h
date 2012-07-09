@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Math
     {
-        /// Vector 2d to manipulate 2 composante of type T
+        /// Vector 2d to manipulate 2 composante of type T.
         template<typename T>
         class Vector2D : public Vector<T,2>
         {
@@ -48,7 +48,7 @@ namespace Nc
                 template<typename U>
                 Vector2D    &operator = (const Vector2D<U> &v);
 
-                /** Initialize the values of the vector */
+                /** Initialize the values of the vector. */
                 void Init(const T &u = 0, const T &v = 0);
 
                 /** \return X */

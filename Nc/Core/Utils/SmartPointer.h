@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Provide a SmartPointer class with type T and bool IsArray
+        /// Provide a SmartPointer class with type T and bool IsArray.
         /**
             Provide a SmartPointer class with type T, and the bool IsArray to inform if the operator delete[] needs to be called insteed of the delete operator.
 
@@ -52,9 +52,7 @@ namespace Nc
         class SmartPointer
         {
             public:
-                /**
-                    Construct the smartPointer with the ptr, and if `destroyable` is true delete the pointer when the number of reference is null
-                */
+                /** Construct the smartPointer with the ptr, and if `destroyable` is true delete the pointer when the number of reference is null. */
                 SmartPointer(T *ptr = 0, bool destroyable = true);
                 SmartPointer(const SmartPointer &sp);
                 virtual ~SmartPointer();
@@ -73,15 +71,15 @@ namespace Nc
                 }
 
                 // Accesseurs
-                /** Return the pointer */
+                /** \return the pointer. */
                 inline T        *Get() const                            {return _ptr;}
-                /** Return true if the reference is unique (no another reference on the pointer) */
+                /** \return true if the reference is unique (no another reference on the pointer). */
                 inline bool     Unique() const                          {return ((*_nbRef) == 1);}
 
                 // modificateurs
-                /** Swap tow smartPointer */
+                /** Swap tow smartPointer. */
                 void                    Swap(SmartPointer &sp);
-                /** Clone the SmartPointer in no destroyable (the pointer is never deleted) */
+                /** Clone the SmartPointer in no destroyable (the pointer is never deleted). */
                 inline SmartPointer     CloneNoDestroyable() const      {return SmartPointer<T,IsArray>(_ptr, false);}
 
             protected:

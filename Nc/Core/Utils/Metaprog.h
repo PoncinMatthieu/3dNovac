@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Define some usefull metaprogramming templates
+        /// Define some usefull metaprogramming templates.
         namespace Metaprog
         {
             /// NullType
@@ -134,30 +134,30 @@ namespace Nc
             #undef NC_UTILS_METAPROG_TYPELIST_7
 
 
-            /// conditional inheritance
+            /// conditional inheritance.
             template<bool T, typename TRUE_CLASS, typename FALSE_CLASS>
             struct If : TRUE_CLASS {};
 
-            /// specialisation of the struct IF, to make the inheritance with the conditional to false
+            /// specialisation of the struct IF, to make the inheritance with the conditional to false.
             template<typename TRUE_CLASS, typename FALSE_CLASS>
             struct If<false, TRUE_CLASS, FALSE_CLASS> : FALSE_CLASS {};
 
-            /// container of type T
+            /// container of type T.
             template<typename T>
             struct Container    { T   data; };
 
-            /// Just a struct which do and store nothing
+            /// Just a struct which do and store nothing.
             struct Nop {};
 
-            /// A Classic allocator which allocate and destroy objects
+            /// A Classic allocator which allocate and destroy objects.
             template<typename T>
             struct Allocator
             {
-                /** Allocate the object with the operator new by using the default constructor  */
+                /** Allocate the object with the operator new by using the default constructor. */
                 inline T       *Allocate()                      {return new T();}
-                /** Allocate the object with the operator new by using the copy constructor */
+                /** Allocate the object with the operator new by using the copy constructor. */
                 inline T       *Allocate(const T &toCopy)       {return new T(toCopy);}
-                /** Deallocate the object with the operator delete */
+                /** Deallocate the object with the operator delete. */
                 inline void    Deallocate(T *p)                 {delete p;}
             };
         }

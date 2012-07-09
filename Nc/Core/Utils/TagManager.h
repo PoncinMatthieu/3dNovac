@@ -34,7 +34,7 @@ namespace Nc
     namespace Utils
     {
 #ifdef SYSTEM_WINDOWS
-		/// Used to register every tag by using a class name
+		/// Used to register every tag by using a class name.
 		/**
 			On linux, we use a templated TagCounter.
 			Unfortunately, on windows we have a copy of every static on every DLL, so we had different classes with the same tag.
@@ -51,12 +51,12 @@ namespace Nc
 		};
 #endif
 
-		/// Define a class to manage a Tag system to associate a unique tag to a class for the given VTableType
+		/// Define a class to manage a Tag system to associate a unique tag to a class for the given VTableType.
         template<typename VTableType>
         struct TagManager
         {
             private:
-            /// Define a tag counter to put a unique tag on each visitable class
+            /// Define a tag counter to put a unique tag on each visitable class.
 #ifdef SYSTEM_LINUX
                 template<typename Base>
                 struct TagCounter
@@ -65,7 +65,7 @@ namespace Nc
                 };
 #endif
 
-            /// Define a class which store the tag for each Visitable associated to the given Base
+            /// Define a class which store the tag for each Visitable associated to the given Base.
                 template<typename Visitable, typename Base>
                 struct TagHolder
                 {
@@ -74,7 +74,7 @@ namespace Nc
                 };
 
             public:
-                /** \return the tag of a visitable */
+                /** \return the tag of a visitable. */
                 template<typename Visitable, typename Base>
                 static size_t GetTag()
                 {

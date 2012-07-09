@@ -33,7 +33,7 @@
 #define NC_UTILS_DEFINE_PARENT_CLASS(parent)                            \
     typedef parent  Parent;
 
-/// helps defining a virtual function in every Visitable class to return its tag
+/// helps defining a virtual function in every Visitable class to return its tag.
 #define NC_UTILS_DEFINE_VISITABLE(base)                                 \
     virtual size_t Tag() const                                          \
     {                                                                   \
@@ -60,7 +60,7 @@
         return Parent::InvokableTag();                                  \
     }
 
-/// check_member_function is a compile time assertion to be sure that the function name exist
+/// check_member_function is a compile time assertion to be sure that the function name exist.
 #define NC_UTILS_DEFINE_VISIT_INVOKER(structName, name)                 \
   struct structName {                                                   \
     template<typename ReturnTypeInvoker, typename VisitorImplInvoker, typename VisitableInvoker> \
@@ -75,7 +75,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Visitable base, every visitable base should inherite to this class
+        /// Visitable base, every visitable base should inherite to this class.
         template<typename Base>
         struct VisitableBase
         {

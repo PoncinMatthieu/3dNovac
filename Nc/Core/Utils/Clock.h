@@ -38,11 +38,11 @@ namespace Nc
 {
     namespace Utils
     {
-        /// a multi-archi Clock, providing elapsedTime in second
+        /// a multi-archi Clock, providing elapsedTime in second.
 		/**
 			The clock can be paused, reset and restart.
 
-			The clock is reset a first time in the constructor, 
+			The clock is reset a first time in the constructor,
 			you can get the elapsed time since the last reset of the clock by calling the method ElapsedTime.
 		*/
         class LCORE Clock
@@ -53,27 +53,27 @@ namespace Nc
 
                 friend LCORE std::ostream &operator << (std::ostream &os, const Clock &cl);
 
-                /** Reset the clock */
+                /** Reset the clock. */
                 inline void Reset()                     {_paused = false; _pauseTime = 0; _startTime = System::Time();}
 
-                /** Pause the clock, next call restart to pause it */
+                /** Pause the clock, next call restart to pause it. */
                 inline void Pause()                     {_paused = true; _startPause = System::Time();}
-                /** Restart the clock after you have pause it */
+                /** Restart the clock after you have pause it. */
                 inline void Restart()                   {if (_paused) {_paused = false; _pauseTime += (System::Time() - _startPause);}}
-                /** \return the total paused time */
+                /** \return the total paused time. */
                 inline double PauseTime() const         {return _pauseTime + ((_paused) ? ((System::Time() - _startPause)) : 0);}
-                /** \return true if the clock is paused */
+                /** \return true if the clock is paused. */
                 inline bool Paused()                    {return _paused;}
 
-                /** \return the ElapsedTime in second since the last Reset minus the paused time */
+                /** \return the ElapsedTime in second since the last Reset minus the paused time. */
                 inline double ElapsedTime() const       {return System::Time() - _startTime - PauseTime();}
 
 
             private:
-                double  _startTime;         ///< The time when the clock was started
-                double  _startPause;        ///< The time when the clock was paused
-                bool    _paused;            ///< true if the clock is currently paused
-                double  _pauseTime;         ///< The total of time in pause
+                double  _startTime;         ///< The time when the clock was started.
+                double  _startPause;        ///< The time when the clock was paused.
+                bool    _paused;            ///< true if the clock is currently paused.
+                double  _pauseTime;         ///< The total of time in pause.
         };
     }
 }

@@ -41,10 +41,10 @@
 #include "Box2D.h"
 #include "Pixel.h"
 
-/// Global Namespace of 3dNovac
+/// Global Namespace of 3dNovac.
 namespace Nc
 {
-    /// Namespace to Manipulate objects like Vector and Matrix and provide some mathematic function
+    /// Namespace to Manipulate objects like Vector and Matrix and provide some mathematic function.
     namespace Math
     {
         // Calculs 3d
@@ -54,22 +54,22 @@ namespace Nc
         // Calculs 2d
         bool     LCORE  InRect(const Vector2i &RectPos, const Vector2i &RectSize, const Vector2i &pointTest);
 
-        /** Init the rand to call srand() function */
+        /** Init the rand to call srand() function. */
         inline void     InitRand()                          {srand((unsigned int)time(0));}
-        /** \return a random number of the type T */
+        /** \return a random number of the type T. */
         template<typename T> T          Rand(const T &min, const T &max)                {return min + ((T)rand() / ((float)RAND_MAX + 1) * max);}
 
-        /** \return the absolute value */
+        /** \return the absolute value. */
         template<typename T> T          Abs(const T &v)                                 {return ((v > 0) ? v : -v);}
 
-        /** \return true if v1 and v2 are equal with a precision */
+        /** \return true if v1 and v2 are equal with a precision. */
         template<typename T> bool       Equal(const T &v1, const T &v2, const T &p)     {return ((v1 >= (v2 - p)) && (v1 <= (v2 + p)));}
-        /** \return true if v1 is superior of v2 with a precision */
+        /** \return true if v1 is superior of v2 with a precision. */
         template<typename T> bool       Sup(const T &v1, const T &v2, const T &p)       {return (v1 > (v2 + p));}
-        /** \return true if v1 is inferior of v2 with a precision */
+        /** \return true if v1 is inferior of v2 with a precision. */
         template<typename T> bool       Inf(const T &v1, const T &v2, const T &p)       {return (v1 < (v2 - p));}
 
-        /** swap to element of type T */
+        /** swap to element of type T. */
         template <typename T>
         void Swap(T &v1, T &v2)
         {
@@ -78,7 +78,7 @@ namespace Nc
             v1 = tmp;
         }
 
-        /** \return true if the number is a power of 2 */
+        /** \return true if the number is a power of 2. */
         template<typename T>
         bool        IsAPowerOf2(const T &v)
         {
@@ -89,7 +89,7 @@ namespace Nc
             return ((tmp >> 1) == 0);
         }
 
-        /** \return the nearest power of 2 */
+        /** \return the nearest power of 2. */
         template<typename T>
         T           NearestPowerOf2(const T &v)
         {
@@ -100,4 +100,4 @@ namespace Nc
     }
 }
 
-#endif // MMATH_H_INCLUDED
+#endif

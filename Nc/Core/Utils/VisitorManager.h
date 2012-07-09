@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// This class encapsulate some usefull classes which can help you to use a Visitor pattern
+        /// This class encapsulate some usefull inner classes which can help you to use a Visitor pattern.
         /**
             The implemented visitor, is a "Cooperative Visitor", this one use some template method like a VTable to define with object should be visited.
             The Cooperative Visitor is a flexible and efficient version of the visitor design pattern that accommodates arbritrary argument and return types.
@@ -43,7 +43,7 @@ namespace Nc
 
             The Visitor Manager implement two visitor.
             The first one allow you to visit an object by using a vtable and resolving the type and calling the visit method if you want to visit the true type by initialize the type you want to visit with a typelist.
-            And the second allow you like the first to visit an object but use a second vtable to call methods which should use to recall the visitor itself to visit a structure like a graph or a tree.
+            And the second allow you like the first to visit an object but use a second vtable to call methods which should be used to recall the visitor itself to visit a structure like a graph or a tree.
 
             \todo Specialize the InvokableVisitor for (ReturnType == bool) to setup some Invokation method (for exemple to stop the visitation when result == false).
         */
@@ -63,7 +63,7 @@ namespace Nc
                     typedef const Visitable Type;
                 };
 
-                /// To Create and initialize the static vtable
+                /// To Create and initialize the static vtable.
                 template<typename Visitor, typename VisitedList, typename Invoker, typename VTableType>
                 struct VTableInitializer
                 {
@@ -82,7 +82,7 @@ namespace Nc
                     VTableType  vtable;
                 };
 
-                /// To Create and initialize the static invokable vtable
+                /// To Create and initialize the static invokable vtable.
                 template<typename Visitor, typename VisitedList, typename Invoker, typename VTableType>
                 struct VTableInvokableInitializer
                 {
@@ -103,13 +103,13 @@ namespace Nc
 
 
             public:
-                /** To define a vtable type to be used with the Visitor class */
+                /** To define a vtable type to be used with the Visitor class. */
                 class VTableVisitorType {};
-                /** To define a vtable type to be used with the Invokable Visitor class */
+                /** To define a vtable type to be used with the Invokable Visitor class. */
                 class VTableInvokableVisitorType {};
 
             public:
-                /// Define a cooperative visitor
+                /// Define a cooperative visitor.
                 template<class VisitorType, class Base, typename ReturnType>
                 class Visitor
                 {
@@ -121,7 +121,7 @@ namespace Nc
                     public:
                         Visitor() : _vtable(0)      {}
 
-                        /** Method used to invoke the visit method */
+                        /** Method used to invoke the visit method. */
                         template<typename Visitable, typename Invoker>
                         ReturnType Thunk(Base &b)
                         {
@@ -129,7 +129,7 @@ namespace Nc
                             return Invoker::template Invoke<ReturnType, VisitorType, VisitableType>(static_cast<VisitorType&>(*this), static_cast<VisitableType&>(b));        // invoke visit method
                         }
 
-                        /** Method used to invoke the visit method */
+                        /** Method used to invoke the visit method. */
                         template<typename Visitable, typename Invoker>
                         ReturnType ConstThunk(const Base &b)
                         {
@@ -137,7 +137,7 @@ namespace Nc
                             return Invoker::template Invoke<ReturnType, VisitorType, VisitableType>(static_cast<VisitorType&>(*this), static_cast<VisitableType&>(b));        // invoke visit method
                         }
 
-                        /** To visit the given class, call the visit method if the class is visitable */
+                        /** To visit the given class, call the visit method if the class is visitable. */
                         ReturnType operator() (Base &b)
                         {
                             if (_vtable == 0)
@@ -161,7 +161,7 @@ namespace Nc
                             return ReturnType();
                         }
 
-                        /** Initialize the vtable with the given invoker and visitable typelist */
+                        /** Initialize the vtable with the given invoker and visitable typelist. */
                         template<typename VisitedList, typename Invoker>
                         void InitVTable(const VisitedList&, const Invoker&)
                         {
@@ -173,7 +173,7 @@ namespace Nc
                         const VTableType    *_vtable; // vtable pointer
                 };
 
-                /// Define a cooperative visitor specialized to be invokable when a class is visited (especialy usefull to browse a graph structure)
+                /// Define a cooperative visitor specialized to be invokable when a class is visited (especialy usefull to browse a graph structure).
                 template<class VisitorType, class Base, typename ReturnType>
                 class InvokableVisitor : public Visitor<VisitorType, Base, ReturnType>
                 {
@@ -184,7 +184,7 @@ namespace Nc
                     public:
                         InvokableVisitor(bool postVisits = true) : _postVisit(postVisits), _vTableInvokable(0) {}
 
-                        /** Method used to invoke the invokable method */
+                        /** Method used to invoke the invokable method. */
                         template<typename Visitable, typename Invoker>
                         void ThunkInvokable(Base &b)
                         {
@@ -192,7 +192,7 @@ namespace Nc
                             Invoker::template Invoke<void, VisitorType, VisitableType>(static_cast<VisitorType&>(*this), static_cast<VisitableType&>(b));  // invoke visit method
                         }
 
-                        /** Visit the given class, call the visit method if the class is visitable and call the invokable method if the class is intrusive */
+                        /** Visit the given class, call the visit method if the class is visitable and call the invokable method if the class is intrusive. */
                         void operator() (Base &b)
                         {
                             if (_postVisit)
@@ -210,7 +210,7 @@ namespace Nc
                             }
                         }
 
-                        /** Initialize the invokable vtable with the given invoker and visitable typelist */
+                        /** Initialize the invokable vtable with the given invoker and visitable typelist. */
                         template<typename VisitedList, typename Invoker>
                         void InitVTableInvokable(const VisitedList&, const Invoker&)
                         {

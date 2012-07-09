@@ -36,7 +36,7 @@ namespace Nc
 {
     namespace Math
     {
-        /// Manipulate an array of Dimension D and Type T, This array is static, but the specialisation with "D = 0" is dynamic
+        /// Manipulate an array of Dimension D and Type T, This array is static, but the specialisation with "D = 0" is dynamic.
         template<typename T, unsigned int D = 0>
         struct Array
         {
@@ -51,14 +51,14 @@ namespace Nc
             virtual ~Array()    {};
 
             // initialisation
-            /** Init all node of the array with the given data */
+            /** Init all node of the array with the given data. */
             void Init(const T &data);
 
             // accessor
             /** \return the size of the array */
             inline unsigned int Size()  const   {return D;}
 
-            /** The accessor will throw an exception if the given index \p i is too long */
+            /** The accessor will throw an exception if the given index \p i is too long. */
             inline T &operator [] (unsigned int i)
             {
                 if (i >= D)
@@ -66,7 +66,7 @@ namespace Nc
                 return data[i];
             }
 
-            /** The accessor will throw an exception if the given index \p i is too long */
+            /** The accessor will throw an exception if the given index \p i is too long. */
             inline const T &operator [] (unsigned int i) const
             {
                 if (i >= D)
@@ -85,7 +85,7 @@ namespace Nc
             T               data[D];            ///< data of type T. Could be directly accessed insteed of using the operator []
         };
 
-        /// Manipulate an array of Type T, This array is dynamic, It's a simplified alternative to the class std::vector
+        /// Manipulate an array of Type T, This array is dynamic, It's a simplified alternative to the class std::vector.
         template<typename T>
         struct Array<T, 0>
         {
@@ -108,16 +108,16 @@ namespace Nc
             void InitSize(unsigned int s);
 
             /**
-                Don't delete the data, just reset the property _size if \p s is lesser than _size
-                \warning to use wisely. This function could be dangerous
+                Don't delete the data, just reset the property _size if \p s is lesser than _size.
+                \warning to use wisely. This function could be dangerous.
             */
             void UnderSize(unsigned int s);
 
-            /** Init all node of the array with the given data */
+            /** Init all node of the array with the given data. */
             void InitData(const T &data);
             /**
-                Init all node of the array with the given array
-                \warning the \p data is an array and it shoud be allocated of the size of our Array
+                Init all node of the array with the given array.
+                \warning the \p data is an array and it shoud be allocated of the size of our Array.
             */
             void InitData(const T *data);
             /**
@@ -126,13 +126,13 @@ namespace Nc
             void Resize(unsigned int s);
 
             // accessor
-            /** \return the size of the array */
+            /** \return the size of the array. */
             inline unsigned int Size()  const   {return _size;}
 
-            /** Accessor with a protection with exception */
+            /** Accessor with a protection with exception. */
             inline T &operator [] (unsigned int i);
 
-            /** Accessor with a protection with exception */
+            /** Accessor with a protection with exception. */
             inline const T &operator [] (unsigned int i) const;
 
             friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Array<T,0> &a)
@@ -143,10 +143,10 @@ namespace Nc
             }
 
             // array
-            T               *data;      ///< data of type T Dynamically allocated. Could be directly accessed insteed of using the operator [].
+            T               *data;      ///< data of type T Dynamically allocated. Could be directly accessed insteed of using the operator []
 
             private:
-                unsigned int    _size;  ///< The size of the array
+                unsigned int    _size;  ///< The size of the array.
         };
     }
 

@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Like SmartPointer, but call the method SPAddRef() in the pointer
+        /// Like SmartPointer, but call the method SPAddRef() in the pointer.
         template<typename T, bool IsArray = false>
         class IntrusiveSmartPointer : public SmartPointer<T, IsArray>
         {

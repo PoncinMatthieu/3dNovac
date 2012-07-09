@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Implement a template singleton class
+        /// Implement a template singleton class.
         /**
             The singleton class is thread safe.
 
@@ -63,7 +63,7 @@ namespace Nc
             public:
                 /**
                     Static function which return the instance of the singleton T.
-                    \return the instance of the singleton of type T
+                    \return the instance of the singleton of type T.
                 */
                 static T &Instance()
                 {
@@ -80,7 +80,7 @@ namespace Nc
                 /**
                     Delete the instance.
                     If this function is not called before the program exit, the data will be not released and appears in valgrind.
-                    It's totally normal and not ugly with a static which exist during the all execution of the program
+                    It's totally normal and not ugly with a static which exist during the all execution of the program.
                 */
                 static void DeleteInstance()
                 {
@@ -90,7 +90,7 @@ namespace Nc
                     _instance = NULL;
                 }
 
-                /** \return true if the instance is already created */
+                /** \return true if the instance is already created. */
                 static bool Exist()
                 {
                     return (_instance != NULL);
@@ -100,8 +100,8 @@ namespace Nc
                 Singleton()                 {_instance = NULL;}
                 virtual ~Singleton()        {_instance = NULL;}
 
-                static T                *_instance;     ///< instance of type T
-                static System::Mutex    _mutex;         ///< protect the instance for multithread context
+                static T                *_instance;     ///< instance of type T.
+                static System::Mutex    _mutex;         ///< protect the instance for multithread context.
         };
 
         template<typename T>

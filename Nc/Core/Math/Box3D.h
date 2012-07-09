@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Math
     {
-        /// To manipulate a box in 3 Dimension of type T
+        /// To manipulate a box in 3 Dimension of type T.
         template<typename T>
         class Box3D : public Box<T,3>
         {
@@ -48,7 +48,7 @@ namespace Nc
                 template<typename U>
                 Box3D    &operator = (const Box3D<U> &b);
 
-                static const Box3D<T>       EmptyBox;       ///< static const empty box
+                static const Box3D<T>       EmptyBox;       ///< static const empty box.
         };
 
         template<typename T>

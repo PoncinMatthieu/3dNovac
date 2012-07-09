@@ -36,10 +36,10 @@ namespace Nc
 {
     namespace Utils
     {
-        ///this namespace provide some classes to manage an Xml Format
+        ///this namespace provide some classes to manage an Xml Format.
         namespace Xml
         {
-            /// Provide a Xml::File management
+            /// Provide a Xml::File management.
             class LCORE File
             {
                 public:
@@ -49,29 +49,29 @@ namespace Nc
 
                     /**
                         Read the given file.
-                        \return the content of the file
+                        \return the content of the file.
                     */
                     Object  *Read(const FileName &f);
                     /**
                         Read the current file.
-                        \return the content of the file
+                        \return the content of the file.
                     */
                     Object  *Read();
 
-                    /** Save the file with the propertie _content */
+                    /** Save the file with the propertie _content. */
                     void    Save() const;
-                    /** Save the file with the content passed in param */
+                    /** Save the file with the content passed in param. */
                     void    Save(Object *content);
 
                     // accesseurs
-                    /** \return the content of the file */
+                    /** \return the content of the file. */
                     inline const Object *Content() const        {return _content;}
-                    /** \return the content of the file */
+                    /** \return the content of the file. */
                     inline Object       *Content()              {return _content;}
 
                 private:
-                    FileName    _filename;      ///< The name of the file to read
-                    Object      *_content;      ///< Content of the XML file
+                    FileName    _filename;      ///< The name of the file to read.
+                    Object      *_content;      ///< Content of the XML file.
             };
         }
     }

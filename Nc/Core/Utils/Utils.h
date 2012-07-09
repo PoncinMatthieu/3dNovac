@@ -25,7 +25,7 @@
 -----------------------------------------------------------------------------*/
 
 /** \file
-    include the principal files of the lib Nc-Utils
+    include the principal files of the lib Nc-Utils.
 */
 
 #ifndef NC_CORE_UTILS_UTILS_H_
@@ -44,11 +44,11 @@
 
     namespace Nc
     {
-        /// This namespace provide many usefull classes and function, like Logger, FileName and Singleton
+        /// This namespace provide many usefull classes and function, like Logger, FileName and Singleton.
         namespace Utils
         {
         // usefull functions
-            /** template Strlen to use with unicode string for exemple*/
+            /** template Strlen to use with unicode string for exemple. */
             template<typename T>
             std::size_t Strlen(const T *str)
             {
@@ -70,7 +70,7 @@
                     dest[i] = src[i];
             }
 
-            /** Delete a container like std::list */
+            /** Delete a \p container like std::list. */
             template<typename T>
             void    DeleteContainer(T &container)
             {

@@ -39,7 +39,7 @@ namespace Nc
 {
     namespace Math
     {
-        /// Define a 4 composant pixel rgba of type T (basicly float or char)
+        /// Define a 4 composant pixel rgba of type T (basicly float or char).
         template<typename T>
         struct  Pixel
         {
@@ -87,13 +87,13 @@ namespace Nc
                 return os;
             }
 
-            T   r;      ///< Red componant
-            T   g;      ///< Green componant
-            T   b;      ///< Blue componant
-            T   a;      ///< Alpha componant
+            T   r;      ///< Red componant.
+            T   g;      ///< Green componant.
+            T   b;      ///< Blue componant.
+            T   a;      ///< Alpha componant.
         };
 
-		template struct Pixel<float>;		///< explicit instanciation of a Pixel defined with floating values
+		template struct Pixel<float>;		///< explicit instanciation of a Pixel defined with floating values.
     }
 }
 

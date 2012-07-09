@@ -35,14 +35,14 @@ namespace Nc
 {
     namespace Utils
     {
-        /// manipulate your filename path
+        /// manipulate your filename path.
         /**
             Parse filename to access the path, filename, extention, change filename, etc...
 
             For transparency and simplicity, FileName inherite of std::string.
 
             If the given path begin with "Nc:Type:", then the beginning of the filename will be set to the "RessourcePath/Type" of the 3dNovac Config file.
-			
+
 			\sa
 				- System::Config
         */
@@ -56,26 +56,26 @@ namespace Nc
                 FileName &operator = (const std::string &path);
                 FileName &operator = (const char *path);
 
-                /** Print the filename */
+                /** Print the filename. */
                 friend LCORE std::ostream& operator << (std::ostream& os, const FileName& f);
 
             //Accesseurs
             // partie du nom
-                /** \return the path of the file */
+                /** \return the path of the file. */
                 std::string		Path() const;
-                /** \return the name + extension */
+                /** \return the name + extension. */
                 std::string		Filename() const;
-                /** Set the name + extension */
+                /** Set the name + extension. */
                 void		    SetFilename(const std::string &s);
-                /** \return Only the name */
+                /** \return Only the name. */
                 std::string		ShortFilename() const;
-                /** Set only the name */
+                /** Set only the name. */
                 void		    SetShortFilename(const std::string &s);
-                /** \return Only the extension */
+                /** \return Only the extension. */
                 std::string		Extension() const;
 
             // Accessibilite du fichier
-                /** \return true if the file is readable */
+                /** \return true if the file is readable. */
                 bool		    IsReadable() const;
 
             private:

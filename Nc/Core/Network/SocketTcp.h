@@ -33,19 +33,18 @@ namespace Nc
 {
     namespace Network
     {
-        /// Define a Tcp Socket
+        /// Define a Tcp Socket.
 		/**
 			To use a socket TCP you will need to `Create` it before doing anything.
-
-			A created socket need to be closed with `Close`.
+            And a created socket need to be closed with `Close`.
 
 			To create a client, use the method `Connect`,
 			and to create a listening socket to accept connection you'll need to use the `Listen` method to initialize it
 			and `Accept` to accept a new connection.
 
 			\sa
-				- Network::Ip
-				- Network::Select
+				- Ip
+				- Select
 		*/
         class LCORE SocketTcp : public ISocket
         {
@@ -53,19 +52,19 @@ namespace Nc
                 SocketTcp();
                 ~SocketTcp();
 
-                /** Create the socket descriptor */
+                /** Create the socket descriptor. */
                 virtual void    Create();
-                /** Close the descriptor */
+                /** Close the descriptor. */
                 virtual void    Close();
 
                 /**
-                    Connect the socket to the given \p ip and the given \p port
+                    Connect the socket to the given \p ip and the given \p port.
                     \return true if no error.
                 */
                 bool            Connect(const Ip &ip, unsigned short port);
 
                 /**
-                    Set the descriptor to listening a port for connection or incomming data
+                    Set the descriptor to listening a port for connection or incomming data.
                     \return true if no error.
                 */
                 bool            Listen(unsigned short port);
@@ -77,14 +76,14 @@ namespace Nc
                 bool            Accept(SocketTcp &newClient, Ip &newclientIp);
 
                 /**
-                    Write (send) to the descriptor an array of type T
-                    \return true if no error
+                    Write (send) to the descriptor an array of type T.
+                    \return true if no error.
                 */
                 template<typename T, unsigned int D>
                 bool            Write(const Math::Array<T,D> &src);
                 /**
-                    Write (send) to the descriptor an array of byte
-                    \return true if no error
+                    Write (send) to the descriptor an array of byte.
+                    \return true if no error.
                 */
                 bool            Write(const char *src, unsigned int size);
 

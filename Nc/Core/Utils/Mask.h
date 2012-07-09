@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Utils
     {
-        /// To manipulate a bit mask easily and secure a enum flags
+        /// To manipulate a bit mask easily and secure a enum flags.
         /**
             The bit field used a type T which should be an enum and D to specify the sizeof of the mask.
 
@@ -65,30 +65,31 @@ namespace Nc
                 Mask(D m) : _mask(m)    {}
                 Mask(T v) : _mask(v)    {}
 
-                /** \return true if the given mask value is only one activated in the mask */
+                /** \return true if the given mask value is only one activated in the mask. */
                 inline bool     operator == (T v) const     {return (_mask == v);}
-                /** \return true if the given mask is the same */
+                /** \return true if the given mask is the same. */
                 inline bool     operator == (D m) const     {return (_mask == m);}
 
-                /** Enable the bit `v` in the mask */
+                /** Enable the bit `v` in the mask. */
                 inline void     Enable(T v)                 {_mask |= v;}
 
-                /** Disable the bit `v` in the mask */
+                /** Disable the bit `v` in the mask. */
                 inline void     Disable(T v)                {_mask &= ~v;}
 
-                /** Trigger the bit `v` in the mask (if == true, then false, else true) */
+                /** Trigger the bit `v` in the mask (if == true, then false, else true). */
                 inline void     Trigger(T v)                {(Enabled(v)) ? Disable(v) : Enable(v);}
 
-                /** \return true if the bit `v` is enabled in the bit mask  */
+                /** \return true if the bit `v` is enabled in the bit mask. */
                 inline bool     Enabled(T v) const          {return ((_mask & v) != 0);}
 
-                /** \return true if the bit `v` is disabled in the bit mask */
+                /** \return true if the bit `v` is disabled in the bit mask. */
                 inline bool     Disabled(T v) const         {return ((_mask & v) == 0);}
 
+                /** \return the mask value */
                 inline D        GetMask() const             {return _mask;}
 
             private:
-                D       _mask;      ///< the bit mask
+                D       _mask;      ///< the bit mask.
         };
     }
 }

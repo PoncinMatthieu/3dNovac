@@ -36,10 +36,10 @@ namespace Nc
 {
     namespace Utils
     {
-        /// This namespace provide classes to manipulate any Unicode strings
+        /// This namespace provide classes to manipulate any Unicode strings.
         namespace Unicode
         {
-            /// Manipulate UTF32 string
+            /// Manipulate UTF32 string.
             class LCORE UTF32 : public std::basic_string<Nc::UInt32>
             {
                 public:
@@ -51,17 +51,17 @@ namespace Nc
                     UTF32(const std::wstring &str);
                     virtual ~UTF32()    {}
 
-                    /** \return the number of occurence of the caractere 'c' in the unicode string */
+                    /** \return the number of occurence of the caractere 'c' in the unicode string. */
                     unsigned int        CharCount(Nc::UInt32 c) const;
 
                     /** Convert and return the unicode string in standard std::string */
                     std::string         ToStdString() const;
-                    /** Convert and return the unicode string in standard std::string into the given std::string */
+                    /** Convert and return the unicode string in standard std::string into the given std::string. */
                     std::string         &ToStdString(std::string &str) const;
 
                     /** Convert and return the unicode string in standard std::wstring */
                     std::wstring        ToStdWString() const;
-                    /** Convert and return the unicode string in standard std::wstring into the given std::wstring */
+                    /** Convert and return the unicode string in standard std::wstring into the given std::wstring. */
                     std::wstring        &ToStdWString(std::wstring &str) const;
 
                     friend LCORE std::ostream &operator << (std::ostream& os, const UTF32& s);

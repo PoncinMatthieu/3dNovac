@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Math
     {
-        /// To manipulate 3 composante of type T
+        /// To manipulate 3 composante of type T.
         template<typename T>
         class Vector3D : public Vector<T,3>
         {
@@ -47,10 +47,10 @@ namespace Nc
                 template<typename U>
                 Vector3D    &operator = (const Vector3D<U> &v);
 
-                /** Initialize the values of the vector */
+                /** Initialize the values of the vector. */
                 void        Init(const T &x = 0, const T &y = 0, const T &z = 0);
 
-                /** Compute the crossProduct with `v` in `result` */
+                /** Compute the crossProduct with `v` in `result`. */
                 void        Cross(const Vector3D &v, Vector3D<T> &result) const;
 
                 /** \return X */

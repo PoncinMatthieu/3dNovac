@@ -40,15 +40,15 @@ namespace Nc
     {
         namespace Xml
         {
-            /// Xml::Object, provide an element of a DOM Model
+            /// Xml::Object, provide an element of a DOM Model.
 			/**
-				\todo now that we defined a graph structure, we should use it to define the XML object. 
+				\todo now that we defined a graph structure, we should use it to define the XML object.
 				\todo now that we defined a visitor structure, we should use it on the XML object to allow the visitation of the XML object.
 			*/
             class LCORE Object
             {
                 public:
-                    /** TYPE, to define the type of Xml object */
+                    /** TYPE, to define the type of Xml object. */
                     enum TYPE {HEADER, INLINE, BLOCK};
 
                 public:
@@ -65,66 +65,66 @@ namespace Nc
 
                     //accesseurs
                     // values
-                    /** \return the type of the object */
+                    /** \return the type of the object. */
                     inline TYPE                 Type() const                        {return _type;}
-                    /** Set the name of the object */
+                    /** Set the name of the object. */
                     inline void                 Name(const std::string &s)                                      {_name = s;}
-                    /** \return the name of the object */
+                    /** \return the name of the object. */
                     inline const std::string    &Name() const                                                   {return _name;}
-                    /** Add a param with the key/value */
+                    /** Add a param with the key/value. */
                     inline void                 AddParam(const std::string &key, const std::string &value)      {_params[key] = value;}
-                    /** \return the param with the given key */
+                    /** \return the param with the given key. */
                     inline std::string          &Param(const std::string &key)                                  {return _params[key];}
-                    /** \return true if the given key exist */
+                    /** \return true if the given key exist. */
                     inline bool                 ParamExist(const std::string &key)                              {return (_params.find(key) != _params.end());}
-                    /** \return the map of param key/values */
+                    /** \return the map of param key/values. */
                     inline MapParam             &Params()                                                       {return _params;}
-                    /** \return the data */
+                    /** \return the data. */
                     inline std::string          &Data()                                                         {return _data;}
-                    /** Set the data */
+                    /** Set the data. */
                     inline void                 Data(const std::string &s)                                      {_data = s;}
-                    /** \return the CDATA block statement, to know if the data is in a CBLOCK data */
+                    /** \return the CDATA block statement, to know if the data is in a CBLOCK data. */
                     inline bool                 CData()                                                         {return _cdata;}
-                    /** Set the CDATA block statement, to know if the data is in a CBLOCK data  */
+                    /** Set the CDATA block statement, to know if the data is in a CBLOCK data.  */
                     inline void                 CData(bool b)                                                   {_cdata = b;}
 
                     // parent
-                    /** \return the parent of the object, Null if the object has no parents */
+                    /** \return the parent of the object, Null if the object has no parents. */
                     inline Object               *Parent()                                                       {return _parent;}
-                    /** \return the parent of the object, Null if the object has no parents */
+                    /** \return the parent of the object, Null if the object has no parents. */
                     inline const Object         *Parent() const                                                 {return _parent;}
-                    /** \return the number of parent in the hierarchie */
+                    /** \return the number of parent in the hierarchy. */
                     unsigned int                GetNbParent() const;
 
                     // child
-                    /** Create a new Block object in the Object */
+                    /** Create a new Block object in the Object. */
                     Object                      *NewBlock(const std::string &name)                              {return AddChild(new Object(name, BLOCK, this));}
-                    /** Create a new Inline object in the Object */
+                    /** Create a new Inline object in the Object. */
                     Object                      *NewLine(const std::string &name)                               {return AddChild(new Object(name, INLINE, this));}
-                    /** \return the block with the good name, Throw if don't exist */
+                    /** \return the block with the good name, Throw if don't exist. */
                     Object                      *Block(const std::string &name);
-                    /** \return true if the block with the good name exist */
+                    /** \return true if the block with the good name exist. */
                     bool                        BlockExist(const std::string &name);
-                    /** \return the line with the good name, Throw if don't exist */
+                    /** \return the line with the good name, Throw if don't exist. */
                     Object                      *Line(const std::string &name);
-                    /** \return true if the line with the good name exist */
+                    /** \return true if the line with the good name exist. */
                     bool                        LineExist(const std::string &name);
-                    /** \return the chils list contained in the Object */
+                    /** \return the chils list contained in the Object. */
                     inline ListObject           &ListChild()                                                    {return _content;}
-                    /** Add a child in the list of child */
+                    /** Add a child in the list of child. */
                     inline Object               *AddChild(Object *o)                                            {_content.push_back(o); return *_content.rbegin();}
 
 
                 protected:
                     inline void                 Type(TYPE t)                                                    {_type = t;}
 
-                    std::string         _name;      ///< the name
-                    TYPE                _type;      ///< the type
-                    MapParam            _params;    ///< the map of params stored with (key/values)
-                    Object              *_parent;   ///< the parent of the object
-                    ListObject          _content;   ///< the list of childs
-                    std::string         _data;      ///< the data
-                    bool                _cdata;     ///< a booleen used to know if we need to store the data in a CBLOCK data
+                    std::string         _name;      ///< the name.
+                    TYPE                _type;      ///< the type.
+                    MapParam            _params;    ///< the map of params stored with (key/values).
+                    Object              *_parent;   ///< the parent of the object.
+                    ListObject          _content;   ///< the list of childs.
+                    std::string         _data;      ///< the data.
+                    bool                _cdata;     ///< a booleen used to know if we need to store the data in a CBLOCK data.
 
                     friend class Parser;
             };

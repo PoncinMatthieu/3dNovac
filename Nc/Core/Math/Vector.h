@@ -36,12 +36,7 @@ namespace Nc
 {
     namespace Math
     {
-        /// template class Vector to manipulate a vector of Dimension D of type T
-        /**
-            template class Vector to manipulate a vector of Dimension D of type T
-            operator defined : = [] += -= *= /= + - * / == !=       <br\>
-            function :         Lenght / Normalize / Dot / Reverse   <br\>
-        */
+        /// Template class Vector to manipulate a vector of Dimension D of type T.
         template<typename T, unsigned char D>
         class Vector
         {
@@ -82,22 +77,22 @@ namespace Nc
                 template<typename U> Vector operator    /   (const Vector<U,D> &a) const;
                 template<typename U> Vector operator    /   (const U &a) const;
 
-                /** \return true if the given vector is equal with the given precision */
+                /** \return true if the given vector is equal with the given precision. */
                 bool    Equal(const Vector &v, float precision) const;
 
                 // function
-                /** \return the square root length of the vector */
+                /** \return the square root length of the vector. */
                 T       Length() const;
                 /** scale the vector */
                 void    Scale(T l);
-                /** Normalize the vector and return itself */
+                /** Normalize the vector and return itself. */
                 Vector  &Normalize();
-                /** \return the dot product of the vector with \p v */
+                /** \return the dot product of the vector with \p v. */
                 template<typename U>
                 T       Dot(const Vector<U,D> &v) const;
                 /** Fill the inverse vector */
                 void    Inverse(Vector &v) const;
-                /** \return the angle between the vector and \p v */
+                /** \return the angle between the vector and \p v. */
                 template<typename U>
                 T       Angle(const Vector<U,D> &v) const;
 
@@ -109,9 +104,9 @@ namespace Nc
                     return os;
                 }
 
-                T   data[D];                                ///< public data, for acces performance reason
+                T   data[D];                                ///< public data, for acces performance reason.
 
-                static const Vector<T,D>    Null;           ///< static const vector null
+                static const Vector<T,D>    Null;           ///< static const vector null.
         };
 
         template<typename T, unsigned char D>

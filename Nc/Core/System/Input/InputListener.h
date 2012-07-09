@@ -36,7 +36,7 @@ namespace Nc
 {
     namespace System
     {
-        /// Manage the inputs, like WindowInput
+        /// Manage the inputs, like WindowInput.
         /**
 			An input listener, contain a list of input in which they are attached, and an event queue to receive events.
 
@@ -54,23 +54,23 @@ namespace Nc
                 InputListener();
                 virtual ~InputListener();
 
-                /** Add the given input and set the eventQueue pointer of the input */
+                /** Add the given input and set the eventQueue pointer of the input. */
                 void                    AddInput(Input *input);
-                /** Remove the given input from the list of inputs */
+                /** Remove the given input from the list of inputs. */
                 void                    RemoveInput(Input *input);
 
-                /** Fill the given event by the event which was in the eventQueue */
+                /** Fill the given event by the event which was in the eventQueue. */
                 bool                    PollEvent(Event &e);
 
-                /** \return the mutex which protect the event queue */
+                /** \return the mutex which protect the event queue. */
                 inline System::Mutex    &GetMutex()                         {return _mutexQueue;}
-                /** \return the event queue of the listener */
+                /** \return the event queue of the listener. */
                 inline EventQueue       &GetEventQueue()                    {return _eventQueue;}
 
             private:
-                ListInput       _inputList;         ///< the list of inputs
-                EventQueue      _eventQueue;        ///< the event queue which store the event received by the inputs
-                Mutex           _mutexQueue;        ///< the mutex used to protect the event queue
+                ListInput       _inputList;         ///< the list of inputs.
+                EventQueue      _eventQueue;        ///< the event queue which store the event received by the inputs.
+                Mutex           _mutexQueue;        ///< the mutex used to protect the event queue.
         };
     }
 }

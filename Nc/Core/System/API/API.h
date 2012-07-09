@@ -31,16 +31,16 @@
 
 	namespace Nc
 	{
-	    /// This namespace provide some multiarchi function and class
+	    /// This namespace provide some multiarchi function and class.
 		namespace System
 		{
-		    /** Sleep in second */
+		    /** Sleep in second. */
 		    LCORE void            Sleep(float second);
-		    /** \return time in second */
+		    /** \return time in second. */
 			LCORE double          Time();
-			/** remalloc a null terminated string */
+			/** remalloc a null terminated string. */
             LCORE char*           Strdup(const char *str);
-            /** \return the current thread id */
+            /** \return the current thread id. */
             LCORE unsigned int    ThreadId();
         }
 	}

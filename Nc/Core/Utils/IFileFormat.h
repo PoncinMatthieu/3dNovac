@@ -33,10 +33,10 @@ namespace Nc
 {
     namespace Utils
     {
-        /// Interface to manage file formats
+        /// Interface to manage file formats.
         /**
             A file format define a way to manage a specific format to read and save.
-			
+
 			To define your own file format, you should redefine the following methods:
 				- LoadFile: to load the file.
 				- SaveFile: to save the file.
@@ -48,24 +48,24 @@ namespace Nc
                 IFileFormat()           {}
                 virtual ~IFileFormat()  {}
 
-                /** Use this static method to load one file format */
+                /** Use this static method to load one file format. */
                 static inline void Load(const Utils::FileName &file, T &content)
                 {
                     FileFormat format;
                     format.LoadFile(file, content);
                 }
 
-                /** Use this static method to save one file format */
+                /** Use this static method to save one file format. */
                 static inline void Save(const Utils::FileName &file, const T &content)
                 {
                     FileFormat format;
                     format.SaveFile(file, content);
                 }
 
-                /** Load a file to the given content */
+                /** Load a file to the given content. */
                 virtual void LoadFile(const Utils::FileName &file, T &content) = 0;
 
-                /** Save a file by using the given content */
+                /** Save a file by using the given content. */
                 virtual void SaveFile(const Utils::FileName &file, const T &content) = 0;
         };
     }

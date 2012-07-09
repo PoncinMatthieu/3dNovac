@@ -55,7 +55,7 @@ namespace Nc
 {
     namespace System
     {
-        /// Provide Definition of the key codes
+        /// Provide Definition of the key codes.
         namespace Key
         {
             enum Code
@@ -169,7 +169,7 @@ namespace Nc
             };
         }
 
-        /// Provide Definition of the mouses button code
+        /// Provide Definition of the mouses button code.
         namespace Mouse
         {
             enum Button
@@ -184,10 +184,10 @@ namespace Nc
             };
         }
 
-        /// Provide a definition of input event designed especially to manage event of WindowInput
+        /// Provide a definition of input event designed especially to manage event of WindowInput.
         struct LCORE Event
         {
-            /// Define a key evenement
+            /// Define a key evenement.
             struct KeyEvent
             {
                 Key::Code code;
@@ -196,14 +196,14 @@ namespace Nc
                 bool      shift;
             };
 
-            /// Define a mouse move evenement
+            /// Define a mouse move evenement.
             struct MouseMoveEvent
             {
                 int x;
                 int y;
             };
 
-            /// Define a mouse button evenement
+            /// Define a mouse button evenement.
             struct MouseButtonEvent
             {
                 Mouse::Button button;
@@ -211,27 +211,27 @@ namespace Nc
                 int           y;
             };
 
-            /// Define a mouse weel event
+            /// Define a mouse weel event.
             struct MouseWheelEvent
             {
                 int delta;
             };
 
-            /// Define a size evenement (eg: for resize)
+            /// Define a size evenement (eg: for resize).
             struct SizeEvent
             {
                 unsigned int width;
                 unsigned int height;
             };
 
-            /// Define the type of evenement
+            /// Define the type of evenement.
             enum EventType
             {
                 Closed,
                 Resized,
                 LostFocus,
                 GainedFocus,
-                TextEntered, ///\todo implement the text entered event
+                TextEntered, ///\todo implement the text entered event.
                 KeyPressed,
                 KeyReleased,
                 MouseWheelMoved,
@@ -244,10 +244,10 @@ namespace Nc
                 Count // total number of event types
             };
 
-            EventEmitter            *emitter;       ///< pointer to the emitter entity of the event
-            EventType               type;           ///< Type of the event
+            EventEmitter            *emitter;       ///< pointer to the emitter entity of the event.
+            EventType               type;           ///< Type of the event.
 
-            union                                   ///< union of datas
+            union                                   ///< union of datas.
             {
                 KeyEvent            key;
                 MouseMoveEvent      mouseMove;

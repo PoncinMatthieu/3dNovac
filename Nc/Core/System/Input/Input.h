@@ -37,13 +37,13 @@ namespace Nc
     {
         class InputListener;
 
-        /// Provide an interface for Inputs
+        /// Provide an interface for Inputs.
         /**
-            Provide an interface for Inputs. An input as a list of Listener.
-            To add a Listener, use the method AddEventQueue.
+            An input has a list of Listener.
+            To add a Listener, use the method AddListener.
 
             All the events need to be push with the method PushEvent.
-			
+
             CheckEvent needs to be redefined.
 
             \sa
@@ -58,19 +58,19 @@ namespace Nc
                 Input();
                 virtual ~Input();
 
-                /** Add the given listner to the listener list */
+                /** Add the given listner to the listener list. */
                 inline void         AddListener(InputListener *listener)            {System::Locker l(&_mutex); _listeners.push_back(listener);}
-                /** Remove he given listner to the listener list */
+                /** Remove he given listner to the listener list. */
                 inline void         RemoveListener(InputListener *listener)         {System::Locker l(&_mutex); _listeners.remove(listener);}
 
-                /** To be redefine, called to check if there is new events */
+                /** To be redefine, called to check if there is new events. */
                 virtual void        CheckEvents() = 0;
 
-                /** \return false if there are a listener */
+                /** \return false if there are a listener. */
                 inline bool         ListenerListEmpty()                             {return _listeners.empty();}
 
             protected:
-                /** Push a new event in the eventQueue pointer */
+                /** Push a new event in the eventQueue pointer. */
                 void                PushEvent(const Event &e);
 
             private:

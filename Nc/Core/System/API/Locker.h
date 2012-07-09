@@ -35,10 +35,10 @@ namespace Nc
     {
         class IMutex;
 
-		/// Used to lock/unlock a mutex safely
+		/// Used to lock/unlock a mutex safely.
 		/**
 			The locker lock/unlock the mutex into it's constructor and destructor.
-			By following the RAII principle (Resource Acquisition Is Initialization), 
+			By following the RAII principle (Resource Acquisition Is Initialization),
 			the locker ensure that the mutex will always be unlock even if an exception is thrown.
 
 			<div class="title"> Here is a sample to use a Locker: </div>
@@ -48,19 +48,19 @@ namespace Nc
 		System::Locker l(&_mutex);
 		// do stuff to protect against a concurential access
 		...
-	} // the mutex is unlocked automatically at the end of the scope, even if an exception has been thrown.
+	} // the mutex is unlocked automatically in the destructor of the Locker at the end of the scope, even if an exception has been thrown.
  \endcode
 			*/
         class LCORE Locker
         {
             public:
-				/** \param mutex is a pointer to the mutex to lock, you can give a null pointer and use the method Lock to lock a new mutex */
+				/** \param mutex is a pointer to the mutex to lock, you can give a null pointer and use the method Lock to lock a new mutex. */
                 Locker(IMutex *mutex);
                 ~Locker();
 
-				/** Use this method if you gived a null pointer to the constructor */
+				/** Use this method if you gived a null pointer to the constructor. */
                 void Lock(IMutex *mutex);
-				/** Unlock the mutex, you don't need to call that method if you use the destructor to unlock it */
+				/** Unlock the mutex, you don't need to call that method if you use the destructor to unlock it. */
                 void Unlock();
 
             private:
@@ -68,7 +68,7 @@ namespace Nc
                 void Dtor();
 
             private:
-                IMutex  *_mutex;		///< pointer to the mutex to lock/unlock
+                IMutex  *_mutex;		///< pointer to the mutex to lock/unlock.
         };
     }
 }

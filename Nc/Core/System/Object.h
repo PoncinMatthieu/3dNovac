@@ -57,7 +57,7 @@ namespace Nc
 {
     namespace System
     {
-        /// base class, with an Id and a Name, the Id is unique
+        /// base class, with an Id and a Name, the Id is unique.
 		/**
 			The object inherit of Utils::VisitableBase so the object can be visited with a visitor.
 		*/
@@ -73,11 +73,11 @@ namespace Nc
                 Object &operator = (const Object &obj);
                 virtual ~Object();
 
-                /** Set the name of the object */
+                /** Set the name of the object. */
                 inline void                 Name(const std::string &name)       {_name = name;}
-                /** \return the name of the object */
+                /** \return the name of the object. */
                 inline const std::string    &Name() const		                {return _name;}
-                /** \return the Id of the object */
+                /** \return the Id of the object. */
                 inline unsigned int         Id() const			                {return _id;}
 
                 /**
@@ -139,7 +139,8 @@ namespace Nc
                 }
 
                 /**
-                    Fill the given ostream used with the operator << <br\>
+                    Fill the given ostream used with the operator <<
+
                     Could be redefine in your own object.
                 */
                 virtual void                ToString(std::ostream &oss) const;
@@ -150,11 +151,11 @@ namespace Nc
                 friend LCORE std::ostream	&operator << (std::ostream &oss, const Object &o);
 
             protected:
-                std::string         _name;          ///< the name of the object
-                unsigned int        _id;            ///< the unique id of the object
+                std::string         _name;          ///< the name of the object.
+                unsigned int        _id;            ///< the unique id of the object.
 
             private:
-                static unsigned int _nbObject;      ///< the current number of object
+                static unsigned int _nbObject;      ///< the current number of object.
         };
 
 		// explicit instanciation

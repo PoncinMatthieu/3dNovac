@@ -39,7 +39,10 @@ namespace Nc
 {
     namespace Network
     {
-        /// Define an ip address
+        /// Define an ip address.
+        /**
+            Allows to manipulate IP v4 addresses.
+        */
         class LCORE Ip
         {
             public:
@@ -48,22 +51,22 @@ namespace Nc
                 Ip(const std::string &ip);
                 Ip(unsigned char byte1, unsigned char byte2, unsigned char byte3, unsigned char byte4);
 
-                /** Init the address with the given \p ip address */
+                /** Init the address with the given \p ip address. */
                 void                Init(const std::string &ip);
-                /** Init the address with the given 4 byte which describ the ip address */
+                /** Init the address with the given 4 byte which describ the ip address. */
                 void                Init(unsigned char byte1, unsigned char byte2, unsigned char byte3, unsigned char byte4);
 
-                /** \return true if the address is valid */
+                /** \return true if the address is valid. */
                 inline bool         IsValid() const             {return _addr != INADDR_NONE;}
 
-                /** \return the address string in dotted-decimal notation */
+                /** \return the address string in dotted-decimal notation. */
                 std::string         ToString() const;
 
             public:
-                static const Ip     localHost;      ///< static ip used to define the localhost
+                static const Ip     localHost;      ///< static ip used to define the localhost.
 
             private:
-                UInt32              _addr;          ///< the address of the ip
+                UInt32              _addr;          ///< the address of the ip.
         };
     }
 }

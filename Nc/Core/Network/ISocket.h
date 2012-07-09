@@ -35,28 +35,32 @@ namespace Nc
 {
     namespace Network
     {
-		/// Interface used to define a socket
+		/// Interface used to define a socket.
 		/**
-			Contain a descriptor. 
-			
+			An ISocket contain a descriptor which will be Create and Close by subclasses.
+
 			To create your own socket you should, redefine the following method:
-				- Create: to open the descriptor
-				- Close: to close the descriptor
+				- Create: to open the descriptor.
+				- Close: to close the descriptor.
+
+            \sa
+                - SocketTcp
+                - SocketUdp
 		*/
 		class LCORE ISocket
         {
             public:
                 ISocket();
 
-                /** Create the socket descriptor */
+                /** Create the socket descriptor. */
                 virtual void    Create() = 0;
-                /** Close the descriptor */
+                /** Close the descriptor. */
                 virtual void    Close() = 0;
 
-                /** \return true if the descriptor of the socket is valid */
+                /** \return true if the descriptor of the socket is valid. */
                 inline bool     IsValid() const                     {return (_descriptor != _invalidDescriptor);}
 
-                /** \return the invalid desriptor */
+                /** \return the invalid desriptor. */
                 #ifdef SYSTEM_WINDOWS
                 inline SOCKET   InvalidDescriptor() const                  {return _invalidDescriptor;}
                 #else
@@ -64,7 +68,7 @@ namespace Nc
                 #endif
 
 
-				/** \return the descriptor of the socket */
+				/** \return the descriptor of the socket. */
                 #ifdef SYSTEM_WINDOWS
                 inline SOCKET   Descriptor() const                  {return _descriptor;}
                 #else

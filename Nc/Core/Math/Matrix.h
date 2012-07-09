@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Math
     {
-        /// template class to manipulate matrix of type T with nb line D1 and row D2
+        /// template class to manipulate matrix of type T with nb line D1 and row D2.
         template<typename T, unsigned int D1, unsigned int D2>
         class Matrix
         {
@@ -73,15 +73,15 @@ namespace Nc
                     return os;
                 }
 
-                /** \return the elements array of the matrix */
+                /** \return the elements array of the matrix. */
                 inline const T *Elements() const        {return _data;}
 
-                /** Transpose the matrix into \p t */
+                /** Transpose the matrix into \p t. */
                 void    Transpose(Matrix<T, D2, D1> &t) const;
 
             protected:
-                unsigned char   _sizeMax;           ///< size of the matrix
-                T               _data[D1 * D2];     ///< array with store the elements of the matrix (lines are D1 and columns are D2)
+                unsigned char   _sizeMax;           ///< size of the matrix.
+                T               _data[D1 * D2];     ///< array with store the elements of the matrix (lines are D1 and columns are D2).
         };
 
         template<typename T, unsigned int D1, unsigned int D2>

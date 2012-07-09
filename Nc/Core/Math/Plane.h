@@ -33,32 +33,32 @@ namespace Nc
 {
     namespace Math
     {
-        /// Define a plane by using a Normal and a Point
+        /// Define a plane by using a Normal and a Point.
         template<typename T>
         class Plane
         {
             public:
                 Plane()                                                                         {}
-                /** Create the plane with the normal and point of the plane */
+                /** Create the plane with the normal and point of the plane. */
                 Plane(const Vector3D<T> &normal, const Vector3D<T> &point)                      {}
-                /** Create the plane with 3 points */
+                /** Create the plane with 3 points. */
                 Plane(const Vector3D<T> &p1, const Vector3D<T> &p2, const Vector3D<T> &p3)      {Init(p1, p2, p3);}
 
-                /** Init the plane with 3 points */
+                /** Init the plane with 3 points. */
                 void    Init(const Vector3D<T> &p1, const Vector3D<T> &p2, const Vector3D<T> &p3);
-                /** Init the plane with the normal and point of the plane */
+                /** Init the plane with the normal and point of the plane. */
                 void    Init(const Vector3D<T> &normal, const Vector3D<T> &point);
 
-                /** \return the distance between the plane and the given point */
+                /** \return the distance between the plane and the given point. */
                 T       Distance(const Vector3D<T> &p);
-                /** \return the normal vector of the plane */
+                /** \return the normal vector of the plane. */
                 const Vector3D<T> &Normal() const               {return _normal;}
-                /** \return the reference point of the plane */
+                /** \return the reference point of the plane. */
                 const Vector3D<T> &Point() const                {return _point;}
 
             private:
-                Vector3D<T>     _normal;        ///< normal which define the orientation of the plane
-                Vector3D<T>     _point;         ///< reference point for the vector
+                Vector3D<T>     _normal;        ///< normal which define the orientation of the plane.
+                Vector3D<T>     _point;         ///< reference point for the vector.
                 T               _d;
         };
 

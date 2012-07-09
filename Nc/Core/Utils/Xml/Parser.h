@@ -35,7 +35,7 @@
 #include "../../Define.h"
 #include "Object.h"
 
-#define NC_UTILS_XML_SIZE_BUFFER 4096        ///< buffer size used to parse an xml file
+#define NC_UTILS_XML_SIZE_BUFFER 4096        ///< buffer size used to parse an xml file.
 
 namespace Nc
 {
@@ -43,52 +43,52 @@ namespace Nc
     {
         namespace Xml
         {
-            /// Provide a parser for reading an Xml format by using an std::istream
+            /// Provide a parser for reading an Xml format by using an std::istream.
             class LCORE Parser
             {
                 private:
                     enum TOKEN_TYPE {CDATA, DATA, TAG, END_TAG, COMMENT};
 
-                    /// token used to parse Xml
+                    /// token used to parse Xml.
                     struct Token
                     {
-                        TOKEN_TYPE      type;           ///< the type of token
-                        Object::TYPE    objectType;     ///< the type of the xml object to create
-                        std::string     data;           ///< the data string of the token
+                        TOKEN_TYPE      type;           ///< the type of token.
+                        Object::TYPE    objectType;     ///< the type of the xml object to create.
+                        std::string     data;           ///< the data string of the token.
                     };
 
                 public:
                     /**
 						Use this function to parse an xml stream.
-						\return a CONTENT Object which contain all others object
+						\return a CONTENT Object which contain all others object.
 					*/
 					static Object *Parse(std::istream &in, bool parseHeader = true);
 
 				private:
 					Parser(std::istream &in, bool parseHeader = true);
 
-					/** read the header and next call the Read function */
+					/** read the header and next call the Read function. */
 					void ReadAll();
-					/** read all the file, call the GenereToken and next the CreateObject method */
+					/** read all the file, call the GenereToken and next the CreateObject method. */
 					void Read();
 
-					/** Generate a token */
+					/** Generate a token. */
 					bool GenereToken(Token &newToken);
 					// avis aux amateur, ne pas regarder le code de ces 2 fonctions, ca pique les yeaux :), elles fonctionnent tres bien et c'est tout ce qu'on leurs demandent :D
-					/** search and fill a token, in the stream */
+					/** search and fill a token, in the stream. */
 					bool SearchTokenInBuffer(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract);
                     unsigned int ChooseTypeToken(Token &newToken, unsigned int &pos, const std::streamsize &size, bool lastEndData, char lastCaract);
 
-                    /** Create an Xml object with the given token */
+                    /** Create an Xml object with the given token. */
                     void CreateObject(Token &token, Object *&newObject);
-                    /** Return the params of the data of the given token <"name param1=value1 param2=value2"> */
+                    /** Return the params of the data of the given token <"name param1=value1 param2=value2">. */
                     void GetParamsAndName(Token &token, std::string &name, std::map<std::string, std::string> &param);
 
-					std::istream    &_in;                               ///< the input stream to parse
-					bool			_parseHeader;						///< if false, do not check the header
-                    Object          *_lastObject;                       ///< the last parsed object
-                    Object          *_content;                          ///< the content that has been parsed
-                    char            _buffer[NC_UTILS_XML_SIZE_BUFFER];  ///< the buffer used to read the input stream
+					std::istream    &_in;                               ///< the input stream to parse.
+					bool			_parseHeader;						///< if false, do not check the header.
+                    Object          *_lastObject;                       ///< the last parsed object.
+                    Object          *_content;                          ///< the content that has been parsed.
+                    char            _buffer[NC_UTILS_XML_SIZE_BUFFER];  ///< the buffer used to read the input stream.
             };
         }
     }
