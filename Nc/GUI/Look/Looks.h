@@ -35,21 +35,47 @@ namespace Nc
 {
     namespace GUI
     {
-        /// Define the interface of a drawable object used to render the look of a widget.
+        /// Interface of a drawable object used to render the look of a widget.
+        /**
+            To Create your own Look object, you'll need to redefine the following methods:
+                - Clone, to be able to create a copy of the look.
+                - Draw, to render the look object.
+                - Update, to update the geometry of the look, this will called when the widget size property has changed.
+        */
         struct LGUI ILook
         {
 			ILook();
 			virtual ~ILook();
 
+            /** \return a copy of the look object. */
             virtual ILook   *Clone() const = 0;
 
+            /** Draw the look using the given \p scene. */
             virtual void    Draw(Graphic::SceneGraph *scene) = 0;
+            /** Update the look using the given widget \p size. */
             virtual void    Update(const Vector2i &size) = 0;
 
-            Color       color;
-            BoxEdges    edges;
+            Color       color;      ///< color used to render the widget look.
+            BoxEdges    edges;      ///< box registering the size of the edges of the widget that the look render.
         };
 
+        /// Define a strip look for a widget.
+        /**
+            Draw the widget look using three sprite (left/middle/right).
+
+            The sprite of the middle will be stretched depending on the size of the widget.
+
+            It is possible to define partially the sprite. For example you can define only the middle sprite,
+            this one will then be drawn with the entire widget size.
+
+            Sprites are loaded using the StyleSheet class and using the following sprite names:
+                - constructor name + StyleSheet::LooksName::StripLeft
+                - constructor name + StyleSheet::LooksName::StripMiddle
+                - constructor name + StyleSheet::LooksName::StripRight
+
+            \sa
+                - StyleSheet
+        */
         class LGUI StripLook : public ILook
         {
             public:
@@ -58,9 +84,13 @@ namespace Nc
                 StripLook &operator = (const StripLook &l);
                 ~StripLook();
 
+                /** \return a copy of the look object. */
                 virtual ILook   *Clone() const                      {return new StripLook(*this);}
 
+                /** Draw the look using the given \p scene. */
                 virtual void    Draw(Graphic::SceneGraph *scene);
+
+                /** Update the look using the given widget \p size. */
                 virtual void    Update(const Vector2i &size);
 
             private:
@@ -72,6 +102,32 @@ namespace Nc
                 Graphic::Sprite     *spriteMiddle;
         };
 
+        /// Define a Box look for a widget.
+        /**
+            Draw the widget using a full sprite box:
+                - edges (leftEdge, topEdge, rightEdge, bottomEdge)
+                - corner (leftTop, rightTop, leftBottom, rightBottom)
+                - middle
+
+            The sprites of the middle and edges will be stretched depending on the size of the widget.
+
+            It is possible to define partially the sprite. For example you can define only the middle sprite,
+            this one will then be drawn with the entire widget size.
+
+            Sprites are loaded using the StyleSheet class and using the following sprite names:
+                - constructor name + StyleSheet::LooksName::BoxLeftEdge
+                - constructor name + StyleSheet::LooksName::BoxTopEdge
+                - constructor name + StyleSheet::LooksName::BoxRightEdge
+                - constructor name + StyleSheet::LooksName::BoxBottomEdge
+                - constructor name + StyleSheet::LooksName::BoxLeftTop
+                - constructor name + StyleSheet::LooksName::BoxRightTop
+                - constructor name + StyleSheet::LooksName::BoxLeftBottom
+                - constructor name + StyleSheet::LooksName::BoxRightBottom
+                - constructor name + StyleSheet::LooksName::BoxMiddle
+
+            \sa
+                - StyleSheet
+        */
         class LGUI BoxLook : public ILook
         {
             public:
@@ -80,11 +136,14 @@ namespace Nc
                 BoxLook &operator = (const BoxLook &l);
                 ~BoxLook();
 
+                /** \return a copy of the look object. */
                 virtual ILook   *Clone() const                      {return new BoxLook(*this);}
 
+                /** Draw the look using the given \p scene. */
                 virtual void    Draw(Graphic::SceneGraph *scene);
-                virtual void    Update(const Vector2i &size);
 
+                /** Update the look using the given widget \p size. */
+                virtual void    Update(const Vector2i &size);
 
             private:
                 void    Copy(const BoxLook &l);

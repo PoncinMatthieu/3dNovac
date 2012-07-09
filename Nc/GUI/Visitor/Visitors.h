@@ -37,18 +37,21 @@ namespace Nc
     {
         namespace Visitor
         {
+            /// Visitor used to notify a changement of size.
             struct LGUI ResizedAll : public WidgetVisitor<ResizedAll>
             {
                 ResizedAll(Graph::VisitTarget visitTarget = Graph::VisitChilds);
                 void VisitNode(Widget &w);
             };
 
+            /// Visitor used to notify a changement of position.
             struct LGUI ReposedAll : public WidgetVisitor<ReposedAll>
             {
                 ReposedAll(Graph::VisitTarget visitTarget = Graph::VisitChilds);
                 void VisitNode(Widget &w);
             };
 
+            /// Visitor used to know if a widget is inhibited.
             struct LGUI IsInhibited : public WidgetVisitor<IsInhibited, true>
             {
                 IsInhibited();
@@ -57,6 +60,7 @@ namespace Nc
                 bool    result;
             };
 
+            /// Visitor used to check focus.
             struct LGUI CheckFocus : public WidgetVisitor<CheckFocus, false, bool>
             {
                 CheckFocus(const Nc::System::Event &e, const Vector2i &mouseP);
@@ -67,8 +71,7 @@ namespace Nc
                 Widget                      *childFocused;
             };
 
-
-            /// Visitor allowing to retreive either the widget parent of the given widget or to retreive the scene graph if no widget parent has been found
+            /// Visitor allowing to retreive either the widget parent of the given widget or to retreive the scene graph if no widget parent has been found.
             struct LGUI GetParentWidget : public WidgetVisitor<GetParentWidget, true>
             {
                 GetParentWidget(const Widget *w);
@@ -80,6 +83,7 @@ namespace Nc
                 const SceneGraph        *parentSceneGraph;
             };
 
+            /// Visitor used to set the state change into widgets, to force an update before rendering.
             struct LGUI ChangeStates : public WidgetVisitor<ChangeStates>
             {
                 ChangeStates();

@@ -33,8 +33,10 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To manage a window
+        /// Defines a windowBox Widget.
         /**
+            A windowBox is just a simple widget displaying a title into it's top edge looks.
+
             \todo Make the WindowBox dragable.
         */
         class LGUI  WindowBox : public Widget

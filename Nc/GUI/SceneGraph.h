@@ -34,10 +34,9 @@
 
 namespace Nc
 {
-    /// This namespace provide many Widget and a SceneGraph to create and render a 2d Graphical User Interface
     namespace GUI
     {
-        /// Manage a 2d scene graph with the management of the interaction of widgets and reception of events
+        /// Manage a 2d scene graph with the management of the interaction of widgets and reception of events.
         class LGUI  SceneGraph : public Graphic::SceneGraph
         {
             public:
@@ -51,30 +50,30 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const              {return new SceneGraph(*this);}
 
-                /** \return the attached window */
+                /** \return the attached window. */
                 Graphic::IWindow     *AttachedWindow() const     {return _attachedWindow;}
 
-                /** Return true if a widget is focused */
+                /** \return true if a widget is focused. */
                 bool Focused()                                  {return (_widgetFocused != NULL);}
-                /** Unfocus the current focuse widget */
+                /** Unfocus the current focused widget. */
                 void Unfocus()                                  {if (_widgetFocused != NULL) _widgetFocused->Focus(false); _widgetFocused = NULL;}
-                /** Unfocus the given widget */
+                /** Unfocus the given widget. */
                 void Unfocus(Widget *w)                         {w->Focus(false); _widgetFocused = NULL;}
-                /** Focus the given widget */
+                /** Focus the given widget. */
                 void Focus(Widget *w)                           {_widgetFocused = w; _widgetFocused->Focus(true);}
 
-                /** Manage the window events by dispatching the event to the good widget */
+                /** Manage the window events by dispatching the event to the good widget. */
                 void ManageWindowEvent(const Nc::System::Event &event);
 
-                /** Bring to front the given widget */
+                /** Bring to front the given widget. */
                 void BringToFront(Widget *w);
 
-                /** Remove the given widget */
+                /** Remove the given widget. */
                 void RemoveWidget(Widget *w);
 
             private:
-                Widget              *_widgetFocused;    ///< the current focused widget
-                Graphic::IWindow     *_attachedWindow;   ///< the attached window
+                Widget              *_widgetFocused;    ///< the current focused widget.
+                Graphic::IWindow     *_attachedWindow;   ///< the attached window.
         };
     }
 }

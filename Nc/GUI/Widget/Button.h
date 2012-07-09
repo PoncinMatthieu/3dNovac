@@ -34,9 +34,9 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To manage a button.
+        /// Define a button Widget.
         /**
-            Display and manage a button.
+            The button widget use allow to send an event to the specified engine, it only display a textual label.
         */
         class LGUI  Button : public Widget
         {

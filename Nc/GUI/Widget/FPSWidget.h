@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To display the Frame per second of the Graphic::Engine
+        /// Define a widget displaying the current frame per second of the Graphic::Engine.
         class LGUI FPSWidget : public Label
         {
             public:
@@ -45,9 +45,9 @@ namespace Nc
                 virtual ISceneNode  *Clone() const              {return new FPSWidget(*this);}
 
             public:
-                /** Update the geometry of the fps widget */
+                /** Update the geometry of the fps widget. */
                 virtual void Update();
-                /** Render the fps */
+                /** Render the fps. */
                 virtual void Draw(Graphic::SceneGraph *scene);
         };
     }

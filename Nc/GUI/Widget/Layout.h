@@ -33,9 +33,11 @@ namespace Nc
 {
     namespace GUI
     {
-        ///
+        /// Defines a layout Widget
         /**
-            \todo Implement the grid layout, with the possibility to set up a given widget to a given case
+            The layout widget allows to manipulate easily the position and size of widget childs.
+
+            \todo Implement the grid layout, with the possibility to set up a given widget to a given case.
         */
         class LGUI Layout : public Widget
         {
@@ -56,9 +58,9 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const                              {return new Layout(*this);}
 
-                /** \return the current pattern of the layout */
+                /** \return the current pattern of the layout. */
                 inline Pattern      GetPattern()                                {return _pattern;}
-                /** Set the pattern of the layout */
+                /** Set the pattern of the layout. */
                 inline void         SetPattern(Pattern p)                       {_pattern = p;}
 
                 /**
@@ -68,9 +70,9 @@ namespace Nc
                 void                SetExpandRatio(Widget *child, float ratio);
 
             protected:
-                /** \return the translation information to position childs */
+                /** \return the translation information to position childs. */
                 virtual void        PosChild(const Widget *child, Vector2i &v) const;
-                /** \return the size that the child should use to set up it's percent size */
+                /** \return the size that the child should use to set up it's percent size. */
                 virtual void        SizeChild(const Widget *child, Vector2i &size) const;
 
                 virtual void        PosChildHorizontal(const Widget *child, Vector2i &v, int childCount, int childNumber) const;

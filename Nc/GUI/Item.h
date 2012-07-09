@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// Store a data text
+        /// Store a data text.
         class LGUI Item : public System::Object
         {
             public:
@@ -44,12 +44,12 @@ namespace Nc
                 Item(const std::string &data);
                 ~Item();
 
-                /** \return a clone of the data... this clone must be deleted further */
+                /** \return a clone of the data... this clone must be deleted further. */
                 virtual Item                *Clone() const                          {return new Item(*this);}
 
-                /** \return the data */
+                /** \return the data. */
                 inline const std::string    &Data() const                           {return _data;}
-                /** Set the data */
+                /** Set the data. */
                 inline void                 Data(const std::string &data)           {_data = data;}
 
             private:

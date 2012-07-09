@@ -33,7 +33,10 @@ namespace Nc
 {
     namespace GUI
     {
+        /// Defines a textEdit Widget.
         /**
+            The textEdit Widget defines a text area and allow it's management / rendering into a ScrollArea.
+
             \todo Make the text edit editable.
         */
         class LGUI TextEdit : public ScrollArea
@@ -42,6 +45,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextEdit);
 
             private:
+                /// Inner class defining a text view to be displayed into the text edit scroll area.
                 struct TextDocument : public Widget
                 {
                     NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::TextEdit::TextDocument);

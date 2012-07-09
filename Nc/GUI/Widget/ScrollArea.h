@@ -34,9 +34,10 @@ namespace Nc
 {
     namespace GUI
     {
-        /// Provide a scrolling view onto another widget
+        /// Provide a scrolling view onto another widget.
         /**
-            Use the size of the first widget child to render the scroll area.
+            Use the size of the settle view 'SetView' to render the scroll area.
+            The view must be a widget child of the ScrollArea.
         */
         class LGUI ScrollArea : public Widget
         {
@@ -51,24 +52,24 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const          {return new ScrollArea(*this);}
 
-                /** Set the widget which will be used to setup the scroll area by using the size of the view object */
+                /** Set the widget which will be used to setup the scroll area by using the size of the view object. */
                 void                SetView(Widget *view);
 
             protected:
-                /** Resize the geometry of the scroll area */
+                /** Resize the geometry of the scroll area. */
                 virtual void        Resize();
-                /** Check the state and update the matrix before rendering */
+                /** Check the state and update the matrix before rendering. */
                 virtual void        RenderBegin(Graphic::SceneGraph *scene);
-                /** draw Debug GUI and update the matrix before rendering */
+                /** draw Debug GUI and update the matrix before rendering. */
                 virtual void        RenderEnd(Graphic::SceneGraph *scene);
-                /** Render the scroll area */
+                /** Render the scroll area. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
             private:
                 void                Copy(const ScrollArea &sc);
 
             protected:
-                Widget              *_view;             ///< view widget used to setup the scroll area
+                Widget              *_view;             ///< view widget used to setup the scroll area.
                 ScrollBar           *_scrollBarH;
                 ScrollBar           *_scrollBarV;
         };

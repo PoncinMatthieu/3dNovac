@@ -34,7 +34,11 @@ namespace Nc
 {
     namespace GUI
     {
-        /// Singleton to a set of properties related to the GUI. (eg: the sprite sheet of the GUI)
+        /// Singleton to setup properties related to the GUI. (eg: the SpriteSheet of the GUI).
+        /**
+            The StyleSheet records a SpriteSheet used to load widget looks.
+            It records also a certain number of static names used to load sprites into the SpriteSheet.
+        */
         class LGUI StyleSheet : public Utils::Singleton<StyleSheet>
         {
             public:
@@ -73,7 +77,7 @@ namespace Nc
                 };
 
             public:
-                /** \return a new sprite of the associated sprite recorded into the sprite sheet */
+                /** \return a new sprite of the associated sprite recorded into the sprite sheet. */
                 Graphic::Sprite     *GetNewSprite(const std::string &name);
 
             protected:
@@ -81,7 +85,7 @@ namespace Nc
                 ~StyleSheet();
 
             private:
-                Graphic::SpriteSheet    *_spriteSheet;          ///< sprite sheet of the GUI
+                Graphic::SpriteSheet    *_spriteSheet;          ///< sprite sheet of the GUI.
 
                 friend class Utils::Singleton<StyleSheet>;
         };

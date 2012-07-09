@@ -38,7 +38,7 @@ namespace Nc
         /**
             A widget can receive window events and interact concequently.
             A widget use it's parents widget to calculate it's relative positions.
-            And The relative position is computed with the defined Corner for X position and Y position.
+            And The relative position is computed with the defined Alignment for X position and Y position.
 
             \todo Think about a whole new event system for the widgets, a widget should be able to send a particular event to a parametized target.
         */
@@ -95,7 +95,7 @@ namespace Nc
                 void                    Resizable(bool state)               {_resizable = state;}
                 /** \return the resizable statement. */
                 bool                    Resizable() const                   {return _resizable;}
-                /** Notify to the widget that it has been resized. The Resize method will be called at the next render pass.*/
+                /** Notify to the widget that it has been resized. The Resize method will be called at the next render pass. */
                 virtual void            Resized();
 
                 /** Return the position of the widget. */

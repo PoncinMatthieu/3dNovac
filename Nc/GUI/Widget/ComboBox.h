@@ -35,6 +35,13 @@ namespace Nc
 {
     namespace GUI
     {
+        /// Define a comboBox Widget.
+        /**
+            A comboBox show a dropdown list when you click on it allow to select an item.
+            The comboBox use a list of Item object to select.
+
+            \todo correct dropdown list which should start below the box, to be able to show the currently selected item.
+        */
         class LGUI ComboBox : public Widget
         {
             public:
@@ -43,6 +50,7 @@ namespace Nc
                 typedef std::list<StringItem>                   ListItem;
 
             private:
+                /// Inner class used to display the dropdown list.
                 class ComboBoxUnfoldList : public Widget
                 {
                     public:
@@ -50,16 +58,16 @@ namespace Nc
 
                         virtual ISceneNode  *Clone() const          {return new ComboBoxUnfoldList(*this);}
 
-                        /** The mouse button handler to choose an item */
+                        /** The mouse button handler to choose an item. */
                         void                MouseButtonEvent(const System::Event &event);
-                        /** Render the unfold list */
+                        /** Render the unfold list. */
                         virtual void        Draw(Graphic::SceneGraph *scene);
 
-                        /** Called when the widget loose the focus */
+                        /** Called when the widget loose the focus. */
                         virtual void        LeaveFocus();
 
                     private:
-                        ComboBox    *_cb;
+                        ComboBox    *_cb;       ///< pointer to the comboBox.
                 };
 
 
@@ -71,21 +79,24 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const          {return new ComboBox(*this);}
 
+                /** Add an item to the list, every item will be deleted in the destructor of the comboBox. */
                 void                AddItem(Item *item);
 
+                /** \return the pointer to the current item selected. */
                 inline Item         *CurrentItem()          {return (_currentItem) ? _currentItem->first : NULL;}
 
             protected:
                 void                Copy(const ComboBox &cb);
 
-                /** Update the geometry of the combo box */
+                /** Update the geometry of the combo box. */
                 virtual void        Update();
-                /** Render the combo box */
+                /** Render the combo box. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
-                /** The mouse button handler to choose an item */
+                /** The mouse button handler to choose an item. */
                 void                MouseButtonEvent(const System::Event &event);
 
+                /** Send an event to notify a changement of item. */
                 void                ItemChoosed(StringItem *item);
 
             private:

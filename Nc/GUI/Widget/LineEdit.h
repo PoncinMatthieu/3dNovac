@@ -33,7 +33,10 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To manage a text box
+        /// Defines a lineEdit Widget.
+        /**
+            The line edit allow to enter text into an single line text field.
+        */
         class LGUI  LineEdit : public Widget
         {
             public:
@@ -48,15 +51,15 @@ namespace Nc
                 virtual ISceneNode  *Clone() const              {return new LineEdit(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
-                /** Set the text of the text box. */
+                /** Set the text of the line edit. */
                 void                                PlainText(const Utils::Unicode::UTF32 &t)   {_font->PlainText(t);}
-                /** Return the text of the text box. */
+                /** \return the text of the line edit. */
                 inline const Utils::Unicode::UTF32  &PlainText() const                          {return _font->PlainText();}
 
             protected:
-                /** update the geometry of the text box. */
+                /** update the geometry of the line edit. */
                 virtual void Update();
-                /** Render the text box. */
+                /** Render the line edit. */
                 virtual void Draw(Graphic::SceneGraph *scene);
 
                 /** the keyboard handler. */
@@ -67,7 +70,7 @@ namespace Nc
                 void        Copy(const LineEdit &w);
 
             protected:
-                Graphic::Text       *_font;                     ///< the text in the text box.
+                Graphic::Text       *_font;                     ///< the text in the line edit.
                 bool                _editable;                  ///< if true, the linedit will receive events from the keyboard.
                 Graphic::Text       *_fontUnderscore;           ///< store the undescore draw next to the editable text.
                 bool                _fontUnderscoreDisplayed;   ///< if true, the underscore is displayed.

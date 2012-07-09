@@ -37,6 +37,7 @@ namespace Nc
     {
         namespace Visitor
         {
+            /// Base class used to define a widget visitor.
             template<typename VisitorType, bool IsConst, typename ReturnType>
             class WidgetVisitor : public Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>
             {
@@ -73,6 +74,7 @@ namespace Nc
                     }
             };
 
+            /// Base class used to define a const widget visitor.
             template<typename VisitorType, typename ReturnType>
             class WidgetVisitor<VisitorType, true, ReturnType> : public Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>
             {

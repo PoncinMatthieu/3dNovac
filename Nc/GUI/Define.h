@@ -61,6 +61,7 @@
 
     namespace Nc
     {
+        /// This namespace provide many Widget and a SceneGraph to create and render a 2d Graphical User Interface.
         namespace GUI
         {
             // definitions
@@ -71,6 +72,7 @@
             // typedef
             typedef std::list<Widget*>      ListPWidget;
 
+            /// Define a set of visitor aiming to visit widget.
             namespace Visitor
             {
                 template<typename VisitorType, bool IsConst = false, typename ReturnType = void>

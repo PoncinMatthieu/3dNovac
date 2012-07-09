@@ -34,7 +34,10 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To manage a widget that contain a sprite
+        /// Defines an image widget.
+        /**
+            The Image widget allow to display sprites and manipulate their size easily.
+        */
         class LGUI  Image : public Widget
         {
             public:

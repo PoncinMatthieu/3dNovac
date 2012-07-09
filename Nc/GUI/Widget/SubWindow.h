@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// Widget creating and managing a Graphic::SubWindow
+        /// Defines a subWindow Widget creating and managing a Graphic::SubWindow.
         /**
             Use a FrameBuffer to render the subwindow to render it into the widget.
         */
@@ -49,23 +49,23 @@ namespace Nc
                 SubWindow &operator = (const SubWindow &w);
                 virtual ~SubWindow();
 
-                /** Resize the widget with the SubWindow */
+                /** Resize the widget with the SubWindow. */
                 virtual void            Resize();
-                /** Repos the widget with the SubWindow */
+                /** Repos the widget with the SubWindow. */
                 virtual void            Reposed();
 
-                /** \return the SubWindow */
+                /** \return the SubWindow. */
                 Graphic::SubWindow      *GetSubWindow() const       {return _subWindow;}
-                /** Enable the sub window for rendering */
+                /** Enable the sub window for rendering. */
                 void			        EnableSubWindow()			{_subWindow->Enable(true);}
 
             protected:
-                /** Draw the result of the render off screen from the sub window */
+                /** Draw the result of the render off screen from the sub window. */
                 virtual void            Draw(Graphic::SceneGraph *scene);
 
             protected:
-                Graphic::SubWindow      *_subWindow;    ///< SubWindow used to simulate a virtual window
-                Graphic::Sprite         *_sprite;       ///< sprite used to render the result off screen of the sub window
+                Graphic::SubWindow      *_subWindow;    ///< SubWindow used to simulate a virtual window.
+                Graphic::Sprite         *_sprite;       ///< sprite used to render the result off screen of the sub window.
         };
     }
 }

@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To manage a progress bar
+        /// Defines a progressBar Widget.
         /**
             \todo Recode the progress bar to use the Widget Looks.
         */
@@ -48,32 +48,32 @@ namespace Nc
 
                 virtual ISceneNode  *Clone() const                              {return new ProgressBar(*this);}
 
-                /** Set the box of the progress bar */
+                /** Set the box of the progress bar. */
                 void    SetProgressBox(const Box2f &b)                          {_progressBox = b;}
-                /** Set the color left and right of the progress bar */
+                /** Set the color left and right of the progress bar. */
                 void    SetColor(const Color &c1, const Color &c2)              {_colorLeft = c1; _colorRight = c2; _stateChanged = true;}
 
-                /** Set the percent of the progress bar */
+                /** Set the percent of the progress bar. */
                 void    Percent(float p)                                        {_percent = p; _stateChanged = true;}
-                /** Set the number of evolution of the progress bar */
+                /** Set the number of evolution of the progress bar. */
                 void    NbEvolution(unsigned int nb)                            {_nbEvolution = nb;}
-                /** Add an evolution to the progress bar */
+                /** Add an evolution to the progress bar. */
                 void    Evolution()                                             {_percent += 100.f / (float)_nbEvolution; _stateChanged = true;}
 
             protected:
-                /** update the geometry of the progress bar */
+                /** update the geometry of the progress bar. */
                 virtual void Update();
-                /** Render the progress bar */
+                /** Render the progress bar. */
                 virtual void Draw(Graphic::SceneGraph *scene);
 
             protected:
                 unsigned int            _indexDrawable;
 
-                Box2f                   _progressBox;           ///< The progress box to delimit the progress bar
-                unsigned int            _nbEvolution;           ///< The number of evolution, used to compute the percent of the progress bar
-                float                   _percent;               ///< The progression in percent
-                Color                   _colorLeft;             ///< The color left of the progress bar
-                Color                   _colorRight;            ///< The color right of the progress bar
+                Box2f                   _progressBox;           ///< The progress box to delimit the progress bar.
+                unsigned int            _nbEvolution;           ///< The number of evolution, used to compute the percent of the progress bar.
+                float                   _percent;               ///< The progression in percent.
+                Color                   _colorLeft;             ///< The color left of the progress bar.
+                Color                   _colorRight;            ///< The color right of the progress bar.
         };
     }
 }
