@@ -14,13 +14,13 @@ int main()
     try
     {
         Engine::Manager manager("3dNovac.conf");
-        Graphic::Window window("Sample Viewer", winSize, style, "Nc:Image:icone.png", 3);
+        Graphic::Window window("Demo Viewer", winSize, style, "Nc:Image:icone.png", 3);
 
 		Graphic::Engine *graphic = new Graphic::Engine(&window, &manager);
 		graphic->LimitFrameRate(60);
 		manager.AddEngine(graphic);
 
-		SampleViewer::GameEngine *game = new SampleViewer::GameEngine(&window, &manager);
+		DemoViewer::GameEngine *game = new DemoViewer::GameEngine(&window, &manager);
 		game->LimitFrameRate(30);
 		manager.AddEngine(game);
 

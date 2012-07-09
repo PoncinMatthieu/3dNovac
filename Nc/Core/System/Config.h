@@ -42,7 +42,7 @@ namespace Nc
         /// To save and load configs like ressources path in an Xml format
         /**
             <div class="title"> Sample of 3dNovac config file: </div>
-            \p Samples/bin/3dNovac.conf
+            \p Examples/bin/3dNovac.conf
             \include bin/3dNovac.conf
         */
         class LCORE Config : public Utils::Singleton<Config>

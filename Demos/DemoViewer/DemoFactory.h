@@ -7,20 +7,20 @@
 #include <Nc/Graphics/Scene/SceneNodeFormatManager.h>
 #include <Nc/Contrib/GameEngine.h>
 
-namespace SampleViewer
+namespace DemoViewer
 {
-    class SampleFactory
+    class DemoFactory
     {
         public:
-            SampleFactory(Nc::Engine::Manager *manager);
+            DemoFactory(Nc::Engine::Manager *manager);
 
-            inline const std::list<std::string>     &SampleNames() const                        {return _sampleNames;}
+            inline const std::list<std::string>     &DemoNames() const                        {return _demoNames;}
 
-            Nc::Contrib::GameEngine                 *CreateSample(Nc::Graphic::IWindow *window, const std::string &name);
+            Nc::Contrib::GameEngine                 *CreateDemo(Nc::Graphic::IWindow *window, const std::string &name);
 
         private:
             Nc::Engine::Manager                     *_manager;
-            std::list<std::string>                  _sampleNames;
+            std::list<std::string>                  _demoNames;
             Nc::Graphic::SceneNodeFormatManager	    _sceneNodeFormatManager;
     };
 }

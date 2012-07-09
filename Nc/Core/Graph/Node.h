@@ -35,10 +35,10 @@
 
 namespace Nc
 {
-    /// Define some usefull abstract and implementation of graph/tree structure
+    /// Define some usefull abstract and implementation of graph/tree structure.
     namespace Graph
     {
-        /// Abstract class used to define a node by using a Politic \p P, a \p NodeType and an \p Allocator
+        /// Abstract class used to define a node by using a Politic \p P, a \p NodeType and an \p Allocator.
         template<typename T, template<typename, class, class> class P, class NodeType, class Allocator = Utils::Metaprog::Allocator<NodeType> >
         class AbstractNode : public P<T,NodeType,Allocator>
         {
@@ -69,20 +69,21 @@ namespace Nc
                 const NodeType  *Child(unsigned int i) const    {return NodePolitic::Child(i);}
         };
 
-        /// Template class Node used to define and manipulate a tree/graph structure using a politic
+        /// Template class Node used to define and manipulate a tree/graph structure using a politic.
         /**
             Basically the node use the same terminology of The Graph Theory.
             The node contain a data of type T and use the Politic P to define it's comportement.
 
             You couldn't create directly a node with this class.
-            But you could use a BinaryNode or the specialisation of the node with a NodeType of Utils::Metaprog::Nop
+            But you could use a BinaryNode or the specialisation of the node with a NodeType of Utils::Metaprog::Nop.
 
             \sa
-            - BinaryNode
-            - Node<T,P,Utils::Metaprog::Nop>
-            - BinaryNodeAVLPolitic
-            - ListNodePolitic
-            - NNodePolitic
+                - BinaryTree
+                - BinaryNode
+                - Node<T,P,Utils::Metaprog::Nop>
+                - BinaryNodeAVLPolitic
+                - ListNodePolitic
+                - NNodePolitic
         */
         template<typename T, template<typename, class, class> class P = ListNodePolitic, class NodeType = Utils::Metaprog::Nop>
         class Node : public AbstractNode<T,P,NodeType>
@@ -94,43 +95,18 @@ namespace Nc
 
             public:
                 Node()                                  : NodePolitic()               {}
-				Node(const T *data)						: NodePolitic(parent)         {NodePolitic::data = data;}
+				Node(const T &data)						: NodePolitic()               {NodePolitic::data = data;}
 				Node(NodeType *parent)                  : NodePolitic(parent)         {}
         };
 
-        /// Specialisation of Node
+        /// Specialisation of Node.
         /**
             Used to define and manipulate a tree/graph structure using a politic and the type of data which would be stored with the data structure.
- <div class="title"> To use this specialisation directly, you can create your node like this: </div>
- \code
-    #include <Nc/Core/Utils/Logger.h>
-    #include <Nc/Core/Graph/DotGraph.h>
-    #include <Nc/Core/Graph/NNodePolitic.h>
+            <div class="title"> To use this specialisation directly, you can create your node like this: </div>
+                \p Examples/GraphNode.cpp
+                \include GraphNode.cpp
 
-    using namespace Nc;
-    using namespace Nc::Graph;
-
-    void main()
-    {
-        Node<int>   node(1);
-
-        node.AddChild(new Node<int>(10));
-        node.AddChild(new Node<int>(10));
-        node.AddChild(new Node<int>(10));
-        node.AddChild(new Node<int>(0));
-        node.AddChild(new Node<int>(120));
-        node.AddChild(new Node<int>(120));
-        node.AddChild(new Node<int>(1430));
-
-        node.Child(2)->AddChild(new Node<int>(345));
-
-        LOG << "print" << std::endl;
-        DotGraph<Node<int, ListNodePolitic> >::Save("testListNode.dot", node);
-    }
- \endcode
-
- <div class="title"> run the command `dot testListNode.dot -Tpng > result.png` to see the result. </div>
-
+                Run the command `dot testListNode.dot -Tpng > result.png` to see the result printed out by the DotGraph into an image.
         */
         template<typename T, template<typename, class, class> class P>
         class Node<T,P,Utils::Metaprog::Nop> : public AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >
@@ -143,7 +119,7 @@ namespace Nc
 
             public:
                 Node()                                  : NodePolitic()               {}
-				Node(const T *data)						: NodePolitic(parent)         {NodePolitic::data = data;}
+				Node(const T &data)						: NodePolitic()               {NodePolitic::data = data;}
                 Node(NodeType *parent)                  : NodePolitic(parent)         {}
         };
     }

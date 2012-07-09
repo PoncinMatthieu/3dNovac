@@ -1,26 +1,26 @@
 
 
-#ifndef SAMPLEVIEWER_GAMEENGINE_H_
-#define SAMPLEVIEWER_GAMEENGINE_H_
+#ifndef DEMOVIEWER_GAMEENGINE_H_
+#define DEMOVIEWER_GAMEENGINE_H_
 
 #include <Nc/Contrib/GameEngine.h>
 #include <Nc/Graphics/Camera/Camera2d.h>
 #include <Nc/GUI/GUI.h>
 #include "MainMenu.h"
-#include "SampleFactory.h"
+#include "DemoFactory.h"
 
-namespace SampleViewer
+namespace DemoViewer
 {
     class GameEngine : public Nc::Contrib::GameEngine
     {
         public:
-            NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, SampleViewer::GameEngine);
+            NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, DemoViewer::GameEngine);
 
         public:
             enum IndexCmd
             {
-                StartSample = 0,
-                SampleSelected
+                StartDemo = 0,
+                DemoSelected
             };
 
         public:
@@ -30,8 +30,8 @@ namespace SampleViewer
             virtual void    LoadContent();
             virtual void    ReleaseContent();
 
-            void            StartSampleCmd(Nc::Engine::IEvent *e);
-            void            SampleSelectedCmd(Nc::Engine::IEvent *e);
+            void            StartDemoCmd(Nc::Engine::IEvent *e);
+            void            DemoSelectedCmd(Nc::Engine::IEvent *e);
 
         protected:
             virtual void    Update(float runningTime);
@@ -43,8 +43,8 @@ namespace SampleViewer
             Nc::GUI::SceneGraph		*_scene;
             Nc::GUI::Console		*_console;
             MainMenu                *_menu;
-            SampleFactory           *_sampleFactory;
-            std::string             _currentSample;
+            DemoFactory             *_demoFactory;
+            std::string             _currentDemo;
     };
 }
 

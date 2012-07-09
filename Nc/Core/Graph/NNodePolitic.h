@@ -56,27 +56,27 @@ namespace Nc
                     The default statement is true.
                 */
                 void                ShouldBeDeleted(bool del)           {_shouldBeDelete = del;}
-                /** \return true if the node will be deleted with it's parents */
+                /** \return true if the node will be deleted with it's parents. */
                 bool                ShouldBeDeleted() const             {return _shouldBeDelete;}
 
-                /** \return the childs of the node */
+                /** \return the childs of the node. */
                 ContainerType       &Childs()                           {return _childs;}
-                /** \return the childs of the node */
+                /** \return the childs of the node. */
                 const ContainerType &Childs() const                     {return _childs;}
 
-                /** \return the height of the node (length of the longest downward path to a leaf) */
+                /** \return the height of the node (length of the longest downward path to a leaf). */
                 int                 Height() const;
 
-                /** \return true if the node has at least one child */
+                /** \return true if the node has at least one child. */
                 bool                HasChilds() const                   {return (NbChilds != 0);}
-                /** \return the number of child nodes */
+                /** \return the number of child nodes. */
                 unsigned int        ChildCount() const                  {return (NbChilds);}
-                /** \return the ieme child */
+                /** \return the ieme child. */
                 NodeType            *Child(unsigned int i)              {return _childs[i];}
-                /** \return the ieme child */
+                /** \return the ieme child. */
                 const NodeType      *Child(unsigned int i) const        {return _childs[i];}
 
-                /** Remove the childs of the node */
+                /** Remove the childs of the node. */
                 void                RemoveChilds();
                 /**
                     Remove the child at the given position and dealocate it with the allocator if the node should be deleted.
@@ -94,18 +94,18 @@ namespace Nc
                 */
                 bool                RemoveChildRecursif(NodeType *n);
 
-                /** Extract all data's leafs of the node into the given list */
+                /** Extract all data's leafs of the node into the given list. */
                 void                ExtractLeaf(std::list<T> &leafs) const;
-                /** Extract all data's childs of the node into the given list */
+                /** Extract all data's childs of the node into the given list. */
                 void                ExtractChilds(std::list<T> &childs) const;
 
             protected:
-                bool                _shouldBeDelete;    ///< boolean to determine if the node should be deleted at the destruction of it's parents
-                ContainerType       _childs;            ///< the childs Array of the node
-                Allocator           _alloc;             ///< the allocator use to allocate and construct the childs node
+                bool                _shouldBeDelete;    ///< boolean to determine if the node should be deleted at the destruction of it's parents.
+                ContainerType       _childs;            ///< the childs Array of the node.
+                Allocator           _alloc;             ///< the allocator use to allocate and construct the childs node.
         };
 
-        /// Specialization for a NNodePolitic which contain a list of childs
+        /// Specialization for a NNodePolitic which contain a list of childs.
         template<typename T, class NodeType, bool Graph, class Allocator>
         class NNodePolitic<T,NodeType,0,Graph,Allocator> : public INodePolitic<T,NodeType,Graph>
         {
@@ -127,24 +127,24 @@ namespace Nc
                     The default statement is true.
                 */
                 void                ShouldBeDeleted(bool del)           {_shouldBeDelete = del;}
-                /** \return true if the node will be deleted with it's parents */
+                /** \return true if the node will be deleted with it's parents. */
                 bool                ShouldBeDeleted() const             {return _shouldBeDelete;}
 
-                /** \return the childs of the node */
+                /** \return the childs of the node. */
                 ContainerType       &Childs()                           {return _childs;}
-                /** \return the childs of the node */
+                /** \return the childs of the node. */
                 const ContainerType &Childs() const                     {return _childs;}
 
-                /** \return the height of the node (length of the longest downward path to a leaf) */
+                /** \return the height of the node (length of the longest downward path to a leaf). */
                 int                 Height() const;
 
-                /** \return true if the node has at least one child */
+                /** \return true if the node has at least one child. */
                 bool                HasChilds() const                   {return (!_childs.empty());}
-                /** \return the number of child nodes */
+                /** \return the number of child nodes. */
                 unsigned int        ChildCount() const                  {return (_childs.size());}
-                /** \return the ieme child */
+                /** \return the ieme child. */
                 NodeType            *Child(unsigned int i);
-                /** \return the ieme child */
+                /** \return the ieme child. */
                 const NodeType      *Child(unsigned int i) const;
 
                 /**
@@ -159,7 +159,7 @@ namespace Nc
                 */
                 void                InsertChild(NodeType *child, unsigned int at);
 
-                /** Remove the childs of the node */
+                /** Remove the childs of the node. */
                 void                RemoveChilds();
                 /**
                     Remove the child at the given position and dealocate it with the allocator if the node should be deleted.
@@ -177,18 +177,18 @@ namespace Nc
                 */
                 bool                RemoveChildRecursif(NodeType *n);
 
-                /** Extract all data's leafs of the node into the given list */
+                /** Extract all data's leafs of the node into the given list. */
                 void                ExtractLeaf(std::list<T> &leafs) const;
-                /** Extract all data's childs of the node into the given list */
+                /** Extract all data's childs of the node into the given list. */
                 void                ExtractChilds(std::list<T> &childs) const;
 
             protected:
-                bool                _shouldBeDelete;    ///< boolean to determine if the node should be deleted at the destruction of it's parents
-                ContainerType       _childs;            ///< the child list of the node
-                Allocator           _alloc;             ///< the allocator used to allocate and construct the childs node
+                bool                _shouldBeDelete;    ///< boolean to determine if the node should be deleted at the destruction of it's parents.
+                ContainerType       _childs;            ///< the child list of the node.
+                Allocator           _alloc;             ///< the allocator used to allocate and construct the childs node.
         };
 
-        /// Politic used to define a node with a list of childs
+        /// Politic used to define a node with a list of childs.
         template<typename T, class NodeType, class Allocator>
         struct ListNodePolitic : public NNodePolitic<T,NodeType,0,true, Allocator>
         {

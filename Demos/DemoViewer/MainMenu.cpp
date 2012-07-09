@@ -1,7 +1,7 @@
 
 /*-----------------------------------------------------------------------------
 
-	3dNovac SampleViewer
+	3dNovac DemoViewer
 	Copyright (C) 2010-2011, The 3dNovac Team
 
     This file is part of 3dNovac.
@@ -39,12 +39,12 @@ using namespace Nc::Utils;
 using namespace Nc::System;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
-using namespace SampleViewer;
+using namespace DemoViewer;
 
 MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     : _GUI(gui)
 {
-    _currentSampleWindow = NULL;
+    _currentDemoWindow = NULL;
     _currentItemSelected = NULL;
     imageHeight = 150;
 
@@ -57,14 +57,14 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     // create the description window
     CreateDescriptionPannel(mainLayout);
 
-    // create the sample window used to render the samples
-    _widgetSampleWindow = new Widget(Center);
-    _widgetSampleWindow->UseLook(new BoxLook("Small"));
-    _widgetSampleWindow->PaddingH(5);
-    _widgetSampleWindow->PaddingV(5);
-    _widgetSampleWindow->Percent(Vector2f(100, 100));
-    mainLayout->AddChild(_widgetSampleWindow);
-    mainLayout->SetExpandRatio(_widgetSampleWindow, 100);
+    // create the demo window used to render the demos
+    _widgetDemoWindow = new Widget(Center);
+    _widgetDemoWindow->UseLook(new BoxLook("Small"));
+    _widgetDemoWindow->PaddingH(5);
+    _widgetDemoWindow->PaddingV(5);
+    _widgetDemoWindow->Percent(Vector2f(100, 100));
+    mainLayout->AddChild(_widgetDemoWindow);
+    mainLayout->SetExpandRatio(_widgetDemoWindow, 100);
 
     // create the fps widget on top of the main layout
     FPSWidget *fps = new FPSWidget(Right | Top);
@@ -80,9 +80,9 @@ MainMenu::~MainMenu()
 {
 }
 
-void    MainMenu::AddSample(const std::string &name)
+void    MainMenu::AddDemo(const std::string &name)
 {
-    _sampleComboBox->AddItem(new Item(name));
+    _demoComboBox->AddItem(new Item(name));
 }
 
 Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
@@ -94,8 +94,8 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     parent->AddChild(pannelDescriptionLayout);
 
     // create the select window with the combobox and the button
-    Widget *windowSelectSample = CreateSelectSampleWindow(pannelDescriptionLayout);
-    windowSelectSample->Percent(Vector2f(100, 0));
+    Widget *windowSelectDemo = CreateSelectDemoWindow(pannelDescriptionLayout);
+    windowSelectDemo->Percent(Vector2f(100, 0));
 
     // create the window description area
     WindowBox *winDescArea = new WindowBox("Description", CenterH | Top);
@@ -108,12 +108,12 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     _layoutWinDesc->Percent(Vector2f(100, 100));
     winDescArea->AddChild(_layoutWinDesc);
 
-    // create the image widget to show an image of the sample
-    _sampleImage = new GUI::Image(CenterH | Top, Vector2i(0, imageHeight));
-    _sampleImage->Percent(Vector2f(100, 0));
-    _layoutWinDesc->AddChild(_sampleImage);
+    // create the image widget to show an image of the demo
+    _demoImage = new GUI::Image(CenterH | Top, Vector2i(0, imageHeight));
+    _demoImage->Percent(Vector2f(100, 0));
+    _layoutWinDesc->AddChild(_demoImage);
 
-    // create the text area to describe the selected sample
+    // create the text area to describe the selected demo
     _descriptionTextArea = new TextEdit("", CenterH | Bottom, Vector2i(0, 0), "arial", PlainTextFormater::Regular);
     _descriptionTextArea->MarginTop(5);
     _descriptionTextArea->UseLook(new BoxLook("Small"));
@@ -124,72 +124,72 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     return pannelDescriptionLayout;
 }
 
-Widget  *MainMenu::CreateSelectSampleWindow(Layout *parent)
+Widget  *MainMenu::CreateSelectDemoWindow(Layout *parent)
 {
-    Widget *windowSelectSample = new Widget(CenterH | Top, Vector2i(0,60));
-    windowSelectSample->UseLook(new BoxLook("Widget"));
-    parent->AddChild(windowSelectSample);
+    Widget *windowSelectDemo = new Widget(CenterH | Top, Vector2i(0,60));
+    windowSelectDemo->UseLook(new BoxLook("Widget"));
+    parent->AddChild(windowSelectDemo);
 
-    Layout *selectSampleLayout = new Layout(Layout::Horizontal, Center);
-    selectSampleLayout->Percent(Vector2f(100, 100));
-    windowSelectSample->AddChild(selectSampleLayout);
+    Layout *selectDemoLayout = new Layout(Layout::Horizontal, Center);
+    selectDemoLayout->Percent(Vector2f(100, 100));
+    windowSelectDemo->AddChild(selectDemoLayout);
 
-    _sampleComboBox = new ComboBox(_GUI, Left | CenterV, Vector2i(250,0));
-    _sampleComboBox->MarginRight(5);
-    _sampleComboBox->HandlerEngineName(GameEngine::ClassName());
-    _sampleComboBox->HandlerId(GameEngine::SampleSelected);
-    _sampleComboBox->Percent(Vector2f(100, 0));
-    selectSampleLayout->AddChild(_sampleComboBox);
-    selectSampleLayout->SetExpandRatio(_sampleComboBox, 100);
+    _demoComboBox = new ComboBox(_GUI, Left | CenterV, Vector2i(250,0));
+    _demoComboBox->MarginRight(5);
+    _demoComboBox->HandlerEngineName(GameEngine::ClassName());
+    _demoComboBox->HandlerId(GameEngine::DemoSelected);
+    _demoComboBox->Percent(Vector2f(100, 0));
+    selectDemoLayout->AddChild(_demoComboBox);
+    selectDemoLayout->SetExpandRatio(_demoComboBox, 100);
 
     Button *button = new Button("Start", Center, Vector2i(70, 28), "arial");
-    selectSampleLayout->AddChild(button);
+    selectDemoLayout->AddChild(button);
     button->HandlerEngineName(GameEngine::ClassName());
-    button->HandlerId(GameEngine::StartSample);
-    return windowSelectSample;
+    button->HandlerId(GameEngine::StartDemo);
+    return windowSelectDemo;
 }
 
-GUI::SubWindow      *MainMenu::CreateSampleWindow(IWindow *windowParent)
+GUI::SubWindow      *MainMenu::CreateDemoWindow(IWindow *windowParent)
 {
-    System::Locker l(&_widgetSampleWindow->GetMutex());
-    if (_currentSampleWindow != NULL)
-        _widgetSampleWindow->RemoveWidget(_currentSampleWindow);
+    System::Locker l(&_widgetDemoWindow->GetMutex());
+    if (_currentDemoWindow != NULL)
+        _widgetDemoWindow->RemoveWidget(_currentDemoWindow);
 
-    _currentSampleWindow = new GUI::SubWindow(windowParent, Center);
-    _currentSampleWindow->Percent(Vector2f(100, 100));
-    _widgetSampleWindow->AddChild(_currentSampleWindow);
-    _currentSampleWindow->Resize();
-    return _currentSampleWindow;
+    _currentDemoWindow = new GUI::SubWindow(windowParent, Center);
+    _currentDemoWindow->Percent(Vector2f(100, 100));
+    _widgetDemoWindow->AddChild(_currentDemoWindow);
+    _currentDemoWindow->Resize();
+    return _currentDemoWindow;
 }
 
-void    MainMenu::CloseSampleWindow()
+void    MainMenu::CloseDemoWindow()
 {
-    if (_currentSampleWindow != NULL)
-        _currentSampleWindow->GetSubWindow()->Close();
+    if (_currentDemoWindow != NULL)
+        _currentDemoWindow->GetSubWindow()->Close();
 }
 
-void    MainMenu::SampleSelected()
+void    MainMenu::DemoSelected()
 {
-    if (_sampleComboBox->CurrentItem() != NULL && _sampleComboBox->CurrentItem() != _currentItemSelected)
+    if (_demoComboBox->CurrentItem() != NULL && _demoComboBox->CurrentItem() != _currentItemSelected)
     {
-        _currentItemSelected = _sampleComboBox->CurrentItem();
+        _currentItemSelected = _demoComboBox->CurrentItem();
 
         // unset the sprite
-        _sampleImage->Sprite(NULL);
+        _demoImage->Sprite(NULL);
 
-        // create the sprite used for the description of the sample
-        Utils::FileName pictureFile = "Nc:Image:Samples/" + _currentItemSelected->Data() + ".png";
+        // create the sprite used for the description of the demo
+        Utils::FileName pictureFile = "Nc:Image:Demos/" + _currentItemSelected->Data() + ".png";
         if (pictureFile.IsReadable())
         {
             Sprite *sp = new Sprite(Vector2i(0,0), GL::Texture(pictureFile), 100);
-            _sampleImage->Sprite(sp);
-            _sampleImage->Size(Vector2i(0, imageHeight));
+            _demoImage->Sprite(sp);
+            _demoImage->Size(Vector2i(0, imageHeight));
         }
         else
-            _sampleImage->Size(Vector2i(0, 0));
+            _demoImage->Size(Vector2i(0, 0));
 
         // set the description
-        _descriptionTextArea->PlainText(CONFIG->Block("SampleDescriptions")->Block(_currentItemSelected->Data())->Data());
+        _descriptionTextArea->PlainText(CONFIG->Block("DemoDescriptions")->Block(_currentItemSelected->Data())->Data());
 
         GUI::Visitor::ResizedAll resized;
         resized(*_layoutWinDesc);

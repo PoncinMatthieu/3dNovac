@@ -37,10 +37,13 @@ namespace Nc
 {
     namespace Graph
     {
-        /// To record a graph in a dot graph file format (.dot)
+        /// To record a graph in a dot graph file format (.dot).
         /**
-            \todo implement the LoadFile method
-			\todo now that we defined a visitor for the graph, we should try to use it with the DotGraph class
+            \todo implement the LoadFile method.
+			\todo now that we defined a visitor for the graph, we should try to use it with the DotGraph class.
+
+            \sa
+                - BinaryTree, to see an example using the DotGraph
         */
         template<typename T, bool Subtree = false>
         class DotGraph : public Utils::IFileFormat<DotGraph<T,Subtree>, T>
@@ -49,9 +52,9 @@ namespace Nc
                 DotGraph()              {}
                 virtual ~DotGraph()     {}
 
-                /** Load the given file, and fill the given content */
+                /** Load the given file, and fill the given content. */
                 virtual void LoadFile(const Utils::FileName &file, T &content);
-                /** Save the given file with the given content */
+                /** Save the given file with the given content. */
                 virtual void SaveFile(const Utils::FileName &file, const T &content);
 
             private:
@@ -59,7 +62,11 @@ namespace Nc
                 void SaveNodeRecursively(std::ofstream &f, const T &content);
         };
 
-        /// Specialization of DotGraph to manage subtrees (tree which store a tree in data)
+        /// Specialization of DotGraph to manage subtrees (tree which store a subtree as a data).
+        /**
+            \sa
+                - DotGraph
+        */
         template<typename T>
         class DotGraph<T,true> : public Utils::IFileFormat<DotGraph<T,true>, T>
         {
@@ -67,13 +74,13 @@ namespace Nc
                 DotGraph()              {}
                 virtual ~DotGraph()     {}
 
-                /** Load the given file, and fill the given content */
+                /** Load the given file, and fill the given content. */
                 virtual void LoadFile(const Utils::FileName &file, T &content);
-                /** Save the given file with the given content */
+                /** Save the given file with the given content. */
                 virtual void SaveFile(const Utils::FileName &file, const T &content);
 
             private:
-                /** Save a node recursively */
+                /** Save a node recursively. */
                 void SaveNodeRecursively(std::ofstream &f, const T &content);
         };
 

@@ -1,5 +1,5 @@
 
-#include "SampleFactory.h"
+#include "DemoFactory.h"
 #include "../bSplinesDemo/GameEngine.h"
 #include "../FBEffectsDemo/GameEngine.h"
 #include "../FrustumDemo/GameEngine.h"
@@ -9,21 +9,21 @@
 #include "../SokobanDemo/GameEngine.h"
 
 using namespace Nc;
-using namespace SampleViewer;
+using namespace DemoViewer;
 
-SampleFactory::SampleFactory(Nc::Engine::Manager *manager)
+DemoFactory::DemoFactory(Nc::Engine::Manager *manager)
     : _manager(manager)
 {
-    _sampleNames.push_back("SokobanDemo");
-    _sampleNames.push_back("FBEffectsDemo");
-    _sampleNames.push_back("FrustumDemo");
-    _sampleNames.push_back("LightDemo");
-    _sampleNames.push_back("SimpleParticleEffect");
-//    _sampleNames.push_back("GUIDemo");
-    _sampleNames.push_back("bSplinesDemo");
+    _demoNames.push_back("SokobanDemo");
+    _demoNames.push_back("FBEffectsDemo");
+    _demoNames.push_back("FrustumDemo");
+    _demoNames.push_back("LightDemo");
+    _demoNames.push_back("SimpleParticleEffect");
+//    _demoNames.push_back("GUIDemo");
+    _demoNames.push_back("bSplinesDemo");
 }
 
-Nc::Contrib::GameEngine     *SampleFactory::CreateSample(Graphic::IWindow *window, const std::string &name)
+Nc::Contrib::GameEngine     *DemoFactory::CreateDemo(Graphic::IWindow *window, const std::string &name)
 {
     Nc::Contrib::GameEngine *engine = NULL;
     if (name == "bSplinesDemo")

@@ -38,9 +38,6 @@ namespace Nc
     namespace Graphic
     {
         /// Interface to define a scene node.
-        /**
-            \todo we should delete the methods Lock/Unlock and use the RAII patern.
-        */
         class LGRAPHICS ISceneNode : public System::Object
         {
             public:

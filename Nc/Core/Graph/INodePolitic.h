@@ -40,10 +40,10 @@ namespace Nc
 {
     namespace Graph
     {
-        /// A set of class which should'nt be used outside of the graph namespace
+        /// A set of class which should'nt be used outside of the graph namespace.
         namespace Priv
         {
-            /// Base class for each node of the graph namespace
+            /// Base class for each node of the graph namespace.
             struct INodeBasePolitic : public Utils::VisitableBase<INodeBasePolitic>
             {
                 NC_UTILS_DEFINE_PARENT_CLASS(Utils::VisitableBase<INodeBasePolitic>);
@@ -51,7 +51,7 @@ namespace Nc
                 NC_UTILS_DEFINE_INVOKABLE(INodeBasePolitic);
             };
 
-            /// A base class Container to store the data of a node if needed
+            /// A base class Container to store the data of a node if needed.
             template<typename T>
             struct Container
             {
@@ -61,7 +61,7 @@ namespace Nc
                 T       data;
             };
 
-            /// A base class Container to store the data of a node if needed (specialization for a pointer)
+            /// A base class Container to store the data of a node if needed (specialization for a pointer).
             template<typename T>
             struct Container<T*>
             {
@@ -71,7 +71,7 @@ namespace Nc
                 T       *data;
             };
 
-            /// Interface used to define a tree node (with a unique parent)
+            /// Interface used to define a tree node (with a unique parent).
             template<typename NodeType>
             class AbstractTreePolitic
             {
@@ -81,20 +81,20 @@ namespace Nc
                     AbstractTreePolitic(const AbstractTreePolitic &)                : _parent(NULL)     {}
                     AbstractTreePolitic &operator = (const AbstractTreePolitic &)    {_parent = NULL; return (*this);}
 
-                    /** \return true if the node is root (has no parent) */
+                    /** \return true if the node is root (has no parent). */
                     bool            IsRoot() const                                  {return (_parent == NULL);}
-                    /** \return the parent of the node (if there is no parent, return NULL) */
+                    /** \return the parent of the node (if there is no parent, return NULL). */
                     NodeType        *Parent()                                       {return _parent;}
-                    /** \return the parent of the node (if there is no parent, return NULL) */
+                    /** \return the parent of the node (if there is no parent, return NULL). */
                     const NodeType  *Parent() const                                 {return _parent;}
 
-                    /** Set the parent of the tree node */
+                    /** Set the parent of the tree node. */
                     void            SetParent(NodeType *parent)                     {_parent = parent;}
 
-                    /** Set the parent to null */
+                    /** Set the parent to null. */
                     void            UnParent(NodeType *)                            {_parent = NULL;}
 
-                    /** \return the root node of the node */
+                    /** \return the root node of the node. */
                     NodeType        *Root()
                     {
                         NodeType *root = static_cast<NodeType*>(this);
@@ -103,7 +103,7 @@ namespace Nc
                         return root;
                     }
 
-                    /** \return the root node of the node */
+                    /** \return the root node of the node. */
                     const NodeType  *Root() const
                     {
                         NodeType *root = static_cast<NodeType*>(this);
@@ -112,7 +112,7 @@ namespace Nc
                         return root;
                     }
 
-                    /** \return the depth of the node (length of the path to it's root) */
+                    /** \return the depth of the node (length of the path to it's root). */
                     int             Depth() const
                     {
                         int n = 0;
@@ -122,10 +122,10 @@ namespace Nc
                     }
 
                 protected:
-                    NodeType                *_parent;   ///< the parent of the node
+                    NodeType                *_parent;   ///< the parent of the node.
             };
 
-            /// Interface used to define a graph node (with a list of parents)
+            /// Interface used to define a graph node (with a list of parents).
             template<typename NodeType>
             class AbstractGraphPolitic
             {
@@ -138,17 +138,17 @@ namespace Nc
                     AbstractGraphPolitic(const AbstractGraphPolitic &)              {}
                     AbstractGraphPolitic operator = (const AbstractGraphPolitic &)  {return (*this);}
 
-                    /** \return true if the node is root (has no parent) */
+                    /** \return true if the node is root (has no parent). */
                     bool                        IsRoot() const                      {return _parents.empty();}
-                    /** \return the parent of the node (if there is no parent, return NULL) */
+                    /** \return the parent of the node (if there is no parent, return NULL). */
                     ParentList                  &Parents()                          {return _parents;}
-                    /** \return the parent of the node (if there is no parent, return NULL) */
+                    /** \return the parent of the node (if there is no parent, return NULL). */
                     const ParentList            &Parents() const                    {return _parents;}
 
-                    /** Add a parent into the list of parents of the graph node */
+                    /** Add a parent into the list of parents of the graph node. */
                     void                        SetParent(NodeType *parent)         {_parents.push_back(parent);}
 
-                    /** Remove the given parent to the parent list of the graph node */
+                    /** Remove the given parent to the parent list of the graph node. */
                     void                        UnParent(NodeType *parent)
                     {
                         for (typename ParentList::iterator it = _parents.begin(); it != _parents.end(); ++it)
@@ -162,11 +162,11 @@ namespace Nc
                     }
 
                 protected:
-                    ParentList      _parents;       ///< the list of parents of the node
+                    ParentList      _parents;       ///< the list of parents of the node.
             };
         }
 
-        /// Interface to define a node politic
+        /// Interface to define a node politic.
         template<typename T, class NodeType, bool Graph>
         class INodePolitic :    public Priv::INodeBasePolitic, public Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >,
                                 public Priv::Container<T>
@@ -177,12 +177,12 @@ namespace Nc
                 INodePolitic(NodeType *parent)                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>()			{SetParent(parent);}
                 INodePolitic(const T &data, NodeType *parent)   : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(), Priv::Container<T>(data)		{SetParent(parent);}
 
-                /** \return the string of the contained type */
+                /** \return the string of the contained type. */
                 std::string         TypeToString() const                        {return typeid(T).name();}
-                /** \return the string of the node politic type */
+                /** \return the string of the node politic type. */
                 std::string         NodeTypeToString() const                    {return typeid(NodeType).name();}
 
-                /** Print the data of the node to the stream */
+                /** Print the data of the node to the stream. */
                 friend /*LCORE*/ std::ostream     &operator << (std::ostream &os, const INodePolitic &n)
                 {
                     os << n.data;
@@ -190,7 +190,7 @@ namespace Nc
                 }
         };
 
-        /// Specialization of INodePolitic for a node without data
+        /// Specialization of INodePolitic for a node without data.
         template<class NodeType, bool Graph>
         class INodePolitic<Utils::Metaprog::Nop, NodeType, Graph> : public Priv::INodeBasePolitic, public Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >
         {
@@ -200,19 +200,19 @@ namespace Nc
                 INodePolitic(NodeType *parent)                                  : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent)    {}
                 INodePolitic(const Utils::Metaprog::Nop &, NodeType *parent)    : Utils::Metaprog::If<Graph, Priv::AbstractGraphPolitic<NodeType>, Priv::AbstractTreePolitic<NodeType> >(parent)    {}
 
-                /** \return the string of the contained type */
+                /** \return the string of the contained type. */
                 std::string         TypeToString() const                        {return typeid(Utils::Metaprog::Nop).name();}
-                /** \return the string of the node politic type */
+                /** \return the string of the node politic type. */
                 std::string         NodeTypeToString() const                    {return typeid(NodeType).name();}
 
-                /** Print the data of the node to the stream */
+                /** Print the data of the node to the stream. */
                 friend /*LCORE*/ std::ostream     &operator << (std::ostream &oss, const INodePolitic &)
                 {
                     return oss;
                 }
         };
 
-        /// Define a visiting method
+        /// Define a visiting method.
         enum VisitTarget
         {
             VisitOnlyCurrentNode,
@@ -220,9 +220,12 @@ namespace Nc
             VisitChilds
         };
 
-        /// Base class to visit a node of the graph namespace
+        /// Base class to visit a node of the graph namespace.
         /**
             To use this visitor, you have to implement the VisitNode method and the InvokeChild method in your own visitors.
+
+            \sa
+                - NodeVisitor
         */
         template<typename VisitorType, typename ReturnType = void, typename Base = Priv::INodeBasePolitic>
         class AbstractNodeVisitor : public Utils::VisitorManager::InvokableVisitor<VisitorType, Base, ReturnType>

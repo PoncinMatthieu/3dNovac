@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 cmake_policy(SET CMP0015 NEW)
 
-project(3dNovac-Samples)
+project(3dNovac-Demos)
 
 # setup the launcher module for vs2010
 if(MSVC_IDE)
@@ -11,12 +11,13 @@ endif()
 
 # set Nc root directory path
 set(NC_DIR ../..)
+set(NC_DEMOS_DIR ..)
 
 # set path to copy dependencies
-set(NC_COPY_DEPENDENCIES_PATH ../bin/${CMAKE_CFG_INTDIR})
+set(NC_COPY_DEPENDENCIES_PATH ${NC_DEMOS_DIR}/bin/${CMAKE_CFG_INTDIR})
 
 # executable and libraries output path
-set(EXECUTABLE_OUTPUT_PATH ../bin/)
+set(EXECUTABLE_OUTPUT_PATH ${NC_DEMOS_DIR}/bin/)
 set(LIBRARY_OUTPUT_PATH ${NC_DIR}/lib/)
 
 
@@ -42,64 +43,6 @@ include_directories(${NC_DIR})
 include_directories(${NC_DIR}/extlibs/)
 link_directories(${NC_DIR}/lib/${CMAKE_CFG_INTDIR})
 link_directories(${NC_DIR}/extlibs/)
-
-#------------------------------------------------------------------------------
-#	Tuto1
-#------------------------------------------------------------------------------
-file(
-  GLOB
-  Tuto1-sources
-  ../Tuto1/*.cpp
-  ../Tuto1/*.h
-)
-
-add_executable(Tuto1		${Tuto1-sources})
-add_dependencies(Tuto1 		Nc-Core Nc-Graphics)
-target_link_libraries(Tuto1	Nc-Core Nc-Graphics)
-
-# create the launcher for vs 2010
-if(MSVC_IDE)
-	create_target_launcher(Tuto1 ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
-endif()
-
-#------------------------------------------------------------------------------
-#	Tuto_NcCore_Server
-#------------------------------------------------------------------------------
-file(
-  GLOB
-  Tuto_NcCore_Server-sources
-  ../Tuto_NcCore_Server/*.cpp
-  ../Tuto_NcCore_Server/*.h
-)
-
-add_executable(Tuto_NcCore_Server 			${Tuto_NcCore_Server-sources})
-add_dependencies(Tuto_NcCore_Server			Nc-Core)
-target_link_libraries(Tuto_NcCore_Server	Nc-Core)
-
-# create the launcher for vs 2010
-if(MSVC_IDE)
-	create_target_launcher(Tuto_NcCore_Server ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
-endif()
-
-#------------------------------------------------------------------------------
-#	Tuto_NcCore_Client
-#------------------------------------------------------------------------------
-file(
-  GLOB
-  Tuto_NcCore_Client-sources
-  ../Tuto_NcCore_Client/*.cpp
-  ../Tuto_NcCore_Client/*.h
-)
-
-add_executable(Tuto_NcCore_Client			${Tuto_NcCore_Client-sources})
-add_dependencies(Tuto_NcCore_Client			Nc-Core)
-target_link_libraries(Tuto_NcCore_Client	Nc-Core)
-
-# create the launcher for vs 2010
-if(MSVC_IDE)
-	create_target_launcher(Tuto_NcCore_Client ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
-endif()
-
 
 #------------------------------------------------------------------------------
 #	Frustum Demo
@@ -265,24 +208,24 @@ endif()
 #------------------------------------------------------------------------------
 file(
   GLOB
-  SampleViewer-sources
-  ../SampleViewer/*.cpp
-  ../SampleViewer/*.h
+  DemoViewer-sources
+  ../DemoViewer/*.cpp
+  ../DemoViewer/*.h
 )
 
-list(APPEND SampleViewer-sources ${FrustumDemo-sources})
-list(APPEND SampleViewer-sources ${GUIDemo-sources})
-list(APPEND SampleViewer-sources ${LightDemo-sources})
-list(APPEND SampleViewer-sources ${bSplinesDemo-sources})
-list(APPEND SampleViewer-sources ${FBEffectsDemo-sources})
-list(APPEND SampleViewer-sources ${SokobanDemo-sources})
-list(APPEND SampleViewer-sources ${SimpleParticleEffect-sources})
+list(APPEND DemoViewer-sources ${FrustumDemo-sources})
+list(APPEND DemoViewer-sources ${GUIDemo-sources})
+list(APPEND DemoViewer-sources ${LightDemo-sources})
+list(APPEND DemoViewer-sources ${bSplinesDemo-sources})
+list(APPEND DemoViewer-sources ${FBEffectsDemo-sources})
+list(APPEND DemoViewer-sources ${SokobanDemo-sources})
+list(APPEND DemoViewer-sources ${SimpleParticleEffect-sources})
 
-add_executable(SampleViewer		${SampleViewer-sources})
-add_dependencies(SampleViewer		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
-target_link_libraries(SampleViewer	Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
+add_executable(DemoViewer		${DemoViewer-sources})
+add_dependencies(DemoViewer		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+target_link_libraries(DemoViewer	Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-  create_target_launcher(SampleViewer ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+  create_target_launcher(DemoViewer ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()

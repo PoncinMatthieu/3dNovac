@@ -36,48 +36,16 @@ namespace Nc
     {
         /// Template class designed to manipulate a binary tree structure.
         /**
-            The Binary tree use by default a BinaryNodeAVL to stock the datas. The BinaryTree could be see as a simple abstraction to use more easily the root node.
+            The Binary tree use by default a BinaryNodeAVL to stock the datas. The BinaryTree could be seen as a simple abstraction to use more easily the root node.
 
             By default the BinaryTree use a BinaryNodeAVL to define the comportement of the insertion/remove into the tree.
             But you could implement your own Node and Politic to define a specific comportement.
 
- <div class="title"> Here a sample to use the BinaryTree : </div>
- \code
-    #include <Nc/Core/Graph/DotGraph.h>
-    #include <Nc/Core/Graph/BinaryTree.h>
-    #include <Nc/Core/Utils/Logger.h>
+            <div class="title"> Here is a sample to show how to use the BinaryTree : </div>
+                \p Examples/BinaryTree.cpp
+                \include BinaryTree.cpp
 
-    using namespace Nc;
-    using namespace Nc::Graph;
-
-    int main()
-    {
-        BinaryTree<int> t(100);
-
-        t.Insert(1);
-        t.Insert(24);
-        t.Insert(3);
-        t.Insert(23);
-        t.Insert(5);
-        t.Insert(7);
-        t.Insert(34);
-        t.Insert(8);
-        t.Insert(3);
-
-        for (BinaryTree<int>::NodeType *n = t.NodeMini(); n != NULL; n = n->Next())
-            LOG << n->data << " ";
-        LOG << std::endl;
-        for (BinaryTree<int>::NodeType *n = t.NodeMaxi(); n != NULL; n = n->Prev())
-            LOG << n->data << " ";
-        LOG << std::endl;
-
-        LOG << "print" << std::endl;
-        if (t.Root() != NULL)
-            DotGraph<BinaryTree<int>::NodeType >::Save("testBinaryNode.dot", *t.Root());
-        return 0;
-    }
- \endcode
- <div class="title"> Run the command `dot testBinaryNode.dot -Tpng > result.png` to see the result. </div>
+                Run the command `dot testBinaryNode.dot -Tpng > result.png` to see the result printed out by the DotGraph into an image.
 
             \sa
             - Node
@@ -101,14 +69,14 @@ namespace Nc
                 BinaryTree &operator = (const BinaryTree &bt);
                 ~BinaryTree()                                       {if (_root != NULL) delete _root;}
 
-                /** \return the root node */
+                /** \return the root node. */
                 NodeType        *Root()                             {return _root;}
-                /** \return the root node */
+                /** \return the root node. */
                 const NodeType  *Root() const                       {return _root;}
 
                 /**
                     Search a key into the tree.
-                    \return the node equals to the given key. return NULL if nothing is found
+                    \return the node equals to the given key. return NULL if nothing is found.
                 */
                 NodeType        *Search(const T &key);
 
@@ -116,19 +84,19 @@ namespace Nc
                 void            Insert(const T &key);
 
                 /**
-                    Remove the first which match with the given key
-                    \param data, filled with the data of the removed node if not null and if a node has been removed
-                    \return true if a node has been removed
+                    Remove the first which match with the given key.
+                    \param data filled with the data of the removed node if not null and if a node has been removed.
+                    \return true if a node has been removed.
                 */
                 bool            Remove(const T &key, T *data = NULL);
 
-                /** \return the minimal node */
+                /** \return the minimal node. */
                 NodeType        *NodeMini();
-                /** \return the maximal node */
+                /** \return the maximal node. */
                 NodeType        *NodeMaxi();
 
             protected:
-                NodeType        *_root;             ///< The root of the tree
+                NodeType        *_root;             ///< The root of the tree.
         };
 
         template<typename T, template<typename> class N>

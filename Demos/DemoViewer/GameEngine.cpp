@@ -5,20 +5,20 @@
 using namespace std;
 using namespace Nc;
 using namespace Nc::Graphic;
-using namespace SampleViewer;
+using namespace DemoViewer;
 
 GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager)
   : Contrib::GameEngine(window, manager)
 {
-    _sampleFactory = new SampleFactory(manager);
+    _demoFactory = new DemoFactory(manager);
 
-    AddNewCmd(StartSample,      (Nc::Engine::CmdFunction)&GameEngine::StartSampleCmd);
-    AddNewCmd(SampleSelected,   (Nc::Engine::CmdFunction)&GameEngine::SampleSelectedCmd);
+    AddNewCmd(StartDemo,      (Nc::Engine::CmdFunction)&GameEngine::StartDemoCmd);
+    AddNewCmd(DemoSelected,   (Nc::Engine::CmdFunction)&GameEngine::DemoSelectedCmd);
 }
 
 GameEngine::~GameEngine()
 {
-	delete _sampleFactory;
+	delete _demoFactory;
 }
 
 void GameEngine::ReleaseContent()
@@ -37,9 +37,9 @@ void GameEngine::LoadContent()
     // GUI :
     _menu = new MainMenu(_scene);
 
-    for (std::list<std::string>::const_iterator it = _sampleFactory->SampleNames().begin(); it != _sampleFactory->SampleNames().end(); ++it)
-        _menu->AddSample(*it);
-    _menu->SampleSelected();
+    for (std::list<std::string>::const_iterator it = _demoFactory->DemoNames().begin(); it != _demoFactory->DemoNames().end(); ++it)
+        _menu->AddDemo(*it);
+    _menu->DemoSelected();
 }
 
 void GameEngine::Update(float runningTime)
@@ -85,39 +85,39 @@ void GameEngine::MouseMotionEvent(System::Event &)
 {
 }
 
-void GameEngine::SampleSelectedCmd(Nc::Engine::IEvent *)
+void GameEngine::DemoSelectedCmd(Nc::Engine::IEvent *)
 {
-    _menu->SampleSelected();
+    _menu->DemoSelected();
 }
 
-void GameEngine::StartSampleCmd(Nc::Engine::IEvent *e)
+void GameEngine::StartDemoCmd(Nc::Engine::IEvent *e)
 {
-    if (!_menu->Sample())
-        throw Utils::Exception("StartSampleCmd", "No sample selected.");
+    if (!_menu->Demo())
+        throw Utils::Exception("StartDemoCmd", "No demo selected.");
 
-    LOG << "Start sample: " << *_menu->Sample() << std::endl;
+    LOG << "Start demo: " << *_menu->Demo() << std::endl;
 
     // close the previous sub window
-    _menu->CloseSampleWindow();
+    _menu->CloseDemoWindow();
 
-    // delete the previous sample game engine
-    if (!_currentSample.empty())
-        _manager->RemoveEngine(_currentSample, true);
+    // delete the previous demo game engine
+    if (!_currentDemo.empty())
+        _manager->RemoveEngine(_currentDemo, true);
 
     // create the widget sub window
-    GUI::SubWindow *w = _menu->CreateSampleWindow(_window);
+    GUI::SubWindow *w = _menu->CreateDemoWindow(_window);
 
-    // create the new sample game engine
-    Contrib::GameEngine *engine = _sampleFactory->CreateSample(w->GetSubWindow(), *_menu->Sample());
+    // create the new demo game engine
+    Contrib::GameEngine *engine = _demoFactory->CreateDemo(w->GetSubWindow(), *_menu->Demo());
     if (engine == NULL)
-        throw Utils::Exception("StartSampleCmd", "Failed to create the new GameEngine.");
+        throw Utils::Exception("StartDemoCmd", "Failed to create the new GameEngine.");
 
-    // init the sample game engine
+    // init the demo game engine
     engine->LimitFrameRate(60);
     _manager->AddEngine(engine);
 
-    // start the sample game engine
-    _currentSample = engine->ResolvedClassName();
+    // start the demo game engine
+    _currentDemo = engine->ResolvedClassName();
     engine->Start();
 
 	// wait the loading and enable the sub window for rendering

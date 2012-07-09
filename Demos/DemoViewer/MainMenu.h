@@ -31,7 +31,7 @@
 #include <Nc/GUI/Widget/SubWindow.h>
 #include <Nc/GUI/Widget/TextEdit.h>
 
-namespace SampleViewer
+namespace DemoViewer
 {
     class MainMenu : Nc::Utils::NonCopyable
     {
@@ -39,30 +39,30 @@ namespace SampleViewer
             MainMenu(Nc::GUI::SceneGraph *gui);
             ~MainMenu();
 
-            void                        AddSample(const std::string &name);
+            void                        AddDemo(const std::string &name);
 
-            void                        SampleSelected();
+            void                        DemoSelected();
 
-            const std::string           *Sample() const         {return (_sampleComboBox->CurrentItem()) ? &_sampleComboBox->CurrentItem()->Data() : NULL;}
+            const std::string           *Demo() const         {return (_demoComboBox->CurrentItem()) ? &_demoComboBox->CurrentItem()->Data() : NULL;}
 
-            Nc::GUI::SubWindow          *CreateSampleWindow(Nc::Graphic::IWindow *windowParent);
+            Nc::GUI::SubWindow          *CreateDemoWindow(Nc::Graphic::IWindow *windowParent);
 
-            void                        CloseSampleWindow();
+            void                        CloseDemoWindow();
 
         private:
             Nc::GUI::Widget             *CreateDescriptionPannel(Nc::GUI::Layout *parent);
-            Nc::GUI::Widget             *CreateSelectSampleWindow(Nc::GUI::Layout *parent);
+            Nc::GUI::Widget             *CreateSelectDemoWindow(Nc::GUI::Layout *parent);
 
         private:
             Nc::GUI::SceneGraph         *_GUI;
-            Nc::GUI::ComboBox           *_sampleComboBox;
-            Nc::GUI::Image              *_sampleImage;
+            Nc::GUI::ComboBox           *_demoComboBox;
+            Nc::GUI::Image              *_demoImage;
             unsigned int                imageHeight;
             Nc::GUI::TextEdit           *_descriptionTextArea;
             Nc::GUI::Layout             *_layoutWinDesc;
 
-            Nc::GUI::Widget             *_widgetSampleWindow;
-            Nc::GUI::SubWindow          *_currentSampleWindow;
+            Nc::GUI::Widget             *_widgetDemoWindow;
+            Nc::GUI::SubWindow          *_currentDemoWindow;
 
             Nc::GUI::Item               *_currentItemSelected;
     };
