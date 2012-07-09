@@ -54,30 +54,31 @@ namespace Nc
     {
         namespace GL
         {
-            /// Manage the OpenGL extensions
+            /// Manage the OpenGL extensions.
             /**
-                Especialy used on windows to dynamically load opengl functions.
+                The Extension class is especialy used on windows to dynamically load opengl functions.
+                But it also provide methods to load and determine if an opengl extention is supported.
             */
             class LGRAPHICS Extension : public Utils::Singleton<Extension>
             {
                 public:
                     virtual ~Extension();
 
-                    /** Init and load the extensions */
+                    /** Init and load the extensions. */
                     bool Init();
 
-                    /** Return true if the given extension name is support */
+                    /** Return true if the given extension name is support. */
                     bool    IsSupported(const char *extName);
-                    /** Return true if non power of 2 texture is supported */
+                    /** Return true if non power of 2 texture is supported. */
                     bool    NonPowerOf2Supported()              {return _supportNonPowerOfTwoTexture;}
 
                 protected:
                     Extension();
 
-                    /** Load the given function */
+                    /** Load the given function. */
                     void *LoadFunc(const char *functionName);
 
-                    bool        _supportNonPowerOfTwoTexture;   ///< true if we support non power of 2 texture
+                    bool        _supportNonPowerOfTwoTexture;   ///< true if we support non power of 2 texture.
 
                 #ifdef SYSTEM_WINDOWS
 				public:
@@ -158,9 +159,9 @@ namespace Nc
                     typedef HDC (CALL_GLEXT *WGLGETPBUFFERDC_PROC)(::HPBUFFERARB hPbuffer);
 
                 public:
-                    WGLCHOOSEPIXELFORMAT_PROC		wglChoosePixelFormat;       ///< to choose a pixel format in Win32 System
-                    WGLCREATEPBUFFER_PROC			wglCreatePbuffer;           ///< to create a pbuffer in Win32 System
-                    WGLGETPBUFFERDC_PROC			wglGetPbufferDC;            ///< to get a DC pbuffer in Win32 System
+                    WGLCHOOSEPIXELFORMAT_PROC		wglChoosePixelFormat;       ///< to choose a pixel format in Win32 System.
+                    WGLCREATEPBUFFER_PROC			wglCreatePbuffer;           ///< to create a pbuffer in Win32 System.
+                    WGLGETPBUFFERDC_PROC			wglGetPbufferDC;            ///< to get a DC pbuffer in Win32 System.
                 #endif
 
                 friend class Utils::Singleton<Extension>;
@@ -169,7 +170,7 @@ namespace Nc
     }
 
     // explicit instantiation
-	template class Utils::Singleton<Graphic::GL::Extension>;         ///< explicit instanciation of the extention singleton
+	template class Utils::Singleton<Graphic::GL::Extension>;         ///< explicit instanciation of the extention singleton.
 }
 
 #endif

@@ -36,6 +36,9 @@ namespace Nc
     namespace Graphic
     {
         /// Define a Graphical object entity.
+        /**
+            The class Object contain a list of Drawables and allow to configure a Material to render them.
+        */
         class LGRAPHICS Object : public Entity
         {
             public:

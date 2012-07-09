@@ -36,16 +36,16 @@ namespace Nc
     {
         namespace GL
         {
-            /// Define an interface to manage uniforms of a shader program
+            /// Define an interface to manage uniforms of a shader program.
             class LGRAPHICS IUniform
             {
                 public:
                     IUniform(unsigned int location);
 
-                    /** Set the value to the current shader program */
+                    /** Set the value to the current shader program. */
                     virtual void			Set() = 0;
 
-					/** \return the location of the uniform */
+					/** \return the location of the uniform. */
 					inline unsigned int		GetLocation()				{return _location;}
 
                     friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const IUniform &u)
@@ -58,7 +58,7 @@ namespace Nc
                     bool            activated;
 
                 protected:
-                    unsigned int    _location;      ///< the location of the uniform into the program
+                    unsigned int    _location;      ///< the location of the uniform into the program.
             };
 
             template<typename T, unsigned int Nb>
@@ -73,7 +73,7 @@ namespace Nc
 
                     inline Uniform &operator = (const TMatrix &m)   {matrix = m; return *this;}
 
-                    /** Set the value to the current shader program */
+                    /** Set the value to the current shader program. */
                     virtual void Set()                              {if (_location != -1) Program::SetUniform(_location, matrix, transpose);}
 
                     TMatrix     matrix;
@@ -90,10 +90,10 @@ namespace Nc
                     inline Uniform &operator = (const Texture &t)   {texture = t; return *this;}
                     inline Uniform &operator = (const int &u)       {unit = u; return *this;}
 
-					/** Init the unit and texture value of the uniform */
+					/** Init the unit and texture value of the uniform. */
 					inline void		Init(int unitValue, const Texture &textureValue)	{unit = unitValue; texture = textureValue;}
 
-                    /** Set the value to the current shader program */
+                    /** Set the value to the current shader program. */
                     virtual void	Set()
                     {
 						if (_location != -1)
@@ -117,7 +117,7 @@ namespace Nc
 
                     inline Uniform &operator = (const T &v)         {value = v; return *this;}
 
-                    /** Set the value to the current shader program */
+                    /** Set the value to the current shader program. */
                     virtual void Set()                              {if (_location != -1) Program::SetUniform(_location, value);}
 
                     T       value;
@@ -132,7 +132,7 @@ namespace Nc
 
                     inline Uniform &operator = (const Vector2D<T> &v)   {value1 = v.data[0]; value2 = v.data[1]; return *this;}
 
-                    /** Set the value to the current shader program */
+                    /** Set the value to the current shader program. */
                     virtual void Set()                                  {if (_location != -1) Program::SetUniform(_location, value1, value2);}
 
                     T       value1;
@@ -148,7 +148,7 @@ namespace Nc
 
                     inline Uniform &operator = (const Vector3D<T> &v)   {value1 = v.data[0]; value2 = v.data[1]; value3 = v.data[2]; return *this;}
 
-                    /** Set the value to the current shader program */
+                    /** Set the value to the current shader program. */
                     virtual void Set()                                  {if (_location != -1) Program::SetUniform(_location, value1, value2, value3);}
 
                     T       value1;
@@ -165,7 +165,7 @@ namespace Nc
 
                     inline Uniform &operator = (const Color &c)     {value1 = c.r; value2 = c.g; value3 = c.b; value4 = c.a; return *this;}
 
-                    /** Set the value to the current shader program */
+                    /** Set the value to the current shader program. */
                     virtual void Set()                              {if (_location != -1) Program::SetUniform(_location, value1, value2, value3, value4);}
 
                     T       value1;

@@ -37,10 +37,10 @@ namespace Nc
     {
         namespace GL
         {
-            /// Template interface which define a geometry with it's given VertexType
+            /// Interface defining a geometry
             /**
-                Define the geometry with a VertexBuffer and a primitive type
-                \todo Use a VertexArray to optimised the rendering
+                Store a primitive type describing the type of primitive stored in the geometry buffer.
+                \todo Use a VertexArray to optimise the rendering.
             */
             class LGRAPHICS IGeometryBuffer
             {
@@ -51,18 +51,18 @@ namespace Nc
 
                     virtual IGeometryBuffer         *Clone() const = 0;
 
-                    /** Set the primitive type to render the geometry buffer */
+                    /** Set the primitive type to render the geometry buffer. */
                     inline void                     PrimitiveType(Enum::PrimitiveType primitiveType)         {_primitiveType = primitiveType;}
 
-                    /** Render the geoemtry */
+                    /** Render the geoemtry. */
                     virtual void                    Render() = 0;
 
-                    /** \return the vertex descriptor of the VBO */
+                    /** \return the vertex descriptor of the VBO. */
                     virtual GL::VertexDescriptor    &Descriptor() = 0;
 
-                    /** Map the vertex buffer in memory with the given access enum */
+                    /** Map the vertex buffer in memory with the given access enum. */
                     virtual void                    MapVertexBuffer(Enum::DataBuffer::AccessType access) = 0;
-                    /** Unmap the vertex buffer */
+                    /** Unmap the vertex buffer. */
                     virtual void                    UnmapVertexBuffer() = 0;
 
                     /**
@@ -85,10 +85,14 @@ namespace Nc
                     */
                     virtual void                    *FetchComponents(unsigned int &size) = 0;
 
-                    Enum::PrimitiveType     _primitiveType;     ///< the primitive type to draw
+                    Enum::PrimitiveType     _primitiveType;     ///< the primitive type to draw.
             };
 
-            /// template class to define a geometry with an index buffer
+            /// template class used to define a geometry with a VertexBuffer and an IndexBuffer.
+            /**
+                The template parameter is used to setup the type of vertex contained by the VertexBuffer.
+                It also allows to retraive the Descriptor of the vertex type.
+            */
             template<typename T, bool IndexToRender = true>
             class GeometryBuffer : public IGeometryBuffer
             {
@@ -104,22 +108,22 @@ namespace Nc
 
                     virtual IGeometryBuffer         *Clone() const                          {return new GeometryBuffer<T,IndexToRender>(*this);}
 
-                    /** \return the vertex buffer */
+                    /** \return the vertex buffer. */
                     inline VertexBuffer<T>          &VBO()                                  {return _VBO;}
-                    /** Set the geometry (vertex buffer) */
+                    /** Set the geometry (vertex buffer). */
                     inline void                     VBO(const VertexBuffer<T> &vbo)         {_VBO = vbo;}
 
-                    /** \return the Index buffer of the geometry */
+                    /** \return the Index buffer of the geometry. */
                     inline IndexBuffer              &IBO()                                  {return _IBO;}
-                    /** \return the Index buffer of the geometry */
+                    /** \return the Index buffer of the geometry. */
                     inline const IndexBuffer        &IBO() const                            {return _IBO;}
-                    /** Set the geometry */
+                    /** Set the geometry. */
                     inline void                     SetGeometry(const VertexBuffer<T> &vbo, const IndexBuffer &ibo) {_needUpdate = true; _VBO = vbo; _IBO = ibo;}
 
-                    /** \return the vertex descriptor of the VBO */
+                    /** \return the vertex descriptor of the VBO. */
                     virtual GL::VertexDescriptor    &Descriptor()                           {return _VBO.Descriptor;}
 
-                    /** Render the geometry with the index buffer */
+                    /** Render the geometry with the index buffer. */
                     virtual void                    Render()
                     {
                         //if (_needUpdate || _VBO.NeedUpdate())
@@ -129,14 +133,14 @@ namespace Nc
                         //_VAO.Disable();
                     }
 
-                    /** Map buffer of the VBO */
+                    /** Map buffer of the VBO. */
                     virtual void                    MapVertexBuffer(Enum::DataBuffer::AccessType access)
                     {
                         _VBO.Enable();
                         _VBO.MapBuffer(access);
                     }
 
-                    /** Unmap buffer of the VBO */
+                    /** Unmap buffer of the VBO. */
                     virtual void                    UnmapVertexBuffer()
                     {
                         _VBO.UnmapBuffer();
@@ -147,8 +151,8 @@ namespace Nc
                     /**
                         Map the Vertex and Index buffer in the VAO (Vertex Array Object).
 
-                        (it appears that the vertexArrays are not shared beetween contexts like the displayLists)
-                        So the Map method is private and called once by the render method
+                        (it appears that the vertexArrays are not shared beetween contexts like the displayLists).
+                        So the Map method is private and called once by the render method.
                     */
                     void    Map()
                     {
@@ -162,20 +166,20 @@ namespace Nc
                         _needUpdate = false;
                     }
 
-                    /** \return the componants of the buffer and it's size */
+                    /** \return the componants of the buffer and it's size. */
                     virtual void    *FetchComponents(unsigned int &size)
                     {
                         size = _VBO.Size();
                         return _VBO.LocalBuffer();
                     }
 
-                    bool                _needUpdate;        ///< to map the vertexArray in the rendering thread
-                    VertexArray         _VAO;               ///< the VAO used to optimised the rendering
-                    VertexBuffer<T>     _VBO;               ///< the VBO used to stored the geometry data
-                    IndexBuffer         _IBO;               ///< the index buffer
+                    bool                _needUpdate;        ///< to map the vertexArray in the rendering thread.
+                    //VertexArray         _VAO;               ///< the VAO used to optimised the rendering.
+                    VertexBuffer<T>     _VBO;               ///< the VBO used to stored the geometry data.
+                    IndexBuffer         _IBO;               ///< the index buffer.
             };
 
-            /// Specialisation of the geometry buffer without IndexBuffer
+            /// Specialisation of the geometry buffer without IndexBuffer.
             template<typename T>
             class GeometryBuffer<T, false> : public IGeometryBuffer
             {
@@ -191,12 +195,12 @@ namespace Nc
 
                     virtual IGeometryBuffer         *Clone() const                          {return new GeometryBuffer<T,false>(*this);}
 
-                    /** \return the vertex buffer */
+                    /** \return the vertex buffer. */
                     inline VertexBuffer<T>          &VBO()                                  {return _VBO;}
-                    /** Set the geometry (vertex buffer) */
+                    /** Set the geometry (vertex buffer). */
                     inline void                     VBO(const VertexBuffer<T> &vbo)         {_VBO = vbo;}
 
-                    /** Render the geometry without index buffer */
+                    /** Render the geometry without index buffer. */
                     virtual void                    Render()
                     {
                         //if (_needUpdate || _VBO.NeedUpdate())
@@ -206,17 +210,17 @@ namespace Nc
                         //_VAO.Disable();
                     }
 
-                    /** \return the vertex descriptor of the VBO */
+                    /** \return the vertex descriptor of the VBO. */
                     virtual GL::VertexDescriptor    &Descriptor()                           {return _VBO.Descriptor;}
 
-                    /** Map buffer of the VBO */
+                    /** Map buffer of the VBO. */
                     virtual void                    MapVertexBuffer(Enum::DataBuffer::AccessType access)
                     {
                         _VBO.Enable();
                         _VBO.MapBuffer(access);
                     }
 
-                    /** Unmap buffer of the VBO */
+                    /** Unmap buffer of the VBO. */
                     virtual void                    UnmapVertexBuffer()
                     {
                         _VBO.UnmapBuffer();
@@ -227,8 +231,8 @@ namespace Nc
                     /**
                         Map the Vertex buffer in the VAO (Vertex Array Object).
 
-                        (it appears that the vertexArrays are not shared beetween contexts like the displayLists)
-                        So the Map method is private and called once by the render method
+                        (it appears that the vertexArrays are not shared beetween contexts like the displayLists).
+                        So the Map method is private and called once by the render method.
                     */
                     void    Map()
                     {
@@ -240,16 +244,16 @@ namespace Nc
                         _needUpdate = false;
                     }
 
-                    /** \return the componants of the buffer and it's size */
+                    /** \return the componants of the buffer and it's size. */
                     virtual void    *FetchComponents(unsigned int &size)
                     {
                         size = _VBO.Size();
                         return _VBO.LocalBuffer();
                     }
 
-                    bool                _needUpdate;        ///< to map the vertexArray in the rendering thread
-                    VertexArray         _VAO;               ///< the VAO used to optimised the rendering
-                    VertexBuffer<T>     _VBO;               ///< the VBO used to stored the geometry data
+                    bool                _needUpdate;        ///< to map the vertexArray in the rendering thread.
+                    //VertexArray         _VAO;               ///< the VAO used to optimised the rendering.
+                    VertexBuffer<T>     _VBO;               ///< the VBO used to stored the geometry data.
             };
 
 

@@ -35,7 +35,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// To manipulate a Render Buffer Object (rbo)
+            /// To manipulate a Render Buffer Object (rbo).
             /**
                 \sa
                     - FrameBuffer
@@ -55,10 +55,10 @@ namespace Nc
                     RenderBuffer();
                     ~RenderBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *Clone() const                  {return new RenderBuffer(*this);}
 
-                    /** Create the rbo */
+                    /** Create the rbo. */
                     void                    Create();
                     /**
                         Initialize and etablish the data storage, format, dimensions, and sample count of the render object image.
@@ -81,23 +81,23 @@ namespace Nc
                     */
                     void                    Init(Enum::RenderBuffer::DepthStencilFormat internalFormat, const Vector2ui &size, unsigned int samples = 0);
 
-                    /** \return the type of the render buffer */
+                    /** \return the type of the render buffer. */
                     inline BufferType       Type() const                    {return _type;}
 
-                    /** \return the index of the Render Buffer Object */
+                    /** \return the index of the Render Buffer Object. */
                     virtual unsigned int    GetIndex() const                {return _index;}
-                    /** Enable the rbo */
+                    /** Enable the rbo. */
                     virtual void            Enable() const;
-                    /** Disable the rbo */
+                    /** Disable the rbo. */
                     virtual void            Disable() const;
 
                 private:
-                    /** Destroy the rbo */
+                    /** Destroy the rbo. */
                     virtual void            Release();
 
                 private:
                     BufferType              _type;
-                    unsigned int            _index;         ///< The id of the rbo
+                    unsigned int            _index;         ///< The id of the rbo.
             };
         }
     }

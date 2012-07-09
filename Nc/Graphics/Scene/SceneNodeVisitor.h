@@ -34,6 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
+        /** Base class to define a visitor aiming to visit a SceneNode */
         template<typename VisitorType, bool IsConst = false, typename ReturnType = void>
         class SceneNodeVisitor : public Graph::NodeVisitor<VisitorType, ReturnType, System::Object>
         {
@@ -63,6 +64,7 @@ namespace Nc
                 }
         };
 
+        /** Base class to define a visitor aiming to visit a SceneNode */
         template<typename VisitorType, typename ReturnType>
         class SceneNodeVisitor<VisitorType, true, ReturnType> : public Graph::NodeVisitor<VisitorType, ReturnType, const System::Object>
         {

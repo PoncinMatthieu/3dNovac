@@ -35,7 +35,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Define an index buffer used to describe a GeometryBuffer
+            /// Define an index buffer object used to describe a GeometryBuffer.
             class LGRAPHICS IndexBuffer : public DataBuffer<unsigned int>
             {
                 public:
@@ -46,10 +46,10 @@ namespace Nc
                     {}
                     virtual ~IndexBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *Clone() const                              {return new IndexBuffer(*this);}
 
-                    /** Update the data */
+                    /** Update the data. */
                     template<unsigned int D>
                     void    UpdateData(const Array<unsigned int, D> &tabIndices, unsigned int stride, bool keepContent = false)
                     {
@@ -57,14 +57,14 @@ namespace Nc
                         _nbElements = tabIndices.Size();
                     }
 
-                    /** Draw the elements index */
+                    /** Draw the elements index. */
                     inline void             Draw(Enum::PrimitiveType type)              {glDrawElements(type, _nbElements, Enum::UnsignedInt, NULL);}
 
-                    /** Return the number of elements */
+                    /** Return the number of elements. */
                     inline unsigned int     NbElements()                                {return _nbElements;}
 
                 private:
-                    unsigned int            _nbElements;            ///< the number of elements in the buffer
+                    unsigned int            _nbElements;            ///< the number of elements in the buffer.
             };
         }
     }

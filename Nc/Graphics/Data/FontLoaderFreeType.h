@@ -36,21 +36,21 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Load font files (.ttf) with the FreeType Librairy
+        /// Load font files (.ttf) with the FreeType Librairy.
         class LGRAPHICS FontLoaderFreeType : public FontLoader
         {
             public:
                 FontLoaderFreeType();
                 virtual ~FontLoaderFreeType();
 
-                /** Load the font from a file */
+                /** Load the font from a file. */
                 virtual void        LoadFromFile(const Utils::FileName &file, const Utils::Unicode::UTF32 &charset, Font &font);
 
             private:
-                /** Generate the bitmap of the font */
+                /** Generate the bitmap of the font. */
                 void CreateBitmapFont(FT_Face &face, const Utils::Unicode::UTF32 &charset, Image &bitmap, Font &font);
 
-                FT_Library      _lib;   ///< the freetype librairy
+                FT_Library      _lib;   ///< the freetype librairy.
         };
     }
 }

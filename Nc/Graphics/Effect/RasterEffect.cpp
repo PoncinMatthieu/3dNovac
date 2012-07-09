@@ -29,44 +29,44 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-RasterEffect::RasterEffect(Pattern pattern)
+RasterEffect::RasterEffect(Style style)
     : Effect()
 {
-    SetPattern(pattern);
+    SetPattern(style);
 }
 
-void RasterEffect::SetPattern(Pattern pattern)
+void RasterEffect::SetPattern(Style style)
 {
     System::Locker l(&_mutex);
-    if (pattern == Points)
+    if (style == Points)
     {
         _mode.SetPolygonMode(GL::Enum::FrontAndBack, GL::Enum::Point);
         _mode2.InhibitPolygonMode();
         _mode2.InhibitPolygonOffset();
         _mode2.InhibitDepthTest();
     }
-    else if (pattern == Wireframe)
+    else if (style == Wireframe)
     {
         _mode.SetPolygonMode(GL::Enum::FrontAndBack, GL::Enum::Line);
         _mode2.InhibitPolygonMode();
         _mode2.InhibitPolygonOffset();
         _mode2.InhibitDepthTest();
     }
-    else if (pattern == Fill)
+    else if (style == Fill)
     {
         _mode.SetPolygonMode(GL::Enum::FrontAndBack, GL::Enum::Fill);
         _mode2.InhibitPolygonMode();
         _mode2.InhibitPolygonOffset();
         _mode2.InhibitDepthTest();
     }
-    else if (pattern == FillWireframe)
+    else if (style == FillWireframe)
     {
         _mode.SetPolygonMode(GL::Enum::FrontAndBack, GL::Enum::Fill);
         _mode2.SetPolygonMode(GL::Enum::FrontAndBack, GL::Enum::Line);
         _mode2.SetPolygonOffset(-1.f, -1.f);
         _mode2.InhibitDepthTest();
     }
-    else if (pattern == FillWireframeNoDepth)
+    else if (style == FillWireframeNoDepth)
     {
         _mode.SetPolygonMode(GL::Enum::FrontAndBack, GL::Enum::Fill);
         _mode2.SetPolygonMode(GL::Enum::FrontAndBack, GL::Enum::Line);

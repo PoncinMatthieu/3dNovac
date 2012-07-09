@@ -44,7 +44,8 @@ namespace Nc
 
         /// Interface to create and manage a window for multiarchi.
         /**
-            The window takes a SceneGraphManager in it's constructor, however if you gives a null pointer, the window will create a new instance of SceneGraphManager.
+            The IWindow taked all the parameters needed to create a window in it's constructor, however, the window will be created only at the call of the method 'Create'.
+            The IWindow takes also a SceneGraphManager in it's constructor, however if you gives a null pointer, the window will create a new instance of SceneGraphManager.
             This allow you to define your own scene manager. But be carefull, The scene manager will be deleted in the destructor of the window.
         */
         class LGRAPHICS IWindow : public Utils::NonCopyable

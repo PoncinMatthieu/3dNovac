@@ -35,45 +35,45 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Define a Character in a bitmap
+        /// Define a Character in a bitmap.
         struct Glyph
         {
-            UInt16          Add;        ///< offset to the next character
-            Vector2i        Size;       ///< size of the character
-            Vector2i        Pos;        ///< relative position for caracters (for example, `p` begin lower than 'a')
-            Box2f           Coord;      ///< coord of the character in the texture
+            UInt16          Add;        ///< offset to the next character.
+            Vector2i        Size;       ///< size of the character.
+            Vector2i        Pos;        ///< relative position for caracters (for example, `p` begin lower than 'a').
+            Box2f           Coord;      ///< coord of the character in the texture.
         };
 
-        /// Manage a font in a bitmap texture
+        /// Manage a font in a bitmap texture.
         /**
             Store the font in a bitmap GL::Texture with a map of Glyphs connected to their values in UTF-32 unicode.
-            Use the FontLoaderFreeType to load the ".ttf" font files
+            Use the FontLoaderFreeType to load the ".ttf" font files.
         */
         class LGRAPHICS Font
         {
             private:
-                typedef std::map<UInt32, Glyph>     MapGlyph;   ///< the map of glyph
+                typedef std::map<UInt32, Glyph>     MapGlyph;   ///< the map of glyph.
 
             public:
                 Font();
                 ~Font();
 
-                /** Enable the bitmap used to render a string */
+                /** Enable the bitmap used to render a string. */
                 inline void     Enable()                            {_bitmap.Enable();}
-                /** Disable the bitmap used to render a string */
+                /** Disable the bitmap used to render a string. */
                 inline void     Disable()                           {_bitmap.Disable();}
 
-                /** Load the font from a file using the FontLoaderFreeType */
+                /** Load the font from a file using the FontLoaderFreeType. */
                 void    LoadFromFile(const Utils::FileName &file, unsigned int baseSize, const Utils::Unicode::UTF32 &charset = _defaultCharset);
 
-                /** \return the base size used to load the font */
+                /** \return the base size used to load the font. */
                 unsigned int        BaseSize() const                {return _baseSize;}
-                /** Set the base size */
+                /** Set the base size. */
                 void                BaseSize(unsigned int size)     {_baseSize = size;}
-                /** \return the bitmap */
+                /** \return the bitmap. */
                 const GL::Texture   &Bitmap()                       {return _bitmap;}
 
-                /** \return the glyph associated to the given caractere */
+                /** \return the glyph associated to the given caractere. */
                 const Glyph         *GetGlyph(UInt32 c) const       {MapGlyph::const_iterator it = _glyphs.find(c); return ((it != _glyphs.end()) ? &it->second : NULL);}
 
             private:

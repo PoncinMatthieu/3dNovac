@@ -36,7 +36,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// To Manipulate a Frame Buffer Object (fbo)
+            /// To Manipulate a Frame Buffer Object (fbo).
             /**
                 A framebuffer must be attached to render buffers or textures before to be used.
                 After creating and attaching render buffers to the fbo, you should use the method 'CheckStatus' to check if you built the fbo correctly.
@@ -54,22 +54,22 @@ namespace Nc
                     FrameBuffer &operator = (const FrameBuffer &fbo);
                     ~FrameBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *   Clone() const      {return new FrameBuffer(*this);}
 
-                    /** Create the frame buffer object (it would be automatically deleted) */
+                    /** Create the frame buffer object (it would be automatically deleted). */
                     void                        Create(Enum::FrameBuffer::Target target = Enum::FrameBuffer::FrameBuffer);
 
-                    /** \return the index of the Frame Buffer Object */
+                    /** \return the index of the Frame Buffer Object. */
                     virtual unsigned int        GetIndex() const    {return _index;}
-                    /** Enable the fbo */
+                    /** Enable the fbo. */
                     virtual void                Enable();
-                    /** Disable the fbo */
+                    /** Disable the fbo. */
                     virtual void                Disable();
 
-                    /** Enable the fbo with the given target */
+                    /** Enable the fbo with the given target. */
                     virtual void                Enable(Enum::FrameBuffer::Target target);
-                    /** Disable the fbo with the given target */
+                    /** Disable the fbo with the given target. */
                     virtual void                Disable(Enum::FrameBuffer::Target target);
 
                     /**
@@ -92,23 +92,23 @@ namespace Nc
                     */
                     Enum::FrameBuffer::State    CheckStatus();
 
-                    /** \return true if there are at least one buffer attached to the fbo */
+                    /** \return true if there are at least one buffer attached to the fbo. */
                     inline bool                 IsAttached()            {return (!_attachedBuffers.empty());}
 
-                    /** Copy a block of pixels from the read framebuffer to the draw framebuffer */
+                    /** Copy a block of pixels from the read framebuffer to the draw framebuffer. */
                     static void                 Blit(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, const Utils::Mask<Enum::BufferBitType> &mask, Enum::Blit::Filter filter);
 
 
                 private:
-                    /** Destroy the fbo */
+                    /** Destroy the fbo. */
                     void                        Release();
 
                 private:
-                    Enum::FrameBuffer::Target   _target;            ///< the target used to bind the fbo
-                    unsigned int                _index;             ///< The id of the fbo
-                    MapAttachedObject           _attachedBuffers;   ///< The map of attached buffers
+                    Enum::FrameBuffer::Target   _target;            ///< the target used to bind the fbo.
+                    unsigned int                _index;             ///< The id of the fbo.
+                    MapAttachedObject           _attachedBuffers;   ///< The map of attached buffers.
 
-                    unsigned int                _previouslyBound;   ///< framebuffer previously bound (saved in Enable and restored in Disable methods)
+                    unsigned int                _previouslyBound;   ///< framebuffer previously bound (saved in Enable and restored in Disable methods).
             };
         }
     }

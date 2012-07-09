@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to manage and render effects
+        /// Interface to manage and render effects.
         /**
             To create your own effect, you should implement not only the clone and render method but also the Defines NC_UTILS_DEFINE_PARENT_CLASS and NC_UTILS_DEFINE_VISITABLE.
             An effect should be able to be activated or not. By default the effect is activated.
@@ -54,7 +54,7 @@ namespace Nc
                 inline void             Activated(bool state)       {_activated = state;}
 
             protected:
-                /** To render the effect and it's childs */
+                /** To render the effect and it's childs. */
                 virtual void            Render(SceneGraph *scene) = 0;
 
             protected:

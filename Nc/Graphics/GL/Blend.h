@@ -35,19 +35,19 @@ namespace Nc
     {
         namespace GL
         {
-            /// Help to manipulate the blending opengl method
+            /// Help to manipulate the blending opengl method.
             /**
-                \todo manage the transparency color and rate
+                \todo manage the transparency color and rate.
             */
             class LGRAPHICS  Blend
             {
                 public:
-                    /// The pattern of the using blend function
+                    /// The pattern of the using blend function.
                     enum    Pattern
                     {
                         Disabled = 0,
-                        Alpha,                  ///< Color Pixel = Src * a + Dest * (1 - a)
-                        Add,                    ///< Color Pixel = Src + Dest
+                        Alpha,                  ///< Color Pixel = Src * a + Dest * (1 - a).
+                        Add,                    ///< Color Pixel = Src + Dest.
                         Multiply                ///< Color Pixel = Src * Dest.
                     };
 
@@ -56,24 +56,24 @@ namespace Nc
                     Blend(Pattern p);
                     ~Blend()    {}
 
-                    /** Set the blending pattern */
+                    /** Set the blending pattern. */
                     void            SetPattern(Pattern p);
                     inline void     InhibitBlending()                                           {_blendState = false;}
-                    /** Set the blend factors and active the blending */
+                    /** Set the blend factors and active the blending. */
                     inline void     SetFactors(Enum::BlendFactor s, Enum::BlendFactor d)        {_sFactor = s; _dFactor = d; _blendState = true;}
 
-                    /** Enable the blending opengl state */
+                    /** Enable the blending opengl state. */
                     void            Enable();
-                    /** Disable the blending opengl state */
+                    /** Disable the blending opengl state. */
                     void            Disable();
 
                 protected:
-                    bool                        _blendState;            ///< if true, enable the blending
-                    Enum::BlendFactor           _sFactor;               ///< sFactor used by the glBlendFunc
-                    Enum::BlendFactor           _dFactor;               ///< dFactor used by the glBlendFunc
-                    bool                        _lastBlendState;        ///< Last blend state
-                    Enum::BlendFactor           _lastSFactor;           ///< Last sFactor used by the glBlendFunc
-                    Enum::BlendFactor           _lastDFactor;           ///< Last dFactor used by the glBlendFunc
+                    bool                        _blendState;            ///< if true, enable the blending.
+                    Enum::BlendFactor           _sFactor;               ///< sFactor used by the glBlendFunc.
+                    Enum::BlendFactor           _dFactor;               ///< dFactor used by the glBlendFunc.
+                    bool                        _lastBlendState;        ///< Last blend state.
+                    Enum::BlendFactor           _lastSFactor;           ///< Last sFactor used by the glBlendFunc.
+                    Enum::BlendFactor           _lastDFactor;           ///< Last dFactor used by the glBlendFunc.
             };
         }
     }

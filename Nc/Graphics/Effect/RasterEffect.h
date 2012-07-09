@@ -35,13 +35,16 @@ namespace Nc
     namespace Graphic
     {
         /// Manage the rasterisation parameters to draw simple effects like a wireframe effect.
+        /**
+            \todo Create a demo using RasterEffect to create a Wireframe effect.
+        */
         class LGRAPHICS RasterEffect : public Effect
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::RasterEffect);
 
             public:
-                enum Pattern
+                enum Style
                 {
                     Points,                 ///< draw only the points of primitives.
                     Wireframe,              ///< draw only the edges of primitives.
@@ -51,7 +54,7 @@ namespace Nc
                 };
 
             public:
-                RasterEffect(Pattern pattern = Fill);
+                RasterEffect(Style style = Fill);
 
                 virtual ISceneNode  *Clone() const                                      {return new RasterEffect(*this);}
 
@@ -59,7 +62,7 @@ namespace Nc
                 inline void         SetDepthTest(bool state)                            {_mode.SetDepthTest(state);}
 
                 /** Set the effect mode. */
-                void                SetPattern(Pattern pattern);
+                void                SetPattern(Style style);
 
                 /** Render the given \p node with the given \p scene. */
                 void                Render(Entity *node, SceneGraph *scene);

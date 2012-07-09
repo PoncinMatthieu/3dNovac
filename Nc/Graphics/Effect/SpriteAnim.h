@@ -37,6 +37,10 @@ namespace Nc
         /// Provide a Sprite Animation Frame to render and manage an animation of sprites `SpriteAnim`.
         /**
             It's simply a container of sprite, a frame is composed of one sprite, so the Animation class will animate his collection of frames.
+
+            \sa
+                - FramesAnimation
+                - FramesAnimation<SpriteAnimFrame>::Frame
         */
         class LGRAPHICS SpriteAnimFrame : public FramesAnimation<SpriteAnimFrame>::Frame
         {

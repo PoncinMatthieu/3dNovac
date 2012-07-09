@@ -34,6 +34,9 @@ namespace Nc
     namespace Graphic
     {
         /// Like a camera, this effect allow you to manipulate the Viewport/Projection/View.
+        /**
+            \todo Create an example using the camera effect.
+        */
         class LGRAPHICS CameraEffect : public Effect
         {
             public:

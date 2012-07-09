@@ -37,7 +37,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Interface to manage an OpenGL Object, manage the opengl ressource like a smart pointer
+            /// Interface to manage an OpenGL Object, manage the opengl ressource like a smart pointer.
             /**
                 The ressource is shared between two object when you use the copy constructor or the copy operator.
                 So GL::Object, is a reference counter of gl ressources (index) like texture and shader.
@@ -56,42 +56,42 @@ namespace Nc
                     Object &operator = (const Object &sp);
                     virtual ~Object();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *Clone() const = 0;
 
-                    /** \return true if the ressource is unique */
+                    /** \return true if the ressource is unique. */
                     inline bool             Unique() const      {return (_nbRef != NULL && *_nbRef == 1);}
-                    /** \return the number of reference on the ressource */
+                    /** \return the number of reference on the ressource. */
                     inline unsigned int     NbRef() const       {return (_nbRef != NULL) ? *_nbRef : 0;}
-                    /** \return true if the ressource is valid (loaded) */
+                    /** \return true if the ressource is valid (loaded). */
                     inline bool             IsValid() const     {return (_nbRef != NULL && GetIndex() != 0);}
-                    /** Destroy the reference of the ressource */
+                    /** Destroy the reference of the ressource. */
                     inline void             Destroy()           {ReleaseRef();}
 
                     // redefine these functions
-                    /** \return the index of the GL object (like texture object) */
+                    /** \return the index of the GL object (like texture object). */
                     virtual unsigned int    GetIndex() const    {return 0;}
-                    /** Enable the ressource */
+                    /** Enable the ressource. */
                     virtual void            Enable() const      {}
-                    /** Disable the ressource */
+                    /** Disable the ressource. */
                     virtual void            Disable() const     {}
 
                 protected:
                     Object();
 
-                    /** Create a new reference for a new ressource */
+                    /** Create a new reference for a new ressource. */
                     void            NewRef();
-                    /** Release the reference of the ressource */
+                    /** Release the reference of the ressource. */
                     void            ReleaseRef();
 
                 private:
-                    /** Add the reference on the shared counter */
+                    /** Add the reference on the shared counter. */
                     void            AddRef(unsigned int *nbRef);
-                    /** To redefine, called when the shared ressource is released */
+                    /** To redefine, called when the shared ressource is released. */
                     virtual void    Release() = 0;
 
                 protected:
-                    unsigned int    *_nbRef;        ///< shared counter to get the number of reference of a shared ressource
+                    unsigned int    *_nbRef;        ///< shared counter to get the number of reference of a shared ressource.
             };
         }
     }

@@ -37,7 +37,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Define a Render state associated to an OpenGL context
+            /// Define a Render state associated to an OpenGL context.
             /**
                 The render state centralize all the statements and modifiers of the opengl machine state.
                 This render state is essantially used to centralize the ogl functions but also to avoid any redundant state changes in the ogl state machine.

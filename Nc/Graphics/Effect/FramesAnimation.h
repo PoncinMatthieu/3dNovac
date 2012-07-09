@@ -34,10 +34,15 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Template class animation to manage any animation.
+        /// Template class animation to manage an animation governed by frames.
         /**
-            The typename T should be the type of AnimationFrame. An animation is typically composed by a list of animation frame.
-            So to use this class you will have to implemente a new Frame class by heritance like the SpriteAnimFrame class.
+            The typename T should be a class which inherite of the inner class Frame, the animation is simply composed by a list of Frame.
+
+            To use this class you will have to implement a new Frame class by heritance like the SpriteAnimFrame class.
+
+            \sa
+                - SpriteAnimFrame
+                - Frame
         */
         template<typename T>
         class FramesAnimation : public Animation
@@ -54,7 +59,7 @@ namespace Nc
                 /// Enum to define the comportement of an Animation.
                 enum Pattern
                 {
-                    Loop = 0,       ///< return to the first frame at the end of the animation and continu.
+                    Loop = 0,       ///< return to the first frame at the end of the animation and continue.
                     Infinite,       ///< The anim continu at the end with the last frame.
                     DieAtEnd        ///< kill (_alive = false) the anim at the end of the animation, and display nothing.
                 };
@@ -63,6 +68,10 @@ namespace Nc
                 /**
                     Inherite of it to create your own animation.
                     It's possible to send a signal to a frame, call the function Animation::Signal() to send a signal to the current frame.
+
+                    \sa
+                        - FramesAnimation
+                        - Frame
                 */
                 class LGRAPHICS Frame : public Effect
                 {

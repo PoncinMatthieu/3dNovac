@@ -36,14 +36,14 @@ namespace Nc
     {
         namespace GL
         {
-            /// Define a Drawable
+            /// Define a Drawable.
             /**
-                A drawable is an association of a MaterialConfig and a GeometryBuffer.
+                A drawable is an association of a MaterialConfig and a IGeometryBuffer.
 
-                The MaterialConfig help us to store data like Texture and RasterMode which is material dependant
-                and The Geometry help us to store data like vertices informations coord/colors/texture_coord which is Material independant.
+                The MaterialConfig help us to store data like Texture and RasterMode which is material dependant.
+                and The IGeometryBuffer help us to store data like vertices informations coord/colors/texture_coord which is Material independant.
 
-                The drawable class is typically here to simplify the manipulation of the MaterialConfig and GeometryBuffer with the materials.
+                The drawable class is typically here to simplify the manipulation of the MaterialConfig and IGeometryBuffer with the materials.
             */
             struct LGRAPHICS Drawable
             {
@@ -64,18 +64,18 @@ namespace Nc
                 ~Drawable();
 
                 // methods
-                /** Enable the configs states before rendering */
+                /** Enable the configs states before rendering. */
                 inline void                     Enable()                        {Config->Enable();}
 
-                /** Disable the configs states after rendering */
+                /** Disable the configs states after rendering. */
                 inline void                     Disable()                       {Config->Disable();}
 
-                /** Render the associated geometry */
+                /** Render the associated geometry. */
                 inline void                     Render()                        {Geometry->Render();}
 
                 // fields
-                MaterialConfig      *Config;            ///< Pointer to a MaterialConfig or a sub class
-                IGeometryBuffer     *Geometry;          ///< Pointer to the geometry
+                MaterialConfig      *Config;            ///< Pointer to a MaterialConfig or a sub class.
+                IGeometryBuffer     *Geometry;          ///< Pointer to the geometry.
             };
 
             template<typename VertexType, unsigned int D1, unsigned int D2>

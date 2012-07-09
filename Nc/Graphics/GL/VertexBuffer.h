@@ -40,7 +40,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Template class which define a buffer of vertex to describe a geometry
+            /// Template class which define a buffer of vertex to describe a geometry.
             template<typename T>
             class VertexBuffer : public DataBuffer<T>
             {
@@ -51,37 +51,37 @@ namespace Nc
                     VertexBuffer(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage);
                     ~VertexBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *Clone() const                  {return new VertexBuffer(*this);}
 
                     // manage content
-                    /** Init the buffer */
+                    /** Init the buffer. */
                     void    Init();
-                    /** Init the buffer */
+                    /** Init the buffer. */
                     void    Init(unsigned int size, Enum::DataBuffer::Usage usage);
-                    /** Update the buffer */
+                    /** Update the buffer. */
                     template<unsigned int D>
                     void    UpdateData(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage);
-                    /** Update the buffer */
+                    /** Update the buffer. */
                     void    UpdateData(const T *aDataTab);
 
-                    /** \return true if we need to update the geometry */
+                    /** \return true if we need to update the geometry. */
                     inline bool         NeedUpdate()                        {return _needUpdate;}
 
                     // affichage
-                    /** Map the buffer (Activate it to be rendered) */
+                    /** Map the buffer (Activate it to be rendered). */
                     void    Map();
-                    /** Unmap the buffer (Disable it) */
+                    /** Unmap the buffer (Disable it). */
                     void    Unmap();
 
-                    /** Draw the vertex buffer with the given primitive type */
+                    /** Draw the vertex buffer with the given primitive type. */
                     void    Draw(Enum::PrimitiveType type);
 
                 public:
-                    VertexDescriptor    Descriptor;         ///< used to describe the vertex type structure
+                    VertexDescriptor    Descriptor;         ///< used to describe the vertex type structure.
 
                 private:
-                    bool    _needUpdate;        ///< used to mark if we need to update the geometry
+                    bool    _needUpdate;        ///< used to mark if we need to update the geometry.
             };
 
             // implementation

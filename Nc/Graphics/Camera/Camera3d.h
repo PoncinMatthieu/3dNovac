@@ -36,8 +36,14 @@ namespace Nc
     {
         /// Abstract class to define 3d Camera.
         /**
-            A 3d Camera needs to have the routines to manage the events and to update the mouvement of the camera.
             The camera is composed by an Eye, a Center and a vector Up.
+
+            To create your own Camera3d, you will need to redefine the following methods:
+                - MajEye, which is used to update the 3 vector of the camera.
+                - Update, which is used to update the camera at each loop of the game engine.
+                - MouseMotionEvent: To receive events.
+                - MouseButtonEvent: To receive events.
+                - KeyboardEvent: To receive events.
 
             \todo Recode gluUnProject which is deprecated and implement the Get3dCoordinateFromProjection method.
         */

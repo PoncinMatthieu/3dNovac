@@ -35,8 +35,8 @@ namespace Nc
     {
         /// To manage simple animation with matrix like Rotation/Translation.
         /**
-            \deprecated this class shouldn't be use, try to create a controller to manipulate the matrix on your node.
-            \todo this class should be recode or just deleted, no longer necessary
+            \deprecated this class shouldn't be use, try to create a Controller to manipulate the matrix on your node.
+            \todo this class should be recode or just deleted, no longer necessary.
         */
         class LGRAPHICS   MatrixAnimation : public Animation
         {
@@ -48,31 +48,31 @@ namespace Nc
                 //MatrixAnimation(const TMatrix &transformation);
                 ~MatrixAnimation();
 
-                /** Copy the matrix animation */
+                /** Copy the matrix animation. */
                 virtual ISceneNode  *Clone() const      {return new MatrixAnimation(*this);}
 
                 virtual void        Start()             {}
                 virtual void        Stop()              {}
                 virtual bool        Started() const     {return true;}
 
-                /** Reset the anim with the initial matrix */
+                /** Reset the anim with the initial matrix. */
                 inline void         Reset()                     {_currentMatrix = TMatrix::Identity;}
 
                 // accesseurs
     //            inline void   Transfornation(const mMatrice &m)   {_transformation = m;}    //TODO
-                /** Program a rotatation animation */
+                /** Program a rotatation animation. */
                 inline void     Rotation(const Vector3f &axe, float angle)      {_rotation = axe; _angle = angle;}
 
             protected:
-                /** Update the matrix animation */
+                /** Update the matrix animation. */
                 virtual void        Update(float runningTime);
-                /** Render the matrix animation */
+                /** Render the matrix animation. */
                 virtual void        Render(SceneGraph *scene);
 
             private:
                 TMatrix         _currentMatrix;
-                float           _angle;             ///< Rotation angle
-                Vector3f        _rotation;          ///< Rotation vector. The matrix transformation is not used. We should find a way to use the time factor
+                float           _angle;             ///< Rotation angle.
+                Vector3f        _rotation;          ///< Rotation vector. The matrix transformation is not used. We should find a way to use the time factor.
         };
     }
 }

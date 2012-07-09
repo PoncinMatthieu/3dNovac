@@ -36,7 +36,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Template Interface to manage an OpenGL buffer
+            /// Template Interface to manage an OpenGL buffer.
             /**
                 The openGL buffer is directly allocated in the graphic card.
                 The memory is not keep in local, but it't possible to retreive it by using the MapBuffer method.
@@ -49,51 +49,51 @@ namespace Nc
                     DataBuffer(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab = NULL);
                     virtual ~DataBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *Clone() const                  {return new DataBuffer<T>(*this);}
 
-                    /** Init the buffer */
+                    /** Init the buffer. */
                     void    Init(Enum::DataBuffer::Target target);
-                    /** Init the buffer */
+                    /** Init the buffer. */
                     void    Init(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab);
-                    /** Update the buffer */
+                    /** Update the buffer. */
                     void    UpdateData(unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab);
-                    /** Update the buffer */
+                    /** Update the buffer. */
                     void    UpdateData(const T *dataTab);
 
-                    /** Enable the buffer */
+                    /** Enable the buffer. */
                     virtual void            Enable() const;
                     // /** Disable the buffer */
                     //virtual inline void         Disable() const             {State::Current().Unbind(_target);} // since OpenGL version 3.3, unbind a buffer is unnecessary
-                    /** return the gl index of the buffer */
+                    /** return the gl index of the buffer. */
                     virtual unsigned int	GetIndex() const                {return _index;}
 
-                    /** Return the size of the buffer */
+                    /** Return the size of the buffer. */
                     inline unsigned int         Size() const                {return _size;}
-                    /** Return the stride of the data in the buffer */
+                    /** Return the stride of the data in the buffer. */
                     inline unsigned int         Stride() const              {return _stride;}
 
                     /**
                         Map the buffer in the local buffer, and return it's pointer.
                      */
                     T                           *MapBuffer(Enum::DataBuffer::AccessType access);
-                    /** Unmap the buffer */
+                    /** Unmap the buffer. */
                     void                        UnmapBuffer();
 
-                    /** \return the local buffer, if no local has been keeped, the ret value will be null */
+                    /** \return the local buffer, if no local has been keeped, the ret value will be null. */
                     inline T                    *LocalBuffer()              {return _dataTab;}
 
                 protected:
-                    /** Release the gl buffer */
+                    /** Release the gl buffer. */
                     virtual  void   Release();
 
-                    unsigned int                _index;             ///< the gl buffer index
-                    unsigned int                _size;              ///< the size of the buffer
-                    unsigned int                _stride;            ///< the stride between two data in the buffer
-                    Enum::DataBuffer::Target    _target;            ///< the target to which the buffer object is bound
-                    Enum::DataBuffer::Usage     _usage;             ///< the type of usage of the buffer
+                    unsigned int                _index;             ///< the gl buffer index.
+                    unsigned int                _size;              ///< the size of the buffer.
+                    unsigned int                _stride;            ///< the stride between two data in the buffer.
+                    Enum::DataBuffer::Target    _target;            ///< the target to which the buffer object is bound.
+                    Enum::DataBuffer::Usage     _usage;             ///< the type of usage of the buffer.
 
-                    T                           *_dataTab;          ///< the local data tab (never used by default)
+                    T                           *_dataTab;          ///< the local data tab (never used by default).
             };
 
             template <typename T>

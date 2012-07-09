@@ -34,14 +34,14 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to load font files
+        /// Interface to load font files.
         class LGRAPHICS FontLoader
         {
             public:
                 FontLoader()            {}
                 virtual ~FontLoader()   {}
 
-                /** Load a font from a file using a charset */
+                /** Load a font from a file using a charset. */
                 virtual void        LoadFromFile(const Utils::FileName &file, const Utils::Unicode::UTF32 &charset, Font &font) = 0;
         };
     }

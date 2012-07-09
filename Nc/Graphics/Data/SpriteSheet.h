@@ -32,7 +32,17 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Allow to read a sprite sheet description, load the associated texture, load boxes and associated sprite names of the sprite sheet.
+        /// Allow to read a sprite sheet description in Xml format
+        /**
+            The SpriteSheet class loads the associated texture, load boxes and associated sprite names of the sprite sheet.
+
+            <div class="title"> Here is an example of Xml sprite sheet: </div>
+                \p Examples/SpriteSheet.desc
+                \include SpriteSheet.desc
+
+                The parameter 'path' allow to setup the path of the image and every inline object 'Sprite' define a sprite with it's name and box.
+                The Sprite box can then be retreive with the method 'SpriteBox'.
+        */
         class LGRAPHICS SpriteSheet
         {
             public:
@@ -42,21 +52,21 @@ namespace Nc
                 SpriteSheet(const Utils::FileName &path);
                 ~SpriteSheet();
 
-                /** \return the sprite map */
+                /** \return the sprite map. */
                 inline const SpriteMap  &Sprites() const                    {return _spriteMap;}
 
-                /** \return the texture used for every sprites */
+                /** \return the texture used for every sprites. */
                 inline const GL::Texture &Texture() const                   {return _texture;}
 
-                /** \return the box associated to the given sprite name */
+                /** \return the box associated to the given sprite name. */
                 inline const Box2i      &SpriteBox(const std::string &s)    {return _spriteMap[s];}
 
-                /** \return true if the given sprite name exist */
+                /** \return true if the given sprite name exist. */
                 bool                    SpriteExist(const std::string &s) const;
 
             private:
-                GL::Texture     _texture;           ///< texture of the sprite sheet
-                SpriteMap       _spriteMap;         ///< box coordinated with associated names in the sprite sheet
+                GL::Texture     _texture;           ///< texture of the sprite sheet.
+                SpriteMap       _spriteMap;         ///< box coordinated with associated names in the sprite sheet.
         };
     }
 }

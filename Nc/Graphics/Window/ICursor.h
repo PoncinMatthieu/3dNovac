@@ -40,7 +40,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to manipulate a Cursor
+        /// Interface to manipulate a Cursor.
         /**
             A cursor can be load from an xpm format and as to be Enable to be seeing.
             When you Enable the cursor, the current cursor of the window will be automatically set

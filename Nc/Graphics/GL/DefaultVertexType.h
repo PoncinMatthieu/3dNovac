@@ -36,10 +36,10 @@ namespace Nc
     {
         namespace GL
         {
-            /// Reference some struct that define default VertexTypes
+            /// Reference some struct that define default VertexTypes.
             namespace DefaultVertexType
             {
-                /** Define the names of the defaults componants which should used in the default shaders */
+                /// Define the names of the defaults componants which should used in the default shaders.
                 namespace ComponentsName
                 {
                     static const std::string Coord = "Coord";
@@ -49,7 +49,7 @@ namespace Nc
                 }
 
                 #pragma pack(push, 1) // pragma pack to remove padding byte on structure
-                /// A VertexType for 3d colored geometry
+                /// A VertexType for 3d colored geometry.
                 struct LGRAPHICS Colored
                 {
                     float           coord[3];     // position
@@ -60,7 +60,7 @@ namespace Nc
                     void Fill(float coordX, float coordY, float coordZ, const Color &c);
                 };
 
-                /// A VertexType for 2d colored geometry
+                /// A VertexType for 2d colored geometry.
                 struct LGRAPHICS Colored2d
                 {
                     float           coord[2];     // position
@@ -71,7 +71,7 @@ namespace Nc
                     void Fill(float coordX, float coordY, const Color &c);
                 };
 
-                /// A VertexType for 3d textured geometry (with a normal to apply lighting on it)
+                /// A VertexType for 3d textured geometry (with a normal to apply lighting on it).
                 struct LGRAPHICS Textured
                 {
                     float           coord[3];     // position
@@ -84,7 +84,7 @@ namespace Nc
                     void Fill(float coordX, float coordY, float coordZ, float texCoordX, float texCoordY, float normalX, float normalY, float normalZ, const Color &c);
                 };
 
-                /// A VertexType for 2d textured geometry
+                /// A VertexType for 2d textured geometry.
                 struct LGRAPHICS Textured2d
                 {
                     float           coord[2];     // position
@@ -96,7 +96,7 @@ namespace Nc
                     void Fill(float coordX, float coordY, float texCoordX, float texCoordY, const Color &c);
                 };
 
-                /// A VertexType for 3d textured geometry (a SkyBox use these VertexType)
+                /// A VertexType for 3d textured geometry (a SkyBox use these VertexType).
                 struct LGRAPHICS Textured3d
                 {
                     float           coord[3];     // position

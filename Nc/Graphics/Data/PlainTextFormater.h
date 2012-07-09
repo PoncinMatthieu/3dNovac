@@ -41,7 +41,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// PlainTextFormater used to plain text elements.
+        /// PlainTextFormater used to format plain text elements.
         /**
             The formater allow to render plain text with the following parameter:
                 - charSize: define the size of the caracters.

@@ -45,9 +45,9 @@ namespace Nc
                 SubWindowInput(IWindow *win, WindowInput *parent);
                 virtual ~SubWindowInput();
 
-                /** Create and init the input */
+                /** Create and init the input. */
                 virtual void Create();
-				/** Destroy the input */
+				/** Destroy the input. */
 				virtual void Destroy();
 
             private:

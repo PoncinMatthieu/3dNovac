@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<SpriteSheet path="Nc:Image:GUI/spriteSheet.png">
+  <Sprite name="BoxLeftEdge"		topX="8" topY="2" bottomX="10" bottomY="6" />
+  <Sprite name="BoxTopEdge"			topX="10" topY="0" bottomX="14" bottomY="2" />
+  <Sprite name="BoxRightEdge"		topX="14" topY="2" bottomX="16" bottomY="6" />
+  <Sprite name="BoxBottomEdge"		topX="10" topY="6" bottomX="14" bottomY="8" />
+  <Sprite name="BoxLeftTop"			topX="8" topY="0" bottomX="10" bottomY="2" />
+  <Sprite name="BoxRightTop"		topX="14" topY="0" bottomX="16" bottomY="2" />
+  <Sprite name="BoxLeftBottom"		topX="8" topY="6" bottomX="10" bottomY="8" />
+  <Sprite name="BoxRightBottom"		topX="14" topY="6" bottomX="16" bottomY="8" />
+</SpriteSheet>
+

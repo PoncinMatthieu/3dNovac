@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Interface to manage and render animations
+        /// Interface to manage and render animations.
         class LGRAPHICS     Animation : public Effect
         {
             public:
@@ -44,20 +44,20 @@ namespace Nc
                 Animation()
                     : Effect(), _alive(true)                {}
 
-                /** Start the effect */
+                /** Start the effect. */
                 virtual void            Start()             {}
-                /** Stop the effect */
+                /** Stop the effect. */
                 virtual void            Stop()              {}
-                /** \return true if the effect is started */
+                /** \return true if the effect is started. */
                 virtual bool            Started() const     {return true;}
 
-                /** Set alive statement */
+                /** Set alive statement. */
                 void                Alive(bool state)           {_alive = state;}
-                /** \return the alive statement */
+                /** \return the alive statement. */
                 virtual inline bool Alive() const               {return _alive;}
 
             protected:
-                bool            _alive;                         ///< statement to specifiy if the effect is dead (terminate), in that case we should destroy the animation upstream
+                bool            _alive;                         ///< Statement used to specifiy if the effect is dead (terminate), in that case we should destroy the animation upstream.
         };
     }
 }

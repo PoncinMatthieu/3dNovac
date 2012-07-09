@@ -35,7 +35,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Structure to define a data of a VertexDescriptor that describe a composant of a VertexType
+            /// Structure to define a data of a VertexDescriptor that describe a composant of a VertexType.
             struct LGRAPHICS DataVertexDescriptor
             {
 				DataVertexDescriptor();
@@ -59,16 +59,16 @@ namespace Nc
                     return oss;
                 }
 
-                size_t          Sizeof;             ///< the size corresponding to the size of the componant type
-                std::string     Name;               ///< the name of the componant used to identify it
-                int             Size;               ///< the size of the data in the vertex
-                GLenum          Type;               ///< the type of the data in the vertex
-                unsigned int    PointerOffset;      ///< the pointer offset of the data in the vertex
-                int             IndexAttrib;        ///< the index Attrib (in relation with the Shader::AttribLocation) of the data in the vertex
-                bool            Normalized;         ///< if true, the data will be normalized before enterring in the shader program pipeline
+                size_t          Sizeof;             ///< the size corresponding to the size of the componant type.
+                std::string     Name;               ///< the name of the componant used to identify it.
+                int             Size;               ///< the size of the data in the vertex.
+                GLenum          Type;               ///< the type of the data in the vertex.
+                unsigned int    PointerOffset;      ///< the pointer offset of the data in the vertex.
+                int             IndexAttrib;        ///< the index Attrib (in relation with the Shader::AttribLocation) of the data in the vertex.
+                bool            Normalized;         ///< if true, the data will be normalized before enterring in the shader program pipeline.
             };
 
-            /// Describe all componants of a VertexType
+            /// Describe all componants of a VertexType.
             class LGRAPHICS VertexDescriptor : public Array<DataVertexDescriptor,0>
             {
                 public:
@@ -87,9 +87,9 @@ namespace Nc
                     }
 
                 private:
-                    std::string     _name;          ///< Name of the vertex type
-                    size_t          _sizeof;        ///< size of the vertex structure
-                    unsigned int    _priority;      ///< priority used to choose the best default material
+                    std::string     _name;          ///< Name of the vertex type.
+                    size_t          _sizeof;        ///< size of the vertex structure.
+                    unsigned int    _priority;      ///< priority used to choose the best default material.
             };
         }
     }

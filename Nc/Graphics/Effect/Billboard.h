@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// Simulate a billboarding effect
+        /// Simulate a billboarding effect.
         /**
             Billboarding is a method in which a sprite is rendered perpendicular to the camera without respect to camera movement and the sprite used is called a billboard.
 
@@ -70,17 +70,17 @@ namespace Nc
 
                 virtual ISceneNode      *Clone() const                      {return new Billboard(*this);}
 
-                /** Rotate the matrix of the childs. This function help to set up the matrix of a sprite or a string */
+                /** Rotate the matrix of the childs. This function help to set up the matrix of a sprite or a string. */
                 virtual void            RotateChilds();
 
-                /** \return the pattern of the billboard */
+                /** \return the pattern of the billboard. */
                 Pattern                 GetPattern() const                  {return _pattern;}
-                /** Set the pattern of the billboard */
+                /** Set the pattern of the billboard. */
                 void                    SetPattern(Pattern p)               {_pattern = p;}
 
-                /** \return the target of the billboard, if the target is null, the true target is the current camera at the rendering */
+                /** \return the target of the billboard, if the target is null, the true target is the current camera at the rendering. */
                 Entity                  *Target() const                     {return _targetEntity;}
-                /** Set the target of the billboard */
+                /** Set the target of the billboard. */
                 void                    Target(Entity *entity)              {_targetEntity = entity;}
 
             protected:
@@ -93,7 +93,7 @@ namespace Nc
                 void                    OrientBillboard(SceneGraph *scene);
 
             protected:
-                Entity          *_targetEntity;     ///< if the target entity is set, the childs will faced to the target entity and not to the current camera
+                Entity          *_targetEntity;     ///< if the target entity is set, the childs will faced to the target entity and not to the current camera.
                 Pattern         _pattern;
         };
     }

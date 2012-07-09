@@ -41,16 +41,17 @@ namespace Nc
 		{
 			namespace Enum
 			{
+			    /// Define opengl implementation descriptions, like opengl version and renderer.
 				enum ImplementationDescription
 				{
 					Vendor					= GL_VENDOR,					///< Returns the company responsible for this GL implementation.
 					Renderer				= GL_RENDERER,					///< Returns the name of the renderer. This name is typically specific to a particular configuration of a hardware platform.
                     Version					= GL_VERSION,					///< Returns a version or release number.
 					ShadingLanguageVersion	= GL_SHADING_LANGUAGE_VERSION,	///< Returns a version or release number for the shading language.
-                    Extensions				= GL_EXTENSIONS					///< Return the supported extensions
+                    Extensions				= GL_EXTENSIONS					///< Return the supported extensions.
 				};
 
-			    /// Define the gl capabilities
+			    /// Define the gl capabilities.
 				/**
                     Sample of ogl functions used with this enum:
                         - glEnable()
@@ -81,7 +82,7 @@ namespace Nc
                     ProgramPointSize        = GL_PROGRAM_POINT_SIZE,        ///< If enabled, and a vertex or geometry shader is active, then the derived point size is taken from the (potentially clipped) shader builtin gl_PointSize and clamped to the implementation-dependent point size range.
                 };
 
-                /// Define ogl scalar types
+                /// Define ogl scalar types.
 				/**
                     Sample of ogl functions used with this enum:
                         - glDrawElements()
@@ -94,7 +95,7 @@ namespace Nc
                     Float                   = GL_FLOAT
                 };
 
-				/// Define the different types of primitive with can be draw
+				/// Define the different types of primitive with can be draw.
 				/**
                     Sample of ogl functions used with this enum:
                         - glDrawArrays()
@@ -117,7 +118,7 @@ namespace Nc
 
                 namespace DataBuffer
                 {
-                    /// Define the supported types of buffers
+                    /// Define the supported types of buffers.
                     /**
                         Sample of ogl functions used with this enum:
                             - glBindBuffer()
@@ -142,7 +143,7 @@ namespace Nc
                         UniformBuffer           = GL_UNIFORM_BUFFER
                     };
 
-                    /// Define the supported types of buffers
+                    /// Define the supported types of buffers.
                     /**
                         Sample of ogl functions used with this enum:
                             - glBufferData()
@@ -163,7 +164,7 @@ namespace Nc
                         DynamicCopy     = GL_DYNAMIC_COPY
                     };
 
-                    /// Define an access rights for buffers
+                    /// Define an access rights for buffers.
                     /**
                         Sample of ogl functions used with this enum:
                             - glMapBuffer()
@@ -176,7 +177,7 @@ namespace Nc
                     };
                 }
 
-                /// Define ogl buffer bit types
+                /// Define ogl buffer bit types.
                 /**
                     Sample of ogl functions used with this enum:
                         - glClear()
@@ -188,7 +189,7 @@ namespace Nc
                     StencilBufferBit    = GL_STENCIL_BUFFER_BIT     ///< Indicates the stencil buffer.
                 };
 
-                /// Define a polygon face mode to be apply
+                /// Define a polygon face mode to be apply.
 				/**
                     Sample of ogl functions used with this enum:
                         - glPolygonMode()
@@ -200,7 +201,7 @@ namespace Nc
                     FrontAndBack    = GL_FRONT_AND_BACK
                 };
 
-                /// Define a polygon mode to be apply
+                /// Define a polygon mode to be apply.
 				/**
                     Sample of ogl functions used with this enum:
                         - glPolygonMode()
@@ -212,7 +213,7 @@ namespace Nc
                     Fill = GL_FILL
                 };
 
-                /// Define the blends factors
+                /// Define the blends factors.
 				/**
                     Sample of ogl functions used with this enum:
                         - glBlendFunc()
@@ -235,7 +236,7 @@ namespace Nc
                     OneMinusConstantAlpha   = GL_ONE_MINUS_CONSTANT_ALPHA
                 };
 
-                /// Define the different depth functions
+                /// Define the different depth functions.
 				/**
                     Sample of ogl functions used with this enum:
                         - glDepthFunc()
@@ -254,7 +255,7 @@ namespace Nc
 
 				namespace Texture
 				{
-                    /// Define ogl texture targets
+                    /// Define ogl texture targets.
                     /**
                         Sample of ogl functions used with this enum:
                             - glBindTexture()
@@ -274,7 +275,7 @@ namespace Nc
                         Texture2dMultisampleArray   = GL_TEXTURE_2D_MULTISAMPLE_ARRAY
                     };
 
-                    /// Define ogl texture internal format
+                    /// Define ogl texture internal format.
                     /**
                         Sample of ogl functions used with this enum:
                             - glTexImage*()
@@ -315,6 +316,7 @@ namespace Nc
                         SRGB8Alpha8                 = GL_SRGB8_ALPHA8
                     };
 
+                    /// Define filtering methods.
                     enum Filter
                     {
                         Linear                      = GL_LINEAR,
@@ -326,7 +328,7 @@ namespace Nc
                     };
 				}
 
-                /// Define ogl pixel format
+                /// Define ogl pixel format.
 				/**
                     Sample of ogl functions used with this enum:
                         - glTexImage*()
@@ -344,7 +346,7 @@ namespace Nc
                     };
 				}
 
-                /// Define ogl pixel data type
+                /// Define ogl pixel data type.
 				/**
                     Sample of ogl functions used with this enum:
                         - glTexImage*()
@@ -375,7 +377,7 @@ namespace Nc
                     };
 				}
 
-                /// Define ogl shader types
+                /// Define ogl shader types.
 				/**
                     Sample of ogl functions used with this enum:
                         - glCreateShader()
@@ -389,7 +391,7 @@ namespace Nc
 
                 namespace FrameBuffer
                 {
-                    /// Define ogl Frame buffer types
+                    /// Define ogl Frame buffer types.
                     /**
                         Sample of ogl functions used with this enum:
                             - glBindFrameBuffer()
@@ -402,7 +404,7 @@ namespace Nc
                         ReadFrameBuffer     = GL_READ_FRAMEBUFFER
                     };
 
-                    /// Define ogl Frame buffer attachment points
+                    /// Define ogl Frame buffer attachment points.
                     /**
                         Sample of ogl functions used with this enum:
                             - glFrameBufferRenderBuffer()
@@ -434,7 +436,7 @@ namespace Nc
                         DepthStencilAttachment      = GL_DEPTH_STENCIL_ATTACHMENT
                     };
 
-                    /// Define ogl Frame buffer status
+                    /// Define ogl Frame buffer status.
                     /**
                         Sample of ogl functions used with this enum:
                             - glCheckFramebufferStatus()
@@ -456,7 +458,7 @@ namespace Nc
 
                 namespace RenderBuffer
                 {
-                    /// Define ogl Render buffer types
+                    /// Define ogl Render buffer types.
                     /**
                         Sample of ogl functions used with this enum:
                             - glBindRenderBuffer()
@@ -467,7 +469,7 @@ namespace Nc
                         RenderBuffer         = GL_RENDERBUFFER
                     };
 
-                    /// Define ogl Color buffer internal formats
+                    /// Define ogl Color buffer internal formats.
                     /**
                         Sample of ogl functions used with this enum:
                             - glRenderBufferStorage()
@@ -515,7 +517,7 @@ namespace Nc
                         RGBA32UI        = GL_RGBA32UI
                     };
 
-                    /// Define ogl Depth buffer internal formats
+                    /// Define ogl Depth buffer internal formats.
                     /**
                         Sample of ogl functions used with this enum:
                             - glRenderBufferStorage()
@@ -530,7 +532,7 @@ namespace Nc
                         DepthComponent32f   = GL_DEPTH_COMPONENT32F
                     };
 
-                    /// Define ogl Stencil buffer internal formats
+                    /// Define ogl Stencil buffer internal formats.
                     /**
                         Sample of ogl functions used with this enum:
                             - glRenderBufferStorage()
@@ -544,7 +546,7 @@ namespace Nc
                             StencilIndex16      = GL_STENCIL_INDEX16
                     };
 
-                    /// Define ogl DepthStencil buffer internal formats
+                    /// Define ogl DepthStencil buffer internal formats.
                     /**
                         Sample of ogl functions used with this enum:
                             - glRenderBufferStorage()

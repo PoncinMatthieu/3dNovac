@@ -35,7 +35,7 @@ namespace Nc
     {
         /// Define an entity node.
         /**
-            An entity is define by a Matrix and can contain only one subtree and a list of childs.
+            An entity is define by a Matrix and can contain only a subtree and a list of childs.
         */
         class LGRAPHICS Entity : public AbstractSceneNode<Graph::ListNodePolitic>
         {

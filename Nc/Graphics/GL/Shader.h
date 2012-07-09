@@ -37,7 +37,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Help to compile and use a glsl shader
+            /// Help to compile and use a glsl shader.
             /**
                 \sa
                     - Program
@@ -50,29 +50,29 @@ namespace Nc
                     Shader(const char *source, Enum::ShaderType type, const Utils::FileName &name);
                     virtual ~Shader();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *Clone() const              {return new Shader(*this);}
 
-                    /** Return the index of the shader */
+                    /** Return the index of the shader. */
                     virtual unsigned int    GetIndex() const            {return _shader;}
 
-                    /** Load a shader from a file and compile it */
+                    /** Load a shader from a file and compile it. */
                     void                    LoadFromFile(const Utils::FileName &file, Enum::ShaderType type);
-                    /** Load a shader from memory and compile it */
+                    /** Load a shader from memory and compile it. */
                     void                    LoadFromMemory(const char *source, Enum::ShaderType type, const Utils::FileName &name);
 
                 private:
-                    /** Release the program shader */
+                    /** Release the program shader. */
                     virtual void    Release();
 
-                    /** Compile the given shader source */
+                    /** Compile the given shader source. */
                     void            Compile(const char *source, Enum::ShaderType type, const Utils::FileName &name);
 
-					/** Print the compilation error */
+					/** Print the compilation error. */
 					void			PrintCompilationError(const char *source, Enum::ShaderType type, const Utils::FileName &name);
 
                 private:
-                    unsigned int    _shader;      ///< the shader id
+                    unsigned int    _shader;      ///< the shader id.
             };
         }
     }

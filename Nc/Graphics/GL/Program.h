@@ -35,7 +35,7 @@ namespace Nc
     {
         namespace GL
         {
-            /// Help to use a programe shader
+            /// Help to use a programe shader.
             /**
                 A program must be attached to shaders and linked before using it.
 
@@ -48,62 +48,62 @@ namespace Nc
                     Program();
                     ~Program();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *Clone() const              {return new Program(*this);}
 
-                    /** Enable the program */
+                    /** Enable the program. */
                     virtual void            Enable() const;
-                    /** Disable the program */
+                    /** Disable the program. */
                     virtual void            Disable() const;
-                    /** Return the index of the program */
+                    /** Return the index of the program. */
                     virtual unsigned int    GetIndex() const            {return _program;}
 
-                    /** Attach a new shader to the program */
+                    /** Attach a new shader to the program. */
                     void                    Attach(const Shader &shader);
-                    /** Attach a new shader source file to the program */
+                    /** Attach a new shader source file to the program. */
                     void                    Attach(const Utils::FileName &shaderFile, Enum::ShaderType type);
-                    /** Attach a new shader source file to the program */
+                    /** Attach a new shader source file to the program. */
                     void                    Attach(const char *shaderSource, Enum::ShaderType type, const Utils::FileName &shaderName);
 
-                    /** Link the program */
+                    /** Link the program. */
                     void                    Link();
 
-                    /** Fetch the uniform location into the program */
+                    /** Fetch the uniform location into the program. */
                     unsigned int            GetUniformLocation(const char *name);
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
                     static void             SetUniform(unsigned int location, const TMatrix &m, bool transpose = true)      {glUniformMatrix4fv(location, 1, transpose, m.Elements());}
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
                     static void             SetUniform(unsigned int location, int v)                                        {glUniform1i(location, v);}
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
                     static void             SetUniform(unsigned int location, unsigned int v)                               {glUniform1ui(location, v);}
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
 					static void             SetUniform(unsigned int location, float v)                                      {glUniform1f(location, v);}
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
                     static void             SetUniform(unsigned int location, float f1, float f2)                           {glUniform2f(location, f1, f2);}
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
                     static void             SetUniform(unsigned int location, const Vector2f &v)                            {glUniform2f(location, v.data[0], v.data[1]);}
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
                     static void             SetUniform(unsigned int location, float f1, float f2, float f3)                 {glUniform3f(location, f1, f2, f3);}
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
                     static void             SetUniform(unsigned int location, const Vector3f &v)                            {glUniform3f(location, v.data[0], v.data[1], v.data[2]);}
-                    /** Set the given uniform \p index */
+                    /** Set the given uniform \p index. */
                     static void             SetUniform(unsigned int location, float f1, float f2, float f3, float f4)       {glUniform4f(location, f1, f2, f3, f4);}
 
-                    /** Fetch the attrib location */
+                    /** Fetch the attrib location. */
                     unsigned int            GetAttribLocation(const char *name);
                     /**
-                        Bind the attribute with the given attrib id, and put it into the attrib location tab
-                        \return the position of the attrib into the attrib location tab
+                        Bind the attribute with the given attrib id, and put it into the attrib location tab.
+                        \return the position of the attrib into the attrib location tab.
                     */
                     void                    BindAttrib(unsigned int attrib, const char *name);
 
                 private:
-                    /** Release the program */
+                    /** Release the program. */
                     virtual void            Release();
 
                 private:
-                    unsigned int                _program;           ///< the program
-                    bool                        _linked;            ///< true if the shader has been linked
+                    unsigned int                _program;           ///< the program.
+                    bool                        _linked;            ///< true if the shader has been linked.
             };
         }
     }

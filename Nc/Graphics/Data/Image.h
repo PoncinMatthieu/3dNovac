@@ -35,7 +35,7 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// To Load and manage image
+        /// To Load and manage image.
         /**
             The images is stored in RGBA mode with 32 bit per pixel.
 
@@ -51,38 +51,38 @@ namespace Nc
                 Image();
                 ~Image();
 
-                /** Init the size of the image, /!\ the data is lost */
+                /** Init the size of the image, /!\ the data is lost. */
                 inline void     InitSize(const Vector2ui &size)                                 {_size = size; _pixels.InitSize(size.data[0] * size.data[1]);}
-                /** Resize the image */
+                /** Resize the image. */
                 inline void     Resize(const Vector2ui &size)                                   {_size = size; _pixels.Resize(size.data[0] * size.data[1]);}
 
                 // Loading
-                /** Load an image from a file */
+                /** Load an image from a file. */
                 void            LoadFromFile(const Utils::FileName &file);
 
                 // transform
-                /** Reverse the image, usefull to create an OpenGL Texture */
+                /** Reverse the image, usefull to create an OpenGL Texture. */
                 void            Reverse();
-                /** Swap two componant of the image, usefull to create a BGRA format or other */
+                /** Swap two componant of the image, usefull to create a BGRA format or other. */
                 void            SwapComponants(unsigned char c1, unsigned char c2);
 
                 // accessors
-                /** Set the pixel at the given position */
+                /** Set the pixel at the given position. */
                 inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)    {_pixels[(pos.data[1] * _size.data[0]) + pos.data[0]] = p;}
-                /** \return the pixel from the given position */
+                /** \return the pixel from the given position. */
                 inline const Pixel<>        &GetPixel(const Vector2ui &pos) const               {return _pixels[(pos.data[1] * _size.data[0]) + pos.data[0]];}
-                /** \return the pixel from the given position */
+                /** \return the pixel from the given position. */
                 inline const Pixel<>        &GetPixel(unsigned int x, unsigned int y) const     {return _pixels[(y * _size.data[0]) + x];}
-                /** \return the pixels in char * */
+                /** \return the pixels in unsigned char*. */
                 inline const unsigned char  *GetPixels() const                                  {return reinterpret_cast<const unsigned char*>(_pixels.data);}
-                /** \return the array of pixels */
+                /** \return the array of pixels. */
                 inline Pixel<>              *GetPixelsArray()                                   {return _pixels.data;}
-                /** \return the size of the image */
+                /** \return the size of the image. */
                 inline const Vector2ui      &Size() const                                       {return _size;}
 
             private:
-                Vector2ui           _size;          ///< the size of the image
-                Array<Pixel<> >     _pixels;        ///< the array of pixels
+                Vector2ui           _size;          ///< the size of the image.
+                Array<Pixel<> >     _pixels;        ///< the array of pixels.
 
                 friend class ImageLoaderPng;
         };

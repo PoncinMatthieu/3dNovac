@@ -36,20 +36,21 @@ namespace Nc
 {
     namespace Graphic
     {
-        /// The material politic used to render a defaultLighting.
+        /// The material used to render a defaultLighting.
         /**
+            \todo the bump mapping effect is not correct. We don't use the local space of vertices.
             \todo Manage specular components.
             \todo Find a way to draw advanced effect like shadow and reflexion.
         */
         class LGRAPHICS DefaultLightingMaterial : public ILightingMaterial
         {
             public:
-                /// Pattern of the DefaultLighting rendering method
+                /// Pattern of the DefaultLighting rendering method.
                 enum MaterialPattern
                 {
-                    Disabled = 1 << 0,          ///< No lighting
-                    BumpMapping = 1 << 1,       ///< Display the drawable using normal mapping (only if the material config has a normalMap)
-                    DisplayNormal = 1 << 2      ///< Display the normals (only in debug)
+                    Disabled = 1 << 0,          ///< No lighting.
+                    BumpMapping = 1 << 1,       ///< Display the drawable using normal mapping (only if the material config has a normalMap).
+                    DisplayNormal = 1 << 2      ///< Display the normals (only in debug).
                 };
 
             private:
@@ -73,26 +74,26 @@ namespace Nc
                 DefaultLightingMaterial();
                 ~DefaultLightingMaterial();
 
-                /** Configure the geometry with the suitable attributes according to the shader */
+                /** Configure the geometry with the suitable attributes according to the shader. */
                 virtual bool    Configure(GL::Drawable &drawable);
 
-                /** \return the pattern */
+                /** \return the pattern. */
                 Utils::Mask<MaterialPattern>    &Pattern()      {return _patternMask;}
 
             protected:
-                /** Render the given drawable with the given model matrix */
+                /** Render the given drawable with the given model matrix. */
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable);
 
             protected:
-                Utils::Mask<MaterialPattern>    _patternMask;               ///< the pattern mask of the material
+                Utils::Mask<MaterialPattern>    _patternMask;               ///< the pattern mask of the material.
 
-                GL::Program                     _program;                   ///< the program shader of the material
-                Array<unsigned int, NbUniform>  _uniforms;                  ///< the tab of uniform locations
-                Array<unsigned int, 4>          _attribs;                   ///< the tab of attrib locations
-                GL::Texture                     _lightMap;                  ///< the light map to used a perpixel lighting method
+                GL::Program                     _program;                   ///< the program shader of the material.
+                Array<unsigned int, NbUniform>  _uniforms;                  ///< the tab of uniform locations.
+                Array<unsigned int, 4>          _attribs;                   ///< the tab of attrib locations.
+                GL::Texture                     _lightMap;                  ///< the light map to used a perpixel lighting method.
 
-                GL::Blend                       _blend;                     ///< set the blending for the light pass
-                GL::RasterMode                  _rasterMode;                ///< disable the depth mask for the light pass
+                GL::Blend                       _blend;                     ///< set the blending for the light pass.
+                GL::RasterMode                  _rasterMode;                ///< disable the depth mask for the light pass.
         };
     }
 }

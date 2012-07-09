@@ -35,28 +35,28 @@ namespace Nc
     {
         namespace GL
         {
-            /// To use an OpenGL VAO (Vertex Array Object)
+            /// To use an Vertex Array Object (VAO)
             class LGRAPHICS VertexArray : public Object
             {
                 public:
                     VertexArray();
                     virtual ~VertexArray();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources */
+                    /** Create a new copy of the object by without duplicate the ogl ressources. */
                     virtual Object          *Clone() const      {return new VertexArray(*this);}
 
-                    /** Return the index of the VAO */
+                    /** Return the index of the VAO. */
                     virtual unsigned int    GetIndex() const    {return _index;}
-                    /** Enable the VAO */
+                    /** Enable the VAO. */
                     virtual inline void     Enable() const      {glBindVertexArray(_index);}
-                    /** Disable the VAO */
+                    /** Disable the VAO. */
                     virtual inline void     Disable() const     {glBindVertexArray(0);}
 
                 private:
-                    /** Release the VAO */
+                    /** Release the VAO. */
                     virtual inline void     Release()           {glDeleteVertexArrays(1, &_index);}
 
-                    unsigned int    _index;         ///< the index of the VAO
+                    unsigned int    _index;         ///< the index of the VAO.
             };
         }
     }

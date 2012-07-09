@@ -67,7 +67,7 @@ namespace Nc
                 ISceneNodeFormatPlugin  *GetSceneNodeFormatByExtension(const std::string &extension);
 
             private:
-                ListSceneNodeFormat     _listSceneNodeFormat;           ///< list of SceneNodeFormatPlugin
+                ListSceneNodeFormat     _listSceneNodeFormat;           ///< list of SceneNodeFormatPlugin.
         };
     }
 }

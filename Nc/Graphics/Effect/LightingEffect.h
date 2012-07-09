@@ -45,8 +45,8 @@ namespace Nc
             Light(const Color &c, const float r = 10)
                 : Object(), color(c), radius(r)                           {}
 
-            Color       color;              ///< the color of the light
-            float       radius;             ///< the raduis of the light
+            Color       color;              ///< the color of the light.
+            float       radius;             ///< the raduis of the light.
         };
 
         /// Define an interface for the lighting Material.
@@ -55,11 +55,11 @@ namespace Nc
             public:
                 ILightingMaterial(const std::string &name) : IMaterial(name), _currentLightingEffect(NULL)     {}
 
-                /** Set the current LightingEffect, to retreive some informations like a list of Lights */
+                /** Set the current LightingEffect, to retreive some informations like a list of Lights. */
                 void SetCurrentLightingEffect(LightingEffect *effect)   {_currentLightingEffect = effect;}
 
             protected:
-                LightingEffect      *_currentLightingEffect;    ///< pointer to the current lighting effect
+                LightingEffect      *_currentLightingEffect;    ///< pointer to the current lighting effect.
         };
 
         /// Define a LightinhEffect used to render some light effect on childs.
@@ -77,23 +77,23 @@ namespace Nc
 
                 virtual ISceneNode          *Clone() const              {return new LightingEffect(*this);}
 
-                /** \return the color ambiant of the lighting */
+                /** \return the color ambiant of the lighting. */
                 inline const Color          &ColorAmbiant() const       {return _colorAmbiant;}
-                /** \return the lights */
+                /** \return the lights. */
                 inline const ListPLight     &Lights() const             {return _listLight;}
-                /** \return the lights */
+                /** \return the lights. */
                 inline ListPLight           &Lights()                   {return _listLight;}
-                /** \return the lighting material */
+                /** \return the lighting material. */
                 inline ILightingMaterial    *Material()                 {return _material;}
 
             protected:
-                /** Render the childs */
+                /** Render the childs. */
                 virtual void                Render(SceneGraph *scene);
 
             private:
-                ILightingMaterial           *_material;         ///< the lighting material
-                Color                       _colorAmbiant;      ///< the color ambiant
-                ListPLight                  _listLight;         ///< the list of light used by the
+                ILightingMaterial           *_material;         ///< the lighting material.
+                Color                       _colorAmbiant;      ///< the color ambiant.
+                ListPLight                  _listLight;         ///< the list of light.
         };
     }
 }

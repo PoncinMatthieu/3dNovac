@@ -39,6 +39,10 @@ namespace Nc
     {
         namespace GL
         {
+            /// Define a material config.
+            /**
+                The MaterialConfig allow to store data like Texture and RasterMode which is material dependant.
+            */
             class LGRAPHICS MaterialConfig
             {
                 public:
@@ -49,31 +53,31 @@ namespace Nc
 
                     virtual MaterialConfig  *Clone() const                          {return new MaterialConfig(*this);}
 
-                    /** Set the blend method */
+                    /** Set the blend method. */
                     void                    SetBlend(const Blend::Pattern &p)       {_blend.SetPattern(p);}
 
-                    /** \return the raster mode */
+                    /** \return the raster mode. */
                     RasterMode              &GetRasterMode()                        {return _rasterMode;}
 
-                    /** Enable the default basic config (blend and depthTest) */
+                    /** Enable the default basic config (blend and depthTest). */
                     virtual void Enable()
                     {
                         _blend.Enable();
                         _rasterMode.Enable();
                     }
 
-                    /** Disable the default basic config (blend and depthTest) */
+                    /** Disable the default basic config (blend and depthTest). */
                     virtual void Disable()
                     {
                         _blend.Disable();
                         _rasterMode.Disable();
                     }
 
-                    Array<Texture,0>    Textures;
+                    Array<Texture,0>    Textures;       ///< texture array used to setup textures needed by the rendering material.
 
                 protected:
-                    Blend               _blend;         ///< the blend method of the material
-                    RasterMode          _rasterMode;    ///< the raster mode of the material
+                    Blend               _blend;         ///< the blend method of the material.
+                    RasterMode          _rasterMode;    ///< the raster mode of the material.
             };
         }
     }
