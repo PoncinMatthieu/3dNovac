@@ -8,10 +8,10 @@
 	     		<td>Getting started</td>
 	     	</tr></table>
 	     </div>
-	     	- \subpage PageTutorial0 "Introduction to the 3dNovac Framework"
-		- \subpage PageTutorial_Install_Linux "Installing 3dNovac under Linux (Ubuntu)"
-	     	- \subpage PageTutorial1 "Your first 3dNovac application. (Minimal code to start a project with the Graphical engine)"
-
+		- \subpage PageTutorial0 "Introduction to the 3dNovac Framework"
+		- \subpage PageTutorial_Install "Building and Installing 3dNovac"
+		- \subpage PageTutorial_BuildProgramUsingCMake "Building your own program using CMake"
+		- \subpage PageTutorial1 "Your first 3dNovac application. (Minimal code to start a project with the Graphical engine)"
 
 	</div>
 	<br/>
@@ -46,7 +46,7 @@
 		     	<td>Namespace Nc::Engine</td>
 		</tr></table>
 	     </div>
-		- \subpage PageTutorial_NcCore_Engine_CreateEngine "Communications between engines" In construction
+		- \subpage PageTutorial_NcCore_Engine_CreateEngine "Communications between engines"
 		- \subpage PageTutorial_NcCore_Engine_CreateEngine "Create your own engine"
 
 	</div>

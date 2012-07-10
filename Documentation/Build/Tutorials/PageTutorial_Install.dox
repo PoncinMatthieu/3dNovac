@@ -1,0 +1,74 @@
+/**
+	\page PageTutorial_Install Building and Installing 3dNovac
+
+	<div class="title">Introduction</div>
+	This tutorial will explain you how to install the framework 3dNovac under Linux and Windows.
+
+	To run 3dNovac Demos, Examples and Nc-Graphics programs you'll have to install and update your graphical drivers,
+	3dNovac does not support an anterior version of OpenGL 3.
+
+	3dNovac uses the CMake building system to target several platforms and compilers.
+	At the moment 3dNovac supports the following development platforms:
+	   - Linux: GNU gcc compiler using Makefiles or the IDE CodeBlocks.
+	   - Windows: Visual Studio 2010
+
+	Note that CMake supports many other platforms and operating systems as well, in wich you can probably also run 3dNovac.
+
+	<div class="title">Getting the latest version</div>
+	To get the latest version of 3dNovac, you can follow the instructions on the <a target=_blank href="http://3dNovac.eu/Download">Download page</a>.
+
+	<div class="title">Building 3dNovac under Linux</div>
+ Installing dependancies for 3dNovac packages under Ubuntu (for other distribution, the name of the packages might differ):
+ \code
+ apt-get install build-essential libx11-dev libxrandr-dev libxpm-dev libpng12-dev libfreetype6-dev
+ \endcode
+
+ Installing dependancies for the plugin FileFormatCollada:
+ \code
+ apt-get install libboost-filesystem-dev libxml2-dev libpcre3-dev
+ \endcode
+
+ 3dNovac use cmake.
+ \code
+ // if cmake is not installed
+ apt-get install cmake
+ \endcode
+
+ So you can generate a makefile or a Codeblocks project with those commands in the '/Build' folder:
+ \code
+ // Generating unix makefile
+ cmake -G"Unix Makefiles"
+
+ // Or Generating Codeblock project
+ cmake -G"CodeBlocks - Unix Makefiles"
+ \endcode
+
+ Finally you can build the project.
+ \code
+ make
+ \endcode
+
+	The libraries will be build into the folder '/lib'
+
+
+	<div class="title">Building 3dNovac under Windows</div>
+	To build 3dNovac under windows, every dependancies are provided so you will only need to install cmake.
+	We recommend you to use cmake-gui.
+
+	Here is a screen shot of what you should get before generating the project:
+	\image html cmake-gui.png
+
+	Click the Configure button and choose the Visual studio generator.
+
+	Then you’ll just have to open and build the 3dNovac generated solution with visual studio.
+
+
+	<div class="title">Building the 3dNovac Demos and Examples</div>
+	The 3dNovac Demos and Examples use also cmake, so it's easy to build them like the 3dNovac framework.
+	There is no additional dependencies.
+
+	Build the samples into the folder '/Demos/Build' and '/Examples/Build' and execute the samples into the folder '/Demos/bin' and 'Examples/bin'.
+
+
+	<div class="tutorialFooter">Author(s): Ponpon </div>
+*/

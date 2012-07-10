@@ -5,252 +5,61 @@
 	This tutorial will explain you how to create your first application using the multithreaded engine abstraction step by step.
 
 	<div class="title">Package used:</div>
-	- Nc-Core
-	- Nc-Graphics
+		- Nc-Core
+		- Nc-Graphics
 
 	<div class="title">Create your own Engine</div>
 	To create our engine we will inherite to the Engine::MainEngine.
 
-	The MainEngine is designed to simplify the creation of application witch receive events.
+	The MainEngine is designed to simplify the creation of application which receive events.
 	So you will have to implement these virtual pure methods:
-	- Update
-	- keyboardEvent
-	- MouseButtonEvent
-	- MouseMotionEvent
+		- Update, will be called in the engine's loop to update your scene.
+		- keyboardEvent, to receive keyboard event.
+		- MouseButtonEvent, to receive mouse button events.
+		- MouseMotionEvent, to receive mouse movement events.
 
-\p Samples/Tuto1/MainEngine.h
-\code
-#include <Nc/Core/Engine/MainEngine.h>
+	But because we want to use the Graphic engine, we need to create a context opengl.
+	To do so, you will need to redefine the following methods:
+		- CreateContext, to create a shared context with the one created into the graphic engine.
+		- ActiveContext, to active the context created.
+		- DisableContext, to disable the context.
 
-class GameEngine : public Nc::MainEngine
-{
-	public:
-		GameEngine(Nc::Engine::Manager *manager);
-		~GameEngine();
+	You will also have to create the following methods:
+		- LoadContent, to load your content.
+		- ReleaseContent, to release your content.
 
-	protected:
-		virtual void Update(float runningTime);
+	And because the first thing needed into a graphical application is a window, the engine will take a Window in it's contructor.
+	The engine will also create a scene, a camera and a repere into it's LoadContent method.
+	Finaly, to be able to visualize the repere in a 3 dimension space, we have to send events to the camera.
 
-		// manage window inputs
-		virtual void KeyboardEvent(Nc::System::Event &event);
-		virtual void MouseButtonEvent(Nc::System::Event &event);
-  		virtual void MouseMotionEvent(Nc::System::Event &event);
-};
-\endcode
+\p Examples/Tuto1/GameEngine.h
+\include Tuto1/GameEngine.h
 
-\p Samples/Tuto1/MainEngine.cpp
-\code
-#include "GameEngine"
-
-GameEngine::GameEngine(Nc::Engine::Manager *manager)
- : Nc::Engine::MainEngine(manager)
-{
-}
-
-void GameEngine::Update()
-{
-}
-
-void GameEngine::KeyboardEvent(Nc::System::Event &event)
-{
-}
-
-void GameEngine::MouseButtonEvent(Nc::System::Event &event)
-{
-}
-
-void GameEngine::MouseMotionEvent(Nc::System::Event &event)
-{
-}
-
-\endcode
+\p Examples/Tuto1/GameEngine.cpp
+\include Tuto1/GameEngine.cpp
 
 
 	<div class="title">Instantiate the Engine: (main.cpp)</div>
-	Ok now we have an engine, but how to use it ?
+	Ok now that we have created our game engine, we need to instantiate it in the main.
 
-	Will will need to use the Engine::Manager
+	For that will need to create an Engine::Manager and a Window for the Graphic::Engine.
 
-\p Samples/Tuto1/main.cpp
-\code
-#include <Nc/Core/Engine/Manager.h>
-#include "GameEngine.h"
-
-using namespace Nc;
-
-void CreateEngines(Engine::Manager &manager)
-{
-  // create our game engine
-  GameEngine *game = new GameEngine(&manager);
-
-  // limit its frame rate to 60 frame by second to avoid to take 100% of the CPU, and add the engine to the manager
-  game->LimitFrameRate(60);
-  manager.AddEngine("Main", game);
-  LOG << "Creation of " << *game << "\t\t\t\t\tDONE" << std::endl;
-
-  LOG << "-----------GameManager-ENGINES-CREATION-SUCCESS--------------" << std::endl;
-}
-
-int main()
-{
-  // create the game engine with the config file name
-  Engine::Manager game("3dNovac.conf");
-
-  // create the engines
-  CreateEngines(game);
-
-  // start the engines and wait it
-  game.Start();
-  game.Wait();
-  return 0;
-}
-\endcode
+\p Examples/Tuto1/main.cpp
+\include Tuto1/main.cpp
 
 	Ok for the main, but if you look at the creation of the Manager, you'll see that you need a conf file: "3dNovac.conf"
 
-\p Samples/bin/3dNovac.conf
+\p Examples/bin/3dNovac.conf
 \include bin/3dNovac.conf
 
-	Now you could use this engine to do what you want.
-
-
-	<div class="title">The Graphical Engine</div>
-	Firstly we have to create the engine :
-
-\p Samples/Tuto1/main.cpp
-\include Tuto1/main.cpp
-
-	As you can see the graphical engine use a member function pointer to create the window. So we have to create it.
-	And we have to create an OpenGL Context shared with the graphic engine, this is neccessary to be able to call any OpenGL functions in our main engine.
-
-\p Samples/Tuto1/GameEngine.h
-\code
-#include <Nc/Core/Engine/MainEngine.h>
-#include <Nc/Graphics/Engine.h>
-
-class GameEngine : public Nc::MainEngine
-{
-	public:
-		GameEngine(Nc::Graphic::Engine *graphic, Nc::Engine::Manager *manager);
-		~GameEngine();
-
-		/** To create the window (called by the graphic engine) */
-      	 	void   CreateWindow(Nc::Graphic::Window *win);
-
-	protected:
-		...
-
-  		// manage the OpenGL context
-  		virtual void CreateContext()         {_context = _graphic->CreateSharedContext();}
-  		virtual void ActiveContext()         {_context->Active();}
-  		virtual void DisableContext()        {_context->Disable();}
-
-	private:
-		Nc::Graphic::Engine	_graphic;			// The graphic engine
-		Nc::Graphic::GLContext	_context;			// The OpenGL context, needed to use the graphic engine
-};
-\endcode
-
-\p Samples/Tuto1/GameEngine.cpp
-\code
-GameEngine::GameEngine(Nc::Graphic::Engine *graphic, Nc::Engine::Manager *manager)
-  : Nc::Engine::MainEngine(manager), _graphic(graphic)
-{
-}
-
-void    GameEngine::CreateWindow(Window *win)
-{
-  // create the window
-  win->Create("Tuto 1", Vector2i(800, 600), Window::Titlebar | Window::Closeable | Window::Resizeable, "Nc:Image:icone.png", 3);
-
-  // add the window Input to the Inputs of our engine
-  AddInput(win->GetInput());
-}
-\endcode
-
-	Now we have a black window.
-
-
-	<div class="title">Create a SceneGraph:</div>
-	Now it could be interesting to create a scene with a repere. So, we will need to create a SceneGraph with a StandardCamera3d in a redefined method LoadContent.
-
-\p Samples/Tuto1/GameEngine.h
-\code
-virtual void LoadContent();
-\endcode
-
-\p Samples/Tuto1/GameEngine.h
-\code
-Nc::Graphic::SceneGraph		*_scene3d;	// our scene 3d, displayed by the graphic engine
-Nc::Graphic::StandardCamera3d   *_camera;       // our camera used by our scene. We use it to resize and update it with the window inputs
-\endcode
-
-\p Samples/Tuto1/GameEngine.cpp
-\code
-#include <Nc/Graphics/Scene/SceneGraph.h>
-#include <Nc/Graphics/Camera/StandardCamera3d.h>
-
-...
-
-void    GameEngine::LoadContent()
-{
-	// create the scene, it's camera, and set it to the SceneGraphManager of the Graphic engine
-  	_scene3d = new SceneGraph();
-  	_camera = new StandardCamera3d(_graphic->GetWindow());
-	_scene3d->AddChild(_camera);
-  	_graphic->GetSceneManager()->AddScene(_scene3d);
-
-  	// create a new repere to display at the center of the scene
-  	_scene3d->AddObject(BasicMeshCreator::Repere(1));
-}
-\endcode
-
-	<div class="title">The inputs and the camera</div>
-	Now we have a window with a repere, but we can't move the camera and resize the viewport.
-
-\p Samples/Tuto1/GameEngine.cpp
-\code
-void GameEngine::Update()
-{
-	// update the scene (will update it's effect and camera)
-  	_scene3d->Update(runningTime);
-}
-
-void GameEngine::ManageWindowEvent(Nc::System::Event &event)
-{
-	// resize the camera if needed
-  	if (event.Type == System::Event::Resized)
-    	   _camera->Resized(event);
-  	MainEngine::ManageWindowEvent(event);
-}
-
-void GameEngine::KeyboardEvent(Nc::System::Event &event)
-{
-	// send the events to the camera
-  	_camera->KeyboardEvent(event);
-}
-
-void GameEngine::MouseButtonEvent(Nc::System::Event &event)
-{
-	// send the events to the camera
-  	_camera->MouseButtonEvent(event);
-}
-
-void GameEngine::MouseMotionEvent(Nc::System::Event &event)
-{
-	// send the events to the camera
-  	_camera->MouseMotionEvent(event);
-}
-\endcode
-
-	Here we use the StandardCamera3d so it has a predefined comportement. But if you want you could create your own camera.
-
 	<div class="title">Conclusion</div>
-	Voila ! Now you have a window with a repere, and you can move the camera and resize the window.
+	Voila !
 
-	Enjoy :)
+	Now you have a window with a repere, and you can move the camera and resize the window.
+
+	The minimalist code to use a Graphic::Engine is pretty consequent. But once you've got that code, it is really easy to create your own game.
+	For an example of a simple game created with 3dNovac, have a look to the Sokoban demo, it's code is available into the folder "/Demo".
 
 
 	<div class="tutorialFooter">Author(s): Ponpon </div>
 */
-

@@ -13,6 +13,15 @@ Authors
 
 Matthieu Poncin - Lead Developer (poncin.matthieu@gmail.com)
 
+Building
+--------
+
+The 3dNovac use the CMake building system to target several platforms and compilers.
+At the moment 3dNovac supports the following development platforms:
+   - Linux: GNU gcc compiler using Makefiles or the IDE CodeBlocks.
+   - Windows: Visual Studio 2010
+
+Note that CMake supports many other platforms and operating systems as well, in wich you can probably also run 3dNovac.
 
 Contribute
 ----------

@@ -1,0 +1,105 @@
+/**
+	\page PageTutorial_BuildProgramUsingCMake Building your own program using CMake
+
+	<div class="title">Introduction</div>
+		This tutorial will explain you how to build your source code using CMake and the 3dNovac framework.
+
+		Before doing that you should first build and install 3dNovac. If it's not done yet, I recommend you to visit the following page:
+			- \subpage PageTutorial_Install "Building and Installing 3dNovac"
+
+	<div class="title">Managing you development environment</div>
+		To manage your development environment, we recommend you to create several folders:
+			- /build will contain every file used to build your program.
+			- /bin will contain the executable of your program.
+			- /sources will contain the sources of your program.
+
+	<div class="title">Hello world</div>
+		Now, I invite you to create the following main.cpp test into the sources folder:
+ \code
+int main()
+{
+	LOG << "Hello world" << std::end;
+	return 0;
+}
+ \endcode
+
+		To build this main.cpp you will need to link your program with Nc-Core.
+
+	<div class="title">Create the CMakeList.txt file</div>
+	CMake require to create a file named CMakeList.txt:
+
+ \code
+cmake_minimum_required(VERSION 2.8)
+cmake_policy(SET CMP0015 NEW)
+
+project(HelloWorld)
+
+# setup the launcher module for vs2010, you can find it on Nc/Examples/Build/
+if(MSVC_IDE)
+	list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules")
+	include(CreateLaunchers)
+endif()
+
+# set Nc root directory path
+set(NC_DIR ../../Nc)
+
+# set path to copy dependencies
+set(NC_COPY_DEPENDENCIES_PATH ../bin/${CMAKE_CFG_INTDIR})
+
+# executable and libraries output path
+set(EXECUTABLE_OUTPUT_PATH ../bin/)
+
+# set debug / release mode
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
+endif()
+
+# add the _DEBUG define
+if(UNIX)
+  if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
+    add_definitions(-D_DEBUG)
+  endif()
+endif()
+
+# we want to compile our libs dynamically
+add_definitions(-DNC_DYNAMIC_LINK)
+
+# add 3dNovac to the project
+SUBDIRS(${NC_DIR}/Build)
+
+# set include and link directories
+include_directories(${NC_DIR})
+include_directories(${NC_DIR}/extlibs/)
+link_directories(${NC_DIR}/lib/${CMAKE_CFG_INTDIR})
+link_directories(${NC_DIR}/extlibs/)
+
+#------------------------------------------------------------------------------
+#	My Own Program, define the source files and dependencies
+#------------------------------------------------------------------------------
+file(
+  GLOB_RECURSE
+  HelloWorld-sources
+  ../sources/*.cpp
+  ../sources/*.h
+)
+
+add_executable(HelloWorld		${HelloWorld-sources})
+add_dependencies(HelloWorld		Nc-Core)
+target_link_libraries(HelloWorld	Nc-Core)
+
+# create the launcher for vs 2010
+if(MSVC_IDE)
+	create_target_launcher(HelloWorld ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+endif()
+ \endcode
+
+	After creating the file "CMakeList.txt" into the folder "/Build".
+	Please pay attention to the variable "NC_DIR", you should set it to the relative or absolute path to your 3dNovac root directory.
+
+	If you are using Visual studio 2010, we create a launcher so that you can launch your program from visual studio. To create the launcher we use a cmake-module that you can find into the folder "${NC_DIR}/Demos/Build/cmake-modules". You will have to copy it into your own folder Build.
+
+	Once you've got this, you can run cmake to create your Makefile or project file, build your project, and execute it.
+
+
+	<div class="tutorialFooter">Author(s): Ponpon </div>
+*/

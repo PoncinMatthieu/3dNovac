@@ -3,7 +3,7 @@
 
 	<div class="title">Introduction</div>
 	This tutorial will explain what is the logger, how to use it and how it works.
-	So you will be able to create your own logging system and manipulate the output produce by the 3dNovac framework and your own program.
+	So you will be able to create your own logging system and manipulate the output produced by the 3dNovac framework and your own program.
 
 	Pay attention that all the entire 3dNovac framework use the Logger class.
 
@@ -11,16 +11,16 @@
 	- Nc-Core
 
 	<div class="title"> What The Fuck ? </div>
-	The Nc::Utils::Logger is a class witch manipulate how the text will be output using the operators <<. 
-		- Is it output into the stdout ? 
-		- in a file ? 
-		- With a prefix ? 
+	The Nc::Utils::Logger is a class which manipulate how the text will be printed out using the operators <<.
+		- Is it output into the stdout ?
+		- in a file ?
+		- With a prefix ?
 
 	The logger is a singleton and you can access to the instance by using the funtion Log().
 
  Prototype:
  \code
-	// use an integer status to control the output mode 
+	// use an integer status to control the output mode
 	static Logger	&Log(int status);
 	static Logger	&Log(const char* file, int line, int status); 	// format the string like this: "$(file): line $(line): 	"
  \endcode
@@ -53,10 +53,10 @@
         #define LOG_DEBUG       Nc::Utils::Logger::Log(_DEBUG_LOG_DEF -1)
     #endif
 #endif
- \endcode 
+ \endcode
 
 	Like this, if you define the _DEBUG_LOG define, you logger will use the name and the line of the file to log your messages.
-	
+
 	By default the logger has 3 static mode of output:
 		- 0 LOG (log into clog and into a file)
 		- 1 LOG_ERROR (log into cerr and into a file)
@@ -123,7 +123,7 @@ namespace Nc
 	}
 }
 
-#endif 
+#endif
  \endcode
 
 
