@@ -20,6 +20,7 @@
 /Demos/Build/CMakeFiles
 /Demos/Build/Makefile
 /Demos/Build/cmake_install.cmake
+/Demos/Build/*.vcxproj*
 
 /Examples/bin/*
 /Examples/Build/launch*
@@ -28,6 +29,10 @@
 /Examples/Build/CMakeFiles/
 /Examples/Build/Makefile
 /Examples/Build/cmake_install.cmake
+/Examples/Build/*.vcxproj*
+/Examples/Build/Win32
+/Examples/Build/ipch
+/Examples/Build/*.dir
 
 # /Build/
 /Build/3dNovac.cbp

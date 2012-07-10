@@ -1,3 +1,7 @@
+/** \file BinaryTree.cpp
+	\todo The BinaryTree Example doesn't seem to work with VisualStudio, the templates failed to compile.
+*/
+
 #include <Nc/Core/Graph/DotGraph.h>
 #include <Nc/Core/Graph/BinaryTree.h>
 #include <Nc/Core/Utils/Logger.h>
