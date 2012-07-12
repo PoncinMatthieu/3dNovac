@@ -3,16 +3,6 @@
 /Demos/bin/*
 /Demos/Build/launch*
 /Demos/Build/3dNovac-Demos.*
-/Demos/Build/FBEffectsDemo.*
-/Demos/Build/FrustumDemo.*
-/Demos/Build/GUIDemo.*
-/Demos/Build/LightDemo.*
-/Demos/Build/SampleViewer.*
-/Demos/Build/SimpleParticleEffect.*
-/Demos/Build/SokobanDemo.*
-/Demos/Build/Tuto1.*
-/Demos/Build/Tuto_NcCore_Client.*
-/Demos/Build/Tuto_NcCore_Server.*
 /Demos/Build/Win32
 /Demos/Build/ipch
 /Demos/Build/ZERO_CHECK.*
@@ -21,6 +11,7 @@
 /Demos/Build/Makefile
 /Demos/Build/cmake_install.cmake
 /Demos/Build/*.vcxproj*
+/Demos/Build/*.dir
 
 /Examples/bin/*
 /Examples/Build/launch*
