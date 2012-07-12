@@ -224,12 +224,11 @@ void	Graphic::Window::SwitchToFullscreen(const Vector2ui &size)
 
 bool	Graphic::Window::SetIcon(const Utils::FileName &f)
 {
-    Utils::FileName filename = CONFIG->Block("RessourcesPath")->Line("Image")->Param("path") + f;
-    if (f.empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
-        return false;
+    if (f.empty() || !f.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
+		return false;
 
 	Image image;
-    image.LoadFromFile(filename);
+    image.LoadFromFile(f);
 
     // First destroy the previous one
     if (_hicon)
