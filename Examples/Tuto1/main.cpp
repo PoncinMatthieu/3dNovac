@@ -14,7 +14,7 @@ int main()
     Engine::Manager manager("3dNovac.conf");
 
     // create the window.
-    Graphic::Window window("Tuto 1", winSize, style, "Nc:Image:icone.png", 3);
+    Graphic::Window window("Tuto 1", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
 
     // create the graphic engine, limit it's frame rate to 60 frame by second to avoid to take 100% of the CPU
     // and add the engine to the manager.

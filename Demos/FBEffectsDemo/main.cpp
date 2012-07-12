@@ -27,7 +27,7 @@ int main()
 	try
 	{
 		Nc::Engine::Manager game("3dNovac.conf");
-        Graphic::Window window("FBEffects", winSize, style, "Nc:Image:icone.png", 3);
+        Graphic::Window window("FBEffects", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
         Nc::Graphic::SceneNodeFormatManager sceneNodeformatManager;
 
 		CreateEngines(game, window, sceneNodeformatManager);

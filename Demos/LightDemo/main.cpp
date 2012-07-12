@@ -28,7 +28,7 @@ int main()
 	try
 	{
         Engine::Manager lightTest("3dNovac.conf");
-        Graphic::Window window("Light Demo", winSize, style, "Nc:Image:icone.png", 3);
+        Graphic::Window window("Light Demo", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
         Graphic::SceneNodeFormatManager sceneNodeformatManager;
 
         CreateEngines(&lightTest, window, sceneNodeformatManager);

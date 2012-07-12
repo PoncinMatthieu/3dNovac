@@ -33,7 +33,7 @@ int main()
     {
         // create the game engine with the config file name
         Engine::Manager game("3dNovac.conf");
-        Graphic::Window window("Simple Particle Effect", winSize, style, "Nc:Image:icone.png", 3);
+        Graphic::Window window("Simple Particle Effect", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
 
         // create the engines
         CreateEngines(game, window);

@@ -27,7 +27,7 @@ int main()
     try
 	{
         Nc::Engine::Manager game("3dNovac.conf");
-        Graphic::Window window("Sokoban Demo", winSize, style, "Nc:Image:icone.png", 3);
+        Graphic::Window window("Sokoban Demo", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
         Graphic::SceneNodeFormatManager sceneNodeformatManager;
 
         CreateEngines(game, window, sceneNodeformatManager);

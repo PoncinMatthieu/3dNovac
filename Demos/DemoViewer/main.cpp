@@ -14,7 +14,7 @@ int main()
     try
     {
         Engine::Manager manager("3dNovac.conf");
-        Graphic::Window window("Demo Viewer", winSize, style, "Nc:Image:icone.png", 3);
+        Graphic::Window window("Demo Viewer", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
 
 		Graphic::Engine *graphic = new Graphic::Engine(&window, &manager);
 		graphic->LimitFrameRate(60);
