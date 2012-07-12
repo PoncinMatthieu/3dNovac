@@ -222,11 +222,10 @@ void Graphic::Window::ChooseBestVisualInfo()
 
 bool Graphic::Window::SetIcon(const Utils::FileName &f)
 {
-    Image image;
-    Utils::FileName filename = f;
-    if (f.empty() || !filename.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
+    if (f.empty() || !f.IsReadable()) // si l'icone n'existe pas, on retourne false sans afficher de message d'erreur
         return false;
-    image.LoadFromFile(filename);
+    Image image;
+    image.LoadFromFile(f);
 
     // X11 wants BGRA pixels : swap red and blue channels
     // Note : this memory will never be freed, but it seems to cause a bug on exit if I do so
