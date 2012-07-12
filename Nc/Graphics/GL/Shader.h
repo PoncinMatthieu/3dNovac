@@ -41,6 +41,8 @@ namespace Nc
             /**
                 \sa
                     - Program
+
+                \todo Create a compilation stage, for exemple to be able to manage GLSL version.
             */
             class LGRAPHICS Shader : public Object
             {

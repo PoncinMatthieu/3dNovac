@@ -44,7 +44,10 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Image);
 
             public:
-                Image(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0));
+                Image(Graphic::Sprite *sprite, const AlignmentMask &alignment = Left | Top);
+                Image(Graphic::Sprite *sprite, const AlignmentMask &alignment, const Vector2i &size);
+                Image(const Image &image);
+                Image &operator = (const Image &image);
                 virtual ~Image();
 
                 virtual ISceneNode  *Clone() const                  {return new Image(*this);}
@@ -64,6 +67,9 @@ namespace Nc
                 virtual void    PosChild(const Widget *, Vector2i &) const;
                 /** \return the size that the child should use to set up it's percent size when we call the Resized method. */
                 virtual void    SizeChild(const Widget *, Vector2i &size) const;
+
+            private:
+                void            Copy(const Image &image);
 
             private:
                 Graphic::Sprite     *_sprite;           ///< the sprite used to render the image.

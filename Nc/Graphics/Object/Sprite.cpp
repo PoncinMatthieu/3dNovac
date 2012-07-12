@@ -41,6 +41,12 @@ Sprite::Sprite(const Vector2f &size, const GL::Texture &t, float percentBox, con
     Initialize(t, blendPattern);
 }
 
+Sprite::Sprite(const GL::Texture &t, const GL::Blend::Pattern &blendPattern)
+    : Object(), _needUpdate(true), _spriteSize(t.Size()), _textureBox(Box2i(Vector2f(0,0), Vector2f(t.Size()[0], t.Size()[1]))), _color(1, 1, 1)
+{
+    Initialize(t, blendPattern);
+}
+
 void Sprite::Initialize(const GL::Texture &t, const GL::Blend::Pattern &blendPattern)
 {
     GL::GeometryBuffer<GL::DefaultVertexType::Textured2d,false> *geo = new GL::GeometryBuffer<GL::DefaultVertexType::Textured2d,false>(GL::Enum::TriangleStrip);

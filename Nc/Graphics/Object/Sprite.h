@@ -47,6 +47,8 @@ namespace Nc
                 Sprite(const Vector2f &size, const GL::Texture &t, const Box2i &textureBox, const GL::Blend::Pattern &blendPattern = GL::Blend::Alpha);
                 /** Create the box of the sprite by using a percent value of the texture size. by using 100.f, you'll get the whole texture size as the box. */
                 Sprite(const Vector2f &size, const GL::Texture &t, float percentBox, const GL::Blend::Pattern &blendPattern = GL::Blend::Alpha);
+                /** Create the sprite by using the whole texture and using the size of the texture. */
+                Sprite(const GL::Texture &t, const GL::Blend::Pattern &blendPattern = GL::Blend::Alpha);
                 virtual ~Sprite() {};
 
                 virtual ISceneNode          *Clone() const              {return new Sprite(*this);}

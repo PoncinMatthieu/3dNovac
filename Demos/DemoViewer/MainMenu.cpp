@@ -109,7 +109,7 @@ Widget  *MainMenu::CreateDescriptionPannel(Layout *parent)
     winDescArea->AddChild(_layoutWinDesc);
 
     // create the image widget to show an image of the demo
-    _demoImage = new GUI::Image(CenterH | Top, Vector2i(0, imageHeight));
+    _demoImage = new GUI::Image(NULL, CenterH | Top, Vector2i(0, imageHeight));
     _demoImage->Percent(Vector2f(100, 0));
     _layoutWinDesc->AddChild(_demoImage);
 

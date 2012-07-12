@@ -436,10 +436,10 @@ void Graphic::Window::Close()
     if (_context)
         delete _context;
 	_context = NULL;
-		
+
     // Destroy the input context
 	_input->Destroy();
-		
+
     if (_vInfo != NULL)
         XFree(_vInfo);
 

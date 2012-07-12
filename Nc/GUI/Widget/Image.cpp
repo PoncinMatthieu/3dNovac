@@ -29,9 +29,38 @@
 using namespace Nc;
 using namespace Nc::GUI;
 
-Image::Image(const AlignmentMask &alignment, const Vector2i &size)
-    : Widget(alignment, size), _sprite(NULL), _spriteAlignment(Center), _spriteResizable(true), _keepRatio(true)
+Image::Image(Graphic::Sprite *sprite, const AlignmentMask &alignment)
+    : Widget(alignment, sprite->Size()), _sprite(sprite), _spriteAlignment(Center), _spriteResizable(true), _keepRatio(true)
 {
+}
+
+Image::Image(Graphic::Sprite *sprite, const AlignmentMask &alignment, const Vector2i &size)
+    : Widget(alignment, size), _sprite(sprite), _spriteAlignment(Center), _spriteResizable(true), _keepRatio(true)
+{
+}
+
+Image::Image(const Image &image)
+{
+    Copy(image);
+}
+
+Image &Image::operator = (const Image &image)
+{
+    if (_sprite != NULL)
+    {
+        delete _sprite;
+        _sprite = NULL;
+    }
+    Copy(image);
+    return *this;
+}
+
+void Image::Copy(const Image &image)
+{
+    _sprite = (image._sprite != NULL) ? static_cast<Graphic::Sprite*>(image._sprite->Clone()) : NULL;
+    _spriteAlignment = image._spriteAlignment;
+    _spriteResizable = image._spriteResizable;
+    _keepRatio = image._keepRatio;
 }
 
 Image::~Image()
@@ -51,6 +80,7 @@ void    Image::Sprite(Graphic::Sprite *sp)
 
 void    Image::Update()
 {
+    Widget::Update();
     if (_sprite != NULL)
     {
         // compute sprite size
