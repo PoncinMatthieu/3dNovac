@@ -65,3 +65,7 @@ ISocket::ISocket()
     : _descriptor(_invalidDescriptor)
 {
 }
+
+ISocket::~ISocket()
+{
+}

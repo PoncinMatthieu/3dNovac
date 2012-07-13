@@ -51,6 +51,7 @@ namespace Nc
         {
             public:
                 ISocket();
+                virtual ~ISocket();
 
                 /** Create the socket descriptor. */
                 virtual void    Create() = 0;
