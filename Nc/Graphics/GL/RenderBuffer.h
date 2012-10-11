@@ -55,7 +55,7 @@ namespace Nc
                     RenderBuffer();
                     ~RenderBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources. */
+                    /** Create a new copy of the object by without duplicate the ogl resources. */
                     virtual Object          *Clone() const                  {return new RenderBuffer(*this);}
 
                     /** Create the rbo. */

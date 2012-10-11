@@ -42,7 +42,7 @@ namespace Nc
                     VertexArray();
                     virtual ~VertexArray();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources. */
+                    /** Create a new copy of the object by without duplicate the ogl resources. */
                     virtual Object          *Clone() const      {return new VertexArray(*this);}
 
                     /** Return the index of the VAO. */

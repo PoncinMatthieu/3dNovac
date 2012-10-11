@@ -44,9 +44,9 @@ namespace Nc
         <SceneNodeFormatPlugin name="Nc:Plugin:libPluginFileFormatCollada.so" />
         <SceneNodeFormatPlugin name="Nc:Plugin:libPluginFileFormat3ds.so" />
     </GameConf>
-    <RessourcesPath>
-        <Plugin path="../Ressources/Plugin/" />
-    </RessourcesPath>
+    <ResourcesPath>
+        <Plugin path="../Resources/Plugin/" />
+    </ResourcesPath>
 </Config>
  \endcode
         */

@@ -49,7 +49,7 @@ namespace Nc
                     DataBuffer(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab = NULL);
                     virtual ~DataBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources. */
+                    /** Create a new copy of the object by without duplicate the ogl resources. */
                     virtual Object          *Clone() const                  {return new DataBuffer<T>(*this);}
 
                     /** Init the buffer. */

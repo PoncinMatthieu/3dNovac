@@ -41,7 +41,7 @@ namespace Nc
 
             For transparency and simplicity, FileName inherite of std::string.
 
-            If the given path begin with "Nc:Type:", then the beginning of the filename will be set to the "RessourcePath/Type" of the 3dNovac Config file.
+            If the given path begin with "Nc:Type:", then the beginning of the filename will be set to the "ResourcePath/Type" of the 3dNovac Config file.
 
 			\sa
 				- System::Config

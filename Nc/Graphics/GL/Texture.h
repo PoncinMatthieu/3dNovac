@@ -50,7 +50,7 @@ namespace Nc
                     Texture(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true);
                     virtual ~Texture();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources. */
+                    /** Create a new copy of the object by without duplicate the ogl resources. */
                     virtual Object          *Clone() const              {return new Texture(*this);}
 
                     // Texture Opengl Object manip

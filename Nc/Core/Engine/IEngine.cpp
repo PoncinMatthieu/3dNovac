@@ -52,9 +52,9 @@ void IEngine::Run()
 {
     try
     {
-        Loading();			// loading ressources and contexts by using the loading priorities
+        Loading();			// loading resources and contexts by using the loading priorities
         MainLoop();			// main loop of the thread
-		Releasing();		// release the ressources by using the deleting priorities
+		Releasing();		// release the resources by using the deleting priorities
 	}
     catch (const std::exception &e)
     {

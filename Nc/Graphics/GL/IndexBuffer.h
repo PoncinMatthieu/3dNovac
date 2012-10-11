@@ -46,7 +46,7 @@ namespace Nc
                     {}
                     virtual ~IndexBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources. */
+                    /** Create a new copy of the object by without duplicate the ogl resources. */
                     virtual Object          *Clone() const                              {return new IndexBuffer(*this);}
 
                     /** Update the data. */

@@ -64,7 +64,7 @@ void Graphic::Engine::CreateContext()
 
 void Graphic::Engine::ReleaseContent()
 {
-// destruction des ressources
+// destruction des resources
 //    ActiveContext();  // create an X error on linux (bad value) with Qt. May be we will need to delete contents in a particular slot before the window is destroyed
     FactoryDefaultMaterials::DeleteInstance();
 }

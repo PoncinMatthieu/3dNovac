@@ -39,7 +39,7 @@ PlainTextFormater::PlainTextFormater(float charSize, const Color &color, const s
     FontMap::iterator it = _mapFont.find(ttf);
     if (it == _mapFont.end()) // si on ne la pas, on creer la font
     {
-        Utils::FileName s = CONFIG->Block("RessourcesPath")->Line("Font")->Param("path") + ttf + ".ttf";
+        Utils::FileName s = CONFIG->Block("ResourcesPath")->Line("Font")->Param("path") + ttf + ".ttf";
         _mapFont[ttf] = _font = new Font();
         _font->LoadFromFile(s, CHAR_SIZE);
     }

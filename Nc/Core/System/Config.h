@@ -39,7 +39,7 @@ namespace Nc
 {
     namespace System
     {
-        /// To save and load configs like ressources path in an Xml format.
+        /// To save and load configs like resources path in an Xml format.
         /**
             <div class="title"> Sample of 3dNovac config file: </div>
                 \p Examples/bin/3dNovac.conf

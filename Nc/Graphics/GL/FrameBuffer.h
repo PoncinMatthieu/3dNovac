@@ -54,7 +54,7 @@ namespace Nc
                     FrameBuffer &operator = (const FrameBuffer &fbo);
                     ~FrameBuffer();
 
-                    /** Create a new copy of the object by without duplicate the ogl ressources. */
+                    /** Create a new copy of the object by without duplicate the ogl resources. */
                     virtual Object          *   Clone() const      {return new FrameBuffer(*this);}
 
                     /** Create the frame buffer object (it would be automatically deleted). */

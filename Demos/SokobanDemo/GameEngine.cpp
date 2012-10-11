@@ -52,7 +52,7 @@ void GameEngine::LoadContent()
     _scene3d->AddChild(leffect);
 
     // creation de la map
-    _map = new Map("Nc:Ressources:Sokoban.map", *_sceneNodeFormatManager);
+    _map = new Map("Nc:Resources:Sokoban.map", *_sceneNodeFormatManager);
     leffect->AddChild(_map);
 
     // centre la camera

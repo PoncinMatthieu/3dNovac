@@ -71,15 +71,15 @@ void   FileName::SetFullname(const char *name)
         {
             Xml::Object *o = NULL;
 
-            // check on RessourcesPath, RessourcesPathWindows and RessourcesPathLinux
-            if (CONFIG->Block("RessourcesPath")->LineExist(subn.substr(0, pos)))
-                o = CONFIG->Block("RessourcesPath")->Line(subn.substr(0, pos));
+            // check on ResourcesPath, ResourcesPathWindows and ResourcesPathLinux
+            if (CONFIG->Block("ResourcesPath")->LineExist(subn.substr(0, pos)))
+                o = CONFIG->Block("ResourcesPath")->Line(subn.substr(0, pos));
 #ifdef SYSTEM_WINDOWS
-            else if (CONFIG->Block("RessourcesPathWindows")->LineExist(subn.substr(0, pos)))
-                o = CONFIG->Block("RessourcesPathWindows")->Line(subn.substr(0, pos));
+            else if (CONFIG->Block("ResourcesPathWindows")->LineExist(subn.substr(0, pos)))
+                o = CONFIG->Block("ResourcesPathWindows")->Line(subn.substr(0, pos));
 #else
-            else if (CONFIG->Block("RessourcesPathLinux")->LineExist(subn.substr(0, pos)))
-                o = CONFIG->Block("RessourcesPathLinux")->Line(subn.substr(0, pos));
+            else if (CONFIG->Block("ResourcesPathLinux")->LineExist(subn.substr(0, pos)))
+                o = CONFIG->Block("ResourcesPathLinux")->Line(subn.substr(0, pos));
 #endif
             else
                 throw Exception("FileName", std::string("Failed to retreive the path of ") + name);
