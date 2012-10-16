@@ -55,9 +55,9 @@ namespace Nc
 
                     void InvokeChilds(Widget &n)
                     {
-                        Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeChilds(n);
                         for (ListPWidget::iterator it = n._composedWidget.begin(); it != n._composedWidget.end(); ++it)
                             (*this)(**it);
+                        Graphic::SceneNodeVisitor<VisitorType, IsConst, ReturnType>::InvokeChilds(n);
                     }
 
                     template<class T>
@@ -92,9 +92,9 @@ namespace Nc
 
                     void InvokeChilds(const Widget &n)
                     {
-                        Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeChilds(n);
                         for (ListPWidget::const_iterator it = n._composedWidget.begin(); it != n._composedWidget.end(); ++it)
                             (*this)(**it);
+                        Graphic::SceneNodeVisitor<VisitorType, true, ReturnType>::InvokeChilds(n);
                     }
 
                     template<class T>

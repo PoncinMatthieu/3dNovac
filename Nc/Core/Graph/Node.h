@@ -43,7 +43,7 @@ namespace Nc
         class AbstractNode : public P<T,NodeType,Allocator>
         {
             public:
-                typedef P<T,NodeType,Allocator>             Parent;
+                typedef P<T,NodeType,Allocator>             ParentType;
                 NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
                 typedef P<T,NodeType,Allocator>             NodePolitic;
 
@@ -89,7 +89,7 @@ namespace Nc
         class Node : public AbstractNode<T,P,NodeType>
         {
             public:
-                typedef AbstractNode<T,P,NodeType>      Parent;
+                typedef AbstractNode<T,P,NodeType>      ParentType;
                 NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
                 typedef AbstractNode<T,P,NodeType>      NodePolitic;
 
@@ -112,7 +112,7 @@ namespace Nc
         class Node<T,P,Utils::Metaprog::Nop> : public AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >
         {
             public:
-                typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >     Parent;
+                typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >     ParentType;
                 NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
                 typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >     NodePolitic;
                 typedef Node                                                    NodeType;

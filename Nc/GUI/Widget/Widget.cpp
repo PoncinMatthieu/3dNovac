@@ -257,6 +257,8 @@ void Widget::CheckFocus(const Event &event)
 
         Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
         Visitor::CheckFocus v(event, mousePos);
+        for (ListPWidget::const_iterator it = _composedWidget.begin(); it != _composedWidget.end(); ++it)
+            v(**it);
         for(ContainerType::iterator it = _childs.begin(); v.childFocused == NULL && it != _childs.end(); it++)
             v(**it);
         _childFocused = v.childFocused;

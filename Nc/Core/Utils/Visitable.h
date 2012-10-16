@@ -31,7 +31,7 @@
 #include "VisitorManager.h"
 
 #define NC_UTILS_DEFINE_PARENT_CLASS(parent)                            \
-    typedef parent  Parent;
+    typedef parent  ParentType;
 
 /// helps defining a virtual function in every Visitable class to return its tag.
 #define NC_UTILS_DEFINE_VISITABLE(base)                                 \
@@ -43,8 +43,8 @@
     virtual size_t ParentTag(unsigned int i) const                      \
     {                                                                   \
         if (i > 0)                                                      \
-            return Parent::ParentTag(i - 1);                            \
-        return Parent::Tag();                                           \
+            return ParentType::ParentTag(i - 1);                            \
+        return ParentType::Tag();                                           \
     }
 
 #define NC_UTILS_DEFINE_INVOKABLE(base)                                 \
@@ -56,8 +56,8 @@
     virtual size_t InvokableParentTag(unsigned int i) const             \
     {                                                                   \
         if (i > 0)                                                      \
-            return Parent::InvokableParentTag(i - 1);                   \
-        return Parent::InvokableTag();                                  \
+            return ParentType::InvokableParentTag(i - 1);                   \
+        return ParentType::InvokableTag();                                  \
     }
 
 /// check_member_function is a compile time assertion to be sure that the function name exist.

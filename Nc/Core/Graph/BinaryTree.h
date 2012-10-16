@@ -61,18 +61,29 @@ namespace Nc
                 typedef N<T>      NodeType;
 
             public:
-                BinaryTree()                                        : _root(NULL)                           {}
-                BinaryTree(const T &data)                           : _root(new NodeType(data))             {}
-                BinaryTree(NodeType *parent)                        : _root(new NodeType(parent))           {}
-                BinaryTree(const T &data, NodeType *parent)         : _root(new NodeType(data, parent))     {}
+                BinaryTree()                                        : _root(NULL), _first(NULL), _last(NULL)     {}
                 BinaryTree(const BinaryTree &bt);
                 BinaryTree &operator = (const BinaryTree &bt);
-                ~BinaryTree()                                       {if (_root != NULL) delete _root;}
+                ~BinaryTree()                                       {Clear();}
+
+                /** Remove every node in the tree (delete the root, every nodes are deleted by its parent). */
+                void            Clear()                             {if (_root != NULL) delete _root; _root = _first = _last = NULL;}
 
                 /** \return the root node. */
                 NodeType        *Root()                             {return _root;}
                 /** \return the root node. */
                 const NodeType  *Root() const                       {return _root;}
+                /** \return the first node in the sorted tree. */
+                NodeType        *First()                            {return _first;}
+                /** \return the last node in the sorted tree. */
+                NodeType        *Last()                             {return _last;}
+                /** \return the first node in the sorted tree. */
+                const NodeType  *First() const                      {return _first;}
+                /** \return the last node in the sorted tree. */
+                const NodeType  *Last() const                       {return _last;}
+
+                /** \return true if the tree is empty */
+                bool            Empty() const                       {return (_root == NULL);}
 
                 /**
                     Search a key into the tree.
@@ -84,25 +95,46 @@ namespace Nc
                 void            Insert(const T &key);
 
                 /**
-                    Remove the first which match with the given key.
+                    Remove the first data which match with the given \p key.
                     \param data filled with the data of the removed node if not null and if a node has been removed.
                     \return true if a node has been removed.
                 */
                 bool            Remove(const T &key, T *data = NULL);
-
-                /** \return the minimal node. */
-                NodeType        *NodeMini();
-                /** \return the maximal node. */
-                NodeType        *NodeMaxi();
+                /**
+                    Remove the first data in the tree.
+                    \param data filled with the data of the removed node if not null and if a node has been removed.
+                    \return true if a node has been removed.
+                */
+                bool            RemoveFirst(T *data = NULL);
+                /**
+                    Remove the last data in the tree.
+                    \param data filled with the data of the removed node if not null and if a node has been removed.
+                    \return true if a node has been removed.
+                */
+                bool            RemoveLast(T *data = NULL);
 
             protected:
                 NodeType        *_root;             ///< The root of the tree.
+                NodeType        *_first;            ///< Store the first node on the sorted tree
+                NodeType        *_last;             ///< Store the last node on the sorted tree
         };
 
         template<typename T, template<typename> class N>
         BinaryTree<T,N>::BinaryTree(const BinaryTree &bt)
         {
-            _root = (bt._root != NULL) ? new NodeType(*bt._root) : NULL;
+            if (bt._root != NULL)
+            {
+                _root = new NodeType(*bt._root);
+                NodeType *n;
+                for (n = _root; n->Prev() != NULL; n = n->Prev());
+                _first = n;
+                for (n = _root; n->Next() != NULL; n = n->Next());
+                _last = n;
+            }
+            else
+            {
+                _root = _first = _last = NULL;
+            }
         }
 
         template<typename T, template<typename> class N>
@@ -110,7 +142,19 @@ namespace Nc
         {
             if (_root != NULL)
                 delete _root;
-            _root = (bt._root != NULL) ? new NodeType(*bt._root) : NULL;
+            if (bt._root != NULL)
+            {
+                _root = new NodeType(*bt._root);
+                NodeType *n;
+                for (n = _root; n->Prev() != NULL; n = n->Prev());
+                _first = n;
+                for (n = _root; n->Next() != NULL; n = n->Next());
+                _last = n;
+            }
+            else
+            {
+                _root = _first = _last = NULL;
+            }
             return *this;
         }
 
@@ -131,6 +175,16 @@ namespace Nc
         {
             NodeType *n = new NodeType(key);
             _root = (_root != NULL) ? _root->Insert(n) : n;
+
+            // record first-last node
+            if (_first == NULL || n->data < _first->data)
+                _first = n;
+            if (_last == NULL || _last->data < n->data)
+                _last = n;
+            while (_first != NULL && _first->Left() != NULL)
+                _first = _first->Left();
+            while (_last != NULL && _last->Right() != NULL)
+                _last = _last->Right();
         }
 
         template<typename T, template<typename> class N>
@@ -138,6 +192,11 @@ namespace Nc
         {
             if (_root != NULL)
             {
+                if (_first != NULL && _first->data == data)
+                    _first = _first->Next();
+                if (_last != NULL && _last->data == data)
+                    _last = _last->Prev();
+
                 NodeType *n = NULL;
                 _root = _root->Remove(key, n);
                 if (data != NULL && n != NULL)
@@ -152,29 +211,39 @@ namespace Nc
         }
 
         template<typename T, template<typename> class N>
-        typename BinaryTree<T,N>::NodeType    *BinaryTree<T,N>::NodeMini()
+        bool            BinaryTree<T,N>::RemoveFirst(T *data)
         {
             if (_root != NULL)
             {
-                NodeType *n = _root;
-                while (n->Left() != NULL)
-                    n = n->Left();
-                return n;
+                NodeType *f = _first;
+                *data = _first->data;
+                if (_last == _first)
+                    _last = _last->Prev();
+                _first = _first->Next();
+
+                _root = _root->Remove(f);
+                delete f;
+                return true;
             }
-            return NULL;
+            return false;
         }
 
         template<typename T, template<typename> class N>
-        typename BinaryTree<T,N>::NodeType    *BinaryTree<T,N>::NodeMaxi()
+        bool            BinaryTree<T,N>::RemoveLast(T *data)
         {
             if (_root != NULL)
             {
-                NodeType *n = _root;
-                while (n->Right() != NULL)
-                    n = n->Right();
-                return n;
+                NodeType *f = _last;
+                *data = _last->data;
+                if (_last == _first)
+                    _first = _first->Next();
+                _last = _last->Prev();
+
+                _root = _root->Remove(f);
+                delete f;
+                return true;
             }
-            return NULL;
+            return false;
         }
     }
 }

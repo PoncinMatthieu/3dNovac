@@ -99,6 +99,19 @@ namespace Nc
                 */
                 NodeType            *Remove(const T &key, NodeType *&removedNode);
 
+                /**
+                    Remove the given node.
+                    \return the node which take place insteed of the removedNode.
+                */
+                NodeType            *Remove(NodeType *nodeToRemove);
+
+                /**
+                    Remove the given leaf. This method does not rebalance the tree.
+                    \param removedNode will be set to the removed node.
+                    \return true if the node has been removed.
+                */
+                bool                RemoveLeaf(NodeType *leaf);
+
                 // specific structure method
                 /** \return the balance factor of the node (the Height of the left node minus the Height of the right node). */
                 int                 BalanceFactor() const;
@@ -140,6 +153,11 @@ namespace Nc
                     \return the root of the tree (the tree has been balanced so the root could have change).
                 */
                 NodeType        *Remove(const T &key, NodeType *&removedNode);
+                /**
+                    Remove the given node on the tree.
+                    \return the root of the tree (the tree has been balanced so the root could have change).
+                */
+                NodeType        *Remove(NodeType *nodeToRemove);
 
             private:
                 /**
@@ -159,7 +177,7 @@ namespace Nc
         template<typename T>
         struct BinaryNodeAVL : public Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
         {
-            typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    Parent;
+            typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
             NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
             typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
             typedef BinaryNodeAVL                                       NodeType;
@@ -371,7 +389,7 @@ namespace Nc
         template<typename T, class NodeType, class Allocator>
         NodeType    *BinaryNodePolitic<T,NodeType,Allocator>::Insert(NodeType *newNode)
         {
-            if (newNode->data <= NodePolitic::data)
+            if (newNode->data < NodePolitic::data)
             {
                 if (!_left) // leaf insertion
                 {
@@ -380,6 +398,44 @@ namespace Nc
                 }
                 else // next
                     static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Insert(newNode);
+            }
+            else if (newNode->data == NodePolitic::data)
+            {
+                if (newNode->IsLeaf())
+                {
+                    if (!_left) // leaf insertion
+                    {
+                        newNode->_parent = static_cast<NodeType*>(this);
+                        _left = newNode;
+                    }
+                    else // next
+                        static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Insert(newNode);
+                }
+                else // insert a node containing already a child (this case happens only when we remove a node)
+                {
+                    if (newNode->_left != NULL)
+                    {
+                        if (!_left) // leaf insertion
+                        {
+                            newNode->_parent = static_cast<NodeType*>(this);
+                            _left = newNode;
+                        }
+                        else // next
+                            static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Insert(newNode);
+                    }
+                    else if (newNode->_right != NULL)
+                    {
+                        if (!_right) // leaf insertion
+                        {
+                            newNode->_parent = static_cast<NodeType*>(this);
+                            _right = newNode;
+                        }
+                        else // next
+                            static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_right)->Insert(newNode);
+                    }
+                    else
+                        throw Utils::Exception("BinaryNodePolitic", "Trying to insert a node that has already childs.");
+                }
             }
             else
             {
@@ -492,11 +548,117 @@ namespace Nc
                 removedNode->_right = NULL;
                 return replacementNode;
             }
-            else if (key < NodePolitic::data)   // next
+            else if (key <= NodePolitic::data)   // next
                 return (_left != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Remove(key, removedNode) : NULL;
             else // next
                 return (_right != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_right)->Remove(key, removedNode) : NULL;
         }
+
+
+        template<typename T, class NodeType, class Allocator>
+        NodeType    *BinaryNodePolitic<T,NodeType,Allocator>::Remove(NodeType *nodeToRemove)
+        {
+            if (nodeToRemove == this)
+            {
+                NodeType *replacementNode = NULL;
+                NodeType *removedNode = static_cast<NodeType*>(this);
+
+                if (removedNode->IsLeaf()) // if we have a leaf
+                {
+                    if (removedNode->_parent != NULL)
+                    {
+                        if (removedNode->_parent->_left == removedNode)
+                            removedNode->_parent->_left = NULL;
+                        else
+                            removedNode->_parent->_right = NULL;
+                    }
+                    replacementNode = removedNode->_parent;
+                }
+                else
+                {
+                    // search for the replacement node (largest node of the left subtree)
+                    if (_left != NULL)
+                    {
+                        replacementNode = _left;
+                        while (replacementNode->_right != NULL)
+                            replacementNode = replacementNode->_right;
+
+                        // replace that node with the removed node
+                        if (removedNode->_parent != NULL)
+                        {
+                            if (removedNode->_parent->_left == removedNode)
+                                removedNode->_parent->_left = replacementNode;
+                            else
+                                removedNode->_parent->_right = replacementNode;
+                        }
+                        if (replacementNode->_parent != NULL)
+                        {
+                            if (replacementNode->_parent->_left == replacementNode)
+                                replacementNode->_parent->_left = NULL;
+                            else
+                                replacementNode->_parent->_right = NULL;
+                        }
+                        replacementNode->_parent = removedNode->_parent;
+                        replacementNode->_right = removedNode->_right;
+                        if (replacementNode->_right != NULL)
+                            replacementNode->_right->_parent = replacementNode;
+
+                        // insert the left node in the replacement node
+                        if (removedNode->_left != NULL)
+                        {
+                            NodeType *n = removedNode->_left;
+                            n->_parent = NULL;
+                            static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(replacementNode)->Insert(n);
+                            replacementNode = n;
+                        }
+                    }
+                    else
+                    {
+                        replacementNode = _right;
+                        while (replacementNode->_left != NULL)
+                            replacementNode = replacementNode->_left;
+
+                        // replace that node with the removed node
+                        if (removedNode->_parent != NULL)
+                        {
+                            if (removedNode->_parent->_left == removedNode)
+                                removedNode->_parent->_left = replacementNode;
+                            else
+                                removedNode->_parent->_right = replacementNode;
+                        }
+                        if (replacementNode->_parent != NULL)
+                        {
+                            if (replacementNode->_parent->_left == replacementNode)
+                                replacementNode->_parent->_left = NULL;
+                            else
+                                replacementNode->_parent->_right = NULL;
+                        }
+                        replacementNode->_parent = removedNode->_parent;
+                        replacementNode->_left = removedNode->_left;
+                        if (replacementNode->_left != NULL)
+                            replacementNode->_left->_parent = replacementNode;
+
+                        // insert the left node in the replacement node
+                        if (removedNode->_right != NULL)
+                        {
+                            NodeType *n = removedNode->_right;
+                            n->_parent = NULL;
+                            static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(replacementNode)->Insert(n);
+                            replacementNode = n;
+                        }
+                    }
+                }
+                removedNode->_parent = NULL;
+                removedNode->_left = NULL;
+                removedNode->_right = NULL;
+                return replacementNode;
+            }
+            else if (nodeToRemove->data <= NodePolitic::data)   // next
+                return (_left != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Remove(nodeToRemove) : NULL;
+            else // next
+                return (_right != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_right)->Remove(nodeToRemove) : NULL;
+        }
+
 
         template<typename T, class NodeType, class Allocator>
         NodeType    *BinaryNodePolitic<T,NodeType,Allocator>::LeftRotation()
@@ -592,6 +754,34 @@ namespace Nc
 
             // rebalancing
             return  (node != NULL) ? node->Rebalancing() : NULL;
+        }
+
+        template<typename T, class NodeType, class Allocator>
+        NodeType    *BinaryNodeAVLPolitic<T,NodeType,Allocator>::Remove(NodeType *nodeToRemove)
+        {
+            // remove
+            NodeType *node = NodePolitic::Remove(nodeToRemove);
+
+            // rebalancing
+            return  (node != NULL) ? node->Rebalancing() : NULL;
+        }
+
+        template<typename T, class NodeType, class Allocator>
+        bool        BinaryNodePolitic<T,NodeType,Allocator>::RemoveLeaf(NodeType *leaf)
+        {
+            if (leaf->IsLeaf()) // if we have a leaf
+            {
+                if (leaf->_parent != NULL)
+                {
+                    if (leaf->_parent->_left == leaf)
+                        leaf->_parent->_left = NULL;
+                    else
+                        leaf->_parent->_right = NULL;
+                    leaf->_parent = NULL;
+                }
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -11,8 +11,9 @@ using namespace Nc::Graph;
 
 int main()
 {
-  BinaryTree<int> t(100);
+  BinaryTree<int> t;
 
+  t.Insert(100);
   t.Insert(1);
   t.Insert(24);
   t.Insert(3);
@@ -23,10 +24,10 @@ int main()
   t.Insert(8);
   t.Insert(3);
 
-  for (BinaryTree<int>::NodeType *n = t.NodeMini(); n != NULL; n = n->Next())
+  for (BinaryTree<int>::NodeType *n = t.First(); n != NULL; n = n->Next())
     LOG << n->data << " ";
   LOG << std::endl;
-  for (BinaryTree<int>::NodeType *n = t.NodeMaxi(); n != NULL; n = n->Prev())
+  for (BinaryTree<int>::NodeType *n = t.Last(); n != NULL; n = n->Prev())
     LOG << n->data << " ";
   LOG << std::endl;
 

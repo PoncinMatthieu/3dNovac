@@ -252,7 +252,16 @@ namespace Nc
         {
             if (!_alive || !Started() || _itCurrentFrame == GetListFrame().end())
                 return;
+            bool pushed = false;
+            if (!Matrix.IsIdentity())
+            {
+                pushed = true;
+                scene->PushModelMatrix();
+                scene->ModelMatrix().AddTransformation(Matrix);
+            }
             RenderFrame(scene);
+            if (pushed)
+                scene->PopModelMatrix();
         }
 
         template<typename T>
@@ -274,16 +283,7 @@ namespace Nc
         template<typename T>
         void FramesAnimation<T>::RenderFrame(SceneGraph *scene)
         {
-            bool pushed = false;
-            if (!Matrix.IsIdentity())
-            {
-                pushed = true;
-                scene->PushModelMatrix();
-                scene->ModelMatrix().AddTransformation(Matrix);
-            }
             _itCurrentFrame->RenderNode(scene);
-            if (pushed)
-                scene->PopModelMatrix();
         }
     }
 }
