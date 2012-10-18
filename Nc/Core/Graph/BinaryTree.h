@@ -192,9 +192,14 @@ namespace Nc
         {
             if (_root != NULL)
             {
-                if (_first != NULL && _first->data == data)
+                // if the firsts nodes are equals, it is possible that the _first is not on the first possition.
+                // to we check that possibility. same for _last
+                for (; _first->Prev() != NULL; _first = _first->Prev());
+                for (; _last->Next() != NULL; _last = _last->Next());
+
+                if (_first != NULL && _first->data == key)
                     _first = _first->Next();
-                if (_last != NULL && _last->data == data)
+                if (_last != NULL && _last->data == key)
                     _last = _last->Prev();
 
                 NodeType *n = NULL;
@@ -215,6 +220,11 @@ namespace Nc
         {
             if (_root != NULL)
             {
+                // if the firsts nodes are equals, it is possible that the _first is not on the first possition.
+                // to we check that possibility. same for _last
+                for (; _first->Prev() != NULL; _first = _first->Prev());
+                for (; _last->Next() != NULL; _last = _last->Next());
+
                 NodeType *f = _first;
                 *data = _first->data;
                 if (_last == _first)
@@ -233,6 +243,11 @@ namespace Nc
         {
             if (_root != NULL)
             {
+                // if the firsts nodes are equals, it is possible that the _first is not on the first possition.
+                // to we check that possibility. same for _last
+                for (; _first->Prev() != NULL; _first = _first->Prev());
+                for (; _last->Next() != NULL; _last = _last->Next());
+
                 NodeType *f = _last;
                 *data = _last->data;
                 if (_last == _first)

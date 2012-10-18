@@ -548,7 +548,7 @@ namespace Nc
                 removedNode->_right = NULL;
                 return replacementNode;
             }
-            else if (key <= NodePolitic::data)   // next
+            else if (key < NodePolitic::data)   // next
                 return (_left != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Remove(key, removedNode) : NULL;
             else // next
                 return (_right != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_right)->Remove(key, removedNode) : NULL;
@@ -653,8 +653,10 @@ namespace Nc
                 removedNode->_right = NULL;
                 return replacementNode;
             }
-            else if (nodeToRemove->data <= NodePolitic::data)   // next
+            else if (nodeToRemove->data < NodePolitic::data)   // next
                 return (_left != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Remove(nodeToRemove) : NULL;
+            //else if (nodeToRemove->data == NodePolitic::data)   // next or prev ?
+            //    return (_left != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_left)->Remove(nodeToRemove) : NULL;
             else // next
                 return (_right != NULL) ? static_cast<BinaryNodePolitic<T,NodeType,Allocator>*>(_right)->Remove(nodeToRemove) : NULL;
         }
