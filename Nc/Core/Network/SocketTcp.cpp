@@ -24,14 +24,15 @@
 
 -----------------------------------------------------------------------------*/
 
-#include "../Define.h"
 #ifdef SYSTEM_WINDOWS
 #else
+    #include <unistd.h>
     #include <sys/types.h>
     #include <sys/socket.h>
     #include <netinet/tcp.h>
     #include <arpa/inet.h>
 #endif
+#include "../Define.h"
 #include "SocketTcp.h"
 
 using namespace Nc;
