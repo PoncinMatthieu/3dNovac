@@ -148,6 +148,10 @@ namespace Nc
                 /** Disable the context, to redefine. */
                 virtual inline void     DisableContext()    {}
 
+            private:
+                /** Pause the thread to avoid taking 100% of the CPU, if the limit is >0 */
+                void                    LimitFrameRate();
+
             protected:
                 Manager                 *_manager;                  ///< The instance of the engine Manager.
                 bool                    _loaded;                    ///< true if the engine is loaded.
@@ -158,12 +162,10 @@ namespace Nc
                 unsigned char           _loadingContextPriority;    ///< if the priority is null, no context loading.
                 unsigned char           _loadingPriority;           ///< if the priority is null, no content loading.
 
-            private:
-                /** limit the fps if the limit is >0 */
-                void                    LimitFrameRate();
-
-                float                   _elapsedTime;               ///< Elapsed time between 2 frame (Execute) in second.
                 unsigned int            _limitFPS;                  ///< if > 0, used to sleep the thread with the good values to have the good number of seconds.
+
+            private:
+                float                   _elapsedTime;               ///< Elapsed time between 2 frame (Execute) in second.
                 Utils::Clock            _clock;                     ///< the clock used to compute the elapsed time and the fps sleep if the limit is set.
                 System::Mutex           _sleepMutex;                ///< mutex used to sleep the engine.
                 System::Locker          *_sleepLocker;              ///< locker used to sleep the engine.

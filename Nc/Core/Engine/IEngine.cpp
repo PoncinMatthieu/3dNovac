@@ -35,7 +35,7 @@ using namespace Nc::Engine;
 IEngine::IEngine(Manager *manager, const Utils::Mask<Nc::Engine::Pattern> &pattern, unsigned char deletePriority, unsigned char loadingContextPriority, unsigned int loadingPriority)
     : EventManager(), _manager(manager), _loaded(false), _released(false), _pattern(pattern),
       _deletePriority(deletePriority), _loadingContextPriority(loadingContextPriority), _loadingPriority(loadingPriority),
-      _elapsedTime(0), _limitFPS(0), _sleepLocker(NULL), _stop(false)
+      _limitFPS(0), _elapsedTime(0), _sleepLocker(NULL), _stop(false)
 {
 }
 
