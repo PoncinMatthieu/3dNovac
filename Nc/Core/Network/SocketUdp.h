@@ -64,6 +64,11 @@ namespace Nc
                 /** Close the descriptor. */
                 virtual void    Close();
 
+                /** \return true if the socket is bound. */
+                bool            Bound() const               {return _bindedPort != 0;}
+                /** \return the binded port. */
+                unsigned short  BoundPort() const           {return _bindedPort;}
+
                 /**
                     Bind the socket to the given port.
                     \return true if no error.

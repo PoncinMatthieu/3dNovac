@@ -63,8 +63,9 @@ void    SocketUdp::Create()
 			throw Utils::Exception("SocketUdp", "Failed to create the socket udp.");
 		// To avoid the "Address already in use" error message when trying to bind to the same port
 		int yep = 1;
-		if (setsockopt(_descriptor, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<char*>(&yep), sizeof(int)) == -1)
-			LOG_ERROR << "Failed to set the socket option `SO_REUSEADDR`. Binding to a same port may fail if too fast" << std::endl;
+        // in udp, reuseaddr cause to bind the socket on the same port if the socket is still bound, so we disable it!
+		//if (setsockopt(_descriptor, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<char*>(&yep), sizeof(int)) == -1)
+		//	LOG_ERROR << "Failed to set the socket option `SO_REUSEADDR`. Binding to a same port may fail if too fast" << std::endl;
         // Enable broadcast by default
         if (setsockopt(_descriptor, SOL_SOCKET, SO_BROADCAST, reinterpret_cast<char*>(&yep), sizeof(int)) == -1)
             LOG_ERROR << "Failed to enable broadcast on UDP socket" << std::endl;
@@ -103,6 +104,8 @@ bool    SocketUdp::Bind(unsigned short port)
         // Save the new port
         _bindedPort = port;
     }
+    else
+        LOG_ERROR << "The socket is already bound to the specified port!" << std::endl;
     return true;
 }
 

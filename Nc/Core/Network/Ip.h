@@ -51,6 +51,8 @@ namespace Nc
                 Ip(const std::string &ip);
                 Ip(unsigned char byte1, unsigned char byte2, unsigned char byte3, unsigned char byte4);
 
+                bool    operator == (const Ip &ip) const        {return _addr == ip._addr;}
+
                 /** Init the address with the given \p ip address. */
                 void                Init(const std::string &ip);
                 /** Init the address with the given 4 byte which describ the ip address. */

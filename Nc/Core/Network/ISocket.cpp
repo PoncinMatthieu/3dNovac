@@ -31,6 +31,7 @@
     #include <sys/socket.h>
     #include <netinet/tcp.h>
     #include <arpa/inet.h>
+    #include <fcntl.h>
 #endif
 #include "SocketTcp.h"
 
@@ -69,3 +70,18 @@ ISocket::ISocket()
 ISocket::~ISocket()
 {
 }
+
+void        ISocket::SetBlocking(bool state)
+{
+#ifdef SYSTEM_WINDOWS
+    u_long blocking = (state) ? 0 : 1;
+    ioctlsocket(_descriptor, FIONBIO, &blocking);
+#else
+    int status = fcntl(_descriptor, F_GETFL);
+    if (state)
+        fcntl(_descriptor, F_SETFL, status & ~O_NONBLOCK);
+    else
+        fcntl(_descriptor, F_SETFL, status | O_NONBLOCK);
+#endif
+}
+

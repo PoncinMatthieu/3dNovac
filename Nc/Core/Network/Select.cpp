@@ -75,7 +75,7 @@ bool Select::IsReadyForWriting(const ISocket &socket)
 
 unsigned int Select::Wait(float timeout)
 {
-    if (timeout > 0)
+    if (timeout >= 0)
     {
         timeval t;
         t.tv_sec  = static_cast<long>(timeout);

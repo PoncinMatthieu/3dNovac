@@ -40,6 +40,8 @@ namespace Nc
 			<div class="title">Full sample to show how to use a select in a Tcp client application:</div>
                 \p Examples/Tuto_NcCore_Client.cpp
                 \include Tuto_NcCore_Client.cpp
+
+            \todo Put in a place an accurate error control, by printing out the message corresponding to the error set into errno.
 		*/
         class LCORE Select
         {
@@ -53,7 +55,11 @@ namespace Nc
                 /** Set the given \p socket for writing. */
                 void            SetForWriting(const ISocket &socket);
 
-                /** Wait until one of the sockets is ready for reading/writing, or \p timeout is reached. */
+                /**
+                    Wait until one of the sockets is ready for reading/writing, or \p timeout is reached.
+                    If \p timeout equals 0, then select returns immediatly.
+                    If \p timeout is negatif, then select can block indefinitely.
+                */
                 unsigned int    Wait(float timeout = 0.f);
 
                 /** \return true if the given \p socket is ready for reading. */

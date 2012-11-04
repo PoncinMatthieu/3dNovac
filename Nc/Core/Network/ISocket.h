@@ -76,6 +76,9 @@ namespace Nc
                 inline int      Descriptor() const                  {return _descriptor;}
                 #endif
 
+                /** Set blocking mode */
+                void            SetBlocking(bool state);
+
             protected:
                 #ifdef SYSTEM_WINDOWS
                 SOCKET                  _descriptor;
