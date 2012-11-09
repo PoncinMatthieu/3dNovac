@@ -48,7 +48,7 @@ namespace Nc
             Array(const Array<T,D2> &a);
             template<unsigned int D2>
             Array &operator = (const Array<T,D2> &a);
-            virtual ~Array()    {};
+            ~Array()    {};
 
             // initialisation
             /** Init all node of the array with the given data. */
@@ -98,7 +98,7 @@ namespace Nc
             Array &operator = (const Array &a);
             template<typename U, unsigned int D2>
             Array &operator = (const Array<U,D2> &a);
-            virtual ~Array();
+            ~Array();
 
             // initialisation
             /**

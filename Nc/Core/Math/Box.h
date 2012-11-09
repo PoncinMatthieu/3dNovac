@@ -45,7 +45,6 @@ namespace Nc
                 Box()   {}
                 Box(const Vector<T,D> &min, const Vector<T,D> &max);
                 template<typename U>    Box(const Box<U,D> &b);
-                virtual ~Box()    {}
 
                 // operator
                 template<typename U>    Box &operator   =   (const Box<U,D> &b);

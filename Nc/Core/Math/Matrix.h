@@ -44,7 +44,6 @@ namespace Nc
                 Matrix();
                 Matrix(const Matrix &m);
                 Matrix &operator = (const Matrix &m);
-                virtual ~Matrix()   {};
 
                 // ascessor
                 inline T const *operator [] (unsigned int i) const

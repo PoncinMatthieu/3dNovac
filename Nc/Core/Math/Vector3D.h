@@ -35,30 +35,29 @@ namespace Nc
     {
         /// To manipulate 3 composante of type T.
         template<typename T>
-        class Vector3D : public Vector<T,3>
+        struct Vector3D : public Vector<T,3>
         {
-            public:
-                Vector3D() : Vector<T,3>()  {};
-                template<typename U>
-                Vector3D(const Vector<U,3> &v) : Vector<T,3>(v) {}
-                Vector3D(const T &x, const T &y, const T &z);
-                Vector3D(const T v[]);
+            Vector3D() : Vector<T,3>()  {};
+            template<typename U>
+            Vector3D(const Vector<U,3> &v) : Vector<T,3>(v) {}
+            Vector3D(const T &x, const T &y, const T &z);
+            Vector3D(const T v[]);
 
-                template<typename U>
-                Vector3D    &operator = (const Vector3D<U> &v);
+            template<typename U>
+            Vector3D    &operator = (const Vector3D<U> &v);
 
-                /** Initialize the values of the vector. */
-                void        Init(const T &x = 0, const T &y = 0, const T &z = 0);
+            /** Initialize the values of the vector. */
+            void        Init(const T &x = 0, const T &y = 0, const T &z = 0);
 
-                /** Compute the crossProduct with `v` in `result`. */
-                void        Cross(const Vector3D &v, Vector3D<T> &result) const;
+            /** Compute the crossProduct with `v` in `result`. */
+            void        Cross(const Vector3D &v, Vector3D<T> &result) const;
 
-                /** \return X */
-                const T     &X() const    {return Vector<T,3>::data[0];}
-                /** \return Y */
-                const T     &Y() const    {return Vector<T,3>::data[1];}
-                /** \return Z */
-                const T     &Z() const    {return Vector<T,3>::data[2];}
+            /** \return X */
+            const T     &X() const    {return Vector<T,3>::data[0];}
+            /** \return Y */
+            const T     &Y() const    {return Vector<T,3>::data[1];}
+            /** \return Z */
+            const T     &Z() const    {return Vector<T,3>::data[2];}
         };
 
         template<typename T>

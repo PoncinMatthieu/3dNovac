@@ -36,19 +36,18 @@ namespace Nc
     {
         /// To manipulate a box in 2 Dimension of type T.
         template<typename T>
-        class Box2D : public Box<T,2>
+        struct Box2D : public Box<T,2>
         {
-            public:
-                Box2D() : Box<T,2>()    {}
-                template<typename U>
-                Box2D(const Box<U,2> &b) : Box<T,2>(b)  {}
-                Box2D(const Vector2D<T> &min, const Vector2D<T> &max);
-                Box2D(const T &xmin, const T &ymin, const T &xmax, const T &ymax);
+            Box2D() : Box<T,2>()    {}
+            template<typename U>
+            Box2D(const Box<U,2> &b) : Box<T,2>(b)  {}
+            Box2D(const Vector2D<T> &min, const Vector2D<T> &max);
+            Box2D(const T &xmin, const T &ymin, const T &xmax, const T &ymax);
 
-                template<typename U>
-                Box2D    &operator = (const Box2D<U> &b);
+            template<typename U>
+            Box2D    &operator = (const Box2D<U> &b);
 
-                static const Box2D<T>       EmptyBox;       ///< static const empty box.
+            static const Box2D<T>       EmptyBox;       ///< static const empty box.
         };
 
         template<typename T>

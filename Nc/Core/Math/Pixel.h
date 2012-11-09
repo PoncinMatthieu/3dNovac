@@ -45,7 +45,6 @@ namespace Nc
         {
             Pixel(const T &red = 0, const T &green = 0, const T &blue = 0, const T &alpha = 0)
                 : r(red), g(green), b(blue), a(alpha) {}
-            ~Pixel() {}
 
             inline void Init(const T &red = 0, const T &green = 0, const T &blue = 0, const T &alpha = 0)    {r = red; g = green; b = blue; a = alpha;}
             inline bool operator == (const Pixel& v) const                                      {return (r == v.r && g == v.g && b == v.b && a == v.a);}

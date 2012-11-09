@@ -38,75 +38,73 @@ namespace Nc
     {
         /// Template class Vector to manipulate a vector of Dimension D of type T.
         template<typename T, unsigned char D>
-        class Vector
+        struct Vector
         {
-            public:
-                Vector();
-                Vector(const Vector &v);
-                template<typename U> Vector(const Vector<U,D> &v);
-                template<typename U, unsigned char D2> Vector(const Vector<U,D2> &v);
-                virtual ~Vector()    {}
+            Vector();
+            Vector(const Vector &v);
+            template<typename U> Vector(const Vector<U,D> &v);
+            template<typename U, unsigned char D2> Vector(const Vector<U,D2> &v);
 
-                // operator
-                T &operator                             []  (unsigned char i);
-                const T &operator                       []  (unsigned char i) const;
-                Vector &operator                        =   (const Vector &v);
-                template<typename U> Vector &operator   =   (const Vector<U,D> &v);
-                template<typename U, unsigned char D2> Vector &operator   =   (const Vector<U,D2> &v);
-                template<typename U> bool operator      ==  (const Vector<U,D> &v) const;
-                template<typename U> bool operator      !=  (const Vector<U,D> &v) const;
+            // operator
+            T &operator                             []  (unsigned char i);
+            const T &operator                       []  (unsigned char i) const;
+            Vector &operator                        =   (const Vector &v);
+            template<typename U> Vector &operator   =   (const Vector<U,D> &v);
+            template<typename U, unsigned char D2> Vector &operator   =   (const Vector<U,D2> &v);
+            template<typename U> bool operator      ==  (const Vector<U,D> &v) const;
+            template<typename U> bool operator      !=  (const Vector<U,D> &v) const;
 
-                template<typename U> Vector &operator   +=  (const Vector<U,D> &v);
+            template<typename U> Vector &operator   +=  (const Vector<U,D> &v);
 
-                template<typename U> Vector &operator   -=  (const Vector<U,D> &v);
+            template<typename U> Vector &operator   -=  (const Vector<U,D> &v);
 
-                template<typename U> Vector &operator   *=  (const Vector<U,D> &v);
-                template<typename U> Vector &operator   *=  (const U &a);
+            template<typename U> Vector &operator   *=  (const Vector<U,D> &v);
+            template<typename U> Vector &operator   *=  (const U &a);
 
-                template<typename U> Vector &operator   /=  (const Vector<U,D> &v);
-                template<typename U> Vector &operator   /=  (const U &a);
+            template<typename U> Vector &operator   /=  (const Vector<U,D> &v);
+            template<typename U> Vector &operator   /=  (const U &a);
 
-                template<typename U> Vector operator    +   (const Vector<U,D> &v) const;
+            template<typename U> Vector operator    +   (const Vector<U,D> &v) const;
 
-                template<typename U> Vector operator    -   (const Vector<U,D> &v) const;
-                Vector                      operator    -   (void) const;
+            template<typename U> Vector operator    -   (const Vector<U,D> &v) const;
+            Vector                      operator    -   (void) const;
 
-                template<typename U> Vector operator    *   (const Vector<U,D> &v) const;
-                template<typename U> Vector operator    *   (const U &v) const;
+            template<typename U> Vector operator    *   (const Vector<U,D> &v) const;
+            template<typename U> Vector operator    *   (const U &v) const;
 
-                template<typename U> Vector operator    /   (const Vector<U,D> &a) const;
-                template<typename U> Vector operator    /   (const U &a) const;
+            template<typename U> Vector operator    /   (const Vector<U,D> &a) const;
+            template<typename U> Vector operator    /   (const U &a) const;
 
-                /** \return true if the given vector is equal with the given precision. */
-                bool    Equal(const Vector &v, float precision) const;
+            /** \return true if the given vector is equal with the given precision. */
+            bool    Equal(const Vector &v, float precision) const;
 
-                // function
-                /** \return the square root length of the vector. */
-                T       Length() const;
-                /** scale the vector */
-                void    Scale(T l);
-                /** Normalize the vector and return itself. */
-                Vector  &Normalize();
-                /** \return the dot product of the vector with \p v. */
-                template<typename U>
-                T       Dot(const Vector<U,D> &v) const;
-                /** Fill the inverse vector */
-                void    Inverse(Vector &v) const;
-                /** \return the angle between the vector and \p v. */
-                template<typename U>
-                T       Angle(const Vector<U,D> &v) const;
+            // function
+            /** \return the square root length of the vector. */
+            T       Length() const;
+            /** scale the vector */
+            void    Scale(T l);
+            /** Normalize the vector and return itself. */
+            Vector  &Normalize();
+            /** \return the dot product of the vector with \p v. */
+            template<typename U>
+            T       Dot(const Vector<U,D> &v) const;
+            /** Fill the inverse vector */
+            void    Inverse(Vector &v) const;
+            /** \return the angle between the vector and \p v. */
+            template<typename U>
+            T       Angle(const Vector<U,D> &v) const;
 
-                friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Vector<T,D> &V)
-                {
-                    char c = 'x';
-                    for (unsigned char i = 0; i < D; ++i, ++c)
-                        os << c << " = " << V.data[i] << "  ";
-                    return os;
-                }
+            friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Vector<T,D> &V)
+            {
+                char c = 'x';
+                for (unsigned char i = 0; i < D; ++i, ++c)
+                    os << c << " = " << V.data[i] << "  ";
+                return os;
+            }
 
-                T   data[D];                                ///< public data, for acces performance reason.
+            T   data[D];                                ///< public data, for acces performance reason.
 
-                static const Vector<T,D>    Null;           ///< static const vector null.
+            static const Vector<T,D>    Null;           ///< static const vector null.
         };
 
         template<typename T, unsigned char D>

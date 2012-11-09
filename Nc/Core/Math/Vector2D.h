@@ -35,26 +35,25 @@ namespace Nc
     {
         /// Vector 2d to manipulate 2 composante of type T.
         template<typename T>
-        class Vector2D : public Vector<T,2>
+        struct Vector2D : public Vector<T,2>
         {
-            public:
-                Vector2D() : Vector<T,2>()                      {}
-                template<typename U>
-                Vector2D(const Vector<U,2> &v) : Vector<T,2>(v) {}
-                template<typename U>
-                Vector2D(const Vector3D<U> &v) : Vector<T,2>(v) {}
-                Vector2D(const T &x, const T &y);
+            Vector2D() : Vector<T,2>()                      {}
+            template<typename U>
+            Vector2D(const Vector<U,2> &v) : Vector<T,2>(v) {}
+            template<typename U>
+            Vector2D(const Vector3D<U> &v) : Vector<T,2>(v) {}
+            Vector2D(const T &x, const T &y);
 
-                template<typename U>
-                Vector2D    &operator = (const Vector2D<U> &v);
+            template<typename U>
+            Vector2D    &operator = (const Vector2D<U> &v);
 
-                /** Initialize the values of the vector. */
-                void Init(const T &u = 0, const T &v = 0);
+            /** Initialize the values of the vector. */
+            void Init(const T &u = 0, const T &v = 0);
 
-                /** \return X */
-                const T   &X() const    {return Vector<T,2>::data[0];}
-                /** \return Z */
-                const T   &Y() const    {return Vector<T,2>::data[1];}
+            /** \return X */
+            const T   &X() const    {return Vector<T,2>::data[0];}
+            /** \return Z */
+            const T   &Y() const    {return Vector<T,2>::data[1];}
         };
 
         template<typename T>

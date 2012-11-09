@@ -36,19 +36,18 @@ namespace Nc
     {
         /// To manipulate a box in 3 Dimension of type T.
         template<typename T>
-        class Box3D : public Box<T,3>
+        struct Box3D : public Box<T,3>
         {
-            public:
-                Box3D() : Box<T,3>()    {}
-                template<typename U>
-                Box3D(const Box<U,3> &b) : Box<T,3>(b)  {}
-                Box3D(const Vector3f &min, const Vector3f &max) : Box<T,3>(min, max)    {}
-                Box3D(const T &xmin, const T &ymin, const T &zmin, const T &xmax, const T &ymax, const T &zmax);
+            Box3D() : Box<T,3>()    {}
+            template<typename U>
+            Box3D(const Box<U,3> &b) : Box<T,3>(b)  {}
+            Box3D(const Vector3f &min, const Vector3f &max) : Box<T,3>(min, max)    {}
+            Box3D(const T &xmin, const T &ymin, const T &zmin, const T &xmax, const T &ymax, const T &zmax);
 
-                template<typename U>
-                Box3D    &operator = (const Box3D<U> &b);
+            template<typename U>
+            Box3D    &operator = (const Box3D<U> &b);
 
-                static const Box3D<T>       EmptyBox;       ///< static const empty box.
+            static const Box3D<T>       EmptyBox;       ///< static const empty box.
         };
 
         template<typename T>
