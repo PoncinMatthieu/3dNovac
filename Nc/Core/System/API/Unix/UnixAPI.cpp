@@ -24,6 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
+#include <unistd.h>
 #include <iostream>
 #include <sys/time.h>
 #include <sys/types.h>

@@ -24,6 +24,14 @@
 
 -----------------------------------------------------------------------------*/
 
+#ifdef SYSTEM_WINDOWS
+#else
+    #include <unistd.h>
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/tcp.h>
+    #include <arpa/inet.h>
+#endif
 #include "../Define.h"
 #include "SocketUdp.h"
 
