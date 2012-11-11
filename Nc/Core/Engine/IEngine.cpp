@@ -67,6 +67,7 @@ void IEngine::Run()
 
 void IEngine::MainLoop()
 {
+    CALLSTACK_INFO("IEngine::MainLoop: " + Utils::Convert::ToString(*this));
     while (_manager->IsLaunched() && !_stop)
     {
         Process();
@@ -75,17 +76,17 @@ void IEngine::MainLoop()
 
 void IEngine::Loading()
 {
+    CALLSTACK_INFO("IEngine::Loading: " + Utils::Convert::ToString(*this));
     _manager->WaitAllEngineStarted();
     // if we have a context
     if (_pattern.Enabled(HasAContext) && _loadingContextPriority > 0)
     {
         _manager->WaitLoadingContextPriority(_loadingContextPriority); // waiting for our turn to load the context
         {
+            CALLSTACK_INFO("IEngine::LoadingContext: " + Utils::Convert::ToString(*this));
             System::Locker l(&_manager->MutexGlobal());
-            LOG_DEBUG << "---------------"<< *this << "-:-Create-Context-------------------" << endl;
             CreateContext();
             _pattern.Enable(ContextIsLoaded);
-            LOG_DEBUG << "---------------"<< *this << "-:-Create-Context-done--------------" << endl;
         }
         if (_pattern.Disabled(DontWaitOthersContext))
             _manager->WaitEnginesContextLoading();	            // waiting for others context
@@ -95,12 +96,11 @@ void IEngine::Loading()
     {
         _manager->WaitLoadingPriority(_loadingPriority);        // waiting for our turn to load contents
         {
+            CALLSTACK_INFO("IEngine::LoadingContent: " + Utils::Convert::ToString(*this));
             System::Locker l(&_manager->MutexGlobal());
             ActiveContext();
-            LOG_DEBUG << "------------------"<< *this << "-:-Loading-----------------------" << endl;
             LoadContent();
             _loaded = true;
-            LOG_DEBUG << "------------------"<< *this << "-:-Loading-done------------------" << endl;
             DisableContext();
         }
         if (_pattern.Enabled(WaitingLoadContentsOfOthersEngines))
@@ -110,6 +110,7 @@ void IEngine::Loading()
 
 void IEngine::Releasing()
 {
+    CALLSTACK_INFO("IEngine::ReleasingContent: " + Utils::Convert::ToString(*this));
 	_manager->WaitReleasePriority(_deletePriority);
 	ReleaseContent();
 	_released = true;
@@ -129,14 +130,9 @@ void IEngine::Process()
 
             try
             {
-                #ifdef _DEBUG_THREAD_ENGINE
-                    LOG_DEBUG <<"Execute `" << *this << "` pid = " << System::ThreadId() << "\n";
-                #endif
-                    ExecuteEvents();
-                    Execute(_elapsedTime);
-                #ifdef _DEBUG_THREAD_ENGINE
-                    LOG_DEBUG <<"Execute END `" << *this << "` pid = " << System::ThreadId() << "\n";
-                #endif
+                CALLSTACK_INFO("IEngine::Execute: " + Utils::Convert::ToString(*this) + "\tElapsedTime: " + Utils::Convert::ToString(_elapsedTime));
+                ExecuteEvents();
+                Execute(_elapsedTime);
             }
             catch (const std::exception &e)
             {

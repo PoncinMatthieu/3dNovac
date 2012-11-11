@@ -52,12 +52,6 @@ Logger::~Logger()
         CloseFile();
 }
 
-void Logger::SetLogger(Logger *logger)
-{
-    System::Locker l(&_mutex);
-    _instance = logger;
-}
-
 Logger &Logger::Log(int status)
 {
     _status = status;

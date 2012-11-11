@@ -41,6 +41,9 @@
     #include "NonCopyable.h"
     #include "Singleton.h"
     #include "Unicode.h"
+    #include "Debug/CrashReporter.h"
+    #include "Debug/CallStack.h"
+    #include "Debug/Assert.h"
 
     namespace Nc
     {

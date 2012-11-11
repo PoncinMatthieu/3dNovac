@@ -141,6 +141,8 @@ void    SubWindow::InitFbo()
 
 void    SubWindow::Render(GLContext *context)
 {
+    CALLSTACK_INFO("SubWindow::Render");
+
     // create the fbo at the first pass
 	if (_needInitFbo)
 		InitFbo();

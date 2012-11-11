@@ -81,6 +81,8 @@ void Graphic::Engine::LoadContent()
 
 void Graphic::Engine::Execute(float runningTime)
 {
+    CALLSTACK_INFO("GraphicEngine::Execute");
+
 	_elapsedTime = runningTime;
 
 	_win->Input()->CheckEvents();

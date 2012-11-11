@@ -58,6 +58,8 @@ void SceneGraphManager::Init(bool multisampling)
 
 void SceneGraphManager::Render(GLContext *context)
 {
+    CALLSTACK_INFO("SceneGraphManager::Render");
+
     System::Locker l(&_mutex);
 
 // vide les tampons
@@ -79,6 +81,8 @@ void SceneGraphManager::Render(GLContext *context)
 
 void SceneGraphManager::Update(float elapsedTime)
 {
+    CALLSTACK_INFO("SceneGraphManager::Update");
+
     for (ListPScene::iterator it = _listScene.begin(); it != _listScene.end(); ++it)
         (*it)->UpdateNode(elapsedTime);
 }

@@ -32,6 +32,7 @@
 #include "../IThread.h"
 #include "../../../Utils/Exception.h"
 #include "../../../Utils/Logger.h"
+#include "../../../Utils/Debug/CrashReporter.h"
 
 namespace Nc
 {
@@ -72,6 +73,7 @@ namespace Nc
             private:
                 inline static void *Launch(void *t)
                 {
+		  Utils::CrashReporter::Instance().Init();
 		  Thread *th = reinterpret_cast<Thread*>(t);
 		  setitimer(ITIMER_PROF, &th->_itimer, NULL);
 		  th->_id = ThreadId();

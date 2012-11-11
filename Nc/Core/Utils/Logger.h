@@ -50,6 +50,7 @@
 
 #include "Singleton.h"
 #include "FileName.h"
+#include "NonCopyable.h"
 
 namespace Nc
 {
@@ -66,9 +67,6 @@ namespace Nc
             public:
                 /** Prototype a function pointer to have a logging function. */
                 typedef void (*LogFunction)(const std::string, bool);
-
-                /** Set the instance of the logger, to redefine and set your own logger. */
-                static void SetLogger(Logger *logger);
 
                 /** \return the instance of the logger, and allow you to call the operator << to log
 
@@ -96,8 +94,8 @@ namespace Nc
                 inline void SetLogFilename(const FileName &f)   {_filename = f;}
 
                 /**
-                    Set an additionnel Logging function (function pointer)
-                    show the typedef LogFunction to see the prototype
+                    Set an additionnel Logging function (function pointer).
+                    See the typedef LogFunction to see the prototype.
                 */
                 inline void SetLoggingFunction(LogFunction f)   {_loggingfunction = f;}
 

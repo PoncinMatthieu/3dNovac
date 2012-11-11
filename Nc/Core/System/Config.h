@@ -33,7 +33,9 @@
 #include "../Utils/Singleton.h"
 #include "../System/API/API.h"
 
+#ifndef CONFIG
 #define CONFIG      Nc::System::Config::Instance()      /// allow you to access to the Config class.
+#endif
 
 namespace Nc
 {

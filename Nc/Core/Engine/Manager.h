@@ -27,10 +27,6 @@
 #ifndef NC_CORE_ENGINE_MANAGER_H_
 #define NC_CORE_ENGINE_MANAGER_H_
 
-#include <map>
-#include <queue>
-#include <string>
-
 #include "../Define.h"
 #include "../Utils/FileName.h"
 #include "../Utils/Mask.h"
@@ -84,8 +80,11 @@ namespace Nc
                 typedef std::map<std::string, AllowedEngine>        MapEngine;
 
             public:
-                /** \param confFile allow you to load automatically the 3dNovac System::Config file, it will be closed in the destructor. If the param stay empty, it won't load the confFile. */
-                Manager(const Utils::FileName &confFile = "");
+                /**
+                    \param confFile allow you to load automatically the 3dNovac System::Config file, it will be closed in the destructor. If the param stay empty, it won't load the confFile.
+                    \param initCrashReporter if true, will create and init the default crashreporter, this one will be deleted in the destructor.
+                */
+                Manager(const Utils::FileName &confFile = "", bool initCrashReporter = true);
                 virtual ~Manager();
 
                 /** Add an engine. */
@@ -138,18 +137,13 @@ namespace Nc
             protected:
                 static MapEngine        _mapEngine;             ///< Engine map container.
 
-                #ifdef SYSTEM_LINUX
-                /** this function is called when a signal SIGSEGV is catch. But only on unix like operating system. */
-                static void             RecieveSegv(int);
-                #endif
-                static void             Terminate();
-
                 bool                    _isLaunched;            ///< true, if the engines are launched.
                 static System::Mutex    _mutexGlobal;           ///< global mutex used to synchronize threads if needed.
 
             private:
                 unsigned int        _mainThreadId;
-                bool                _confFileOpened;        ///< true, if the Config file of 3dNovac has been loaded by the Manager, in this case it will be closed be the Manager.
+                bool                _confFileOpened;            ///< true, if the Config file of 3dNovac has been loaded by the Manager, in this case it will be closed be the Manager.
+                bool                _crashReporterInitialized;  ///< true, if the crash reporter has been initialized in the constructor, this one will be deleted in the destructor.
         };
     }
 }

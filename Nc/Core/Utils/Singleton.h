@@ -28,7 +28,14 @@
 #define NC_CORE_UTILS_SINGLETON_H_
 
 #include "../Define.h"
-#include "../System/API/API.h"
+//#include "../System/API/API.h"
+#if defined(SYSTEM_WINDOWS)
+    #include "../System/API/Windows/Mutex.h"
+#elif defined(SYSTEM_LINUX)
+    #include "../System/API/Unix/Mutex.h"
+#else
+    #error "Thread API not implemented for this system."
+#endif
 
 namespace Nc
 {
@@ -93,7 +100,21 @@ namespace Nc
                 /** \return true if the instance is already created. */
                 static bool Exist()
                 {
+                    System::Locker l(&_mutex);
                     return (_instance != NULL);
+                }
+
+                /**
+                    Allow to setup your own instance.
+                    if an instance is already set, the instance will be deleted.
+                    \warning Be aware that the instance will be delete by the class if the method "DeleteInstance" is call.
+                */
+                template<class I>
+                static void SetInstance(I *instance)
+                {
+                    DeleteInstance();
+                    System::Locker l(&_mutex);
+                    _instance = instance;
                 }
 
             protected:

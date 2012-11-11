@@ -24,12 +24,8 @@
 
 -----------------------------------------------------------------------------*/
 
-#include <signal.h>
 #include "Manager.h"
 #include "../System/Config.h"
-#ifdef SYSTEM_LINUX
-	#include <execinfo.h>
-#endif
 
 using namespace std;
 using namespace Nc;
@@ -38,10 +34,18 @@ using namespace Nc::Engine;
 Manager::MapEngine      Manager::_mapEngine;
 System::Mutex           Manager::_mutexGlobal;
 
-Manager::Manager(const Utils::FileName &confFile)
+Manager::Manager(const Utils::FileName &confFile, bool initCrashReporter)
 {
+    CALLSTACK_INFO("Engine::Manager::Constructor");
+
     _mainThreadId = System::ThreadId();
     _isLaunched = false;
+
+    if (initCrashReporter)
+    {
+        Utils::CrashReporter::Instance().Init();
+        _crashReporterInitialized = true;
+    }
 
     // Open the Config file of 3dNovac
     if (!confFile.empty())
@@ -49,16 +53,12 @@ Manager::Manager(const Utils::FileName &confFile)
         CONFIG.Load(confFile);
         _confFileOpened = true;
     }
-
-    // redirect signal SIGSEGV functions
-    set_terminate(Terminate);
-    #ifdef SYSTEM_LINUX
-    signal(SIGSEGV, &Manager::RecieveSegv);
-    #endif
 }
 
 Manager::~Manager()
 {
+    CALLSTACK_INFO("Engine::Manager::Destructor");
+
 // priority destruction ! (if 0, no delete)
     unsigned char lowestPriority = 0xff;
     unsigned char nextPriority;
@@ -91,42 +91,10 @@ Manager::~Manager()
 // close the Config file of 3dNovac
     if (_confFileOpened)
         CONFIG.DeleteInstance();
-}
 
-#ifdef SYSTEM_LINUX
-void Manager::RecieveSegv(int)
-{
-#ifdef _DEBUG
-// print the backtrace
-    LOG << "Backtrace: " << std::endl;
-    void    *array[25];
-    int     nSize = backtrace(array, 25);
-    char    **symbols = backtrace_symbols(array, nSize);
-    for (int i = 0; i < nSize; i++)
-        LOG << symbols[i] << std::endl;
-    LOG << std::endl;
-    free(symbols);
-#endif
-    throw Utils::Exception("System::Manager", "Receive Segv");
-}
-#endif
-
-void    Manager::Terminate()
-{
-//reference: http://www.ibm.com/developerworks/linux/library/l-cppexcep.html
-     try
-     {
-         throw; // re-throw
-     }
-     catch (const Utils::Exception &e)
-     {
-         LOG << "Fatal error: " << e.what() << std::endl;
-     }
-
-     //if this is a thread performing some core activity
-     abort();
-     // else if this is a thread used to service requests
-     // pthread_exit();
+// delete the crash reporter instance
+    if (_crashReporterInitialized)
+        Utils::CrashReporter::DeleteInstance();
 }
 
 void    Manager::AddEngine(IEngine *engine, const Permissions &permissions)
@@ -175,6 +143,8 @@ void    Manager::Start()
 
 void    Manager::Wait()
 {
+    CALLSTACK_INFO("Engine::Manager::Wait");
+
 // on attend que les thread se finisse
     for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); ++itEngine)
         itEngine->second.engine->Wait();
@@ -182,6 +152,8 @@ void    Manager::Wait()
 
 void    Manager::Stop()
 {
+    CALLSTACK_INFO("Engine::Manager::Stop");
+
     System::Locker l(&_mutexGlobal);
     // check if the current thread is allowed to exit the thread
     unsigned int currentThreadId = System::ThreadId();
