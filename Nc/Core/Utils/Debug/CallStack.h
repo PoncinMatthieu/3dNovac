@@ -30,9 +30,13 @@
 #include "../Logger.h"
 #include "../PerThreadSingleton.h"
 
-#ifdef _DEBUG
+#if defined(_DEBUG)
     #ifndef CALLSTACK_INFO
         #define CALLSTACK_INFO(info)        Nc::Utils::CallStackInfo callStackInfo(info);
+    #endif
+#else
+    #ifndef CALLSTACK_INFO
+        #define CALLSTACK_INFO
     #endif
 #endif
 
