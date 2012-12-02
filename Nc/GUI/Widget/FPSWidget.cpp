@@ -34,12 +34,12 @@ FPSWidget::FPSWidget(const AlignmentMask &alignment)
 {
 }
 
-void FPSWidget::Update()
+void FPSWidget::UpdateState()
 {
     // update the size of the widget
     _size = _label->Size();
 
-    Label::Update();
+    Label::UpdateState();
 }
 
 void FPSWidget::Draw(Graphic::SceneGraph *scene)

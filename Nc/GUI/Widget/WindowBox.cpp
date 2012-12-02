@@ -94,9 +94,9 @@ void WindowBox::ChangeTitle(const std::string &title, float charSize, const std:
     _stateChanged = true;
 }
 
-void WindowBox::Update()
+void WindowBox::UpdateState()
 {
-    Widget::Update();
+    Widget::UpdateState();
 
     float topEdge = 0;
     if (_widgetLook != NULL && static_cast<BoxLook*>(_widgetLook)->spriteTopEdge != NULL)

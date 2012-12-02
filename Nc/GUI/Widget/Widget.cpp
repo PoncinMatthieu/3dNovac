@@ -64,14 +64,14 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
 }
 
 Widget::Widget(const Widget &w)
-    : Object(w), Handler(w), _widgetLook(NULL)
+    : Graphic::Object(w), Handler(w), _widgetLook(NULL)
 {
     Copy(w);
 }
 
 Widget &Widget::operator = (const Widget &w)
 {
-    Object::operator = (w);
+    Graphic::Object::operator = (w);
     Handler::operator = (w);
     Copy(w);
     return *this;
@@ -127,7 +127,7 @@ bool    Widget::InhibitedRecursif() const
     return v.result;
 }
 
-void Widget::Update()
+void Widget::UpdateState()
 {
     if (_widgetLook)
         _widgetLook->Update(_size);
@@ -401,7 +401,7 @@ void Widget::CheckState()
     }
     if (_stateChanged)
     {
-        Update();
+        UpdateState();
         _stateChanged = false;
     }
 

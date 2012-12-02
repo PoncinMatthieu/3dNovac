@@ -254,7 +254,7 @@ namespace Nc
                 void                    ChangeChildsStateRecursive();
 
                 /** Update the widget geometry. Called when the state of the widget has changed (when property _stateChanged == true) */
-                virtual void            Update();
+                virtual void            UpdateState();
                 /** Resize the widget. Called when the widget or a parent has been resized. */
                 virtual void            Resize();
                 /** Repos the widget. Called when the widget or a parent has changed of position. */

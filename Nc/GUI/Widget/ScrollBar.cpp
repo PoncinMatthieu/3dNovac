@@ -163,7 +163,7 @@ void    ScrollBar::MouseButtonLeft(const Nc::System::Event &event)
     else
         size = _spriteLeftButton->TextureBox().Length();
 
-    if (Math::InRect(pos, size, mousePos))
+    if (Math::Test::PointInRect(mousePos, pos, size))
         inRect = true;
 
     if (inRect && !_buttonLeftPressed && event.type == System::Event::MouseButtonPressed)
@@ -199,7 +199,7 @@ void    ScrollBar::MouseButtonRight(const Nc::System::Event &event)
         size = _spriteRightButton->TextureBox().Length();
     }
 
-    if (Math::InRect(pos, size, mousePos))
+    if (Math::Test::PointInRect(mousePos, pos, size))
         inRect = true;
 
     if (inRect && !_buttonRightPressed && event.type == System::Event::MouseButtonPressed)
@@ -236,7 +236,7 @@ void    ScrollBar::MouseButtonSlider(const Nc::System::Event &event)
         size[1] = _spriteSliderMiddle->TextureBox().Length()[1];
     }
 
-    if (Math::InRect(pos, size, mousePos))
+    if (Math::Test::PointInRect(mousePos, pos, size))
         inRect = true;
 
     if (inRect && !_buttonSliderPressed && event.type == System::Event::MouseButtonPressed)
@@ -294,7 +294,7 @@ float ScrollBar::GetPagePosition(float translation)
     return t;
 }
 
-void ScrollBar::Update()
+void ScrollBar::UpdateState()
 {
     float s = GetSliderSize();
     float t = GetSliderTranslation(_position);

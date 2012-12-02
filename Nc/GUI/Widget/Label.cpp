@@ -80,7 +80,7 @@ void Label::CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Co
     _stateChanged = true;
 }
 
-void Label::Update()
+void Label::UpdateState()
 {
     // update the size of the label on the size of the text if the size if too small
     // (more likely if we didn't set the size at first)
@@ -89,7 +89,7 @@ void Label::Update()
     if (_size[1] < _label->Size()[1])
         _size[1] = _label->Size()[1] + PaddingTop() + PaddingBottom();
 
-    Widget::Update();
+    Widget::UpdateState();
     UpdateLabel();
 }
 

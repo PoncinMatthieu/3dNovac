@@ -35,6 +35,23 @@ ProgressBar::ProgressBar(const AlignmentMask &alignment, const Vector2i &size, c
     _progressBox(0, 0, size.data[0], size.data[1]),
     _percent(0)
 {
+    Init(file);
+}
+
+ProgressBar::ProgressBar(const AlignmentMask &alignment, const Vector2i &size, const Graphic::GL::Texture &texture)
+    : Widget(alignment, size),
+    _progressBox(0, 0, size.data[0], size.data[1]),
+    _percent(0)
+{
+    Init(texture);
+}
+
+ProgressBar::~ProgressBar()
+{
+}
+
+void ProgressBar::Init(const Graphic::GL::Texture &texture)
+{
     _colorLeft.Init(0, 1, 0);
     _colorRight.Init(0, 1, 0);
     _nbEvolution = 1;
@@ -49,18 +66,15 @@ ProgressBar::ProgressBar(const AlignmentMask &alignment, const Vector2i &size, c
     geometry2->VBO().Init(4, GL::Enum::DataBuffer::StreamDraw);
     GL::Drawable *dr = new GL::Drawable(geometry2);
     dr->Config->Textures.InitSize(1);
-    dr->Config->Textures[0].LoadFromFile(file);
-    dr->Config->SetBlend(GL::Blend::Alpha);
+    dr->Config->Textures[0] = texture;
+    dr->Config->GetBlend().SetPattern(GL::Blend::Alpha);
     _drawables.push_back(dr);
     ChooseDefaultMaterial();
 }
 
-ProgressBar::~ProgressBar()
+void ProgressBar::UpdateState()
 {
-}
-
-void ProgressBar::Update()
-{
+    Widget::UpdateState();
     Array<GL::DefaultVertexType::Colored2d, 4>   verticesProgress;
     verticesProgress[0].Fill(_progressBox.Min(0), _progressBox.Min(1), _colorLeft);
     verticesProgress[1].Fill(_progressBox.Min(0) + (_percent * _progressBox.Length(0) / 100.f), _progressBox.Min(1), _colorRight);

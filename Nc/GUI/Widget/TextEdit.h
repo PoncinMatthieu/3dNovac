@@ -60,7 +60,7 @@ namespace Nc
                     /** Resize the geometry of the text. */
                     virtual void        Resize();
                     /** Update the geometry of the text. */
-                    virtual void        Update();
+                    virtual void        UpdateState();
                     /** Render the text area. */
                     virtual void        Draw(Graphic::SceneGraph *scene);
 

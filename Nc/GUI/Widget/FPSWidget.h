@@ -46,7 +46,7 @@ namespace Nc
 
             public:
                 /** Update the geometry of the fps widget. */
-                virtual void Update();
+                virtual void UpdateState();
                 /** Render the fps. */
                 virtual void Draw(Graphic::SceneGraph *scene);
         };

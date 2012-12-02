@@ -78,7 +78,7 @@ namespace Nc
 
             protected:
                 /** Update the geometry of the label. */
-                virtual void        Update();
+                virtual void        UpdateState();
                 /** Render the widget labeled. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 

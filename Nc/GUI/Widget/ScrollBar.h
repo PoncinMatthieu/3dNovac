@@ -72,7 +72,7 @@ namespace Nc
                 virtual void        MouseButtonEvent(const Nc::System::Event &e);
 
                 /** Update the sprites. */
-                virtual void        Update();
+                virtual void        UpdateState();
                 /** Render the scroll area. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 

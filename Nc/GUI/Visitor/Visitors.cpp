@@ -88,7 +88,7 @@ bool CheckFocus::VisitNode(Widget &w)
     LOG_DEBUG << "Size      = " << w.Size() << std::endl;
     LOG_DEBUG << "Mouse     = " << mousePos << std::endl;
     #endif
-    if (Math::InRect(pos, w.Size(), mousePos))
+    if (Math::Test::PointInRect(mousePos, pos, w.Size()))
     {
         childFocused = &w;
         childFocused->Focus(true);

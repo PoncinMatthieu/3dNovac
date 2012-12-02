@@ -58,7 +58,7 @@ namespace Nc
 
             protected:
                 /** Update the geometry of the button. */
-                virtual void        Update();
+                virtual void        UpdateState();
                 /** Render the button. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 

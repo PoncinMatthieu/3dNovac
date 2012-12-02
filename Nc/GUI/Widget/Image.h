@@ -59,7 +59,7 @@ namespace Nc
 
             protected:
                 /** Update the geometry of the image. */
-                virtual void    Update();
+                virtual void    UpdateState();
                 /** Render the sprite list. */
                 virtual void    Draw(Graphic::SceneGraph *scene);
 

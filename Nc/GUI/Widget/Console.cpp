@@ -101,9 +101,9 @@ void Console::GetReelPos(Vector2i &pos) const
         pos.data[1] -= _size.data[1] /*- _titleHeight*//*;
 }
 */
-void Console::Update()
+void Console::UpdateState()
 {
-    WindowBox::Update();
+    WindowBox::UpdateState();
     // met a jour la taille de la console en fonction de la taille de la fenetre
     unsigned short  percent = 15; // hauteur de la console en poucentage
     _size.data[0] = _attachedWindow->Width() - 1;

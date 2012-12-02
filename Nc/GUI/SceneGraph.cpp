@@ -95,7 +95,7 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
                 LOG_DEBUG << "Size     = " << w->Size() << std::endl;
                 LOG_DEBUG << "Mouse    = " << mousePos << std::endl;
                 #endif
-                if (Math::InRect(reelPos, w->Size(), mousePos))
+                if (Math::Test::PointInRect(mousePos, reelPos, w->Size()))
                 {
                     _widgetFocused = w;
                     _widgetFocused->Focus(true);

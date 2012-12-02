@@ -89,7 +89,7 @@ namespace Nc
                 void                Copy(const ComboBox &cb);
 
                 /** Update the geometry of the combo box. */
-                virtual void        Update();
+                virtual void        UpdateState();
                 /** Render the combo box. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 

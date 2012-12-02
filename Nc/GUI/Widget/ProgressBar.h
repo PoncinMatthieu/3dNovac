@@ -44,17 +44,20 @@ namespace Nc
 
             public:
                 ProgressBar(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
+                ProgressBar(const AlignmentMask &alignment, const Vector2i &size, const Graphic::GL::Texture &texture);
                 virtual ~ProgressBar();
 
                 virtual ISceneNode  *Clone() const                              {return new ProgressBar(*this);}
 
                 /** Set the box of the progress bar. */
-                void    SetProgressBox(const Box2f &b)                          {_progressBox = b;}
+                void    SetProgressBox(const Box2f &b)                          {if (_progressBox != b) {_progressBox = b; _size = b.Size(); _stateChanged = true;}}
                 /** Set the color left and right of the progress bar. */
-                void    SetColor(const Color &c1, const Color &c2)              {_colorLeft = c1; _colorRight = c2; _stateChanged = true;}
+                void    SetColor(const Color &c)                                {if (_colorLeft != c || _colorRight != c) {_colorLeft = _colorRight = c; _stateChanged = true;}}
+                /** Set the color left and right of the progress bar. */
+                void    SetColor(const Color &c1, const Color &c2)              {if (_colorLeft != c1 || _colorRight != c2) {_colorLeft = c1; _colorRight = c2; _stateChanged = true;}}
 
                 /** Set the percent of the progress bar. */
-                void    Percent(float p)                                        {_percent = p; _stateChanged = true;}
+                void    Percent(float p)                                        {if (_percent != p) {_percent = p; _stateChanged = true;}}
                 /** Set the number of evolution of the progress bar. */
                 void    NbEvolution(unsigned int nb)                            {_nbEvolution = nb;}
                 /** Add an evolution to the progress bar. */
@@ -62,9 +65,12 @@ namespace Nc
 
             protected:
                 /** update the geometry of the progress bar. */
-                virtual void Update();
+                virtual void UpdateState();
                 /** Render the progress bar. */
                 virtual void Draw(Graphic::SceneGraph *scene);
+
+            private:
+                void    Init(const Graphic::GL::Texture &texture);
 
             protected:
                 unsigned int            _indexDrawable;

@@ -58,7 +58,7 @@ namespace Nc
 
             protected:
                 /** Update the geometry of the window. */
-                virtual void    Update();
+                virtual void    UpdateState();
                 /** Render the window. */
                 virtual void    Draw(Graphic::SceneGraph *scene);
 

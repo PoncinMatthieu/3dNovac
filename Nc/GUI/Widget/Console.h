@@ -71,7 +71,7 @@ namespace Nc
                 /** Render the console. */
                 virtual void        Render(Graphic::SceneGraph *scene);
                 /** Update the geometry of the console. */
-                virtual void        Update();
+                virtual void        UpdateState();
 
                 /** Keyboadr event Handler. */
                 void KeyboardEvent(const System::Event &event); // receptionne les commandes clavier et l'inscrit dans la console

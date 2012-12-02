@@ -58,7 +58,7 @@ namespace Nc
 
             protected:
                 /** update the geometry of the line edit. */
-                virtual void Update();
+                virtual void UpdateState();
                 /** Render the line edit. */
                 virtual void Draw(Graphic::SceneGraph *scene);
 

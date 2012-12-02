@@ -79,9 +79,9 @@ void    LineEdit::ToString(std::ostream &os) const
     os << " Text: " << _font->PlainText();
 }
 
-void    LineEdit::Update()
+void    LineEdit::UpdateState()
 {
-    Widget::Update();
+    Widget::UpdateState();
 
     PlainTextFormater *formater = static_cast<PlainTextFormater*>(_font->Formater());
     PlainTextFormater *formaterUnderscore = static_cast<PlainTextFormater*>(_fontUnderscore->Formater());

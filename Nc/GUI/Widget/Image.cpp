@@ -78,9 +78,9 @@ void    Image::Sprite(Graphic::Sprite *sp)
     _stateChanged = true;
 }
 
-void    Image::Update()
+void    Image::UpdateState()
 {
-    Widget::Update();
+    Widget::UpdateState();
     if (_sprite != NULL)
     {
         // compute sprite size

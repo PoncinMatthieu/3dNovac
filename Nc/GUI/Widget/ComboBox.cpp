@@ -95,9 +95,9 @@ ComboBox::~ComboBox()
     }
 }
 
-void    ComboBox::Update()
+void    ComboBox::UpdateState()
 {
-    Widget::Update();
+    Widget::UpdateState();
 
     _spriteList->Size(Vector2f(_size[0] - static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0] - static_cast<StripLook*>(_widgetLook)->spriteRight->Size()[0], _spriteList->Size()[1]));
 
@@ -136,7 +136,7 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
 
         if (!_listUnrolled)
         {
-            if (Math::InRect(pos, _size, mousePos))
+            if (Math::Test::PointInRect(mousePos, pos, _size))
             {
                 pos[0] += static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0];
                 pos[1] += (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] - _spriteList->Size()[1]) / 2;
@@ -186,7 +186,7 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
         pos[1] += ((static_cast<StripLook*>(_cb->_widgetLook)->spriteMiddle->Size()[1] - _cb->_spriteList->Size()[1]) / 2);
         for (ListItem::iterator it = _cb->_itemList.begin(); it != _cb->_itemList.end(); ++it)
         {
-            if (Math::InRect(pos, size, mousePos))
+            if (Math::Test::PointInRect(mousePos, pos, size))
             {
                 _cb->ItemChoosed(&*it);
             }

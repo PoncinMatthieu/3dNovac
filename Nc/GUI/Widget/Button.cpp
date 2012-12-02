@@ -101,7 +101,7 @@ void Button::ToString(std::ostream &os) const
     os << " Text: " << _font->PlainText();
 }
 
-void Button::Update()
+void Button::UpdateState()
 {
     Graphic::PlainTextFormater *formater = static_cast<Graphic::PlainTextFormater*>(_font->Formater());
 
@@ -121,7 +121,7 @@ void Button::Update()
         _widgetLook = _buttonLook;
 
     // update the widget, which will update the look
-    Widget::Update();
+    Widget::UpdateState();
 
     // update the size of the title
     // we have to reduce the size of the text if it's too large
@@ -157,7 +157,7 @@ void Button::MouseButtonEvent(const System::Event &event)
         Vector2i pos;
         Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
         AbsolutePos(pos);
-        if (Math::InRect(pos, _size, mousePos))
+        if (Math::Test::PointInRect(mousePos, pos, _size))
             inRect = true;
 
         if (inRect && !_buttonPressed && event.type == System::Event::MouseButtonPressed)

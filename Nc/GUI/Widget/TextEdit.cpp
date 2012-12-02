@@ -124,9 +124,9 @@ void    TextEdit::TextDocument::Resize()
         _editor->Resize();
 }
 
-void    TextEdit::TextDocument::Update()
+void    TextEdit::TextDocument::UpdateState()
 {
-    Widget::Update();
+    Widget::UpdateState();
     text->Matrix.Translation(PaddingLeft(), PaddingBottom(), 0);
 }
 
