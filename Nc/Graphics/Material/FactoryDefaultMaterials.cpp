@@ -40,6 +40,7 @@ FactoryDefaultMaterials::~FactoryDefaultMaterials()
 
 IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const GL::DrawableArray &drawables)
 {
+    CALLSTACK_INFO("Object::GetBestMaterial(drawables)");
     if (drawables.size() == 0)
         return NULL;
 
@@ -48,29 +49,37 @@ IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const GL::Drawable
     // get back the max priority descriptor
     for (unsigned int i = 0; i < drawables.size(); ++i)
     {
-        GL::VertexDescriptor *desc = &drawables[i]->Geometry->Descriptor();
-        if (descriptor == NULL || desc->Priority() > descriptor->Priority())
-            descriptor = desc;
+        if (drawables[i] != NULL)
+        {
+            GL::VertexDescriptor *desc = &drawables[i]->Geometry->Descriptor();
+            if (descriptor == NULL || desc->Priority() > descriptor->Priority())
+                descriptor = desc;
+        }
     }
     return GetBestMaterial(descriptor);
 }
 
 IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const GL::Drawable *drawable)
 {
+    CALLSTACK_INFO("Object::GetBestMaterial(drawable)");
     return GetBestMaterial(&drawable->Geometry->Descriptor());
 }
 
 IDefaultMaterial        *FactoryDefaultMaterials::GetBestMaterial(GL::VertexDescriptor *descriptor)
 {
+    CALLSTACK_INFO("Object::GetBestMaterial(descriptor)");
     IDefaultMaterial        *result = NULL;
 
     // get back the best Material
-    PriorityMaterialList::iterator it = _materials.begin();
-    for (; it != _materials.end() && it->first > descriptor->Priority(); ++it);
-    for (; result == NULL && it != _materials.end(); ++it)
+    if (descriptor != NULL)
     {
-        if (it->second->IsCompatible(*descriptor))
-            result = it->second;
+        PriorityMaterialList::iterator it = _materials.begin();
+        for (; it != _materials.end() && it->first > descriptor->Priority(); ++it);
+        for (; result == NULL && it != _materials.end(); ++it)
+        {
+            if (it->second->IsCompatible(*descriptor))
+                result = it->second;
+        }
     }
     if (result == NULL)
     {

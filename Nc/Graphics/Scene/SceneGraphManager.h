@@ -47,7 +47,7 @@ namespace Nc
                 virtual ~SceneGraphManager();
 
                 /** Init some opengl statements. */
-                void            Init(bool multisampling);
+                void            Init(bool multisampling, bool zBuffering);
 
                 /** \return the scenes. */
                 inline ListPScene           &Scenes()                       {return _listScene;}

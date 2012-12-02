@@ -69,7 +69,7 @@ void FontLoaderFreeType::LoadFromFile(const Utils::FileName &file, const Utils::
     FT_Done_Face(face);
 
     if (bitmap.Size().data[0] > 0 && bitmap.Size().data[1] > 0)
-        font._bitmap.LoadFromImage(bitmap, GL::Enum::Texture::Linear, GL::Enum::Texture::Linear, false, file);
+        font._bitmap.LoadFromImage(bitmap, GL::Enum::Texture::Linear, GL::Enum::Texture::Linear, false);
 }
 
 void FontLoaderFreeType::CreateBitmapFont(FT_Face &face, const Utils::Unicode::UTF32 &charset, Image &bitmap, Font &font)

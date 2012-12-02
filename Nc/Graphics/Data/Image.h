@@ -68,9 +68,11 @@ namespace Nc
 
                 // accessors
                 /** Set the pixel at the given position. */
-                inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)    {_pixels[(pos.data[1] * _size.data[0]) + pos.data[0]] = p;}
+                inline void                 SetPixel(const Vector2ui &pos, const Pixel<> &p)            {SetPixel(pos.data[0], pos.data[1], p);}
+                /** Set the pixel at the given position. */
+                inline void                 SetPixel(unsigned int x, unsigned int y, const Pixel<> &p)  {_pixels[(y * _size.data[0]) + x] = p;}
                 /** \return the pixel from the given position. */
-                inline const Pixel<>        &GetPixel(const Vector2ui &pos) const               {return _pixels[(pos.data[1] * _size.data[0]) + pos.data[0]];}
+                inline const Pixel<>        &GetPixel(const Vector2ui &pos) const               {return GetPixel(pos.data[0], pos.data[1]);}
                 /** \return the pixel from the given position. */
                 inline const Pixel<>        &GetPixel(unsigned int x, unsigned int y) const     {return _pixels[(y * _size.data[0]) + x];}
                 /** \return the pixels in unsigned char*. */

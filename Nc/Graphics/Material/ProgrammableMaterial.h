@@ -46,7 +46,7 @@ namespace Nc
         {
             private:
                 typedef std::map<std::string, GL::IUniform*>    UniformMap;
-                typedef std::map<unsigned int, int>             UniformDrawablesTextureUnitMap;
+                typedef std::map<int, int>                      UniformDrawablesTextureUnitMap;
                 typedef std::map<std::string, unsigned int>     AttribMap;
 
             public:

@@ -9,7 +9,7 @@ uniform vec4    Light; // coord light  + rayon dans w
 
 in vec3         InCoord;
 in vec2         InTexCoord;
-in vec3         InColor;
+in vec4         InColor;
 in vec3         InNormal;
 
 out Vertice
@@ -25,10 +25,10 @@ void main ()
 {
     vec4 vPos = MMatrix * vec4(InCoord, 1.0);
     if (!LightPass)
-        vertice.Color = vec4(InColor, 1.0) * LightColor;
+        vertice.Color = InColor * LightColor;
     else
     {
-        vertice.Color = vec4(InColor, 1.0) * LightColor;
+        vertice.Color = InColor * LightColor;
         vertice.Normal = vec3(NormalMatrix * vec4(InNormal, 1.0));
         vertice.ToLight = Light.xyz - vPos.xyz;
         normalize(vertice.Normal);

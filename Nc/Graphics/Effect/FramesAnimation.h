@@ -211,7 +211,7 @@ namespace Nc
         }
 
         template<typename T>
-        void FramesAnimation<T>::Update(float runningTime)
+        void FramesAnimation<T>::Update(float elapsedTime)
         {
             if (!_activated)
                 return;
@@ -241,7 +241,8 @@ namespace Nc
                         ++_indexCurrentFrame;
                     }
                 }
-                UpdateFrame(runningTime);
+                UpdateFrame(elapsedTime);
+                UpdateChilds(elapsedTime);
             }
             else if (_itCurrentFrame != GetListFrame().end())
                 _isPlaying = false;
@@ -259,7 +260,10 @@ namespace Nc
                 scene->PushModelMatrix();
                 scene->ModelMatrix().AddTransformation(Matrix);
             }
+
             RenderFrame(scene);
+            RenderChilds(scene);
+
             if (pushed)
                 scene->PopModelMatrix();
         }

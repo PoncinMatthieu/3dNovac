@@ -28,6 +28,37 @@
 
 using namespace Nc::Graphic;
 
+SpriteAnimFrame::SpriteAnimFrame(ParentType::Pattern p, double d)
+    : ParentType(p, d), sprite(NULL)
+{
+}
+
+SpriteAnimFrame::SpriteAnimFrame(ParentType::Pattern p, double d, Sprite *s)
+    : ParentType(p, d), sprite(s)
+{
+}
+
+SpriteAnimFrame::SpriteAnimFrame(const SpriteAnimFrame &f)
+    : ParentType(f)
+{
+    sprite = (f.sprite) ? new Sprite(*f.sprite) : NULL;
+}
+
+SpriteAnimFrame::~SpriteAnimFrame()
+{
+    if (sprite)
+        delete sprite;
+}
+
+SpriteAnimFrame &SpriteAnimFrame::operator = (const SpriteAnimFrame &f)
+{
+    ParentType::operator=(f);
+    if (sprite)
+        delete sprite;
+    sprite = (f.sprite) ? new Sprite(*f.sprite) : NULL;
+    return *this;
+}
+
 void SpriteAnimFrame::Update(float runningTime)
 {
 }

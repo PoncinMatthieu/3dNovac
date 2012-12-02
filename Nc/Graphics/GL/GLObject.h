@@ -39,7 +39,7 @@ namespace Nc
         {
             /// Interface to manage an OpenGL Object, manage the opengl resource like a smart pointer.
             /**
-                The resource is shared between two object when you use the copy constructor or the copy operator.
+                The resource is shared between two object when you use the copy constructor, copy operator or "Clone" method.
                 So GL::Object, is a reference counter of gl resources (index) like texture and shader.
                 It release the opengl resources when no more reference exists.
 
@@ -47,7 +47,8 @@ namespace Nc
                     - Use ReleaseRef() in the destructor of the child.
                     - Use NewRef() when you are loading new resource in the child.
                     - The shared resources of a child like GL index needs to be a pointer and malloc at the loading.
-                    - Redefine the function Release() to destroy the shared resources.
+                    - Redefine the method Release() to destroy the shared resources.
+                    - Redefine the method Clone to create a new object of the same type.
             */
             class LGRAPHICS Object
             {
@@ -56,7 +57,7 @@ namespace Nc
                     Object &operator = (const Object &sp);
                     virtual ~Object();
 
-                    /** Create a new copy of the object by without duplicate the ogl resources. */
+                    /** \return a new copy of the object without duplicate the ogl resources. */
                     virtual Object          *Clone() const = 0;
 
                     /** \return true if the resource is unique. */

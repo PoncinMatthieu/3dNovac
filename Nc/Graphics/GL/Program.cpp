@@ -53,7 +53,7 @@ void     Program::Enable() const
 	if (_program == 0 || !_linked)
         throw Utils::Exception("GL::Program::Enable", "The program hasn't been linked.");
     if (State::IsSet())
-        State::Current().BindProgram(_program);
+        State::Current().UseProgram(_program);
     else
 		glUseProgram(_program);
 }

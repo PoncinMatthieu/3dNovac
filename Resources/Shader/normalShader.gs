@@ -4,7 +4,7 @@ uniform mat4    MVPMatrix;
 
 in Vertice
 {
-    vec3        Color;
+    vec4        Color;
     vec3        Normal;
 }   vertice[];
 

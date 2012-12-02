@@ -110,7 +110,7 @@ namespace Nc
                         Ogl function:
                             -glClear()
                     */
-                    inline void         Clear(const BufferBitMask &mask) const                      {glClear(mask.GetMask());}
+                    inline void         Clear(const BufferBitMask &m) const                         {glClear(m.mask);}
 
                     /** \return true if the given \p capability is enabled. */
                     inline bool         Enabled(Enum::Capability cp)                                {return _mapCurrentCapabilityStatement[cp];}
@@ -157,7 +157,7 @@ namespace Nc
                         Ogl function:
                             -glUseProgram()
                     */
-                    void                BindProgram(unsigned int id);
+                    void                UseProgram(unsigned int id);
 
                     /** \brief Unbind the current buffer.
                         Ogl function:
@@ -194,7 +194,7 @@ namespace Nc
                         Ogl function:
                             -glDepthFunc()
                     */
-                    void                DepthFunc(Enum::DepthFunc f);
+                    void                DepthFunc(Enum::MaskFunc f);
                     /** \return the current depth mask statement. */
                     inline bool         CurrentDepthMask() const                                    {return _currentDepthMask;}
 
@@ -254,6 +254,45 @@ namespace Nc
                     */
                     void                Scissor(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 
+                    /** \brief Set the color mask in the framebuffer.
+                        Ogl function:
+                            -glColorMask()
+
+                        glColorMask specify whether the individual color components in the frame buffer can or cannot be written.
+                        glColorMask sets the mask for all draw buffers.
+                        If red is GL_FALSE, for example, no change is made to the red component of any pixel in any of the color buffers, regardless of the drawing operation attempted.
+                    */
+                    void                ColorMask(bool red, bool green, bool blue, bool alpha);
+                    /** \return the current red color mask. */
+                    bool                CurrentColorMaskRed()                                       {return _currentColorMaskRed;}
+                    /** \return the current green color mask. */
+                    bool                CurrentColorMaskGreen()                                     {return _currentColorMaskGreen;}
+                    /** \return the current blue color mask. */
+                    bool                CurrentColorMaskBlue()                                      {return _currentColorMaskBlue;}
+                    /** \return the current alpha color mask. */
+                    bool                CurrentColorMaskAlpha()                                     {return _currentColorMaskAlpha;}
+
+                    /** \brief Specify the clear value for the stencil buffer.
+                        Ogl function:
+                            - glClearStencil()
+                    */
+                    void                ClearStencil(int value);
+                    /** \brief Specifies a bit mask to enable and disable writing of individual bits in the stencil planes. Initially, the mask is all 1's.
+                        Ogl function:
+                            - glStencilMask()
+                    */
+                    void                StencilMask(unsigned int mask);
+                    /** \brief Set front and back function and reference value for stencil testing.
+                        Ogl function:
+                            - glStencilFunc()
+                    */
+                    void                StencilFunc(Enum::MaskFunc f, int refValue, unsigned int mask);
+                    /** \brief Set front and back stencil test actions.
+                        Ogl function:
+                            - glStencilOp()
+                    */
+                    void                StencilOp(Enum::Stencil::Action sFail, Enum::Stencil::Action dpFail, Enum::Stencil::Action dpPass);
+
                 private:
                     /** Check the opengl version of the current context. */
                     void            CheckGLVersion();
@@ -283,9 +322,25 @@ namespace Nc
                     int                         _currentScissorWidth;           ///< the current upper x scissor.
                     int                         _currentScissorHeight;          ///< the current upper y scissor.
 
+                    // color mask
+                    bool                        _currentColorMaskRed;           ///< the current red color mask state
+                    bool                        _currentColorMaskGreen;         ///< the current green color mask state
+                    bool                        _currentColorMaskBlue;          ///< the current blue color mask state
+                    bool                        _currentColorMaskAlpha;         ///< the current alpha color mask state
+
                     // depth test
                     bool                        _currentDepthMask;              ///< the current write depth mask statement.
-                    Enum::DepthFunc             _currentDepthFunc;              ///< the current depth func used by the depth test.
+                    Enum::MaskFunc              _currentDepthFunc;              ///< the current depth func used by the depth test.
+
+                    // stencil test
+                    int                         _currentClearStencil;           ///< the current value used to clear the stencil buffer.
+                    unsigned int                _currentStencilMask;            ///< the current mask value used to control writting of individual bits in the stencil planes.
+                    Enum::MaskFunc              _currentStencilFunc;            ///< the current stencil func used by the stencil test.
+                    int                         _currentStencilFuncRef;         ///< the current stencil reference value used by the stencil test.
+                    unsigned int                _currentStencilFuncMask;        ///< the current stencil mask value used by the stencil test.
+                    Enum::Stencil::Action       _currentStencilSFail;           ///< the current stencil action to take when the test fails.
+                    Enum::Stencil::Action       _currentStencilDpFail;          ///< the current stencil action to take when the test passes but not the depth test.
+                    Enum::Stencil::Action       _currentStencilDpPass;          ///< the current stencil action to take when both stencil and depth test passes.
 
                     // blend
                     Enum::BlendFactor           _currentBlendSFactor;           ///< the blend source factor used by the blending function.

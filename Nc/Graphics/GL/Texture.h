@@ -54,8 +54,6 @@ namespace Nc
                     virtual Object          *Clone() const              {return new Texture(*this);}
 
                     // Texture Opengl Object manip
-                    /** \return the name of the texture. */
-                    std::string                     &Name()             {return _name;}
                     /** \return the index of the gl texture. */
                     virtual inline unsigned int		GetIndex() const    {return _texture;}
 					/** \return the target of the gl texture. */
@@ -70,7 +68,7 @@ namespace Nc
                     /** Load the texture from a file. */
                     void            LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true);
                     /** Load the texture from a given Image. */
-                    void            LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true, const std::string &name = "");
+                    void            LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter = Enum::Texture::Linear, Enum::Texture::Filter mignifyingFilter = Enum::Texture::LinearMipmapLinear, bool generateMipmap = true);
                     /** Load a Cube map (to display a SkyBox). */
                     void            LoadCubeMap(const Utils::FileName Names[6]);
                     /** Generate a 3d sphere map (to create a light map in the DefaultLightingMaterial class). */
@@ -111,7 +109,6 @@ namespace Nc
                     unsigned int            _texture;                   ///< the gl texture object index.
                     Vector2ui               _size;                      ///< the size of the texture.
                     Enum::Texture::Target   _target;                    ///< the texture target to which the texture is bound.
-                    std::string             _name;                      ///< the name of the texture.
 
                     static int              _maxSize;                   ///< the maximum size of a texture.
             };

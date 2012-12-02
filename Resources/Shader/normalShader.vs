@@ -3,12 +3,12 @@
 uniform mat4    MVPMatrix;
 
 in vec3         InCoord;
-in vec3         InColor;
+in vec4         InColor;
 in vec3         InNormal;
 
 out Vertice
 {
-    vec3        Color;
+    vec4        Color;
     vec3        Normal;
 }   vertice;
 

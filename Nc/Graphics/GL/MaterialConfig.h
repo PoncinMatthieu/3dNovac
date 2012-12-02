@@ -53,8 +53,8 @@ namespace Nc
 
                     virtual MaterialConfig  *Clone() const                          {return new MaterialConfig(*this);}
 
-                    /** Set the blend method. */
-                    void                    SetBlend(const Blend::Pattern &p)       {_blend.SetPattern(p);}
+                    /** \return the blend mode. */
+                    Blend                   &GetBlend()                             {return _blend;}
 
                     /** \return the raster mode. */
                     RasterMode              &GetRasterMode()                        {return _rasterMode;}

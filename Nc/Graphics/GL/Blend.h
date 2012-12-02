@@ -37,6 +37,11 @@ namespace Nc
         {
             /// Help to manipulate the blending opengl method.
             /**
+                Blending works with the following equation:
+                Pixel = (source * sFactor) + (dest * dFactor)
+
+                The blend class allow to use predefined pattern to simplify the use of blending, but you still can specify the factors you want to use.
+
                 \todo manage the transparency color and rate.
             */
             class LGRAPHICS  Blend
@@ -45,10 +50,10 @@ namespace Nc
                     /// The pattern of the using blend function.
                     enum    Pattern
                     {
-                        Disabled = 0,
-                        Alpha,                  ///< Color Pixel = Src * a + Dest * (1 - a).
-                        Add,                    ///< Color Pixel = Src + Dest.
-                        Multiply                ///< Color Pixel = Src * Dest.
+                        Disabled = 0,           ///< Factors are set like this: sFactor = One, dFactor = Zero.                  In result Pixel = source
+                        Alpha,                  ///< Factors are set like this: sFactor = SrcAlpha, dFactor = OneMinusSrcAlpha. In result Pixel = (source * source.a) + (dest * (1 - source.a))
+                        Add,                    ///< Factors are set like this: sFactor = SrcAlpha, dFactor = One.              In result Pixel = (source * source.a) + dest
+                        Multiply                ///< Factors are set like this: sFactor = DstColor, dFactor = Zero.             In result Pixel = source * dest
                     };
 
                 public:

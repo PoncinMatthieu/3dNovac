@@ -124,7 +124,7 @@ namespace Nc
                 NewRef();
                 _target = target;
                 glGenBuffers(1, &_index);   // création du buffer
-                LOG_DEBUG << "Data Buffer " << _index << " CREATED" << std::endl;
+                CALLSTACK_INFO("Data Buffer " + Utils::Convert::ToString(_index) + " CREATED");
             }
 
             template <typename T>
@@ -137,7 +137,7 @@ namespace Nc
                 Enable();
                 UpdateData(size, stride, usage, dataTab);
                 Disable();
-                LOG_DEBUG << "Data Buffer " << _index << " CREATED" << std::endl;
+                CALLSTACK_INFO("Data Buffer " + Utils::Convert::ToString(_index) + " CREATED");
             }
 
             template<typename T>
@@ -180,9 +180,9 @@ namespace Nc
             template<typename T>
             void DataBuffer<T>::Release()
             {
+                CALLSTACK_INFO("Data Buffer " + Utils::Convert::ToString(_index) + " DELETED");
                 _dataTab = NULL;
                 glDeleteBuffers(1, &_index); // suppression du buffer
-                LOG_DEBUG << "Data Buffer " << _index << " DELETED" << std::endl;
                 _index = 0;
             }
 

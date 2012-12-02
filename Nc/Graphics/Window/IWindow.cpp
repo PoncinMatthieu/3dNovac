@@ -78,7 +78,7 @@ void	IWindow::Create()
 
 void    IWindow::InitSceneGraphManager()
 {
-    _sceneGraphManager->Init((_antialiasingLevel > 0));
+    _sceneGraphManager->Init((_antialiasingLevel > 0), true);
 }
 
 void    IWindow::Render(GLContext *context)

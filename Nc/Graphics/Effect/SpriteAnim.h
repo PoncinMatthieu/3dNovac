@@ -48,21 +48,14 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(FramesAnimation<SpriteAnimFrame>::Frame, System::Object, Nc::Graphic::SpriteAnimFrame)
 
             public:
-                SpriteAnimFrame(ParentType::Pattern p, double d)                : ParentType(p, d), sprite(NULL)                    {}
-                SpriteAnimFrame(ParentType::Pattern p, double d, Sprite *s)     : ParentType(p, d), sprite(s)                       {}
-                SpriteAnimFrame(const SpriteAnimFrame &f)                   : ParentType(f), sprite(new Sprite(*f.sprite))      {}
-                virtual ~SpriteAnimFrame()                                  {delete sprite;}
+                SpriteAnimFrame(ParentType::Pattern p, double d);
+                SpriteAnimFrame(ParentType::Pattern p, double d, Sprite *s);
+                SpriteAnimFrame(const SpriteAnimFrame &f);
+                virtual ~SpriteAnimFrame();
 
                 virtual ISceneNode      *Clone() const                      {return new SpriteAnimFrame(*this);}
 
-                SpriteAnimFrame &operator = (const SpriteAnimFrame &f)
-                {
-                    ParentType::operator=(f);
-                    if (sprite)
-                        delete sprite;
-                    sprite = new Sprite(*f.sprite);
-                    return *this;
-                }
+                SpriteAnimFrame &operator = (const SpriteAnimFrame &f);
 
             protected:
                 /** Update the sprite. */

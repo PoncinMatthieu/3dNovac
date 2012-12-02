@@ -236,22 +236,43 @@ namespace Nc
                     OneMinusConstantAlpha   = GL_ONE_MINUS_CONSTANT_ALPHA
                 };
 
-                /// Define the different depth functions.
+                /// Define the different mask functions.
 				/**
                     Sample of ogl functions used with this enum:
                         - glDepthFunc()
+                        - glStencilFunc()
 				*/
-                enum DepthFunc
+                enum MaskFunc
                 {
                     Never       = GL_NEVER,         ///< Never passes.
-                    Less        = GL_LESS,          ///< Passes if the incoming depth value is less than the stored depth value.
-                    Equal       = GL_EQUAL,         ///< Passes if the incoming depth value is equal to the stored depth value.
-                    LEqual      = GL_LEQUAL,        ///< Passes if the incoming depth value is less than or equal to the stored depth value.
-                    Greater     = GL_GREATER,       ///< Passes if the incoming depth value is greater than the stored depth value.
-                    NotEqual    = GL_NOTEQUAL,      ///< Passes if the incoming depth value is not equal to the stored depth value.
-                    GEqual      = GL_GEQUAL,        ///< Passes if the incoming depth value is greater than or equal to the stored depth value.
+                    Less        = GL_LESS,          ///< Passes if the incoming mask value is less than the stored mask value.
+                    Equal       = GL_EQUAL,         ///< Passes if the incoming mask value is equal to the stored mask value.
+                    LEqual      = GL_LEQUAL,        ///< Passes if the incoming mask value is less than or equal to the stored mask value.
+                    Greater     = GL_GREATER,       ///< Passes if the incoming mask value is greater than the stored mask value.
+                    NotEqual    = GL_NOTEQUAL,      ///< Passes if the incoming mask value is not equal to the stored mask value.
+                    GEqual      = GL_GEQUAL,        ///< Passes if the incoming mask value is greater than or equal to the stored mask value.
                     Always      = GL_ALWAYS         ///< Always passes.
                 };
+
+                namespace Stencil
+                {
+                    /// Define the different stencil test actions.
+                    /**
+                        Sample of ogl functions used with this enum:
+                            - glStencilOp()
+                    */
+                    enum Action
+                    {
+                        Keep            = GL_KEEP,          ///< Keeps the current value.
+                        Zero            = GL_ZERO,          ///< Sets the stencil buffer value to 0.
+                        Replace         = GL_REPLACE,       ///< Sets the stencil buffer value to ref, as specified by glStencilFunc
+                        Incr            = GL_INCR,          ///< Increments the current stencil buffer value. Clamps to the maximum representable unsigned value.
+                        IncrWrap        = GL_INCR_WRAP,     ///< Increments the current stencil buffer value. Wraps stencil buffer value to zero when incrementing the maximum representable unsigned value.
+                        Decr            = GL_DECR,          ///< Decrements the current stencil buffer value. Clamps to 0.
+                        DecrWrap        = GL_DECR_WRAP,     ///< Decrements the current stencil buffer value. Wraps stencil buffer value to the maximum representable unsigned value when decrementing a stencil buffer value of zero.
+                        Invert          = GL_INVERT         ///< Bitwise inverts the current stencil buffer value.
+                    };
+                }
 
 				namespace Texture
 				{

@@ -53,7 +53,7 @@ namespace Nc
                 struct LGRAPHICS Colored
                 {
                     float           coord[3];     // position
-                    float           color[3];     // color
+                    float           color[4];     // color
 
                     static const GL::VertexDescriptor   &GetDescriptor();
                     static unsigned int                 GetDescriptorPriority()             {return sizeof(Colored);}
@@ -64,7 +64,7 @@ namespace Nc
                 struct LGRAPHICS Colored2d
                 {
                     float           coord[2];     // position
-                    float           color[3];     // color
+                    float           color[4];     // color
 
                     static const GL::VertexDescriptor   &GetDescriptor();
                     static unsigned int                 GetDescriptorPriority()             {return sizeof(Colored2d);}
@@ -76,7 +76,7 @@ namespace Nc
                 {
                     float           coord[3];     // position
                     float           texCoord[2];   // texture coord
-                    float           color[3];     // color
+                    float           color[4];     // color
                     float           normal[3];
 
                     static const GL::VertexDescriptor   &GetDescriptor();
@@ -89,7 +89,7 @@ namespace Nc
                 {
                     float           coord[2];     // position
                     float           texCoord[2];   // texture coord
-                    float           color[3];     // color
+                    float           color[4];     // color
 
                     static const GL::VertexDescriptor   &GetDescriptor();
                     static unsigned int                 GetDescriptorPriority()             {return sizeof(Textured2d);}
@@ -101,7 +101,7 @@ namespace Nc
                 {
                     float           coord[3];     // position
                     float           texCoord[3];  // texture coord
-                    float           color[3];     // color
+                    float           color[4];     // color
 
                     static const GL::VertexDescriptor   &GetDescriptor();
                     static unsigned int                 GetDescriptorPriority()             {return sizeof(Textured3d);}

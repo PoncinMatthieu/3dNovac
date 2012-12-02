@@ -32,7 +32,7 @@ using namespace Nc::Graphic;
 using namespace Nc::Graphic::GL;
 
 SceneGraphManager::SceneGraphManager()
-    : _clearMask(Enum::ColorBufferBit | Enum::DepthBufferBit)
+    : _clearMask(Enum::ColorBufferBit)
 {
 }
 
@@ -40,7 +40,7 @@ SceneGraphManager::~SceneGraphManager()
 {
 }
 
-void SceneGraphManager::Init(bool multisampling)
+void SceneGraphManager::Init(bool multisampling, bool zBuffering)
 {
     State &current = State::Current();
 
@@ -53,7 +53,11 @@ void SceneGraphManager::Init(bool multisampling)
 
 // enable le Z-buffer
     current.DepthFunc(Enum::LEqual);
-    current.Enable(Enum::DepthTest);
+    if (zBuffering)
+    {
+        current.Enable(Enum::DepthTest);
+        _clearMask.Enable(Enum::DepthBufferBit); // add the DepthBuffer to be cleared
+    }
 }
 
 void SceneGraphManager::Render(GLContext *context)

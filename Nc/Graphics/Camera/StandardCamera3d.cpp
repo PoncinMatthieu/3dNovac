@@ -472,7 +472,7 @@ void StandardCamera3d::DrawFrustum(bool state)
             GL::GeometryBuffer<GL::DefaultVertexType::Colored, false> *geometryPlan = new GL::GeometryBuffer<GL::DefaultVertexType::Colored, false>(GL::Enum::Triangles);
             geometryPlan->VBO().Init(12, GL::Enum::DataBuffer::StreamDraw);
             GL::Drawable *drawablePlan = new GL::Drawable(geometryPlan);
-            drawablePlan->Config->SetBlend(GL::Blend::Multiply);
+            drawablePlan->Config->GetBlend().SetPattern(GL::Blend::Multiply);
             _drawables.push_back(drawablePlan);
             ChooseDefaultMaterial();
         }

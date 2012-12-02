@@ -34,11 +34,11 @@ const char *DefaultSources::ColoredVertexShader =
 uniform mat4    MVPMatrix;\
 \
 in vec3 InCoord;\
-in vec3 InColor;\
+in vec4 InColor;\
 \
 out Vertice\
 {\
-    vec3        Color;\
+    vec4        Color;\
 }   vertice;\
 \
 void main ()\
@@ -53,14 +53,14 @@ precision highp float;\
 \
 in Vertice\
 {\
-    vec3        Color;\
+    vec4        Color;\
 }   vertice;\
 \
 out vec4        FragmentColor;\
 \
 void main()\
 {\
-	FragmentColor = vec4(vertice.Color, 1.0);\
+	FragmentColor = vertice.Color;\
 }";
 
 const char *DefaultSources::Colored2dVertexShader =
@@ -69,11 +69,11 @@ const char *DefaultSources::Colored2dVertexShader =
 uniform mat4    MVPMatrix;\
 \
 in vec2 InCoord;\
-in vec3 InColor;\
+in vec4 InColor;\
 \
 out Vertice\
 {\
-    vec3        Color;\
+    vec4        Color;\
 }   vertice;\
 \
 void main ()\
@@ -88,14 +88,14 @@ precision highp float;\
 \
 in Vertice\
 {\
-    vec3        Color;\
+    vec4        Color;\
 }   vertice;\
 \
 out vec4        FragmentColor;\
 \
 void main()\
 {\
-	FragmentColor = vec4(vertice.Color, 1.0);\
+	FragmentColor = vertice.Color;\
 }";
 
 const char *DefaultSources::TexturedVertexShader =
@@ -105,12 +105,12 @@ uniform mat4    MVPMatrix;\
 \
 in vec3 InCoord;\
 in vec2 InTexCoord;\
-in vec3 InColor;\
+in vec4 InColor;\
 \
 out Vertice\
 {\
     vec2        TexCoord;\
-    vec3        Color;\
+    vec4        Color;\
 }   vertice;\
 \
 void main ()\
@@ -130,7 +130,7 @@ uniform bool        Textured;\
 in Vertice\
 {\
     vec2            TexCoord;\
-    vec3            Color;\
+    vec4            Color;\
 }   vertice;\
 \
 out vec4            FragmentColor;\
@@ -138,9 +138,9 @@ out vec4            FragmentColor;\
 void main()\
 {\
     if (Textured)\
-        FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+        FragmentColor = texture(TextureId, vertice.TexCoord) * vertice.Color;\
     else\
-        FragmentColor = vec4(vertice.Color, 1.0);\
+        FragmentColor = vertice.Color;\
 }";
 
 const char *DefaultSources::Textured2dVertexShader =
@@ -150,12 +150,12 @@ uniform mat4    MVPMatrix;\
 \
 in vec2         InCoord;\
 in vec2         InTexCoord;\
-in vec3         InColor;\
+in vec4         InColor;\
 \
 out Vertice\
 {\
     vec2        TexCoord;\
-    vec3        Color;\
+    vec4        Color;\
 }   vertice;\
 \
 void main ()\
@@ -175,7 +175,7 @@ uniform sampler2D   TextureId;\
 in Vertice\
 {\
     vec2            TexCoord;\
-    vec3            Color;\
+    vec4            Color;\
 }   vertice;\
 \
 out vec4            FragmentColor;\
@@ -183,9 +183,9 @@ out vec4            FragmentColor;\
 void main()\
 {\
     if (Textured)\
-        FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+        FragmentColor = texture(TextureId, vertice.TexCoord) * vertice.Color;\
     else\
-        FragmentColor = vec4(vertice.Color, 1.0);\
+        FragmentColor = vertice.Color;\
 }";
 
 const char *DefaultSources::Textured3dVertexShader =
@@ -195,12 +195,12 @@ uniform mat4    MVPMatrix;\
 \
 in vec3         InCoord;\
 in vec3         InTexCoord;\
-in vec3         InColor;\
+in vec4         InColor;\
 \
 out Vertice\
 {\
     vec3        TexCoord;\
-    vec3        Color;\
+    vec4        Color;\
 }   vertice;\
 \
 void main ()\
@@ -220,7 +220,7 @@ uniform samplerCube TextureId;\
 in Vertice\
 {\
     vec3            TexCoord;\
-    vec3            Color;\
+    vec4            Color;\
 }   vertice;\
 \
 out vec4            FragmentColor;\
@@ -228,7 +228,7 @@ out vec4            FragmentColor;\
 void main()\
 {\
     if (Textured)\
-        FragmentColor = texture(TextureId, vertice.TexCoord) * vec4(vertice.Color, 1.0);\
+        FragmentColor = texture(TextureId, vertice.TexCoord) * vertice.Color;\
     else\
-        FragmentColor = vec4(vertice.Color, 1.0);\
+        FragmentColor = vertice.Color;\
 }";

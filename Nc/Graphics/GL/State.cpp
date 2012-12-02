@@ -73,6 +73,14 @@ void    State::InitContext(Graphic::GLContext *context)
     _currentClearColor.Init(0,0,0,0);
     _currentDepthMask = true;
     _currentDepthFunc = Enum::Less;
+    _currentClearStencil = 0;
+    _currentStencilMask = 0xFF;
+    _currentStencilFunc = Enum::Always;
+    _currentStencilFuncRef = 0;
+    _currentStencilFuncMask = 0xFF;
+    _currentStencilSFail = Enum::Stencil::Keep;
+    _currentStencilDpFail = Enum::Stencil::Keep;
+    _currentStencilDpPass = Enum::Stencil::Keep;
     _currentBlendSFactor = Enum::One;
     _currentBlendDFactor = Enum::Zero;
     _currentPolygonFace = Enum::FrontAndBack;
@@ -81,6 +89,10 @@ void    State::InitContext(Graphic::GLContext *context)
     _currentLineWidth = 1.f;
     _currentPolygonOffsetFactor = 0.f;
     _currentPolygonOffsetUnits = 0.f;
+    _currentColorMaskRed = true;
+    _currentColorMaskGreen = true;
+    _currentColorMaskBlue = true;
+    _currentColorMaskAlpha = true;
 
     _mapCurrentCapabilityStatement[Enum::Blend] = false;
     _mapCurrentCapabilityStatement[Enum::ColorLogicOp] = false;
@@ -167,8 +179,14 @@ namespace Nc {
                 oss << "Viewport:                               " << s._currentViewportX << "\t" << s._currentViewportY << "\t" << s._currentViewportWidth << "\t" << s._currentViewportHeight << std::endl;
                 oss << "Scissor:                                " << s._currentScissorX << "\t" << s._currentScissorY << "\t" << s._currentScissorWidth << "\t" << s._currentScissorHeight << std::endl;
                 oss << "ClearColor:                             " << s._currentClearColor << std::endl;
+                oss << "ColorMask:                              R:" << s._currentColorMaskRed << " G:" << s._currentColorMaskGreen << " B:"<< s._currentColorMaskBlue << " A:" << s._currentColorMaskAlpha << std::endl;
+
                 oss << "DepthMask:                              " << ((s._currentDepthMask) ? "True" : "False") << std::endl;
                 oss << "DepthFunc:                              " << s._currentDepthFunc << std::endl;
+                oss << "ClearStencil:                           " << s._currentClearStencil << std::endl;
+                oss << "StencilMask:                            " << s._currentStencilMask << std::endl;
+                oss << "StencilFunc:                            " << s._currentStencilFunc << " Ref:" << s._currentStencilFuncRef << " Mask:" << s._currentStencilFuncMask << std::endl;
+                oss << "StencilOp:                              " << s._currentStencilSFail << " " << s._currentStencilDpFail << " " << s._currentStencilDpPass << std::endl;
                 oss << "BlendFactor:                            " << s._currentBlendSFactor << "\tD: " << s._currentBlendDFactor << std::endl;
                 oss << "PolygonFace:                            " << s._currentPolygonFace << std::endl;
                 oss << "PolygonMode:                            " << s._currentPolygonMode << std::endl;
@@ -176,7 +194,7 @@ namespace Nc {
                 oss << "LineWidth:                              " << s._currentLineWidth << std::endl;
                 oss << "PolygonOffsetFactor:                    " << s._currentPolygonOffsetFactor << std::endl;
                 oss << "PolygonOffsetUnits:                     " << s._currentPolygonOffsetUnits << std::endl;
-                oss << "_currentActiveTextureUnit:              " << s._currentActiveTextureUnit << std::endl;
+                oss << "ActiveTextureUnit:                      " << s._currentActiveTextureUnit << std::endl;
 
                 oss << "Capability[Blend]:                      " << ((s._mapCurrentCapabilityStatement[Enum::Blend]) ? "True" : "False") << std::endl;
                 oss << "Capability[ColorLogicOp]:               " << ((s._mapCurrentCapabilityStatement[Enum::ColorLogicOp]) ? "True" : "False") << std::endl;
@@ -305,7 +323,7 @@ void    State::Disable(Enum::Capability cp)
     }
 }
 
-void    State::DepthFunc(Enum::DepthFunc f)
+void    State::DepthFunc(Enum::MaskFunc f)
 {
     if (_currentDepthFunc != f)
     {
@@ -423,7 +441,7 @@ void    State::Bind(Enum::RenderBuffer::Target target, unsigned int id)
     }
 }
 
-void    State::BindProgram(unsigned int id)
+void    State::UseProgram(unsigned int id)
 {
     if (_currentProgramBound != id)
     {
@@ -514,3 +532,56 @@ void    State::Scissor(unsigned int x, unsigned int y, unsigned int width, unsig
         _currentScissorHeight = height;
     }
 }
+
+void    State::ColorMask(bool red, bool green, bool blue, bool alpha)
+{
+    if (_currentColorMaskRed != red || _currentColorMaskGreen != green || _currentColorMaskBlue != blue || _currentColorMaskAlpha != alpha)
+    {
+        glColorMask(red, green, blue, alpha);
+        _currentColorMaskRed = red;
+        _currentColorMaskGreen = green;
+        _currentColorMaskBlue = blue;
+        _currentColorMaskAlpha = alpha;
+    }
+}
+
+void    State::StencilFunc(Enum::MaskFunc f, int refValue, unsigned int mask)
+{
+    if (_currentStencilFunc != f || _currentStencilFuncRef != refValue || _currentStencilFuncMask != mask)
+    {
+        glStencilFunc(f, refValue, mask);
+        _currentStencilFunc = f;
+        _currentStencilFuncRef = refValue;
+        _currentStencilFuncMask = mask;
+    }
+}
+
+void    State::StencilOp(Enum::Stencil::Action sFail, Enum::Stencil::Action dpFail, Enum::Stencil::Action dpPass)
+{
+    if (_currentStencilSFail != sFail || _currentStencilDpFail != dpFail || _currentStencilDpPass != dpPass)
+    {
+        glStencilOp(sFail, dpFail, dpPass);
+        _currentStencilSFail = sFail;
+        _currentStencilDpFail = dpFail;
+        _currentStencilDpPass = dpPass;
+    }
+}
+
+void    State::ClearStencil(int value)
+{
+    if (_currentClearStencil != value)
+    {
+        glClearStencil(value);
+        _currentClearStencil = value;
+    }
+}
+
+void    State::StencilMask(unsigned int mask)
+{
+    if (_currentStencilMask != mask)
+    {
+        glStencilMask(mask);
+        _currentStencilMask = mask;
+    }
+}
+

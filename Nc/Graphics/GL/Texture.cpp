@@ -51,7 +51,7 @@ Texture::~Texture()
 
 void Texture::Release()
 {
-    LOG_DEBUG << "DESTROY Texture n = " << _texture << "  `" << _name << "`" << std::endl;
+    CALLSTACK_INFO("DESTROY Texture n = " + Utils::Convert::ToString(_texture));
     glDeleteTextures(1, &_texture);
     _texture = 0;
 }
@@ -92,7 +92,7 @@ void Texture::CheckSize(const Vector2ui &size)
     if (!Math::IsAPowerOf2(size.data[0]) || !Math::IsAPowerOf2(size.data[1]))
     {
         if (EXT.NonPowerOf2Supported())
-            LOG_DEBUG << "Warning: GL::Texture: To increse performance, please use a texture size of power of 2. " << _name << ":" << size.data[0] << "/" << size.data[1];
+            LOG_DEBUG << "Warning: GL::Texture: To increse performance, please use a texture size of power of 2. TextureId:" << _texture << " Size:" << size.data[0] << "/" << size.data[1] << std::endl;
         else
             throw Utils::Exception("Texture", "Can't create the texture: Texturing with a non power of two size is not supported on this plateform.");
     }
@@ -103,9 +103,9 @@ void    Texture::Create(Enum::Texture::Target target)
     NewRef();
     _target = target;
     glGenTextures(1, &_texture);
+    CALLSTACK_INFO("CREATE NEW TEXTURE OBJECT n = " + Utils::Convert::ToString(_texture));
     if (_texture == 0)
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
-	LOG_DEBUG << "CREATE NEW TEXTURE OBJECT n = " << _texture << std::endl;
 }
 
 void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
@@ -126,22 +126,24 @@ void    Texture::GenerateMipmaps()
 
 void Texture::LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
 {
+    CALLSTACK_INFO("Texture::LoadFromFile(" + file + ")");
+
 // Load the image and reverse it
     Image image;
     image.LoadFromFile(file);
     image.Reverse();
 
-    LoadFromImage(image, magnifyingFilter, mignifyingFilter, generateMipmap, file);
+    LoadFromImage(image, magnifyingFilter, mignifyingFilter, generateMipmap);
 }
 
-void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap, const std::string &name)
+void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
 {
+    CALLSTACK_INFO("Texture::LoadFromImage");
     NewRef();
 
 // Load the image and reverse it
     CheckSize(image.Size());  // check the image
     _size = image.Size();
-    _name = name;
     const unsigned char *pixels = image.GetPixels();
 
 // Create the OpenGL texture
@@ -151,24 +153,23 @@ void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifying
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
     Enable();
 
+    {
+        CALLSTACK_INFO("LOAD TEXTURE n = " + Utils::Convert::ToString(_texture));
+        glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+        glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, magnifyingFilter);
+        glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, mignifyingFilter);
+        //glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        //glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, (generateMipmap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
 
-    glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexImage2D(_target, 0, GL_RGBA8, image.Size().data[0], image.Size().data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
 
-    glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, magnifyingFilter);
-    glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, mignifyingFilter);
-    //glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, (generateMipmap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+        if(generateMipmap)
+            glGenerateMipmap(_target);
 
-    glTexImage2D(_target, 0, GL_RGBA8, image.Size().data[0], image.Size().data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
-
-    if(generateMipmap)
-        glGenerateMipmap(_target);
-
-    Disable();
-
-    LOG_DEBUG << "LOAD TEXTURE n = " << _texture << " `" << _name << "`" << endl;
+        Disable();
+    }
 }
 
 void Texture::LoadCubeMap(const Utils::FileName names[6])
@@ -192,6 +193,8 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
     if (_texture == 0)
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
 
+    CALLSTACK_INFO("LOAD TEXTURE CUBE MAP n = " + Utils::Convert::ToString(_texture));
+
     // Configuration de la texture
     Enable();
     glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -210,9 +213,6 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
         glTexImage2D(target[i], 0, GL_RGBA8, image.Size().data[0], image.Size().data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
     }
     Disable();
-
-    _name = "CUBE_MAP";
-    LOG_DEBUG << "LOAD TEXTURE n = " << _texture << " `" << _name << "`" << endl;
 }
 
 void Texture::AddNoRepeatMode()
@@ -259,6 +259,8 @@ void Texture::GenereSphereMap(const unsigned int d)
     if (_texture == 0)
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
 
+    CALLSTACK_INFO("LOAD TEXTURE SPHERE MAP n = " + Utils::Convert::ToString(_texture));
+
     Enable();
 	glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -269,9 +271,6 @@ void Texture::GenereSphereMap(const unsigned int d)
 	glTexImage3D(_target, 0, GL_RGB8, d, d, d, 0, GL_RGB, Enum::Float, data);
     Disable();
     delete[] data;
-
-    _name = "SPHERE MAP";
-    LOG_DEBUG << "LOAD TEXTURE n = " << _texture << " `" << _name << "`" << endl;
 }
 
 /*

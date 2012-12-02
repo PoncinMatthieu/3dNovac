@@ -69,6 +69,9 @@ namespace Nc
                 /** Clone the camera. */
                 virtual ISceneNode  *Clone() const = 0;
 
+                /** \return the attached window. */
+                IWindow         *Window()                                   {return _window;}
+
                 /** To reception the mouse motion event. */
                 virtual void    MouseMotionEvent(const Nc::System::Event &event) = 0;
                 /** To reception the mouse button event. */
