@@ -35,6 +35,10 @@
 #define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(__STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
 #endif
 
+#ifndef AssertError
+#define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, __STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
+#endif
+
 namespace Nc
 {
     namespace Utils
@@ -42,6 +46,13 @@ namespace Nc
         static void AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function)
         {
             CALLSTACK_INFO("Assertion Failed: " + file + ":" + Convert::ToString(line) + ": " + function + ": (" + expr + ")");
+            CrashReporter::Abort();
+        }
+
+        static void AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function)
+        {
+            CALLSTACK_INFO("Assertion Failed: " + file + ":" + Convert::ToString(line) + ": " + function + ": (" + expr + ")");
+            LOG_ERROR << "Fatal error: " << error << std::endl;
             CrashReporter::Abort();
         }
     }

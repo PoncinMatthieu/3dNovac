@@ -78,6 +78,9 @@ namespace Nc
 
                 /** Remove the childs of the node. */
                 void                RemoveChilds();
+                /** Remove the childs of the node when the given functor return true for a child. */
+                template<class Functor>
+                void                RemoveChilds(Functor f);
                 /**
                     Remove the child at the given position and dealocate it with the allocator if the node should be deleted.
                     \return true if the node has been found and removed.
@@ -161,6 +164,9 @@ namespace Nc
 
                 /** Remove the childs of the node. */
                 void                RemoveChilds();
+                /** Remove the childs of the node when the given functor return true for a child. */
+                template<class Functor>
+                void                RemoveChilds(Functor f);
                 /**
                     Remove the child at the given position and dealocate it with the allocator if the node should be deleted.
                     \return true if the node has been found and removed.
@@ -384,6 +390,46 @@ namespace Nc
                         _alloc.Deallocate(*it);
                 }
                 it = _childs.erase(it);
+            }
+        }
+
+        template<typename T, class NodeType, unsigned int NbChilds, bool Graph, class Allocator>
+        template<class Functor>
+        void    NNodePolitic<T,NodeType,NbChilds,Graph,Allocator>::RemoveChilds(Functor f)
+        {
+            for (unsigned int i = 0; i < NbChilds; ++i)
+            {
+                if (_childs.data[i] != NULL)
+                {
+                    if (f(_childs.data[i]))
+                    {
+                        _childs.data[i]->UnParent(static_cast<NodeType*>(this));
+                        if (_childs.data[i]->_shouldBeDelete && _childs.data[i]->IsRoot())
+                            _alloc.Deallocate(_childs.data[i]);
+                        _childs.data[i] = NULL;
+                    }
+                }
+            }
+        }
+
+        template<typename T, class NodeType, bool Graph, class Allocator>
+        template<class Functor>
+        void    NNodePolitic<T,NodeType,0,Graph,Allocator>::RemoveChilds(Functor f)
+        {
+            for (typename ContainerType::iterator it = _childs.begin(); it != _childs.end();)
+            {
+                if (f(*it))
+                {
+                    if ((*it) != NULL)
+                    {
+                        (*it)->UnParent(static_cast<NodeType*>(this));
+                        if ((*it)->_shouldBeDelete && (*it)->IsRoot())
+                            _alloc.Deallocate(*it);
+                    }
+                    it = _childs.erase(it);
+                }
+                else
+                    ++it;
             }
         }
 

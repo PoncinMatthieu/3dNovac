@@ -40,6 +40,7 @@
 #include "Box3D.h"
 #include "Box2D.h"
 #include "Pixel.h"
+#include "Test.h"
 
 /// Global Namespace of 3dNovac.
 namespace Nc
@@ -50,9 +51,6 @@ namespace Nc
         // Calculs 3d
         Vector3f LCORE  Normal(const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, bool normalize = true);
         void     LCORE  Normalize(float p[3]);
-
-        // Calculs 2d
-        bool     LCORE  InRect(const Vector2i &RectPos, const Vector2i &RectSize, const Vector2i &pointTest);
 
         /** Init the rand to call srand() function. */
         inline void     InitRand()                          {srand((unsigned int)time(0));}

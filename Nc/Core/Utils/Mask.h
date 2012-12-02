@@ -58,38 +58,33 @@ namespace Nc
  \endcode
         */
         template<typename T, typename D = int>
-        class Mask
+        struct Mask
         {
-            public:
-                Mask() : _mask(0)       {}
-                Mask(D m) : _mask(m)    {}
-                Mask(T v) : _mask(v)    {}
+            Mask() : mask(0)       {}
+            Mask(D m) : mask(m)    {}
+            Mask(T v) : mask(v)    {}
 
-                /** \return true if the given mask value is only one activated in the mask. */
-                inline bool     operator == (T v) const     {return (_mask == v);}
-                /** \return true if the given mask is the same. */
-                inline bool     operator == (D m) const     {return (_mask == m);}
+            /** \return true if the given mask value is only one activated in the mask. */
+            inline bool     operator == (T v) const     {return (mask == v);}
+            /** \return true if the given mask is the same. */
+            inline bool     operator == (D m) const     {return (mask == m);}
 
-                /** Enable the bit `v` in the mask. */
-                inline void     Enable(T v)                 {_mask |= v;}
+            /** Enable the bit `v` in the mask. */
+            inline void     Enable(T v)                 {mask |= v;}
 
-                /** Disable the bit `v` in the mask. */
-                inline void     Disable(T v)                {_mask &= ~v;}
+            /** Disable the bit `v` in the mask. */
+            inline void     Disable(T v)                {mask &= ~v;}
 
-                /** Trigger the bit `v` in the mask (if == true, then false, else true). */
-                inline void     Trigger(T v)                {(Enabled(v)) ? Disable(v) : Enable(v);}
+            /** Trigger the bit `v` in the mask (if == true, then false, else true). */
+            inline void     Trigger(T v)                {(Enabled(v)) ? Disable(v) : Enable(v);}
 
-                /** \return true if the bit `v` is enabled in the bit mask. */
-                inline bool     Enabled(T v) const          {return ((_mask & v) != 0);}
+            /** \return true if the bit `v` is enabled in the bit mask. */
+            inline bool     Enabled(T v) const          {return ((mask & v) != 0);}
 
-                /** \return true if the bit `v` is disabled in the bit mask. */
-                inline bool     Disabled(T v) const         {return ((_mask & v) == 0);}
+            /** \return true if the bit `v` is disabled in the bit mask. */
+            inline bool     Disabled(T v) const         {return ((mask & v) == 0);}
 
-                /** \return the mask value */
-                inline D        GetMask() const             {return _mask;}
-
-            private:
-                D       _mask;      ///< the bit mask.
+            D       mask;      ///< the bit mask.
         };
     }
 }

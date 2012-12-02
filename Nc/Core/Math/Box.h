@@ -47,11 +47,13 @@ namespace Nc
                 template<typename U>    Box(const Box<U,D> &b);
 
                 // operator
-                template<typename U>    Box &operator   =   (const Box<U,D> &b);
-                template<typename U>    Box &operator   +=  (const Box<U,D> &b);
-                template<typename U>    Box &operator   +=  (const Vector<U,D> &p);
-                template<typename U>    Box &operator   +=  (const U coord[]);
-                template<typename U>    Box operator    +   (const Box<U,D> &b) const;
+                template<typename U>    Box     &operator   =   (const Box<U,D> &b);
+                template<typename U>    Box     &operator   +=  (const Box<U,D> &b);
+                template<typename U>    Box     &operator   +=  (const Vector<U,D> &p);
+                template<typename U>    Box     &operator   +=  (const U coord[]);
+                template<typename U>    Box     operator    +   (const Box<U,D> &b) const;
+                template<typename U>    bool    operator    ==  (const Box<U,D> &b) const;
+                template<typename U>    bool    operator    !=  (const Box<U,D> &b) const;
 
                 // accessor
                 /** \return the minima point of the box. */
@@ -178,6 +180,20 @@ namespace Nc
             Box<T,D>    box(*this);
             box += b;
             return box;
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        bool Box<T,D>::operator    ==   (const Box<U,D> &b) const
+        {
+            return (_min == b._min && _max == b._max);
+        }
+
+        template<typename T, unsigned char D>
+        template<typename U>
+        bool Box<T,D>::operator    !=   (const Box<U,D> &b) const
+        {
+            return (_min != b._min || _max != b._max);
         }
 
         template<typename T, unsigned char D>

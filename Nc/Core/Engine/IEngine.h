@@ -125,6 +125,9 @@ namespace Nc
                 unsigned char           LoadingPriority()               {return _loadingPriority;}
 
             protected:
+                /** \return the time since the loop iteration started. */
+                float                   ElapsedTime() const             {return _clock.ElapsedTime();}
+
                 /** Before to entering in the main loop, load contents and create context by using the engine manager priorities. */
                 virtual void            Loading();
                 /** Just after the main loop, delete the contents by using the engine manager priorities. */

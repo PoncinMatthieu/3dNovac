@@ -49,16 +49,5 @@ namespace Nc
             p[1] /= len;
             p[2] /= len;
         }
-
-        bool InRect(const Vector2i &RectPos, const Vector2i &RectSize, const Vector2i &pointTest)
-        {
-            Vector2f posRectSize = RectPos + RectSize;
-            if ((pointTest.data[0] > RectPos.data[0] && pointTest.data[0] < posRectSize.data[0] && posRectSize.data[0] > RectPos.data[0]) ||
-                (pointTest.data[0] < RectPos.data[0] && pointTest.data[0] > posRectSize.data[0] && posRectSize.data[0] < RectPos.data[0]))
-                if ((pointTest.data[1] > RectPos.data[1] && pointTest.data[1] < posRectSize.data[1] && posRectSize.data[1] > RectPos.data[1]) ||
-                    (pointTest.data[1] < RectPos.data[1] && pointTest.data[1] > posRectSize.data[1] && posRectSize.data[1] < RectPos.data[1]))
-                        return true;
-            return false;
-        }
     }
 }

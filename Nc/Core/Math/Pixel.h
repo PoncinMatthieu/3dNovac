@@ -43,10 +43,10 @@ namespace Nc
         template<typename T>
         struct  Pixel
         {
-            Pixel(const T &red = 0, const T &green = 0, const T &blue = 0, const T &alpha = 0)
+            Pixel(const T &red = 0, const T &green = 0, const T &blue = 0, const T &alpha = 1)
                 : r(red), g(green), b(blue), a(alpha) {}
 
-            inline void Init(const T &red = 0, const T &green = 0, const T &blue = 0, const T &alpha = 0)    {r = red; g = green; b = blue; a = alpha;}
+            inline void Init(const T &red = 0, const T &green = 0, const T &blue = 0, const T &alpha = 1)    {r = red; g = green; b = blue; a = alpha;}
             inline bool operator == (const Pixel& v) const                                      {return (r == v.r && g == v.g && b == v.b && a == v.a);}
             inline bool operator != (const Pixel& v) const                                      {return (r != v.r || g != v.g || b != v.b || a != v.a);}
             inline T &operator [] (const T &i)                                                  {return ((i == 0) ? r : ((i == 1) ? g : ((i == 2) ? b : a)));}

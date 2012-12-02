@@ -91,6 +91,10 @@
     namespace Nc
     {
         // portable fixed size
+        // 8 bit interger type
+            typedef char            Int8;
+            typedef unsigned char   UInt8;
+
         // 16 bits integer type
         #if USHRT_MAX == 0xFFFF
             typedef short           Int16;

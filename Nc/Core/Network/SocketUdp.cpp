@@ -34,6 +34,7 @@
 #endif
 #include "../Define.h"
 #include "SocketUdp.h"
+#include "../System/Config.h"
 
 using namespace Nc;
 using namespace Nc::Network;
@@ -186,6 +187,10 @@ int    SocketUdp::Read(char *dst, unsigned int maxSize, Ip &ip, unsigned short &
         // Check the number of bytes received and fill the ip/port of the sender
         if (r > 0)
         {
+            // if datagram truncated
+            if (r == maxSize)
+                System::Config::Warning("SocketUdp::Read", "Received truncated datagram.");
+
             ip = Ip(inet_ntoa(sender.sin_addr));
             port = ntohs(sender.sin_port);
         }

@@ -130,7 +130,7 @@ void IEngine::Process()
 
             try
             {
-                CALLSTACK_INFO("IEngine::Execute: " + Utils::Convert::ToString(*this) + "\tElapsedTime: " + Utils::Convert::ToString(_elapsedTime));
+                CALLSTACK_INFO("IEngine::Execute: " + Utils::Convert::ToString(*this));
                 ExecuteEvents();
                 Execute(_elapsedTime);
             }
