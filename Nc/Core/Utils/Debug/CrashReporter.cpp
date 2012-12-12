@@ -99,6 +99,21 @@ void    CrashReporter::Terminate()
 void CrashReporter::Abort()
 {
     // print the available backtrace
+    PrintBacktrace();
+
+    // print the available callstack infos
+    PrintCallStackInfos();
+    CallStack::DeleteInstances();
+
+    //if this is a thread performing some core activity
+    LOG_ERROR << "Aborting..." << std::endl;
+    abort();
+    // else if this is a thread used to service requests
+    // pthread_exit();
+}
+
+void    CrashReporter::PrintBacktrace()
+{
     LOG_ERROR << "Backtrace: " << std::endl;
     void    *array[25];
     int     nSize = backtrace(array, 25);
@@ -107,8 +122,10 @@ void CrashReporter::Abort()
         LOG_ERROR << symbols[i] << std::endl;
     LOG_ERROR << std::endl;
     free(symbols);
+}
 
-    // print the available callstack infos
+void    CrashReporter::PrintCallStackInfos()
+{
     const CallStack::MapInstance &instances = CallStack::Instances();
     for (CallStack::MapInstance::const_iterator it = instances.begin(); it != instances.end(); ++it)
     {
@@ -119,11 +136,4 @@ void CrashReporter::Abort()
             LOG_ERROR << std::endl;
         }
     }
-    CallStack::DeleteInstances();
-
-    //if this is a thread performing some core activity
-    LOG_ERROR << "Aborting..." << std::endl;
-    abort();
-    // else if this is a thread used to service requests
-    // pthread_exit();
 }

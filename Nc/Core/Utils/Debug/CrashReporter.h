@@ -49,6 +49,11 @@ namespace Nc
                 /** Print information about the callstack and then abort the program. */
                 static void     Abort();
 
+                /** Print the backtrace. */
+                static void     PrintBacktrace();
+                /** Print the callstacks. */
+                static void     PrintCallStackInfos();
+
             protected:
                 CrashReporter();
                 virtual ~CrashReporter();

@@ -32,11 +32,13 @@
 
 #if defined(_DEBUG)
     #ifndef CALLSTACK_INFO
-        #define CALLSTACK_INFO(info)        Nc::Utils::CallStackInfo callStackInfo(info);
+        #define CALLSTACK_INFO(info)            Nc::Utils::CallStackInfo callStackInfo(info);
+        #define CALLSTACK_APPEND_INFO(info)     callStackInfo.AppendInfo(info);
     #endif
 #else
     #ifndef CALLSTACK_INFO
-        #define CALLSTACK_INFO
+        #define CALLSTACK_INFO(info)
+        #define CALLSTACK_APPEND_INFO(info)
     #endif
 #endif
 
@@ -49,6 +51,8 @@ namespace Nc
         {
             CallStackInfo(const std::string &info);
             ~CallStackInfo();
+
+            void    AppendInfo(const std::string &info);
         };
 
         /// Allow to add info on the current call stack.
@@ -65,11 +69,18 @@ namespace Nc
 
                 /** Push an info stack. */
                 void            Push(const std::string &info);
+                /** Append an info to the current stack. */
+                void            Append(const std::string &info);
                 /** Pop the current info stack. */
                 void            Pop();
 
+                /** \return the current info on the stack. */
+                const std::string &Back()               {return _stack.back();}
+
                 /** \return true if the stack is empty. */
                 bool            Empty() const           {return _stack.empty();}
+                /** \return the size of the stack. */
+                unsigned int    Size() const            {return _stack.size();}
 
                 /** Print the current info stack. */
                 virtual void    Print() const;

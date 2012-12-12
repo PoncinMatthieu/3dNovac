@@ -32,11 +32,28 @@ using namespace Nc::Utils;
 CallStackInfo::CallStackInfo(const std::string &info)
 {
     CallStack::Instance().Push(info);
+/*
+    std::string s = "";
+    for (unsigned int i = 0; i < CallStack::Instance().Size(); ++i)
+        s += "\t";
+    LOG_DEBUG << s << info << std::endl;
+*/
 }
 
 CallStackInfo::~CallStackInfo()
 {
+/*
+    std::string s = "";
+    for (unsigned int i = 0; i < CallStack::Instance().Size(); ++i)
+        s += "\t";
+    LOG_DEBUG << s << CallStack::Instance().Back() << std::endl;
+*/
     CallStack::Instance().Pop();
+}
+
+void    CallStackInfo::AppendInfo(const std::string &info)
+{
+    CallStack::Instance().Append(info);
 }
 
 CallStack::CallStack()
@@ -53,6 +70,11 @@ void    CallStack::Push(const std::string &info)
     _stack.push_back(info);
 }
 
+void    CallStack::Append(const std::string &info)
+{
+    _stack.back() += info;
+}
+
 void    CallStack::Pop()
 {
     _stack.pop_back();
@@ -64,7 +86,7 @@ void    CallStack::Print() const
     {
         for (int i = _stack.size() - 1; i >= 0; --i)
         {
-            LOG << i << ": " << _stack[i] << std::endl;
+            LOG_ERROR << i << ": " << _stack[i] << std::endl;
         }
     }
 }
