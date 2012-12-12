@@ -49,6 +49,9 @@ namespace Nc
                 virtual ~GameEngine();
 
             protected:
+                /** Destroy the ogl context. */
+                virtual void    ReleaseContent();
+
                 /** Create the shared ogl context specific to the thread of the GameEngine */
                 virtual void    CreateContext();
                 /** Active the ogl context */

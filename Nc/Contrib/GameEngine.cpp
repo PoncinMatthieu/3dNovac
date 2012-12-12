@@ -44,7 +44,12 @@ GameEngine::GameEngine(IWindow *window, Nc::Engine::Manager *manager,
 
 GameEngine::~GameEngine()
 {
-    delete _context;
+}
+
+void    GameEngine::ReleaseContent()
+{
+    if (_context != NULL)
+        delete _context;
 }
 
 void    GameEngine::CreateContext()
