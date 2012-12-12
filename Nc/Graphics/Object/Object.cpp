@@ -91,7 +91,7 @@ Object &Object::operator = (const Object &o)
 
 Object::~Object()
 {
-    CALLSTACK_INFO("Object::Destructor");
+    CALLSTACK_INFO("Object::Destructor()");
     for (unsigned int i = 0; i < _drawables.size(); ++i)
         if (_drawables[i] != NULL)
             delete _drawables[i];
@@ -120,7 +120,7 @@ bool    Object::SetMaterial(IMaterial *newMaterial)
 
 void    Object::ChooseDefaultMaterial()
 {
-    CALLSTACK_INFO("Object::ChooseDefaultMaterial");
+    CALLSTACK_INFO("Object::ChooseDefaultMaterial()");
     if (_drawables.size() == 0)
         return;
 
@@ -140,7 +140,7 @@ void    Object::ReconfigureDrawables()
 
 void    Object::ConfigureDrawables(IMaterial *material)
 {
-    CALLSTACK_INFO("Object::ConfigureDrawables");
+    CALLSTACK_INFO("Object::ConfigureDrawables()");
     if (material != NULL)
     {
         for (unsigned int i = 0; i < _drawables.size(); ++i)
@@ -150,7 +150,7 @@ void    Object::ConfigureDrawables(IMaterial *material)
                 if (!material->Configure(*_drawables[i]))    // config failed ?
                 {
                     material = NULL;
-                    throw Utils::Exception("Graphic::Object", "The Configuration of the drawable no " + Utils::Convert::ToString(i) + " failed");
+                    throw Utils::Exception("Graphic::Object", "The Configuration of the drawable no " + Utils::Convert::ToString(i) + " failed.");
                 }
             }
         }
@@ -160,7 +160,7 @@ void    Object::ConfigureDrawables(IMaterial *material)
 
 void    Object::Render(SceneGraph *scene)
 {
-    CALLSTACK_INFO("Object::Render");
+    CALLSTACK_INFO("Object::Render() Object: " + Utils::Convert::ToString(*this));
     RenderBegin(scene);
 
     // rendering
@@ -187,7 +187,7 @@ void    Object::RenderEnd(SceneGraph *scene)
 
 void    Object::Draw(SceneGraph *scene)
 {
-    CALLSTACK_INFO("Object::Draw");
+    CALLSTACK_INFO("Object::Draw()");
 
     // get back the current material set in the scene
     IMaterial *m = (_useSceneMaterial) ? scene->Material() : NULL;

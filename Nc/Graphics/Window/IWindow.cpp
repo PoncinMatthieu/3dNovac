@@ -83,7 +83,7 @@ void    IWindow::InitSceneGraphManager()
 
 void    IWindow::Render(GLContext *context)
 {
-    CALLSTACK_INFO("IWindow::Render");
+    CALLSTACK_INFO("IWindow::Render()");
 
     // Render the scene graph manager
     _sceneGraphManager->Render(_context);

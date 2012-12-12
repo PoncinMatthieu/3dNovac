@@ -53,6 +53,7 @@ bool    DefaultMaterialColored::Configure(GL::Drawable &drawable)
 
 void    DefaultMaterialColored::Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable)
 {
+    CALLSTACK_INFO("DefaultMaterialColored::Render()");
     drawable.Enable();
     _program.Enable(); // enable the shader
 
@@ -86,6 +87,8 @@ bool    DefaultMaterialTextured::Configure(GL::Drawable &drawable)
 
 void    DefaultMaterialTextured::Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable)
 {
+    CALLSTACK_INFO("DefaultMaterialTextured::Render()");
+
     drawable.Enable();
     _program.Enable(); // enable the shader
 
@@ -195,6 +198,7 @@ void    DefaultMaterial<Textured3d>::Initialize()
 
 void    DefaultMaterial<Textured3d>::Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable)
 {
+    CALLSTACK_INFO("DefaultMaterial<Textured3d>::Render()");
     drawable.Enable();
     _program.Enable(); // enable the shader
 

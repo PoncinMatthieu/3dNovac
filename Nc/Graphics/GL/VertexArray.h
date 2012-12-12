@@ -36,6 +36,9 @@ namespace Nc
         namespace GL
         {
             /// To use an Vertex Array Object (VAO)
+            /**
+                \todo VertexArray doesn't work properly and has been disabled into the GeometryBuffer class.
+             */
             class LGRAPHICS VertexArray : public Object
             {
                 public:
@@ -48,13 +51,13 @@ namespace Nc
                     /** Return the index of the VAO. */
                     virtual unsigned int    GetIndex() const    {return _index;}
                     /** Enable the VAO. */
-                    virtual inline void     Enable() const      {glBindVertexArray(_index);}
+                    virtual void            Enable() const;
                     /** Disable the VAO. */
-                    virtual inline void     Disable() const     {glBindVertexArray(0);}
+                    virtual void            Disable() const;
 
                 private:
                     /** Release the VAO. */
-                    virtual inline void     Release()           {glDeleteVertexArrays(1, &_index);}
+                    virtual void            Release();
 
                     unsigned int    _index;         ///< the index of the VAO.
             };

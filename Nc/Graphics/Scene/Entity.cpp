@@ -73,6 +73,7 @@ Entity::~Entity()
 
 void    Entity::RenderChilds(SceneGraph *scene)
 {
+    CALLSTACK_INFO("Entity::RenderChilds()");
     try
     {
         if (NodeType::data != NULL)
@@ -88,6 +89,7 @@ void    Entity::RenderChilds(SceneGraph *scene)
 
 void    Entity::UpdateChilds(float elapsedTime)
 {
+    CALLSTACK_INFO("Entity::UpdateChilds()");
     try
     {
         if (NodeType::data != NULL)

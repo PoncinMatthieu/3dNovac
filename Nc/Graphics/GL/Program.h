@@ -71,23 +71,23 @@ namespace Nc
                     /** Fetch the uniform location into the program. */
                     unsigned int            GetUniformLocation(const char *name);
                     /** Set the given uniform \p index. */
-                    static void             SetUniform(unsigned int location, const TMatrix &m, bool transpose = true)      {glUniformMatrix4fv(location, 1, transpose, m.Elements());}
+                    static void             SetUniform(unsigned int location, const TMatrix &m, bool transpose = true);
                     /** Set the given uniform \p index. */
-                    static void             SetUniform(unsigned int location, int v)                                        {glUniform1i(location, v);}
+                    static void             SetUniform(unsigned int location, int v);
                     /** Set the given uniform \p index. */
-                    static void             SetUniform(unsigned int location, unsigned int v)                               {glUniform1ui(location, v);}
+                    static void             SetUniform(unsigned int location, unsigned int v);
                     /** Set the given uniform \p index. */
-					static void             SetUniform(unsigned int location, float v)                                      {glUniform1f(location, v);}
+					static void             SetUniform(unsigned int location, float v);
                     /** Set the given uniform \p index. */
-                    static void             SetUniform(unsigned int location, float f1, float f2)                           {glUniform2f(location, f1, f2);}
+                    static void             SetUniform(unsigned int location, float f1, float f2);
                     /** Set the given uniform \p index. */
-                    static void             SetUniform(unsigned int location, const Vector2f &v)                            {glUniform2f(location, v.data[0], v.data[1]);}
+                    static void             SetUniform(unsigned int location, const Vector2f &v);
                     /** Set the given uniform \p index. */
-                    static void             SetUniform(unsigned int location, float f1, float f2, float f3)                 {glUniform3f(location, f1, f2, f3);}
+                    static void             SetUniform(unsigned int location, float f1, float f2, float f3);
                     /** Set the given uniform \p index. */
-                    static void             SetUniform(unsigned int location, const Vector3f &v)                            {glUniform3f(location, v.data[0], v.data[1], v.data[2]);}
+                    static void             SetUniform(unsigned int location, const Vector3f &v);
                     /** Set the given uniform \p index. */
-                    static void             SetUniform(unsigned int location, float f1, float f2, float f3, float f4)       {glUniform4f(location, f1, f2, f3, f4);}
+                    static void             SetUniform(unsigned int location, float f1, float f2, float f3, float f4);
 
                     /** Fetch the attrib location. */
                     unsigned int            GetAttribLocation(const char *name);

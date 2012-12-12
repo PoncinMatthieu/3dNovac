@@ -26,17 +26,36 @@
 
 #include "VertexArray.h"
 
+using namespace Nc;
 using namespace Nc::Graphic::GL;
 
 VertexArray::VertexArray() : _index(0)
 {
+    CALLSTACK_INFO("VertexArray::Constructor() ")
     NewRef();
     glGenVertexArrays(1, &_index);
     if (_index == 0)
         throw Utils::Exception("VertexArray", "Failed to create the VertexArrayObject.");
+    CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_index));
 }
 
 VertexArray::~VertexArray()
 {
     ReleaseRef();
+}
+
+void     VertexArray::Release()
+{
+    CALLSTACK_INFO("VertexArray::Release() " + Utils::Convert::ToString(_index));
+    glDeleteVertexArrays(1, &_index);
+}
+
+void     VertexArray::Enable() const
+{
+    glBindVertexArray(_index);
+}
+
+void     VertexArray::Disable() const
+{
+    glBindVertexArray(0);
 }

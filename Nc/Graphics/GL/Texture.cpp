@@ -51,9 +51,10 @@ Texture::~Texture()
 
 void Texture::Release()
 {
-    CALLSTACK_INFO("DESTROY Texture n = " + Utils::Convert::ToString(_texture));
+    CALLSTACK_INFO("Texture::Release() " + Utils::Convert::ToString(_texture));
     glDeleteTextures(1, &_texture);
     _texture = 0;
+    NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void  Texture::Enable() const
@@ -100,28 +101,34 @@ void Texture::CheckSize(const Vector2ui &size)
 
 void    Texture::Create(Enum::Texture::Target target)
 {
+    CALLSTACK_INFO("Texture::Create() ");
     NewRef();
     _target = target;
     glGenTextures(1, &_texture);
-    CALLSTACK_INFO("CREATE NEW TEXTURE OBJECT n = " + Utils::Convert::ToString(_texture));
+    CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_texture));
+    NC_GRAPHIC_GL_CHECK_ERROR();
     if (_texture == 0)
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
 }
 
 void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
 {
+    CALLSTACK_INFO("Texture::Init2d()");
     if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture which is not enabled.");
     CheckSize(size);
     glTexImage2D(_target, level, internalFormat, size.data[0], size.data[1], 0, pixelFormat, pixelType, pixelData);
     _size = size;
+    NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Texture::GenerateMipmaps()
 {
+    CALLSTACK_INFO("Texture::GenerateMipmaps()");
     if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::GenerateMipmap", "Can't generate the texture mipmaps if the texture is not enabled.");
     glGenerateMipmap(_target);
+    NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void Texture::LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
@@ -138,7 +145,7 @@ void Texture::LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter ma
 
 void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
 {
-    CALLSTACK_INFO("Texture::LoadFromImage");
+    CALLSTACK_INFO("Texture::LoadFromImage() ");
     NewRef();
 
 // Load the image and reverse it
@@ -149,31 +156,31 @@ void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifying
 // Create the OpenGL texture
     _target = Enum::Texture::Texture2d;
     glGenTextures(1, &_texture);
+    CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_texture));
     if (_texture == 0)
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
     Enable();
 
-    {
-        CALLSTACK_INFO("LOAD TEXTURE n = " + Utils::Convert::ToString(_texture));
-        glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-        glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, magnifyingFilter);
-        glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, mignifyingFilter);
-        //glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        //glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, (generateMipmap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+    glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, magnifyingFilter);
+    glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, mignifyingFilter);
+    //glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    //glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, (generateMipmap) ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
 
-        glTexImage2D(_target, 0, GL_RGBA8, image.Size().data[0], image.Size().data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
+    glTexImage2D(_target, 0, GL_RGBA8, image.Size().data[0], image.Size().data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
+    NC_GRAPHIC_GL_CHECK_ERROR();
 
-        if(generateMipmap)
-            glGenerateMipmap(_target);
+    if(generateMipmap)
+        glGenerateMipmap(_target);
 
-        Disable();
-    }
+    Disable();
 }
 
 void Texture::LoadCubeMap(const Utils::FileName names[6])
 {
+    CALLSTACK_INFO("Texture::LoadCubeMap() ");
     NewRef();
 
     Image image;
@@ -193,7 +200,7 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
     if (_texture == 0)
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
 
-    CALLSTACK_INFO("LOAD TEXTURE CUBE MAP n = " + Utils::Convert::ToString(_texture));
+    CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_texture));
 
     // Configuration de la texture
     Enable();
@@ -212,18 +219,22 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
 
         glTexImage2D(target[i], 0, GL_RGBA8, image.Size().data[0], image.Size().data[1], 0, GL_RGBA, Enum::UnsignedByte, pixels);
     }
+    NC_GRAPHIC_GL_CHECK_ERROR();
     Disable();
 }
 
 void Texture::AddNoRepeatMode()
 {
+    CALLSTACK_INFO("Texture::AddNoRepeatMode()");
     Enable();
     glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void Texture::GenereSphereMap(const unsigned int d)
 {
+    CALLSTACK_INFO("Texture::GenereSphereMap(" + Utils::Convert::ToString(d) + ") ");
     NewRef();
 
     float           *data;
@@ -259,7 +270,7 @@ void Texture::GenereSphereMap(const unsigned int d)
     if (_texture == 0)
         throw Utils::Exception("Texture", "Failed to generate the texture unit");
 
-    CALLSTACK_INFO("LOAD TEXTURE SPHERE MAP n = " + Utils::Convert::ToString(_texture));
+    CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_texture));
 
     Enable();
 	glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -269,6 +280,7 @@ void Texture::GenereSphereMap(const unsigned int d)
 	glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 //	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); // deprecated
 	glTexImage3D(_target, 0, GL_RGB8, d, d, d, 0, GL_RGB, Enum::Float, data);
+    NC_GRAPHIC_GL_CHECK_ERROR();
     Disable();
     delete[] data;
 }

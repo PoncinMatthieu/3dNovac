@@ -55,13 +55,15 @@ Shader::~Shader()
 
 void    Shader::Release()
 {
+    CALLSTACK_INFO("Shader::Release()" + Utils::Convert::ToString(_shader));
     if (_shader != 0)
         glDeleteShader(_shader);
-    LOG_DEBUG << "Shader " << _shader << " DELETED" << std::endl;
+    NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type)
 {
+    CALLSTACK_INFO("Shader::LoadFromFile(" + filename + ") ");
     if (filename.empty() || !filename.IsReadable())
         throw Utils::Exception("Shader", "Can't open the source file GLSL " + filename);
 
@@ -91,7 +93,8 @@ void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type
         throw Utils::Exception("Shader", "Can't create the shader !");
     glShaderSource(_shader, 1, (const GLchar**)&source, NULL);
 	delete[] source;
-    LOG_DEBUG << "Shader " << _shader << " CREATED" << std::endl;
+    CALLSTACK_APPEND_INFO("New shader " + Utils::Convert::ToString(_shader) + " created.");
+    NC_GRAPHIC_GL_CHECK_ERROR();
 
     // compile the source
     Compile(source, type, filename);
@@ -99,6 +102,7 @@ void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type
 
 void Shader::LoadFromMemory(const char *source, Enum::ShaderType type, const Utils::FileName &name)
 {
+    CALLSTACK_INFO("Shader::LoadFromMemory() ");
     NewRef();
     _shader = 0;
 
@@ -106,7 +110,8 @@ void Shader::LoadFromMemory(const char *source, Enum::ShaderType type, const Uti
     if ((_shader = glCreateShader(type)) == 0)
         throw Utils::Exception("Shader", "Can't create the shader !");
     glShaderSource(_shader, 1, &source, NULL);
-    LOG_DEBUG << "Shader " << _shader << " CREATED" << std::endl;
+    CALLSTACK_APPEND_INFO("New shader " + Utils::Convert::ToString(_shader) + " created.");
+    NC_GRAPHIC_GL_CHECK_ERROR();
 
     // compile the source
     Compile(source, type, name);
@@ -115,7 +120,7 @@ void Shader::LoadFromMemory(const char *source, Enum::ShaderType type, const Uti
 void    Shader::Compile(const char *source, Enum::ShaderType type, const Utils::FileName &name)
 {
     // compilation
-    LOG_DEBUG << "Compile `" << name.c_str() << "`...\t\t\t";
+    CALLSTACK_INFO("Shader::Compile(" + name + ")");
     glCompileShader(_shader);
 
     // check compilation errors
@@ -126,7 +131,6 @@ void    Shader::Compile(const char *source, Enum::ShaderType type, const Utils::
 		PrintCompilationError(source, type, name);
 		throw Utils::Exception("Shader::Compile", "Failed to compile '" + name + "'");
     }
-    LOG_DEBUG << "DONE" << std::endl;
 }
 
 void Shader::PrintCompilationError(const char *source, Enum::ShaderType type, const Utils::FileName &name)

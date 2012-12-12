@@ -121,28 +121,34 @@ namespace Nc
             template <typename T>
             void    DataBuffer<T>::Init(Enum::DataBuffer::Target target)
             {
+                CALLSTACK_INFO("DataBuffer::Init() ");
                 NewRef();
                 _target = target;
                 glGenBuffers(1, &_index);   // création du buffer
-                CALLSTACK_INFO("Data Buffer " + Utils::Convert::ToString(_index) + " CREATED");
+                CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_index));
+                NC_GRAPHIC_GL_CHECK_ERROR();
             }
 
             template <typename T>
             void DataBuffer<T>::Init(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab)
             {
+                CALLSTACK_INFO("DataBuffer::Init() ");
                 NewRef();
                 _target = target;
 
                 glGenBuffers(1, &_index);   // création du buffer
+                CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_index));
+                NC_GRAPHIC_GL_CHECK_ERROR();
+
                 Enable();
                 UpdateData(size, stride, usage, dataTab);
                 Disable();
-                CALLSTACK_INFO("Data Buffer " + Utils::Convert::ToString(_index) + " CREATED");
             }
 
             template<typename T>
             void DataBuffer<T>::UpdateData(unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab)
             {
+                CALLSTACK_INFO("DataBuffer::UpdateData(" + Utils::Convert::ToString(size) + ", " + Utils::Convert::ToString(stride) + ")");
                 if (_index == 0)
                     throw Utils::Exception("GL::DataBuffer", "Can't update the data if it wasn't init before !");
 
@@ -155,6 +161,7 @@ namespace Nc
 
                 unsigned int completeSize =  _size * _stride;
                 glBufferData(_target, completeSize * sizeof(T), NULL, _usage); // allocation du buffer
+                NC_GRAPHIC_GL_CHECK_ERROR();
                 if (dataTab != NULL)
                     UpdateData(dataTab);
             }
@@ -162,12 +169,14 @@ namespace Nc
             template<typename T>
             void DataBuffer<T>::UpdateData(const T *dataTab)
             {
+                CALLSTACK_INFO("DataBuffer::UpdateData()");
                 if (_index == 0)
                     throw Utils::Exception("GL::DataBuffer", "Can't update the data if it wasn't init before !");
 
                 unsigned int completeSize =  _size * _stride;
                 _dataTab = NULL;
                 glBufferSubData(_target, 0, completeSize * sizeof(T), dataTab); // transfert des données a partir du DataTab
+                NC_GRAPHIC_GL_CHECK_ERROR();
             }
 
 
@@ -180,24 +189,27 @@ namespace Nc
             template<typename T>
             void DataBuffer<T>::Release()
             {
-                CALLSTACK_INFO("Data Buffer " + Utils::Convert::ToString(_index) + " DELETED");
+                CALLSTACK_INFO("DataBuffer::Release() " + Utils::Convert::ToString(_index));
                 _dataTab = NULL;
                 glDeleteBuffers(1, &_index); // suppression du buffer
                 _index = 0;
+                NC_GRAPHIC_GL_CHECK_ERROR();
             }
 
             template<typename T>
             T    *DataBuffer<T>::MapBuffer(Enum::DataBuffer::AccessType access)
             {
+                CALLSTACK_INFO("DataBuffer::MapBuffer()");
                 _dataTab = (T*)glMapBuffer(_target, access);
                 if (_dataTab == NULL)
-                    LOG_ERROR << "DataBuffer::glMapBuffer: " << State::GetError() << std::endl;
+                    LOG_ERROR << "DataBuffer glMapBuffer" << State::GetError() << std::endl;
                 return _dataTab;
             }
 
             template<typename T>
             void   DataBuffer<T>::UnmapBuffer()
             {
+                CALLSTACK_INFO("DataBuffer::UnmapBuffer()");
                 _dataTab = NULL;
                 if (glUnmapBuffer(_target) == GL_FALSE)
                     LOG_ERROR << "DataBuffer::glUnmapBuffer: " << State::GetError() << std::endl;

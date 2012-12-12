@@ -32,6 +32,12 @@
     #include "../Define.h"
 	#include "Extension.h"
 
+#ifdef _DEBUG
+    #define NC_GRAPHIC_GL_CHECK_ERROR()       Nc::Graphic::GL::State::CheckError()
+#else
+    #define NC_GRAPHIC_GL_CHECK_ERROR()
+#endif
+
 // define if we are on windows the ogl functions
 #ifdef SYSTEM_WINDOWS
 	// buffer

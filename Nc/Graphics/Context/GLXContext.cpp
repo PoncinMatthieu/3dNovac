@@ -56,7 +56,7 @@ void    Graphic::GLXContext::Active()
     // check if the context is already active
     if (_currentThreadId != 0)
     {
-        // check if the context is already active in that thread ot into another
+        // check if the context is already active in that thread or into another
         if (_currentThreadId == threadId)
             System::Config::Warning("GLXContext:Active", "The context is already active.");
         else

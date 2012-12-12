@@ -27,6 +27,18 @@
 #include "State.h"
 #include "../Context/GLContext.h"
 
+#ifdef _DEBUG
+    #define GL_STATE_CALLSTACK_INFO(info)       CALLSTACK_INFO(info); \
+                                                GLenum code = GetErrorCode(); \
+                                                if (code != GL_NO_ERROR) \
+                                                { \
+                                                    System::Config::Warning("An opengl error has already occured: ", GetError(code)); \
+                                                    Utils::CrashReporter::Abort(); \
+                                                }
+#else
+    #define GL_STATE_CALLSTACK_INFO(info)
+#endif
+
 using namespace Nc;
 using namespace Nc::Graphic::GL;
 
@@ -51,6 +63,51 @@ void    State::Enable()
 void    State::Disable()
 {
     _current = NULL;
+}
+
+const GLubyte *State::GetString(Enum::ImplementationDescription type)
+{
+    const GLubyte   *s = glGetString(type);
+
+    if (s == NULL)
+        throw Utils::Exception("GL::State", "glGetString return NULL");
+    return s;
+}
+
+GLenum State::GetErrorCode()
+{
+    return glGetError();
+}
+
+std::string     State::GetError(GLenum code)
+{
+    switch (code)
+    {
+        case GL_NO_ERROR:                       return "[GL_NO_ERROR] No error has been recorded.";
+        case GL_INVALID_ENUM:                   return "[GL_INVALID_ENUM] An unacceptable value is specified for an enumerated argument.";
+        case GL_INVALID_VALUE:                  return "[GL_INVALID_VALUE] A numeric argument is out of range.";
+        case GL_INVALID_OPERATION:              return "[GL_INVALID_OPERATION] The specified operation is not allowed in the current state.";
+        case GL_INVALID_FRAMEBUFFER_OPERATION:  return "[GL_INVALID_FRAMEBUFFER_OPERATION] The framebuffer object is not complete.";
+        case GL_OUT_OF_MEMORY:                  return "[GL_OUT_OF_MEMORY] There is not enough memory left to execute the command.";
+        default:                                return "[" + Utils::Convert::ToString(code) + "] Unknown error.";
+    }
+}
+
+std::string     State::GetError()
+{
+    return GetError(GetErrorCode());
+}
+
+bool    State::CheckError()
+{
+    GLenum e = GetErrorCode();
+    if (e != GL_NO_ERROR)
+    {
+        System::Config::Warning("State::CheckError: ", GetError(e));
+        Utils::CrashReporter::Abort();
+        return true;
+    }
+    return false;
 }
 
 void    State::InitContext(Graphic::GLContext *context)
@@ -145,31 +202,6 @@ void    State::InitContext(Graphic::GLContext *context)
         throw Utils::Exception("SceneGraphManager", "Can't initialize gl extensions");
 }
 
-const GLubyte *State::GetString(Enum::ImplementationDescription type)
-{
-    const GLubyte   *s = glGetString(type);
-
-    if (s == NULL)
-        throw Utils::Exception("GL::State", "glGetString return NULL");
-    return s;
-}
-
-std::string State::GetError()
-{
-    GLenum e = glGetError();
-    switch (e)
-    {
-        case GL_NO_ERROR:                       return "[GL_NO_ERROR] No error has been recorded.";
-        case GL_INVALID_ENUM:                   return "[GL_INVALID_ENUM] An unacceptable value is specified for an enumerated argument.";
-        case GL_INVALID_VALUE:                  return "[GL_INVALID_VALUE] A numeric argument is out of range.";
-        case GL_INVALID_OPERATION:              return "[GL_INVALID_OPERATION] The specified operation is not allowed in the current state.";
-        case GL_INVALID_FRAMEBUFFER_OPERATION:  return "[GL_INVALID_FRAMEBUFFER_OPERATION] The framebuffer object is not complete.";
-        case GL_OUT_OF_MEMORY:                  return "[GL_OUT_OF_MEMORY] There is not enough memory left to execute the command.";
-        default:                                return "[" + Utils::Convert::ToString(e) + "] Unknown error.";
-    }
-}
-
-
 namespace Nc {
     namespace Graphic {
         namespace GL {
@@ -247,6 +279,8 @@ namespace Nc {
 
 void    State::CheckGLVersion()
 {
+    GL_STATE_CALLSTACK_INFO("State::CheckGLVersion()");
+
     // on a linux system, we check if the graphic acceleration is support and enable
     #ifdef SYSTEM_LINUX
     LOG << "Direct Rendering : \t\t\t\t\t";
@@ -279,10 +313,14 @@ void    State::CheckGLVersion()
     }
     else
         LOG << "OpenGL version OK" << std::endl;
+
+    CheckError();
 }
 
 void    State::Viewport(int viewportX, int viewportY, int viewportWidth, int viewportHeight)
 {
+    GL_STATE_CALLSTACK_INFO("State::Viewport()");
+
     if (_currentViewportX != viewportX || _currentViewportY != viewportY ||
         _currentViewportWidth != viewportWidth || _currentViewportHeight != viewportHeight)
     {
@@ -291,126 +329,165 @@ void    State::Viewport(int viewportX, int viewportY, int viewportWidth, int vie
         _currentViewportY = viewportY;
         _currentViewportWidth = viewportWidth;
         _currentViewportHeight = viewportHeight;
+        CheckError();
     }
 }
 
 void    State::ClearColor(Color c)
 {
+    GL_STATE_CALLSTACK_INFO("State::ClearColor()");
+
     if (_currentClearColor != c)
     {
         glClearColor(c.r, c.g, c.b, c.a);
         _currentClearColor = c;
+        CheckError();
     }
 }
 
 void    State::Enable(Enum::Capability cp)
 {
+    GL_STATE_CALLSTACK_INFO("State::Enable()");
+
     MapCapabilityStatement::iterator it = _mapCurrentCapabilityStatement.find(cp);
     if (it->second != true)
     {
         glEnable(cp);
         it->second = true;
+        CheckError();
     }
 }
 
 void    State::Disable(Enum::Capability cp)
 {
+    GL_STATE_CALLSTACK_INFO("State::Disable()");
+
     MapCapabilityStatement::iterator it = _mapCurrentCapabilityStatement.find(cp);
     if (it->second != false)
     {
         glDisable(cp);
         it->second = false;
+        CheckError();
     }
 }
 
 void    State::DepthFunc(Enum::MaskFunc f)
 {
+    GL_STATE_CALLSTACK_INFO("State::DepthFunc()");
+
     if (_currentDepthFunc != f)
     {
         glDepthFunc(f);
         _currentDepthFunc = f;
+        CheckError();
     }
 }
 
 void    State::PolygonMode(Enum::PolygonFace f, Enum::PolygonMode m)
 {
+    GL_STATE_CALLSTACK_INFO("State::PolygonMode()");
+
     if (f != _currentPolygonFace || m != _currentPolygonMode)
     {
         glPolygonMode(f, m);
         _currentPolygonFace = f;
         _currentPolygonMode = m;
+        CheckError();
     }
 }
 
 void    State::PolygonOffset(float offsetFactor, float offsetUnits)
 {
+    GL_STATE_CALLSTACK_INFO("State::PolygonOffset()");
+
     if (offsetFactor != _currentPolygonOffsetFactor || offsetUnits != _currentPolygonOffsetUnits)
     {
         glPolygonOffset(offsetFactor, offsetUnits);
         _currentPolygonOffsetFactor = offsetFactor;
         _currentPolygonOffsetUnits = offsetUnits;
+        CheckError();
     }
 }
 
 void    State::PointSize(float s)
 {
+    GL_STATE_CALLSTACK_INFO("State::PointSize()");
+
     if (s != _currentPointSize)
     {
         glPointSize(s);
         _currentPointSize = s;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::LineWidth(float w)
 {
+    GL_STATE_CALLSTACK_INFO("State::LineWidth()");
+
     if (w != _currentLineWidth)
     {
         glLineWidth(w);
         _currentLineWidth = w;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::DepthMask(bool state)
 {
+    GL_STATE_CALLSTACK_INFO("State::DepthMask()");
+
     if (_currentDepthMask != state)
     {
         glDepthMask(state);
         _currentDepthMask = state;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::BlendFunc(Enum::BlendFactor s, Enum::BlendFactor d)
 {
+    GL_STATE_CALLSTACK_INFO("State::BlendFunc()");
+
     if (_currentBlendSFactor != s || _currentBlendDFactor != d)
     {
         glBlendFunc(s, d);
         _currentBlendSFactor = s;
         _currentBlendDFactor = d;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Bind(Enum::DataBuffer::Target target, unsigned int id)
 {
+    GL_STATE_CALLSTACK_INFO("State::Bind(DataBuffer)");
+
     MapBufferBound::iterator it = _mapCurrentBufferBound.find(target);
     if (it->second != id)
     {
         glBindBuffer(target, id);
         it->second = id;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Bind(Enum::Texture::Target target, unsigned int id)
 {
+    GL_STATE_CALLSTACK_INFO("State::Bind(Texture)");
+
     MapTextureBound::iterator it = _mapCurrentTextureBound.find(target);
     if (it->second != id)
     {
         glBindTexture(target, id);
         it->second = id;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Bind(Enum::FrameBuffer::Target target, unsigned int id)
 {
+    GL_STATE_CALLSTACK_INFO("State::Bind(FrameBuffer)");
+
     if (target == Enum::FrameBuffer::FrameBuffer)
     {
         if (_currentDrawFrameBufferBound != id || _currentReadFrameBufferBound != id)
@@ -418,60 +495,77 @@ void    State::Bind(Enum::FrameBuffer::Target target, unsigned int id)
             glBindFramebuffer(target, id);
             _currentDrawFrameBufferBound = id;
             _currentReadFrameBufferBound = id;
+            NC_GRAPHIC_GL_CHECK_ERROR();
         }
     }
     else if (target == Enum::FrameBuffer::DrawFrameBuffer && _currentDrawFrameBufferBound != id)
     {
         glBindFramebuffer(target, id);
         _currentDrawFrameBufferBound = id;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
     else if (target == Enum::FrameBuffer::ReadFrameBuffer && _currentReadFrameBufferBound != id)
     {
         glBindFramebuffer(target, id);
         _currentReadFrameBufferBound = id;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Bind(Enum::RenderBuffer::Target target, unsigned int id)
 {
+    GL_STATE_CALLSTACK_INFO("State::Bind(RenderBuffer)");
+
     if (_currentRenderBufferBound != id)
     {
         glBindRenderbuffer(target, id);
         _currentRenderBufferBound = id;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::UseProgram(unsigned int id)
 {
+    GL_STATE_CALLSTACK_INFO("State::UseProgram()");
+
     if (_currentProgramBound != id)
     {
         glUseProgram(id);
         _currentProgramBound = id;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Unbind(Enum::DataBuffer::Target target)
 {
+    GL_STATE_CALLSTACK_INFO("State::Unbind(DataBuffer)");
+
     MapBufferBound::iterator it = _mapCurrentBufferBound.find(target);
     if (it->second != 0)
     {
         glBindBuffer(target, 0);
         it->second = 0;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Unbind(Enum::Texture::Target target)
 {
+    GL_STATE_CALLSTACK_INFO("State::Unbind(Texture)");
+
     MapTextureBound::iterator it = _mapCurrentTextureBound.find(target);
     if (it->second != 0)
     {
         glBindTexture(target, 0);
         it->second = 0;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Unbind(Enum::FrameBuffer::Target target)
 {
+    GL_STATE_CALLSTACK_INFO("State::Unbind(FrameBuffer)");
+
     if (target == Enum::FrameBuffer::FrameBuffer)
     {
         if (_currentDrawFrameBufferBound != 0 || _currentReadFrameBufferBound != 0)
@@ -479,49 +573,63 @@ void    State::Unbind(Enum::FrameBuffer::Target target)
             glBindFramebuffer(target, 0);
             _currentDrawFrameBufferBound = 0;
             _currentReadFrameBufferBound = 0;
+            NC_GRAPHIC_GL_CHECK_ERROR();
         }
     }
     else if (target == Enum::FrameBuffer::DrawFrameBuffer && _currentDrawFrameBufferBound != 0)
     {
         glBindFramebuffer(target, 0);
         _currentDrawFrameBufferBound = 0;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
     else if (target == Enum::FrameBuffer::ReadFrameBuffer && _currentReadFrameBufferBound != 0)
     {
         glBindFramebuffer(target, 0);
         _currentReadFrameBufferBound = 0;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Unbind(Enum::RenderBuffer::Target target)
 {
+    GL_STATE_CALLSTACK_INFO("State::Unbind(RenderBuffer)");
+
     if (_currentRenderBufferBound != 0)
     {
         glBindRenderbuffer(target, 0);
         _currentRenderBufferBound = 0;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::UnbindProgram()
 {
+    GL_STATE_CALLSTACK_INFO("State::UnbindProgram()");
+
     if (_currentProgramBound != 0)
     {
         glUseProgram(0);
         _currentProgramBound = 0;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::ActiveTexture(unsigned int no)
 {
+    GL_STATE_CALLSTACK_INFO("State::ActiveTexture()");
+
     if (_currentActiveTextureUnit != no)
     {
         glActiveTexture(GL_TEXTURE0 + no);
         _currentActiveTextureUnit = no;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::Scissor(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
 {
+    GL_STATE_CALLSTACK_INFO("State::Scissor()");
+
     if (_currentScissorX != x || _currentScissorY != y ||
         _currentScissorWidth != width || _currentScissorHeight != height)
     {
@@ -530,11 +638,14 @@ void    State::Scissor(unsigned int x, unsigned int y, unsigned int width, unsig
         _currentScissorY = y;
         _currentScissorWidth = width;
         _currentScissorHeight = height;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::ColorMask(bool red, bool green, bool blue, bool alpha)
 {
+    GL_STATE_CALLSTACK_INFO("State::ColorMask()");
+
     if (_currentColorMaskRed != red || _currentColorMaskGreen != green || _currentColorMaskBlue != blue || _currentColorMaskAlpha != alpha)
     {
         glColorMask(red, green, blue, alpha);
@@ -542,46 +653,59 @@ void    State::ColorMask(bool red, bool green, bool blue, bool alpha)
         _currentColorMaskGreen = green;
         _currentColorMaskBlue = blue;
         _currentColorMaskAlpha = alpha;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::StencilFunc(Enum::MaskFunc f, int refValue, unsigned int mask)
 {
+    GL_STATE_CALLSTACK_INFO("State::StencilFunc()");
+
     if (_currentStencilFunc != f || _currentStencilFuncRef != refValue || _currentStencilFuncMask != mask)
     {
         glStencilFunc(f, refValue, mask);
         _currentStencilFunc = f;
         _currentStencilFuncRef = refValue;
         _currentStencilFuncMask = mask;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::StencilOp(Enum::Stencil::Action sFail, Enum::Stencil::Action dpFail, Enum::Stencil::Action dpPass)
 {
+    GL_STATE_CALLSTACK_INFO("State::StencilOp()");
+
     if (_currentStencilSFail != sFail || _currentStencilDpFail != dpFail || _currentStencilDpPass != dpPass)
     {
         glStencilOp(sFail, dpFail, dpPass);
         _currentStencilSFail = sFail;
         _currentStencilDpFail = dpFail;
         _currentStencilDpPass = dpPass;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::ClearStencil(int value)
 {
+    GL_STATE_CALLSTACK_INFO("State::ClearStencil()");
+
     if (_currentClearStencil != value)
     {
         glClearStencil(value);
         _currentClearStencil = value;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
 void    State::StencilMask(unsigned int mask)
 {
+    GL_STATE_CALLSTACK_INFO("State::StencilMask()");
+
     if (_currentStencilMask != mask)
     {
         glStencilMask(mask);
         _currentStencilMask = mask;
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
