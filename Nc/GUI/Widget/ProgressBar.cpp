@@ -50,6 +50,28 @@ ProgressBar::~ProgressBar()
 {
 }
 
+void    ProgressBar::Percent(float p)
+{
+    float newP = (p < 100) ? p : 100.f;
+    newP = (newP > 0) ? newP : 0.f;
+
+    if (_percent != newP)
+    {
+        _percent = newP;
+        _stateChanged = true;
+    }
+}
+
+void    ProgressBar::NbEvolution(unsigned int nb)
+{
+    _nbEvolution = nb;
+}
+
+void    ProgressBar::Evolution()
+{
+    Percent(_percent + (100.f / (float)_nbEvolution));
+}
+
 void ProgressBar::Init(const Graphic::GL::Texture &texture)
 {
     _colorLeft.Init(0, 1, 0);

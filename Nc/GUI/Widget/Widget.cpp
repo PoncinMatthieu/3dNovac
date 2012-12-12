@@ -145,25 +145,26 @@ void Widget::Resize()
 
         Vector2i newSize = Size();
 
-        Vector2i sizeParent;
-        if (v.parent != NULL)
+        if (_percent[0] != 0 || _percent[1] != 0)
         {
-            v.parent->SizeChild(this, sizeParent);
-        }
-        else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph which is supposed to be the parent of the widget at one point
-        {
-            Graphic::IWindow *win = v.parentSceneGraph->AttachedWindow();
-            sizeParent.Init(win->Width(), win->Height());
-        }
-        else
-        {
-            throw Utils::Exception(Utils::Convert::ToString(*this), "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
-        }
+            Vector2i sizeParent;
+            if (v.parent != NULL)
+            {
+                v.parent->SizeChild(this, sizeParent);
+            }
+            else if (v.parentSceneGraph != NULL) // get the size of the window attached to the scene graph which is supposed to be the parent of the widget at one point
+            {
+                Graphic::IWindow *win = v.parentSceneGraph->AttachedWindow();
+                sizeParent.Init(win->Width(), win->Height());
+            }
+            else
+                throw Utils::Exception(Utils::Convert::ToString(*this), "Cannot find the scene graph attached to the widget, to resize the widget with a percent value, the widget should have a parent.");
 
-        if (_percent[0] != 0)
-            newSize[0] = ((float)(_percent[0] * sizeParent[0]) / 100.0);
-        if (_percent[1] != 0)
-            newSize[1] = ((float)(_percent[1] * sizeParent[1]) / 100.0);
+            if (_percent[0] != 0)
+                newSize[0] = ((float)(_percent[0] * sizeParent[0]) / 100.0);
+            if (_percent[1] != 0)
+                newSize[1] = ((float)(_percent[1] * sizeParent[1]) / 100.0);
+        }
         Size(newSize);
     }
 }
@@ -334,9 +335,9 @@ void    Widget::RelativePos(Vector2i &relativePos) const
         Graphic::IWindow *win = v.parentSceneGraph->AttachedWindow();
         parentSize.Init(win->Width(), win->Height());
     }
-    else
+    else // no parent
     {
-        throw Utils::Exception(Utils::Convert::ToString(*this), "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
+        //throw Utils::Exception(Utils::Convert::ToString(*this), "Cannot find the scene graph attached to the widget, the widget should always be attached to the scene graph at one point.");
     }
 
     // check horizontal alignment

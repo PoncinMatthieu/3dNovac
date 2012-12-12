@@ -57,11 +57,11 @@ namespace Nc
                 void    SetColor(const Color &c1, const Color &c2)              {if (_colorLeft != c1 || _colorRight != c2) {_colorLeft = c1; _colorRight = c2; _stateChanged = true;}}
 
                 /** Set the percent of the progress bar. */
-                void    Percent(float p)                                        {if (_percent != p) {_percent = p; _stateChanged = true;}}
+                void    Percent(float p);
                 /** Set the number of evolution of the progress bar. */
-                void    NbEvolution(unsigned int nb)                            {_nbEvolution = nb;}
+                void    NbEvolution(unsigned int nb);
                 /** Add an evolution to the progress bar. */
-                void    Evolution()                                             {_percent += 100.f / (float)_nbEvolution; _stateChanged = true;}
+                void    Evolution();
 
             protected:
                 /** update the geometry of the progress bar. */
