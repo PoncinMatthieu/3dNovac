@@ -103,7 +103,7 @@ void    Entity::UpdateChilds(float elapsedTime)
     }
 }
 
-void    Entity::Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)
+void    Entity::MoveNode(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)
 {
 
     Entity *oldParentEntity = NULL;

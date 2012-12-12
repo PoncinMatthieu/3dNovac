@@ -64,7 +64,7 @@ namespace Nc
 
                     Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible).
                 */
-                virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt);
+                virtual void                MoveNode(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt);
 
                 /** Render the childs and the subtrees. */
                 void                        RenderChilds(SceneGraph *scene);

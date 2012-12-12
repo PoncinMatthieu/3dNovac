@@ -59,7 +59,7 @@ namespace Nc
                     Insert the given \p node into the current node at the given position \p at and remode it from the given \p oldParent at the given ]p oldAt.
                     Throw an exception if the type of the given \p node is imcompatible with the current node. (Entity and Subtree are incompatible).
                 */
-                virtual void                Move(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)            {throw Utils::Exception("SubTree::Move", "The movement into a subtree is forbiden.");}
+                virtual void            MoveNode(ISceneNode *node, int at, ISceneNode *oldParent, int oldAt)            {throw Utils::Exception("SubTree::Move", "The movement into a subtree is forbiden.");}
 
             protected:
                 /** Update the node with the elapsed time in second. */
