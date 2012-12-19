@@ -90,6 +90,10 @@ void Graphic::Window::Create(const std::string &title, const Vector2ui &size, co
     // Compute position and size
     _width = size.data[0];
     _height = size.data[1];
+    if (_width <= 0)
+        _width = 1;
+    if (_height <= 0)
+        _height = 1;
     bool    fullscreen = style.Enabled(Fullscreen);
     int     left = (fullscreen) ? 0 : (DisplayWidth(_display, _screen) - _width)  / 2;
     int     top = (fullscreen) ? 0 : (DisplayHeight(_display, _screen) - _height) / 2;

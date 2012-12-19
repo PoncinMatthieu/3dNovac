@@ -84,6 +84,18 @@ namespace Nc
             int     top;
             int     bottom;
         };
+
+        namespace Event
+        {
+            enum EventId
+            {
+                EnterFocus = 0,
+                LeaveFocus,
+                Toggled,
+                ItemChanged,
+                EventIdMax,
+            };
+        }
     }
 }
 

@@ -94,7 +94,7 @@ namespace Nc
                 /** \return the corresponding engine. */
                 static IEngine          *GetEngine(const std::string &name);
                 /** \return the engines managed by the Manager. */
-                static const MapEngine  &GetEngines()                   {return _mapEngine;}
+                static MapEngine        &GetEngines()                   {return _mapEngine;}
 
                 /** \return true if the engines is launch. */
                 inline bool             IsLaunched()                    {return _isLaunched;}

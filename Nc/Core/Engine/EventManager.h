@@ -157,10 +157,10 @@ namespace Nc
                 template<typename T>
                 void    PushEvent(unsigned int id, const T &arg);
 
-            protected:
                 /** Execute all event present in the event queues. */
                 void    ExecuteEvents();
 
+            protected:
                 /** Create a new command to receive events. */
                 void    AddNewCmd(unsigned int id, CmdFunction function);
                 /** Create a new command string to receive events. */
@@ -196,7 +196,7 @@ namespace Nc
         T   &IEvent::GetData()
         {
             if (this == NULL)
-                throw Utils::Exception("IEvent:GetData", "Event if Null, Event<" + std::string(typeid(T).name()) + "> expected");
+                throw Utils::Exception("IEvent:GetData", "Event is Null, Event<" + std::string(typeid(T).name()) + "> expected");
             Event<T> *e = dynamic_cast<Event<T>*>(this);
             if (e == NULL)
                 throw Utils::Exception("IEvent:GetData", "Bad param, Event<" + std::string(typeid(T).name()) + "> expected");

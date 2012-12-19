@@ -28,14 +28,3 @@
 
 using namespace Nc::Engine;
 
-Handler::Handler()
-{
-    _engineName = "";
-    _idCmd = 0;
-}
-
-Handler::Handler(const std::string &engineName, unsigned int id)
-{
-    _engineName = engineName;
-    _idCmd = id;
-}

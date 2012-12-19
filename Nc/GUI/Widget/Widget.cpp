@@ -38,7 +38,7 @@ using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
 Widget::Widget(const AlignmentMask &alignment, const Vector2i &size)
-    : Object(), Handler()
+    : Object()
 {
     Init(size, alignment);
 }
@@ -64,7 +64,7 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
 }
 
 Widget::Widget(const Widget &w)
-    : Graphic::Object(w), Handler(w), _widgetLook(NULL)
+    : Graphic::Object(w), _widgetLook(NULL)
 {
     Copy(w);
 }
@@ -72,7 +72,6 @@ Widget::Widget(const Widget &w)
 Widget &Widget::operator = (const Widget &w)
 {
     Graphic::Object::operator = (w);
-    Handler::operator = (w);
     Copy(w);
     return *this;
 }
@@ -97,6 +96,7 @@ void Widget::Copy(const Widget &w)
     _padding = w._padding;
     _percent = w._percent;
     _useStencil = w._useStencil;
+    _eventHandler = w._eventHandler;
 
 	if (_widgetLook)
         delete _widgetLook;
@@ -231,26 +231,26 @@ void Widget::Draw(Graphic::SceneGraph *scene)
         _widgetLook->Draw(scene);
 }
 
-void Widget::ManageWindowEvent(const Event &event)
+void Widget::ManageWindowEvent(const System::Event &event)
 {
-    if (event.type == Event::KeyPressed ||
-        event.type == Event::KeyReleased)
+    if (event.type == System::Event::KeyPressed ||
+        event.type == System::Event::KeyReleased)
         KeyboardEvent(event);
-    else if (event.type == Event::MouseMoved)
+    else if (event.type == System::Event::MouseMoved)
         MouseMotionEvent(event);
-    else if (event.type == Event::MouseButtonPressed ||
-             event.type == Event::MouseButtonReleased ||
-             event.type == Event::MouseWheelMoved)
+    else if (event.type == System::Event::MouseButtonPressed ||
+             event.type == System::Event::MouseButtonReleased ||
+             event.type == System::Event::MouseWheelMoved)
         MouseButtonEvent(event);
     CheckFocus(event);
     if (_childFocused != NULL)
         _childFocused->ManageWindowEvent(event);
 }
 
-void Widget::CheckFocus(const Event &event)
+void Widget::CheckFocus(const System::Event &event)
 {
     // testing focus childs
-    if (event.type == Event::MouseButtonPressed && EnabledRecursif() && !InhibitedRecursif())
+    if (event.type == System::Event::MouseButtonPressed && EnabledRecursif() && !InhibitedRecursif())
     {
         // set the last child to had the focus
         Widget *lastchildToHaveTheFocus = _childFocused;
@@ -378,7 +378,7 @@ void Widget::Focus(bool state)
         if (!state && _childFocused != NULL)
             _childFocused->Focus(false);
         if (_focus && _generateHandleAtEnterFocus && !_inhibit)
-            SendEvent(_id);
+            SendEvent(Event::EnterFocus);
         ChangeChildsStateRecursive();
 
         if (_focus)
@@ -693,3 +693,10 @@ void    Widget::Disable()
     }
 }
 
+void    Widget::SendEvent(GUI::Event::EventId e)
+{
+    if (Enabled())
+    {
+        _eventHandler.SendEvent(e, this);
+    }
+}

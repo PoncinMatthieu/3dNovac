@@ -48,7 +48,7 @@ Console::Console(IWindow *attachedWindow, const std::string &engineName, Pattern
     PaddingH(5);
     PaddingV(5);
     _prompt = "[" + engineName + "]> ";
-    _engineName = engineName;
+    //_engineName = engineName;
 
     _size.data[0] = _attachedWindow->Width() - 1;
     _size.data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
@@ -155,13 +155,13 @@ void Console::Render(Graphic::SceneGraph *scene)
     }
 }
 
-void Console::KeyboardEvent(const Event &event)
+void Console::KeyboardEvent(const System::Event &event)
 {
     static bool                     lastcmdSet = false;
     static Utils::Unicode::UTF32    cmd;
     char                            c;
 
-    if (!_inhibit && event.type == Event::KeyPressed)
+    if (!_inhibit && event.type == System::Event::KeyPressed)
     {
         if (event.key.code == Key::Up || event.key.code == Key::Down)
         {
@@ -251,7 +251,7 @@ void Console::PushMsg(const string &s)
 
 void Console::ExecCmd(const string &cmd)
 {
-    string cmdName(cmd), engineName = _engineName;
+    string cmdName(cmd), engineName;// = _engineName;
     size_t pos = cmd.find_first_of(":");
 
 	// npos en commentaire a cause d'un bug VC 2010 a l'export de string::npos (et oui encore ce foutu windows)  ref: http://connect.microsoft.com/VisualStudio/feedback/details/562448/std-string-npos-lnk2001-when-inheriting-a-dll-class-from-std-string

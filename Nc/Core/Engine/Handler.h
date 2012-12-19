@@ -30,39 +30,37 @@
 #include "../Define.h"
 #include "../Utils/Utils.h"
 #include "Manager.h"
+#include "EventManager.h"
 
 namespace Nc
 {
     namespace Engine
     {
-        /// Used to simplify the process of sending events to an Engine
+        /// Used to simplify the process of sending events to one or many EventManager.
         /**
-            Inherite of this class to use it, and call the methods 'HandlerEngineName' and 'HandlerId' to setup an event.
-            Then you can send an event to the predefined engine and with the predefined command id by calling the method 'SendEvent'.
+            Store a list of EventManager to send events.
         */
         class LCORE Handler
         {
+            private:
+                typedef std::list<EventManager*>        ListEventManager;
+
             public:
-                Handler();
-                Handler(const std::string &engineName, unsigned int id);
+                /** Add an engine from the Engine::Manager into the event manager list to sent events. */
+                inline void         AddEngine(const std::string &name)      {AddEventManager(Manager::GetEngine(name));}
+                /** Add the given event manager to the list to send events. */
+                inline void         AddEventManager(EventManager *e)        {_eventManagers.push_back(e);}
 
-                /** Set the name of the engine which will recieve the events */
-                inline void                 HandlerEngineName(const std::string &name)      {_engineName = name;}
-                /** \return the EngineName which will recieve the events */
-                inline const std::string    &HandlerEngineName() const      {return _engineName;}
-
-                /** Set the Id of the Cmd to send */
-                inline void                 HandlerId(unsigned int id)                      {_idCmd = id;}
-                /** \return the Id of the Cmd to send */
-                inline unsigned int         HandlerId() const               {return _idCmd;}
-
-            protected:
                 /** Send to the GameManager an event, the GameManager will redispatch the event */
                 template<typename T>
-                void SendEvent(T &arg)                                      {Manager::PushEvent(_engineName, _idCmd, arg);}
+                void    SendEvent(unsigned int idCmd, T &arg)
+                {
+                    for (ListEventManager::iterator it = _eventManagers.begin(); it != _eventManagers.end(); ++it)
+                        (*it)->PushEvent(idCmd, arg);
+                }
 
-                std::string     _engineName;    ///< The name of the engine to send the event
-                unsigned int    _idCmd;         ///< The id of the cmd to send
+            private:
+                ListEventManager    _eventManagers; ///< Instance on the event manager used to send events.
         };
     }
 }

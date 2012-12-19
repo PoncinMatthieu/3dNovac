@@ -59,22 +59,22 @@ namespace Nc
                 void                            AddBuddy(Widget *w);
 
                 /** Create the label with a text, a font and a style. */
-                virtual void                    CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s);
+                virtual void                    Init(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s);
                 /** \return the label size. */
                 inline const Vector2f           &GetTextSize()                                  {return _label->Size();}
                 /** Set the label text. */
                 inline void                     PlainText(const Utils::Unicode::UTF32 &text)    {_label->PlainText(text); UpdateLabel(); _stateChanged = true;}
                 /** \return the label. */
-                inline const Graphic::Text      *GetLabel() const                               {return _label;}
+                inline const Graphic::Text      *GetText() const                                {return _label;}
                 /** \return the label. */
-                inline Graphic::Text            *GetLabel()                                     {return _label;}
+                inline Graphic::Text            *GetText()                                      {return _label;}
 
                 /** \return the alignment mask of the label. */
-                inline const AlignmentMask      &LabelAlignment() const                         {return _labelAlignment;}
+                inline const AlignmentMask      &Alignment() const                              {return _labelAlignment;}
                 /** \return the alignment mask of the label. */
-                inline AlignmentMask            &LabelAlignment()                               {return _labelAlignment;}
+                inline AlignmentMask            &Alignment()                                    {return _labelAlignment;}
                 /** Set the alignment of the label. */
-                inline void                     LabelAlignment(const AlignmentMask &mask)       {_labelAlignment = mask;}
+                inline void                     Alignment(const AlignmentMask &mask)            {_labelAlignment = mask;}
 
             protected:
                 /** Update the geometry of the label. */

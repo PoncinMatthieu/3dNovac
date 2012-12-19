@@ -163,8 +163,11 @@ void    ComboBox::AddItem(Item *item)
 
 void    ComboBox::ItemChoosed(StringItem *item)
 {
-    _currentItem = item;
-    SendEvent(this);
+    if (_currentItem != item)
+    {
+        _currentItem = item;
+        SendEvent(Event::ItemChanged);
+    }
 }
 
 ComboBox::ComboBoxUnfoldList::ComboBoxUnfoldList(ComboBox *cb, const AlignmentMask &alignment, const Vector2i &pos, const Vector2i &size)

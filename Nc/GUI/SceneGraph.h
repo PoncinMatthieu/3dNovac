@@ -51,7 +51,7 @@ namespace Nc
                 virtual ISceneNode  *Clone() const              {return new SceneGraph(*this);}
 
                 /** \return the attached window. */
-                Graphic::IWindow     *AttachedWindow() const     {return _attachedWindow;}
+                Graphic::IWindow     *AttachedWindow() const    {return _attachedWindow;}
 
                 /** \return true if a widget is focused. */
                 bool Focused()                                  {return (_widgetFocused != NULL);}
@@ -63,7 +63,7 @@ namespace Nc
                 void Focus(Widget *w)                           {_widgetFocused = w; _widgetFocused->Focus(true);}
 
                 /** Manage the window events by dispatching the event to the good widget. */
-                void ManageWindowEvent(const Nc::System::Event &event);
+                virtual void    ManageWindowEvent(const Nc::System::Event &event);
 
                 /** Bring to front the given widget. */
                 void BringToFront(Widget *w);
@@ -71,9 +71,9 @@ namespace Nc
                 /** Remove the given widget. */
                 void RemoveWidget(Widget *w);
 
-            private:
+            protected:
                 Widget              *_widgetFocused;    ///< the current focused widget.
-                Graphic::IWindow     *_attachedWindow;   ///< the attached window.
+                Graphic::IWindow    *_attachedWindow;   ///< the attached window.
         };
     }
 }

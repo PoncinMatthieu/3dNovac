@@ -64,21 +64,25 @@ void    Button::DeleteButton()
 {
     delete _font;
 
-    if (_widgetLook != NULL && (_widgetLook == _buttonLook || _widgetLook == _buttonLookPressed))
+    if (_widgetLook != NULL && (_widgetLook == _buttonLook || _widgetLook == _buttonLookToggled))
         _widgetLook = NULL;
 
     delete _buttonLook;
-    delete _buttonLookPressed;
+    delete _buttonLookToggled;
 }
 
 void    Button::Initialize(const std::string &text, const Vector2i &size, const std::string &ttf, const std::string &lookName)
 {
     _buttonLook = new StripLook(lookName + StyleSheet::Name::Button);
-    _buttonLookPressed = new StripLook(lookName + StyleSheet::Name::ButtonPressed);
+    _buttonLookToggled = new StripLook(lookName + StyleSheet::Name::ButtonPressed);
     UseLook(_buttonLook);
 
+    _checkable = false;
+    _toggled = false;
     _colorDisable = Color(0.2f, 0.2f, 0.2f);
+    _mouseButton = System::Mouse::Left;
     _buttonPressed = false;
+
     _charSize = size.data[1] - (PaddingTop() + PaddingBottom());
     _font = new Graphic::Text(text, _charSize, Color(1, 1, 1), ttf);
 }
@@ -86,11 +90,14 @@ void    Button::Initialize(const std::string &text, const Vector2i &size, const 
 void    Button::Copy(const Button &w)
 {
     _buttonLook = static_cast<StripLook*>(w._buttonLook->Clone());
-    _buttonLookPressed = static_cast<StripLook*>(w._buttonLookPressed->Clone());
+    _buttonLookToggled = static_cast<StripLook*>(w._buttonLookToggled->Clone());
     UseLook(_buttonLook);
 
     _colorDisable = w._colorDisable;
-    _buttonPressed = w._buttonPressed;
+    _checkable = w._checkable;
+    _toggled = w._toggled;
+    _mouseButton = w._mouseButton;
+    _buttonPressed = false;
     _font = new Graphic::Text(*w._font);
     _charSize = w._charSize;
 }
@@ -115,8 +122,8 @@ void Button::UpdateState()
         _widgetLook->color = c;
 
     // update the widget look, if pressed
-    if (_buttonPressed)
-        _widgetLook = _buttonLookPressed;
+    if (_toggled)
+        _widgetLook = _buttonLookToggled;
     else
         _widgetLook = _buttonLook;
 
@@ -151,31 +158,52 @@ void Button::Draw(Graphic::SceneGraph *scene)
 void Button::MouseButtonEvent(const System::Event &event)
 {
     bool inRect = false;
-    if (event.mouseButton.button == System::Mouse::Left)
+    if (event.mouseButton.button == _mouseButton)
     {
-        // test si la souris est sur le bouton
+        // test if the mouse is on the button
         Vector2i pos;
         Vector2i mousePos = static_cast<WindowInput*>(event.emitter)->MousePositionInGLCoord();
         AbsolutePos(pos);
         if (Math::Test::PointInRect(mousePos, pos, _size))
             inRect = true;
 
-        if (inRect && !_buttonPressed && event.type == System::Event::MouseButtonPressed)
+        if (event.type == System::Event::MouseButtonPressed)
         {
-            _buttonPressed = true;
+            if (inRect)
+            {
+                if (!_buttonPressed)
+                {
+                    _toggled = !_toggled;
+                    _stateChanged = true;
+                }
+                _buttonPressed = true;
+            }
+        }
+        else
+        {
+            if (inRect)
+            {
+                if (_buttonPressed)
+                    SendEvent(Event::Toggled);
+            }
+            _toggled = !_toggled;
+            _stateChanged = true;
+            _buttonPressed = false;
+        }
+
+/*
+        if (inRect && !_toggled && event.type == System::Event::MouseButtonPressed)
+        {
+            _toggled = true;
             _stateChanged = true;
         }
-        else if (_buttonPressed && event.type == System::Event::MouseButtonReleased)
+        else if (_toggled && event.type == System::Event::MouseButtonReleased)
         {
             if (inRect)
                 ExecHanle();
-            _buttonPressed = false;
+            _toggled = false;
             _stateChanged = true;
         }
+*/
     }
-}
-
-void Button::ExecHanle()
-{
-    SendEvent(_id);
 }

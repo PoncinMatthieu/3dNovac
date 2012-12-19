@@ -42,7 +42,7 @@ namespace Nc
 
             \todo Think about a whole new event system for the widgets, a widget should be able to send a particular event to a parametized target.
         */
-        class LGUI  Widget : public Graphic::Object, public Engine::Handler
+        class LGUI  Widget : public Graphic::Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Graphic::Object, System::Object, System::Object, Nc::GUI::Widget);
@@ -197,6 +197,9 @@ namespace Nc
                 /** Remove the given widget. */
                 void                    RemoveWidget(Widget *w);
 
+                /** Add the given event manager to the event handler. */
+                void                    AddEventManager(Engine::EventManager *e)    {_eventHandler.AddEventManager(e);}
+
             protected:
                 /** called when the widget gain the focus. */
                 virtual void            EnterFocus()                            {}
@@ -260,6 +263,9 @@ namespace Nc
                 /** Repos the widget. Called when the widget or a parent has changed of position. */
                 virtual void            Repos()         {}
 
+                /** Send the given event. */
+                void                    SendEvent(GUI::Event::EventId e);
+
             private:
                 /** Init the widget with the basics information. */
                 void                    Init(const Vector2i &size, const AlignmentMask &alignment);
@@ -296,6 +302,8 @@ namespace Nc
             private:
                 BoxEdges                _margin;                    ///< Used to space out widgets, mergin correspond of the space outside the widget in which the childs are spaced out. To access the property you should call the methods "MarginLeft / MarginRight / MarginTop / MarginBottom"
                 BoxEdges                _padding;                   ///< Used to space out widgets, padding correspond of the space inside the widget in which the childs are spaced out. To access the property you should call the methods "PaddingLeft / PaddingRight / PaddingTop / PaddingBottom"
+
+                Engine::Handler         _eventHandler;              ///< manage widget events.
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class Visitor::WidgetVisitor;

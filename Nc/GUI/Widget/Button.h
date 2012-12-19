@@ -37,6 +37,9 @@ namespace Nc
         /// Define a button Widget.
         /**
             The button widget use allow to send an event to the specified engine, it only display a textual label.
+            The button can be set as a checkable button.
+
+            The button send a Toggle event when the button is toggled.
         */
         class LGUI  Button : public Widget
         {
@@ -54,7 +57,17 @@ namespace Nc
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the widget. */
-                inline void         PlainText(const Utils::Unicode::UTF32 &t)     {_font->PlainText(t);}
+                inline void         PlainText(const Utils::Unicode::UTF32 &t)       {_font->PlainText(t);}
+
+                /** Set whether the button is checkable or not. */
+                inline void         Checkable(bool state)                           {_checkable = state; _stateChanged = true;}
+                /** \return true if the button is checkable. */
+                inline bool         Checkable() const                               {return _checkable;}
+
+                /** Set the current status of the button. */
+                inline void         Toggled(bool state)                             {_toggled = state; _stateChanged = true;}
+                /** \return true if the button is currently toggled. */
+                inline bool         Toggled() const                                 {return _toggled;}
 
             protected:
                 /** Update the geometry of the button. */
@@ -64,8 +77,6 @@ namespace Nc
 
                 /** The mouse button handler. */
                 virtual void		MouseButtonEvent(const System::Event &event);
-                /** Send an event to the good engine. */
-                virtual void        ExecHanle();
 
             private:
                 /** Initialise the widget. */
@@ -75,13 +86,18 @@ namespace Nc
                 /** Delete the button. */
                 void                DeleteButton();
 
+            protected:
+                StripLook               *_buttonLook;           ///< look used to render the button in it's normal state.
+                StripLook               *_buttonLookToggled;    ///< look used to render the button pressed.
+                Graphic::Text           *_font;                 ///< The text of the button.
+                float                   _charSize;              ///< Recorde the charsize used for the font.
+                bool                    _checkable;             ///< define if the button is a toggle button or not.
+                bool                    _toggled;               ///< define if the button is toggled or not.
+                Color                   _colorDisable;          ///< The color of the disabled button.
+                System::Mouse::Button   _mouseButton;           ///< mouse button used to toggle the button. Default is Left.
+
             private:
-                StripLook           *_buttonLook;           ///< look used to render the button in it's normal state.
-                StripLook           *_buttonLookPressed;    ///< look used to render the button pressed.
-                Graphic::Text       *_font;                 ///< The text of the button.
-                float               _charSize;              ///< Recorde the charsize used for the font.
-                bool                _buttonPressed;         ///< Mark if the button is pressed.
-                Color               _colorDisable;          ///< The color of the disabled button.
+                bool                    _buttonPressed;         ///< true if the button as just been pressed.
         };
     }
 }

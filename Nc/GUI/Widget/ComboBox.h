@@ -40,6 +40,8 @@ namespace Nc
             A comboBox show a dropdown list when you click on it allow to select an item.
             The comboBox use a list of Item object to select.
 
+            Once an item is choosed, the combobox send the event ItemChanged.
+
             \todo correct dropdown list which should start below the box, to be able to show the currently selected item.
         */
         class LGUI ComboBox : public Widget

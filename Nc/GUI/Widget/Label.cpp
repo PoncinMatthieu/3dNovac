@@ -36,7 +36,7 @@ Label::Label(const Utils::Unicode::UTF32 &label, float charSize, const Color &c,
     : Widget(alignment, size), _label(NULL), _labelAlignment(Left | CenterV)
 {
     PaddingH(5);
-    CreateLabel(label, charSize, c, ttf, s);
+    Init(label, charSize, c, ttf, s);
 }
 
 Label::~Label()
@@ -72,7 +72,7 @@ void Label::ToString(std::ostream &os) const
     os << " Label: " << _label->PlainText();
 }
 
-void Label::CreateLabel(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s)
+void Label::Init(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s)
 {
     if (_label)
         delete _label;
