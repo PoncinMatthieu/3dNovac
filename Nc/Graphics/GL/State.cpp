@@ -42,27 +42,12 @@
 using namespace Nc;
 using namespace Nc::Graphic::GL;
 
-State           *State::_current = NULL;
-unsigned int    State::_instanceCounter = 0;
-
 State::State()
 {
-    _instanceCounter++;
 }
 
 State::~State()
 {
-    _instanceCounter--;
-}
-
-void    State::Enable()
-{
-    _current = this;
-}
-
-void    State::Disable()
-{
-    _current = NULL;
 }
 
 const GLubyte *State::GetString(Enum::ImplementationDescription type)

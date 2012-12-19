@@ -99,7 +99,7 @@ namespace Nc
 						if (_location != -1)
 						{
 							Program::SetUniform(_location, unit);
-							GL::State::Current().ActiveTexture(unit);
+							GL::State::Instance().ActiveTexture(unit);
 							texture.Enable();
 						}
                     }

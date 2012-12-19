@@ -124,6 +124,9 @@ namespace Nc
                 /** \return the priority loading. */
                 unsigned char           LoadingPriority()               {return _loadingPriority;}
 
+                /** \return the pattern of the engine. */
+                const Utils::Mask<Pattern> &GetPattern() const          {return _pattern;}
+
             protected:
                 /** \return the time since the loop iteration started. */
                 float                   ElapsedTime() const             {return _clock.ElapsedTime();}

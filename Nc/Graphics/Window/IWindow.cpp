@@ -26,6 +26,7 @@
 
 #include "IWindow.h"
 #include "ICursor.h"
+#include "../Context/GLContext.h"
 #include "../Scene/SceneGraphManager.h"
 #include "SubWindow.h"
 

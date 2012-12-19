@@ -64,7 +64,7 @@ namespace Nc
                     /** Enable the buffer. */
                     virtual void            Enable() const;
                     // /** Disable the buffer */
-                    //virtual inline void         Disable() const             {State::Current().Unbind(_target);} // since OpenGL version 3.3, unbind a buffer is unnecessary
+                    //virtual inline void         Disable() const             {State::Instance().Unbind(_target);} // since OpenGL version 3.3, unbind a buffer is unnecessary
                     /** return the gl index of the buffer. */
                     virtual unsigned int	GetIndex() const                {return _index;}
 
@@ -111,10 +111,7 @@ namespace Nc
             template <typename T>
             void    DataBuffer<T>::Enable() const
             {
-                if (State::IsSet())
-                    State::Current().Bind(_target, _index);
-                else
-                    glBindBuffer(_target, _index);
+                State::Instance().Bind(_target, _index);
             }
 
 
@@ -191,6 +188,7 @@ namespace Nc
             {
                 CALLSTACK_INFO("DataBuffer::Release() " + Utils::Convert::ToString(_index));
                 _dataTab = NULL;
+                State::Instance().Unbind(_target);
                 glDeleteBuffers(1, &_index); // suppression du buffer
                 _index = 0;
                 NC_GRAPHIC_GL_CHECK_ERROR();

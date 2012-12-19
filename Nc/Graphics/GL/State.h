@@ -29,7 +29,6 @@
 
 #include <Nc/Core/Utils/Mask.h>
 #include "GL.h"
-#include "../Context/GLContext.h"
 
 namespace Nc
 {
@@ -43,11 +42,12 @@ namespace Nc
                 This render state is essantially used to centralize the ogl functions but also to avoid any redundant state changes in the ogl state machine.
                 See the opengl documentation for more detail on the opengl functions.
 
+                There is one instance of GL::State per thread, the state is initilialized when a GLContext is created.
+
                 \warning All opengl functions which modify the opengl machine state like glEnable() glDisable() should not be direcly call but call with a method of the render state.
-                \todo [Stability] We should delete the static _current. We could put the GL::State into the GLContext and retreive the state by using the context.
-                \todo [Stability] Restructurate the position of the instance of GL::State, we should put it into the GL::Context. So we will have one GL::State by context (even if the context is shared, they still have their own state machine).
+                \todo [Performance] Since we need to know the calling thread to access to good GL::State instance, performances can be very bad. Find a way to remove the singleton and put the State instance into the GLContext class. On linux, using the method pthread_getspecific, could help but is probably running as fast as pthread_self.
             */
-            class LGRAPHICS State : Utils::NonCopyable
+            class LGRAPHICS State : public Utils::PerThreadSingleton<State>
             {
                 public:
                     typedef Utils::Mask<Enum::BufferBitType, GLbitfield>        BufferBitMask;
@@ -75,24 +75,8 @@ namespace Nc
                     /** \return the error corresponding on the given ogl error code. */
                     static std::string          GetError(GLenum code);
 
-                    /** \return true if the current state is not null. */
-                    static inline bool  IsSet()                                 {return (_current != NULL);}
-                    /**
-                        \return the current render state.
-                        Throw an exception if the render state has not been set.
-                    */
-                    static inline State &Current()                              {if (_current == NULL) throw Utils::Exception("GL::State", "The current render state is not set."); return *_current;}
-
                     /** Print the states. */
                     friend LGRAPHICS std::ostream &operator << (std::ostream &oss, State &s);
-
-                    /**
-                        Enable the render state (will lock a mutex and affect the current render state).
-                        So the rendering threads will be synchronized.
-                     */
-                    void                Enable();
-                    /** Disable the render state (unset the current render state and unlock the mutex). */
-                    void                Disable();
 
                     /** Initialize the render state with the given associated \p context. */
                     void                InitContext(GLContext *context);
@@ -363,12 +347,14 @@ namespace Nc
                     float                       _currentPolygonOffsetUnits;     ///< the current unit factor used to make some polygon offsets.
                     float                       _currentPointSize;              ///< the current rasterization size of the points.
                     float                       _currentLineWidth;              ///< the current rasterization width of the lines.
-
-                    static State                *_current;                      ///< Pointer to the current activated render state.
-                    //static System::Mutex        _mutex;                         ///< The mutex used to protect the render state.
-                    static unsigned int         _instanceCounter;               ///< An instance used to know how many render state exist.
             };
         }
+    }
+
+    namespace Utils
+    {
+        // explicit instanciation
+        template class PerThreadSingleton<Graphic::GL::State>;
     }
 }
 

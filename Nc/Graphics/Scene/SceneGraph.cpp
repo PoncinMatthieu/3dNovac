@@ -54,7 +54,7 @@ void     SceneGraph::SetupCamera()
 
 void    SceneGraph::Render(SceneGraph *scene)
 {
-    _oglState = &GL::State::Current();
+    _oglState = &GL::State::Instance();
 
     if (!ModelMatrix().IsIdentity())
         ModelMatrix().SetIdentity();

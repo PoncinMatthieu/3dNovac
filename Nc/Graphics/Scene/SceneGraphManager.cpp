@@ -42,7 +42,7 @@ SceneGraphManager::~SceneGraphManager()
 
 void SceneGraphManager::Init(bool multisampling, bool zBuffering)
 {
-    State &current = State::Current();
+    State &current = State::Instance();
 
 // defini les valeur des tompon a vider
     current.ClearColor(_clearColor);
@@ -68,7 +68,7 @@ void SceneGraphManager::Render(GLContext *context)
     System::Locker l(&_mutex);
 
 // vide les tampons
-    State::Current().Clear(_clearMask);
+    State::Instance().Clear(_clearMask);
 
 // render les 2 scenes
     for (ListPScene::iterator it = _listScene.begin(); it != _listScene.end(); ++it)

@@ -91,7 +91,7 @@ namespace Nc
 
                     // current binded textures
                     /** Return true if the texture is currently binded. */
-                    inline bool         IsBound()                {return State::Current().CurrentBound(_target) == _texture;}
+                    inline bool         IsBound()                {return State::Instance().CurrentBound(_target) == _texture;}
                     /** \return true if the texture is a texture 2d. */
                     inline bool         Is2d()                  {return (_target == Enum::Texture::Texture2d);}
                     /** \return true if the texture is a cube map texture (used to render skyboxs). */

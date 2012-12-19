@@ -44,3 +44,13 @@ GLContext::GLContext(IWindow *win) : _win(win)
 GLContext::~GLContext()
 {
 }
+
+void    GLContext::InitGLState()
+{
+    CALLSTACK_INFO("GLContext::InitGLState()");
+
+    // init the per thread GL::State singleton
+    Active();
+    GL::State::Instance().InitContext(this);
+    Disable();
+}

@@ -246,6 +246,7 @@ void Graphic::GLXContext::Create(GLContext *sharedContext)
     LOG_DEBUG << std::endl;
 
     // the context is now created but not active
+    InitGLState();
     _currentThreadId = 0;
     _isCreate = true;
 }

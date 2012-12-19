@@ -32,6 +32,7 @@
 #include <map>
 #include <Nc/Core/System/API/API.h>
 #include "../Define.h"
+#include "../GL/State.h"
 
 namespace Nc
 {
@@ -74,7 +75,11 @@ namespace Nc
                 inline IWindow       *AttachedWindow()                   {return _win;}
 
             protected:
+                void                InitGLState();
+
+            protected:
                 IWindow			*_win;				///< The instance of the associated window.
+                //GL::State       _glState;           ///< Even if an OpenGL context is shared with others, they have their own machine states.
                 bool			_isCreate;			///< Statement to define if the context is create.
                 bool			_isShared;			///< Statement to define if the context is shared.
                 unsigned int	_currentThreadId;	///< Register the thread id in which the context is currently bound.

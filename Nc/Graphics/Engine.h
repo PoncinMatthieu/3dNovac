@@ -80,7 +80,7 @@ namespace Nc
 
                 IWindow                  *_win;                  ///< The instance of the window
                 GLContext               *_context;              ///< The GL context used to render the scene with the scene graph manager
-                GL::State               _renderState;           ///< The render state associated to the rendering context
+                //GL::State               _renderState;           ///< The render state associated to the rendering context
                 static double           _elapsedTime;           ///< Elapsed Time between 2 frame (in second)
         };
     }

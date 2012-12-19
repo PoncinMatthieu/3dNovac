@@ -72,7 +72,7 @@ void Blend::SetPattern(Pattern p)
 
 void Blend::Enable()
 {
-    State &s = State::Current();
+    State &s = State::Instance();
     _lastBlendState = s.Enabled(Enum::Blend);
     if (_blendState == true)
         s.Enable(Enum::Blend);
@@ -85,7 +85,7 @@ void Blend::Enable()
 
 void Blend::Disable()
 {
-    State &s = State::Current();
+    State &s = State::Instance();
     if (_lastBlendState == true)
         s.Enable(Enum::Blend);
     else

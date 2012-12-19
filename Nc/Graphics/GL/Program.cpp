@@ -43,7 +43,10 @@ void    Program::Release()
 {
     CALLSTACK_INFO("Program::Release() " + Utils::Convert::ToString(_program));
     if (_program != 0)
+    {
+        State::Instance().UnbindProgram();
         glDeleteProgram(_program);
+    }
     NC_GRAPHIC_GL_CHECK_ERROR();
     _linked = false;
     _program = 0;
@@ -53,19 +56,13 @@ void     Program::Enable() const
 {
 	if (_program == 0 || !_linked)
         throw Utils::Exception("GL::Program::Enable", "The program hasn't been linked.");
-    if (State::IsSet())
-        State::Current().UseProgram(_program);
-    else
-		glUseProgram(_program);
+    State::Instance().UseProgram(_program);
 }
 
 void     Program::Disable() const
 {
 /*
-    if (State::IsSet())
-        State::Current().UnbindProgram();
-    else
-        glUseProgram(0);
+    State::Instance().UnbindProgram();
 */
 }
 

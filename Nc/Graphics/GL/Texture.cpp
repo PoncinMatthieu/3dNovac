@@ -52,6 +52,7 @@ Texture::~Texture()
 void Texture::Release()
 {
     CALLSTACK_INFO("Texture::Release() " + Utils::Convert::ToString(_texture));
+    State::Instance().Unbind(_target);
     glDeleteTextures(1, &_texture);
     _texture = 0;
     NC_GRAPHIC_GL_CHECK_ERROR();
@@ -61,10 +62,7 @@ void  Texture::Enable() const
 {
     if (_target >= 0)
     {
-        if (State::IsSet())
-            State::Current().Bind(_target, _texture);
-        else
-            glBindTexture(_target, _texture);
+        State::Instance().Bind(_target, _texture);
     }
 }
 
@@ -72,7 +70,7 @@ void  Texture::Disable() const
 {
     // since OpenGL version 3.3, unbind a texture is unnecessary
     // do nothing (maybe we will need to have a method to force the unbind ?)
-    //State::Current().Unbind(_target);
+    //State::Instance().Unbind(_target);
 }
 
 int Texture::MaxSize()
@@ -114,7 +112,7 @@ void    Texture::Create(Enum::Texture::Target target)
 void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
 {
     CALLSTACK_INFO("Texture::Init2d()");
-    if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
+    if (State::Instance().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture which is not enabled.");
     CheckSize(size);
     glTexImage2D(_target, level, internalFormat, size.data[0], size.data[1], 0, pixelFormat, pixelType, pixelData);
@@ -125,7 +123,7 @@ void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat
 void    Texture::GenerateMipmaps()
 {
     CALLSTACK_INFO("Texture::GenerateMipmaps()");
-    if (State::IsSet() && State::Current().CurrentBound(_target) != _texture)
+    if (State::Instance().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::GenerateMipmap", "Can't generate the texture mipmaps if the texture is not enabled.");
     glGenerateMipmap(_target);
     NC_GRAPHIC_GL_CHECK_ERROR();
@@ -295,7 +293,7 @@ unsigned int    GLContext::GenereCubeMapNormalize(const unsigned int size)
     // activation et creation de la cube map
     glEnable(Enum::TextureCubeMap);
 	glGenTextures(1, &textureFinal);
-	State::Current().Bind(Enum::TextureCubeMap, textureFinal);
+	State::Instance().Bind(Enum::TextureCubeMap, textureFinal);
 
 	// on configure la texture et utilise un filtrage lineaire pour ne pas avoir a generer les mipmaps.
 	glTexParameteri(Enum::TextureCubeMap, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

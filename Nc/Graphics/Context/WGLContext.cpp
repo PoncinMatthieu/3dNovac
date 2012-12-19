@@ -152,6 +152,7 @@ void WGLContext::Create(GLContext *sharedContext)
 	}
 
 	// the context is now created but not active
+    InitGLState();
 	_currentThreadId = 0;
 	_isCreate = true;
 }
@@ -256,7 +257,7 @@ void	WGLContext::ChoosePixelFormat()
 		{
 			ShowError("WGLContext:ChoosePixelFormat:wglMakeCurrent");
 			throw Utils::Exception("WGLContext:ChoosePixelFormat", "Make current failed");
-		} 
+		}
 
 		// delete dummy context
 		DeleteDummyContext(dummyWindowHandle, dummyDrawable, dummyContext);

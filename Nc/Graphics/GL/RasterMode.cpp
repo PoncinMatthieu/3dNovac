@@ -50,7 +50,7 @@ RasterMode::RasterMode(Enum::PolygonFace face, Enum::PolygonMode mode)
 
 void    RasterMode::Enable()
 {
-    State &s = State::Current();
+    State &s = State::Instance();
     if (_setPolygonMode)
     {
         _lastPolygonFace = s.CurrentPolygonFace();
@@ -93,7 +93,7 @@ void    RasterMode::Enable()
 
 void    RasterMode::Disable()
 {
-    State &s = State::Current();
+    State &s = State::Instance();
     if (_setPolygonMode)
         s.PolygonMode(_lastPolygonFace, _lastPolygonMode);
     if (_setPolygonOffset)

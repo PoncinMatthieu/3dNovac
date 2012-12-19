@@ -75,6 +75,7 @@ void    FrameBuffer::Release()
 {
     CALLSTACK_INFO("FrameBuffer::Release() " + Utils::Convert::ToString(_index));
 
+    State::Instance().Unbind(_target);
     glDeleteFramebuffers(1, &_index);
     for (; !_attachedBuffers.empty(); _attachedBuffers.erase(_attachedBuffers.begin()))
         delete _attachedBuffers.begin()->second;
@@ -94,33 +95,23 @@ void    FrameBuffer::Disable()
 
 void    FrameBuffer::Enable(Enum::FrameBuffer::Target target)
 {
-    if (State::IsSet())
-    {
-        State &st = State::Current();
+    State &st = State::Instance();
 
-        // save the previous framebuffer
-        _previouslyBound = st.CurrentBound(target);
+    // save the previous framebuffer
+    _previouslyBound = st.CurrentBound(target);
 
-        // set the framebuffer
-        st.Bind(target, _index);
-    }
-    else
-        throw Utils::Exception("FrameBuffer::Enable", "GL::State is not set.");
+    // set the framebuffer
+    st.Bind(target, _index);
 }
 
 void    FrameBuffer::Disable(Enum::FrameBuffer::Target target)
 {
-    if (State::IsSet())
-    {
-        // unset the framebuffer
-        if (_previouslyBound == 0)
-            State::Current().Unbind(target);
-        else
-            State::Current().Bind(target, _previouslyBound);
-        _previouslyBound = 0;
-    }
+    // unset the framebuffer
+    if (_previouslyBound == 0)
+        State::Instance().Unbind(target);
     else
-        throw Utils::Exception("FrameBuffer::Disable", "GL::State is not set.");
+        State::Instance().Bind(target, _previouslyBound);
+    _previouslyBound = 0;
 }
 
 void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, const RenderBuffer &renderBuffer)
@@ -129,7 +120,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
         throw Utils::Exception("FrameBuffer::Attach", "The given RenderBuffer is not valid");
     if (!IsValid())
         throw Utils::Exception("FrameBuffer::Attach", "The FrameBuffer is not valid");
-    if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
+    if (State::Instance().CurrentBound(_target) != _index)
         throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer which is not enabled.");
 
     CALLSTACK_INFO("FrameBuffer::Attach()");
@@ -144,7 +135,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
         throw Utils::Exception("FrameBuffer::Attach", "The given Texture is not valid");
     if (!IsValid())
         throw Utils::Exception("FrameBuffer::Attach", "The FrameBuffer is not valid");
-    if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
+    if (State::Instance().CurrentBound(_target) != _index)
         throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer which is not enabled.");
 
     CALLSTACK_INFO("FrameBuffer::Attach()");
@@ -155,7 +146,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
 
 Enum::FrameBuffer::State FrameBuffer::CheckStatus()
 {
-    if (State::IsSet() && State::Current().CurrentBound(_target) != _index)
+    if (State::Instance().CurrentBound(_target) != _index)
         throw Utils::Exception("FrameBuffer::CheckStatus", "Can't check the status of the framebuffer which is not enabled.");
     return static_cast<Enum::FrameBuffer::State>(glCheckFramebufferStatus(_target));
 }

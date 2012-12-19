@@ -47,6 +47,7 @@ VertexArray::~VertexArray()
 void     VertexArray::Release()
 {
     CALLSTACK_INFO("VertexArray::Release() " + Utils::Convert::ToString(_index));
+    glBindVertexArray(0);
     glDeleteVertexArrays(1, &_index);
 }
 
