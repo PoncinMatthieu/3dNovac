@@ -17,13 +17,6 @@ namespace DemoViewer
             NC_SYSTEM_DEFINE_OBJECT(Nc::Contrib::GameEngine, DemoViewer::GameEngine);
 
         public:
-            enum IndexCmd
-            {
-                StartDemo = 0,
-                DemoSelected
-            };
-
-        public:
             GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manager);
             virtual ~GameEngine();
 

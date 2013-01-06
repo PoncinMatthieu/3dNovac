@@ -38,7 +38,7 @@ ParticleEffect::ParticleEffect()
     }
 
     _drawable = new GL::Drawable(vertices, GL::Enum::DataBuffer::StaticDraw, GL::Enum::Points);
-    _drawable->Config->SetBlend(GL::Blend::Add);
+    _drawable->Config->GetBlend().SetPattern(GL::Blend::Add);
     _drawable->Config->GetRasterMode().SetDepthTest(false);
 
     // config the material

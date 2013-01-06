@@ -136,16 +136,16 @@ Widget  *MainMenu::CreateSelectDemoWindow(Layout *parent)
 
     _demoComboBox = new ComboBox(_GUI, Left | CenterV, Vector2i(250,0));
     _demoComboBox->MarginRight(5);
-    _demoComboBox->HandlerEngineName(GameEngine::ClassName());
-    _demoComboBox->HandlerId(GameEngine::DemoSelected);
+    _demoComboBox->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
+    //_demoComboBox->HandlerId(GameEngine::DemoSelected);
     _demoComboBox->Percent(Vector2f(100, 0));
     selectDemoLayout->AddChild(_demoComboBox);
     selectDemoLayout->SetExpandRatio(_demoComboBox, 100);
 
     Button *button = new Button("Start", Center, Vector2i(70, 28), "arial");
     selectDemoLayout->AddChild(button);
-    button->HandlerEngineName(GameEngine::ClassName());
-    button->HandlerId(GameEngine::StartDemo);
+    button->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
+    //button->HandlerId(GameEngine::StartDemo);
     return windowSelectDemo;
 }
 

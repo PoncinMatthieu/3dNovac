@@ -12,8 +12,8 @@ GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manage
 {
     _demoFactory = new DemoFactory(manager);
 
-    AddNewCmd(StartDemo,      (Nc::Engine::CmdFunction)&GameEngine::StartDemoCmd);
-    AddNewCmd(DemoSelected,   (Nc::Engine::CmdFunction)&GameEngine::DemoSelectedCmd);
+    AddNewCmd(GUI::Event::Toggled,      (Nc::Engine::CmdFunction)&GameEngine::StartDemoCmd);
+    AddNewCmd(GUI::Event::ItemChanged,  (Nc::Engine::CmdFunction)&GameEngine::DemoSelectedCmd);
 }
 
 GameEngine::~GameEngine()
