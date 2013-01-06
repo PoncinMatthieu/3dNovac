@@ -35,6 +35,7 @@ SubWindow::SubWindow(Graphic::IWindow *windowParent, const AlignmentMask &alignm
 {
     _subWindow = new Graphic::SubWindow(windowParent);
     _subWindow->Create(_size);
+    _subWindow->InitSceneGraphManager();
     _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
 }
 
@@ -44,6 +45,7 @@ SubWindow::SubWindow(const SubWindow &w)
     _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
     _subWindow = new Graphic::SubWindow(w._subWindow->Parent());
     _subWindow->Create(_size);
+    _subWindow->InitSceneGraphManager();
 }
 
 SubWindow &SubWindow::operator = (const SubWindow &w)
@@ -52,6 +54,7 @@ SubWindow &SubWindow::operator = (const SubWindow &w)
     _sprite = new Graphic::Sprite(_size, Graphic::GL::Texture(), Box2i(Vector2f(0,0), _size), Graphic::GL::Blend::Disabled);
     _subWindow = new Graphic::SubWindow(w._subWindow->Parent());
     _subWindow->Create(_size);
+    _subWindow->InitSceneGraphManager();
 	return *this;
 }
 

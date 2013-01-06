@@ -54,10 +54,7 @@ void Graphic::Engine::CreateContext()
 
     // initialize opengl context
     _context->Active();
-//    _renderState.InitContext(_context);
-//    _renderState.Enable();
     _win->InitSceneGraphManager();
-//	_renderState.Disable();
     _context->Disable();
 
 	_win->Enable(true);
@@ -89,8 +86,6 @@ void Graphic::Engine::Execute(float runningTime)
 	_win->Input()->CheckEvents();
 
 	// display the scene graph
-	//_renderState.Enable();
 	if (_win->Enabled())
 		_win->Render(_context);
-	//_renderState.Disable();
 }
