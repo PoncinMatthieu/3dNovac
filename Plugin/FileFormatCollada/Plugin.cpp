@@ -693,6 +693,7 @@ Box3f Plugin::BuildTriangles(domTriangles *domTriangles, GL::Drawable *&drawable
         vertices[ivertex].color[0] = 1;
         vertices[ivertex].color[1] = 1;
         vertices[ivertex].color[2] = 1;
+        vertices[ivertex].color[3] = 1;
 
         vertices[ivertex].coord[0] = (float)(*position_floats)[(size_t)index*3+0];
         vertices[ivertex].coord[1] = (float)(*position_floats)[(size_t)index*3+1];
