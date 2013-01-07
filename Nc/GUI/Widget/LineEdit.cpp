@@ -129,22 +129,21 @@ void LineEdit::KeyboardEvent(const System::Event &event)
             s.erase(s.end() - 1);
             _font->PlainText(s);
         }
+        // 13 is the caracter code for Return/Enter
+        else if (event.text.unicode == 13)
+        {
+            SendEvent(Event::ReturnPressed);
+        }
         else
         {
             PlainTextFormater *formater = static_cast<PlainTextFormater*>(_font->Formater());
             float charSize = formater->GetCharSize(event.text.unicode).data[0];
-            if (event.text.unicode != '\0' && charSize != 0 && _font->Size().data[0] + charSize < _size.data[0])
+            if ((event.text.unicode != '\0' && charSize != 0 && _font->Size().data[0] + charSize < _size.data[0]) ||
+                event.text.unicode == ' ' || event.text.unicode == '\t')
             {
-                if (event.text.unicode == '\n')
-                {
-                    SendEvent(Event::ReturnPressed);
-                }
-                else // ajout du caractere dans la string
-                {
-                    Utils::Unicode::UTF32 s = _font->PlainText();
-                    s += event.text.unicode;
-                    _font->PlainText(s);
-                }
+                Utils::Unicode::UTF32 s = _font->PlainText();
+                s += event.text.unicode;
+                _font->PlainText(s);
             }
         }
         _stateChanged = true;
