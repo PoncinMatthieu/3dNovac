@@ -35,54 +35,39 @@ namespace Nc
 {
     namespace GUI
     {
-        /// To manage a console.
+        /// To manage a console, contain a text edit to display text with a line edit to send commands.
         /**
-            \deprecated The console is now obsololete.
-            \todo Recode the console.
         */
-        class LGUI  Console : public WindowBox, Utils::NonCopyable
+/*        class LGUI  Console : public WindowBox
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WindowBox, System::Object, Nc::GUI::Console);
 
-            private:
-                /// The pattern of the console.
-                enum Pattern
-                {
-                    Nop,
-                    TranslateAtFocus        ///< if set, then the console will translate itsel when she has the focus.
-                };
-
-                typedef std::list<Utils::Unicode::UTF32>    ListMsg;    ///< The list of message in UTF-32.
-
             public:
-                Console(Graphic::IWindow *attachedWindow, const std::string &engineName, Pattern p = TranslateAtFocus);
+                Console();
                 virtual ~Console();
 
-                /** Return the reel position of the console. */
-                //virtual void        GetReelPos(Vector2i &pos) const;
-
                 /** Push a message in the message list of the console. */
-                static void         PushMsg(const std::string &s);
+/*                static void         PushMsg(const std::string &s);
                 /** Write a message for the Utils::Logger. */
-                static void         Write(const std::string msg, bool flush);
+/*                static void         Write(const std::string msg, bool flush);
 
             protected:
                 /** Render the console. */
-                virtual void        Render(Graphic::SceneGraph *scene);
+/*                virtual void        Render(Graphic::SceneGraph *scene);
                 /** Update the geometry of the console. */
-                virtual void        UpdateState();
+/*                virtual void        UpdateState();
 
                 /** Keyboadr event Handler. */
-                void KeyboardEvent(const System::Event &event); // receptionne les commandes clavier et l'inscrit dans la console
+/*                void KeyboardEvent(const System::Event &event); // receptionne les commandes clavier et l'inscrit dans la console
                 /** Delete the list of font used to render the msg. */
-                void DeleteListFont();
+/*                void DeleteListFont();
 
                 /** Execute a command by sending an event the good engine. */
-                void ExecCmd(const std::string &cmd);
+/*                void ExecCmd(const std::string &cmd);
 
                 /** Update the position of the cursor. */
-                void UpdateCursorPosition();
+/*                void UpdateCursorPosition();
 
             protected:
                 static ListMsg                      _listMsg;           ///< The message list.
@@ -98,10 +83,8 @@ namespace Nc
 
                 unsigned int                        _scroll;            ///< scroll position.
                 std::string                         _prompt;            ///< prompt string.
-                Pattern                             _pattern;           ///< the pattern of the console.
-                Graphic::IWindow                     *_attachedWindow;   ///< attached window.
         };
-    }
+*/    }
 }
 
 #endif

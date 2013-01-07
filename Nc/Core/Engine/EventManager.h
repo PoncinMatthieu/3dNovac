@@ -40,18 +40,12 @@ namespace Nc
     {
         class   EventManager;
         struct  IEvent;
-        struct  EventString;
 
         /**
             Member function pointer used to receive an event.
             \param e could be NULL
         */
         typedef void (EventManager::*CmdFunction)(IEvent *e);
-        /**
-            Member function pointer used to receive an event string.
-            \param e could be NULL
-        */
-        typedef void (EventManager::*CmdFunctionString)(EventString *e);
 
         /// Interface to define an engine event.
         struct LCORE IEvent
@@ -82,24 +76,6 @@ namespace Nc
             T   data;           ///< data of type T.
         };
 
-        /// Define an engine event containing a string.
-        /**
-            Used to send event which contain a string. Mainly used to manage console events.
-        */
-        struct LCORE EventString : public IEvent
-        {
-            EventString(const std::string &s)    : args(s)     {}
-
-            /** Split the argument of the event with the given delimiter, to get a sub string argument. */
-            template<typename T>
-            void NextArg(T &arg, const std::string delimit = " ");
-
-            /** \return the typeid of the event data, to debug and know what type of event you received. */
-            virtual inline const std::type_info    &GetDataTypeId()        {return typeid(std::string);}
-
-            std::string     args;           ///< the string argument of the event
-        };
-
         /// Define a Cmd handler which have an id and a member function pointer.
 		/**
             Cmds will be used to store command handler to be called at event reception.
@@ -111,19 +87,6 @@ namespace Nc
 
             unsigned int        id;             ///< Id of the command.
             CmdFunction         function;       ///< The member function pointer to excute the handler event.
-        };
-
-        /// Define a CmdString handler which have a name, a comment to describe the cmd and a member function pointer.
-        /**
-            \sa Cmd
-        */
-        struct LCORE CmdString
-        {
-            CmdString(const std::string &n, const std::string &c, CmdFunctionString f) : name(n), comment(c), function(f)    {}
-
-            std::string         name;           ///< Name of the command.
-            std::string         comment;        ///< Comment of the command.
-            CmdFunctionString   function;       ///< The member function pointer to excute the handler event.
         };
 
         /// Base class used to manage events, can receive events and execute them.
@@ -138,18 +101,11 @@ namespace Nc
 
             private:
                 typedef std::queue<std::pair<unsigned int, IEvent*> >       QueueEvent;
-                typedef std::queue<std::pair<std::string, EventString*> >   QueueEventString;
                 typedef std::list<Cmd>                                      ListCmd;
-                typedef std::list<CmdString>                                ListCmdString;
 
             public:
                 EventManager();
                 virtual ~EventManager();
-
-                /** Push an EventString without arg. */
-                void    PushEvent(const std::string &cmdName);
-                /** Push an EventString with an argument string. */
-                void    PushEvent(const std::string &cmdName, const std::string &args);
 
                 /** Push an IEvent. */
                 void    PushEvent(unsigned int id, IEvent *e = NULL);
@@ -163,8 +119,6 @@ namespace Nc
             protected:
                 /** Create a new command to receive events. */
                 void    AddNewCmd(unsigned int id, CmdFunction function);
-                /** Create a new command string to receive events. */
-                void    AddNewCmd(const std::string &name, const std::string &comment, CmdFunctionString function);
 
                 bool    _execEvents;        ///< to pause the execution of events in the event queue.
                 bool    _receiveEvents;     ///< to bypass events (stop the reception of events).
@@ -172,19 +126,9 @@ namespace Nc
             private:
                 /** Execute an event. */
                 void    ExecuteEvent(unsigned int id, IEvent *e);
-                /** Execute an event string. */
-                void    ExecuteEvent(const std::string &name, EventString *e);
-
-                /** Display the list of commands string. */
-                void    Help(EventString *);
-
 
                 QueueEvent              _queueEvent;                ///< Queue of IEvent to execute when we call `ExecuteEvents`.
-                QueueEventString        _queueEventString;          ///< Queue of EventString to execute when we call `ExecuteEvents`.
-
                 ListCmd                 _listCmd;                   ///< List of Event handler to use for the management of events.
-                ListCmdString           _listCmdString;             ///< List of EventString handler to use for the management of event strings.
-
                 System::Mutex           _mutexQueue;                ///< Protect the mutex queue.
 
                 friend LCORE std::ostream& operator << (std::ostream& Out, const EventManager& o);
@@ -207,13 +151,6 @@ namespace Nc
         const std::type_info    &Event<T>::GetDataTypeId()
         {
             return typeid(T);
-        }
-
-        template<typename T>
-        void EventString::NextArg(T &arg, const std::string delimit)
-        {
-            if (!Utils::Convert::SplitStringTo(args, delimit, arg))
-                throw Utils::Exception("EventString::NextArg", "Failed to get the next argument.");
         }
 
         template<typename T>

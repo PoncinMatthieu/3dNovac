@@ -36,7 +36,6 @@ EventManager::EventManager()
 {
     _execEvents = true;
     _receiveEvents = true;
-    AddNewCmd("help", "display help", (CmdFunctionString)&EventManager::Help);
 }
 
 EventManager::~EventManager()
@@ -57,21 +56,9 @@ namespace Nc
     }
 }
 
-void EventManager::Help(EventString *)
-{
-    LOG << "List all function of " << *this << endl;
-    for (ListCmdString::iterator it = _listCmdString.begin(); it != _listCmdString.end(); it++)
-        LOG << it->name << "--> " << it->comment << endl;
-}
-
 void EventManager::AddNewCmd(unsigned int id, CmdFunction function)
 {
     _listCmd.push_back(Cmd(id, function));
-}
-
-void EventManager::AddNewCmd(const std::string &name, const std::string &comment, CmdFunctionString function)
-{
-    _listCmdString.push_back(CmdString(name, comment, function));
 }
 
 void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
@@ -99,31 +86,6 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
     }
 }
 
-void EventManager::ExecuteEvent(const std::string &name, EventString *e)
-{
-    try
-    {
-        for (ListCmdString::iterator it = _listCmdString.begin(); it != _listCmdString.end(); it++)
-        {
-            if (it->name == name)
-            {
-                CALLSTACK_INFO("IEngine::CallEventString: Name: " + name + ((e != NULL) ? std::string(" e: ") + e->args : ""));
-                (this->*(it->function))(e);
-                return;
-            }
-        }
-        throw Utils::Exception(ResolvedClassName(), "Unknown command `" + name + "`");
-    }
-    catch (const std::exception &ex)
-    {
-        LOG_ERROR << "Error: " << *this << ": " << ex.what() << std::endl;
-    }
-    catch (...)
-    {
-        LOG_ERROR << ResolvedClassName() << ": Unknown Error, throw catched !" << std::endl;
-    }
-}
-
 void  EventManager::ExecuteEvents()
 {
     CALLSTACK_INFO("IEngine::ExecuteEvents");
@@ -141,19 +103,6 @@ void  EventManager::ExecuteEvents()
             if (p.second != NULL)
                 delete p.second;
         }
-
-        // exec queue event string
-        for (; !_queueEventString.empty(); _queueEventString.pop())
-        {
-            std::pair<std::string, EventString*> p;
-            {
-                System::Locker l(&_mutexQueue);
-                p = _queueEventString.front();
-            }
-            ExecuteEvent(p.first, p.second);
-            if (p.second != NULL)
-                delete p.second;
-        }
     }
 }
 
@@ -162,18 +111,4 @@ void    EventManager::PushEvent(unsigned int id, IEvent *e)
     System::Locker l(&_mutexQueue);
     if (_receiveEvents)
         _queueEvent.push(std::pair<unsigned int, IEvent*>(id, e));
-}
-
-void EventManager::PushEvent(const std::string &cmdName)
-{
-    System::Locker l(&_mutexQueue);
-    if (_receiveEvents)
-        _queueEventString.push(std::pair<std::string, EventString*>(cmdName, (EventString*)NULL));
-}
-
-void EventManager::PushEvent(const std::string &cmdName, const std::string &args)
-{
-    System::Locker l(&_mutexQueue);
-    if (_receiveEvents)
-        _queueEventString.push(std::pair<std::string, EventString*>(cmdName, new EventString(args)));
 }

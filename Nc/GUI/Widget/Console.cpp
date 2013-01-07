@@ -34,7 +34,7 @@ using namespace Nc;
 using namespace Nc::System;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
-
+/*
 Console::ListMsg                    Console::_listMsg;
 Console::ListMsg::reverse_iterator  Console::_itCurrentMsg = Console::_listMsg.rbegin();
 Mutex                               Console::_mutexMsg;
@@ -51,7 +51,7 @@ Console::Console(IWindow *attachedWindow, const std::string &engineName, Pattern
     //_engineName = engineName;
 
     _size.data[0] = _attachedWindow->Width() - 1;
-    _size.data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
+    _size.data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*//*;
     _pos[0] = 1; // pour voir tous les bord de la console, on se decale de 1
 
     _labelPrompt = new Label(_prompt, 17, Color(1, 1, 1), Left | Bottom, Vector2f(0, 17), "Prototype");
@@ -100,21 +100,21 @@ void Console::GetReelPos(Vector2i &pos) const
     if (_pattern == TranslateAtFocus && !_focus)
         pos.data[1] -= _size.data[1] /*- _titleHeight*//*;
 }
-*/
+*//*
 void Console::UpdateState()
 {
     WindowBox::UpdateState();
     // met a jour la taille de la console en fonction de la taille de la fenetre
     unsigned short  percent = 15; // hauteur de la console en poucentage
     _size.data[0] = _attachedWindow->Width() - 1;
-    _size.data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*/;
+    _size.data[1] = ((float)(percent * _attachedWindow->Height()) / 100.0) /*+ _titleHeight*//*;
 
     // met a jour les string de message
     if ((_pattern == TranslateAtFocus && _focus) || (_pattern == Nop))
     {
         TMatrix         m;
         float           textHeight1 = 17, textHeight2 = 14;
-        unsigned int    nbMsg = (((float)(_size.data[1] /*- _titleHeight*/ - textHeight1)) / textHeight2);
+        unsigned int    nbMsg = (((float)(_size.data[1] /*- _titleHeight*/ /*- textHeight1)) / textHeight2);
 
         if (nbMsg != _listFont.size())
         {
@@ -255,14 +255,15 @@ void Console::ExecCmd(const string &cmd)
     size_t pos = cmd.find_first_of(":");
 
 	// npos en commentaire a cause d'un bug VC 2010 a l'export de string::npos (et oui encore ce foutu windows)  ref: http://connect.microsoft.com/VisualStudio/feedback/details/562448/std-string-npos-lnk2001-when-inheriting-a-dll-class-from-std-string
-	if (pos != /*string::npos*/ (size_t)-1)
+	if (pos != /*string::npos*/ /*(size_t)-1)
     {
         engineName = cmd.substr(0, pos);
         cmdName = cmdName.substr(pos + 1, cmd.length());
     }
     size_t pos2 = cmdName.find_first_of(" ");
-    if (pos2 != /*string::npos*/ (size_t)-1)   // execution de la commande avec les arguments
-        Engine::Manager::PushEvent(engineName, cmdName.substr(0, pos2), cmdName.substr(pos2+1, /*string::npos*/ -1));
+    if (pos2 != /*string::npos*/ /*(size_t)-1)   // execution de la commande avec les arguments
+        Engine::Manager::PushEvent(engineName, cmdName.substr(0, pos2), cmdName.substr(pos2+1, /*string::npos*/ /*-1));
     else                        // execution de la commande sans argument
         Engine::Manager::PushEvent(engineName, cmdName.substr(0, pos2));
 }
+*/

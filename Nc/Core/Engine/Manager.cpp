@@ -196,31 +196,6 @@ void Manager::PushEvent(const std::string &engineName, unsigned int id, IEvent *
     }
 }
 
-
-void Manager::PushEvent(const std::string &engineName, const std::string &cmdName)
-{
-    try
-    {
-        GetEngine(engineName)->PushEvent(cmdName);
-    }
-    catch(const std::exception &e)
-    {
-        LOG_ERROR << "Error: " << e.what() << std::endl;
-    }
-}
-
-void Manager::PushEvent(const std::string &engineName, const std::string &cmdName, const std::string &args)
-{
-    try
-    {
-        GetEngine(engineName)->PushEvent(cmdName, args);
-    }
-    catch(const std::exception &e)
-    {
-        LOG_ERROR << "Error: " << e.what() << std::endl;
-    }
-}
-
 void Manager::WaitAllEngineStarted()
 {
     bool isLaunched = false;

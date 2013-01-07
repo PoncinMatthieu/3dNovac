@@ -129,10 +129,6 @@ namespace Nc
                 static void             PushEvent(const std::string &engineName, unsigned int id);
                 /** Dispatch events to the corresponding engine. */
                 static void             PushEvent(const std::string &engineName, unsigned int id, IEvent *e);
-                /** Dispatch string events to the corresponding engine. */
-                static void             PushEvent(const std::string &engineName, const std::string &cmdName, const std::string &args);
-                /** Dispatch string events to the corresponding engine. */
-                static void             PushEvent(const std::string &engineName, const std::string &cmdName);
 
             protected:
                 static MapEngine        _mapEngine;             ///< Engine map container.
