@@ -67,6 +67,11 @@ void TextEdit::Copy(const TextEdit &edit)
     _textDocument = static_cast<TextDocument*>(edit._textDocument->Clone());
 }
 
+void    TextEdit::SetToEndOfText()
+{
+    _scrollBarV->Position(_scrollBarV->TotalSize() - _scrollBarV->PageSize());
+}
+
 void TextEdit::RenderChildsEnd(Graphic::SceneGraph *scene)
 {
     _textDocument->RenderNode(scene);
@@ -76,7 +81,7 @@ void TextEdit::RenderChildsEnd(Graphic::SceneGraph *scene)
 void    TextEdit::PlainText(const Utils::Unicode::UTF32 &t)
 {
     _textDocument->text->PlainText(t);
-    Resized();
+    _textDocument->Resized();
 }
 
 TextEdit::TextDocument::TextDocument(TextEdit *editor, const Utils::Unicode::UTF32 &t, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<PlainTextFormater::Style> &s)

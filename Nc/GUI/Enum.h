@@ -94,6 +94,7 @@ namespace Nc
                 Toggled,
                 ItemChanged,
                 EventIdMax,
+                ReturnPressed,
             };
         }
     }

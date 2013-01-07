@@ -62,6 +62,7 @@ ScrollBar::ScrollBar(const AlignmentMask &alignment, Orientation orientation, co
     // set the real size of the scroll bar
     _size = (orientation == Vertical)   ? Vector2i(_spriteLeftButton->TextureBox().Length()[1], 0)
                                         : Vector2i(0, _spriteLeftButton->TextureBox().Length()[1]);
+    _positionChangedByUser = false;
 }
 
 ScrollBar::~ScrollBar()
@@ -120,6 +121,7 @@ void ScrollBar::Copy(const ScrollBar &sc)
     _spriteSliderRightPressed = (Graphic::Sprite*)sc._spriteSliderRightPressed->Clone();
     _spriteSliderExpand1Pressed = (Graphic::Sprite*)sc._spriteSliderExpand1Pressed->Clone();
     _spriteSliderExpand2Pressed = (Graphic::Sprite*)sc._spriteSliderExpand2Pressed->Clone();
+    _positionChangedByUser = false;
 }
 
 void ScrollBar::MouseMotionEvent(const Nc::System::Event &event)
@@ -129,6 +131,7 @@ void ScrollBar::MouseMotionEvent(const Nc::System::Event &event)
         float diff = (_orientation == Vertical) ? -(_lastPosMouse[1] - event.mouseMove.y) : (event.mouseMove.x - _lastPosMouse[0]);
 
         _position = GetPagePosition(GetSliderTranslation(_position) + diff);
+        _positionChangedByUser = true;
 
         _lastPosMouse[0] = event.mouseMove.x;
         _lastPosMouse[1] = event.mouseMove.y;
@@ -173,6 +176,7 @@ void    ScrollBar::MouseButtonLeft(const Nc::System::Event &event)
         if (inRect && _position > 0)
         {
             _position--;
+            _positionChangedByUser = true;
             _stateChanged = true;
         }
         _buttonLeftPressed = false;
@@ -209,6 +213,7 @@ void    ScrollBar::MouseButtonRight(const Nc::System::Event &event)
         if (inRect && _position < _totalSize - _pageSize)
         {
             _position++;
+            _positionChangedByUser = true;
             _stateChanged = true;
         }
         _buttonRightPressed = false;

@@ -93,12 +93,12 @@ bool CheckFocus::VisitNode(Widget &w)
         childFocused = &w;
         childFocused->Focus(true);
         #ifdef _DEBUG_GUI_FOCUS
-        LOG_DEBUG << "OK" << std::endl;
+        LOG_DEBUG << "Focused." << std::endl;
         #endif
         return true;
     }
     #ifdef _DEBUG_GUI_FOCUS
-    LOG << std::endl;
+    LOG << "Not focused." << std::endl;
     #endif
     return false;
 }

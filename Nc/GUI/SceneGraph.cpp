@@ -100,11 +100,11 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
                     _widgetFocused = w;
                     _widgetFocused->Focus(true);
                     #ifdef _DEBUG_GUI_FOCUS
-                    LOG_DEBUG << "OK" << std::endl;
+                    LOG_DEBUG << "Focused." << std::endl;
                     #endif
                 }
                 #ifdef _DEBUG_GUI_FOCUS
-                LOG << std::endl;
+                LOG << "Not focused." << std::endl;
                 #endif
             }
         }

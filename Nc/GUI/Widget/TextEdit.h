@@ -76,6 +76,9 @@ namespace Nc
 
                 virtual ISceneNode              *Clone() const          {return new TextEdit(*this);}
 
+                /** Small trick to force the scroll bar to stay at the end of the text. */
+                void                            SetToEndOfText();
+
                 /** \return the text. */
                 const Utils::Unicode::UTF32     &PlainText() const      {return _textDocument->text->PlainText();}
                 /** Set the text. */

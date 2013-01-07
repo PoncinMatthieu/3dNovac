@@ -40,7 +40,6 @@ LineEdit::LineEdit(const AlignmentMask &alignment, const Vector2i &size, const s
 
     _editable = true;
     _fontUnderscoreDisplayed = false;
-    //MarginH(5);
     PaddingV(5);
     _font = new Graphic::Text("", size[1] - (PaddingTop() + PaddingBottom()), Color(), ttf);
     _fontUnderscore = new Graphic::Text("|", size[1] - (PaddingTop() + PaddingBottom()), Color(), ttf);
@@ -133,11 +132,18 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         {
             UInt32 c = (UInt32)static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
             PlainTextFormater *formater = static_cast<PlainTextFormater*>(_font->Formater());
-            if (c != '\0' && _font->Size().data[0] + formater->GetCharSize(c).data[0] < _size.data[0]) // ajout du caractere dans la string)
+            if (c != '\0' && _font->Size().data[0] + formater->GetCharSize(c).data[0] < _size.data[0])
             {
-                Utils::Unicode::UTF32 s = _font->PlainText();
-                s += c;
-                _font->PlainText(s);
+                if (c == '\n')
+                {
+                    SendEvent(Event::ReturnPressed);
+                }
+                else // ajout du caractere dans la string)
+                {
+                    Utils::Unicode::UTF32 s = _font->PlainText();
+                    s += c;
+                    _font->PlainText(s);
+                }
             }
         }
         _stateChanged = true;

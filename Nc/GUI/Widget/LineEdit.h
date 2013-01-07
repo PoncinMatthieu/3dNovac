@@ -36,6 +36,7 @@ namespace Nc
         /// Defines a lineEdit Widget.
         /**
             The line edit allow to enter text into an single line text field.
+            Send an ReturnPressed event when the Return/Enter key is pressed.
         */
         class LGUI  LineEdit : public Widget
         {
@@ -52,7 +53,7 @@ namespace Nc
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the line edit. */
-                void                                PlainText(const Utils::Unicode::UTF32 &t)   {_font->PlainText(t);}
+                void                                PlainText(const Utils::Unicode::UTF32 &t)   {_font->PlainText(t); _stateChanged = true;}
                 /** \return the text of the line edit. */
                 inline const Utils::Unicode::UTF32  &PlainText() const                          {return _font->PlainText();}
 

@@ -51,19 +51,22 @@ namespace Nc
                 virtual ISceneNode  *Clone() const              {return new ScrollBar(*this);}
 
                 /** Set the total size of the document. */
-                void        TotalSize(float s)                  {_totalSize = s;}
+                void        TotalSize(float s)                  {_totalSize = s; _stateChanged = true;}
                 /** \return the total size of the document. */
                 float       TotalSize() const                   {return _totalSize;}
 
                 /** Set the page size of the view. */
-                void        PageSize(float s)                   {_pageSize = s;}
+                void        PageSize(float s)                   {_pageSize = s; _stateChanged = true;}
                 /** \return the page size of the slider. */
                 float       PageSize() const                    {return _pageSize;}
 
                 /** Set the total position in the document. */
-                void        Position(float s)                   {_position = s;}
+                void        Position(float s)                   {_position = s; _positionChangedByUser = true; _stateChanged = true;}
                 /** \return the position of the slider. */
                 float       Position() const                    {return _position;}
+
+                /** \return true if the position has been changed at least once by the user. */
+                bool        PositionChangedByUser()             {return _positionChangedByUser;}
 
             protected:
                 /** Handler of Mouse motion event. */
@@ -102,6 +105,7 @@ namespace Nc
                 bool                _buttonSliderPressed;       ///< true if the slider is pressed.
 
                 Vector2i            _lastPosMouse;              ///< record the last position of the mouse.
+                bool                _positionChangedByUser;     ///< true if the position of the scroll bar has been changed at least once by the user.
 
                 Graphic::Sprite     *_spriteLeftButton;         ///< sprite of the left button.
                 Graphic::Sprite     *_spriteRightButton;        ///< sprite of the right button.

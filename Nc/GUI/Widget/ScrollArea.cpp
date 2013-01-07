@@ -135,10 +135,19 @@ void ScrollArea::Resize()
             resizedAll(*this);
         }
 
+        if (_scrollBarH->Position() > _view->Size()[0])
+            _scrollBarH->Position(_view->Size()[0]);
+        else if (_scrollBarH->PositionChangedByUser() && _scrollBarH->Position() + _scrollBarH->PageSize() == _scrollBarH->TotalSize())
+            _scrollBarH->Position(_view->Size()[0] - pageSize[0]);
+
+        if (_scrollBarV->Position() > _view->Size()[1])
+            _scrollBarV->Position(_view->Size()[1]);
+        else if (_scrollBarV->PositionChangedByUser() && _scrollBarV->Position() + _scrollBarV->PageSize() == _scrollBarV->TotalSize())
+            _scrollBarV->Position(_view->Size()[1] - pageSize[1]);
+
         _scrollBarH->TotalSize(_view->Size()[0]);
-        _scrollBarH->Position(0);
         _scrollBarV->TotalSize(_view->Size()[1]);
-        _scrollBarV->Position(0);
+
         _scrollBarH->PageSize(pageSize[0]);
         _scrollBarV->PageSize(pageSize[1]);
     }

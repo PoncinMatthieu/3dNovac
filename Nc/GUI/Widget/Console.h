@@ -30,6 +30,10 @@
 #include <list>
 #include "WindowBox.h"
 #include "Label.h"
+#include "TextEdit.h"
+#include "LineEdit.h"
+#include "Layout.h"
+
 
 namespace Nc
 {
@@ -37,54 +41,69 @@ namespace Nc
     {
         /// To manage a console, contain a text edit to display text with a line edit to send commands.
         /**
+            Send a ReturnPressed event when a command is sent, the line edit and text edit will stay unchanged until you modify it.
         */
-/*        class LGUI  Console : public WindowBox
+        class LGUI  Console : public WindowBox, Utils::NonCopyable
         {
+            private:
+                /// Used to manage event of composed widgets.
+                class Listener : public Nc::Engine::EventManager
+                {
+                    public:
+                        Listener(Console *console)
+                            : _console(console)
+                        {
+                            AddNewCmd(Event::ReturnPressed,    (Nc::Engine::CmdFunction)&Listener::ReturnPressedCmd);
+                        }
+
+                    protected:
+                        void    ReturnPressedCmd(Nc::Engine::IEvent *e)
+                        {
+                            _console->SendCommand();
+                        }
+
+                    protected:
+                        Console *_console;
+                };
+
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WindowBox, System::Object, Nc::GUI::Console);
 
             public:
-                Console();
+                Console(const std::string &title, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0), const std::string &titleTtf = "arial", const std::string &looksName = "");
                 virtual ~Console();
 
-                /** Push a message in the message list of the console. */
-/*                static void         PushMsg(const std::string &s);
-                /** Write a message for the Utils::Logger. */
-/*                static void         Write(const std::string msg, bool flush);
+                /** \return the line edit content. */
+                const Utils::Unicode::UTF32     &LineEditText() const       {return _lineEdit->PlainText();}
+                /** Clear the line edit. Most likely called after you receive a ReturnPressed event. */
+                void                            ClearLineEdit()             {_lineEdit->PlainText("");}
+
+                /** \return the text hold by the text edit. */
+                const Utils::Unicode::UTF32     &TextEditText() const       {return _textEdit->PlainText();}
+                /** Clear the text edit. */
+                void                            ClearTextEdit()             {_textEdit->PlainText("");}
+                /** Append the given \p text to the text edit. */
+                void                            AppendText(const Utils::Unicode::UTF32 &text);
+
+                /** receive events from composed widgets. */
+                virtual void        Update(float elapsedTime);
 
             protected:
-                /** Render the console. */
-/*                virtual void        Render(Graphic::SceneGraph *scene);
-                /** Update the geometry of the console. */
-/*                virtual void        UpdateState();
+                /** Render the root composed widgets. */
+                virtual void        RenderEnd(Graphic::SceneGraph *scene);
 
-                /** Keyboadr event Handler. */
-/*                void KeyboardEvent(const System::Event &event); // receptionne les commandes clavier et l'inscrit dans la console
-                /** Delete the list of font used to render the msg. */
-/*                void DeleteListFont();
-
-                /** Execute a command by sending an event the good engine. */
-/*                void ExecCmd(const std::string &cmd);
-
-                /** Update the position of the cursor. */
-/*                void UpdateCursorPosition();
+                /** Send the command. */
+                virtual void        SendCommand();
 
             protected:
-                static ListMsg                      _listMsg;           ///< The message list.
-                static System::Mutex                _mutexMsg;          ///< Protect the acces of the message list.
-                static ListMsg::reverse_iterator    _itCurrentMsg;      ///< the current message, to scroll the messages.
-                static std::string					_currentWritingMsg;	///< The message that is save between a Write and a flush.
+                Listener                    _listener;          ///< listen composed widget to manage correctly the console.
+                Layout                      *_centralLayout;    ///< root layout.
+                TextEdit                    *_textEdit;         ///< the text edit used to display infos.
+                LineEdit                    *_lineEdit;         ///< the line edit used to send commands.
 
-                std::list<Graphic::Text*>           _listFont;          ///< list of string used to render the messages.
-                Label                               *_labelPrompt;      ///< the label used to render the prompt.
-                Label                               *_labelWrite;       ///< the label used to render the command text.
-                Label                               *_labelCursor;      ///< the label used to render the cursor.
-                float                               _cursorWidth;       ///< posittion of the cursor.
-
-                unsigned int                        _scroll;            ///< scroll position.
-                std::string                         _prompt;            ///< prompt string.
+                friend class Listener;
         };
-*/    }
+    }
 }
 
 #endif
