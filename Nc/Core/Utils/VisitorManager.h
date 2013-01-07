@@ -239,7 +239,75 @@ namespace Nc
                     private:
                         bool                        _postVisit;
                         const VTableInvokableType   *_vTableInvokable;      // vtable pointer for the nodes which should be internaly visited
-                  };
+                };
+
+                /// specialization of the InvokableVisitor with a boolean return type
+                template<class VisitorType, class Base>
+                class InvokableVisitor<VisitorType, Base, bool> : public Visitor<VisitorType, Base, bool>
+                {
+                    public:
+                        typedef void (InvokableVisitor::*InvokableFunc)(Base&);
+                        typedef VTableManager::VTable<VTableInvokableVisitorType, const Base, InvokableFunc>    VTableInvokableType;
+
+                    public:
+                        InvokableVisitor(bool postVisits = true) : _postVisit(postVisits), _vTableInvokable(0) {}
+
+                        /** Method used to invoke the invokable method. */
+                        template<typename Visitable, typename Invoker>
+                        void ThunkInvokable(Base &b)
+                        {
+                            typedef typename GetVisitMethodArgumentType<Visitable, Base>::Type  VisitableType;
+                            Invoker::template Invoke<void, VisitorType, VisitableType>(static_cast<VisitorType&>(*this), static_cast<VisitableType&>(b));  // invoke visit method
+                        }
+
+                        /** Visit the given class, call the visit method if the class is visitable and call the invokable method if the class is intrusive. */
+                        void operator() (Base &b)
+                        {
+                            if (_postVisit)
+                            {
+                                //std::cout << "visit " << &b << std::endl;
+                                if (Visitor<VisitorType, Base, bool>::operator()(b))
+                                    if (_vTableInvokable != 0)
+                                        Invoke(b);
+                            }
+                            else
+                            {
+                                if (_vTableInvokable != 0)
+                                    Invoke(b);
+                                Visitor<VisitorType, Base, bool>::operator()(b);
+                            }
+                        }
+
+                        /** Initialize the invokable vtable with the given invoker and visitable typelist. */
+                        template<typename VisitedList, typename Invoker>
+                        void InitVTableInvokable(const VisitedList&, const Invoker&)
+                        {
+                            _vTableInvokable = VTableManager::GetStaticVtable<VisitorType, VisitedList, Invoker, VTableInvokableType, VTableInvokableInitializer>();
+                        }
+
+                    private:
+                        void Invoke(Base &b)
+                        {
+                            unsigned int    i = 0;
+                            size_t          index = b.InvokableTag();
+                            InvokableFunc   thunk = _vTableInvokable->GetFunc(index);
+                            //std::cout << "tag: " << b.InvokableTag() << " thunk " << thunk << " " << b.GetClassName() << std::endl;
+
+                            while (thunk == NULL && index != 0)
+                            {
+                                index = b.InvokableParentTag(i++);
+                                if (index != 0)
+                                    thunk = _vTableInvokable->GetFunc(index);
+                            }
+
+                            if (thunk != NULL)
+                                (this->*thunk)(b);
+                        }
+
+                    private:
+                        bool                        _postVisit;
+                        const VTableInvokableType   *_vTableInvokable;      // vtable pointer for the nodes which should be internaly visited
+                };
         };
     }
 }

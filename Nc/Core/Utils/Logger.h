@@ -66,7 +66,7 @@ namespace Nc
         {
             public:
                 /** Prototype a function pointer to have a logging function. */
-                typedef void (*LogFunction)(const std::string, bool);
+                typedef void (*LogFunction)(const std::string&, bool);
 
                 /** \return the instance of the logger, and allow you to call the operator << to log
 
