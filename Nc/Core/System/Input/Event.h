@@ -224,6 +224,12 @@ namespace Nc
                 unsigned int height;
             };
 
+            /// Define a unicode char
+            struct TextEvent
+            {
+                UInt32  unicode;
+            };
+
             /// Define the type of evenement.
             enum EventType
             {
@@ -231,7 +237,7 @@ namespace Nc
                 Resized,
                 LostFocus,
                 GainedFocus,
-                TextEntered, ///\todo implement the text entered event.
+                TextEntered, ///\todo implement the text entered event under window.
                 KeyPressed,
                 KeyReleased,
                 MouseWheelMoved,
@@ -254,6 +260,7 @@ namespace Nc
                 MouseButtonEvent    mouseButton;
                 MouseWheelEvent     mouseWheel;
                 SizeEvent           size;
+                TextEvent           text;
                 void                *data;
             };
 

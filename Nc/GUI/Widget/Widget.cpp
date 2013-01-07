@@ -234,7 +234,8 @@ void Widget::Draw(Graphic::SceneGraph *scene)
 void Widget::ManageWindowEvent(const System::Event &event)
 {
     if (event.type == System::Event::KeyPressed ||
-        event.type == System::Event::KeyReleased)
+        event.type == System::Event::KeyReleased ||
+        event.type == System::Event::TextEntered)
         KeyboardEvent(event);
     else if (event.type == System::Event::MouseMoved)
         MouseMotionEvent(event);

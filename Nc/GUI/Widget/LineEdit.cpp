@@ -120,9 +120,10 @@ void LineEdit::Draw(Graphic::SceneGraph *scene)
 
 void LineEdit::KeyboardEvent(const System::Event &event)
 {
-    if (_editable && event.type == System::Event::KeyPressed)
+    if (_editable && event.type == System::Event::TextEntered)
     {
-        if (event.key.code == System::Key::Back && !_font->PlainText().empty()) // suppression du dernier caractere
+        // 8 is the caracter code for backspace, we delete the last caracter
+        if (event.text.unicode == 8 && !_font->PlainText().empty())
         {
             Utils::Unicode::UTF32 s = _font->PlainText();
             s.erase(s.end() - 1);
@@ -130,18 +131,18 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         }
         else
         {
-            UInt32 c = (UInt32)static_cast<WindowInput*>(event.emitter)->ToChar(event.key.code);
             PlainTextFormater *formater = static_cast<PlainTextFormater*>(_font->Formater());
-            if (c != '\0' && _font->Size().data[0] + formater->GetCharSize(c).data[0] < _size.data[0])
+            float charSize = formater->GetCharSize(event.text.unicode).data[0];
+            if (event.text.unicode != '\0' && charSize != 0 && _font->Size().data[0] + charSize < _size.data[0])
             {
-                if (c == '\n')
+                if (event.text.unicode == '\n')
                 {
                     SendEvent(Event::ReturnPressed);
                 }
-                else // ajout du caractere dans la string)
+                else // ajout du caractere dans la string
                 {
                     Utils::Unicode::UTF32 s = _font->PlainText();
-                    s += c;
+                    s += event.text.unicode;
                     _font->PlainText(s);
                 }
             }

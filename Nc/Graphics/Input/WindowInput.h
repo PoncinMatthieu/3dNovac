@@ -47,6 +47,8 @@ namespace Nc
             \sa
                 - IWindow
                 - GLContext
+
+            \deprecated the method to char is deprecated. you should catch the TextEntered events insteed !
         */
         class LGRAPHICS WindowInput : public System::Input
         {

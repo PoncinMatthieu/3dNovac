@@ -201,48 +201,45 @@ void XWindowInput::ProcessEvent(XEvent &event)
             e.key.control = event.xkey.state & ControlMask;
             e.key.shift   = event.xkey.state & ShiftMask;
             GenereEvent(e);
-            break;
-        }
+
             // Generate a TextEntered event
-/*
             if (!XFilterEvent(&event, None))
             {
                 #ifdef X_HAVE_UTF8_STRING
-                if (myInputContext)
+                if (_inputContext)
                 {
-                    Status ReturnedStatus;
-                    Uint8  KeyBuffer[16];
-                    int Length = Xutf8LookupString(myInputContext, &event.xkey, reinterpret_cast<char*>(KeyBuffer), sizeof(KeyBuffer), NULL, &ReturnedStatus);
-                    if (Length > 0)
+                    Status returnedStatus;
+                    UInt8  keyBuffer[16];
+                    int length = Xutf8LookupString(_inputContext, &event.xkey, reinterpret_cast<char*>(keyBuffer), sizeof(keyBuffer), NULL, &returnedStatus);
+                    if (length > 0)
                     {
-                        Uint32 Unicode[2]; // just in case, but 1 character should be enough
-                        const Uint32* End = Unicode::UTF8ToUTF32(KeyBuffer, KeyBuffer + Length, Unicode);
+                        UInt32 text[2]; // just in case, but 1 character should be enough
+                        const UInt32* end = Utils::Convert::Unicode::ANSIToUTF32(keyBuffer, keyBuffer + length, text);
 
-                        if (End > Unicode)
+                        if (end > text)
                         {
-                            Event TextEvt;
-                            TextEvt.Type         = Event::TextEntered;
-                            TextEvt.Text.Unicode = Unicode[0];
-                            SendEvent(TextEvt);
+                            Event textEvt(this, Event::TextEntered);
+                            textEvt.text.unicode = text[0];
+                            GenereEvent(textEvt);
                         }
                     }
                 }
                 else
                 #endif
                 {
-                    static XComposeStatus ComposeStatus;
-                    char KeyBuffer[16];
-                    if (XLookupString(&event.xkey, KeyBuffer, sizeof(KeyBuffer), NULL, &ComposeStatus))
+                    static XComposeStatus composeStatus;
+                    char keyBuffer[16];
+                    if (XLookupString(&event.xkey, keyBuffer, sizeof(keyBuffer), NULL, &composeStatus))
                     {
-                        Event TextEvt;
-                        TextEvt.Type         = Event::TextEntered;
-                        TextEvt.Text.Unicode = static_cast<Uint32>(KeyBuffer[0]);
-                        SendEvent(TextEvt);
+                        Event textEvt(this, Event::TextEntered);
+                        textEvt.text.unicode = static_cast<UInt32>(keyBuffer[0]);
+                        GenereEvent(textEvt);
                     }
                 }
             }
-*/
-            //break;
+
+            break;
+        }
 
         // Key up event
         case KeyRelease :
