@@ -37,7 +37,6 @@ namespace GUIDemo
             virtual void    MouseMotionEvent(Nc::System::Event &event);
 
             Nc::GUI::SceneGraph		*_sceneGUI;
-            Nc::GUI::Console		*_console;
             MainMenu                *_menu;
     };
 }

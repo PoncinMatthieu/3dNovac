@@ -45,8 +45,6 @@ void GameEngine::LoadContent()
 
   // GUI :
   _menu = new MainMenu(_sceneGUI);
-  _console = new GUI::Console(_window, GameEngine::ClassName());
-  _sceneGUI->AddChild(_console);
 }
 
 void GameEngine::Update(float)
@@ -60,16 +58,6 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     {
       if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
 	Quit();
-      else if (event.key.code == System::Key::Tilde) // Tilde pour afficher/cacher la console
-	{
-	  if (!_console->Focus())
-	    {
-	      _sceneGUI->Focus(_console);
-	      send = false;
-	    }
-	  else
-	    _sceneGUI->Unfocus(_console);
-	}
     }
   // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
   if (send)

@@ -41,6 +41,8 @@ using namespace Nc::GUI;
 using namespace Nc::Graphic;
 using namespace DemoViewer;
 
+Nc::GUI::Console	    *MainMenu::_console = NULL;
+
 MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     : _GUI(gui)
 {
@@ -57,23 +59,35 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     // create the description window
     CreateDescriptionPannel(mainLayout);
 
+    // create a central layout
+    Layout *centralLayout = new Layout(Layout::Vertical, Center);
+    centralLayout->PaddingH(5);
+    centralLayout->PaddingV(5);
+    centralLayout->Percent(Vector2f(100, 100));
+    mainLayout->AddChild(centralLayout);
+    mainLayout->SetExpandRatio(centralLayout, 100);
+
     // create the demo window used to render the demos
     _widgetDemoWindow = new Widget(Center);
     _widgetDemoWindow->UseLook(new BoxLook("Small"));
-    _widgetDemoWindow->PaddingH(5);
-    _widgetDemoWindow->PaddingV(5);
     _widgetDemoWindow->Percent(Vector2f(100, 100));
-    mainLayout->AddChild(_widgetDemoWindow);
-    mainLayout->SetExpandRatio(_widgetDemoWindow, 100);
+    centralLayout->AddChild(_widgetDemoWindow);
+    centralLayout->SetExpandRatio(_widgetDemoWindow, 100);
+
+    // create the console at the bottom of the centralLayout
+    _console = new Console("Console", CenterH | Bottom, Vector2i(0,200));
+    _console->Percent(Vector2f(100, 0));
+    _console->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
+    centralLayout->AddChild(_console);
+
+    // link the logger to the console
+    Utils::Logger::Instance().SetLoggingFunction(Write);
 
     // create the fps widget on top of the main layout
     FPSWidget *fps = new FPSWidget(Right | Top);
     fps->MarginTop(8);
     fps->MarginRight(8);
     _GUI->AddChild(fps);
-
-    //_console = new GUI::Console();
-    //_scene->AddChild(_console);
 }
 
 MainMenu::~MainMenu()
@@ -137,7 +151,6 @@ Widget  *MainMenu::CreateSelectDemoWindow(Layout *parent)
     _demoComboBox = new ComboBox(_GUI, Left | CenterV, Vector2i(250,0));
     _demoComboBox->MarginRight(5);
     _demoComboBox->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
-    //_demoComboBox->HandlerId(GameEngine::DemoSelected);
     _demoComboBox->Percent(Vector2f(100, 0));
     selectDemoLayout->AddChild(_demoComboBox);
     selectDemoLayout->SetExpandRatio(_demoComboBox, 100);
@@ -145,7 +158,6 @@ Widget  *MainMenu::CreateSelectDemoWindow(Layout *parent)
     Button *button = new Button("Start", Center, Vector2i(70, 28), "arial");
     selectDemoLayout->AddChild(button);
     button->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
-    //button->HandlerId(GameEngine::StartDemo);
     return windowSelectDemo;
 }
 
@@ -194,4 +206,19 @@ void    MainMenu::DemoSelected()
         GUI::Visitor::ResizedAll resized;
         resized(*_layoutWinDesc);
     }
+}
+
+void    MainMenu::ExecConsoleCommand()
+{
+    // print the command, so it will be displayed by the console
+    if (!_console->LineEditText().empty())
+    {
+        LOG << _console->LineEditText() << std::endl;
+        _console->ClearLineEdit();
+    }
+}
+
+void    MainMenu::Write(const std::string &msg, bool flush)
+{
+    _console->AppendText(msg);
 }

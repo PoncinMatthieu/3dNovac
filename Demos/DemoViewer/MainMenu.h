@@ -39,6 +39,10 @@ namespace DemoViewer
             MainMenu(Nc::GUI::SceneGraph *gui);
             ~MainMenu();
 
+            Nc::GUI::Console            *GetConsole()       {return _console;}
+
+            void                        ExecConsoleCommand();
+
             void                        AddDemo(const std::string &name);
 
             void                        DemoSelected();
@@ -49,12 +53,16 @@ namespace DemoViewer
 
             void                        CloseDemoWindow();
 
+            /** Append messages from the Utils::Logger to the console. */
+            static void                 Write(const std::string &msg, bool flush);
+
         private:
             Nc::GUI::Widget             *CreateDescriptionPannel(Nc::GUI::Layout *parent);
             Nc::GUI::Widget             *CreateSelectDemoWindow(Nc::GUI::Layout *parent);
 
         private:
             Nc::GUI::SceneGraph         *_GUI;
+            static Nc::GUI::Console	    *_console;
             Nc::GUI::ComboBox           *_demoComboBox;
             Nc::GUI::Image              *_demoImage;
             unsigned int                imageHeight;

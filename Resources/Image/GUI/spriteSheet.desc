@@ -19,6 +19,7 @@
   <Sprite name="SmallBoxRightTop"		topX="21" topY="0" bottomX="23" bottomY="2" />
   <Sprite name="SmallBoxLeftBottom"		topX="16" topY="5" bottomX="18" bottomY="7" />
   <Sprite name="SmallBoxRightBottom"	topX="21" topY="5" bottomX="23" bottomY="7" />
+  <Sprite name="SmallBoxMiddle"			topX="19" topY="3" bottomX="21" bottomY="5" />
 
   <Sprite name="WidgetBoxLeftEdge"			topX="0" topY="77" bottomX="10" bottomY="93" />
   <Sprite name="WidgetBoxTopEdge"			topX="9" topY="64" bottomX="26" bottomY="74" />

@@ -25,6 +25,7 @@ namespace DemoViewer
 
             void            StartDemoCmd(Nc::Engine::IEvent *e);
             void            DemoSelectedCmd(Nc::Engine::IEvent *e);
+            void            ConsolePushCommandCmd(Nc::Engine::IEvent *e);
 
         protected:
             virtual void    Update(float runningTime);
@@ -34,7 +35,6 @@ namespace DemoViewer
             virtual void    MouseMotionEvent(Nc::System::Event &event);
 
             Nc::GUI::SceneGraph		*_scene;
-            Nc::GUI::Console		*_console;
             MainMenu                *_menu;
             DemoFactory             *_demoFactory;
             std::string             _currentDemo;

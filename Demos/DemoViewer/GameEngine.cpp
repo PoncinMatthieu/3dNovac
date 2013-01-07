@@ -12,8 +12,9 @@ GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manage
 {
     _demoFactory = new DemoFactory(manager);
 
-    AddNewCmd(GUI::Event::Toggled,      (Nc::Engine::CmdFunction)&GameEngine::StartDemoCmd);
-    AddNewCmd(GUI::Event::ItemChanged,  (Nc::Engine::CmdFunction)&GameEngine::DemoSelectedCmd);
+    AddNewCmd(GUI::Event::Toggled,          (Nc::Engine::CmdFunction)&GameEngine::StartDemoCmd);
+    AddNewCmd(GUI::Event::ItemChanged,      (Nc::Engine::CmdFunction)&GameEngine::DemoSelectedCmd);
+    AddNewCmd(GUI::Event::ReturnPressed,    (Nc::Engine::CmdFunction)&GameEngine::ConsolePushCommandCmd);
 }
 
 GameEngine::~GameEngine()
@@ -54,18 +55,6 @@ void GameEngine::ManageWindowEvent(System::Event &event)
     {
         if (event.type == System::Event::KeyPressed && event.key.code == System::Key::Escape)
             Quit();
-/*
-        else if (event.key.code == System::Key::Tilde) // Tilde pour afficher/cacher la console
-        {
-            if (!_console->Focus())
-            {
-                _scene->Focus(_console);
-                send = false;
-            }
-            else
-                _scene->Unfocus(_console);
-        }
-*/
     }
     // send les evenements au gameManager (celui ci les dispatch a la GUI et au fonction Keybord/MouseEvent)
     if (send)
@@ -123,6 +112,12 @@ void GameEngine::StartDemoCmd(Nc::Engine::IEvent *e)
 	// wait the loading and enable the sub window for rendering
 	_manager->WaitEnginesLoading();
 	w->EnableSubWindow();
+}
+
+void    GameEngine::ConsolePushCommandCmd(Nc::Engine::IEvent *e)
+{
+    if (e->GetData<Nc::GUI::Widget*>() == _menu->GetConsole())
+        _menu->ExecConsoleCommand();
 }
 
 

@@ -10,7 +10,7 @@ using namespace Nc;
 int main(int argc, char *argv[])
 {
     Graphic::WindowStyle    style = Graphic::IWindow::Titlebar | Graphic::IWindow::Closeable | Graphic::IWindow::Resizeable;
-    Vector2ui               winSize(1360, 768);
+    Vector2ui               winSize(1360, 868);
 
     try
     {
