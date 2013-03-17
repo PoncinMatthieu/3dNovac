@@ -120,8 +120,9 @@ namespace Nc
                 /** Create a new command to receive events. */
                 void    AddNewCmd(unsigned int id, CmdFunction function);
 
-                bool    _execEvents;        ///< to pause the execution of events in the event queue.
-                bool    _receiveEvents;     ///< to bypass events (stop the reception of events).
+                bool    _execEvents;                    ///< to pause the execution of events in the event queue.
+                bool    _receiveEvents;                 ///< to bypass events (stop the reception of events).
+                bool    _throwErrorAtUnknownCommand;    ///< if true, will throw an error if the event manager receive an unknown command. By default the statement is true.
 
             private:
                 /** Execute an event. */

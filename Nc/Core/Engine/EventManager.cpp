@@ -36,6 +36,7 @@ EventManager::EventManager()
 {
     _execEvents = true;
     _receiveEvents = true;
+    _throwErrorAtUnknownCommand = true;
 }
 
 EventManager::~EventManager()
@@ -74,7 +75,8 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
                 return;
             }
         }
-        throw Utils::Exception("Unknown command id:" + Utils::Convert::ToString(id));
+        if (_throwErrorAtUnknownCommand)
+            throw Utils::Exception("Unknown command id:" + Utils::Convert::ToString(id));
     }
     catch (const std::exception &ex)
     {
