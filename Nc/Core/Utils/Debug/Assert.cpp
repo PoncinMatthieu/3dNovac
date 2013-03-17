@@ -24,29 +24,20 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_CORE_UTILS_DEBUG_ASSERT_H_
-#define NC_CORE_UTILS_DEBUG_ASSERT_H_
+#include "Assert.h"
 
-#include <assert.h>
-#include "../../Define.h"
-#include "CallStack.h"
-#include "CrashReporter.h"
+using namespace Nc;
+using namespace Nc::Utils;
 
-#ifndef Assert
-#define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(__STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
-#endif
-
-#ifndef AssertError
-#define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, __STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
-#endif
-
-namespace Nc
+void Nc::Utils::AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function)
 {
-    namespace Utils
-    {
-      LCORE void AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function);
-      LCORE void AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function);
-    }
+  CALLSTACK_INFO("Assertion Failed: " + file + ":" + Convert::ToString(line) + ": " + function + ": (" + expr + ")");
+  CrashReporter::Abort();
 }
 
-#endif
+void Nc::Utils::AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function)
+{
+  CALLSTACK_INFO("Assertion Failed: " + file + ":" + Convert::ToString(line) + ": " + function + ": (" + expr + ")");
+  LOG_ERROR << "Fatal error: " << error << std::endl;
+  CrashReporter::Abort();
+}
