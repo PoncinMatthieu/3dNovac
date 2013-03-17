@@ -613,7 +613,9 @@ void    State::ActiveTexture(unsigned int no)
 
 void    State::Scissor(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
 {
-    GL_STATE_CALLSTACK_INFO("State::Scissor()");
+    GL_STATE_CALLSTACK_INFO("State::Scissor(" +
+                            Utils::Convert::ToString(x) + ", " + Utils::Convert::ToString(y) + ", " +
+                            Utils::Convert::ToString(width) + ", " + Utils::Convert::ToString(height) + ")");
 
     if (_currentScissorX != x || _currentScissorY != y ||
         _currentScissorWidth != width || _currentScissorHeight != height)
