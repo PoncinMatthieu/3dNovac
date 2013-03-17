@@ -116,7 +116,7 @@ namespace Nc
                     int             Depth() const
                     {
                         int n = 0;
-                        for (NodeType *root = static_cast<NodeType*>(this); root->Parent() != NULL; ++n)
+                        for (const NodeType *root = static_cast<const NodeType*>(this); root->Parent() != NULL; ++n)
                             root = root->Parent();
                         return n;
                     }
@@ -159,6 +159,18 @@ namespace Nc
                                 return;
                             }
                         }
+                    }
+
+                    /**
+                        \return the depth of the node (length of the path to it's root).
+                        \todo Here we calculate the depth using the first parent of the node, we should test every parent and return either the longer or shorter path.
+                    */
+                    int             Depth() const
+                    {
+                        int n = 0;
+                        for (const NodeType *root = static_cast<const NodeType*>(this); !root->Parents().empty(); ++n)
+                            root = *root->Parents().begin();
+                        return n;
                     }
 
                 protected:

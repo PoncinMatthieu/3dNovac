@@ -85,13 +85,13 @@ namespace Nc
                 - ListNodePolitic
                 - NNodePolitic
         */
-        template<typename T, template<typename, class, class> class P = ListNodePolitic, class NodeType = Utils::Metaprog::Nop>
-        class Node : public AbstractNode<T,P,NodeType>
+        template<typename T, template<typename, class, class> class P = ListNodePolitic, class NodeType = Utils::Metaprog::Nop, template<class> class Allocator = Utils::Metaprog::Allocator >
+        class Node : public AbstractNode<T,P,NodeType,Allocator<Node<T,P,NodeType,Allocator> > >
         {
             public:
-                typedef AbstractNode<T,P,NodeType>      ParentType;
+                typedef AbstractNode<T,P,NodeType,Allocator<Node> >        ParentType;
                 NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
-                typedef AbstractNode<T,P,NodeType>      NodePolitic;
+                typedef AbstractNode<T,P,NodeType,Allocator<Node> >        NodePolitic;
 
             public:
                 Node()                                  : NodePolitic()               {}
@@ -108,14 +108,14 @@ namespace Nc
 
                 Run the command `dot testListNode.dot -Tpng > result.png` to see the result printed out by the DotGraph into an image.
         */
-        template<typename T, template<typename, class, class> class P>
-        class Node<T,P,Utils::Metaprog::Nop> : public AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >
+        template<typename T, template<typename, class, class> class P, template<class> class Allocator>
+        class Node<T,P,Utils::Metaprog::Nop, Allocator> : public AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop>, Allocator<Node<T,P,Utils::Metaprog::Nop,Allocator> > >
         {
             public:
-                typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >     ParentType;
+                typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop>, Allocator<Node> >        ParentType;
                 NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
-                typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop> >     NodePolitic;
-                typedef Node                                                    NodeType;
+                typedef AbstractNode<T, P, Node<T,P,Utils::Metaprog::Nop>, Allocator<Node> >        NodePolitic;
+                typedef Node                                                                        NodeType;
 
             public:
                 Node()                                  : NodePolitic()               {}

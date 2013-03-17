@@ -1,5 +1,6 @@
 /** \file BinaryTree.cpp
 	\todo The BinaryTree Example doesn't seem to work with VisualStudio, the templates failed to compile.
+	\todo Check if the tree is really well balanced. It seems that it isn't well balanced when there is a node with the same value in the tree.
 */
 
 #include <Nc/Core/Graph/DotGraph.h>
