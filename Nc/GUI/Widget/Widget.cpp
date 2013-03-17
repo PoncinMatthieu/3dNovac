@@ -200,7 +200,7 @@ void Widget::RenderEnd(Graphic::SceneGraph *scene)
     scene->PopModelMatrix();
 }
 
-void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
+bool Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
 {
     if (_useStencil)
     {
@@ -216,6 +216,7 @@ void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
 
         scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
     }
+    return true;
 }
 
 void Widget::RenderChildsEnd(Graphic::SceneGraph *scene)

@@ -224,8 +224,9 @@ namespace Nc
                 /**
                     Set the stencil buffer if activated.
                     Here the clipping part is rectangular, so we simply use the scissor test insteed of using the stencil test.
+		    \return true
                 */
-                virtual void            RenderChildsBegin(Graphic::SceneGraph *scene);
+                virtual bool            RenderChildsBegin(Graphic::SceneGraph *scene);
                 /** Unset the stencil buffer if activated. */
                 virtual void            RenderChildsEnd(Graphic::SceneGraph *scene);
                 /** Draw the widget. */
