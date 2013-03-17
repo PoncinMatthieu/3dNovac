@@ -36,7 +36,7 @@ Label::Label(const Utils::Unicode::UTF32 &label, float charSize, const Color &c,
     : Widget(alignment, size), _label(NULL), _labelAlignment(Left | CenterV)
 {
     PaddingH(5);
-    Init(label, charSize, c, ttf, s);
+    Text(label, charSize, c, ttf, s);
 }
 
 Label::~Label()
@@ -72,7 +72,7 @@ void Label::ToString(std::ostream &os) const
     os << " Label: " << _label->PlainText();
 }
 
-void Label::Init(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s)
+void Label::Text(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s)
 {
     if (_label)
         delete _label;
@@ -82,7 +82,7 @@ void Label::Init(const Utils::Unicode::UTF32 &l, float charSize, const Color &c,
 
 void Label::UpdateState()
 {
-    // update the size of the label on the size of the text if the size if too small
+    // update the size of the label using the size of the text if the size if too small
     // (more likely if we didn't set the size at first)
     if (_size[0] < _label->Size()[0])
         _size[0] = _label->Size()[0] + PaddingLeft() + PaddingRight();
@@ -128,10 +128,7 @@ void Label::UpdateLabel()
 
 void Label::Draw(Graphic::SceneGraph *scene)
 {
-    // draw le widget
     Widget::Draw(scene);
-
-    // draw le label
     _label->RenderNode(scene);
 }
 

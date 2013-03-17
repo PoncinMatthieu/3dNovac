@@ -46,7 +46,7 @@ namespace Nc
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Label);
 
             public:
-                Label(  const Utils::Unicode::UTF32 &label, float charSize, const Color &c, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0),
+                Label(  const Utils::Unicode::UTF32 &label, float fontSize, const Color &fontColor, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0),
                         const std::string &ttf = "arial", Graphic::PlainTextFormater::Style s = Graphic::PlainTextFormater::Regular);
                 Label(const Label &w);
                 Label &operator = (const Label &w);
@@ -58,16 +58,16 @@ namespace Nc
                 /** Add the given widget as a child to the label and setup the widget so it will be positioned next to the label. */
                 void                            AddBuddy(Widget *w);
 
-                /** Create the label with a text, a font and a style. */
-                virtual void                    Init(const Utils::Unicode::UTF32 &l, float charSize, const Color &c, const std::string &ttf, Graphic::PlainTextFormater::Style s);
                 /** \return the label size. */
-                inline const Vector2f           &GetTextSize()                                  {return _label->Size();}
+                inline const Vector2f           &TextSize()                                     {return _label->Size();}
                 /** Set the label text. */
                 inline void                     PlainText(const Utils::Unicode::UTF32 &text)    {_label->PlainText(text); UpdateLabel(); _stateChanged = true;}
                 /** \return the label. */
-                inline const Graphic::Text      *GetText() const                                {return _label;}
+                inline const Graphic::Text      *Text() const                                   {return _label;}
                 /** \return the label. */
-                inline Graphic::Text            *GetText()                                      {return _label;}
+                inline Graphic::Text            *Text()                                         {return _label;}
+                /** Initialize the text with a string, a color, a font and a style. */
+                void                            Text(const Utils::Unicode::UTF32 &l, float fontSize = 15, const Color &fontColor = Color(0,0,0), const std::string &ttf = "arial", Graphic::PlainTextFormater::Style fontStyle = Graphic::PlainTextFormater::Regular);
 
                 /** \return the alignment mask of the label. */
                 inline const AlignmentMask      &Alignment() const                              {return _labelAlignment;}
@@ -83,7 +83,7 @@ namespace Nc
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
                 /** Update the label matrix. */
-                void                UpdateLabel();
+                virtual void        UpdateLabel();
 
                 /** \return a vector to translate the childs when we call the RelativePos method. */
                 virtual void        PosChild(const Widget *, Vector2i &) const;

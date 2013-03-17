@@ -30,16 +30,22 @@ using namespace Nc;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
-Item::Item()
+Item::Item(const Utils::Unicode::UTF32 &label, float fontSize, const Color &fontColor, const std::string &fontName, Graphic::PlainTextFormater::Style fontStyle)
+    : Label(label, fontSize, fontColor, Left | Top, Vector2i(0,0), fontName, fontStyle), _selected(false)
 {
-}
-
-Item::Item(const std::string &data)
-    : _data(data)
-{
+    _renderRelativePos = false;
 }
 
 Item::~Item()
 {
+}
+
+void    Item::Selected(bool st)
+{
+    if (_selected != st)
+    {
+        _selected = st;
+        _stateChanged = true;
+    }
 }
 

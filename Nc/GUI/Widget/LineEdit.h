@@ -36,7 +36,9 @@ namespace Nc
         /// Defines a lineEdit Widget.
         /**
             The line edit allow to enter text into an single line text field.
-            Send an ReturnPressed event when the Return/Enter key is pressed.
+
+            - Send an ReturnPressed event when the Return/Enter key is pressed.
+            - Send a TextEntered event whenever the text changed from a keyboard event.
         */
         class LGUI  LineEdit : public Widget
         {

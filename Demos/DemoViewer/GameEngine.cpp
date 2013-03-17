@@ -97,7 +97,7 @@ void GameEngine::StartDemoCmd(Nc::Engine::IEvent *e)
     GUI::SubWindow *w = _menu->CreateDemoWindow(_window);
 
     // create the new demo game engine
-    Contrib::GameEngine *engine = _demoFactory->CreateDemo(w->GetSubWindow(), *_menu->Demo());
+    Contrib::GameEngine *engine = _demoFactory->CreateDemo(w->GetSubWindow(), _menu->Demo()->ToStdString());
     if (engine == NULL)
         throw Utils::Exception("StartDemoCmd", "Failed to create the new GameEngine.");
 

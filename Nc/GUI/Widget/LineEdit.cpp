@@ -144,6 +144,7 @@ void LineEdit::KeyboardEvent(const System::Event &event)
                 Utils::Unicode::UTF32 s = _font->PlainText();
                 s += event.text.unicode;
                 _font->PlainText(s);
+                SendEvent(Event::TextEntered);
             }
         }
         _stateChanged = true;

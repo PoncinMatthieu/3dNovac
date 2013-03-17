@@ -57,6 +57,7 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
     _padding.Init(0, 0, 0, 0);
     _widgetLook = NULL;
     _owner = NULL;
+    _renderRelativePos = true;
 
     _reposed = true;
     _resized = true;
@@ -97,6 +98,7 @@ void Widget::Copy(const Widget &w)
     _percent = w._percent;
     _useStencil = w._useStencil;
     _eventHandler = w._eventHandler;
+    _renderRelativePos = w._renderRelativePos;
 
 	if (_widgetLook)
         delete _widgetLook;
@@ -174,10 +176,17 @@ void Widget::RenderBegin(Graphic::SceneGraph *scene)
     CheckState();
 
     // definit la position en fonction des corners
-    Vector2i reelPos;
-    RelativePos(reelPos);
     scene->PushModelMatrix();
-    scene->ModelMatrix().AddTranslation(reelPos.data[0], reelPos.data[1], 0.f); // translation sur la position relative au Corner
+    if (_renderRelativePos)
+    {
+        Vector2i reelPos;
+        RelativePos(reelPos);
+        scene->ModelMatrix().AddTranslation(reelPos.data[0], reelPos.data[1], 0.f); // translation sur la position relative au Corner
+    }
+    else
+    {
+        scene->ModelMatrix().AddTranslation(_pos.data[0], _pos.data[1], 0.f); // translation sur la position du widget
+    }
 }
 
 void Widget::RenderEnd(Graphic::SceneGraph *scene)
@@ -200,7 +209,7 @@ void Widget::RenderEnd(Graphic::SceneGraph *scene)
     scene->PopModelMatrix();
 }
 
-void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
+bool Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
 {
     if (_useStencil)
     {
@@ -214,8 +223,14 @@ void Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
         size[0] -= PaddingH();
         size[1] -= PaddingV();
 
+        if (size[0] < 0)
+            size[0] = 0;
+        if (size[1] < 0)
+            size[1] = 0;
+
         scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
     }
+    return true;
 }
 
 void Widget::RenderChildsEnd(Graphic::SceneGraph *scene)
@@ -443,9 +458,9 @@ void    Widget::RemoveWidget(Widget *w)
     RemoveChild(w);
 }
 
-void    Widget::UseLook(GUI::ILook *look)
+void    Widget::UseLook(GUI::ILook *look, bool deletePreviousLook)
 {
-    if (_widgetLook)
+    if (deletePreviousLook && _widgetLook)
         delete _widgetLook;
     _widgetLook = look;
 }

@@ -43,7 +43,7 @@ namespace Nc
         /**
             Send a ReturnPressed event when a command is sent, the line edit and text edit will stay unchanged until you modify it.
         */
-        class LGUI  Console : public WindowBox, Utils::NonCopyable
+        class LGUI  Console : public Widget, Utils::NonCopyable
         {
             private:
                 /// Used to manage event of composed widgets.
@@ -53,6 +53,7 @@ namespace Nc
                         Listener(Console *console)
                             : _console(console)
                         {
+                            _throwErrorAtUnknownCommand = false;
                             AddNewCmd(Event::ReturnPressed,    (Nc::Engine::CmdFunction)&Listener::ReturnPressedCmd);
                         }
 
@@ -67,10 +68,10 @@ namespace Nc
                 };
 
             public:
-                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(WindowBox, System::Object, Nc::GUI::Console);
+                NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Console);
 
             public:
-                Console(const std::string &title, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0), const std::string &titleTtf = "arial", const std::string &looksName = "");
+                Console(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0,0));
                 virtual ~Console();
 
                 /** \return the line edit content. */

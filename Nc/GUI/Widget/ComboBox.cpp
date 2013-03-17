@@ -33,8 +33,8 @@ using namespace Nc;
 using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
-ComboBox::ComboBox(GUI::SceneGraph *scene, const AlignmentMask &alignment, const Vector2i &size, float fontSize, const Color &fontColor, const std::string &fontName, const std::string &looksName)
-    : Widget(alignment, size), _scene(scene), _fontSize(fontSize), _fontColor(fontColor), _fontName(fontName), _currentItem(NULL), _listUnrolled(false), _currentUnfoldList(NULL)
+ComboBox::ComboBox(GUI::SceneGraph *scene, const AlignmentMask &alignment, const Vector2i &size, const std::string &looksName)
+    : Widget(alignment, size), _scene(scene), _currentItem(NULL), _listUnrolled(false), _currentUnfoldList(NULL)
 {
     StripLook *l = new StripLook(looksName + StyleSheet::Name::ComboBox);
     UseLook(l);
@@ -70,15 +70,12 @@ ComboBox &ComboBox::operator = (const ComboBox &cb)
 void    ComboBox::Copy(const ComboBox &cb)
 {
     _scene = cb._scene;
-    _fontSize = cb._fontSize;
-    _fontColor = cb._fontColor;
-    _fontName = cb._fontName;
     _listUnrolled = cb._listUnrolled;
     _spriteList = new Sprite(*cb._spriteList);
 
-    for (ListItem::const_iterator it = cb._itemList.begin(); it != cb._itemList.end(); ++it)
-        _itemList.push_back(std::pair<Item*, Graphic::Text*>(it->first->Clone(), new Graphic::Text(*it->second)));
-    _currentItem = (!_itemList.empty()) ? &(*_itemList.begin()) : NULL;
+    for (ListPItem::const_iterator it = cb._itemList.begin(); it != cb._itemList.end(); ++it)
+        _itemList.push_back(static_cast<Item*>((*it)->Clone()));
+    _currentItem = (!_itemList.empty()) ? (*_itemList.begin()) : NULL;
     _listUnrolled = false;
     _currentUnfoldList = NULL;
 }
@@ -88,11 +85,8 @@ ComboBox::~ComboBox()
 {
     delete _spriteList;
 
-    for (ListItem::iterator it = _itemList.begin(); it != _itemList.end(); ++it)
-    {
-        delete it->first;
-        delete it->second;
-    }
+    for (ListPItem::iterator it = _itemList.begin(); it != _itemList.end(); ++it)
+        delete *it;
 }
 
 void    ComboBox::UpdateState()
@@ -100,6 +94,11 @@ void    ComboBox::UpdateState()
     Widget::UpdateState();
 
     _spriteList->Size(Vector2f(_size[0] - static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0] - static_cast<StripLook*>(_widgetLook)->spriteRight->Size()[0], _spriteList->Size()[1]));
+
+    for (ListPItem::iterator it = _itemList.begin(); it != _itemList.end(); ++it)
+    {
+        (*it)->Pos(Vector2i(PaddingLeft(), ((_spriteList->Size()[1] - (*it)->TextSize()[1]) / 2)));
+    }
 
     if (!_listUnrolled && _currentUnfoldList != NULL)
     {
@@ -118,8 +117,8 @@ void    ComboBox::Draw(Graphic::SceneGraph *scene)
         {
             scene->PushModelMatrix();
             scene->ModelMatrix().AddTranslation(static_cast<StripLook*>(_widgetLook)->spriteLeft->Size()[0],
-                                                (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] / 2) - (_currentItem->second->Size()[1] / 2) - ((_spriteList->Size()[1] / 2) - (_currentItem->second->Size()[1] / 2)), 0);
-            _currentItem->second->RenderNode(scene);
+                                                (static_cast<StripLook*>(_widgetLook)->spriteMiddle->Size()[1] / 2) - (_currentItem->TextSize()[1] / 2) - ((_spriteList->Size()[1] / 2) - (_currentItem->TextSize()[1] / 2)), 0);
+            _currentItem->RenderNode(scene);
             scene->PopModelMatrix();
         }
     }
@@ -153,19 +152,22 @@ void    ComboBox::MouseButtonEvent(const System::Event &event)
 
 void    ComboBox::AddItem(Item *item)
 {
-    Graphic::Text *s = new Graphic::Text(item->Data(), _fontSize, _fontColor, _fontName);
-    s->Matrix.AddTranslation(PaddingLeft(), (_spriteList->Size()[1] / 2) - (s->Size()[1] / 2), 0);
+    // init the matrix of the text
+    item->Text()->Matrix.AddTranslation(PaddingLeft(), (_spriteList->Size()[1] / 2) - (item->Text()->Size()[1] / 2), 0);
 
-    _itemList.push_back(std::pair<Item*, Graphic::Text*>(item, s));
-    _currentItem = &(*_itemList.begin());
+    _itemList.push_back(item);
+    _currentItem = *_itemList.begin();
     _stateChanged = true;
 }
 
-void    ComboBox::ItemChoosed(StringItem *item)
+void    ComboBox::ItemChoosed(Item *item)
 {
     if (_currentItem != item)
     {
+        if (_currentItem)
+            _currentItem->Selected(false);
         _currentItem = item;
+        _currentItem->Selected(true);
         SendEvent(Event::ItemChanged);
     }
 }
@@ -187,11 +189,11 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
         Vector2i size = _cb->_spriteList->Size();
         pos[0] += static_cast<StripLook*>(_cb->_widgetLook)->spriteLeft->Size()[0];
         pos[1] += ((static_cast<StripLook*>(_cb->_widgetLook)->spriteMiddle->Size()[1] - _cb->_spriteList->Size()[1]) / 2);
-        for (ListItem::iterator it = _cb->_itemList.begin(); it != _cb->_itemList.end(); ++it)
+        for (ListPItem::iterator it = _cb->_itemList.begin(); it != _cb->_itemList.end(); ++it)
         {
             if (Math::Test::PointInRect(mousePos, pos, size))
             {
-                _cb->ItemChoosed(&*it);
+                _cb->ItemChoosed(*it);
             }
             pos[1] -= _cb->_spriteList->Size()[1];
         }
@@ -204,10 +206,10 @@ void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &
 void        ComboBox::ComboBoxUnfoldList::Draw(Graphic::SceneGraph *scene)
 {
     scene->ModelMatrix().AddTranslation(0, -_cb->_spriteList->Size()[1], 0);
-    for (ListItem::iterator it = _cb->_itemList.begin(); it != _cb->_itemList.end(); ++it)
+    for (ListPItem::iterator it = _cb->_itemList.begin(); it != _cb->_itemList.end(); ++it)
     {
         _cb->_spriteList->RenderNode(scene);
-        it->second->RenderNode(scene);
+        (*it)->RenderNode(scene);
         scene->ModelMatrix().AddTranslation(0, -_cb->_spriteList->Size()[1], 0);
     }
 }

@@ -36,8 +36,8 @@ using namespace Nc::Graphic;
 using namespace Nc::GUI;
 
 
-Console::Console(const std::string &title, const AlignmentMask &alignment, const Vector2i &size, const std::string &titleTtf, const std::string &looksName)
-    :   WindowBox(title, alignment, size, titleTtf, looksName),
+Console::Console(const AlignmentMask &alignment, const Vector2i &size)
+    :   Widget(alignment, size),
         _listener(this)
 {
     // create the composed widgets
@@ -74,7 +74,7 @@ void    Console::RenderEnd(Graphic::SceneGraph *scene)
 void    Console::Update(float elapsedTime)
 {
     _listener.ExecuteEvents();
-    WindowBox::Update(elapsedTime);
+    Widget::Update(elapsedTime);
 }
 
 void    Console::SendCommand()

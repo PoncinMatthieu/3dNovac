@@ -92,16 +92,19 @@ TextEdit::TextDocument::TextDocument(TextEdit *editor, const Utils::Unicode::UTF
 }
 
 TextEdit::TextDocument::TextDocument(const TextDocument &textDocument)
-    : Widget(textDocument)
+    : Widget(textDocument), _editor(textDocument._editor)
 {
     text = static_cast<Graphic::Text*>(textDocument.text->Clone());
+    Resize();
 }
 
 TextEdit::TextDocument &TextEdit::TextDocument::operator = (const TextDocument &textDocument)
 {
     Widget::operator = (textDocument);
+    _editor = textDocument._editor;
     delete text;
     text = static_cast<Graphic::Text*>(textDocument.text->Clone());
+    Resize();
     return *this;
 }
 

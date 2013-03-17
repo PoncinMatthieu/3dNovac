@@ -68,9 +68,12 @@
             struct ILook;
 
             class Widget;
+            class Item;
 
             // typedef
             typedef std::list<Widget*>      ListPWidget;
+            typedef std::list<Item*>        ListPItem;
+            //typedef Graph::Node<Item*>      ItemNode;
 
             /// Define a set of visitor aiming to visit widget.
             namespace Visitor

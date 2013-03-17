@@ -95,6 +95,7 @@ namespace Nc
                 ItemChanged,
                 EventIdMax,
                 ReturnPressed,
+                TextEntered,
             };
         }
     }

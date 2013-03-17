@@ -192,7 +192,7 @@ namespace Nc
                     If \p look is null, the widget will not be decored.
                     \warning the look will be deleted by the widget, a look object should be used with one and only one widget.
                 */
-                void					UseLook(GUI::ILook *look = NULL);
+                void					UseLook(GUI::ILook *look = NULL, bool deletePreviousLook = true);
 
                 /** Remove the given widget. */
                 void                    RemoveWidget(Widget *w);
@@ -225,7 +225,7 @@ namespace Nc
                     Set the stencil buffer if activated.
                     Here the clipping part is rectangular, so we simply use the scissor test insteed of using the stencil test.
                 */
-                virtual void            RenderChildsBegin(Graphic::SceneGraph *scene);
+                virtual bool            RenderChildsBegin(Graphic::SceneGraph *scene);
                 /** Unset the stencil buffer if activated. */
                 virtual void            RenderChildsEnd(Graphic::SceneGraph *scene);
                 /** Draw the widget. */
@@ -295,7 +295,8 @@ namespace Nc
                 bool                    _resizable;                 ///< if false, the widget will not be resized.
                 Vector2f                _percent;                   ///< if the percent is different of null, then the size will be calculated in function of the parent size (if no parent then use the window size).
 
-                bool                    _useStencil;                ///< if true, use the stencil buffer to be sure that the childs will not be drawn outside of the widget.
+                bool                    _useStencil;                ///< if true, use the stencil buffer to be sure that the childs will not be drawdrawn outside of the widget.
+                bool                    _renderRelativePos;         ///< if true, the widget is rendered using the relative position of it's parent.
 
                 ILook                   *_widgetLook;               ///< look used to render the look of the widget.
 
