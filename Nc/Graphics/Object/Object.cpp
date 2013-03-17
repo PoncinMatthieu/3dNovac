@@ -167,9 +167,11 @@ void    Object::Render(SceneGraph *scene)
     Draw(scene);
 
     // rendering childs
-    RenderChildsBegin(scene);
-    Entity::RenderChilds(scene);
-    RenderChildsEnd(scene);
+    if (RenderChildsBegin(scene))
+    {
+        Entity::RenderChilds(scene);
+        RenderChildsEnd(scene);
+    }
 
     RenderEnd(scene);
 }

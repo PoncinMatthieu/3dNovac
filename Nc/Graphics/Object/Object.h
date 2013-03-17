@@ -100,9 +100,11 @@ namespace Nc
 
                 /**
                     Method called just before the RenderChilds method.
+                    If the method return false, the childs won't be rendered.
                     Do nothing but can be redefined.
+                    \return true
                 */
-                virtual void        RenderChildsBegin(SceneGraph *scene)        {}
+                virtual bool        RenderChildsBegin(SceneGraph *scene)        {return true;}
 
                 /**
                     Method called just after the RenderChilds method.
