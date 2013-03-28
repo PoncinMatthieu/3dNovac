@@ -24,10 +24,11 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_CORE_UTILS_ASSERT_H_
-#define NC_CORE_UTILS_ASSERT_H_
+#ifndef NC_CORE_UTILS_DEBUG_ASSERT_H_
+#define NC_CORE_UTILS_DEBUG_ASSERT_H_
 
 #include <assert.h>
+#include "../../Define.h"
 #include "CallStack.h"
 #include "CrashReporter.h"
 
@@ -43,8 +44,8 @@ namespace Nc
 {
     namespace Utils
     {
-      static void AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function);
-      static void AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function);
+      LCORE void AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function);
+      LCORE void AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function);
     }
 }
 
