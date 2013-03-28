@@ -62,7 +62,7 @@ FrameBuffer::~FrameBuffer()
 
 void    FrameBuffer::Create(Enum::FrameBuffer::Target target)
 {
-    CALLSTACK_INFO("FrameBuffer::Create() ");
+    CALLSTACK_INFO();
     NewRef();
     glGenFramebuffers(1, &_index);
     CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_index));
@@ -73,7 +73,7 @@ void    FrameBuffer::Create(Enum::FrameBuffer::Target target)
 
 void    FrameBuffer::Release()
 {
-    CALLSTACK_INFO("FrameBuffer::Release() " + Utils::Convert::ToString(_index));
+    CALLSTACK_INFO_ARG("index: " + Utils::Convert::ToString(_index));
 
     State::Instance().Unbind(_target);
     glDeleteFramebuffers(1, &_index);
@@ -123,7 +123,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
     if (State::Instance().CurrentBound(_target) != _index)
         throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer which is not enabled.");
 
-    CALLSTACK_INFO("FrameBuffer::Attach()");
+    CALLSTACK_INFO();
     glFramebufferRenderbuffer(_target, attachPoint, Enum::RenderBuffer::RenderBuffer, renderBuffer.GetIndex());
     _attachedBuffers[attachPoint] = renderBuffer.Clone();
     NC_GRAPHIC_GL_CHECK_ERROR();
@@ -138,7 +138,7 @@ void    FrameBuffer::Attach(Enum::FrameBuffer::AttachementPoint attachPoint, con
     if (State::Instance().CurrentBound(_target) != _index)
         throw Utils::Exception("FrameBuffer::Attach", "Can't attach the render buffer with a framebuffer which is not enabled.");
 
-    CALLSTACK_INFO("FrameBuffer::Attach()");
+    CALLSTACK_INFO();
     glFramebufferTexture2D(_target, attachPoint, texture.GetTarget(), texture.GetIndex(), level);
     _attachedBuffers[attachPoint] = texture.Clone();
     NC_GRAPHIC_GL_CHECK_ERROR();
@@ -153,7 +153,7 @@ Enum::FrameBuffer::State FrameBuffer::CheckStatus()
 
 void    FrameBuffer::Blit(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, const Mask<Enum::BufferBitType> &m, Enum::Blit::Filter filter)
 {
-    CALLSTACK_INFO("FrameBuffer::Blit()");
+    CALLSTACK_INFO();
     glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1,
                       dstX0, dstY0, dstX1, dstY1,
                       m.mask, filter);

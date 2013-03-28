@@ -31,7 +31,7 @@ using namespace Nc::Graphic::GL;
 
 VertexArray::VertexArray() : _index(0)
 {
-    CALLSTACK_INFO("VertexArray::Constructor() ")
+    CALLSTACK_INFO()
     NewRef();
     glGenVertexArrays(1, &_index);
     if (_index == 0)
@@ -46,7 +46,7 @@ VertexArray::~VertexArray()
 
 void     VertexArray::Release()
 {
-    CALLSTACK_INFO("VertexArray::Release() " + Utils::Convert::ToString(_index));
+    CALLSTACK_INFO_ARG("index: " + Utils::Convert::ToString(_index));
     glBindVertexArray(0);
     glDeleteVertexArrays(1, &_index);
 }

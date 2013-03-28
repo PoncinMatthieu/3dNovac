@@ -51,7 +51,7 @@ Texture::~Texture()
 
 void Texture::Release()
 {
-    CALLSTACK_INFO("Texture::Release() " + Utils::Convert::ToString(_texture));
+    CALLSTACK_INFO_ARG("texture: " + Utils::Convert::ToString(_texture));
     State::Instance().Unbind(_target);
     glDeleteTextures(1, &_texture);
     _texture = 0;
@@ -99,7 +99,7 @@ void Texture::CheckSize(const Vector2ui &size)
 
 void    Texture::Create(Enum::Texture::Target target)
 {
-    CALLSTACK_INFO("Texture::Create() ");
+    CALLSTACK_INFO();
     NewRef();
     _target = target;
     glGenTextures(1, &_texture);
@@ -111,7 +111,7 @@ void    Texture::Create(Enum::Texture::Target target)
 
 void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat, const Vector2ui &size, Enum::PixelFormat::Type pixelFormat, Enum::PixelDataType::Type pixelType, const void *pixelData)
 {
-    CALLSTACK_INFO("Texture::Init2d()");
+    CALLSTACK_INFO();
     if (State::Instance().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::InitTexture2d", "Can't init the texture which is not enabled.");
     CheckSize(size);
@@ -122,7 +122,7 @@ void    Texture::Init2d(unsigned int level, Enum::Texture::Format internalFormat
 
 void    Texture::GenerateMipmaps()
 {
-    CALLSTACK_INFO("Texture::GenerateMipmaps()");
+    CALLSTACK_INFO();
     if (State::Instance().CurrentBound(_target) != _texture)
         throw Utils::Exception("Texture::GenerateMipmap", "Can't generate the texture mipmaps if the texture is not enabled.");
     glGenerateMipmap(_target);
@@ -131,7 +131,7 @@ void    Texture::GenerateMipmaps()
 
 void Texture::LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
 {
-    CALLSTACK_INFO("Texture::LoadFromFile(" + file + ")");
+    CALLSTACK_INFO_ARG("filename: " + file);
 
 // Load the image and reverse it
     Image image;
@@ -143,7 +143,7 @@ void Texture::LoadFromFile(const Utils::FileName &file, Enum::Texture::Filter ma
 
 void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifyingFilter, Enum::Texture::Filter mignifyingFilter, bool generateMipmap)
 {
-    CALLSTACK_INFO("Texture::LoadFromImage() ");
+    CALLSTACK_INFO();
     NewRef();
 
 // Load the image and reverse it
@@ -178,7 +178,7 @@ void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifying
 
 void Texture::LoadCubeMap(const Utils::FileName names[6])
 {
-    CALLSTACK_INFO("Texture::LoadCubeMap() ");
+    CALLSTACK_INFO();
     NewRef();
 
     Image image;
@@ -223,7 +223,7 @@ void Texture::LoadCubeMap(const Utils::FileName names[6])
 
 void Texture::AddNoRepeatMode()
 {
-    CALLSTACK_INFO("Texture::AddNoRepeatMode()");
+    CALLSTACK_INFO();
     Enable();
     glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -232,7 +232,7 @@ void Texture::AddNoRepeatMode()
 
 void Texture::GenereSphereMap(const unsigned int d)
 {
-    CALLSTACK_INFO("Texture::GenereSphereMap(" + Utils::Convert::ToString(d) + ") ");
+    CALLSTACK_INFO_ARG("d: " + Utils::Convert::ToString(d));
     NewRef();
 
     float           *data;

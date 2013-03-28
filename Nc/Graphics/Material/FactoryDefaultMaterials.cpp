@@ -40,7 +40,7 @@ FactoryDefaultMaterials::~FactoryDefaultMaterials()
 
 IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const GL::DrawableArray &drawables)
 {
-    CALLSTACK_INFO("Object::GetBestMaterial(drawables)");
+    CALLSTACK_INFO();
     if (drawables.size() == 0)
         return NULL;
 
@@ -61,13 +61,13 @@ IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const GL::Drawable
 
 IDefaultMaterial    *FactoryDefaultMaterials::GetBestMaterial(const GL::Drawable *drawable)
 {
-    CALLSTACK_INFO("Object::GetBestMaterial(drawable)");
+    CALLSTACK_INFO();
     return GetBestMaterial(&drawable->Geometry->Descriptor());
 }
 
 IDefaultMaterial        *FactoryDefaultMaterials::GetBestMaterial(GL::VertexDescriptor *descriptor)
 {
-    CALLSTACK_INFO("Object::GetBestMaterial(descriptor)");
+    CALLSTACK_INFO();
     IDefaultMaterial        *result = NULL;
 
     // get back the best Material

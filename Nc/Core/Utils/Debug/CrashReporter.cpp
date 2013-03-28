@@ -61,7 +61,7 @@ void CrashReporter::Init()
 #ifdef SYSTEM_LINUX
 void CrashReporter::SignalHandler(int signal)
 {
-    CALLSTACK_INFO("CrashReporter::SignalHandler");
+    CALLSTACK_INFO();
     switch (signal)
     {
         case SIGSEGV:   LOG_ERROR << "Fatal error: " << "Received SIGSEGV." << std::endl << std::endl; break;
@@ -77,7 +77,7 @@ void CrashReporter::SignalHandler(int signal)
 //reference: http://www.ibm.com/developerworks/linux/library/l-cppexcep.html
 void    CrashReporter::Terminate()
 {
-    CALLSTACK_INFO("CrashReporter::Terminate");
+    CALLSTACK_INFO();
 
     try
     {

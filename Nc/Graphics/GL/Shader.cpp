@@ -55,7 +55,7 @@ Shader::~Shader()
 
 void    Shader::Release()
 {
-    CALLSTACK_INFO("Shader::Release()" + Utils::Convert::ToString(_shader));
+    CALLSTACK_INFO_ARG("shader: " + Utils::Convert::ToString(_shader));
     if (_shader != 0)
         glDeleteShader(_shader);
     NC_GRAPHIC_GL_CHECK_ERROR();
@@ -63,7 +63,7 @@ void    Shader::Release()
 
 void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type)
 {
-    CALLSTACK_INFO("Shader::LoadFromFile(" + filename + ") ");
+    CALLSTACK_INFO_ARG("filename: " + filename);
     if (filename.empty() || !filename.IsReadable())
         throw Utils::Exception("Shader", "Can't open the source file GLSL " + filename);
 
@@ -102,7 +102,7 @@ void Shader::LoadFromFile(const Utils::FileName &filename, Enum::ShaderType type
 
 void Shader::LoadFromMemory(const char *source, Enum::ShaderType type, const Utils::FileName &name)
 {
-    CALLSTACK_INFO("Shader::LoadFromMemory() ");
+    CALLSTACK_INFO();
     NewRef();
     _shader = 0;
 
@@ -120,7 +120,7 @@ void Shader::LoadFromMemory(const char *source, Enum::ShaderType type, const Uti
 void    Shader::Compile(const char *source, Enum::ShaderType type, const Utils::FileName &name)
 {
     // compilation
-    CALLSTACK_INFO("Shader::Compile(" + name + ")");
+    CALLSTACK_INFO_ARG("name: " + name);
     glCompileShader(_shader);
 
     // check compilation errors

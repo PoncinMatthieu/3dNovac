@@ -40,7 +40,7 @@ RenderBuffer::~RenderBuffer()
 
 void    RenderBuffer::Create()
 {
-    CALLSTACK_INFO("RenderBuffer::Create() ");
+    CALLSTACK_INFO();
     NewRef();
     glGenRenderbuffers(1, &_index);
     CALLSTACK_APPEND_INFO(Utils::Convert::ToString(_index));
@@ -49,7 +49,7 @@ void    RenderBuffer::Create()
 
 void    RenderBuffer::Release()
 {
-    CALLSTACK_INFO("RenderBuffer::Release() " + Utils::Convert::ToString(_index));
+    CALLSTACK_INFO_ARG("index: " + Utils::Convert::ToString(_index));
     State::Instance().Unbind(Enum::RenderBuffer::RenderBuffer);
     glDeleteRenderbuffers(1, &_index);
     _index = 0;
@@ -68,7 +68,7 @@ void    RenderBuffer::Disable() const
 
 void    RenderBuffer::Init(Enum::RenderBuffer::ColorFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
-    CALLSTACK_INFO("RenderBuffer::Init()");
+    CALLSTACK_INFO();
     if (State::Instance().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
         throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer which is not enabled.");
 
@@ -86,7 +86,7 @@ void    RenderBuffer::Init(Enum::RenderBuffer::ColorFormat internalFormat, const
 
 void    RenderBuffer::Init(Enum::RenderBuffer::DepthFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
-    CALLSTACK_INFO("RenderBuffer::Init()");
+    CALLSTACK_INFO();
     if (State::Instance().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
         throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer which is not enabled.");
 
@@ -104,7 +104,7 @@ void    RenderBuffer::Init(Enum::RenderBuffer::DepthFormat internalFormat, const
 
 void    RenderBuffer::Init(Enum::RenderBuffer::StencilFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
-    CALLSTACK_INFO("RenderBuffer::Init()");
+    CALLSTACK_INFO();
     if (State::Instance().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
         throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer which is not enabled.");
 
@@ -122,7 +122,7 @@ void    RenderBuffer::Init(Enum::RenderBuffer::StencilFormat internalFormat, con
 
 void    RenderBuffer::Init(Enum::RenderBuffer::DepthStencilFormat internalFormat, const Vector2ui &size, unsigned int samples)
 {
-    CALLSTACK_INFO("RenderBuffer::Init()");
+    CALLSTACK_INFO();
     if (State::Instance().CurrentBound(Enum::RenderBuffer::RenderBuffer) != _index)
         throw Utils::Exception("RenderBuffer::Init", "Can't init the render buffer which is not enabled.");
 

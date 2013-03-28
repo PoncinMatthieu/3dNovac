@@ -28,7 +28,14 @@
 #include "../Context/GLContext.h"
 
 #ifdef _DEBUG
-    #define GL_STATE_CALLSTACK_INFO(info)       CALLSTACK_INFO(info); \
+    #define GL_STATE_CALLSTACK_INFO()           CALLSTACK_INFO(); \
+                                                GLenum code = GetErrorCode(); \
+                                                if (code != GL_NO_ERROR) \
+                                                { \
+                                                    System::Config::Warning("An opengl error has already occured: ", GetError(code)); \
+                                                    Utils::CrashReporter::Abort(); \
+                                                }
+    #define GL_STATE_CALLSTACK_INFO_ARG(info)   CALLSTACK_INFO_ARG(info); \
                                                 GLenum code = GetErrorCode(); \
                                                 if (code != GL_NO_ERROR) \
                                                 { \
@@ -36,7 +43,8 @@
                                                     Utils::CrashReporter::Abort(); \
                                                 }
 #else
-    #define GL_STATE_CALLSTACK_INFO(info)
+    #define GL_STATE_CALLSTACK_INFO()
+    #define GL_STATE_CALLSTACK_INFO_ARG()
 #endif
 
 using namespace Nc;
@@ -264,7 +272,7 @@ namespace Nc {
 
 void    State::CheckGLVersion()
 {
-    GL_STATE_CALLSTACK_INFO("State::CheckGLVersion()");
+    GL_STATE_CALLSTACK_INFO();
 
     // on a linux system, we check if the graphic acceleration is support and enable
     #ifdef SYSTEM_LINUX
@@ -304,7 +312,7 @@ void    State::CheckGLVersion()
 
 void    State::Viewport(int viewportX, int viewportY, int viewportWidth, int viewportHeight)
 {
-    GL_STATE_CALLSTACK_INFO("State::Viewport()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentViewportX != viewportX || _currentViewportY != viewportY ||
         _currentViewportWidth != viewportWidth || _currentViewportHeight != viewportHeight)
@@ -320,7 +328,7 @@ void    State::Viewport(int viewportX, int viewportY, int viewportWidth, int vie
 
 void    State::ClearColor(Color c)
 {
-    GL_STATE_CALLSTACK_INFO("State::ClearColor()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentClearColor != c)
     {
@@ -332,7 +340,7 @@ void    State::ClearColor(Color c)
 
 void    State::Enable(Enum::Capability cp)
 {
-    GL_STATE_CALLSTACK_INFO("State::Enable()");
+    GL_STATE_CALLSTACK_INFO();
 
     MapCapabilityStatement::iterator it = _mapCurrentCapabilityStatement.find(cp);
     if (it->second != true)
@@ -345,7 +353,7 @@ void    State::Enable(Enum::Capability cp)
 
 void    State::Disable(Enum::Capability cp)
 {
-    GL_STATE_CALLSTACK_INFO("State::Disable()");
+    GL_STATE_CALLSTACK_INFO();
 
     MapCapabilityStatement::iterator it = _mapCurrentCapabilityStatement.find(cp);
     if (it->second != false)
@@ -358,7 +366,7 @@ void    State::Disable(Enum::Capability cp)
 
 void    State::DepthFunc(Enum::MaskFunc f)
 {
-    GL_STATE_CALLSTACK_INFO("State::DepthFunc()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentDepthFunc != f)
     {
@@ -370,7 +378,7 @@ void    State::DepthFunc(Enum::MaskFunc f)
 
 void    State::PolygonMode(Enum::PolygonFace f, Enum::PolygonMode m)
 {
-    GL_STATE_CALLSTACK_INFO("State::PolygonMode()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (f != _currentPolygonFace || m != _currentPolygonMode)
     {
@@ -383,7 +391,7 @@ void    State::PolygonMode(Enum::PolygonFace f, Enum::PolygonMode m)
 
 void    State::PolygonOffset(float offsetFactor, float offsetUnits)
 {
-    GL_STATE_CALLSTACK_INFO("State::PolygonOffset()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (offsetFactor != _currentPolygonOffsetFactor || offsetUnits != _currentPolygonOffsetUnits)
     {
@@ -396,7 +404,7 @@ void    State::PolygonOffset(float offsetFactor, float offsetUnits)
 
 void    State::PointSize(float s)
 {
-    GL_STATE_CALLSTACK_INFO("State::PointSize()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (s != _currentPointSize)
     {
@@ -408,7 +416,7 @@ void    State::PointSize(float s)
 
 void    State::LineWidth(float w)
 {
-    GL_STATE_CALLSTACK_INFO("State::LineWidth()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (w != _currentLineWidth)
     {
@@ -420,7 +428,7 @@ void    State::LineWidth(float w)
 
 void    State::DepthMask(bool state)
 {
-    GL_STATE_CALLSTACK_INFO("State::DepthMask()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentDepthMask != state)
     {
@@ -432,7 +440,7 @@ void    State::DepthMask(bool state)
 
 void    State::BlendFunc(Enum::BlendFactor s, Enum::BlendFactor d)
 {
-    GL_STATE_CALLSTACK_INFO("State::BlendFunc()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentBlendSFactor != s || _currentBlendDFactor != d)
     {
@@ -445,7 +453,7 @@ void    State::BlendFunc(Enum::BlendFactor s, Enum::BlendFactor d)
 
 void    State::Bind(Enum::DataBuffer::Target target, unsigned int id)
 {
-    GL_STATE_CALLSTACK_INFO("State::Bind(DataBuffer)");
+    GL_STATE_CALLSTACK_INFO();
 
     MapBufferBound::iterator it = _mapCurrentBufferBound.find(target);
     if (it->second != id)
@@ -458,7 +466,7 @@ void    State::Bind(Enum::DataBuffer::Target target, unsigned int id)
 
 void    State::Bind(Enum::Texture::Target target, unsigned int id)
 {
-    GL_STATE_CALLSTACK_INFO("State::Bind(Texture)");
+    GL_STATE_CALLSTACK_INFO();
 
     MapTextureBound::iterator it = _mapCurrentTextureBound.find(target);
     if (it->second != id)
@@ -471,7 +479,7 @@ void    State::Bind(Enum::Texture::Target target, unsigned int id)
 
 void    State::Bind(Enum::FrameBuffer::Target target, unsigned int id)
 {
-    GL_STATE_CALLSTACK_INFO("State::Bind(FrameBuffer)");
+    GL_STATE_CALLSTACK_INFO();
 
     if (target == Enum::FrameBuffer::FrameBuffer)
     {
@@ -499,7 +507,7 @@ void    State::Bind(Enum::FrameBuffer::Target target, unsigned int id)
 
 void    State::Bind(Enum::RenderBuffer::Target target, unsigned int id)
 {
-    GL_STATE_CALLSTACK_INFO("State::Bind(RenderBuffer)");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentRenderBufferBound != id)
     {
@@ -511,7 +519,7 @@ void    State::Bind(Enum::RenderBuffer::Target target, unsigned int id)
 
 void    State::UseProgram(unsigned int id)
 {
-    GL_STATE_CALLSTACK_INFO("State::UseProgram()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentProgramBound != id)
     {
@@ -523,7 +531,7 @@ void    State::UseProgram(unsigned int id)
 
 void    State::Unbind(Enum::DataBuffer::Target target)
 {
-    GL_STATE_CALLSTACK_INFO("State::Unbind(DataBuffer)");
+    GL_STATE_CALLSTACK_INFO();
 
     MapBufferBound::iterator it = _mapCurrentBufferBound.find(target);
     if (it->second != 0)
@@ -536,7 +544,7 @@ void    State::Unbind(Enum::DataBuffer::Target target)
 
 void    State::Unbind(Enum::Texture::Target target)
 {
-    GL_STATE_CALLSTACK_INFO("State::Unbind(Texture)");
+    GL_STATE_CALLSTACK_INFO();
 
     MapTextureBound::iterator it = _mapCurrentTextureBound.find(target);
     if (it->second != 0)
@@ -549,7 +557,7 @@ void    State::Unbind(Enum::Texture::Target target)
 
 void    State::Unbind(Enum::FrameBuffer::Target target)
 {
-    GL_STATE_CALLSTACK_INFO("State::Unbind(FrameBuffer)");
+    GL_STATE_CALLSTACK_INFO();
 
     if (target == Enum::FrameBuffer::FrameBuffer)
     {
@@ -577,7 +585,7 @@ void    State::Unbind(Enum::FrameBuffer::Target target)
 
 void    State::Unbind(Enum::RenderBuffer::Target target)
 {
-    GL_STATE_CALLSTACK_INFO("State::Unbind(RenderBuffer)");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentRenderBufferBound != 0)
     {
@@ -589,7 +597,7 @@ void    State::Unbind(Enum::RenderBuffer::Target target)
 
 void    State::UnbindProgram()
 {
-    GL_STATE_CALLSTACK_INFO("State::UnbindProgram()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentProgramBound != 0)
     {
@@ -601,7 +609,7 @@ void    State::UnbindProgram()
 
 void    State::ActiveTexture(unsigned int no)
 {
-    GL_STATE_CALLSTACK_INFO("State::ActiveTexture()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentActiveTextureUnit != no)
     {
@@ -613,9 +621,8 @@ void    State::ActiveTexture(unsigned int no)
 
 void    State::Scissor(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
 {
-    GL_STATE_CALLSTACK_INFO("State::Scissor(" +
-                            Utils::Convert::ToString(x) + ", " + Utils::Convert::ToString(y) + ", " +
-                            Utils::Convert::ToString(width) + ", " + Utils::Convert::ToString(height) + ")");
+    GL_STATE_CALLSTACK_INFO_ARG("x: " + Utils::Convert::ToString(x) + ", y: " + Utils::Convert::ToString(y) + ", width: " +
+                            Utils::Convert::ToString(width) + ", height: " + Utils::Convert::ToString(height));
 
     if (_currentScissorX != x || _currentScissorY != y ||
         _currentScissorWidth != width || _currentScissorHeight != height)
@@ -631,7 +638,7 @@ void    State::Scissor(unsigned int x, unsigned int y, unsigned int width, unsig
 
 void    State::ColorMask(bool red, bool green, bool blue, bool alpha)
 {
-    GL_STATE_CALLSTACK_INFO("State::ColorMask()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentColorMaskRed != red || _currentColorMaskGreen != green || _currentColorMaskBlue != blue || _currentColorMaskAlpha != alpha)
     {
@@ -646,7 +653,7 @@ void    State::ColorMask(bool red, bool green, bool blue, bool alpha)
 
 void    State::StencilFunc(Enum::MaskFunc f, int refValue, unsigned int mask)
 {
-    GL_STATE_CALLSTACK_INFO("State::StencilFunc()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentStencilFunc != f || _currentStencilFuncRef != refValue || _currentStencilFuncMask != mask)
     {
@@ -660,7 +667,7 @@ void    State::StencilFunc(Enum::MaskFunc f, int refValue, unsigned int mask)
 
 void    State::StencilOp(Enum::Stencil::Action sFail, Enum::Stencil::Action dpFail, Enum::Stencil::Action dpPass)
 {
-    GL_STATE_CALLSTACK_INFO("State::StencilOp()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentStencilSFail != sFail || _currentStencilDpFail != dpFail || _currentStencilDpPass != dpPass)
     {
@@ -674,7 +681,7 @@ void    State::StencilOp(Enum::Stencil::Action sFail, Enum::Stencil::Action dpFa
 
 void    State::ClearStencil(int value)
 {
-    GL_STATE_CALLSTACK_INFO("State::ClearStencil()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentClearStencil != value)
     {
@@ -686,7 +693,7 @@ void    State::ClearStencil(int value)
 
 void    State::StencilMask(unsigned int mask)
 {
-    GL_STATE_CALLSTACK_INFO("State::StencilMask()");
+    GL_STATE_CALLSTACK_INFO();
 
     if (_currentStencilMask != mask)
     {
