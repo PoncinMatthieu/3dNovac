@@ -44,7 +44,7 @@
                                                 }
 #else
     #define GL_STATE_CALLSTACK_INFO()
-    #define GL_STATE_CALLSTACK_INFO_ARG()
+    #define GL_STATE_CALLSTACK_INFO_ARG(info)
 #endif
 
 using namespace Nc;
@@ -621,8 +621,7 @@ void    State::ActiveTexture(unsigned int no)
 
 void    State::Scissor(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
 {
-    GL_STATE_CALLSTACK_INFO_ARG("x: " + Utils::Convert::ToString(x) + ", y: " + Utils::Convert::ToString(y) + ", width: " +
-                            Utils::Convert::ToString(width) + ", height: " + Utils::Convert::ToString(height));
+    GL_STATE_CALLSTACK_INFO_ARG("x: " + Utils::Convert::ToString(x) + ", y: " + Utils::Convert::ToString(y) + ", width: " + Utils::Convert::ToString(width) + ", height: " + Utils::Convert::ToString(height));
 
     if (_currentScissorX != x || _currentScissorY != y ||
         _currentScissorWidth != width || _currentScissorHeight != height)
