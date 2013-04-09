@@ -70,7 +70,7 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
         {
             if (it->id == id)
             {
-                CALLSTACK_INFO("IEngine::CallEvent: Id: " + Utils::Convert::ToString(id) + ((e != NULL) ? std::string(" e: ") + e->GetDataTypeId().name() : ""));
+                CALLSTACK_INFO_ARG("Id: " + Utils::Convert::ToString(id) + ((e != NULL) ? std::string(" e: ") + e->GetDataTypeId().name() : ""));
                 (this->*(it->function))(e);
                 return;
             }
@@ -90,7 +90,7 @@ void EventManager::ExecuteEvent(unsigned int id, IEvent *e)
 
 void  EventManager::ExecuteEvents()
 {
-    CALLSTACK_INFO("IEngine::ExecuteEvents");
+    CALLSTACK_INFO();
     if (_execEvents)
     {
         // exec queue event

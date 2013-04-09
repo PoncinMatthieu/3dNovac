@@ -67,7 +67,7 @@ void IEngine::Run()
 
 void IEngine::MainLoop()
 {
-    CALLSTACK_INFO("IEngine::MainLoop: " + Utils::Convert::ToString(*this));
+    CALLSTACK_INFO_ARG(Utils::Convert::ToString(*this));
     while (_manager->IsLaunched() && !_stop)
     {
         Process();
@@ -76,14 +76,14 @@ void IEngine::MainLoop()
 
 void IEngine::Loading()
 {
-    CALLSTACK_INFO("IEngine::Loading: " + Utils::Convert::ToString(*this));
+    CALLSTACK_INFO_ARG(Utils::Convert::ToString(*this));
     _manager->WaitAllEngineStarted();
     // if we have a context
     if (_pattern.Enabled(HasAContext) && _loadingContextPriority > 0)
     {
         _manager->WaitLoadingContextPriority(_loadingContextPriority); // waiting for our turn to load the context
         {
-            CALLSTACK_INFO("IEngine::LoadingContext: " + Utils::Convert::ToString(*this));
+            CALLSTACK_INFO_BLOCK("IEngine::LoadingContext: " + Utils::Convert::ToString(*this));
             System::Locker l(&_manager->MutexGlobal());
             CreateContext();
             _pattern.Enable(ContextIsLoaded);
@@ -96,7 +96,7 @@ void IEngine::Loading()
     {
         _manager->WaitLoadingPriority(_loadingPriority);        // waiting for our turn to load contents
         {
-            CALLSTACK_INFO("IEngine::LoadingContent: " + Utils::Convert::ToString(*this));
+            CALLSTACK_INFO_BLOCK("IEngine::LoadingContent: " + Utils::Convert::ToString(*this));
             System::Locker l(&_manager->MutexGlobal());
             ActiveContext();
             LoadContent();
@@ -110,7 +110,7 @@ void IEngine::Loading()
 
 void IEngine::Releasing()
 {
-    CALLSTACK_INFO("IEngine::ReleasingContent: " + Utils::Convert::ToString(*this));
+    CALLSTACK_INFO_ARG(Utils::Convert::ToString(*this));
 	_manager->WaitReleasePriority(_deletePriority);
 	ReleaseContent();
 	_released = true;
@@ -130,7 +130,7 @@ void IEngine::Process()
 
             try
             {
-                CALLSTACK_INFO("IEngine::Execute: " + Utils::Convert::ToString(*this));
+                CALLSTACK_INFO_BLOCK("IEngine::Execute: " + Utils::Convert::ToString(*this));
                 ExecuteEvents();
                 Execute(_elapsedTime);
             }

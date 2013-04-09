@@ -118,7 +118,7 @@ namespace Nc
             template <typename T>
             void    DataBuffer<T>::Init(Enum::DataBuffer::Target target)
             {
-                CALLSTACK_INFO("DataBuffer::Init() ");
+                CALLSTACK_INFO();
                 NewRef();
                 _target = target;
                 glGenBuffers(1, &_index);   // création du buffer
@@ -129,7 +129,7 @@ namespace Nc
             template <typename T>
             void DataBuffer<T>::Init(Enum::DataBuffer::Target target, unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab)
             {
-                CALLSTACK_INFO("DataBuffer::Init() ");
+                CALLSTACK_INFO();
                 NewRef();
                 _target = target;
 
@@ -145,7 +145,7 @@ namespace Nc
             template<typename T>
             void DataBuffer<T>::UpdateData(unsigned int size, unsigned int stride, Enum::DataBuffer::Usage usage, const T *dataTab)
             {
-                CALLSTACK_INFO("DataBuffer::UpdateData(" + Utils::Convert::ToString(size) + ", " + Utils::Convert::ToString(stride) + ")");
+                CALLSTACK_INFO_ARG("size: " + Utils::Convert::ToString(size) + " stride: " + Utils::Convert::ToString(stride));
                 if (_index == 0)
                     throw Utils::Exception("GL::DataBuffer", "Can't update the data if it wasn't init before !");
 
@@ -166,7 +166,7 @@ namespace Nc
             template<typename T>
             void DataBuffer<T>::UpdateData(const T *dataTab)
             {
-                CALLSTACK_INFO("DataBuffer::UpdateData()");
+                CALLSTACK_INFO();
                 if (_index == 0)
                     throw Utils::Exception("GL::DataBuffer", "Can't update the data if it wasn't init before !");
 
@@ -186,7 +186,7 @@ namespace Nc
             template<typename T>
             void DataBuffer<T>::Release()
             {
-                CALLSTACK_INFO("DataBuffer::Release() " + Utils::Convert::ToString(_index));
+                CALLSTACK_INFO_ARG("index: " + Utils::Convert::ToString(_index));
                 _dataTab = NULL;
                 State::Instance().Unbind(_target);
                 glDeleteBuffers(1, &_index); // suppression du buffer
@@ -197,7 +197,7 @@ namespace Nc
             template<typename T>
             T    *DataBuffer<T>::MapBuffer(Enum::DataBuffer::AccessType access)
             {
-                CALLSTACK_INFO("DataBuffer::MapBuffer()");
+                CALLSTACK_INFO();
                 _dataTab = (T*)glMapBuffer(_target, access);
                 if (_dataTab == NULL)
                     LOG_ERROR << "DataBuffer glMapBuffer" << State::GetError() << std::endl;
@@ -207,7 +207,7 @@ namespace Nc
             template<typename T>
             void   DataBuffer<T>::UnmapBuffer()
             {
-                CALLSTACK_INFO("DataBuffer::UnmapBuffer()");
+                CALLSTACK_INFO();
                 _dataTab = NULL;
                 if (glUnmapBuffer(_target) == GL_FALSE)
                     LOG_ERROR << "DataBuffer::glUnmapBuffer: " << State::GetError() << std::endl;

@@ -36,7 +36,7 @@ System::Mutex           Manager::_mutexGlobal;
 
 Manager::Manager(const Utils::FileName &confFile, bool initCrashReporter)
 {
-    CALLSTACK_INFO("Engine::Manager::Constructor");
+    CALLSTACK_INFO();
 
     _mainThreadId = System::ThreadId();
     _isLaunched = false;
@@ -57,7 +57,7 @@ Manager::Manager(const Utils::FileName &confFile, bool initCrashReporter)
 
 Manager::~Manager()
 {
-    CALLSTACK_INFO("Engine::Manager::Destructor");
+    CALLSTACK_INFO();
 
 // priority destruction ! (if 0, no delete)
     unsigned char lowestPriority = 0xff;
@@ -143,7 +143,7 @@ void    Manager::Start()
 
 void    Manager::Wait()
 {
-    CALLSTACK_INFO("Engine::Manager::Wait");
+    CALLSTACK_INFO();
 
 // on attend que les thread se finisse
     for (MapEngine::iterator itEngine = _mapEngine.begin(); itEngine != _mapEngine.end(); ++itEngine)
@@ -152,7 +152,7 @@ void    Manager::Wait()
 
 void    Manager::Stop()
 {
-    CALLSTACK_INFO("Engine::Manager::Stop");
+    CALLSTACK_INFO();
 
     System::Locker l(&_mutexGlobal);
     // check if the current thread is allowed to exit the thread

@@ -27,18 +27,23 @@
 #ifndef NC_CORE_UTILS_DEBUG_CALLSTACK_H_
 #define NC_CORE_UTILS_DEBUG_CALLSTACK_H_
 
+#include <assert.h>
 #include "../Logger.h"
 #include "../PerThreadSingleton.h"
 
 #if defined(_DEBUG)
     #ifndef CALLSTACK_INFO
-        #define CALLSTACK_INFO(info)            Nc::Utils::CallStackInfo callStackInfo(info);
+        #define CALLSTACK_INFO()                Nc::Utils::CallStackInfo callStackInfo(__ASSERT_FUNCTION);
+        #define CALLSTACK_INFO_BLOCK(info)      Nc::Utils::CallStackInfo callStackInfo(info);
         #define CALLSTACK_APPEND_INFO(info)     callStackInfo.AppendInfo(info);
+        #define CALLSTACK_INFO_ARG(args)        CALLSTACK_INFO(); CALLSTACK_APPEND_INFO(args);
     #endif
 #else
     #ifndef CALLSTACK_INFO
-        #define CALLSTACK_INFO(info)
+        #define CALLSTACK_INFO()
+        #define CALLSTACK_INFO_BLOCK(info)
         #define CALLSTACK_APPEND_INFO(info)
+        #define CALLSTACK_INFO_ARG(args)        CALLSTACK_INFO(); CALLSTACK_APPEND_INFO(args);
     #endif
 #endif
 
@@ -49,7 +54,7 @@ namespace Nc
         /// Help to register an info into the call stack using the RAII principle.
         struct CallStackInfo
         {
-            CallStackInfo(const std::string &info);
+            CallStackInfo(const std::string &funcName);
             ~CallStackInfo();
 
             void    AppendInfo(const std::string &info);
@@ -58,6 +63,8 @@ namespace Nc
         /// Allow to add info on the current call stack.
         /**
             The CallStack can be reimplemented if needed.
+
+            \todo add a method to track function calls. (adding strings to track, if the string show up, print the call. eventualy with some printing parameters).
 
             \warning The CallStack has one instance per thread.
         */

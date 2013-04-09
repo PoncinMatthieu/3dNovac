@@ -79,7 +79,7 @@ void Graphic::Engine::LoadContent()
 
 void Graphic::Engine::Execute(float runningTime)
 {
-    CALLSTACK_INFO("GraphicEngine::Execute");
+    CALLSTACK_INFO();
 
 	_elapsedTime = runningTime;
 

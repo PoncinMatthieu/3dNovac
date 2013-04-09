@@ -29,9 +29,9 @@
 using namespace Nc;
 using namespace Nc::Utils;
 
-CallStackInfo::CallStackInfo(const std::string &info)
+CallStackInfo::CallStackInfo(const std::string &funcName)
 {
-    CallStack::Instance().Push(info);
+    CallStack::Instance().Push(funcName);
 /*
     std::string s = "";
     for (unsigned int i = 0; i < CallStack::Instance().Size(); ++i)
@@ -53,7 +53,7 @@ CallStackInfo::~CallStackInfo()
 
 void    CallStackInfo::AppendInfo(const std::string &info)
 {
-    CallStack::Instance().Append(info);
+    CallStack::Instance().Append("\n   - " + info);
 }
 
 CallStack::CallStack()

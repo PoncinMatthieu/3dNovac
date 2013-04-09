@@ -41,7 +41,7 @@ Program::~Program()
 
 void    Program::Release()
 {
-    CALLSTACK_INFO("Program::Release() " + Utils::Convert::ToString(_program));
+    CALLSTACK_INFO_ARG("program: " + Utils::Convert::ToString(_program));
     if (_program != 0)
     {
         State::Instance().UnbindProgram();
@@ -68,7 +68,7 @@ void     Program::Disable() const
 
 void    Program::Attach(const Shader &shader)
 {
-    CALLSTACK_INFO("Program::Attach() ");
+    CALLSTACK_INFO();
     if (_program == 0)
     {
         NewRef();
@@ -94,7 +94,7 @@ void    Program::Attach(const char *shaderSource, Enum::ShaderType type, const U
 
 void    Program::Link()
 {
-    CALLSTACK_INFO("Program::Link()");
+    CALLSTACK_INFO();
     if (!IsValid())
         throw Utils::Exception("GL::Program::Link", "There is no attached shader");
     glLinkProgram(_program);
@@ -135,70 +135,70 @@ unsigned int    Program::GetAttribLocation(const char *name)
 
 void Program::BindAttrib(unsigned int attrib, const char *name)
 {
-    CALLSTACK_INFO("Program::BindAttrib()");
+    CALLSTACK_INFO();
 	glBindAttribLocation(_program, attrib, name);
 	NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, const TMatrix &m, bool transpose)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniformMatrix4fv) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniformMatrix4fv(location, 1, transpose, m.Elements());
     NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, int v)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniform1i) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniform1i(location, v);
     NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, unsigned int v)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniform1ui) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniform1ui(location, v);
     NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, float v)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniform1f) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniform1f(location, v);
     NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, float f1, float f2)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniform2f) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniform2f(location, f1, f2);
     NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, const Vector2f &v)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniform2f) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniform2f(location, v.data[0], v.data[1]);
     NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, float f1, float f2, float f3)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniform3f) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniform3f(location, f1, f2, f3);
     NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, const Vector3f &v)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniform3f) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniform3f(location, v.data[0], v.data[1], v.data[2]);
     NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    Program::SetUniform(unsigned int location, float f1, float f2, float f3, float f4)
 {
-    CALLSTACK_INFO("Program::SetUniform(glUniform4f) location: " + Utils::Convert::ToString(location));
+    CALLSTACK_INFO_ARG("location: " + Utils::Convert::ToString(location));
     glUniform4f(location, f1, f2, f3, f4);
     NC_GRAPHIC_GL_CHECK_ERROR();
 }

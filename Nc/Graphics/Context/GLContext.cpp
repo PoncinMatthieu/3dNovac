@@ -47,7 +47,7 @@ GLContext::~GLContext()
 
 void    GLContext::InitGLState()
 {
-    CALLSTACK_INFO("GLContext::InitGLState()");
+    CALLSTACK_INFO();
 
     // init the per thread GL::State singleton
     Active();
