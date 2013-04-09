@@ -136,7 +136,7 @@ struct ComputeTotalViewSizeVisitor : public GUI::Visitor::WidgetVisitor<ComputeT
 
 void    TreeWidget::TreeView::Resize()
 {
-    CALLSTACK_INFO("TreeWidget::TreeView::Resize()")
+    CALLSTACK_INFO()
     Widget::Resize();
 
     bool resized = false;
