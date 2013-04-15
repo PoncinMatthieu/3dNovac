@@ -97,7 +97,7 @@ void Graphic::Window::Create(const std::string &title, const Vector2ui &size, co
 			_win32Style |= WS_THICKFRAME | WS_MAXIMIZEBOX;
         if (style.Enabled(Closeable))
 			_win32Style |= WS_SYSMENU;
-		if (style.Enabled(Hiden))
+		if (style.Enabled(Hidden))
 			_win32Style &= ~WS_VISIBLE;
     }
 
@@ -267,11 +267,11 @@ bool	Graphic::Window::SetIcon(const Utils::FileName &f)
 void	Graphic::Window::Hide()
 {
 	ShowWindowAsync(_handle, SW_HIDE);
-	_style.Enable(Hiden);
+	_style.Enable(Hidden);
 }
 
 void	Graphic::Window::Show()
 {
 	ShowWindowAsync(_handle, SW_SHOW);
-	_style.Disable(Hiden);
+	_style.Disable(Hidden);
 }
