@@ -31,6 +31,10 @@
 #include "../Logger.h"
 #include "../PerThreadSingleton.h"
 
+#if defined(SYSTEM_WINDOWS) && !defined(__ASSERT_FUNCTION)
+	#define __ASSERT_FUNCTION	__FUNCTION__
+#endif
+
 #if defined(_DEBUG)
     #ifndef CALLSTACK_INFO
         #define CALLSTACK_INFO()                Nc::Utils::CallStackInfo callStackInfo(__ASSERT_FUNCTION);
@@ -52,7 +56,7 @@ namespace Nc
     namespace Utils
     {
         /// Help to register an info into the call stack using the RAII principle.
-        struct CallStackInfo
+        struct LCORE CallStackInfo
         {
             CallStackInfo(const std::string &funcName);
             ~CallStackInfo();
@@ -68,7 +72,7 @@ namespace Nc
 
             \warning The CallStack has one instance per thread.
         */
-        class CallStack : public PerThreadSingleton<CallStack>
+        class LCORE CallStack : public PerThreadSingleton<CallStack>
         {
             public:
                 CallStack();

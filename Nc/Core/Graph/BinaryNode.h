@@ -35,8 +35,8 @@ namespace Nc
     namespace Graph
     {
         /// Politic class to define a binary node, has a left/right node.
-        template<typename T, class NodeType, class Allocator = Utils::Metaprog::Allocator<NodeType> >
-        class BinaryNodePolitic : public INodePolitic<T,NodeType, false>
+        template<typename T, class NodeType, class Allocator /*= Utils::Metaprog::Allocator<NodeType>*/ >
+        class BinaryNodePolitic : public INodePolitic<T, NodeType, false>
         {
             public:
                 typedef INodePolitic<T,NodeType,false>      NodePolitic;
@@ -131,7 +131,7 @@ namespace Nc
         };
 
         /** To define a binary search tree using the AVL method. */
-        template<typename T, class NodeType, class Allocator = Utils::Metaprog::Allocator<NodeType> >
+        template<typename T, class NodeType, class Allocator /*= Utils::Metaprog::Allocator<NodeType>*/ >
         class BinaryNodeAVLPolitic : public BinaryNodePolitic<T, NodeType, Allocator>
         {
             public:
@@ -175,12 +175,21 @@ namespace Nc
             - BinaryNodePolitic
         */
         template<typename T>
-        struct BinaryNodeAVL : public Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
+        class BinaryNodeAVL : public Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
+			//AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
         {
-            typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
+		public:
+			typedef Node	ParentType;
             NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
-            typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
+            typedef Node	NodePolitic;
+            typedef BinaryNodeAVL	NodeType;
+
+			/*
+			typedef AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
+            NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
+            typedef AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
             typedef BinaryNodeAVL                                       NodeType;
+			*/
 
             BinaryNodeAVL()                                    : NodePolitic()               {}
             BinaryNodeAVL(const T &data)                       : NodePolitic(data)           {}

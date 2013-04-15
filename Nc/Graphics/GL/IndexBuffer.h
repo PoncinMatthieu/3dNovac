@@ -53,6 +53,7 @@ namespace Nc
                     template<unsigned int D>
                     void    UpdateData(const Array<unsigned int, D> &tabIndices, unsigned int stride, bool keepContent = false)
                     {
+						CALLSTACK_INFO();
                         DataBuffer<unsigned int>::Init(Enum::DataBuffer::ElementArrayBuffer, tabIndices.Size() / stride, stride, GL::Enum::DataBuffer::StaticDraw, tabIndices.data, keepContent);
                         _nbElements = tabIndices.Size();
                     }

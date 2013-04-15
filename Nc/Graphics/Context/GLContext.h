@@ -45,7 +45,7 @@ namespace Nc
             Typically a GLContext is created in 2 ways. With a Window by calling the method IWindow::CreateGLContext(),
             or with an other context by calling the method GLContext::CreateNewSharedContext().
 
-            \todo [Performance] Find a way to stop Enabling/Disabling the context at each look... we already tried once, but it doesn't seem to work on linux (with an nvidia) and window (with an ati) even if according to the opengl specification it should work. See branch '_StopEnabling'.
+            \todo [Performance] Find a way to stop Enabling/Disabling the context at each loop... we already tried once, but it doesn't seem to work on linux (with an nvidia) and window (with an ati) even if according to the opengl specification it should work. See branch '_StopEnabling'.
         */
         class LGRAPHICS GLContext : public Utils::NonCopyable
         {

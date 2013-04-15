@@ -34,7 +34,7 @@ namespace Nc
     namespace Graphic
     {
         /// Factory of DefaultMaterial, used to create/intialize/choose the best material for a set of drawables.
-        class FactoryDefaultMaterials : public Utils::Singleton<FactoryDefaultMaterials>
+        class LGRAPHICS FactoryDefaultMaterials : public Utils::Singleton<FactoryDefaultMaterials>
         {
             public:
                 typedef std::pair<unsigned int,IDefaultMaterial*>   PriorityMaterial;
@@ -71,7 +71,10 @@ namespace Nc
 
                 PriorityMaterialList        _materials;     ///< a list of priority for each default material.
         };
-    }
+
+        // explicit instanciation
+        template class Utils::Singleton<FactoryDefaultMaterials>;
+	}
 }
 
 #endif

@@ -37,7 +37,7 @@ namespace Nc
         /**
             You can redefine your own crash reporter if needed.
         */
-        class CrashReporter : public Singleton<CrashReporter>, NonCopyable
+        class LCORE CrashReporter : public Singleton<CrashReporter>, NonCopyable
         {
             public:
                 /**

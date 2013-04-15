@@ -114,6 +114,7 @@ void CrashReporter::Abort()
 
 void    CrashReporter::PrintBacktrace()
 {
+#ifdef SYSTEM_LINUX
     LOG_ERROR << "Backtrace: " << std::endl;
     void    *array[25];
     int     nSize = backtrace(array, 25);
@@ -122,6 +123,7 @@ void    CrashReporter::PrintBacktrace()
         LOG_ERROR << symbols[i] << std::endl;
     LOG_ERROR << std::endl;
     free(symbols);
+#endif
 }
 
 void    CrashReporter::PrintCallStackInfos()

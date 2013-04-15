@@ -77,6 +77,11 @@ namespace Nc
                 /** \return the postion of the subwindow into the parent. */
                 const Vector2i      &Pos() const                                        {return _pos;}
 
+				/** Hide the window. */
+				virtual void		Hide();
+				/** Show the window. */
+				virtual void		Show();
+
                 /** \return true and do nothing. SubWindows don't have icon support. */
                 virtual bool        SetIcon(const Utils::FileName &)                    {return true;}
 

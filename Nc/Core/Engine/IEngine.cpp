@@ -112,7 +112,15 @@ void IEngine::Releasing()
 {
     CALLSTACK_INFO_ARG(Utils::Convert::ToString(*this));
 	_manager->WaitReleasePriority(_deletePriority);
+
+	if (_pattern.Enabled(HasAContext))
+		ActiveContext();
+
 	ReleaseContent();
+
+    if (_pattern.Enabled(HasAContext))
+        DisableContext();
+
 	_released = true;
 }
 

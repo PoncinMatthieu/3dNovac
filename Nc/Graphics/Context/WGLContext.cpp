@@ -90,7 +90,7 @@ void	WGLContext::Disable()
 	{
 		// disable the context
 		if (wglMakeCurrent(0, 0) == false)
-			System::Config::Error("WGLContext::Disable", "Make current failed.");
+			System::Config::Warning("WGLContext::Disable", "Make current failed.");
 		_currentThreadId = 0;
 	}
 }

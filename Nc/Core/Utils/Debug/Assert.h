@@ -33,11 +33,19 @@
 #include "CrashReporter.h"
 
 #ifndef Assert
-#define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(__STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
+	#ifdef SYSTEM_WINDOWS
+		#define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
+	#else
+		#define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(__STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
+	#endif
 #endif
 
 #ifndef AssertError
-#define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, __STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
+	#ifdef SYSTEM_WINDOWS
+		#define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, #expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
+	#else
+		#define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, __STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
+	#endif
 #endif
 
 namespace Nc

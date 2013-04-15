@@ -143,10 +143,10 @@
         {
             // define the classes to typedef basics type
             template<typename T = unsigned char>    struct Pixel;
-            template<typename T>                    class Box2D;
-            template<typename T>                    class Box3D;
-            template<typename T>                    class Vector2D;
-            template<typename T>                    class Vector3D;
+            template<typename T>                    struct Box2D;
+            template<typename T>                    struct Box3D;
+            template<typename T>                    struct Vector2D;
+            template<typename T>                    struct Vector3D;
             template<typename T>                    class Matrix4x4;
             template<typename T>                    class Plane;
 

@@ -174,19 +174,16 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         }
 
         // Text event
-/*
         case WM_CHAR :
         {
             if (_keyRepeatEnabled || ((LParam & (1 << 30)) == 0))
             {
-                Event Evt;
-                Evt.Type = Event::TextEntered;
-                Evt.Text.Unicode = static_cast<Uint32>(WParam);
-                SendEvent(Evt);
+				Event e(this, Event::TextEntered);
+                e.text.unicode = static_cast<UInt32>(WParam);
+                GenereEvent(e);
             }
             break;
         }
-*/
 
         // Key up event
         case WM_KEYUP :
