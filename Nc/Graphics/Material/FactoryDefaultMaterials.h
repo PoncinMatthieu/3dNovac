@@ -71,10 +71,13 @@ namespace Nc
 
                 PriorityMaterialList        _materials;     ///< a list of priority for each default material.
         };
-
-        // explicit instanciation
-        template class Utils::Singleton<FactoryDefaultMaterials>;
 	}
+
+    namespace Utils
+    {
+        // explicit instanciation
+        template class Singleton<Graphic::FactoryDefaultMaterials>;
+    }
 }
 
 #endif

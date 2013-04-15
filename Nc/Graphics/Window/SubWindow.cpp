@@ -143,7 +143,7 @@ void    SubWindow::Render(GLContext *context)
 {
     CALLSTACK_INFO();
 
-	if (_style.Enabled(Hiden))
+	if (_style.Enabled(Hidden))
 		return;
 
     // create the fbo at the first pass
@@ -157,11 +157,11 @@ void    SubWindow::Render(GLContext *context)
 
 void	SubWindow::Hide()
 {
-	_style.Enable(Hiden);
+	_style.Enable(Hidden);
 }
 
 void	SubWindow::Show()
 {
-	_style.Disable(Hiden);
+	_style.Disable(Hidden);
 }
 

@@ -176,20 +176,20 @@ namespace Nc
         */
         template<typename T>
         class BinaryNodeAVL : public Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
-			//AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
         {
 		public:
-			typedef Node	ParentType;
-            NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
-            typedef Node	NodePolitic;
-            typedef BinaryNodeAVL	NodeType;
-
-			/*
-			typedef AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
-            NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
-            typedef AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
-            typedef BinaryNodeAVL                                       NodeType;
-			*/
+            // Visual Studio 2010 won't compile using the correct form "Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >". Insteed it accept onle "Node" and seems to work even thought it souldn't.
+            #ifdef SYSTEM_WINDOWS
+                typedef Node	ParentType;
+                NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
+                typedef Node	NodePolitic;
+                typedef BinaryNodeAVL	NodeType;
+            #else
+                typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
+                NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
+                typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
+                typedef BinaryNodeAVL                                       NodeType;
+            #endif
 
             BinaryNodeAVL()                                    : NodePolitic()               {}
             BinaryNodeAVL(const T &data)                       : NodePolitic(data)           {}

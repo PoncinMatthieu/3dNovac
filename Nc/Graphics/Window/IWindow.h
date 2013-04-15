@@ -59,7 +59,7 @@ namespace Nc
                     Fullscreen  =   1 << 1,         ///< fullscreen mode.
                     Titlebar    =   1 << 2,         ///< show the Titlebar.
                     Closeable   =   1 << 3,         ///< set the window closable.
-					Hiden		=	1 << 4			///< the window will be hidden. (can be usefull if you want to resize it after it's creation)
+					Hidden		=	1 << 4			///< the window will be hidden. (can be usefull if you want to resize it after it's creation)
 				};
 
                 typedef std::list<SubWindow*>       ListSubWindow;
