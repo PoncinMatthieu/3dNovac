@@ -62,8 +62,9 @@ namespace Nc
 
                 static LRESULT CALLBACK GlobalOnEvent(HWND Handle, UINT Message, WPARAM WParam, LPARAM LParam);
 
-            private:
                 void ProcessEvent(UINT Message, WPARAM WParam, LPARAM LParam);
+
+			private:
                 System::Key::Code ConvertVirtualKey(WPARAM VirtualKey, LPARAM Flags);
 
                 long    _callback;

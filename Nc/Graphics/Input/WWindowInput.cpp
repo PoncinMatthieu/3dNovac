@@ -59,7 +59,7 @@ void WWindowInput::Destroy()
 
 void WWindowInput::CheckEvents()
 {
-    if (!_callback) // process event only if its our window
+    if (_callback != NULL) // process event only if its our window
     {
         MSG Message;
         while (PeekMessage(&Message, NULL, 0, 0, PM_REMOVE))

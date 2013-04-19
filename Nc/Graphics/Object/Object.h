@@ -104,13 +104,13 @@ namespace Nc
                     Do nothing but can be redefined.
                     \return true
                 */
-                virtual bool        RenderChildsBegin(SceneGraph *scene)        {return true;}
+                virtual bool        RenderChildsBegin(SceneGraph *)             {return true;}
 
                 /**
                     Method called just after the RenderChilds method.
                     Do nothing but can be redefined.
                 */
-                virtual void        RenderChildsEnd(SceneGraph *scene)          {}
+                virtual void        RenderChildsEnd(SceneGraph *)               {}
 
                 /**
                     Render the drawables.
