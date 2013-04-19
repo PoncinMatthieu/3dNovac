@@ -125,7 +125,7 @@ namespace Nc
                     By default, write the msg, and flush the buffer if `flush` == true.
                     And call the CheckFile method to open the file, if it's not open.
                 */
-                virtual void Write(const std::string msg, bool flush);
+                virtual void Write(const std::string &msg, bool flush);
 
                 /** Open the file, if it isn't already yet. */
                 virtual void CheckFile();

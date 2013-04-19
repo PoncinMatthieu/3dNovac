@@ -105,7 +105,7 @@ void Logger::CheckFile()
     }
 }
 
-void Logger::Write(const string Msg, bool flush)
+void Logger::Write(const std::string &Msg, bool flush)
 {
     System::Locker l(&_mutex);
 
