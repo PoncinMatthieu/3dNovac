@@ -83,7 +83,7 @@ namespace Nc
             /// Convert an std::string to the type T.
             /**
                 Fill the data passed in parameter, and return true if the translation succeed.
-                The \p modifyer function allow to convert for exemple an hexa representation with std::hex.
+                The \p modifyer function allow to convert for example an hexa representation with std::hex.
             */
             template <typename T>
             bool StringTo(const std::string &s, T &dest, std::ios_base &(*modifyer)(std::ios_base &str));
@@ -91,6 +91,12 @@ namespace Nc
             /// Convert a data T to an std::string.
             template <typename T>
             std::string ToString(const T &data);
+            /// Convert a data T to an std::string.
+            /**
+			    The \p modifyer function allow to convert for example to an hexa representation with std::hex.
+            */
+            template <typename T>
+            std::string ToString(const T &data, std::ios_base &(*modifyer)(std::ios_base &str));
 
             /// Convert the first occurence of the \p delimitor to T in \p dest.
             template <typename T>

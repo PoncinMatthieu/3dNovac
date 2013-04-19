@@ -47,6 +47,14 @@ std::string ToString(const T &data)
 }
 
 template <typename T>
+std::string ToString(const T &data, std::ios_base &(*modifyer)(std::ios_base &str))
+{
+    std::ostringstream oss;
+    oss << modifyer << data;
+    return oss.str();
+}
+
+template <typename T>
 bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest)
 {
     std::string::size_type pos = str.find_first_of(delimitor);
