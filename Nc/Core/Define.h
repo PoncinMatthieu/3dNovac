@@ -38,7 +38,6 @@
     #include <map>
     #include <list>
     #include <string>
-    #include <Nc/Define.h>
 
     //#define NC_DYNAMIC_LINK
     //#define EXPORT_MATH
@@ -83,6 +82,23 @@
         #endif
     #else                                                       // others os (do nothing)
         #define LCORE               ///< Linking option of Nc-Core module
+    #endif
+
+// Define LOG
+    #ifndef LOG
+        #if defined(_DEBUG) && defined(_DEBUG_LOG)
+            #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
+        #else
+            #define _DEBUG_LOG_DEF
+        #endif
+
+        #define LOG             Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 0)
+        #define LOG_ERROR       Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 1)
+        #ifdef _DEBUG
+            #define LOG_DEBUG       Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 2)
+        #else
+            #define LOG_DEBUG       Nc::Utils::Logger::Log(_DEBUG_LOG_DEF -1)
+        #endif
     #endif
 
 // includes interne

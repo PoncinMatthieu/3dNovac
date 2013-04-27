@@ -32,7 +32,6 @@
 #ifndef NC_GUI_DEFINE_H_
 #define NC_GUI_DEFINE_H_
 
-    #include <Nc/Define.h>
     #include <Nc/Graphics/Graphics.h>
 
 // linking option (static or shared)

@@ -34,7 +34,6 @@
 
 // includes extern
     #include <list>
-    #include <Nc/Define.h>
     #include <Nc/Core/Core.h>
 
     //#define NC_DYNAMIC_LINK
