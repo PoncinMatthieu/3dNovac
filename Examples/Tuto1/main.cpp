@@ -11,7 +11,7 @@ int main()
     Vector2ui               winSize(800, 600);
 
     // create the game engine with the config file name.
-    Engine::Manager manager("3dNovac.conf");
+    Engine::Manager manager("Nc-Examples.conf");
 
     // create the window.
     Graphic::Window window("Tuto 1", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);

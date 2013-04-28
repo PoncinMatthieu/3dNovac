@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 cmake_policy(SET CMP0015 NEW)
 
-project(3dNovac-Demos)
+project(Nc-Demos)
 
 # setup the launcher module for vs2010
 if(MSVC_IDE)
@@ -10,16 +10,8 @@ if(MSVC_IDE)
 endif()
 
 # set Nc root directory path
-set(NC_DIR ../..)
-set(NC_DEMOS_DIR ..)
-
-# set path to copy dependencies
-set(NC_COPY_DEPENDENCIES_PATH ${NC_DEMOS_DIR}/bin/${CMAKE_CFG_INTDIR})
-
-# executable and libraries output path
-set(EXECUTABLE_OUTPUT_PATH ${NC_DEMOS_DIR}/bin/)
-set(LIBRARY_OUTPUT_PATH ${NC_DIR}/lib/)
-
+set(NC_DIR ../)
+set(NC_DEMOS_DIR ./)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
@@ -35,9 +27,6 @@ endif()
 # we want to compile our libs dynamically
 add_definitions(-DNC_DYNAMIC_LINK)
 
-# add 3dNovac to the project
-SUBDIRS(${NC_DIR}/Build)
-
 # set include and link directories
 include_directories(${NC_DIR})
 include_directories(${NC_DIR}/extlibs/)
@@ -50,15 +39,15 @@ link_directories(${NC_DIR}/extlibs/)
 file(
   GLOB
   FrustumDemo-sources
-  ../FrustumDemo/*.cpp
-  ../FrustumDemo/*.h
+  ./FrustumDemo/*.cpp
+  ./FrustumDemo/*.h
 )
 
-file(GLOB FrustumDemoMain-sources ../FrustumDemo/main.cpp)
+file(GLOB FrustumDemoMain-sources ./FrustumDemo/main.cpp)
 list(REMOVE_ITEM FrustumDemo-sources ${FrustumDemoMain-sources})
 
 add_executable(FrustumDemo					${FrustumDemo-sources} ${FrustumDemoMain-sources})
-add_dependencies(FrustumDemo				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+add_dependencies(FrustumDemo				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib Nc-Plugin-FileFormatCollada)
 target_link_libraries(FrustumDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
@@ -77,7 +66,7 @@ file(
   ../GUIDemo/*.h
 )
 
-file(GLOB GUIDemoMain-sources ../GUIDemo/main.cpp)
+file(GLOB GUIDemoMain-sources ./GUIDemo/main.cpp)
 list(REMOVE_ITEM GUIDemo-sources ${GUIDemoMain-sources})
 
 add_executable(GUIDemo					${GUIDemo-sources} ${GUIDemoMain-sources})
@@ -96,15 +85,15 @@ endif()
 file(
   GLOB
   LightDemo-sources
-  ../LightDemo/*.cpp
-  ../LightDemo/*.h
+  ./LightDemo/*.cpp
+  ./LightDemo/*.h
 )
 
-file(GLOB LightDemoMain-sources ../LightDemo/main.cpp)
+file(GLOB LightDemoMain-sources ./LightDemo/main.cpp)
 list(REMOVE_ITEM LightDemo-sources ${LightDemoMain-sources})
 
 add_executable(LightDemo				${LightDemo-sources} ${LightDemoMain-sources})
-add_dependencies(LightDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+add_dependencies(LightDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib Nc-Plugin-FileFormatCollada)
 target_link_libraries(LightDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
@@ -119,11 +108,11 @@ endif()
 file(
   GLOB
   bSplinesDemo-sources
-  ../bSplinesDemo/*.cpp
-  ../bSplinesDemo/*.h
+  ./bSplinesDemo/*.cpp
+  ./bSplinesDemo/*.h
 )
 
-file(GLOB bSplinesDemoMain-sources ../bSplinesDemo/main.cpp)
+file(GLOB bSplinesDemoMain-sources ./bSplinesDemo/main.cpp)
 list(REMOVE_ITEM bSplinesDemo-sources ${bSplinesDemoMain-sources})
 
 add_executable(bSplinesDemo					${bSplinesDemo-sources} ${bSplinesDemoMain-sources})
@@ -142,15 +131,15 @@ endif()
 file(
   GLOB
   FBEffectsDemo-sources
-  ../FBEffectsDemo/*.cpp
-  ../FBEffectsDemo/*.h
+  ./FBEffectsDemo/*.cpp
+  ./FBEffectsDemo/*.h
 )
 
-file(GLOB FBEffectsDemoMain-sources ../FBEffectsDemo/main.cpp)
+file(GLOB FBEffectsDemoMain-sources ./FBEffectsDemo/main.cpp)
 list(REMOVE_ITEM FBEffectsDemo-sources ${FBEffectsDemoMain-sources})
 
 add_executable(FBEffectsDemo				${FBEffectsDemo-sources} ${FBEffectsDemoMain-sources})
-add_dependencies(FBEffectsDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+add_dependencies(FBEffectsDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib Nc-Plugin-FileFormatCollada)
 target_link_libraries(FBEffectsDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
@@ -164,15 +153,15 @@ endif()
 file(
   GLOB
   SokobanDemo-sources
-  ../SokobanDemo/*.cpp
-  ../SokobanDemo/*.h
+  ./SokobanDemo/*.cpp
+  ./SokobanDemo/*.h
 )
 
-file(GLOB SokobanDemoMain-sources ../SokobanDemo/main.cpp)
+file(GLOB SokobanDemoMain-sources ./SokobanDemo/main.cpp)
 list(REMOVE_ITEM SokobanDemo-sources ${SokobanDemoMain-sources})
 
 add_executable(SokobanDemo					${SokobanDemo-sources} ${SokobanDemoMain-sources})
-add_dependencies(SokobanDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+add_dependencies(SokobanDemo 				Nc-Core Nc-Graphics Nc-GUI Nc-Contrib Nc-Plugin-FileFormatCollada)
 target_link_libraries(SokobanDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
@@ -186,11 +175,11 @@ endif()
 file(
   GLOB
   SimpleParticleEffect-sources
-  ../SimpleParticleEffect/*.cpp
-  ../SimpleParticleEffect/*.h
+  ./SimpleParticleEffect/*.cpp
+  ./SimpleParticleEffect/*.h
 )
 
-file(GLOB SimpleParticleEffectMain-sources ../SimpleParticleEffect/main.cpp)
+file(GLOB SimpleParticleEffectMain-sources ./SimpleParticleEffect/main.cpp)
 list(REMOVE_ITEM SimpleParticleEffect-sources ${SimpleParticleEffectMain-sources})
 
 add_executable(SimpleParticleEffect			${SimpleParticleEffect-sources} ${SimpleParticleEffectMain-sources})
@@ -209,8 +198,8 @@ endif()
 file(
   GLOB
   DemoViewer-sources
-  ../DemoViewer/*.cpp
-  ../DemoViewer/*.h
+  ./DemoViewer/*.cpp
+  ./DemoViewer/*.h
 )
 
 list(APPEND DemoViewer-sources ${FrustumDemo-sources})
@@ -222,7 +211,7 @@ list(APPEND DemoViewer-sources ${SokobanDemo-sources})
 list(APPEND DemoViewer-sources ${SimpleParticleEffect-sources})
 
 add_executable(DemoViewer		${DemoViewer-sources})
-add_dependencies(DemoViewer		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib PluginFileFormatCollada)
+add_dependencies(DemoViewer		Nc-Core Nc-Graphics Nc-GUI Nc-Contrib Nc-Plugin-FileFormatCollada)
 target_link_libraries(DemoViewer	Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010

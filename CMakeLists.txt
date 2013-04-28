@@ -1,0 +1,43 @@
+
+#
+# Usage:
+# - mkdir build && cd build
+# - cmake -G"Unix Makefiles" ..
+# - make
+#
+
+cmake_minimum_required(VERSION 2.8)
+cmake_policy(SET CMP0015 NEW)
+
+# project name
+project(3dNovac)
+
+# executable and libraries output path
+set(LIBRARY_OUTPUT_PATH  ${3dNovac_SOURCE_DIR}/lib CACHE PATH "Single directory for all libraries.")
+set(EXECUTABLE_OUTPUT_PATH ${3dNovac_SOURCE_DIR}/bin CACHE PATH "Single directory for all executables.")
+mark_as_advanced(EXECUTABLE_OUTPUT_PATH)
+mark_as_advanced(LIBRARY_OUTPUT_PATH)
+
+# set path to copy dependencies
+set(NC_COPY_DEPENDENCIES_PATH ${3dNovac_SOURCE_DIR}/bin/${CMAKE_CFG_INTDIR})
+mark_as_advanced(NC_COPY_DEPENDENCIES_PATH)
+
+
+# add 3dNovac modules
+# the second argument is usefull for an out of source build.
+add_subdirectory(./Nc/Core/ ./Nc/Core/)
+add_subdirectory(./Nc/Graphics/ ./Nc/Graphics/)
+add_subdirectory(./Nc/GUI/ ./Nc/GUI/)
+add_subdirectory(./Nc/Contrib/ ./Nc/Contrib/)
+add_subdirectory(./Nc/Audio/ ./Nc/Audio/)
+
+# Following projects won't be compiled with the ALL target or when you execute "make", to compile then, you must specify the target in your IDE or by "make 'TargetName'".
+# Those projects are optional.
+# plugins
+add_subdirectory(./Plugin/FileFormatCollada/ ./Plugin/FileFormatCollada/ EXCLUDE_FROM_ALL)
+
+# examples
+add_subdirectory(./Examples/ ./Examples/ EXCLUDE_FROM_ALL)
+
+# demos
+add_subdirectory(./Demos/ ./Demos/ EXCLUDE_FROM_ALL)

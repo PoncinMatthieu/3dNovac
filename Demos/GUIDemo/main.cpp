@@ -27,7 +27,7 @@ int main()
 
 	try
 	{
-        Engine::Manager GUITest("3dNovac.conf");
+        Engine::Manager GUITest("Nc-Demos.conf");
         Graphic::Window window("GUI Tests", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
 
         CreateEngines(&GUITest, window);

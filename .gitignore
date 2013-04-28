@@ -1,50 +1,9 @@
 *~
 /svn-commit.tmp
 /lib/*
-/Demos/bin/*
-/Demos/Build/launch*
-/Demos/Build/3dNovac-Demos.*
-/Demos/Build/Win32
-/Demos/Build/ipch
-/Demos/Build/ZERO_CHECK.*
-/Demos/Build/CMakeCache.txt
-/Demos/Build/CMakeFiles
-/Demos/Build/Makefile
-/Demos/Build/cmake_install.cmake
-/Demos/Build/*.vcxproj*
-/Demos/Build/*.dir
+/bin/*
 
-/Examples/bin/*
-/Examples/Build/launch*
-/Examples/Build/3dNovac-Examples.*
-/Examples/Build/CMakeCache.txt
-/Examples/Build/CMakeFiles/
-/Examples/Build/Makefile
-/Examples/Build/cmake_install.cmake
-/Examples/Build/*.vcxproj*
-/Examples/Build/Win32
-/Examples/Build/ipch
-/Examples/Build/*.dir
-
-# /Build/
-/Build/3dNovac.cbp
-/Build/3dNovac.depend
-/Build/3dNovac.layout
-/Build/3dNovac.sdf
-/Build/3dNovac.sln
-/Build/3dNovac.suo
-/Build/*.vcxproj
-/Build/*.vcxproj.filters
-/Build/*.vcxproj.user
-/Build/*.dir
-/Build/CMakeCache.txt
-/Build/CMakeFiles
-/Build/Debug
-/Build/Makefile
-/Build/Release
-/Build/Win32
-/Build/cmake_install.cmake
-/Build/ipch
+/Build
 
 # /Documentation/
 /Documentation/html

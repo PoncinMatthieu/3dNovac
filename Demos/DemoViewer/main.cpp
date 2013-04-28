@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
     try
     {
-        Engine::Manager manager("3dNovac.conf");
+        Engine::Manager manager("Nc-Demos.conf");
         Graphic::Window window("Demo Viewer", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
 
 		Graphic::Engine *graphic = new Graphic::Engine(&window, &manager);
