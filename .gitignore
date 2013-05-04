@@ -7,21 +7,3 @@
 
 # /Documentation/
 /Documentation/html
-
-# /Editor/Build/
-/Editor/Build/Editor.pro.user
-/Editor/Build/Makefile
-
-# /Editor/Build/obj/
-/Editor/Build/obj/moc_EditorEngine.cpp
-/Editor/Build/obj/moc_EditorManager.cpp
-/Editor/Build/obj/moc_MainTreeModel.cpp
-/Editor/Build/obj/moc_MainWindow.cpp
-/Editor/Build/obj/moc_NodeProperties.cpp
-/Editor/Build/obj/moc_QManager.cpp
-/Editor/Build/obj/moc_QSceneGraphManager.cpp
-/Editor/Build/obj/qrc_MainWindow.cpp
-
-# /Editor/bin/
-/Editor/bin/Editor
-/Editor/bin/out.log
