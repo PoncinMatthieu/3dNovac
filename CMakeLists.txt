@@ -12,6 +12,15 @@ cmake_policy(SET CMP0015 NEW)
 # project name
 project(3dNovac)
 
+set (NC_LICENSE "LGPL")
+message("*** 3dNovac use ${NC_LICENSE} license ***")
+
+set(NC_VERSION_MAJOR 0)
+set(NC_VERSION_MINOR 1)
+set(NC_VERSION "${NC_VERSION_MAJOR}.${NC_VERSION_MINOR}" )
+add_definitions(-DNC_VERSION=\"${NC_VERSION}\")
+message("*** Using Nc version ${NC_VERSION} ***")
+
 # executable and libraries output path
 set(LIBRARY_OUTPUT_PATH  ${3dNovac_SOURCE_DIR}/lib CACHE PATH "Single directory for all libraries.")
 set(EXECUTABLE_OUTPUT_PATH ${3dNovac_SOURCE_DIR}/bin CACHE PATH "Single directory for all executables.")
