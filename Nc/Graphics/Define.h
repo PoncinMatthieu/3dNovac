@@ -37,12 +37,12 @@
     #include <Nc/Core/Core.h>
 
     //#define NC_DYNAMIC_LINK
-    //#define EXPORT_MATH
+    //#define NC_EXPORT_GRAPHICS
 
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                     // dynamic
-            #ifdef EXPORT_GRAPHICS
+            #ifdef NC_EXPORT_GRAPHICS
                 #define LGRAPHICS     __declspec(dllexport)
             #else
                 #define LGRAPHICS     __declspec(dllimport)

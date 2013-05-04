@@ -32,7 +32,7 @@
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                      // dynamic
-            #ifdef EXPORT_AUDIO
+            #ifdef NC_EXPORT_AUDIO
                 #define LAUDIO          __declspec(dllexport)
             #else
                 #define LAUDIO          __declspec(dllimport)

@@ -32,7 +32,7 @@
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                      // dynamic
-            #ifdef EXPORT_CONTRIB
+            #ifdef NC_EXPORT_CONTRIB
                 #define LCONTRIB    __declspec(dllexport)
             #else
                 #define LCONTRIB    __declspec(dllimport)

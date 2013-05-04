@@ -40,7 +40,7 @@
     #include <string>
 
     //#define NC_DYNAMIC_LINK
-    //#define EXPORT_MATH
+    //#define NC_EXPORT_CORE
 
 // define Operating System
 	#if !defined(SYSTEM_WINDOWS) && !defined(SYSTEM_LINUX) && !defined(SYSTEM_MACOS) && !defined(SYSTEM_FREEBSD)
@@ -72,7 +72,7 @@
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                  // dynamic
-            #ifdef EXPORT_CORE
+            #ifdef NC_EXPORT_CORE
                 #define LCORE       __declspec(dllexport)
             #else
                 #define LCORE       __declspec(dllimport)

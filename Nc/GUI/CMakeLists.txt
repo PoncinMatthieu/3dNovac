@@ -52,7 +52,7 @@ add_dependencies(Nc-GUI	Nc-Core Nc-Graphics)
 
 # set the export defines to export the symbole in the dll
 # those defines are more likely more usefull for Windows, but it could be interesting to keep these define on the other systems
-set_target_properties(Nc-GUI PROPERTIES DEFINE_SYMBOL EXPORT_GUI)
+set_target_properties(Nc-GUI PROPERTIES DEFINE_SYMBOL NC_EXPORT_GUI)
 
 # copy dll and .pdb files for excutable dependencies if NC_COPY_DEPENDENCIES_PATH is set
 if (WIN32)

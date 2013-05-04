@@ -59,7 +59,7 @@ endif()
 
 # set the export defines to export the symbole in the dll
 # those defines are more likely more usefull for Windows, but it could be interesting to keep these define on the other systems
-set_target_properties(Nc-Core PROPERTIES DEFINE_SYMBOL EXPORT_CORE)
+set_target_properties(Nc-Core PROPERTIES DEFINE_SYMBOL NC_EXPORT_CORE)
 
 # copy dll and .pdb files for excutable dependencies if NC_COPY_DEPENDENCIES_PATH is set
 if (WIN32)

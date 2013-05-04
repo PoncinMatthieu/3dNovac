@@ -37,7 +37,7 @@
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                     // dynamic
-            #ifdef EXPORT_GUI
+            #ifdef NC_EXPORT_GUI
                 #define LGUI     __declspec(dllexport)
             #else
                 #define LGUI     __declspec(dllimport)

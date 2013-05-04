@@ -72,5 +72,5 @@ add_dependencies(Nc-Plugin-FileFormatCollada	Nc-Core Nc-Graphics)
 
 # set the export defines to export the symbole in the dll
 # those defines are more likely more usefull for Windows, but it could be interesting to keep these define on the other systems
-set_target_properties(Nc-Plugin-FileFormatCollada PROPERTIES DEFINE_SYMBOL EXPORT_PLUGIN_FILEFORMATCOLLADA)
+set_target_properties(Nc-Plugin-FileFormatCollada PROPERTIES DEFINE_SYMBOL NC_EXPORT_PLUGIN_FILEFORMATCOLLADA)
 
