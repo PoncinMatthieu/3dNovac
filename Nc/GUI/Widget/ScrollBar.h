@@ -37,7 +37,7 @@ namespace Nc
         /**
             Enable users to access part of a document that is larger than the widget used to display it.
         */
-        class LGUI ScrollBar : public Widget
+        class LIB_NC_GUI ScrollBar : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ScrollBar);

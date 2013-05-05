@@ -40,7 +40,7 @@ namespace Nc
             Allow to display text and also to display a description text next to another widget by using the method 'AddBuddy'.
             The method will add the widget as a child and configure it so it can be displayed next to the label depending on it's alignment.
         */
-        class LGUI  Label : public Widget
+        class LIB_NC_GUI  Label : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Label);

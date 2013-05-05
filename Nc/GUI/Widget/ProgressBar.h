@@ -37,7 +37,7 @@ namespace Nc
         /**
             \todo Recode the progress bar to use the Widget Looks.
         */
-        class LGUI  ProgressBar : public Widget
+        class LIB_NC_GUI  ProgressBar : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ProgressBar);

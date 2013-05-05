@@ -34,7 +34,7 @@ namespace Nc
     namespace GUI
     {
         /// Store a data text.
-        class LGUI Item : public Label
+        class LIB_NC_GUI Item : public Label
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Label, Nc::System::Object, Nc::GUI::Item);

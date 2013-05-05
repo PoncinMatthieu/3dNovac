@@ -42,7 +42,7 @@ namespace Nc
 
             \todo Think about a whole new event system for the widgets, a widget should be able to send a particular event to a parametized target.
         */
-        class LGUI  Widget : public Graphic::Object
+        class LIB_NC_GUI  Widget : public Graphic::Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Graphic::Object, System::Object, System::Object, Nc::GUI::Widget);

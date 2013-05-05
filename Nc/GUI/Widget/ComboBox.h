@@ -43,7 +43,7 @@ namespace Nc
 
             \todo correct dropdown list which should start below the box, to be able to show the currently selected item.
         */
-        class LGUI ComboBox : public Widget
+        class LIB_NC_GUI ComboBox : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(GUI::Widget, System::Object, Nc::GUI::ComboBox);

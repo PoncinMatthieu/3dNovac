@@ -34,7 +34,7 @@ namespace Nc
 {
     namespace GUI
     {
-        class LGUI TreeWidget : public ScrollArea
+        class LIB_NC_GUI TreeWidget : public ScrollArea
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TreeWidget);

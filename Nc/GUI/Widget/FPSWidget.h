@@ -34,7 +34,7 @@ namespace Nc
     namespace GUI
     {
         /// Define a widget displaying the current frame per second of the Graphic::Engine.
-        class LGUI FPSWidget : public Label
+        class LIB_NC_GUI FPSWidget : public Label
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Label, System::Object, Nc::GUI::FPSWidget);

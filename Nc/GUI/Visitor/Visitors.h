@@ -38,21 +38,21 @@ namespace Nc
         namespace Visitor
         {
             /// Visitor used to notify a changement of size.
-            struct LGUI ResizedAll : public WidgetVisitor<ResizedAll>
+            struct LIB_NC_GUI ResizedAll : public WidgetVisitor<ResizedAll>
             {
                 ResizedAll(Graph::VisitTarget visitTarget = Graph::VisitChilds);
                 void VisitNode(Widget &w);
             };
 
             /// Visitor used to notify a changement of position.
-            struct LGUI ReposedAll : public WidgetVisitor<ReposedAll>
+            struct LIB_NC_GUI ReposedAll : public WidgetVisitor<ReposedAll>
             {
                 ReposedAll(Graph::VisitTarget visitTarget = Graph::VisitChilds);
                 void VisitNode(Widget &w);
             };
 
             /// Visitor used to know if a widget is inhibited.
-            struct LGUI IsInhibited : public WidgetVisitor<IsInhibited, true>
+            struct LIB_NC_GUI IsInhibited : public WidgetVisitor<IsInhibited, true>
             {
                 IsInhibited();
                 void VisitNode(const Widget &w);
@@ -61,7 +61,7 @@ namespace Nc
             };
 
             /// Visitor used to check focus.
-            struct LGUI CheckFocus : public WidgetVisitor<CheckFocus, false, bool>
+            struct LIB_NC_GUI CheckFocus : public WidgetVisitor<CheckFocus, false, bool>
             {
                 CheckFocus(const Nc::System::Event &e, const Vector2i &mouseP);
                 bool VisitNode(Widget &w);
@@ -72,7 +72,7 @@ namespace Nc
             };
 
             /// Visitor allowing to retreive either the widget parent of the given widget or to retreive the scene graph if no widget parent has been found.
-            struct LGUI GetParentWidget : public WidgetVisitor<GetParentWidget, true>
+            struct LIB_NC_GUI GetParentWidget : public WidgetVisitor<GetParentWidget, true>
             {
                 GetParentWidget(const Widget *w);
                 void VisitNode(const Widget &w);
@@ -84,7 +84,7 @@ namespace Nc
             };
 
             /// Visitor used to set the state change into widgets, to force an update before rendering.
-            struct LGUI ChangeStates : public WidgetVisitor<ChangeStates>
+            struct LIB_NC_GUI ChangeStates : public WidgetVisitor<ChangeStates>
             {
                 ChangeStates();
                 void VisitNode(Widget &w);

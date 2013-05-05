@@ -43,7 +43,7 @@ namespace Nc
         /**
             Send a ReturnPressed event when a command is sent, the line edit and text edit will stay unchanged until you modify it.
         */
-        class LGUI  Console : public Widget, Utils::NonCopyable
+        class LIB_NC_GUI  Console : public Widget, Utils::NonCopyable
         {
             private:
                 /// Used to manage event of composed widgets.

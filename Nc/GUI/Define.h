@@ -38,15 +38,15 @@
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                     // dynamic
             #ifdef NC_EXPORT_GUI
-                #define LGUI     __declspec(dllexport)
+                #define LIB_NC_GUI     __declspec(dllexport)
             #else
-                #define LGUI     __declspec(dllimport)
+                #define LIB_NC_GUI     __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LGUI
+            #define LIB_NC_GUI
         #endif
     #else                                                       // othes os (do nothing)
-        #define LGUI
+        #define LIB_NC_GUI
     #endif
 
 // includes interne

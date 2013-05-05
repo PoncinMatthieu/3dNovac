@@ -39,7 +39,7 @@ namespace Nc
 
             \todo Implement the grid layout, with the possibility to set up a given widget to a given case.
         */
-        class LGUI Layout : public Widget
+        class LIB_NC_GUI Layout : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Layout);

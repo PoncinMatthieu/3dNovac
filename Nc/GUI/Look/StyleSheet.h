@@ -39,7 +39,7 @@ namespace Nc
             The StyleSheet records a SpriteSheet used to load widget looks.
             It records also a certain number of static names used to load sprites into the SpriteSheet.
         */
-        class LGUI StyleSheet : public Utils::Singleton<StyleSheet>
+        class LIB_NC_GUI StyleSheet : public Utils::Singleton<StyleSheet>
         {
             public:
                 struct LooksName

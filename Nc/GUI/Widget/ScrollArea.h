@@ -39,7 +39,7 @@ namespace Nc
             Use the size of the settle view 'SetView' to render the scroll area.
             The view must be a widget child of the ScrollArea.
         */
-        class LGUI ScrollArea : public Widget
+        class LIB_NC_GUI ScrollArea : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ScrollArea);
