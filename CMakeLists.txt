@@ -12,7 +12,7 @@ cmake_policy(SET CMP0015 NEW)
 # project name
 project(3dNovac)
 
-set (NC_LICENSE "LGPL")
+set(NC_LICENSE "LGPL")
 message("*** 3dNovac use ${NC_LICENSE} license ***")
 
 set(NC_VERSION_MAJOR 0)
@@ -20,6 +20,16 @@ set(NC_VERSION_MINOR 1)
 set(NC_VERSION "${NC_VERSION_MAJOR}.${NC_VERSION_MINOR}" )
 add_definitions(-DNC_VERSION=\"${NC_VERSION}\")
 message("*** Using Nc version ${NC_VERSION} ***")
+
+if(NOT DEFINED NC_BUILD_PLUGINS)
+    set(NC_BUILD_PLUGINS true CACHE BOOL "If true, add the plugins to the project.")
+endif()
+if(NOT DEFINED NC_BUILD_DEMOS)
+    set(NC_BUILD_DEMOS true CACHE BOOL "If true, add the demos to the project.")
+endif()
+if(NOT DEFINED NC_BUILD_EXAMPLES)
+    set(NC_BUILD_EXAMPLES true CACHE BOOL "If true, add the examples to the project.")
+endif()
 
 # executable and libraries output path
 set(LIBRARY_OUTPUT_PATH  ${3dNovac_SOURCE_DIR}/lib CACHE PATH "Single directory for all libraries.")
@@ -43,10 +53,16 @@ add_subdirectory(./Nc/Audio/ ./Nc/Audio/)
 # Following projects won't be compiled with the ALL target or when you execute "make", to compile then, you must specify the target in your IDE or by "make 'TargetName'".
 # Those projects are optional.
 # plugins
-add_subdirectory(./Plugin/FileFormatCollada/ ./Plugin/FileFormatCollada/ EXCLUDE_FROM_ALL)
+if(NC_BUILD_PLUGINS)
+  add_subdirectory(./Plugin/FileFormatCollada/ ./Plugin/FileFormatCollada/ EXCLUDE_FROM_ALL)
+endif()
 
 # examples
-add_subdirectory(./Examples/ ./Examples/ EXCLUDE_FROM_ALL)
+if(NC_BUILD_EXAMPLES)
+  add_subdirectory(./Examples/ ./Examples/ EXCLUDE_FROM_ALL)
+endif()
 
 # demos
-add_subdirectory(./Demos/ ./Demos/ EXCLUDE_FROM_ALL)
+if(NC_BUILD_DEMOS)
+  add_subdirectory(./Demos/ ./Demos/ EXCLUDE_FROM_ALL)
+endif()

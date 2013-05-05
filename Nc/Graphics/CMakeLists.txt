@@ -73,7 +73,11 @@ endif()
 
 add_library(Nc-Graphics SHARED ${Nc-Graphics-sources})
 
+find_package(OpenGL REQUIRED)
 if(UNIX)
+  find_package(PNG REQUIRED)
+  find_package(Freetype REQUIRED)
+  find_package(X11 REQUIRED)
   target_link_libraries(Nc-Graphics Nc-Core freetype GL png X11 Xrandr)
 else()
   target_link_libraries(Nc-Graphics Nc-Core freetype opengl32)

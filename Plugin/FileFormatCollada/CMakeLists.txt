@@ -48,6 +48,8 @@ file(GLOB PluginFileFormatCollada-sources       ./*.cpp ./*.h)
 add_library(Nc-Plugin-FileFormatCollada SHARED ${PluginFileFormatCollada-sources})
 
 if(UNIX)
+  find_package(Boost REQUIRED)
+  find_package(LibXml2 REQUIRED)
   target_link_libraries(Nc-Plugin-FileFormatCollada collada14dom minizip xml2 pcre pcrecpp boost_filesystem boost_system)
 else()
   target_link_libraries(Nc-Plugin-FileFormatCollada general opengl32

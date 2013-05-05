@@ -3,7 +3,7 @@
 /lib/*
 /bin/*
 
-/Build
+/build
 
 # /Documentation/
 /Documentation/html
