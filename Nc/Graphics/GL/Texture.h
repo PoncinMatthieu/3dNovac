@@ -37,7 +37,7 @@ namespace Nc
         namespace GL
         {
             ///< provide an opengl texture object.
-            class LGRAPHICS Texture : public Object
+            class LIB_NC_GRAPHICS Texture : public Object
             {
                 public:
                     Texture();

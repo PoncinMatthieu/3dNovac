@@ -50,7 +50,7 @@ namespace Nc
 
 			\todo Manage Hiden flag under unix system.
 		*/
-        class LGRAPHICS IWindow : public Utils::NonCopyable
+        class LIB_NC_GRAPHICS IWindow : public Utils::NonCopyable
         {
             public:
                 enum Style

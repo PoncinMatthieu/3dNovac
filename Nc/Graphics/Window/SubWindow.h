@@ -50,7 +50,7 @@ namespace Nc
             \todo Generate Entered/Left mouse event.
             \todo Change the cursor at Entered/Left mouse event.
         */
-        class LGRAPHICS SubWindow : public IWindow
+        class LIB_NC_GRAPHICS SubWindow : public IWindow
         {
             public:
                 SubWindow(IWindow *parent, SceneGraphManager *sceneGraphManager = NULL);

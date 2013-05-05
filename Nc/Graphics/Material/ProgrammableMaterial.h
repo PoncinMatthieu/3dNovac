@@ -42,7 +42,7 @@ namespace Nc
 
             To use this class you should configure it by setting the attributes just after it's creation and setting the uniforms value before the rendering.
         */
-        class LGRAPHICS ProgrammableMaterial : public IMaterial
+        class LIB_NC_GRAPHICS ProgrammableMaterial : public IMaterial
         {
             private:
                 typedef std::map<std::string, GL::IUniform*>    UniformMap;
@@ -90,7 +90,7 @@ namespace Nc
                 /** Set the uniform normal matrix location. */
                 void                SetNormalMatrixUniform(const char *name);
 
-                friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const ProgrammableMaterial &m);
+                friend LIB_NC_GRAPHICS std::ostream &operator << (std::ostream &oss, const ProgrammableMaterial &m);
 
             protected:
                 GL::Program                         _program;                       ///< the program used to render the drawables.

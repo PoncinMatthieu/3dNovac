@@ -50,7 +50,7 @@ namespace Nc
         /**
             For more detail show WindowInput
         */
-        class LGRAPHICS WWindowInput : public WindowInput
+        class LIB_NC_GRAPHICS WWindowInput : public WindowInput
         {
             public:
                 WWindowInput(Graphic::Window *win);

@@ -46,7 +46,7 @@ namespace Nc
         /**
             \todo put a reference counter here to destroy the static drawable of the box and avoid memory leek.
         */
-        class LGRAPHICS BoundingBox : public Object, public Box3f
+        class LIB_NC_GRAPHICS BoundingBox : public Object, public Box3f
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::BoundingBox);

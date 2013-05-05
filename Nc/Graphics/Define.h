@@ -43,15 +43,15 @@
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                     // dynamic
             #ifdef NC_EXPORT_GRAPHICS
-                #define LGRAPHICS     __declspec(dllexport)
+                #define LIB_NC_GRAPHICS     __declspec(dllexport)
             #else
-                #define LGRAPHICS     __declspec(dllimport)
+                #define LIB_NC_GRAPHICS     __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LGRAPHICS
+            #define LIB_NC_GRAPHICS
         #endif
     #else                                                       // othes os (do nothing)
-        #define LGRAPHICS       ///< Linking option of Nc-Graphics module.
+        #define LIB_NC_GRAPHICS       ///< Linking option of Nc-Graphics module.
     #endif
 
     namespace Nc

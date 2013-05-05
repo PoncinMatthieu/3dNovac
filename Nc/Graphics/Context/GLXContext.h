@@ -45,7 +45,7 @@ namespace Nc
             \sa
                 - GLContext
         */
-        class LIB_NC_CORE GLXContext : public GLContext
+        class LIB_NC_GRAPHICS GLXContext : public GLContext
         {
             public:
                 GLXContext(Window *win);

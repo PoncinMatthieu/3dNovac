@@ -41,7 +41,7 @@ namespace Nc
             \sa
                 - WindowInput
         */
-        class LIB_NC_CORE XWindowInput : public WindowInput
+        class LIB_NC_GRAPHICS XWindowInput : public WindowInput
         {
             public:
                 XWindowInput(Window *win);

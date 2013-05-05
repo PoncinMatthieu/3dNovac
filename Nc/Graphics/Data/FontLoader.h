@@ -35,7 +35,7 @@ namespace Nc
     namespace Graphic
     {
         /// Interface to load font files.
-        class LGRAPHICS FontLoader
+        class LIB_NC_GRAPHICS FontLoader
         {
             public:
                 FontLoader()            {}

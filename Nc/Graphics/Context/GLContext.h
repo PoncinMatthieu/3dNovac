@@ -47,7 +47,7 @@ namespace Nc
 
             \todo [Performance] Find a way to stop Enabling/Disabling the context at each loop... we already tried once, but it doesn't seem to work on linux (with an nvidia) and window (with an ati) even if according to the opengl specification it should work. See branch '_StopEnabling'.
         */
-        class LGRAPHICS GLContext : public Utils::NonCopyable
+        class LIB_NC_GRAPHICS GLContext : public Utils::NonCopyable
         {
             public:
                 typedef std::map<unsigned int, GLContext*>	MapPIDContext;

@@ -36,7 +36,7 @@ namespace Nc
     namespace Graphic
     {
         /// Define a light to use with the LightingEffect.
-        struct LGRAPHICS Light : public Object
+        struct LIB_NC_GRAPHICS Light : public Object
         {
             NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Light)
 
@@ -66,7 +66,7 @@ namespace Nc
         /**
             The lightingEffect is a "Material effect" in that case, we need to configure the materials of the childs to apply the effects.
         */
-        class LGRAPHICS LightingEffect : public Effect
+        class LIB_NC_GRAPHICS LightingEffect : public Effect
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, System::Object, Nc::Graphic::LightingEffect)

@@ -50,7 +50,7 @@ namespace Nc
 
                 #pragma pack(push, 1) // pragma pack to remove padding byte on structure
                 /// A VertexType for 3d colored geometry.
-                struct LGRAPHICS Colored
+                struct LIB_NC_GRAPHICS Colored
                 {
                     float           coord[3];     // position
                     float           color[4];     // color
@@ -61,7 +61,7 @@ namespace Nc
                 };
 
                 /// A VertexType for 2d colored geometry.
-                struct LGRAPHICS Colored2d
+                struct LIB_NC_GRAPHICS Colored2d
                 {
                     float           coord[2];     // position
                     float           color[4];     // color
@@ -72,7 +72,7 @@ namespace Nc
                 };
 
                 /// A VertexType for 3d textured geometry (with a normal to apply lighting on it).
-                struct LGRAPHICS Textured
+                struct LIB_NC_GRAPHICS Textured
                 {
                     float           coord[3];     // position
                     float           texCoord[2];   // texture coord
@@ -85,7 +85,7 @@ namespace Nc
                 };
 
                 /// A VertexType for 2d textured geometry.
-                struct LGRAPHICS Textured2d
+                struct LIB_NC_GRAPHICS Textured2d
                 {
                     float           coord[2];     // position
                     float           texCoord[2];   // texture coord
@@ -97,7 +97,7 @@ namespace Nc
                 };
 
                 /// A VertexType for 3d textured geometry (a SkyBox use these VertexType).
-                struct LGRAPHICS Textured3d
+                struct LIB_NC_GRAPHICS Textured3d
                 {
                     float           coord[3];     // position
                     float           texCoord[3];  // texture coord

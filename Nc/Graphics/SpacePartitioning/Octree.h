@@ -38,7 +38,7 @@ namespace Nc
         /**
             An octree can have 8 childs and has a list of ISceneNode as subtrees.
         */
-        class LGRAPHICS Octree : public SubTree<Graph::OctreeNodePolitic>
+        class LIB_NC_GRAPHICS Octree : public SubTree<Graph::OctreeNodePolitic>
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(ISceneNode, System::Object, System::Object, Nc::Graphic::Octree);

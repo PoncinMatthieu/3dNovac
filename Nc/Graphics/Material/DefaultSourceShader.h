@@ -36,20 +36,20 @@ namespace Nc
         /// Reference the sources of the shaders used with the DefaultMaterial and BasicVertexType.
         namespace DefaultSources
         {
-            extern LGRAPHICS const char *ColoredVertexShader;               ///< Default Vertex shader to render a Colored VertexType.
-            extern LGRAPHICS const char *ColoredFragmentShader;             ///< Default Fragment shader to render a Colored VertexType.
+            extern LIB_NC_GRAPHICS const char *ColoredVertexShader;               ///< Default Vertex shader to render a Colored VertexType.
+            extern LIB_NC_GRAPHICS const char *ColoredFragmentShader;             ///< Default Fragment shader to render a Colored VertexType.
 
-            extern LGRAPHICS const char *Colored2dVertexShader;             ///< Default Vertex shader to render a Colored2d VertexType.
-            extern LGRAPHICS const char *Colored2dFragmentShader;           ///< Default Fragment shader to render a Colored2d VertexType.
+            extern LIB_NC_GRAPHICS const char *Colored2dVertexShader;             ///< Default Vertex shader to render a Colored2d VertexType.
+            extern LIB_NC_GRAPHICS const char *Colored2dFragmentShader;           ///< Default Fragment shader to render a Colored2d VertexType.
 
-            extern LGRAPHICS const char *TexturedVertexShader;              ///< Default Vertex shader to render a Textured VertexType.
-            extern LGRAPHICS const char *TexturedFragmentShader;            ///< Default Fragment shader to render a Textured VertexType.
+            extern LIB_NC_GRAPHICS const char *TexturedVertexShader;              ///< Default Vertex shader to render a Textured VertexType.
+            extern LIB_NC_GRAPHICS const char *TexturedFragmentShader;            ///< Default Fragment shader to render a Textured VertexType.
 
-            extern LGRAPHICS const char *Textured2dVertexShader;            ///< Default Vertex shader to render a Textured2d VertexType.
-            extern LGRAPHICS const char *Textured2dFragmentShader;          ///< Default Fragment shader to render a Textured2d VertexType.
+            extern LIB_NC_GRAPHICS const char *Textured2dVertexShader;            ///< Default Vertex shader to render a Textured2d VertexType.
+            extern LIB_NC_GRAPHICS const char *Textured2dFragmentShader;          ///< Default Fragment shader to render a Textured2d VertexType.
 
-            extern LGRAPHICS const char *Textured3dVertexShader;            ///< Default Vertex shader to render a Textured3d VertexType.
-            extern LGRAPHICS const char *Textured3dFragmentShader;          ///< Default Fragment shader to render a Textured3d VertexType.
+            extern LIB_NC_GRAPHICS const char *Textured3dVertexShader;            ///< Default Vertex shader to render a Textured3d VertexType.
+            extern LIB_NC_GRAPHICS const char *Textured3dFragmentShader;          ///< Default Fragment shader to render a Textured3d VertexType.
         }
     }
 }

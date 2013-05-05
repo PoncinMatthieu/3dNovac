@@ -37,7 +37,7 @@ namespace Nc
         /**
             \todo Create an example using the camera effect.
         */
-        class LGRAPHICS CameraEffect : public Effect
+        class LIB_NC_GRAPHICS CameraEffect : public Effect
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::CameraEffect);

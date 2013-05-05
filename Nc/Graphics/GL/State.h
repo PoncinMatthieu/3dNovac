@@ -47,7 +47,7 @@ namespace Nc
                 \warning All opengl functions which modify the opengl machine state like glEnable() glDisable() should not be direcly call but call with a method of the render state.
                 \todo [Performance] Since we need to know the calling thread to access to good GL::State instance, performances can be very bad. Find a way to remove the singleton and put the State instance into the GLContext class. On linux, using the method pthread_getspecific, could help but is probably running as fast as pthread_self.
             */
-            class LGRAPHICS State : public Utils::PerThreadSingleton<State>
+            class LIB_NC_GRAPHICS State : public Utils::PerThreadSingleton<State>
             {
                 public:
                     typedef Utils::Mask<Enum::BufferBitType, GLbitfield>        BufferBitMask;
@@ -76,7 +76,7 @@ namespace Nc
                     static std::string          GetError(GLenum code);
 
                     /** Print the states. */
-                    friend LGRAPHICS std::ostream &operator << (std::ostream &oss, State &s);
+                    friend LIB_NC_GRAPHICS std::ostream &operator << (std::ostream &oss, State &s);
 
                     /** Initialize the render state with the given associated \p context. */
                     void                InitContext(GLContext *context);

@@ -73,7 +73,7 @@ namespace Nc
                         - FramesAnimation
                         - Frame
                 */
-                class LGRAPHICS Frame : public Effect
+                class LIB_NC_GRAPHICS Frame : public Effect
                 {
                     public:
                         NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::Frame);

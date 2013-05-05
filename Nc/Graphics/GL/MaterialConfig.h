@@ -43,7 +43,7 @@ namespace Nc
             /**
                 The MaterialConfig allow to store data like Texture and RasterMode which is material dependant.
             */
-            class LGRAPHICS MaterialConfig
+            class LIB_NC_GRAPHICS MaterialConfig
             {
                 public:
                     MaterialConfig()                                {}

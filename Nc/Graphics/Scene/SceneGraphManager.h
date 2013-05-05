@@ -40,7 +40,7 @@ namespace Nc
             The SceneGraphs contained by the SceneGraphManager are not deleted when the SceneGraphManager is destroyed.
             So it's your role to destroy them if they are dynamically allocated.
         */
-        class LGRAPHICS SceneGraphManager
+        class LIB_NC_GRAPHICS SceneGraphManager
         {
             public:
                 SceneGraphManager();

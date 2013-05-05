@@ -47,7 +47,7 @@ namespace Nc
 
             \todo Think about removing the static elapsedTime. Statics are evil :D
         */
-        class LGRAPHICS   Engine : public Nc::Engine::IEngine
+        class LIB_NC_GRAPHICS   Engine : public Nc::Engine::IEngine
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::IEngine, Nc::Graphic::Engine);

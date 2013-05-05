@@ -36,7 +36,7 @@ namespace Nc
         namespace GL
         {
             /// Define an index buffer object used to describe a GeometryBuffer.
-            class LGRAPHICS IndexBuffer : public DataBuffer<unsigned int>
+            class LIB_NC_GRAPHICS IndexBuffer : public DataBuffer<unsigned int>
             {
                 public:
                     IndexBuffer();

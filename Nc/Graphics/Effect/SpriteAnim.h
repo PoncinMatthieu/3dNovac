@@ -42,7 +42,7 @@ namespace Nc
                 - FramesAnimation
                 - FramesAnimation<SpriteAnimFrame>::Frame
         */
-        class LGRAPHICS SpriteAnimFrame : public FramesAnimation<SpriteAnimFrame>::Frame
+        class LIB_NC_GRAPHICS SpriteAnimFrame : public FramesAnimation<SpriteAnimFrame>::Frame
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(FramesAnimation<SpriteAnimFrame>::Frame, System::Object, Nc::Graphic::SpriteAnimFrame)

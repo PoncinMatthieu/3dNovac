@@ -37,7 +37,7 @@ namespace Nc
         namespace GL
         {
             /// Define an interface to manage uniforms of a shader program.
-            class LGRAPHICS IUniform
+            class LIB_NC_GRAPHICS IUniform
             {
                 public:
                     IUniform(unsigned int location);
@@ -48,7 +48,7 @@ namespace Nc
 					/** \return the location of the uniform. */
 					inline unsigned int		GetLocation()				{return _location;}
 
-                    friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const IUniform &u)
+                    friend LIB_NC_GRAPHICS std::ostream &operator << (std::ostream &oss, const IUniform &u)
                     {
                         oss << u._location;
                         return oss;
@@ -65,7 +65,7 @@ namespace Nc
             class Uniform   {};
 
             template<>
-            class LGRAPHICS Uniform<TMatrix, 1> : public IUniform
+            class LIB_NC_GRAPHICS Uniform<TMatrix, 1> : public IUniform
             {
                 public:
                     Uniform(unsigned int location)
@@ -81,7 +81,7 @@ namespace Nc
             };
 
             template<>
-            class LGRAPHICS Uniform<Texture, 1> : public IUniform
+            class LIB_NC_GRAPHICS Uniform<Texture, 1> : public IUniform
             {
                 public:
                     Uniform(unsigned int location)

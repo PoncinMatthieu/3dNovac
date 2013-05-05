@@ -36,7 +36,7 @@ namespace Nc
         namespace GL
         {
             /// Structure to define a data of a VertexDescriptor that describe a composant of a VertexType.
-            struct LGRAPHICS DataVertexDescriptor
+            struct LIB_NC_GRAPHICS DataVertexDescriptor
             {
 				DataVertexDescriptor();
 				~DataVertexDescriptor();
@@ -52,7 +52,7 @@ namespace Nc
 					Normalized = normalized;
 				}
 
-                friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const DataVertexDescriptor &d)
+                friend LIB_NC_GRAPHICS std::ostream &operator << (std::ostream &oss, const DataVertexDescriptor &d)
                 {
                     oss << "Size: " << d.Size << "\tType: " << d.Type << "\tPointerOffset: " << d.PointerOffset
                         << "\tIndexAttrib: " << d.IndexAttrib << "\tNormalized: " << d.Normalized;
@@ -69,7 +69,7 @@ namespace Nc
             };
 
             /// Describe all componants of a VertexType.
-            class LGRAPHICS VertexDescriptor : public Array<DataVertexDescriptor,0>
+            class LIB_NC_GRAPHICS VertexDescriptor : public Array<DataVertexDescriptor,0>
             {
                 public:
                     VertexDescriptor(const std::string &name, unsigned int Sizeof, unsigned int nbComponent, unsigned int priority);
@@ -78,7 +78,7 @@ namespace Nc
                     inline size_t       Sizeof()        {return _sizeof;}
                     inline unsigned int Priority()      {return _priority;}
 
-                    friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const VertexDescriptor &d)
+                    friend LIB_NC_GRAPHICS std::ostream &operator << (std::ostream &oss, const VertexDescriptor &d)
                     {
                         oss << "Descriptor: " << d._name << std::endl << "Priority = " << d._priority << std::endl;
                         for (unsigned int i = 0; i < d.Size(); ++i)

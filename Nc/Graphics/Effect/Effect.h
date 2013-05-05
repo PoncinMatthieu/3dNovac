@@ -38,7 +38,7 @@ namespace Nc
             To create your own effect, you should implement not only the clone and render method but also the Defines NC_UTILS_DEFINE_PARENT_CLASS and NC_UTILS_DEFINE_VISITABLE.
             An effect should be able to be activated or not. By default the effect is activated.
         */
-        class LGRAPHICS Effect : public Entity
+        class LIB_NC_GRAPHICS Effect : public Entity
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, System::Object, Nc::Graphic::Effect);

@@ -35,7 +35,7 @@ namespace Nc
     namespace Graphic
     {
         /// Interface to manage and render animations.
-        class LGRAPHICS     Animation : public Effect
+        class LIB_NC_GRAPHICS     Animation : public Effect
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::Animation);

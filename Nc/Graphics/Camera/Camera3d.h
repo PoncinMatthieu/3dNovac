@@ -47,7 +47,7 @@ namespace Nc
 
             \todo Recode gluUnProject which is deprecated and implement the Get3dCoordinateFromProjection method.
         */
-        class LGRAPHICS Camera3d : public Camera
+        class LIB_NC_GRAPHICS Camera3d : public Camera
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Camera, System::Object, Nc::Graphic::Camera3d);

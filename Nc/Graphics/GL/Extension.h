@@ -61,7 +61,7 @@ namespace Nc
 
                 \todo On windows, GDebugger drop an error like "function load into a context and used into an other". So we should load function for a given context. Our best option is to remove the singleton and put the extention class as a member of GL::State or WGL/GLXContext.
             */
-            class LGRAPHICS Extension : public Utils::Singleton<Extension>
+            class LIB_NC_GRAPHICS Extension : public Utils::Singleton<Extension>
             {
                 public:
                     virtual ~Extension();

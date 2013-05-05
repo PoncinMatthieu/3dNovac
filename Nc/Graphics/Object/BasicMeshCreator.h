@@ -42,7 +42,7 @@ namespace Nc
                 Each axis will have the same length.
                 \return the corresponding Mesh.
             */
-            LGRAPHICS Object *Axis(float scale, bool withLegend = true, const Vector3f &center = Vector3f(0,0,0));
+            LIB_NC_GRAPHICS Object *Axis(float scale, bool withLegend = true, const Vector3f &center = Vector3f(0,0,0));
 
             /**
                 Create a axis with this color sheme : Red:X  Blue:Y Green:Z.
@@ -50,7 +50,7 @@ namespace Nc
                 The length of each axis is defined by the vector \p scale.
                 \return the corresponding Mesh.
             */
-            LGRAPHICS Object *Axis(const Vector3f &scale, bool withLegend = true, const Vector3f &center = Vector3f(0,0,0));
+            LIB_NC_GRAPHICS Object *Axis(const Vector3f &scale, bool withLegend = true, const Vector3f &center = Vector3f(0,0,0));
 
             /**
                 Create an axis with this color sheme : Red:X  Blue:Y Green:Z.
@@ -59,7 +59,7 @@ namespace Nc
                 The axis will be displayed in the left bottom corner by using a viewport effect.
                 \return the corresponding Mesh.
             */
-            LGRAPHICS Entity *Axis(float scale, bool withLegend, bool inCorner);
+            LIB_NC_GRAPHICS Entity *Axis(float scale, bool withLegend, bool inCorner);
 
             /**
                 Create a axis with this color sheme : Red:X  Blue:Y Green:Z.
@@ -68,13 +68,13 @@ namespace Nc
                 The axis will be displayed in the left bottom corner by using a viewport effect.
                 \return the corresponding Mesh.
             */
-            LGRAPHICS Entity *Axis(const Vector3f &scale, bool withLegend, bool inCorner);
+            LIB_NC_GRAPHICS Entity *Axis(const Vector3f &scale, bool withLegend, bool inCorner);
 
             /**
                 Add a Graphic::String controled with a Billboard effect to the given \p entity as child at the given \p position.
                 \return the created Graphic::String.
             */
-            LGRAPHICS Text *AddLabel(const std::string &text, float caracterSize, const Color &color, const std::string &fontName, bool centerText, Entity *entity, const Vector3f &position = Vector3f(0,0,0));
+            LIB_NC_GRAPHICS Text *AddLabel(const std::string &text, float caracterSize, const Color &color, const std::string &fontName, bool centerText, Entity *entity, const Vector3f &position = Vector3f(0,0,0));
         }
     }
 }

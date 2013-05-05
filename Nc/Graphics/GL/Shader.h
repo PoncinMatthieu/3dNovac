@@ -44,7 +44,7 @@ namespace Nc
 
                 \todo Create a compilation stage, for exemple to be able to manage GLSL version.
             */
-            class LGRAPHICS Shader : public Object
+            class LIB_NC_GRAPHICS Shader : public Object
             {
                 public:
                     Shader();

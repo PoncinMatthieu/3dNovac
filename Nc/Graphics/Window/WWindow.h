@@ -39,7 +39,7 @@ namespace Nc
         /**
             For more detail, please see the Window documentation
         */
-        class LGRAPHICS Window : public IWindow
+        class LIB_NC_GRAPHICS Window : public IWindow
         {
             public:
 				Window(SceneGraphManager *sceneGraphManager = NULL);

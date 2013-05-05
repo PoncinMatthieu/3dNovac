@@ -57,7 +57,7 @@ namespace Nc
                 - Camera3d
                 - StandardCamera3d
         */
-        class LGRAPHICS Camera : public Object
+        class LIB_NC_GRAPHICS Camera : public Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Camera);

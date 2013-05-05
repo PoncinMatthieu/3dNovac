@@ -46,7 +46,7 @@ namespace Nc
                 - the ViewMatrix            <-- Used to Set the View (camera) in the scene.
                 - the ModelMatrix           <-- Used to locate the model in the repere.
         */
-        class LGRAPHICS SceneGraph : public Entity
+        class LIB_NC_GRAPHICS SceneGraph : public Entity
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, Nc::System::Object, Nc::Graphic::SceneGraph);

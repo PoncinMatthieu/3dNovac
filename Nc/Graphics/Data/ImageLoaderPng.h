@@ -43,7 +43,7 @@ namespace Nc
         /**
             \todo Save method not implemented.
         */
-        class LGRAPHICS  ImageLoaderPng : public ImageLoader
+        class LIB_NC_GRAPHICS  ImageLoaderPng : public ImageLoader
         {
             public:
                 ImageLoaderPng();
