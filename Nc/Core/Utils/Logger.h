@@ -62,7 +62,7 @@ namespace Nc
 
             The Logger is thread safe.
         */
-        class LCORE Logger : public Singleton<Logger>, NonCopyable
+        class LIB_NC_CORE Logger : public Singleton<Logger>, NonCopyable
         {
             public:
                 /** Prototype a function pointer to have a logging function. */
@@ -136,7 +136,7 @@ namespace Nc
                 FileName		_filename;
                 static int		_status;		// status d'ecriture du logger (default = 0; error = 1; debug = 2)
 
-                friend /*LCORE*/ class Singleton<Logger>; // pour avoir acces a l'instance du singleton
+                friend /*LIB_NC_CORE*/ class Singleton<Logger>; // pour avoir acces a l'instance du singleton
         };
 
         template<class T>

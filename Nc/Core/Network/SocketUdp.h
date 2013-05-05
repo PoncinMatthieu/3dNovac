@@ -53,7 +53,7 @@ namespace Nc
 				- Ip
 				- Select
 		*/
-        class LCORE SocketUdp : public ISocket
+        class LIB_NC_CORE SocketUdp : public ISocket
         {
             public:
                 SocketUdp();

@@ -74,7 +74,7 @@ namespace Nc
                 return data[i];
             }
 
-            friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Array<T,D> &a)
+            friend /*LIB_NC_CORE*/ std::ostream &operator << (std::ostream &os, const Array<T,D> &a)
             {
                 for (unsigned int i = 0; i < D; ++i)
                     os << a.data[i] << " ";
@@ -135,7 +135,7 @@ namespace Nc
             /** Accessor with a protection with exception. */
             inline const T &operator [] (unsigned int i) const;
 
-            friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Array<T,0> &a)
+            friend /*LIB_NC_CORE*/ std::ostream &operator << (std::ostream &os, const Array<T,0> &a)
             {
                 for (unsigned int i = 0; i < a._size; ++i)
                     os << a.data[i] << " ";

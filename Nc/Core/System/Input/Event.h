@@ -185,7 +185,7 @@ namespace Nc
         }
 
         /// Provide a definition of input event designed especially to manage event of WindowInput.
-        struct LCORE Event
+        struct LIB_NC_CORE Event
         {
             /// Define a key evenement.
             struct KeyEvent

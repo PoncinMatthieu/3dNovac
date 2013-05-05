@@ -46,7 +46,7 @@ namespace Nc
 				- Ip
 				- Select
 		*/
-        class LCORE SocketTcp : public ISocket
+        class LIB_NC_CORE SocketTcp : public ISocket
         {
             public:
                 SocketTcp();

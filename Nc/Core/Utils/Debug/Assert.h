@@ -52,8 +52,8 @@ namespace Nc
 {
     namespace Utils
     {
-      LCORE void AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function);
-      LCORE void AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function);
+      LIB_NC_CORE void AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function);
+      LIB_NC_CORE void AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function);
     }
 }
 

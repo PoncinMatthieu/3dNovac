@@ -40,7 +40,7 @@ namespace Nc
         class ThreadCondition;
 
         /// Implementation of mutex for unix system (with pthread)
-        class LCORE Mutex : public IMutex
+        class LIB_NC_CORE Mutex : public IMutex
         {
             public:
                 Mutex()

@@ -43,7 +43,7 @@ namespace Nc
 
             \todo Put in a place an accurate error control, by printing out the message corresponding to the error set into errno.
 		*/
-        class LCORE Select
+        class LIB_NC_CORE Select
         {
             public:
                 Select();

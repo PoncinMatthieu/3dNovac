@@ -35,13 +35,13 @@
 		namespace System
 		{
 		    /** Sleep in second. */
-		    LCORE void            Sleep(float second);
+		    LIB_NC_CORE void            Sleep(float second);
 		    /** \return time in second. */
-			LCORE double          Time();
+			LIB_NC_CORE double          Time();
 			/** remalloc a null terminated string. */
-            LCORE char*           Strdup(const char *str);
+            LIB_NC_CORE char*           Strdup(const char *str);
             /** \return the current thread id. */
-            LCORE unsigned int    ThreadId();
+            LIB_NC_CORE unsigned int    ThreadId();
         }
 	}
 

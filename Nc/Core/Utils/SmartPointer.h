@@ -64,7 +64,7 @@ namespace Nc
                 T               &operator * () const;
                 T               *operator ->() const;
 
-                friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const SmartPointer &sp)
+                friend /*LIB_NC_CORE*/ std::ostream &operator << (std::ostream &os, const SmartPointer &sp)
                 {
                     os << sp._ptr;
                     return os;

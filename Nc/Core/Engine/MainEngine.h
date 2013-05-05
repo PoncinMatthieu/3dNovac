@@ -48,7 +48,7 @@ namespace Nc
 				- MouseMotionEvent which is called if the engine receive an input event comming from a mouse movement.
 				- ManageWindowEvent that you can also redefine to get a better control over input events.
 		*/
-        class LCORE MainEngine : public IEngine, public System::InputListener
+        class LIB_NC_CORE MainEngine : public IEngine, public System::InputListener
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::IEngine, Nc::Engine::MainEngine);

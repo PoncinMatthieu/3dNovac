@@ -40,7 +40,7 @@ namespace Nc
         namespace Unicode
         {
             /// Manipulate UTF32 string.
-            class LCORE UTF32 : public std::basic_string<Nc::UInt32>
+            class LIB_NC_CORE UTF32 : public std::basic_string<Nc::UInt32>
             {
                 public:
                     UTF32()  {}
@@ -64,7 +64,7 @@ namespace Nc
                     /** Convert and return the unicode string in standard std::wstring into the given std::wstring. */
                     std::wstring        &ToStdWString(std::wstring &str) const;
 
-                    friend LCORE std::ostream &operator << (std::ostream& os, const UTF32& s);
+                    friend LIB_NC_CORE std::ostream &operator << (std::ostream& os, const UTF32& s);
             };
         }
     }

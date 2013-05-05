@@ -49,7 +49,7 @@ namespace Nc
         /**
 			Damn you windows!!!
         */
-		struct LCORE String : public std::string
+		struct LIB_NC_CORE String : public std::string
 		{
 			static const std::size_t npos;
 		};
@@ -57,7 +57,7 @@ namespace Nc
         /**
 			Damn you windows!!!
         */
-		LCORE void Getline(std::ifstream &stream, std::string &line);
+		LIB_NC_CORE void Getline(std::ifstream &stream, std::string &line);
 
 		/// This namespace provide some fonctor class utility.
         namespace Fonctor
@@ -103,7 +103,7 @@ namespace Nc
             bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest);
 
 			/// Return the first occurence of the \p delimitor into the string \p dest.
-			LCORE bool SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest);
+			LIB_NC_CORE bool SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest);
 
             /// Convert the caracters of the string in lower caracters.
             inline void ToLower(std::string &s)     {std::transform(s.begin(), s.end(), s.begin(), Fonctor::ToLower());}

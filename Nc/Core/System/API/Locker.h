@@ -51,7 +51,7 @@ namespace Nc
 	} // the mutex is unlocked automatically in the destructor of the Locker at the end of the scope, even if an exception has been thrown.
  \endcode
 			*/
-        class LCORE Locker
+        class LIB_NC_CORE Locker
         {
             public:
 				/** \param mutex is a pointer to the mutex to lock, you can give a null pointer and use the method Lock to lock a new mutex. */

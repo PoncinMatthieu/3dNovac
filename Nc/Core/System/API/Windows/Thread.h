@@ -41,7 +41,7 @@ namespace Nc
     namespace System
     {
         /// Thread implementation for a unix system
-        class LCORE Thread : public IThread
+        class LIB_NC_CORE Thread : public IThread
         {
             public:
                 Thread()

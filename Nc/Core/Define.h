@@ -73,15 +73,15 @@
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                  // dynamic
             #ifdef NC_EXPORT_CORE
-                #define LCORE       __declspec(dllexport)
+                #define LIB_NC_CORE       __declspec(dllexport)
             #else
-                #define LCORE       __declspec(dllimport)
+                #define LIB_NC_CORE       __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LCORE
+            #define LIB_NC_CORE
         #endif
     #else                                                       // others os (do nothing)
-        #define LCORE               ///< Linking option of Nc-Core module
+        #define LIB_NC_CORE               ///< Linking option of Nc-Core module
     #endif
 
 // Define LOG
