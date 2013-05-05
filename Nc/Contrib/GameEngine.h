@@ -38,7 +38,7 @@ namespace Nc
     namespace Contrib
     {
         /// Helps to create an engine which use the graphic engine with a shared context
-        class LCONTRIB GameEngine : public Engine::MainEngine
+        class LIB_NC_CONTRIB GameEngine : public Engine::MainEngine
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::MainEngine, Nc::Contrib::GameEngine);

@@ -42,13 +42,13 @@ namespace Nc
                 \param texture : the texture of the plan.
                 \return the resulting object.
             */
-            LCONTRIB Object         *Plan(const Vector2f &size, const GL::Texture &texture);
+            LIB_NC_CONTRIB Object         *Plan(const Vector2f &size, const GL::Texture &texture);
             /**
                 Create a plan drawable.
                 \param size : the 2d dimension size.
                 \return the resulting drawable.
             */
-            LCONTRIB GL::Drawable   *PlanDrawable(const Vector2f &size);
+            LIB_NC_CONTRIB GL::Drawable   *PlanDrawable(const Vector2f &size);
 
             /**
                 Create a grid.
@@ -56,14 +56,14 @@ namespace Nc
                 \param c the color of the grid lines.
                 \return the resulting object.
             */
-            LCONTRIB Object         *Grid(const Vector3f &size, const Color &c);
+            LIB_NC_CONTRIB Object         *Grid(const Vector3f &size, const Color &c);
             /**
                 Create a grid drawable.
                 \param size to specified the 2d size of the whole grid. A case has the size 1*1. The z coord is to specified the height of the grid.
                 \param c the color of the grid lines.
                 \return the resulting drawable.
             */
-            LCONTRIB GL::Drawable   *GridDrawable(const Vector3f &size, const Color &c);
+            LIB_NC_CONTRIB GL::Drawable   *GridDrawable(const Vector3f &size, const Color &c);
 
             /**
                 Create a circle.
@@ -72,7 +72,7 @@ namespace Nc
                 \param chordError is the difference between the ideal arc section and the approximation using segments. Will define the number of vertex used to construct the circle.
                 \return the resulting object.
             */
-            LCONTRIB Object         *Circle(float radius, const Color &c, float chordError);
+            LIB_NC_CONTRIB Object         *Circle(float radius, const Color &c, float chordError);
             /**
                 Create a circle.
                 \param radius of the circle.
@@ -80,7 +80,7 @@ namespace Nc
                 \param chordError is the difference between the ideal arc section and the approximation using segments. Will define the number of vertex used to construct the circle.
                 \return the resulting object.
             */
-            LCONTRIB GL::Drawable   *CircleDrawable(float radius, const Color &c, float chordError);
+            LIB_NC_CONTRIB GL::Drawable   *CircleDrawable(float radius, const Color &c, float chordError);
         }
     }
 }
