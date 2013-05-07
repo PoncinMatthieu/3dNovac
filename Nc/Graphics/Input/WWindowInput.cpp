@@ -59,6 +59,7 @@ void WWindowInput::Destroy()
 
 void WWindowInput::CheckEvents()
 {
+/* // this will cause a recursive repaint event with Qt
     if (_callback == NULL) // process event only if its our window
     {
         MSG Message;
@@ -68,6 +69,7 @@ void WWindowInput::CheckEvents()
             DispatchMessage(&Message);
         }
     }
+*/
 }
 
 LRESULT CALLBACK WWindowInput::GlobalOnEvent(HWND handle, UINT message, WPARAM WParam, LPARAM LParam)
