@@ -33,15 +33,15 @@
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                      // dynamic
             #ifdef NC_EXPORT_AUDIO
-                #define LAUDIO          __declspec(dllexport)
+                #define LIB_NC_AUDIO          __declspec(dllexport)
             #else
-                #define LAUDIO          __declspec(dllimport)
+                #define LIB_NC_AUDIO          __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LAUDIO
+            #define LIB_NC_AUDIO
         #endif
     #else                                                       // others os (do nothing)
-        #define LAUDIO                  ///< Linking option of Nc-Audio module
+        #define LIB_NC_AUDIO                  ///< Linking option of Nc-Audio module
     #endif
 
 #endif
