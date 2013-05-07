@@ -28,9 +28,9 @@ include_directories(${NC_ROOT}/extlibs/zlib/)
 link_directories(${NC_ROOT}/lib/${CMAKE_CFG_INTDIR})
 if(UNIX)
 else()
-  link_directories(../extlibs/)
+  link_directories(${NC_ROOT}/extlibs/)
 endif()
-
+ 
 # we want to compile our libs dynamically
 add_definitions(-DNC_DYNAMIC_LINK)
 
@@ -89,14 +89,14 @@ add_dependencies(Nc-Graphics	Nc-Core)
 # those defines are more likely more usefull for Windows, but it could be interesting to keep these define on the other systems
 set_target_properties(Nc-Graphics PROPERTIES DEFINE_SYMBOL NC_EXPORT_GRAPHICS)
 
-# copy dll and .pdb files for excutable dependencies if NC_COPY_DEPENDENCIES_PATH is set
+# copy dll and .pdb files for excutable dependencies if the lib and bin output file are different
 if (WIN32)
-  if(NC_COPY_DEPENDENCIES_PATH)
-     add_custom_command(TARGET Nc-Graphics POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  if(NOT ${LIBRARY_OUTPUT_PATH} EQUAL ${EXECUTABLE_OUTPUT_PATH})
+     add_custom_command(TARGET Nc-Graphics POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/Nc-Graphics.dll ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
      if (MSVC_IDE)
        if (${CMAKE_CFG_INTDIR} MATCHES "Debug")
-	 add_custom_command(TARGET Nc-Graphics POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Graphics.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+	 add_custom_command(TARGET Nc-Graphics POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/Nc-Graphics.pdb ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
        endif()
      endif()
    endif()

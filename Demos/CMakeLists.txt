@@ -5,7 +5,7 @@ project(Nc-Demos)
 
 # setup the launcher module for vs2010
 if(MSVC_IDE)
-	list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules")
+	list(APPEND CMAKE_MODULE_PATH "${Nc-Demos_SOURCE_DIR}/cmake-modules")
 	include(CreateLaunchers)
 endif()
 
@@ -52,7 +52,7 @@ target_link_libraries(FrustumDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(FrustumDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(FrustumDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -62,8 +62,8 @@ endif()
 file(
   GLOB
   GUIDemo-sources
-  ../GUIDemo/*.cpp
-  ../GUIDemo/*.h
+  ./GUIDemo/*.cpp
+  ./GUIDemo/*.h
 )
 
 file(GLOB GUIDemoMain-sources ./GUIDemo/main.cpp)
@@ -75,7 +75,7 @@ target_link_libraries(GUIDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(GUIDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(GUIDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -98,7 +98,7 @@ target_link_libraries(LightDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(LightDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(LightDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -121,7 +121,7 @@ target_link_libraries(bSplinesDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(bSplineDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(bSplineDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -144,7 +144,7 @@ target_link_libraries(FBEffectsDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(FBEffectsDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(FBEffectsDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -166,7 +166,7 @@ target_link_libraries(SokobanDemo			Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(SokobanDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(SokobanDemo ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -188,7 +188,7 @@ target_link_libraries(SimpleParticleEffect		Nc-Core Nc-Graphics Nc-GUI Nc-Contri
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-  create_target_launcher(SimpleParticleEffect ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+  create_target_launcher(SimpleParticleEffect ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 
@@ -216,5 +216,5 @@ target_link_libraries(DemoViewer	Nc-Core Nc-Graphics Nc-GUI Nc-Contrib)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-  create_target_launcher(DemoViewer ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/../bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+  create_target_launcher(DemoViewer ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()

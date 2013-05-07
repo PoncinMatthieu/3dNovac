@@ -22,7 +22,8 @@ GameEngine::~GameEngine()
 void	GameEngine::ReleaseContent()
 {
     // delete the scene and it's childs node
-    delete _scene3d;
+	_context->Active();
+	delete _scene3d;
     delete _context;
 }
 

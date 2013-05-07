@@ -80,7 +80,9 @@ void Graphic::Window::Create(const std::string &title, const Vector2ui &size, co
 
 // Compute position and size
     HDC screenDC = GetDC(NULL);
-    int left   = (GetDeviceCaps(screenDC, HORZRES) - size.data[0])  / 2;
+	_width = size.data[0];
+	_height = size.data[1];
+	int left   = (GetDeviceCaps(screenDC, HORZRES) - size.data[0])  / 2;
     int top    = (GetDeviceCaps(screenDC, VERTRES) - size.data[1]) / 2;
     ReleaseDC(NULL, screenDC);
 

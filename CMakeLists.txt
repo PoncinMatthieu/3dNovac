@@ -37,11 +37,6 @@ set(EXECUTABLE_OUTPUT_PATH ${3dNovac_SOURCE_DIR}/bin CACHE PATH "Single director
 mark_as_advanced(EXECUTABLE_OUTPUT_PATH)
 mark_as_advanced(LIBRARY_OUTPUT_PATH)
 
-# set path to copy dependencies
-set(NC_COPY_DEPENDENCIES_PATH ${3dNovac_SOURCE_DIR}/bin/${CMAKE_CFG_INTDIR})
-mark_as_advanced(NC_COPY_DEPENDENCIES_PATH)
-
-
 # add 3dNovac modules
 # the second argument is usefull for an out of source build.
 add_subdirectory(./Nc/Core/ ./Nc/Core/)
@@ -54,15 +49,15 @@ add_subdirectory(./Nc/Audio/ ./Nc/Audio/)
 # Those projects are optional.
 # plugins
 if(NC_BUILD_PLUGINS)
-  add_subdirectory(./Plugin/FileFormatCollada/ ./Plugin/FileFormatCollada/ EXCLUDE_FROM_ALL)
+  add_subdirectory(./Plugin/FileFormatCollada/ ./Plugin/FileFormatCollada/)
 endif()
 
 # examples
 if(NC_BUILD_EXAMPLES)
-  add_subdirectory(./Examples/ ./Examples/ EXCLUDE_FROM_ALL)
+  add_subdirectory(./Examples/ ./Examples/)
 endif()
 
 # demos
 if(NC_BUILD_DEMOS)
-  add_subdirectory(./Demos/ ./Demos/ EXCLUDE_FROM_ALL)
+  add_subdirectory(./Demos/ ./Demos/)
 endif()

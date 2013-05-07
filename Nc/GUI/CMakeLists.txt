@@ -54,14 +54,14 @@ add_dependencies(Nc-GUI	Nc-Core Nc-Graphics)
 # those defines are more likely more usefull for Windows, but it could be interesting to keep these define on the other systems
 set_target_properties(Nc-GUI PROPERTIES DEFINE_SYMBOL NC_EXPORT_GUI)
 
-# copy dll and .pdb files for excutable dependencies if NC_COPY_DEPENDENCIES_PATH is set
+# copy dll and .pdb files for excutable dependencies if the lib and bin output file are different
 if (WIN32)
-  if(NC_COPY_DEPENDENCIES_PATH)
-     add_custom_command(TARGET Nc-GUI POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  if(NOT ${LIBRARY_OUTPUT_PATH} EQUAL ${EXECUTABLE_OUTPUT_PATH})
+     add_custom_command(TARGET Nc-GUI POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/Nc-GUI.dll ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
      if (MSVC_IDE)
        if (${CMAKE_CFG_INTDIR} MATCHES "Debug")
-	 add_custom_command(TARGET Nc-GUI POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-GUI.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+	 add_custom_command(TARGET Nc-GUI POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/Nc-GUI.pdb ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
        endif()
      endif()
    endif()

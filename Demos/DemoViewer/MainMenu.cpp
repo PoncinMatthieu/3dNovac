@@ -81,7 +81,7 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
 
     _console = new Console(CenterH | Bottom, Vector2i(0,0));
     _console->Percent(Vector2f(100, 100));
-    _console->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
+    _console->AddEventManager(Nc::Engine::Manager::GetEngine(GameEngine::ClassName()));
     consoleWindow->AddChild(_console);
 
     // link the logger to the console
@@ -154,14 +154,14 @@ Widget  *MainMenu::CreateSelectDemoWindow(Layout *parent)
 
     _demoComboBox = new ComboBox(_GUI, Left | CenterV, Vector2i(250,0));
     _demoComboBox->MarginRight(5);
-    _demoComboBox->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
+    _demoComboBox->AddEventManager(Nc::Engine::Manager::GetEngine(GameEngine::ClassName()));
     _demoComboBox->Percent(Vector2f(100, 0));
     selectDemoLayout->AddChild(_demoComboBox);
     selectDemoLayout->SetExpandRatio(_demoComboBox, 100);
 
     Button *button = new Button("Start", Center, Vector2i(70, 28), "arial");
     selectDemoLayout->AddChild(button);
-    button->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
+    button->AddEventManager(Nc::Engine::Manager::GetEngine(GameEngine::ClassName()));
     return windowSelectDemo;
 }
 

@@ -5,7 +5,7 @@ project(Nc-Examples)
 
 # setup the launcher module for vs2010
 if(MSVC_IDE)
-	list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules")
+	list(APPEND CMAKE_MODULE_PATH "${Nc-Examples_SOURCE_DIR}/cmake-modules")
 	include(CreateLaunchers)
 endif()
 
@@ -48,7 +48,7 @@ target_link_libraries(Nc-Tuto1	Nc-Core Nc-Graphics)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(Nc-Tuto1 ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${NC_DIR}/bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(Nc-Tuto1 ARGS ${COMMAND_LINE_ARGS} RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ target_link_libraries(Nc-Tuto_NcCore_Server	Nc-Core)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(Nc-Tuto_NcCore_Server ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${NC_DIR}/bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(Nc-Tuto_NcCore_Server ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ target_link_libraries(Nc-Tuto_NcCore_Client	Nc-Core)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(Nc-Tuto_NcCore_Client ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${NC_DIR}/bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(Nc-Tuto_NcCore_Client ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ target_link_libraries(Nc-Example-BinaryTree    Nc-Core)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(Nc-Example-BinaryTree ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${NC_DIR}/bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(Nc-Example-BinaryTree ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 #------------------------------------------------------------------------------
@@ -106,7 +106,7 @@ target_link_libraries(Nc-Example-GraphNode    Nc-Core)
 
 # create the launcher for vs 2010
 if(MSVC_IDE)
-	create_target_launcher(Nc-Example-GraphNode ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY "${NC_DIR}/bin/" ENVIRONMENT ${ENVIRONMENT_VARS})
+	create_target_launcher(Nc-Example-GraphNode ARGS "${COMMAND_LINE_ARGS}" RUNTIME_LIBRARY_DIRS ${RUNTIME_LIBRARY_DIRS} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH} ENVIRONMENT ${ENVIRONMENT_VARS})
 endif()
 
 

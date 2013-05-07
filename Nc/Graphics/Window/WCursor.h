@@ -27,7 +27,6 @@
 #ifndef NC_SYSTEM_XCURSOR_H_
 #define NC_SYSTEM_XCURSOR_H_
 
-#include "../../Define.h"
 #include "ICursor.h"
 
 namespace Nc

@@ -59,7 +59,7 @@ void WWindowInput::Destroy()
 
 void WWindowInput::CheckEvents()
 {
-    if (_callback != NULL) // process event only if its our window
+    if (_callback == NULL) // process event only if its our window
     {
         MSG Message;
         while (PeekMessage(&Message, NULL, 0, 0, PM_REMOVE))
@@ -88,7 +88,7 @@ LRESULT CALLBACK WWindowInput::GlobalOnEvent(HWND handle, UINT message, WPARAM W
     // Forward the event to the appropriate function
     if (input)
     {
-		if (handle && !input->ListenerListEmpty()) // don't proceed event until window is created
+		if (input->AttachedWindow()->IsCreate() && handle && !input->ListenerListEmpty()) // don't proceed event until window is created
             input->ProcessEvent(message, WParam, LParam);
 
         if (input->_callback)
