@@ -271,6 +271,22 @@ namespace Nc {
     }
 }
 
+#ifdef SYSTEM_WINDOWS
+void ShowWindowErrorUpgradeDrivers(const std::string &vendor, const std::string &renderer)
+{
+	std::string str = "Your OpenGL version is outdated.\nYou either have a very old graphic card, or you need to update you graphic driver.\n\nTo update you driver, please follow one of the given links depending on your graphic card manufacturer:\n\
+ * Intel: http://www.intel.com/p/en_US/support/detect?iid=dc_iduu \n\
+ * ATI: http://support.amd.com/us/gpudownload/Pages/index.aspx \n\
+ * nVidia: http://www.nvidia.com/Download/index.aspx \n\
+\n\n\
+Here is some informations on your graphic card:\n\
+ * GL_VENDOR : " + vendor + "\n\
+ * GL_RENDERER : " + renderer + "\n";
+
+	MessageBox(NULL, str.c_str(), "Error: OpenGL version outdated.", MB_OK);
+}
+#endif
+
 void    State::CheckGLVersion()
 {
     GL_STATE_CALLSTACK_INFO();
@@ -295,14 +311,24 @@ void    State::CheckGLVersion()
     LOG << "GL_RENDERER = `" << GetString(Enum::Renderer) << "`" << std::endl;
     //LOG << "GL_EXTENSIONS = `" << EXT.GetInfo(Enum::Extentions) << "`" << std::endl;
     try
-        {LOG << "GL_SHADING_LANGUAGE_VERSION = `" << GetString(Enum::ShadingLanguageVersion) << "`" << std::endl;}
+	{
+		LOG << "GL_SHADING_LANGUAGE_VERSION = `" << GetString(Enum::ShadingLanguageVersion) << "`" << std::endl;
+	}
     catch (...)
-        {System::Config::Error("GraphicEngine", "Failed to fetch GL_SHADING_LANGUAGE_VERSION, Shaders is probably not supported");}
+	{
+		#ifdef SYSTEM_WINDOWS
+		ShowWindowErrorUpgradeDrivers((char*)GetString(Enum::Vendor), (char*)GetString(Enum::Renderer));
+		#endif
+		System::Config::Error("GraphicEngine", "Failed to fetch GL_SHADING_LANGUAGE_VERSION, Shaders is probably not supported");
+	}
 
     float   nbr = 0;
     Utils::Convert::StringTo(version, nbr);
     if (nbr < VERSION_MIN_OPENGL)
     {
+		#ifdef SYSTEM_WINDOWS
+		ShowWindowErrorUpgradeDrivers((char*)GetString(Enum::Vendor), (char*)GetString(Enum::Renderer));
+		#endif
         System::Config::Error("GraphicEngine", "Bad OpenGl version, minimum is '" + Utils::Convert::ToString(VERSION_MIN_OPENGL) + "'\nPlease upgrade your opengl driver");
     }
     else
