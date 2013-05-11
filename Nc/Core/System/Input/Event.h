@@ -237,7 +237,7 @@ namespace Nc
                 Resized,
                 LostFocus,
                 GainedFocus,
-                TextEntered, ///\todo implement the text entered event under window.
+                TextEntered,
                 KeyPressed,
                 KeyReleased,
                 MouseWheelMoved,
