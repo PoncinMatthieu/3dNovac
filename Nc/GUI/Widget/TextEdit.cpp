@@ -35,6 +35,8 @@ using namespace Nc::GUI;
 TextEdit::TextEdit(const Utils::Unicode::UTF32 &text, const AlignmentMask &alignment, const Vector2i &size, const std::string &ttf, const Utils::Mask<PlainTextFormater::Style> &s)
     : ScrollArea(alignment, size)
 {
+    _setToEndOfText = false;
+    _alwaysSetToEndOfText = false;
     _textDocument = new TextDocument(this, text, Left | Top, size, ttf, s);
     _textDocument->PaddingH(5);
     _textDocument->PaddingV(5);
@@ -64,12 +66,14 @@ TextEdit::~TextEdit()
 
 void TextEdit::Copy(const TextEdit &edit)
 {
+    _setToEndOfText = false;
+    _alwaysSetToEndOfText = edit._alwaysSetToEndOfText;
     _textDocument = static_cast<TextDocument*>(edit._textDocument->Clone());
 }
 
 void    TextEdit::SetToEndOfText()
 {
-    _scrollBarV->Position(_scrollBarV->TotalSize() - _scrollBarV->PageSize());
+    _setToEndOfText = true;
 }
 
 void TextEdit::RenderChildsEnd(Graphic::SceneGraph *scene)
@@ -130,6 +134,12 @@ void    TextEdit::TextDocument::Resize()
     }
     if (resized)
         _editor->Resize();
+
+    if (_editor->_setToEndOfText || _editor->_alwaysSetToEndOfText)
+    {
+        _editor->_scrollBarV->Position(_editor->_scrollBarV->TotalSize() - _editor->_scrollBarV->PageSize());
+        _editor->_setToEndOfText = false;
+    }
 }
 
 void    TextEdit::TextDocument::UpdateState()

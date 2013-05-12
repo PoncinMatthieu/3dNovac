@@ -82,7 +82,7 @@ namespace Nc
                 /** \return the text hold by the text edit. */
                 const Utils::Unicode::UTF32     &TextEditText() const       {return _textEdit->PlainText();}
                 /** Clear the text edit. */
-                void                            ClearTextEdit()             {_textEdit->PlainText("");}
+                void                            ClearTextEdit();
                 /** Append the given \p text to the text edit. */
                 void                            AppendText(const Utils::Unicode::UTF32 &text);
 

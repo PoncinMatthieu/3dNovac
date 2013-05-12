@@ -64,6 +64,12 @@ Console::~Console()
     delete _centralLayout;
 }
 
+void    Console::ClearTextEdit()
+{
+    _textEdit->PlainText("");
+    _textEdit->SetToEndOfText();
+}
+
 void    Console::RenderEnd(Graphic::SceneGraph *scene)
 {
     _centralLayout->RenderNode(scene);

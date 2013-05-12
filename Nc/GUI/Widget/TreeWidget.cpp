@@ -33,7 +33,7 @@ using namespace Nc::GUI;
 
 
 TreeWidget::TreeWidget(const AlignmentMask &alignment, const Vector2i &size)
-    : ScrollArea(alignment, size)
+    : ScrollArea(alignment, size), _selectedItem(NULL)
 {
     _treeView = new TreeView(this, Left | Top, size);
     _treeView->Padding(BoxEdges(5,5,5,5));
@@ -63,11 +63,14 @@ TreeWidget::~TreeWidget()
 
 void    TreeWidget::Copy(const TreeWidget &tw)
 {
+    _selectedItem = NULL;
     _treeView = static_cast<TreeView*>(tw._treeView->Clone());
 }
 
 void    TreeWidget::Insert(Item *items)
 {
+    if (items->Selected())
+        _selectedItem = items;
     _treeView->AddChild(items);
     _treeView->Resized();
 }
@@ -233,9 +236,12 @@ struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisito
     {
         n.Unselect();
 
+        if (selectedItem != NULL)
+            return;
+
         // test if the mouse is on the item
         int mousePos = static_cast<Graphic::WindowInput*>(event.emitter)->MousePositionInGLCoord()[1];
-        int top = pos + n.Pos()[1] + n.Size()[1] /*+ n.PaddingTop() + n.PaddingBottom()*/;
+        int top = pos + n.Pos()[1] + n.Size()[1];
         int bot = pos + n.Pos()[1];
 
         if (mousePos < top && mousePos > bot)
@@ -261,6 +267,7 @@ void    TreeWidget::TreeView::CheckItemFocus(const System::Event &event)
     if (v.selectedItem != NULL)
     {
         v.selectedItem->SendEvent(Event::ItemSelected);
+        _widget->_selectedItem = v.selectedItem;
     }
 }
 
