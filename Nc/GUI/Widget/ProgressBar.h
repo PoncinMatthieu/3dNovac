@@ -34,9 +34,6 @@ namespace Nc
     namespace GUI
     {
         /// Defines a progressBar Widget.
-        /**
-            \todo Recode the progress bar to use the Widget Looks.
-        */
         class LIB_NC_GUI  ProgressBar : public Widget
         {
             public:

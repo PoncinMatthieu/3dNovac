@@ -48,6 +48,9 @@ namespace Nc
                     TreeView &operator = (const TreeView &tv);
                     ~TreeView();
 
+                    /** Check item selection. */
+                    virtual void            CheckItemFocus(const System::Event &event);
+
                     /** Update the widget geometry. Called when the state of the widget has changed (when property _stateChanged == true) */
                     virtual void            UpdateState();
                     /** Resize the widget. Called when the widget or a parent has been resized. */
@@ -61,7 +64,7 @@ namespace Nc
                         We want to control how the childs are rendrered.
                         \return false
                     */
-                    virtual bool        RenderChildsBegin(Graphic::SceneGraph *scene)        {return false;}
+                    virtual bool            RenderChildsBegin(Graphic::SceneGraph *scene)        {return false;}
 
                     TreeWidget              *_widget;
                 };
@@ -71,6 +74,9 @@ namespace Nc
                 TreeWidget(const TreeWidget &tw);
                 TreeWidget &operator = (const TreeWidget &tw);
                 ~TreeWidget();
+
+                /** The mouse button handler to choose an item. */
+                void                    MouseButtonEvent(const System::Event &event);
 
                 /** Insert an item node into the tree. */
                 void    Insert(Item *items);
@@ -88,6 +94,7 @@ namespace Nc
 
             private:
                 TreeView        *_treeView;
+                Item            *_selectedItem;
         };
     }
 }

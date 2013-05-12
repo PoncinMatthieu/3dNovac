@@ -92,7 +92,7 @@ namespace Nc
                 EnterFocus = 0,
                 LeaveFocus,
                 Toggled,
-                ItemChanged,
+                ItemSelected,
                 EventIdMax,
                 ReturnPressed,
                 TextEntered,

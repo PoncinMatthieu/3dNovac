@@ -64,7 +64,9 @@ namespace Nc
                     Regular =       0,
                     Bold =          1 << 0,
                     Italic =        1 << 1,
-                    Underlined =    1 << 2
+                    Underlined =    1 << 2,
+                    ///< \todo Add an highligh method and remove the highligh code from GUI::Label
+                    // Highlight = 1 << 3
                 };
 
                 /** Define an alignment method of the text. */

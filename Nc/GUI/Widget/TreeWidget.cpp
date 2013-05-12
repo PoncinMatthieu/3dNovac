@@ -78,9 +78,18 @@ void    TreeWidget::RenderChildsEnd(Graphic::SceneGraph *scene)
     ScrollArea::RenderChildsEnd(scene);
 }
 
+void    TreeWidget::MouseButtonEvent(const System::Event &event)
+{
+    if (event.mouseButton.button == System::Mouse::Left && event.type == System::Event::MouseButtonPressed)
+    {
+        _treeView->CheckItemFocus(event);
+    }
+}
+
 TreeWidget::TreeView::TreeView(TreeWidget *widget, const AlignmentMask &alignment, const Vector2i &size)
     : Widget(alignment, size), _widget(widget)
 {
+    _acceptFocus = false;
     Resize();
 }
 
@@ -117,17 +126,17 @@ struct ComputeTotalViewSizeVisitor : public GUI::Visitor::WidgetVisitor<ComputeT
 
     void VisitNode(Item &n)
     {
-        Vector2f    size = n.Text()->Size();
+        Vector2f    size = n.Size();
         int         depth = (n.Depth() - 1) * 10;
 
         size[0] += depth;
+        //size[1] += n.PaddingTop() + n.PaddingBottom();
 
         if (totalSize[0] < size[0])
             totalSize[0] = size[0];
         totalSize[1] += size[1];
 
         n.Pos(Vector2i(depth, -(totalSize[1])));
-        totalSize[1] += 5;
     }
 
     Vector2i                totalSize;
@@ -205,4 +214,53 @@ void    TreeWidget::TreeView::Draw(Graphic::SceneGraph *scene)
     scene->PopModelMatrix();
 }
 
+// visitor used to go through every item and select them
+struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisitor>
+{
+    SelectItemsVisitor(const System::Event &e, int p)
+        :   GUI::Visitor::WidgetVisitor<SelectItemsVisitor>(Utils::Metaprog::Seq<Item>::Type(),
+                                                            Utils::Metaprog::Seq<Widget>::Type(),
+                                                            Graph::VisitChilds, true, true),
+            event(e), pos(p), selectedItem(NULL)
+    {
+    }
+
+    void VisitNode(Widget &w)
+    {
+    }
+
+    void VisitNode(Item &n)
+    {
+        n.Unselect();
+
+        // test if the mouse is on the item
+        int mousePos = static_cast<Graphic::WindowInput*>(event.emitter)->MousePositionInGLCoord()[1];
+        int top = pos + n.Pos()[1] + n.Size()[1] /*+ n.PaddingTop() + n.PaddingBottom()*/;
+        int bot = pos + n.Pos()[1];
+
+        if (mousePos < top && mousePos > bot)
+        {
+            n.Select();
+            selectedItem = &n;
+        }
+    }
+
+    const System::Event &event;
+    unsigned int        pos;
+    Item                *selectedItem;
+};
+
+void    TreeWidget::TreeView::CheckItemFocus(const System::Event &event)
+{
+    Vector2i pos;
+    AbsolutePos(pos);
+    pos[1] += _size[1] - PaddingTop();
+
+    SelectItemsVisitor v(event, pos[1]);
+    v(*this);
+    if (v.selectedItem != NULL)
+    {
+        v.selectedItem->SendEvent(Event::ItemSelected);
+    }
+}
 

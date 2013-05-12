@@ -76,7 +76,7 @@ bool CheckFocus::VisitNode(Widget &w)
     if (childFocused != NULL && childFocused->Childs().empty() && childFocused->_composedWidget.empty())
         return false;
 
-    if (!w.EnabledRecursif() || w.InhibitedRecursif())
+    if (!w.AcceptFocus() || !w.EnabledRecursif() || w.InhibitedRecursif())
         return false;
 
     Vector2i    pos;

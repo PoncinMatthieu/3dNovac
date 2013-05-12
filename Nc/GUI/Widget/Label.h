@@ -39,6 +39,7 @@ namespace Nc
         /**
             Allow to display text and also to display a description text next to another widget by using the method 'AddBuddy'.
             The method will add the widget as a child and configure it so it can be displayed next to the label depending on it's alignment.
+            The label can also display an icon next to the text using the method Icon().
         */
         class LIB_NC_GUI  Label : public Widget
         {
@@ -69,6 +70,11 @@ namespace Nc
                 /** Initialize the text with a string, a color, a font and a style. */
                 void                            Text(const Utils::Unicode::UTF32 &l, float fontSize = 15, const Color &fontColor = Color(0,0,0), const std::string &ttf = "arial", Graphic::PlainTextFormater::Style fontStyle = Graphic::PlainTextFormater::Regular);
 
+                /** Set the icon of the label. */
+                void                            Icon(const Graphic::GL::Texture &texture, const Box2i &textureBox);
+                /** Set the icon of the label. */
+                void                            Icon(const Graphic::GL::Texture &texture);
+
                 /** \return the alignment mask of the label. */
                 inline const AlignmentMask      &Alignment() const                              {return _labelAlignment;}
                 /** \return the alignment mask of the label. */
@@ -76,14 +82,25 @@ namespace Nc
                 /** Set the alignment of the label. */
                 inline void                     Alignment(const AlignmentMask &mask)            {_labelAlignment = mask;}
 
+                /** Highlight the text. */
+                inline void                     Highlight(bool state)                           {_highlight = state; _stateChanged = true;}
+                /** \return whether the text is highlighted or not. */
+                inline bool                     Highlighted() const                             {return _highlight;}
+                /** Set the highlight color. */
+                inline void                     HighlightColor(const Color &c)                  {_highlightColor = c; _stateChanged = true;}
+
             protected:
                 /** Update the geometry of the label. */
                 virtual void        UpdateState();
                 /** Render the widget labeled. */
                 virtual void        Draw(Graphic::SceneGraph *scene);
 
+                /** Set the size of the widget. */
+                void                RecomputeWidgetSize();
                 /** Update the label matrix. */
                 virtual void        UpdateLabel();
+                /** Update the icon matrix. */
+                virtual void        UpdateIcon();
 
                 /** \return a vector to translate the childs when we call the RelativePos method. */
                 virtual void        PosChild(const Widget *, Vector2i &) const;
@@ -95,8 +112,13 @@ namespace Nc
                 void                Copy(const Label &w);
 
             protected:
-                Graphic::Text       *_label;            ///< the label (string).
+                Graphic::Text       *_label;            ///< the label if not null.
+                Graphic::Sprite     *_icon;             ///< the icon if not null.
                 AlignmentMask       _labelAlignment;    ///< describe the alignment of the label.
+
+                bool                _highlight;         ///< if true, the label will be highlighted.
+                Color               _highlightColor;    ///< color used to render the highlight.
+                Graphic::Sprite     *_highlightSprite;  ///< sprite used to render the highlight text.
         };
     }
 }

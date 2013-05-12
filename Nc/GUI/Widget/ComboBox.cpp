@@ -168,7 +168,7 @@ void    ComboBox::ItemChoosed(Item *item)
             _currentItem->Selected(false);
         _currentItem = item;
         _currentItem->Selected(true);
-        SendEvent(Event::ItemChanged);
+        SendEvent(Event::ItemSelected);
     }
 }
 

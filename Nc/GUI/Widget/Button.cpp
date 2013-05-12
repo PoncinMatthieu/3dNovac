@@ -190,20 +190,5 @@ void Button::MouseButtonEvent(const System::Event &event)
             _stateChanged = true;
             _buttonPressed = false;
         }
-
-/*
-        if (inRect && !_toggled && event.type == System::Event::MouseButtonPressed)
-        {
-            _toggled = true;
-            _stateChanged = true;
-        }
-        else if (_toggled && event.type == System::Event::MouseButtonReleased)
-        {
-            if (inRect)
-                ExecHanle();
-            _toggled = false;
-            _stateChanged = true;
-        }
-*/
     }
 }

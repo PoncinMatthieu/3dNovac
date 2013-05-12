@@ -85,7 +85,7 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
         for(ContainerType::reverse_iterator it = _childs.rbegin(); _widgetFocused == NULL && it != _childs.rend(); it++)
         {
             Widget *w = (*it)->AsWithoutThrow<Widget>();
-			if (w != NULL && w->Enabled() && !w->Inhibited())
+			if (w != NULL && w->Enabled() && w->AcceptFocus() && !w->Inhibited())
             {
                 Vector2i    reelPos;
                 w->RelativePos(reelPos);

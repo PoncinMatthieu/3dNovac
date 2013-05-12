@@ -120,6 +120,10 @@ namespace Nc
                 bool                    Focus() const                               {return _focus;}
                 /** Set the generateHandleAtEnterFocus statement. If it's true, the widget will generate an event when the widget will entered in focus. */
                 void                    GenerateHandleAtEnterFocus(bool state);
+                /** Set if the widget accept focus or not. */
+                void                    AcceptFocus(bool state)                     {_acceptFocus = state;}
+                /** \return true if the widget accept to be focused. */
+                bool                    AcceptFocus() const                         {return _acceptFocus;}
 
                 /** Set the alignment settings. */
                 inline void                 Alignment(const AlignmentMask &mask)    {_alignment = mask;}
@@ -200,6 +204,9 @@ namespace Nc
                 /** Add the given event manager to the event handler. */
                 void                    AddEventManager(Engine::EventManager *e)    {_eventHandler.AddEventManager(e);}
 
+                /** Send the given event. */
+                void                    SendEvent(GUI::Event::EventId e);
+
             protected:
                 /** called when the widget gain the focus. */
                 virtual void            EnterFocus()                            {}
@@ -264,9 +271,6 @@ namespace Nc
                 /** Repos the widget. Called when the widget or a parent has changed of position. */
                 virtual void            Repos()         {}
 
-                /** Send the given event. */
-                void                    SendEvent(GUI::Event::EventId e);
-
             private:
                 /** Init the widget with the basics information. */
                 void                    Init(const Vector2i &size, const AlignmentMask &alignment);
@@ -287,6 +291,7 @@ namespace Nc
 
                 Widget                  *_childFocused;             ///< The child which has the focus.
                 bool                    _focus;                     ///< Mark if the widget has the focus.
+                bool                    _acceptFocus;               ///< if false, the widget doesn't accept focus and won't be selected during focus test.
 
                 bool                    _inhibit;                   ///< eg: if a button or a parent of the button is set false, the button don't exec the handler.
                 bool                    _stateChanged;              ///< if true, the widget will be update before to be rendered.

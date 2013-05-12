@@ -48,6 +48,7 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
     _childFocused = NULL;
     _inhibit = false;
     _focus = false;
+    _acceptFocus = true;
     _generateHandleAtEnterFocus = false;
     _resizable = true;
     _size = size;
@@ -89,6 +90,7 @@ void Widget::Copy(const Widget &w)
     _inhibit = w._inhibit;
     _resizable = w._resizable;
     _focus = w._focus;
+    _acceptFocus = w._acceptFocus;
     _size = w._size;
     _pos = w._pos;
     _alignment = w._alignment;
@@ -388,6 +390,8 @@ void    Widget::AbsolutePos(Vector2i &absolutePos) const
 
 void Widget::Focus(bool state)
 {
+    if (!AcceptFocus())
+        return;
     if (_focus != state)
     {
         _focus = state;
@@ -447,6 +451,15 @@ void Widget::Percent(const Vector2f &percent)
 
 void Widget::Resized()
 {
+    // resize parents
+    Visitor::GetParentWidget v(this);
+    if (_owner != NULL)
+        v.parent = _owner;
+    else
+        v(*this);
+    if (v.parent != NULL)
+        const_cast<Nc::GUI::Widget*>(v.parent)->Resized();
+
     _resized = true;
     _stateChanged = true;
 }
