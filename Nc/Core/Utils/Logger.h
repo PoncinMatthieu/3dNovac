@@ -24,9 +24,6 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_CORE_UTILS_LOG_H_
-#define NC_CORE_UTILS_LOG_H_
-
 #ifndef LOG
     #if defined(_DEBUG) && defined(_DEBUG_LOG)
         #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
@@ -42,6 +39,9 @@
         #define LOG_DEBUG       Nc::Utils::Logger::Log(_DEBUG_LOG_DEF -1)
     #endif
 #endif
+
+#ifndef NC_CORE_UTILS_LOG_H_
+#define NC_CORE_UTILS_LOG_H_
 
 #include <iostream>
 #include <fstream>
