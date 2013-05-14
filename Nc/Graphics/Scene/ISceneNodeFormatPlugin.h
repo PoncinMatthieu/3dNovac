@@ -35,7 +35,7 @@ namespace Nc
     namespace Graphic
     {
         /// Interface to create plugins which would be used to import and export SceneNodes.
-        class LGRAPHICS ISceneNodeFormatPlugin
+        class LIB_NC_GRAPHICS ISceneNodeFormatPlugin
         {
             public:
                 ISceneNodeFormatPlugin(const std::string &extension) : _extension(extension)      {}

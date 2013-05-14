@@ -42,7 +42,7 @@ namespace Nc
                 \sa
                     - Shader
             */
-            class LGRAPHICS Program : public Object
+            class LIB_NC_GRAPHICS Program : public Object
             {
                 public:
                     Program();

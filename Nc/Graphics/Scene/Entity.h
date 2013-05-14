@@ -37,7 +37,7 @@ namespace Nc
         /**
             An entity is define by a Matrix and can contain only a subtree and a list of childs.
         */
-        class LGRAPHICS Entity : public AbstractSceneNode<Graph::ListNodePolitic>
+        class LIB_NC_GRAPHICS Entity : public AbstractSceneNode<Graph::ListNodePolitic>
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(ISceneNode, System::Object, System::Object, Nc::Graphic::Entity);

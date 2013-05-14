@@ -38,11 +38,11 @@ namespace Nc
         namespace Test
         {
             // test position 2d
-            bool    LCORE   PointInRect(const Vector2i &pointTest, const Vector2i &rectPos, const Vector2i &rectSize);
-            bool    LCORE   PointInCircle(const Vector2f &pointTest, const Vector2f &center, float radius);
+            bool    LIB_NC_CORE   PointInRect(const Vector2i &pointTest, const Vector2i &rectPos, const Vector2i &rectSize);
+            bool    LIB_NC_CORE   PointInCircle(const Vector2f &pointTest, const Vector2f &center, float radius);
 
             // test intersection 2d
-            bool    LCORE   IntersectionRectCircle(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &circleCenter, float circleRadius);
+            bool    LIB_NC_CORE   IntersectionRectCircle(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &circleCenter, float circleRadius);
         }
     }
 }

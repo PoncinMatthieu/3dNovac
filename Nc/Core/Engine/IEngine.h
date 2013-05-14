@@ -78,7 +78,7 @@ namespace Nc
                 - MainEngine, which can be used to manage an engine receiving inputs, like a game engine.
                 - EventManager, base class of IEngine used to allow events between engines.
 		*/
-        class LCORE IEngine : public EventManager, public System::Thread
+        class LIB_NC_CORE IEngine : public EventManager, public System::Thread
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::EventManager, Nc::Engine::IEngine);

@@ -59,7 +59,8 @@ void WWindowInput::Destroy()
 
 void WWindowInput::CheckEvents()
 {
-    if (!_callback) // process event only if its our window
+ // this will cause a recursive repaint event with Qt
+    if (_win->IsOwn()) // process event only if its our window
     {
         MSG Message;
         while (PeekMessage(&Message, NULL, 0, 0, PM_REMOVE))
@@ -88,7 +89,7 @@ LRESULT CALLBACK WWindowInput::GlobalOnEvent(HWND handle, UINT message, WPARAM W
     // Forward the event to the appropriate function
     if (input)
     {
-		if (handle && !input->ListenerListEmpty()) // don't proceed event until window is created
+		if (input->AttachedWindow()->IsCreate() && handle && !input->ListenerListEmpty()) // don't proceed event until window is created
             input->ProcessEvent(message, WParam, LParam);
 
         if (input->_callback)
@@ -174,19 +175,16 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
         }
 
         // Text event
-/*
         case WM_CHAR :
         {
             if (_keyRepeatEnabled || ((LParam & (1 << 30)) == 0))
             {
-                Event Evt;
-                Evt.Type = Event::TextEntered;
-                Evt.Text.Unicode = static_cast<Uint32>(WParam);
-                SendEvent(Evt);
+				Event e(this, Event::TextEntered);
+                e.text.unicode = static_cast<UInt32>(WParam);
+                GenereEvent(e);
             }
             break;
         }
-*/
 
         // Key up event
         case WM_KEYUP :
@@ -215,6 +213,7 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
             e.mouseButton.button = Mouse::Left;
             e.mouseButton.x      = LOWORD(LParam);
             e.mouseButton.y      = HIWORD(LParam);
+	    e.mouseButton.doubled = IsDoubleClick(e);
             GenereEvent(e);
             break;
         }
@@ -235,6 +234,7 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
             e.mouseButton.button = Mouse::Right;
             e.mouseButton.x      = LOWORD(LParam);
             e.mouseButton.y      = HIWORD(LParam);
+	    e.mouseButton.doubled = IsDoubleClick(e);
             GenereEvent(e);
             break;
         }

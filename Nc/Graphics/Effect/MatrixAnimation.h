@@ -38,7 +38,7 @@ namespace Nc
             \deprecated this class shouldn't be use, try to create a Controller to manipulate the matrix on your node.
             \todo this class should be recode or just deleted, no longer necessary.
         */
-        class LGRAPHICS   MatrixAnimation : public Animation
+        class LIB_NC_GRAPHICS   MatrixAnimation : public Animation
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Animation, System::Object, Nc::Graphic::MatrixAnimation)

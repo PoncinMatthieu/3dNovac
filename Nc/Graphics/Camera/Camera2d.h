@@ -37,7 +37,7 @@ namespace Nc
         /**
             This type of camera will be used to display a 2d scene like a GUI.
         */
-        class LGRAPHICS Camera2d : public Camera
+        class LIB_NC_GRAPHICS Camera2d : public Camera
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Camera, System::Object, Nc::Graphic::Camera);

@@ -27,7 +27,6 @@
 #ifndef NC_SYSTEM_XCURSOR_H_
 #define NC_SYSTEM_XCURSOR_H_
 
-#include "../../Define.h"
 #include "ICursor.h"
 
 namespace Nc
@@ -44,7 +43,7 @@ namespace Nc
             To create a cursor you will need to have an XWindow but you shouldn't create a create directly a cursor, the best way is to use the methode Window::NewCursor() <br/>
             <br/>
         */
-        class LGRAPHICS Cursor : public ICursor
+        class LIB_NC_GRAPHICS Cursor : public ICursor
         {
             public:
                 Cursor(Window *w);

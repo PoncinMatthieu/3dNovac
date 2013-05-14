@@ -51,6 +51,7 @@ const std::string   StyleSheet::Name::ComboBox = "ComboBox";
 const std::string   StyleSheet::Name::ComboBoxList = "ComboBoxList";
 const std::string   StyleSheet::Name::LineEdit = "LineEdit";
 const std::string   StyleSheet::Name::WindowBox = "Window";
+const std::string   StyleSheet::Name::ProgressBar = "ProgressBar";
 const std::string   StyleSheet::Name::ScrollBarRightButton = "ScrollBarRightButton";
 const std::string   StyleSheet::Name::ScrollBarLeftButton = "ScrollBarLeftButton";
 const std::string   StyleSheet::Name::ScrollBarSliderBackground = "ScrollBarSliderBackground";

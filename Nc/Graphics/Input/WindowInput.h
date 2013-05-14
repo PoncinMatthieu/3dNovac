@@ -50,7 +50,7 @@ namespace Nc
 
             \deprecated the method to char is deprecated. you should catch the TextEntered events insteed !
         */
-        class LGRAPHICS WindowInput : public System::Input
+        class LIB_NC_GRAPHICS WindowInput : public System::Input
         {
             public:
                 WindowInput(IWindow *win);
@@ -92,8 +92,10 @@ namespace Nc
                 char                        ToChar(System::Key::Code key) const;
 
             protected:
-                void                        ForwardEventToSubWindow(SubWindow *subWindow, const System::Event &e);
-                void                        UpdateMousePositionSubWindow(SubWindow *subWindow, int &newX, int &newY, const int &oldX, const int &oldY);
+                void                    ForwardEventToSubWindow(SubWindow *subWindow, const System::Event &e);
+                void                    UpdateMousePositionSubWindow(SubWindow *subWindow, int &newX, int &newY, const int &oldX, const int &oldY);
+
+                bool                    IsDoubleClick(const System::Event &e);
 
             protected:
                 bool                    _keyStates[System::Key::Count];             ///< Store the key states.
@@ -101,7 +103,11 @@ namespace Nc
                 Math::Vector2i          _mousePosition;                             ///< Store the current position of the mouse.
                 bool                    _mouseIn;                                   ///< statement used to know if the mouse is in or out of the window.
                 bool                    _keyRepeat;                                 ///< true if the key are repeating.
-                IWindow                  *_win;                                      ///< instance to the attached windows.
+                IWindow                  *_win;                                     ///< instance to the attached windows.
+
+            private:
+                Utils::Clock            _mouseButtonLeftClock;                      ///< clock used to determine whether the left click is a double click or not.
+                Utils::Clock            _mouseButtonRightClock;                     ///< clock used to determine whether the right click is a double click or not.
         };
     }
 }

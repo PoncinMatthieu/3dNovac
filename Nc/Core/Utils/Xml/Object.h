@@ -46,7 +46,7 @@ namespace Nc
 				\todo Now that we defined a graph structure, we should use it to define the XML object.
 				\todo Now that we defined a visitor structure, we should use it on the XML object to allow the visitation of the XML object.
 			*/
-            class LCORE Object
+            class LIB_NC_CORE Object
             {
                 public:
                     /** TYPE, to define the type of Xml object. */
@@ -60,7 +60,7 @@ namespace Nc
                     virtual ~Object();
 
                     Object						&operator = (const Object &o);
-                    friend LCORE std::ostream	&operator << (std::ostream &out, const Object &o);
+                    friend LIB_NC_CORE std::ostream	&operator << (std::ostream &out, const Object &o);
 
                     virtual void Write(std::ostream &out, unsigned int i) const;
 

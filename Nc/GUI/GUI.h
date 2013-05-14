@@ -38,6 +38,7 @@
 #include "Widget/LineEdit.h"
 #include "Widget/WindowBox.h"
 #include "Widget/ComboBox.h"
+#include "Widget/TreeWidget.h"
 #include "Widget/Console.h"
 #include "Widget/Image.h"
 #include "Widget/ProgressBar.h"

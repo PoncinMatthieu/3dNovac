@@ -50,7 +50,7 @@ namespace Nc
     };
  \endcode
         */
-        class LGRAPHICS SkyBox : public Object
+        class LIB_NC_GRAPHICS SkyBox : public Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::SkyBox);

@@ -38,7 +38,7 @@ namespace Nc
         /**
             \todo render the drawables in one time not a call of the material for each drawables of the objects, this would improve the number of matrix compute and Ogl call.
         */
-        class LGRAPHICS IMaterial
+        class LIB_NC_GRAPHICS IMaterial
         {
             public:
                 IMaterial(const std::string &name)
@@ -63,7 +63,7 @@ namespace Nc
                 /** Render the given drawable with the given model matrix. */
                 virtual void    Render(SceneGraph *scene, const TMatrix &modelMatrix, GL::Drawable &drawable) = 0;
 
-                friend LGRAPHICS std::ostream &operator << (std::ostream &oss, const IMaterial &m)
+                friend LIB_NC_GRAPHICS std::ostream &operator << (std::ostream &oss, const IMaterial &m)
                 {
                     oss << m._name;
                     return oss;

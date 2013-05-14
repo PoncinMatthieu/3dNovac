@@ -47,7 +47,7 @@ namespace DemoViewer
 
             void                        DemoSelected();
 
-            const std::string           *Demo() const         {return (_demoComboBox->CurrentItem()) ? &_demoComboBox->CurrentItem()->Data() : NULL;}
+            const Nc::Utils::Unicode::UTF32 *Demo() const         {return (_demoComboBox->CurrentItem()) ? &_demoComboBox->CurrentItem()->Text()->PlainText() : NULL;}
 
             Nc::GUI::SubWindow          *CreateDemoWindow(Nc::Graphic::IWindow *windowParent);
 

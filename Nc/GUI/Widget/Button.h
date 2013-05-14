@@ -41,7 +41,7 @@ namespace Nc
 
             The button send a Toggle event when the button is toggled.
         */
-        class LGUI  Button : public Widget
+        class LIB_NC_GUI  Button : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Button);

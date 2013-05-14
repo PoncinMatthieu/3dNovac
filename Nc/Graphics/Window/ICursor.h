@@ -78,7 +78,7 @@ namespace Nc
     };
  \endcode
         */
-        class LGRAPHICS ICursor
+        class LIB_NC_GRAPHICS ICursor
         {
             public:
                 ICursor(IWindow *attachedWindow) : _attachedWindow(attachedWindow)   {}

@@ -34,27 +34,23 @@ namespace Nc
     namespace GUI
     {
         /// Defines a progressBar Widget.
-        /**
-            \todo Recode the progress bar to use the Widget Looks.
-        */
-        class LGUI  ProgressBar : public Widget
+        class LIB_NC_GUI  ProgressBar : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::ProgressBar);
 
             public:
-                ProgressBar(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const Utils::FileName &file = "Nc:GUI:ProgressBar.png");
-                ProgressBar(const AlignmentMask &alignment, const Vector2i &size, const Graphic::GL::Texture &texture);
+                ProgressBar(const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &looksName = "");
                 virtual ~ProgressBar();
 
                 virtual ISceneNode  *Clone() const                              {return new ProgressBar(*this);}
 
                 /** Set the box of the progress bar. */
-                void    SetProgressBox(const Box2f &b)                          {if (_progressBox != b) {_progressBox = b; _size = b.Size(); _stateChanged = true;}}
+                void    SetProgressBox(const Box2f &b);
                 /** Set the color left and right of the progress bar. */
-                void    SetColor(const Color &c)                                {if (_colorLeft != c || _colorRight != c) {_colorLeft = _colorRight = c; _stateChanged = true;}}
+                void    SetColor(const Color &c);
                 /** Set the color left and right of the progress bar. */
-                void    SetColor(const Color &c1, const Color &c2)              {if (_colorLeft != c1 || _colorRight != c2) {_colorLeft = c1; _colorRight = c2; _stateChanged = true;}}
+                void    SetColor(const Color &c1, const Color &c2);
 
                 /** Set the percent of the progress bar. */
                 void    Percent(float p);
@@ -70,7 +66,7 @@ namespace Nc
                 virtual void Draw(Graphic::SceneGraph *scene);
 
             private:
-                void    Init(const Graphic::GL::Texture &texture);
+                void    Init(const std::string &looksName = "");
 
             protected:
                 unsigned int            _indexDrawable;

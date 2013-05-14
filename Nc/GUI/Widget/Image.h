@@ -38,7 +38,7 @@ namespace Nc
         /**
             The Image widget allow to display sprites and manipulate their size easily.
         */
-        class LGUI  Image : public Widget
+        class LIB_NC_GUI  Image : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::Image);

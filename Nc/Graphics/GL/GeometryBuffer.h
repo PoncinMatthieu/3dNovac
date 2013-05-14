@@ -42,7 +42,7 @@ namespace Nc
                 Store a primitive type describing the type of primitive stored in the geometry buffer.
                 \todo Use a VertexArray to optimise the rendering.
             */
-            class LGRAPHICS IGeometryBuffer
+            class LIB_NC_GRAPHICS IGeometryBuffer
             {
                 public:
                     IGeometryBuffer(Enum::PrimitiveType primitiveType)

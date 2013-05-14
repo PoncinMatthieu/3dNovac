@@ -35,8 +35,8 @@ namespace Nc
     namespace Graph
     {
         /// Politic class to define a binary node, has a left/right node.
-        template<typename T, class NodeType, class Allocator = Utils::Metaprog::Allocator<NodeType> >
-        class BinaryNodePolitic : public INodePolitic<T,NodeType, false>
+        template<typename T, class NodeType, class Allocator /*= Utils::Metaprog::Allocator<NodeType>*/ >
+        class BinaryNodePolitic : public INodePolitic<T, NodeType, false>
         {
             public:
                 typedef INodePolitic<T,NodeType,false>      NodePolitic;
@@ -131,7 +131,7 @@ namespace Nc
         };
 
         /** To define a binary search tree using the AVL method. */
-        template<typename T, class NodeType, class Allocator = Utils::Metaprog::Allocator<NodeType> >
+        template<typename T, class NodeType, class Allocator /*= Utils::Metaprog::Allocator<NodeType>*/ >
         class BinaryNodeAVLPolitic : public BinaryNodePolitic<T, NodeType, Allocator>
         {
             public:
@@ -175,17 +175,24 @@ namespace Nc
             - BinaryNodePolitic
         */
         template<typename T>
-        struct BinaryNodeAVL : public Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
+        class BinaryNodeAVL : public AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
         {
-            typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
-            NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
-            typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
-            typedef BinaryNodeAVL                                       NodeType;
+		public:
+            // Visual Studio 2010 won't compile using the correct form "Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >". Insteed it accept onle "Node" and seems to work even thought it souldn't.
+            #ifdef SYSTEM_WINDOWS
+                typedef AbstractNode	ParentType;
+                NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
+                typedef AbstractNode	NodePolitic;
+                typedef BinaryNodeAVL	NodeType;
+            #else
+                typedef AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
+                NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
+                typedef AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
+                typedef BinaryNodeAVL                                       NodeType;
+            #endif
 
             BinaryNodeAVL()                                    : NodePolitic()               {}
-            BinaryNodeAVL(const T &data)                       : NodePolitic(data)           {}
             BinaryNodeAVL(NodeType *parent)                    : NodePolitic(parent)         {}
-            BinaryNodeAVL(const T &data, NodeType *parent)     : NodePolitic(data, parent)   {}
         };
 
         template<typename T, class NodeType, class Allocator>

@@ -42,7 +42,7 @@ namespace Nc
                 - Draw, to render the look object.
                 - Update, to update the geometry of the look, this will called when the widget size property has changed.
         */
-        struct LGUI ILook
+        struct LIB_NC_GUI ILook
         {
 			ILook();
 			virtual ~ILook();
@@ -76,7 +76,7 @@ namespace Nc
             \sa
                 - StyleSheet
         */
-        class LGUI StripLook : public ILook
+        class LIB_NC_GUI StripLook : public ILook
         {
             public:
                 StripLook(const std::string &name = "");
@@ -128,7 +128,7 @@ namespace Nc
             \sa
                 - StyleSheet
         */
-        class LGUI BoxLook : public ILook
+        class LIB_NC_GUI BoxLook : public ILook
         {
             public:
                 BoxLook(const std::string &name = "");

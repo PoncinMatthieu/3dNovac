@@ -40,7 +40,7 @@ namespace Nc
                 \sa
                     - FrameBuffer
             */
-            class LGRAPHICS RenderBuffer : public Object
+            class LIB_NC_GRAPHICS RenderBuffer : public Object
             {
                 public:
                     enum BufferType

@@ -26,7 +26,7 @@ int main()
 
     try
 	{
-        Nc::Engine::Manager game("3dNovac.conf");
+        Nc::Engine::Manager game("Nc-Demos.conf");
         Graphic::Window window("Sokoban Demo", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
         Graphic::SceneNodeFormatManager sceneNodeformatManager;
 

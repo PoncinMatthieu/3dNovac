@@ -39,7 +39,7 @@ namespace Nc
         /**
             The class Object contain a list of Drawables and allow to configure a Material to render them.
         */
-        class LGRAPHICS Object : public Entity
+        class LIB_NC_GRAPHICS Object : public Entity
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Entity, System::Object, Nc::Graphic::Object);
@@ -104,13 +104,13 @@ namespace Nc
                     Do nothing but can be redefined.
                     \return true
                 */
-                virtual bool        RenderChildsBegin(SceneGraph *scene)        {return true;}
+                virtual bool        RenderChildsBegin(SceneGraph *)             {return true;}
 
                 /**
                     Method called just after the RenderChilds method.
                     Do nothing but can be redefined.
                 */
-                virtual void        RenderChildsEnd(SceneGraph *scene)          {}
+                virtual void        RenderChildsEnd(SceneGraph *)               {}
 
                 /**
                     Render the drawables.

@@ -43,7 +43,7 @@ namespace Nc
 
                 \warning Be carefull while manipulating a framebuffer, a framebuffer must be enabled/disable each time you want to use it. The previous framebuffer will be set after disabling the current one.
             */
-            class LGRAPHICS FrameBuffer : public Object
+            class LIB_NC_GRAPHICS FrameBuffer : public Object
             {
                 public:
                     typedef std::map<Enum::FrameBuffer::AttachementPoint, Object*>      MapAttachedObject;

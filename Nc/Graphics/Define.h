@@ -34,25 +34,24 @@
 
 // includes extern
     #include <list>
-    #include <Nc/Define.h>
     #include <Nc/Core/Core.h>
 
     //#define NC_DYNAMIC_LINK
-    //#define EXPORT_MATH
+    //#define NC_EXPORT_GRAPHICS
 
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                     // dynamic
-            #ifdef EXPORT_GRAPHICS
-                #define LGRAPHICS     __declspec(dllexport)
+            #ifdef NC_EXPORT_GRAPHICS
+                #define LIB_NC_GRAPHICS     __declspec(dllexport)
             #else
-                #define LGRAPHICS     __declspec(dllimport)
+                #define LIB_NC_GRAPHICS     __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LGRAPHICS
+            #define LIB_NC_GRAPHICS
         #endif
     #else                                                       // othes os (do nothing)
-        #define LGRAPHICS       ///< Linking option of Nc-Graphics module.
+        #define LIB_NC_GRAPHICS       ///< Linking option of Nc-Graphics module.
     #endif
 
     namespace Nc

@@ -44,7 +44,7 @@ namespace Nc
 
                 \todo manage the transparency color and rate.
             */
-            class LGRAPHICS  Blend
+            class LIB_NC_GRAPHICS  Blend
             {
                 public:
                     /// The pattern of the using blend function.

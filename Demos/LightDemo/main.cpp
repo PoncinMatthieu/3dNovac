@@ -27,7 +27,7 @@ int main()
 
 	try
 	{
-        Engine::Manager lightTest("3dNovac.conf");
+        Engine::Manager lightTest("Nc-Demos.conf");
         Graphic::Window window("Light Demo", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
         Graphic::SceneNodeFormatManager sceneNodeformatManager;
 

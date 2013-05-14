@@ -42,7 +42,7 @@ namespace Nc
             \todo Manage specular components.
             \todo Find a way to draw advanced effect like shadow and reflexion.
         */
-        class LGRAPHICS DefaultLightingMaterial : public ILightingMaterial
+        class LIB_NC_GRAPHICS DefaultLightingMaterial : public ILightingMaterial
         {
             public:
                 /// Pattern of the DefaultLighting rendering method.

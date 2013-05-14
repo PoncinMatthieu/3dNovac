@@ -80,12 +80,14 @@ void Graphic::Window::Create(const std::string &title, const Vector2ui &size, co
 
 // Compute position and size
     HDC screenDC = GetDC(NULL);
-    int left   = (GetDeviceCaps(screenDC, HORZRES) - size.data[0])  / 2;
+	_width = size.data[0];
+	_height = size.data[1];
+	int left   = (GetDeviceCaps(screenDC, HORZRES) - size.data[0])  / 2;
     int top    = (GetDeviceCaps(screenDC, VERTRES) - size.data[1]) / 2;
     ReleaseDC(NULL, screenDC);
 
     // Choose the window style according to the Style parameter
-	if (style.GetMask() == 0)
+	if (style.mask == 0)
     {
         _win32Style |= WS_POPUP;
     }
@@ -97,10 +99,12 @@ void Graphic::Window::Create(const std::string &title, const Vector2ui &size, co
 			_win32Style |= WS_THICKFRAME | WS_MAXIMIZEBOX;
         if (style.Enabled(Closeable))
 			_win32Style |= WS_SYSMENU;
+		if (style.Enabled(Hidden))
+			_win32Style &= ~WS_VISIBLE;
     }
 
     // In windowed mode, adjust width and height so that window will have the requested client area
-    Vector2i winsize(size);
+	Vector2i winsize(size);
     if (style.Disabled(Fullscreen))
     {
         RECT Rect = {0, 0, winsize.data[0], winsize.data[1]};
@@ -124,12 +128,7 @@ void Graphic::Window::Create(const std::string &title, const Vector2ui &size, co
     _own = true;
     _input->Create();
 
-    // recompute the window size, to be sure that the window as the good size
-    RECT ActualRect;
-    GetClientRect(_handle, &ActualRect);
-    _width  = ActualRect.right - ActualRect.left;
-    _height = ActualRect.bottom - ActualRect.top;
-
+	// set the icon
 	SetIcon(icon);
 
     // creation du curseur par defaut
@@ -193,11 +192,18 @@ void Graphic::Window::Close()
 
 void Graphic::Window::Resize(unsigned int width, unsigned int height)
 {
-    RECT Rect = {0, 0, width, height};
-    AdjustWindowRect(&Rect, _win32Style, false);
-    _width  = Rect.right - Rect.left;
-    _height = Rect.bottom - Rect.top;
-    Resized();
+	_width = width;
+	_height = height;
+
+	// adjust size with the window style (borders, title bar, ...)
+    RECT rect = {0, 0, width, height};
+    AdjustWindowRect(&rect, GetWindowLong(_handle, GWL_STYLE), false);
+    width  = rect.right - rect.left;
+    height = rect.bottom - rect.top;
+
+	// resize
+	SetWindowPos(_handle, NULL, 0, 0, width, height, SWP_ASYNCWINDOWPOS | SWP_NOZORDER);
+	Resized();
 }
 
 void	Graphic::Window::SwitchToFullscreen(const Vector2ui &size)
@@ -250,7 +256,7 @@ bool	Graphic::Window::SetIcon(const Utils::FileName &f)
 	if (!_hicon)
 	{
 		delete[] iconPixels;
-		throw Utils::Exception("WWindow", "Failed to create the icone");
+		throw Utils::Exception("WWindow", "Failed to create the icon");
 	}
 
     // Set it as both big and small icon of the window
@@ -258,4 +264,16 @@ bool	Graphic::Window::SetIcon(const Utils::FileName &f)
 	SendMessage(_handle, WM_SETICON, ICON_SMALL, (LPARAM)_hicon);
 	delete[] iconPixels;
 	return true;
+}
+
+void	Graphic::Window::Hide()
+{
+	ShowWindowAsync(_handle, SW_HIDE);
+	_style.Enable(Hidden);
+}
+
+void	Graphic::Window::Show()
+{
+	ShowWindowAsync(_handle, SW_SHOW);
+	_style.Disable(Hidden);
 }

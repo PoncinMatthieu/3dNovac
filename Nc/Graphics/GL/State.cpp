@@ -34,12 +34,13 @@
                                                 { \
                                                     System::Config::Warning("An opengl error has already occured: ", GetError(code)); \
                                                     Utils::CrashReporter::Abort(); \
-                                                }
+												}
     #define GL_STATE_CALLSTACK_INFO_ARG(info)   CALLSTACK_INFO_ARG(info); \
                                                 GLenum code = GetErrorCode(); \
                                                 if (code != GL_NO_ERROR) \
                                                 { \
                                                     System::Config::Warning("An opengl error has already occured: ", GetError(code)); \
+													code = GL_NO_ERROR; \
                                                     Utils::CrashReporter::Abort(); \
                                                 }
 #else
@@ -270,6 +271,22 @@ namespace Nc {
     }
 }
 
+#ifdef SYSTEM_WINDOWS
+void ShowWindowErrorUpgradeDrivers(const std::string &vendor, const std::string &renderer)
+{
+	std::string str = "Your OpenGL version is outdated.\nYou either have a very old graphic card, or you need to update you graphic driver.\n\nTo update you driver, please follow one of the given links depending on your graphic card manufacturer:\n\
+ * Intel: http://www.intel.com/p/en_US/support/detect?iid=dc_iduu \n\
+ * ATI: http://support.amd.com/us/gpudownload/Pages/index.aspx \n\
+ * nVidia: http://www.nvidia.com/Download/index.aspx \n\
+\n\n\
+Here is some informations on your graphic card:\n\
+ * GL_VENDOR : " + vendor + "\n\
+ * GL_RENDERER : " + renderer + "\n";
+
+	MessageBox(NULL, str.c_str(), "Error: OpenGL version outdated.", MB_OK);
+}
+#endif
+
 void    State::CheckGLVersion()
 {
     GL_STATE_CALLSTACK_INFO();
@@ -294,20 +311,30 @@ void    State::CheckGLVersion()
     LOG << "GL_RENDERER = `" << GetString(Enum::Renderer) << "`" << std::endl;
     //LOG << "GL_EXTENSIONS = `" << EXT.GetInfo(Enum::Extentions) << "`" << std::endl;
     try
-        {LOG << "GL_SHADING_LANGUAGE_VERSION = `" << GetString(Enum::ShadingLanguageVersion) << "`" << std::endl;}
+	{
+		LOG << "GL_SHADING_LANGUAGE_VERSION = `" << GetString(Enum::ShadingLanguageVersion) << "`" << std::endl;
+	}
     catch (...)
-        {System::Config::Error("GraphicEngine", "Failed to fetch GL_SHADING_LANGUAGE_VERSION, Shaders is probably not supported");}
+	{
+		#ifdef SYSTEM_WINDOWS
+		ShowWindowErrorUpgradeDrivers((char*)GetString(Enum::Vendor), (char*)GetString(Enum::Renderer));
+		#endif
+		System::Config::Error("GraphicEngine", "Failed to fetch GL_SHADING_LANGUAGE_VERSION, Shaders is probably not supported");
+	}
 
     float   nbr = 0;
     Utils::Convert::StringTo(version, nbr);
     if (nbr < VERSION_MIN_OPENGL)
     {
+		#ifdef SYSTEM_WINDOWS
+		ShowWindowErrorUpgradeDrivers((char*)GetString(Enum::Vendor), (char*)GetString(Enum::Renderer));
+		#endif
         System::Config::Error("GraphicEngine", "Bad OpenGl version, minimum is '" + Utils::Convert::ToString(VERSION_MIN_OPENGL) + "'\nPlease upgrade your opengl driver");
     }
     else
         LOG << "OpenGL version OK" << std::endl;
 
-    CheckError();
+    NC_GRAPHIC_GL_CHECK_ERROR();
 }
 
 void    State::Viewport(int viewportX, int viewportY, int viewportWidth, int viewportHeight)
@@ -322,7 +349,7 @@ void    State::Viewport(int viewportX, int viewportY, int viewportWidth, int vie
         _currentViewportY = viewportY;
         _currentViewportWidth = viewportWidth;
         _currentViewportHeight = viewportHeight;
-        CheckError();
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
@@ -334,7 +361,7 @@ void    State::ClearColor(Color c)
     {
         glClearColor(c.r, c.g, c.b, c.a);
         _currentClearColor = c;
-        CheckError();
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
@@ -347,7 +374,7 @@ void    State::Enable(Enum::Capability cp)
     {
         glEnable(cp);
         it->second = true;
-        CheckError();
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
@@ -360,7 +387,7 @@ void    State::Disable(Enum::Capability cp)
     {
         glDisable(cp);
         it->second = false;
-        CheckError();
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
@@ -372,7 +399,7 @@ void    State::DepthFunc(Enum::MaskFunc f)
     {
         glDepthFunc(f);
         _currentDepthFunc = f;
-        CheckError();
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
@@ -385,7 +412,7 @@ void    State::PolygonMode(Enum::PolygonFace f, Enum::PolygonMode m)
         glPolygonMode(f, m);
         _currentPolygonFace = f;
         _currentPolygonMode = m;
-        CheckError();
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 
@@ -398,7 +425,7 @@ void    State::PolygonOffset(float offsetFactor, float offsetUnits)
         glPolygonOffset(offsetFactor, offsetUnits);
         _currentPolygonOffsetFactor = offsetFactor;
         _currentPolygonOffsetUnits = offsetUnits;
-        CheckError();
+        NC_GRAPHIC_GL_CHECK_ERROR();
     }
 }
 

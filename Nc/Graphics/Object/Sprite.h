@@ -38,7 +38,7 @@ namespace Nc
         /**
             A sprite is defined by a size, a texture, a box that delimit the sprite in the texture and finaly a blend pattern.
         */
-        class LGRAPHICS Sprite : public Object
+        class LIB_NC_GRAPHICS Sprite : public Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Sprite);

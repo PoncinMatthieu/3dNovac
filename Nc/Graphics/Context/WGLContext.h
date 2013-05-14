@@ -39,7 +39,7 @@ namespace Nc
         /**
             For more detail please show the class GLContext
         */
-        class LGRAPHICS WGLContext : public GLContext
+        class LIB_NC_GRAPHICS WGLContext : public GLContext
         {
             public:
                 WGLContext(Window *win, HDC drawable = 0);

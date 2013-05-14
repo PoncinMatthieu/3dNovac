@@ -38,7 +38,7 @@ namespace Nc
         /**
             \todo Create a demo using RasterEffect to create a Wireframe effect.
         */
-        class LGRAPHICS RasterEffect : public Effect
+        class LIB_NC_GRAPHICS RasterEffect : public Effect
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Effect, System::Object, Nc::Graphic::RasterEffect);

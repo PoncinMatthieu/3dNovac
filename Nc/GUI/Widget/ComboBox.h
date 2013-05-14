@@ -28,8 +28,7 @@
 #define NC_GUI_WIDGET_COMBOBOX_H_
 
 #include "../SceneGraph.h"
-#include "../Item.h"
-#include "Widget.h"
+#include "Item.h"
 
 namespace Nc
 {
@@ -44,12 +43,10 @@ namespace Nc
 
             \todo correct dropdown list which should start below the box, to be able to show the currently selected item.
         */
-        class LGUI ComboBox : public Widget
+        class LIB_NC_GUI ComboBox : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(GUI::Widget, System::Object, Nc::GUI::ComboBox);
-                typedef std::pair<Item*, Graphic::Text*>        StringItem;
-                typedef std::list<StringItem>                   ListItem;
 
             private:
                 /// Inner class used to display the dropdown list.
@@ -74,7 +71,7 @@ namespace Nc
 
 
             public:
-                ComboBox(GUI::SceneGraph *scene, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), float fontSize = 15, const Color &fontColor = Color(0,0,0), const std::string &fontName = "arial", const std::string &looksName = "");
+                ComboBox(GUI::SceneGraph *scene, const AlignmentMask &alignment = Left | Top, const Vector2i &size = Vector2i(0, 0), const std::string &looksName = "");
                 ComboBox(const ComboBox &cb);
                 ComboBox &operator = (const ComboBox &cb);
                 ~ComboBox();
@@ -85,7 +82,7 @@ namespace Nc
                 void                AddItem(Item *item);
 
                 /** \return the pointer to the current item selected. */
-                inline Item         *CurrentItem()          {return (_currentItem) ? _currentItem->first : NULL;}
+                inline Item         *CurrentItem()          {return _currentItem;}
 
             protected:
                 void                Copy(const ComboBox &cb);
@@ -99,17 +96,14 @@ namespace Nc
                 void                MouseButtonEvent(const System::Event &event);
 
                 /** Send an event to notify a changement of item. */
-                void                ItemChoosed(StringItem *item);
+                void                ItemChoosed(Item *item);
 
             private:
                 SceneGraph          *_scene;
-                float               _fontSize;
-                Color               _fontColor;
-                std::string         _fontName;
                 Graphic::Sprite     *_spriteList;
 
-                ListItem            _itemList;
-                StringItem          *_currentItem;
+                ListPItem           _itemList;
+                Item                *_currentItem;
 
                 bool                _listUnrolled;
                 ComboBoxUnfoldList  *_currentUnfoldList;

@@ -50,7 +50,7 @@ namespace Nc
                     - Redefine the method Release() to destroy the shared resources.
                     - Redefine the method Clone to create a new object of the same type.
             */
-            class LGRAPHICS Object
+            class LIB_NC_GRAPHICS Object
             {
                 public:
                     Object(const Object &sp);

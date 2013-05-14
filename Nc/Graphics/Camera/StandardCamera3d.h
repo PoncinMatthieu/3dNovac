@@ -38,7 +38,7 @@ namespace Nc
         /**
             To manage default freefly, trackball or turntable camera.
         */
-        class LGRAPHICS StandardCamera3d : public Camera3d
+        class LIB_NC_GRAPHICS StandardCamera3d : public Camera3d
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Camera3d, System::Object, Nc::Graphic::StandardCamera3d);

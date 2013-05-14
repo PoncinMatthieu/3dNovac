@@ -80,6 +80,11 @@ void WindowInput::GenereEvent(const System::Event &e)
         }
         case System::Event::MouseButtonPressed:
         {
+            if (e.mouseButton.button == System::Mouse::Left)
+                _mouseButtonLeftClock.Reset();
+            else if (e.mouseButton.button == System::Mouse::Right)
+                _mouseButtonRightClock.Reset();
+
             _mouseButtonStates[e.mouseButton.button] = true;
             _mousePosition.data[0] = e.mouseButton.x;
             _mousePosition.data[1] = e.mouseButton.y;
@@ -110,6 +115,21 @@ void WindowInput::GenereEvent(const System::Event &e)
     System::Locker l(&_win->_mutexListSubWindow);
     for (IWindow::ListSubWindow::iterator it = _win->_listSubWindow.begin(); it != _win->_listSubWindow.end(); ++it)
         ForwardEventToSubWindow(*it, e);
+}
+
+bool    WindowInput::IsDoubleClick(const System::Event &e)
+{
+    if (e.mouseButton.button == System::Mouse::Left)
+    {
+        if (_mouseButtonLeftClock.ElapsedTime() < 0.2f)
+            return true;
+    }
+    else if (e.mouseButton.button == System::Mouse::Right)
+    {
+        if (_mouseButtonRightClock.ElapsedTime() < 0.2f)
+            return true;
+    }
+    return false;
 }
 
 void    WindowInput::ForwardEventToSubWindow(SubWindow *subWindow, const System::Event &e)

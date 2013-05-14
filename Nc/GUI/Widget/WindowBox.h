@@ -39,7 +39,7 @@ namespace Nc
 
             \todo Make the WindowBox dragable.
         */
-        class LGUI  WindowBox : public Widget
+        class LIB_NC_GUI  WindowBox : public Widget
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Widget, System::Object, Nc::GUI::WindowBox);

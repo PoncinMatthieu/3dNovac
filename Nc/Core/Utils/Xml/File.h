@@ -40,7 +40,7 @@ namespace Nc
         namespace Xml
         {
             /// Provide a Xml::File management.
-            class LCORE File
+            class LIB_NC_CORE File
             {
                 public:
                     File() : _content(NULL) {}

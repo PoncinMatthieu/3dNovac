@@ -50,7 +50,7 @@ namespace Nc
 </Config>
  \endcode
         */
-        class LGRAPHICS SceneNodeFormatManager
+        class LIB_NC_GRAPHICS SceneNodeFormatManager
         {
             private:
                 typedef std::list<System::PluginLoader<ISceneNodeFormatPlugin> >     ListSceneNodeFormat;

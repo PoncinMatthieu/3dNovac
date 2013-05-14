@@ -24,6 +24,7 @@
 
 -----------------------------------------------------------------------------*/
 
+#include "../Define.h"
 #ifdef SYSTEM_WINDOWS
 #else
     #include <unistd.h>
@@ -32,7 +33,6 @@
     #include <netinet/tcp.h>
     #include <arpa/inet.h>
 #endif
-#include "../Define.h"
 #include "SocketUdp.h"
 #include "../System/Config.h"
 

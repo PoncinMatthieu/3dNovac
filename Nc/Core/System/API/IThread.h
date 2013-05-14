@@ -57,7 +57,7 @@ namespace Nc
                 - Mutex
                 - Locker
         */
-        class LCORE IThread : public Utils::NonCopyable
+        class LIB_NC_CORE IThread : public Utils::NonCopyable
         {
             public:
                 IThread()            {}

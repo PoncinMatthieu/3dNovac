@@ -49,7 +49,10 @@ GameEngine::~GameEngine()
 void    GameEngine::ReleaseContent()
 {
     if (_context != NULL)
+	{
         delete _context;
+		_context = NULL;
+	}
 }
 
 void    GameEngine::CreateContext()

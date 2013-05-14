@@ -220,13 +220,13 @@ void    PlainTextFormater::ComputeDrawables(Vector2f &textSize, GL::DrawableArra
             // Advance to the next character
             X += curCharWidth;
             curWordWidth += curCharWidth;
-            if (width < X)
-                width = X;
             float charHeight = (float)(curGlyph->Size.data[1] + curGlyph->Pos.data[1]) * factor;
             if (Math::Abs(charHeight) > Math::Abs(curHeight))
                 curHeight = charHeight;
             curCharWidth = 0;
         }
+        if (width < X)
+            width = X;
     }
 
     // manage alignment for last line
@@ -442,13 +442,13 @@ void    PlainTextFormater::ManageAlignment(bool &endWord, bool &endLine, float &
             indexLineBegin = indexWordBegin;
             endLine = false;
         }
-        if (wordTooLong == 0)
+        if (!wordTooLong)
         {
             curWordWidth = 0;
             indexWordBegin = noVertice;
         }
     }
 
-    if (wordTooLong != 0)
+    if (wordTooLong)
         endWord = false;
 }

@@ -26,7 +26,7 @@ int main()
 
 	try
 	{
-		Nc::Engine::Manager game("3dNovac.conf");
+		Nc::Engine::Manager game("Nc-Demos.conf");
         Graphic::Window window("FBEffects", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
         Nc::Graphic::SceneNodeFormatManager sceneNodeformatManager;
 

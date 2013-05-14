@@ -39,7 +39,7 @@ namespace Nc
             /**
                 \todo VertexArray doesn't work properly and has been disabled into the GeometryBuffer class.
              */
-            class LGRAPHICS VertexArray : public Object
+            class LIB_NC_GRAPHICS VertexArray : public Object
             {
                 public:
                     VertexArray();

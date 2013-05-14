@@ -75,10 +75,14 @@ MainMenu::MainMenu(Nc::GUI::SceneGraph *gui)
     centralLayout->SetExpandRatio(_widgetDemoWindow, 100);
 
     // create the console at the bottom of the centralLayout
-    _console = new Console("Console", CenterH | Bottom, Vector2i(0,200));
-    _console->Percent(Vector2f(100, 0));
-    _console->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
-    centralLayout->AddChild(_console);
+    WindowBox *consoleWindow = new WindowBox("Console", CenterH | Bottom, Vector2i(0,200));
+    consoleWindow->Percent(Vector2f(100, 0));
+    centralLayout->AddChild(consoleWindow);
+
+    _console = new Console(CenterH | Bottom, Vector2i(0,0));
+    _console->Percent(Vector2f(100, 100));
+    _console->AddEventManager(Nc::Engine::Manager::GetEngine(GameEngine::ClassName()));
+    consoleWindow->AddChild(_console);
 
     // link the logger to the console
     Utils::Logger::Instance().SetLoggingFunction(Write);
@@ -150,14 +154,14 @@ Widget  *MainMenu::CreateSelectDemoWindow(Layout *parent)
 
     _demoComboBox = new ComboBox(_GUI, Left | CenterV, Vector2i(250,0));
     _demoComboBox->MarginRight(5);
-    _demoComboBox->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
+    _demoComboBox->AddEventManager(Nc::Engine::Manager::GetEngine(GameEngine::ClassName()));
     _demoComboBox->Percent(Vector2f(100, 0));
     selectDemoLayout->AddChild(_demoComboBox);
     selectDemoLayout->SetExpandRatio(_demoComboBox, 100);
 
     Button *button = new Button("Start", Center, Vector2i(70, 28), "arial");
     selectDemoLayout->AddChild(button);
-    button->AddEventManager(Engine::Manager::GetEngine(GameEngine::ClassName()));
+    button->AddEventManager(Nc::Engine::Manager::GetEngine(GameEngine::ClassName()));
     return windowSelectDemo;
 }
 
@@ -190,7 +194,7 @@ void    MainMenu::DemoSelected()
         _demoImage->Sprite(NULL);
 
         // create the sprite used for the description of the demo
-        Utils::FileName pictureFile = "Nc:Image:Demos/" + _currentItemSelected->Data() + ".png";
+        Utils::FileName pictureFile = "Nc:Image:Demos/" + _currentItemSelected->Text()->PlainText().ToStdString() + ".png";
         if (pictureFile.IsReadable())
         {
             Sprite *sp = new Sprite(Vector2i(0,0), GL::Texture(pictureFile), 100);
@@ -201,7 +205,7 @@ void    MainMenu::DemoSelected()
             _demoImage->Size(Vector2i(0, 0));
 
         // set the description
-        _descriptionTextArea->PlainText(CONFIG->Block("DemoDescriptions")->Block(_currentItemSelected->Data())->Data());
+        _descriptionTextArea->PlainText(CONFIG->Block("DemoDescriptions")->Block(_currentItemSelected->Text()->PlainText().ToStdString())->Data());
 
         GUI::Visitor::ResizedAll resized;
         resized(*_layoutWinDesc);

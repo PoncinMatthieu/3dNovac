@@ -40,9 +40,9 @@ namespace Nc
             A widget use it's parents widget to calculate it's relative positions.
             And The relative position is computed with the defined Alignment for X position and Y position.
 
-            \todo Think about a whole new event system for the widgets, a widget should be able to send a particular event to a parametized target.
+            \todo Find a workaround on the _absolutePos attribute (store the value to improve performance), we disabled it because we need to recompute it everytime a parent is changed not only when the item itesel changed.
         */
-        class LGUI  Widget : public Graphic::Object
+        class LIB_NC_GUI  Widget : public Graphic::Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Graphic::Object, System::Object, System::Object, Nc::GUI::Widget);
@@ -105,7 +105,7 @@ namespace Nc
                 /** \return the relative position of the widget (including the alignment of the widget and it's padding's parent). */
                 void                    RelativePos(Vector2i &pos) const;
                 /** \return the absolute position of the widget (recursively includes the alignment of the widget and it's padding's parent). */
-                void                    AbsolutePos(Vector2i &pos) const;
+                void                    AbsolutePos(Vector2i &pos);
                 /** Notify a changement of position to the widget. The Repos method will be called at the next render pass. */
                 virtual void            Reposed();
 
@@ -120,6 +120,12 @@ namespace Nc
                 bool                    Focus() const                               {return _focus;}
                 /** Set the generateHandleAtEnterFocus statement. If it's true, the widget will generate an event when the widget will entered in focus. */
                 void                    GenerateHandleAtEnterFocus(bool state);
+                /** Set if the widget accept focus or not. */
+                void                    AcceptFocus(bool state)                     {_acceptFocus = state;}
+                /** \return true if the widget accept to be focused. */
+                bool                    AcceptFocus() const                         {return _acceptFocus;}
+                /** \return true if the childs of the widget should be tested during a focus test even if the widget is not focused. */
+                bool                    AlwaysTestChildFocus() const                {return _alwaysTestChildFocus;}
 
                 /** Set the alignment settings. */
                 inline void                 Alignment(const AlignmentMask &mask)    {_alignment = mask;}
@@ -192,13 +198,16 @@ namespace Nc
                     If \p look is null, the widget will not be decored.
                     \warning the look will be deleted by the widget, a look object should be used with one and only one widget.
                 */
-                void					UseLook(GUI::ILook *look = NULL);
+                void					UseLook(GUI::ILook *look = NULL, bool deletePreviousLook = true);
 
                 /** Remove the given widget. */
                 void                    RemoveWidget(Widget *w);
 
                 /** Add the given event manager to the event handler. */
                 void                    AddEventManager(Engine::EventManager *e)    {_eventHandler.AddEventManager(e);}
+
+                /** Send the given event. */
+                void                    SendEvent(GUI::Event::EventId e);
 
             protected:
                 /** called when the widget gain the focus. */
@@ -264,9 +273,6 @@ namespace Nc
                 /** Repos the widget. Called when the widget or a parent has changed of position. */
                 virtual void            Repos()         {}
 
-                /** Send the given event. */
-                void                    SendEvent(GUI::Event::EventId e);
-
             private:
                 /** Init the widget with the basics information. */
                 void                    Init(const Vector2i &size, const AlignmentMask &alignment);
@@ -287,6 +293,8 @@ namespace Nc
 
                 Widget                  *_childFocused;             ///< The child which has the focus.
                 bool                    _focus;                     ///< Mark if the widget has the focus.
+                bool                    _acceptFocus;               ///< if false, the widget doesn't accept focus and won't be selected during focus test.
+                bool                    _alwaysTestChildFocus;      ///< if true, even if the widget is not focused, the focus test will go through the childs.
 
                 bool                    _inhibit;                   ///< eg: if a button or a parent of the button is set false, the button don't exec the handler.
                 bool                    _stateChanged;              ///< if true, the widget will be update before to be rendered.
@@ -296,7 +304,8 @@ namespace Nc
                 bool                    _resizable;                 ///< if false, the widget will not be resized.
                 Vector2f                _percent;                   ///< if the percent is different of null, then the size will be calculated in function of the parent size (if no parent then use the window size).
 
-                bool                    _useStencil;                ///< if true, use the stencil buffer to be sure that the childs will not be drawn outside of the widget.
+                bool                    _useStencil;                ///< if true, use the stencil buffer to be sure that the childs will not be drawdrawn outside of the widget.
+                bool                    _renderRelativePos;         ///< if true, the widget is rendered using the relative position of it's parent.
 
                 ILook                   *_widgetLook;               ///< look used to render the look of the widget.
 
@@ -305,6 +314,8 @@ namespace Nc
                 BoxEdges                _padding;                   ///< Used to space out widgets, padding correspond of the space inside the widget in which the childs are spaced out. To access the property you should call the methods "PaddingLeft / PaddingRight / PaddingTop / PaddingBottom"
 
                 Engine::Handler         _eventHandler;              ///< manage widget events.
+
+                //Vector2i                _absolutePos;               ///< for performance reason, we store the absolute position of the widget.
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class Visitor::WidgetVisitor;

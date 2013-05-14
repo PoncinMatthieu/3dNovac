@@ -58,6 +58,9 @@ namespace Nc
                 virtual bool            SetIcon(const Utils::FileName &f);
                 virtual void            Resize(unsigned int width, unsigned int height);
 
+				virtual void		    Hide();
+				virtual void		    Show();
+
                 virtual ICursor         *NewCursor();
 
 

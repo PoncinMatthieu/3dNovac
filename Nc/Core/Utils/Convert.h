@@ -49,7 +49,7 @@ namespace Nc
         /**
 			Damn you windows!!!
         */
-		struct LCORE String : public std::string
+		struct LIB_NC_CORE String : public std::string
 		{
 			static const std::size_t npos;
 		};
@@ -57,7 +57,7 @@ namespace Nc
         /**
 			Damn you windows!!!
         */
-		LCORE void Getline(std::ifstream &stream, std::string &line);
+		LIB_NC_CORE void Getline(std::ifstream &stream, std::string &line);
 
 		/// This namespace provide some fonctor class utility.
         namespace Fonctor
@@ -83,7 +83,7 @@ namespace Nc
             /// Convert an std::string to the type T.
             /**
                 Fill the data passed in parameter, and return true if the translation succeed.
-                The \p modifyer function allow to convert for exemple an hexa representation with std::hex.
+                The \p modifyer function allow to convert for example an hexa representation with std::hex.
             */
             template <typename T>
             bool StringTo(const std::string &s, T &dest, std::ios_base &(*modifyer)(std::ios_base &str));
@@ -91,13 +91,19 @@ namespace Nc
             /// Convert a data T to an std::string.
             template <typename T>
             std::string ToString(const T &data);
+            /// Convert a data T to an std::string.
+            /**
+			    The \p modifyer function allow to convert for example to an hexa representation with std::hex.
+            */
+            template <typename T>
+            std::string ToString(const T &data, std::ios_base &(*modifyer)(std::ios_base &str));
 
             /// Convert the first occurence of the \p delimitor to T in \p dest.
             template <typename T>
             bool SplitStringTo(std::string &str, const std::string &delimitor, T &dest);
 
 			/// Return the first occurence of the \p delimitor into the string \p dest.
-			LCORE bool SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest);
+			LIB_NC_CORE bool SplitStringTo(std::string &str, const std::string &delimitor, std::string &dest);
 
             /// Convert the caracters of the string in lower caracters.
             inline void ToLower(std::string &s)     {std::transform(s.begin(), s.end(), s.begin(), Fonctor::ToLower());}

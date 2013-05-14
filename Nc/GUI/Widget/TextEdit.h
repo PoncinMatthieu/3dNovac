@@ -39,7 +39,7 @@ namespace Nc
 
             \todo Make the text edit editable.
         */
-        class LGUI TextEdit : public ScrollArea
+        class LIB_NC_GUI TextEdit : public ScrollArea
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(ScrollArea, System::Object, Nc::GUI::TextEdit);
@@ -76,8 +76,10 @@ namespace Nc
 
                 virtual ISceneNode              *Clone() const          {return new TextEdit(*this);}
 
-                /** Small trick to force the scroll bar to stay at the end of the text. */
+                /** Force the scroll bar to stay at the end of the text. This effect isn't applied once the user moved the scrollbar. */
                 void                            SetToEndOfText();
+                /** Set whether we always scroll to the end of the text or not. */
+                void                            AlwaysSetToEndOfText(bool state)  {_alwaysSetToEndOfText = state;}
 
                 /** \return the text. */
                 const Utils::Unicode::UTF32     &PlainText() const      {return _textDocument->text->PlainText();}
@@ -92,6 +94,8 @@ namespace Nc
 
             private:
                 TextDocument    *_textDocument;     ///< text document used to display the text.
+                bool            _setToEndOfText;
+                bool            _alwaysSetToEndOfText;
         };
     }
 }

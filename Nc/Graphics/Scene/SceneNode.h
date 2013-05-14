@@ -38,7 +38,7 @@ namespace Nc
     namespace Graphic
     {
         /// Interface to define a scene node.
-        class LGRAPHICS ISceneNode : public System::Object
+        class LIB_NC_GRAPHICS ISceneNode : public System::Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(System::Object, System::Object, System::Object, Nc::Graphic::ISceneNode);
@@ -160,7 +160,7 @@ namespace Nc
                 /** \return the good child with the given \p index. */
                 virtual const ISceneNode    *Child(unsigned int i) const    {return NodePolitic::Child(i);}
 
-                friend LGRAPHICS std::ostream& operator << (std::ostream& Out, const AbstractSceneNode<P>& o)
+                friend LIB_NC_GRAPHICS std::ostream& operator << (std::ostream& Out, const AbstractSceneNode<P>& o)
                 {
                     Out << static_cast<const ISceneNode&>(o);
                     return Out;

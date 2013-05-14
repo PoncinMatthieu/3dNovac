@@ -32,16 +32,16 @@
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                      // dynamic
-            #ifdef EXPORT_FILEOBJPLUGIN
-                #define LFILEOBJPLUGIN       __declspec(dllexport)
+            #ifdef NC_EXPORT_PLUGIN_FILEFORMATCOLLADA
+                #define LIB_NC_PLUGIN_FILEFORMATCOLLADA       __declspec(dllexport)
             #else
-                #define LFILEOBJPLUGIN       __declspec(dllimport)
+                #define LIB_NC_PLUGIN_FILEFORMATCOLLADA       __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LFILEOBJPLUGIN
+            #define LIB_NC_PLUGIN_FILEFORMATCOLLADA
         #endif
     #else                                                       // others os (do nothing)
-        #define LFILEOBJPLUGIN
+        #define LIB_NC_PLUGIN_FILEFORMATCOLLADA
     #endif
 
 

@@ -55,7 +55,7 @@ namespace Nc
             \todo the constructor takes the name of the font to retreive/create the font dynamically. Find a better way to create and store fonts.
             \todo implement Justify alignment.
         */
-        class LGRAPHICS PlainTextFormater : public ITextFormater
+        class LIB_NC_GRAPHICS PlainTextFormater : public ITextFormater
         {
             public:
                 /** Define the style of the text. */
@@ -64,7 +64,9 @@ namespace Nc
                     Regular =       0,
                     Bold =          1 << 0,
                     Italic =        1 << 1,
-                    Underlined =    1 << 2
+                    Underlined =    1 << 2,
+                    ///< \todo Add an highligh method and remove the highligh code from GUI::Label
+                    // Highlight = 1 << 3
                 };
 
                 /** Define an alignment method of the text. */

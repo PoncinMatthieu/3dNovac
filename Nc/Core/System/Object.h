@@ -61,7 +61,7 @@ namespace Nc
 		/**
 			The object inherit of Utils::VisitableBase so the object can be visited with a visitor.
 		*/
-        class LCORE  Object : public Utils::VisitableBase<Object>
+        class LIB_NC_CORE  Object : public Utils::VisitableBase<Object>
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Utils::VisitableBase<Object>, Nc::System::Object, Nc::System::Object, Nc::System::Object);
@@ -148,7 +148,7 @@ namespace Nc
                 /** Fill the given string */
                 void                        ToString(std::string &str) const;
 
-                friend LCORE std::ostream	&operator << (std::ostream &oss, const Object &o);
+                friend LIB_NC_CORE std::ostream	&operator << (std::ostream &oss, const Object &o);
 
             protected:
                 std::string         _name;          ///< the name of the object.

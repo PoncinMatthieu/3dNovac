@@ -27,7 +27,7 @@ int main()
 
 	try
 	{
-        Engine::Manager bsplines("3dNovac.conf");
+        Engine::Manager bsplines("Nc-Demos.conf");
         Graphic::Window window("bSpline 2d", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
 
         CreateEngines(bsplines, window);

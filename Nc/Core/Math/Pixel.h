@@ -80,7 +80,7 @@ namespace Nc
                 return *this;
             }
 
-            friend /*LCORE*/ std::ostream& operator << (std::ostream& os, const Pixel& v)
+            friend /*LIB_NC_CORE*/ std::ostream& operator << (std::ostream& os, const Pixel& v)
             {
                 os<< "R = " << (unsigned int)v.r << "\tG = " << (unsigned int)v.g << "\tB = " << (unsigned int)v.b << "\tA = " << (unsigned int)v.a;
                 return os;

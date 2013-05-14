@@ -40,7 +40,7 @@ namespace Nc
     namespace Graphic
     {
         /// Interface used to define a default material for vertex types.
-        class LGRAPHICS IDefaultMaterial : public IMaterial
+        class LIB_NC_GRAPHICS IDefaultMaterial : public IMaterial
         {
             public:
                 IDefaultMaterial(const std::string &name)

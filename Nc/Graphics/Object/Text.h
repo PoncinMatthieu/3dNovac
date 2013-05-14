@@ -44,7 +44,7 @@ namespace Nc
                 - Core::ITextFormater.
                 - Core::PlainTextFormater.
         */
-        class LGRAPHICS   Text : public Object
+        class LIB_NC_GRAPHICS   Text : public Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::Object, System::Object, Nc::Graphic::Text);

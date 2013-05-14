@@ -37,7 +37,7 @@ namespace Nc
     namespace Graphic
     {
         /// Load font files (.ttf) with the FreeType Librairy.
-        class LGRAPHICS FontLoaderFreeType : public FontLoader
+        class LIB_NC_GRAPHICS FontLoaderFreeType : public FontLoader
         {
             public:
                 FontLoaderFreeType();

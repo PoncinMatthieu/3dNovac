@@ -45,7 +45,7 @@ namespace Nc
 
                 The drawable class is typically here to simplify the manipulation of the MaterialConfig and IGeometryBuffer with the materials.
             */
-            struct LGRAPHICS Drawable
+            struct LIB_NC_GRAPHICS Drawable
             {
                 // constructs
                 Drawable(IGeometryBuffer *geometry);

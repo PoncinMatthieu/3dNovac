@@ -39,7 +39,7 @@ namespace Nc
                 - WindowInput
                 - SubWindow
         */
-        class LGRAPHICS SubWindowInput : public WindowInput
+        class LIB_NC_GRAPHICS SubWindowInput : public WindowInput
         {
             public:
                 SubWindowInput(IWindow *win, WindowInput *parent);

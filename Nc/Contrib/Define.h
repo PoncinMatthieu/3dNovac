@@ -32,16 +32,16 @@
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                      // dynamic
-            #ifdef EXPORT_CONTRIB
-                #define LCONTRIB    __declspec(dllexport)
+            #ifdef NC_EXPORT_CONTRIB
+                #define LIB_NC_CONTRIB    __declspec(dllexport)
             #else
-                #define LCONTRIB    __declspec(dllimport)
+                #define LIB_NC_CONTRIB    __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LCONTRIB
+            #define LIB_NC_CONTRIB
         #endif
     #else                                                       // others os (do nothing)
-        #define LCONTRIB            ///< Linking option of Nc-Contrib module
+        #define LIB_NC_CONTRIB            ///< Linking option of Nc-Contrib module
     #endif
 
 #endif // NC_CONTRIB_DEFINE_H_

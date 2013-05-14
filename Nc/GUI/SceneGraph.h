@@ -37,7 +37,7 @@ namespace Nc
     namespace GUI
     {
         /// Manage a 2d scene graph with the management of the interaction of widgets and reception of events.
-        class LGUI  SceneGraph : public Graphic::SceneGraph
+        class LIB_NC_GUI  SceneGraph : public Graphic::SceneGraph
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Graphic::SceneGraph, Nc::System::Object, Nc::GUI::SceneGraph);

@@ -43,7 +43,7 @@ namespace Nc
                 The parameter 'path' allow to setup the path of the image and every inline object 'Sprite' define a sprite with it's name and box.
                 The Sprite box can then be retreive with the method 'SpriteBox'.
         */
-        class LGRAPHICS SpriteSheet
+        class LIB_NC_GRAPHICS SpriteSheet
         {
             public:
                 typedef std::map<std::string, Box2i>    SpriteMap;

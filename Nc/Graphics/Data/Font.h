@@ -49,7 +49,7 @@ namespace Nc
             Store the font in a bitmap GL::Texture with a map of Glyphs connected to their values in UTF-32 unicode.
             Use the FontLoaderFreeType to load the ".ttf" font files.
         */
-        class LGRAPHICS Font
+        class LIB_NC_GRAPHICS Font
         {
             private:
                 typedef std::map<UInt32, Glyph>     MapGlyph;   ///< the map of glyph.

@@ -107,6 +107,7 @@ namespace Nc
             template<typename T>
             void VertexBuffer<T>::Init()
             {
+				CALLSTACK_INFO();
                 DataBuffer<T>::Init(Enum::DataBuffer::ArrayBuffer);
                 _needUpdate = true;
             }
@@ -114,6 +115,7 @@ namespace Nc
             template<typename T>
             void VertexBuffer<T>::Init(unsigned int size, Enum::DataBuffer::Usage usage)
             {
+				CALLSTACK_INFO();
                 DataBuffer<T>::Init(Enum::DataBuffer::ArrayBuffer, size, 0, usage, (T*)NULL);
                 _needUpdate = true;
             }
@@ -122,6 +124,7 @@ namespace Nc
             template<unsigned int D>
             void VertexBuffer<T>::UpdateData(const Array<T,D> &tabVertices, Enum::DataBuffer::Usage usage)
             {
+				CALLSTACK_INFO();
                 if (!DataBuffer<T>::IsValid())
                     DataBuffer<T>::Init(Enum::DataBuffer::ArrayBuffer, tabVertices.Size(), 0, usage, (T*)tabVertices.data);
                 else
@@ -139,6 +142,7 @@ namespace Nc
             template<typename T>
             void    VertexBuffer<T>::UpdateData(const T *aDataTab)
             {
+				CALLSTACK_INFO();
                 DataBuffer<T>::Enable();
                 DataBuffer<T>::UpdateData(aDataTab);
                 DataBuffer<T>::Disable();
@@ -148,6 +152,7 @@ namespace Nc
             template<typename T>
             void    VertexBuffer<T>::Map()
             {
+				CALLSTACK_INFO();
                 #define BUFFER_OFFSET(n) ((char*)NULL + (n))
 
                 // enable client states and set pointer, Draw, and then disable the client states
@@ -158,7 +163,8 @@ namespace Nc
                     {
                         glEnableVertexAttribArray(desc.IndexAttrib);
                         glVertexAttribPointer(desc.IndexAttrib, desc.Size, desc.Type, desc.Normalized, sizeof(T), BUFFER_OFFSET(desc.PointerOffset));
-                    }
+						NC_GRAPHIC_GL_CHECK_ERROR();
+					}
                 }
                 _needUpdate = false;
 
@@ -168,19 +174,25 @@ namespace Nc
             template<typename T>
             void    VertexBuffer<T>::Unmap()
             {
+				CALLSTACK_INFO();
                 for (unsigned short i = 0; i < Descriptor.Size(); ++i)
                 {
                     DataVertexDescriptor &desc = Descriptor[i];
                     if (desc.IndexAttrib >= 0)
+					{
                         glDisableVertexAttribArray(desc.IndexAttrib);
+						NC_GRAPHIC_GL_CHECK_ERROR();
+					}
                 }
             }
 
             template<typename T>
             void    VertexBuffer<T>::Draw(Enum::PrimitiveType type)
             {
+				CALLSTACK_INFO();
                 glDrawArrays(type, 0, DataBuffer<T>::_size);
-            }
+				NC_GRAPHIC_GL_CHECK_ERROR();
+			}
         }
     }
 }

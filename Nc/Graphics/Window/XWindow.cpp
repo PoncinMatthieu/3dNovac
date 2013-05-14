@@ -125,10 +125,13 @@ void Graphic::Window::Create(const std::string &title, const Vector2ui &size, co
     // initialize the inputs of the window
     _input->Create();
 
-    // Map the window to the screen, and wait for it to appear
-    XMapWindow(_display, _xwin);
-    XEvent event;
-    XIfEvent(_display, &event, WaitForNotify, (XPointer)_xwin);
+    if (!_style.Enabled(Hidden)) // if the window is not hidden.
+    {
+        // Map the window to the screen, and wait for it to appear
+        XMapWindow(_display, _xwin);
+        XEvent event;
+        XIfEvent(_display, &event, WaitForNotify, (XPointer)_xwin);
+    }
     XFlush(_display);
 
     if (fullscreen)
@@ -473,5 +476,19 @@ void Graphic::Window::Resize(unsigned int width, unsigned int height)
 ICursor *Graphic::Window::NewCursor()
 {
     return new Cursor(this);
+}
+
+void    Graphic::Window::Hide()
+{
+    XUnmapWindow(_display, _xwin);
+    XFlush(_display);
+    _style.Enable(Hidden);
+}
+
+void    Graphic::Window::Show()
+{
+    XMapWindow(_display, _xwin);
+    XFlush(_display);
+    _style.Disable(Hidden);
 }
 

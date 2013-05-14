@@ -89,7 +89,7 @@ namespace Nc
                 void                        Transform(const TMatrix &m);
 
                 /** Print the Min and Max vector of the box. */
-                friend /*LCORE*/ std::ostream &operator << (std::ostream &os, const Box<T,D> &V)
+                friend /*LIB_NC_CORE*/ std::ostream &operator << (std::ostream &os, const Box<T,D> &V)
                 {
                     os << "Min: " << V._min << std::endl;
                     os << "Max: " << V._max << std::endl;

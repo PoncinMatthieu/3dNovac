@@ -45,7 +45,7 @@ namespace Nc
                 - ImageLoader
                 - ImageLoaderPng
         */
-        class LGRAPHICS  Image
+        class LIB_NC_GRAPHICS  Image
         {
             public:
                 Image();

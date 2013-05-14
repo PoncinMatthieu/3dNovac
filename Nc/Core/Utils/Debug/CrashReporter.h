@@ -37,7 +37,7 @@ namespace Nc
         /**
             You can redefine your own crash reporter if needed.
         */
-        class CrashReporter : public Singleton<CrashReporter>, NonCopyable
+        class LIB_NC_CORE CrashReporter : public Singleton<CrashReporter>, NonCopyable
         {
             public:
                 /**
@@ -66,7 +66,7 @@ namespace Nc
                 static void     Terminate();
 
             protected:
-                friend /*LCORE*/ class Singleton<CrashReporter>; // pour avoir acces a l'instance du singleton
+                friend /*LIB_NC_CORE*/ class Singleton<CrashReporter>; // pour avoir acces a l'instance du singleton
         };
 
         // explicit instanciation

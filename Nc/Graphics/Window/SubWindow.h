@@ -50,7 +50,7 @@ namespace Nc
             \todo Generate Entered/Left mouse event.
             \todo Change the cursor at Entered/Left mouse event.
         */
-        class LGRAPHICS SubWindow : public IWindow
+        class LIB_NC_GRAPHICS SubWindow : public IWindow
         {
             public:
                 SubWindow(IWindow *parent, SceneGraphManager *sceneGraphManager = NULL);
@@ -76,6 +76,11 @@ namespace Nc
                 void                Pos(const Vector2i &pos)                            {_pos = pos;}
                 /** \return the postion of the subwindow into the parent. */
                 const Vector2i      &Pos() const                                        {return _pos;}
+
+				/** Hide the window. */
+				virtual void		Hide();
+				/** Show the window. */
+				virtual void		Show();
 
                 /** \return true and do nothing. SubWindows don't have icon support. */
                 virtual bool        SetIcon(const Utils::FileName &)                    {return true;}

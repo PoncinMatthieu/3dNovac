@@ -27,7 +27,7 @@ int main()
 
     try
 	{
-        Engine::Manager demo("3dNovac.conf");
+        Engine::Manager demo("Nc-Demos.conf");
         Graphic::Window window("Frustum Demo", winSize, style, "Nc:Image:logo/logoNcTransparent.png", 3);
         Graphic::SceneNodeFormatManager sceneNodeformatManager;
 

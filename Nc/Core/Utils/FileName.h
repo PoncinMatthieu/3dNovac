@@ -46,7 +46,7 @@ namespace Nc
 			\sa
 				- System::Config
         */
-        class LCORE FileName : public std::string
+        class LIB_NC_CORE FileName : public std::string
         {
             public:
                 FileName()  {};
@@ -57,7 +57,7 @@ namespace Nc
                 FileName &operator = (const char *path);
 
                 /** Print the filename. */
-                friend LCORE std::ostream& operator << (std::ostream& os, const FileName& f);
+                friend LIB_NC_CORE std::ostream& operator << (std::ostream& os, const FileName& f);
 
             //Accesseurs
             // partie du nom

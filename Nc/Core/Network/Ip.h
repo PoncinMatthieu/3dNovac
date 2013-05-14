@@ -43,7 +43,7 @@ namespace Nc
         /**
             Allows to manipulate IP v4 addresses.
         */
-        class LCORE Ip
+        class LIB_NC_CORE Ip
         {
             public:
                 Ip();

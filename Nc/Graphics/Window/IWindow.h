@@ -47,8 +47,8 @@ namespace Nc
             The IWindow taked all the parameters needed to create a window in it's constructor, however, the window will be created only at the call of the method 'Create'.
             The IWindow takes also a SceneGraphManager in it's constructor, however if you gives a null pointer, the window will create a new instance of SceneGraphManager.
             This allow you to define your own scene manager. But be carefull, The scene manager will be deleted in the destructor of the window.
-        */
-        class LGRAPHICS IWindow : public Utils::NonCopyable
+		*/
+        class LIB_NC_GRAPHICS IWindow : public Utils::NonCopyable
         {
             public:
                 enum Style
@@ -56,8 +56,9 @@ namespace Nc
                     Resizeable  =   1 << 0,         ///< set the window resizable.
                     Fullscreen  =   1 << 1,         ///< fullscreen mode.
                     Titlebar    =   1 << 2,         ///< show the Titlebar.
-                    Closeable   =   1 << 3          ///< set the window closable.
-                };
+                    Closeable   =   1 << 3,         ///< set the window closable.
+					Hidden		=	1 << 4			///< the window will be hidden. (can be usefull if you want to resize it after it's creation)
+				};
 
                 typedef std::list<SubWindow*>       ListSubWindow;
 
@@ -94,6 +95,11 @@ namespace Nc
                 /** \return true if the window can be rendered. */
                 inline bool			Enabled() const						{return _isEnable;}
 
+				/** Hide the window. */
+				virtual void		Hide() = 0;
+				/** Show the window. */
+				virtual void		Show() = 0;
+
                 /** Render the scenes by using the given GLContext through the scene graph manager. */
                 virtual void        Render(GLContext *context);
 
@@ -101,7 +107,7 @@ namespace Nc
                 /** Set an Icon to the window with the given image filename. */
                 virtual bool                    SetIcon(const Utils::FileName &f) = 0;
 
-                /** Resize the window. */
+                /** Resize the window using the given size. */
                 virtual void                    Resize(unsigned int width, unsigned int height) = 0;
                 /** Notify a resize of the window. */
                 virtual void                    Resized()               {}
@@ -112,8 +118,8 @@ namespace Nc
                 /** \return the height of the window. */
                 inline unsigned int		        Height() const          {return _height;}
 
-                /** Set the window size. */
-                inline void                     ResetSize(unsigned int width, unsigned int height)      {_width = width; _height = height;}
+                // /** Set the window size. */
+                //inline void                     ResetSize(unsigned int width, unsigned int height)      {_width = width; _height = height;}
 
                 /** \return the OpenGL context associated. */
                 inline GLContext                *Context()              {return _context;}

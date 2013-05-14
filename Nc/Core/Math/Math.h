@@ -49,8 +49,8 @@ namespace Nc
     namespace Math
     {
         // Calculs 3d
-        Vector3f LCORE  Normal(const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, bool normalize = true);
-        void     LCORE  Normalize(float p[3]);
+        Vector3f LIB_NC_CORE  Normal(const Vector3f &p1, const Vector3f &p2, const Vector3f &p3, bool normalize = true);
+        void     LIB_NC_CORE  Normalize(float p[3]);
 
         /** Init the rand to call srand() function. */
         inline void     InitRand()                          {srand((unsigned int)time(0));}

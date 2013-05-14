@@ -48,6 +48,8 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
     _childFocused = NULL;
     _inhibit = false;
     _focus = false;
+    _acceptFocus = true;
+    _alwaysTestChildFocus = false;
     _generateHandleAtEnterFocus = false;
     _resizable = true;
     _size = size;
@@ -57,6 +59,7 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
     _padding.Init(0, 0, 0, 0);
     _widgetLook = NULL;
     _owner = NULL;
+    _renderRelativePos = true;
 
     _reposed = true;
     _resized = true;
@@ -88,6 +91,8 @@ void Widget::Copy(const Widget &w)
     _inhibit = w._inhibit;
     _resizable = w._resizable;
     _focus = w._focus;
+    _acceptFocus = w._acceptFocus;
+    _alwaysTestChildFocus = w._alwaysTestChildFocus;
     _size = w._size;
     _pos = w._pos;
     _alignment = w._alignment;
@@ -97,6 +102,7 @@ void Widget::Copy(const Widget &w)
     _percent = w._percent;
     _useStencil = w._useStencil;
     _eventHandler = w._eventHandler;
+    _renderRelativePos = w._renderRelativePos;
 
 	if (_widgetLook)
         delete _widgetLook;
@@ -129,6 +135,11 @@ bool    Widget::InhibitedRecursif() const
 
 void Widget::UpdateState()
 {
+    // Compute the absolute pos, so we don't have to compute it afterwards.
+    // improve performance if the widget need the absolute pos (stencil test needs it) and the state of the widget doesn't change every frame which is unlikely.
+    Vector2i    apos;
+    AbsolutePos(apos);
+
     if (_widgetLook)
         _widgetLook->Update(_size);
 }
@@ -174,10 +185,17 @@ void Widget::RenderBegin(Graphic::SceneGraph *scene)
     CheckState();
 
     // definit la position en fonction des corners
-    Vector2i reelPos;
-    RelativePos(reelPos);
     scene->PushModelMatrix();
-    scene->ModelMatrix().AddTranslation(reelPos.data[0], reelPos.data[1], 0.f); // translation sur la position relative au Corner
+    if (_renderRelativePos)
+    {
+        Vector2i reelPos;
+        RelativePos(reelPos);
+        scene->ModelMatrix().AddTranslation(reelPos.data[0], reelPos.data[1], 0.f); // translation sur la position relative au Corner
+    }
+    else
+    {
+        scene->ModelMatrix().AddTranslation(_pos.data[0], _pos.data[1], 0.f); // translation sur la position du widget
+    }
 }
 
 void Widget::RenderEnd(Graphic::SceneGraph *scene)
@@ -187,12 +205,10 @@ void Widget::RenderEnd(Graphic::SceneGraph *scene)
     if (repere == NULL)
     {
         repere = Graphic::BasicMeshCreator::Axis(1);
-        repere->Drawables()[0]->Config->RasterMode().SetLineWidth(2);
+        repere->Drawables()[0]->Config->GetRasterMode().SetLineWidth(2);
     }
-    Vector2i reelSize;
-    GetReelSize(reelSize);
     TMatrix m;
-    m.Scale(reelSize.data[0], reelSize.data[1], 0);
+    m.Scale(_size[0], _size[1], 0);
     scene->ModelMatrix() *= m;
     repere->RenderNode(scene);
     #endif
@@ -213,6 +229,11 @@ bool Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
         pos[1] += PaddingBottom();
         size[0] -= PaddingH();
         size[1] -= PaddingV();
+
+        if (size[0] < 0)
+            size[0] = 0;
+        if (size[1] < 0)
+            size[1] = 0;
 
         scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
     }
@@ -360,20 +381,32 @@ void    Widget::RelativePos(Vector2i &relativePos) const
     relativePos += parentTranslate;
 }
 
-void    Widget::AbsolutePos(Vector2i &absolutePos) const
+void    Widget::AbsolutePos(Vector2i &absolutePos)
 {
-    // get back the first parent
-    Visitor::GetParentWidget v(this);
-    v(*this);
-    if (v.parent != NULL)
-        v.parent->AbsolutePos(absolutePos);
-    Vector2i relativePos;
-    RelativePos(relativePos);
-    absolutePos += relativePos;
+    // compute the absolute pos only if the state changed
+    //if (_stateChanged)
+    {
+        // get back the first parent
+        Visitor::GetParentWidget v(this);
+        if (_owner != NULL)
+            v.parent = _owner;
+        else
+            v(*this);
+        if (v.parent != NULL)
+            const_cast<Widget*>(v.parent)->AbsolutePos(absolutePos);
+        Vector2i relativePos;
+        RelativePos(relativePos);
+        absolutePos += relativePos;
+        //_absolutePos = absolutePos; // store the result
+    }
+    //else
+    //    absolutePos = _absolutePos;
 }
 
 void Widget::Focus(bool state)
 {
+    if (!AcceptFocus())
+        return;
     if (_focus != state)
     {
         _focus = state;
@@ -433,6 +466,15 @@ void Widget::Percent(const Vector2f &percent)
 
 void Widget::Resized()
 {
+    // resize parents
+    Visitor::GetParentWidget v(this);
+    if (_owner != NULL)
+        v.parent = _owner;
+    else
+        v(*this);
+    if (v.parent != NULL)
+        const_cast<Nc::GUI::Widget*>(v.parent)->Resized();
+
     _resized = true;
     _stateChanged = true;
 }
@@ -444,9 +486,9 @@ void    Widget::RemoveWidget(Widget *w)
     RemoveChild(w);
 }
 
-void    Widget::UseLook(GUI::ILook *look)
+void    Widget::UseLook(GUI::ILook *look, bool deletePreviousLook)
 {
-    if (_widgetLook)
+    if (deletePreviousLook && _widgetLook)
         delete _widgetLook;
     _widgetLook = look;
 }

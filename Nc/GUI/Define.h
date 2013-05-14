@@ -32,22 +32,21 @@
 #ifndef NC_GUI_DEFINE_H_
 #define NC_GUI_DEFINE_H_
 
-    #include <Nc/Define.h>
     #include <Nc/Graphics/Graphics.h>
 
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                     // dynamic
-            #ifdef EXPORT_GUI
-                #define LGUI     __declspec(dllexport)
+            #ifdef NC_EXPORT_GUI
+                #define LIB_NC_GUI     __declspec(dllexport)
             #else
-                #define LGUI     __declspec(dllimport)
+                #define LIB_NC_GUI     __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LGUI
+            #define LIB_NC_GUI
         #endif
     #else                                                       // othes os (do nothing)
-        #define LGUI
+        #define LIB_NC_GUI
     #endif
 
 // includes interne
@@ -68,9 +67,13 @@
             struct ILook;
 
             class Widget;
+            class Item;
+            class TreeWidget;
 
             // typedef
             typedef std::list<Widget*>      ListPWidget;
+            typedef std::list<Item*>        ListPItem;
+            //typedef Graph::Node<Item*>      ItemNode;
 
             /// Define a set of visitor aiming to visit widget.
             namespace Visitor

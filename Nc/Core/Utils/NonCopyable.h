@@ -34,7 +34,7 @@ namespace Nc
     namespace Utils
     {
         /// Innerite of this class to forbide the copy.
-        class LCORE NonCopyable
+        class LIB_NC_CORE NonCopyable
         {
             public:
                 ~NonCopyable() {}

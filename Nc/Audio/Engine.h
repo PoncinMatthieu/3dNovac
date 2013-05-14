@@ -43,7 +43,7 @@ namespace Nc
             But there is not limit for sounds. And the Audio engine use the sfml-audio librairy to play audio.  <br\>
             Nb: A Sounds is not encoded and a Music is
         */
-        class LAUDIO Engine : public Nc::Engine::IEngine
+        class LIB_NC_AUDIO Engine : public Nc::Engine::IEngine
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT(Nc::Engine::IEngine, Nc::Audio::Engine);

@@ -91,9 +91,9 @@ void    LineEdit::UpdateState()
         formater->SetCharSize(charSize);
         formaterUnderscore->SetCharSize(charSize);
     }
-    _font->Matrix.Translation(PaddingLeft(), (_size.data[1] / 2.f) - (_font->Size().data[1] / 2.f), 0);
+    _font->Matrix.Translation(PaddingLeft(), (_size.data[1] / 2.f) - (_fontUnderscore->Size().data[1] / 2.f), 0);
 
-    _fontUnderscore->Matrix.Translation(PaddingLeft() + _font->Size()[0], (_size.data[1] / 2.f) - (_font->Size().data[1] / 2.f), 0);
+    _fontUnderscore->Matrix.Translation(PaddingLeft() + _font->Size()[0], (_size.data[1] / 2.f) - (_fontUnderscore->Size().data[1] / 2.f), 0);
 }
 
 void LineEdit::Draw(Graphic::SceneGraph *scene)
@@ -139,11 +139,12 @@ void LineEdit::KeyboardEvent(const System::Event &event)
             PlainTextFormater *formater = static_cast<PlainTextFormater*>(_font->Formater());
             float charSize = formater->GetCharSize(event.text.unicode).data[0];
             if ((event.text.unicode != '\0' && charSize != 0 && _font->Size().data[0] + charSize < _size.data[0]) ||
-                event.text.unicode == ' ' || event.text.unicode == '\t')
+                (charSize == 0 && (event.text.unicode == ' ' || event.text.unicode == '\t')) && _font->Size().data[0] + formater->GetCharSize() < _size.data[0])
             {
                 Utils::Unicode::UTF32 s = _font->PlainText();
                 s += event.text.unicode;
                 _font->PlainText(s);
+                SendEvent(Event::TextEntered);
             }
         }
         _stateChanged = true;

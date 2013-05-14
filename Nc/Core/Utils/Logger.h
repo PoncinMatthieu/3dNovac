@@ -62,7 +62,7 @@ namespace Nc
 
             The Logger is thread safe.
         */
-        class LCORE Logger : public Singleton<Logger>, NonCopyable
+        class LIB_NC_CORE Logger : public Singleton<Logger>, NonCopyable
         {
             public:
                 /** Prototype a function pointer to have a logging function. */
@@ -125,7 +125,7 @@ namespace Nc
                     By default, write the msg, and flush the buffer if `flush` == true.
                     And call the CheckFile method to open the file, if it's not open.
                 */
-                virtual void Write(const std::string msg, bool flush);
+                virtual void Write(const std::string &msg, bool flush);
 
                 /** Open the file, if it isn't already yet. */
                 virtual void CheckFile();
@@ -136,7 +136,7 @@ namespace Nc
                 FileName		_filename;
                 static int		_status;		// status d'ecriture du logger (default = 0; error = 1; debug = 2)
 
-                friend /*LCORE*/ class Singleton<Logger>; // pour avoir acces a l'instance du singleton
+                friend /*LIB_NC_CORE*/ class Singleton<Logger>; // pour avoir acces a l'instance du singleton
         };
 
         template<class T>

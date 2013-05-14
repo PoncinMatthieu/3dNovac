@@ -109,8 +109,7 @@ namespace Nc
                     if an instance is already set, the instance will be deleted.
                     \warning Be aware that the instance will be delete by the class if the method "DeleteInstance" is call.
                 */
-                template<class I>
-                static void SetInstance(I *instance)
+                static void SetInstance(T *instance)
                 {
                     DeleteInstance();
                     System::Locker l(&_mutex);
@@ -129,7 +128,7 @@ namespace Nc
         T               *Singleton<T>::_instance = NULL;
 
         template<typename T>
-        System::Mutex   Singleton<T>::_mutex;
+        System::Mutex	Singleton<T>::_mutex;
     }
 }
 
