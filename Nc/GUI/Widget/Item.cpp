@@ -34,7 +34,6 @@ Item::Item(const Utils::Unicode::UTF32 &label, float fontSize, const Color &font
     : Label(label, fontSize, fontColor, Left | Top, Vector2i(0,0), fontName, fontStyle), _selected(false)
 {
     PaddingV(5);
-    _renderRelativePos = false;
 }
 
 Item::~Item()

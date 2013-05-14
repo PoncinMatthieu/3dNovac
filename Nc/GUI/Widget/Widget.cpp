@@ -133,6 +133,11 @@ bool    Widget::InhibitedRecursif() const
 
 void Widget::UpdateState()
 {
+    // Compute the absolute pos, so we don't have to compute it afterwards.
+    // improve performance if the widget need the absolute pos (stencil test needs it) and the state of the widget doesn't change every frame which is unlikely.
+    Vector2i    apos;
+    AbsolutePos(apos);
+
     if (_widgetLook)
         _widgetLook->Update(_size);
 }
@@ -198,12 +203,10 @@ void Widget::RenderEnd(Graphic::SceneGraph *scene)
     if (repere == NULL)
     {
         repere = Graphic::BasicMeshCreator::Axis(1);
-        repere->Drawables()[0]->Config->RasterMode().SetLineWidth(2);
+        repere->Drawables()[0]->Config->GetRasterMode().SetLineWidth(2);
     }
-    Vector2i reelSize;
-    GetReelSize(reelSize);
     TMatrix m;
-    m.Scale(reelSize.data[0], reelSize.data[1], 0);
+    m.Scale(_size[0], _size[1], 0);
     scene->ModelMatrix() *= m;
     repere->RenderNode(scene);
     #endif
@@ -376,16 +379,28 @@ void    Widget::RelativePos(Vector2i &relativePos) const
     relativePos += parentTranslate;
 }
 
-void    Widget::AbsolutePos(Vector2i &absolutePos) const
+void    Widget::AbsolutePos(Vector2i &absolutePos)
 {
-    // get back the first parent
-    Visitor::GetParentWidget v(this);
-    v(*this);
-    if (v.parent != NULL)
-        v.parent->AbsolutePos(absolutePos);
-    Vector2i relativePos;
-    RelativePos(relativePos);
-    absolutePos += relativePos;
+    // compute the absolute pos only if the state changed
+    if (_stateChanged)
+    {
+        //std::cout << "AbsolutePos: " << *this << std::endl;
+
+        // get back the first parent
+        Visitor::GetParentWidget v(this);
+        if (_owner != NULL)
+            v.parent = _owner;
+        else
+            v(*this);
+        if (v.parent != NULL)
+            const_cast<Widget*>(v.parent)->AbsolutePos(absolutePos);
+        Vector2i relativePos;
+        RelativePos(relativePos);
+        absolutePos += relativePos;
+        _absolutePos = absolutePos; // store the result
+    }
+    else
+        absolutePos = _absolutePos;
 }
 
 void Widget::Focus(bool state)

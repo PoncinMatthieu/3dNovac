@@ -105,7 +105,7 @@ namespace Nc
                 /** \return the relative position of the widget (including the alignment of the widget and it's padding's parent). */
                 void                    RelativePos(Vector2i &pos) const;
                 /** \return the absolute position of the widget (recursively includes the alignment of the widget and it's padding's parent). */
-                void                    AbsolutePos(Vector2i &pos) const;
+                void                    AbsolutePos(Vector2i &pos);
                 /** Notify a changement of position to the widget. The Repos method will be called at the next render pass. */
                 virtual void            Reposed();
 
@@ -311,6 +311,8 @@ namespace Nc
                 BoxEdges                _padding;                   ///< Used to space out widgets, padding correspond of the space inside the widget in which the childs are spaced out. To access the property you should call the methods "PaddingLeft / PaddingRight / PaddingTop / PaddingBottom"
 
                 Engine::Handler         _eventHandler;              ///< manage widget events.
+
+                Vector2i                _absolutePos;               ///< for performance reason, we store the absolute position of the widget.
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class Visitor::WidgetVisitor;

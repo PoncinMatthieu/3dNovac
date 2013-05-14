@@ -114,38 +114,6 @@ TreeWidget::TreeView::~TreeView()
 {
 }
 
-struct ComputeTotalViewSizeVisitor : public GUI::Visitor::WidgetVisitor<ComputeTotalViewSizeVisitor>
-{
-    ComputeTotalViewSizeVisitor(TreeWidget::TreeView *tv)
-        : GUI::Visitor::WidgetVisitor<ComputeTotalViewSizeVisitor>(  Utils::Metaprog::Seq<Item>::Type(),
-                                                                Utils::Metaprog::Seq<Widget>::Type(), Graph::VisitChilds, true, true),
-            treeView(tv)
-    {
-    }
-
-    void VisitNode(Widget &w)
-    {
-    }
-
-    void VisitNode(Item &n)
-    {
-        Vector2f    size = n.Size();
-        int         depth = (n.Depth() - 1) * 10;
-
-        size[0] += depth;
-        //size[1] += n.PaddingTop() + n.PaddingBottom();
-
-        if (totalSize[0] < size[0])
-            totalSize[0] = size[0];
-        totalSize[1] += size[1];
-
-        n.Pos(Vector2i(depth, -(totalSize[1])));
-    }
-
-    Vector2i                totalSize;
-    TreeWidget::TreeView    *treeView;
-};
-
 void    TreeWidget::TreeView::Resize()
 {
     CALLSTACK_INFO()
@@ -153,18 +121,29 @@ void    TreeWidget::TreeView::Resize()
 
     bool resized = false;
 
-    // compute the size
-    ComputeTotalViewSizeVisitor v(this);
-    v(*this);
-
-    if (_size[0] != v.totalSize[0] + PaddingH())
+    // compute total size and positions of every item using a recursive method
+    Vector2i    totalSize;
+    for (NodePolitic::ContainerType::iterator it = _childs.begin(); it != _childs.end(); ++it)
     {
-        _size[0] = v.totalSize[0] + PaddingH();
+        TreeItem *item = dynamic_cast<TreeItem*>(*it);
+        if (item != NULL)
+        {
+            item->Pos(Vector2i(0, totalSize[1]));
+            Vector2i size = item->ComputeSizePosRecursif(0);
+            if (totalSize[0] < size[0])
+                totalSize[0] = size[0];
+            totalSize[1] += size[1];
+        }
+    }
+
+    if (_size[0] != totalSize[0] + PaddingH())
+    {
+        _size[0] = totalSize[0] + PaddingH();
         resized = true;
     }
-    if (_size[1] != v.totalSize[1] + PaddingV())
+    if (_size[1] != totalSize[1] + PaddingV())
     {
-        _size[1] = v.totalSize[1] + PaddingV();
+        _size[1] = totalSize[1] + PaddingV();
         resized = true;
     }
 
@@ -172,59 +151,14 @@ void    TreeWidget::TreeView::Resize()
         _widget->Resize();
 }
 
-void    TreeWidget::TreeView::UpdateState()
-{
-    Widget::UpdateState();
-}
-
-// visitor used to go through every item and render them
-struct DrawItemsVisitor : public GUI::Visitor::WidgetVisitor<DrawItemsVisitor>
-{
-    DrawItemsVisitor(Graphic::SceneGraph *s)
-        :   GUI::Visitor::WidgetVisitor<DrawItemsVisitor>( Utils::Metaprog::Seq<Item>::Type(),
-                                                           Utils::Metaprog::Seq<Widget>::Type(),
-                                                           Graph::VisitChilds, true, true),
-            scene(s)
-    {
-    }
-
-    void VisitNode(Widget &w)
-    {
-    }
-
-    void VisitNode(Item &n)
-    {
-        n.RenderNode(scene);
-    }
-
-    Graphic::SceneGraph *scene;
-};
-
-void    TreeWidget::TreeView::Draw(Graphic::SceneGraph *scene)
-{
-    Widget::Draw(scene);
-
-    Vector2i pos;
-    pos.data[0] = PaddingLeft();
-    pos.data[1] = _size.data[1] - PaddingTop();
-
-    scene->PushModelMatrix();
-    scene->ModelMatrix().AddTranslation(pos.data[0], pos.data[1], 0.f); // translation sur la position relative au Corner
-
-    DrawItemsVisitor v(scene);
-    v(*this);
-
-    scene->PopModelMatrix();
-}
-
 // visitor used to go through every item and select them
 struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisitor>
 {
-    SelectItemsVisitor(const System::Event &e, int p)
+    SelectItemsVisitor(const System::Event &e)
         :   GUI::Visitor::WidgetVisitor<SelectItemsVisitor>(Utils::Metaprog::Seq<Item>::Type(),
                                                             Utils::Metaprog::Seq<Widget>::Type(),
                                                             Graph::VisitChilds, true, true),
-            event(e), pos(p), selectedItem(NULL)
+            event(e), selectedItem(NULL)
     {
     }
 
@@ -241,8 +175,12 @@ struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisito
 
         // test if the mouse is on the item
         int mousePos = static_cast<Graphic::WindowInput*>(event.emitter)->MousePositionInGLCoord()[1];
-        int top = pos + n.Pos()[1] + n.Size()[1];
-        int bot = pos + n.Pos()[1];
+
+        Vector2i    apos;
+        n.AbsolutePos(apos);
+
+        int top = apos[1] + n.Size()[1];
+        int bot = apos[1];
 
         if (mousePos < top && mousePos > bot)
         {
@@ -252,22 +190,18 @@ struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisito
     }
 
     const System::Event &event;
-    unsigned int        pos;
     Item                *selectedItem;
 };
 
 void    TreeWidget::TreeView::CheckItemFocus(const System::Event &event)
 {
-    Vector2i pos;
-    AbsolutePos(pos);
-    pos[1] += _size[1] - PaddingTop();
-
-    SelectItemsVisitor v(event, pos[1]);
+    SelectItemsVisitor v(event);
     v(*this);
     if (v.selectedItem != NULL)
     {
         v.selectedItem->SendEvent(Event::ItemSelected);
         _widget->_selectedItem = v.selectedItem;
     }
+
 }
 

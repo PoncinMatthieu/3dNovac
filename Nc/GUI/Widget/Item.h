@@ -33,7 +33,7 @@ namespace Nc
 {
     namespace GUI
     {
-        /// Store a data text.
+        /// Label items to be used with widget like ComboBox or TreeWidget.
         class LIB_NC_GUI Item : public Label
         {
             public:
@@ -54,15 +54,6 @@ namespace Nc
                 void        Select()                {Selected(true);}
                 /** Unselect the item. */
                 void        Unselect()              {Selected(false);}
-
-
-            protected:
-                /**
-                    Redefined method to avoid the childs to be automaticaly rendered.
-                    Item is a very peculiar class, we want to control how the childs are rendrered inside a view class.
-                    \return false
-                */
-                virtual bool        RenderChildsBegin(Graphic::SceneGraph *scene)        {return false;}
 
             protected:
                 bool        _selected;

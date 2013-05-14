@@ -28,7 +28,7 @@
 #define NC_GUI_WIDGET_TREEWIDGET_H_
 
 #include "ScrollArea.h"
-#include "Item.h"
+#include "TreeItem.h"
 
 namespace Nc
 {
@@ -51,20 +51,8 @@ namespace Nc
                     /** Check item selection. */
                     virtual void            CheckItemFocus(const System::Event &event);
 
-                    /** Update the widget geometry. Called when the state of the widget has changed (when property _stateChanged == true) */
-                    virtual void            UpdateState();
                     /** Resize the widget. Called when the widget or a parent has been resized. */
                     virtual void            Resize();
-
-                    /** Draw the widget. */
-                    virtual void            Draw(Graphic::SceneGraph *scene);
-
-                    /**
-                        Redefined method to avoid the childs to be automaticaly rendered.
-                        We want to control how the childs are rendrered.
-                        \return false
-                    */
-                    virtual bool            RenderChildsBegin(Graphic::SceneGraph *scene)        {return false;}
 
                     TreeWidget              *_widget;
                 };
@@ -76,7 +64,7 @@ namespace Nc
                 ~TreeWidget();
 
                 /** The mouse button handler to choose an item. */
-                void                    MouseButtonEvent(const System::Event &event);
+                void    MouseButtonEvent(const System::Event &event);
 
                 /** Insert an item node into the tree. */
                 void    Insert(Item *items);
