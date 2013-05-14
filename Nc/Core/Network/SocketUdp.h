@@ -90,7 +90,7 @@ namespace Nc
                     Write (send) to the descriptor an array of byte to the ip and port specified.
                     \return true if no error.
                 */
-                bool            Write(const char *src, unsigned int size, const Ip &ip, unsigned short port);
+                bool            Write(const unsigned char *src, unsigned int size, const Ip &ip, unsigned short port);
 
                 /**
                     Read (receive) from the descriptor an array of type T into \p dst.
@@ -102,7 +102,7 @@ namespace Nc
                     Read (receive) from the descriptor an array of byte into \p dst.
                     \return the received size, and fill the ip/port of the sender.
                 */
-                int             Read(char *dst, unsigned int maxSize, Ip &ip, unsigned short &port);
+                int             Read(unsigned char *dst, unsigned int maxSize, Ip &ip, unsigned short &port);
 
             private:
                 unsigned short		_bindedPort;
@@ -128,7 +128,7 @@ namespace Nc
                 int reelSize = src.Size() * sizeof(T);
                 for (int len = 0; len < reelSize; len += sent)
                 {
-                    sent = sendto(_descriptor, reinterpret_cast<const char*>(src.data) + len, reelSize - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
+                    sent = sendto(_descriptor, reinterpret_cast<const unsigned char*>(src.data) + len, reelSize - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
                     if (sent <= 0)
                         return false;
                 }
