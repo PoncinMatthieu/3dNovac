@@ -276,6 +276,7 @@ void XWindowInput::ProcessEvent(XEvent &event)
                     case 8 :       e.mouseButton.button = Mouse::XButton1; break;
                     case 9 :       e.mouseButton.button = Mouse::XButton2; break;
                 }
+                e.mouseButton.doubled = IsDoubleClick(e);
                 GenereEvent(e);
             }
             break;

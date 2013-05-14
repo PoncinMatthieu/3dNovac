@@ -49,6 +49,7 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
     _inhibit = false;
     _focus = false;
     _acceptFocus = true;
+    _alwaysTestChildFocus = false;
     _generateHandleAtEnterFocus = false;
     _resizable = true;
     _size = size;
@@ -91,6 +92,7 @@ void Widget::Copy(const Widget &w)
     _resizable = w._resizable;
     _focus = w._focus;
     _acceptFocus = w._acceptFocus;
+    _alwaysTestChildFocus = w._alwaysTestChildFocus;
     _size = w._size;
     _pos = w._pos;
     _alignment = w._alignment;
@@ -382,10 +384,8 @@ void    Widget::RelativePos(Vector2i &relativePos) const
 void    Widget::AbsolutePos(Vector2i &absolutePos)
 {
     // compute the absolute pos only if the state changed
-    if (_stateChanged)
+    //if (_stateChanged)
     {
-        //std::cout << "AbsolutePos: " << *this << std::endl;
-
         // get back the first parent
         Visitor::GetParentWidget v(this);
         if (_owner != NULL)
@@ -397,10 +397,10 @@ void    Widget::AbsolutePos(Vector2i &absolutePos)
         Vector2i relativePos;
         RelativePos(relativePos);
         absolutePos += relativePos;
-        _absolutePos = absolutePos; // store the result
+        //_absolutePos = absolutePos; // store the result
     }
-    else
-        absolutePos = _absolutePos;
+    //else
+    //    absolutePos = _absolutePos;
 }
 
 void Widget::Focus(bool state)

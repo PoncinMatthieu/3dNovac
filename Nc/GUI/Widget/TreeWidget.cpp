@@ -67,12 +67,22 @@ void    TreeWidget::Copy(const TreeWidget &tw)
     _treeView = static_cast<TreeView*>(tw._treeView->Clone());
 }
 
-void    TreeWidget::Insert(Item *items)
+void    TreeWidget::Insert(TreeItem *item)
 {
-    if (items->Selected())
-        _selectedItem = items;
-    _treeView->AddChild(items);
+    if (item->Selected())
+        _selectedItem = item;
+    _treeView->AddChild(item);
     _treeView->Resized();
+}
+
+void    TreeWidget::ItemChanged(TreeItem *item)
+{
+    if (_selectedItem != item)
+    {
+        _selectedItem->Unselect();
+        _selectedItem = item;
+    }
+    //_stateChanged = true;
 }
 
 void    TreeWidget::RenderChildsEnd(Graphic::SceneGraph *scene)
@@ -81,18 +91,21 @@ void    TreeWidget::RenderChildsEnd(Graphic::SceneGraph *scene)
     ScrollArea::RenderChildsEnd(scene);
 }
 
+/*
 void    TreeWidget::MouseButtonEvent(const System::Event &event)
 {
+//LOG << "plop" << std::endl;
     if (event.mouseButton.button == System::Mouse::Left && event.type == System::Event::MouseButtonPressed)
     {
-        _treeView->CheckItemFocus(event);
+//        _treeView->CheckItemFocus(event);
     }
 }
+*/
 
 TreeWidget::TreeView::TreeView(TreeWidget *widget, const AlignmentMask &alignment, const Vector2i &size)
     : Widget(alignment, size), _widget(widget)
 {
-    _acceptFocus = false;
+    //_acceptFocus = false;
     Resize();
 }
 
@@ -151,6 +164,7 @@ void    TreeWidget::TreeView::Resize()
         _widget->Resize();
 }
 
+/*
 // visitor used to go through every item and select them
 struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisitor>
 {
@@ -168,11 +182,12 @@ struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisito
 
     void VisitNode(Item &n)
     {
-        n.Unselect();
-
         if (selectedItem != NULL)
             return;
 
+        if (n.Selected())
+            selectedItem = &n; */
+/*
         // test if the mouse is on the item
         int mousePos = static_cast<Graphic::WindowInput*>(event.emitter)->MousePositionInGLCoord()[1];
 
@@ -185,23 +200,29 @@ struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisito
         if (mousePos < top && mousePos > bot)
         {
             n.Select();
+            if (event.mouseButton.doubled)
+                n.DoubleClicked();
             selectedItem = &n;
         }
+*/ /*
     }
 
     const System::Event &event;
     Item                *selectedItem;
-};
-
+};*/
+/*
 void    TreeWidget::TreeView::CheckItemFocus(const System::Event &event)
 {
     SelectItemsVisitor v(event);
     v(*this);
     if (v.selectedItem != NULL)
     {
-        v.selectedItem->SendEvent(Event::ItemSelected);
-        _widget->_selectedItem = v.selectedItem;
+        if (_widget->_selectedItem != v.selectedItem)
+        {
+            _widget->_selectedItem->Unselect();
+            _widget->_selectedItem = v.selectedItem;
+            v.selectedItem->SendEvent(Event::ItemSelected);
+        }
     }
-
 }
-
+*/

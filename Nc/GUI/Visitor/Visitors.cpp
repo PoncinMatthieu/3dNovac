@@ -100,7 +100,7 @@ bool CheckFocus::VisitNode(Widget &w)
     #ifdef _DEBUG_GUI_FOCUS
     LOG << "Not focused." << std::endl;
     #endif
-    return false;
+    return w.AlwaysTestChildFocus();
 }
 
 GetParentWidget::GetParentWidget(const Widget *w)

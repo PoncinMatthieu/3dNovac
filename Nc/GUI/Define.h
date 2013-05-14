@@ -68,6 +68,7 @@
 
             class Widget;
             class Item;
+            class TreeWidget;
 
             // typedef
             typedef std::list<Widget*>      ListPWidget;

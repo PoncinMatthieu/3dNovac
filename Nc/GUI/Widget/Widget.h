@@ -40,7 +40,7 @@ namespace Nc
             A widget use it's parents widget to calculate it's relative positions.
             And The relative position is computed with the defined Alignment for X position and Y position.
 
-            \todo Think about a whole new event system for the widgets, a widget should be able to send a particular event to a parametized target.
+            \todo Find a workaround on the _absolutePos attribute (store the value to improve performance), we disabled it because we need to recompute it everytime a parent is changed not only when the item itesel changed.
         */
         class LIB_NC_GUI  Widget : public Graphic::Object
         {
@@ -124,6 +124,8 @@ namespace Nc
                 void                    AcceptFocus(bool state)                     {_acceptFocus = state;}
                 /** \return true if the widget accept to be focused. */
                 bool                    AcceptFocus() const                         {return _acceptFocus;}
+                /** \return true if the childs of the widget should be tested during a focus test even if the widget is not focused. */
+                bool                    AlwaysTestChildFocus() const                {return _alwaysTestChildFocus;}
 
                 /** Set the alignment settings. */
                 inline void                 Alignment(const AlignmentMask &mask)    {_alignment = mask;}
@@ -292,6 +294,7 @@ namespace Nc
                 Widget                  *_childFocused;             ///< The child which has the focus.
                 bool                    _focus;                     ///< Mark if the widget has the focus.
                 bool                    _acceptFocus;               ///< if false, the widget doesn't accept focus and won't be selected during focus test.
+                bool                    _alwaysTestChildFocus;      ///< if true, even if the widget is not focused, the focus test will go through the childs.
 
                 bool                    _inhibit;                   ///< eg: if a button or a parent of the button is set false, the button don't exec the handler.
                 bool                    _stateChanged;              ///< if true, the widget will be update before to be rendered.
@@ -312,7 +315,7 @@ namespace Nc
 
                 Engine::Handler         _eventHandler;              ///< manage widget events.
 
-                Vector2i                _absolutePos;               ///< for performance reason, we store the absolute position of the widget.
+                //Vector2i                _absolutePos;               ///< for performance reason, we store the absolute position of the widget.
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class Visitor::WidgetVisitor;

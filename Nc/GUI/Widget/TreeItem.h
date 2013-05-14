@@ -21,20 +21,32 @@ namespace Nc
                 /** \return a clone of the item. */
                 virtual Graphic::ISceneNode         *Clone() const                          {return new TreeItem(*this);}
 
+                /** Select or unselect the item. */
+                bool            Selected() const        {return _selected;}
+                /** Select or unselect the item. */
+                virtual void    Selected(bool st);
+
                 /** \return true if the item is folded. */
-                bool        Folded() const          {return _folded;}
+                bool            Folded() const          {return _folded;}
                 /** Fold or unfold the item. */
-                void        Folded(bool st);
+                virtual void    Folded(bool st);
                 /** Fold the item. */
-                void        Fold()                  {Folded(true);}
+                void            Fold()                  {Folded(true);}
                 /** Unfold the item. */
-                void        Unfold()                {Folded(false);}
+                void            Unfold()                {Folded(false);}
 
                 /** Revursively compute the full size of the item tree and set the position of every item inside the tree. */
                 Vector2i    ComputeSizePosRecursif(unsigned int depth);
 
+                /** Called when the item is double clicked. */
+                virtual void    DoubleClicked();
+
             protected:
+                virtual bool    RenderChildsBegin(Graphic::SceneGraph *scene);
+
                 virtual void    PosChild(const Widget *w, Vector2i &pos) const;
+
+                TreeWidget      *GetParentTreeWidget();
 
             protected:
                 bool        _folded;

@@ -213,6 +213,7 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
             e.mouseButton.button = Mouse::Left;
             e.mouseButton.x      = LOWORD(LParam);
             e.mouseButton.y      = HIWORD(LParam);
+	    e.mouseButton.doubled = IsDoubleClick(e);
             GenereEvent(e);
             break;
         }
@@ -233,6 +234,7 @@ void WWindowInput::ProcessEvent(UINT message, WPARAM WParam, LPARAM LParam)
             e.mouseButton.button = Mouse::Right;
             e.mouseButton.x      = LOWORD(LParam);
             e.mouseButton.y      = HIWORD(LParam);
+	    e.mouseButton.doubled = IsDoubleClick(e);
             GenereEvent(e);
             break;
         }

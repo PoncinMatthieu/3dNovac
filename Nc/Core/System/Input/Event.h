@@ -206,9 +206,10 @@ namespace Nc
             /// Define a mouse button evenement.
             struct MouseButtonEvent
             {
-                Mouse::Button button;
-                int           x;
-                int           y;
+                Mouse::Button   button;
+                int             x;
+                int             y;
+                bool            doubled;    ///< if true, the event is a double click.
             };
 
             /// Define a mouse weel event.

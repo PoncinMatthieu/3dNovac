@@ -45,7 +45,22 @@ void    Item::Selected(bool st)
     if (_selected != st)
     {
         _selected = st;
+
+        // send a select event
+        if (_selected)
+            SendEvent(Event::ItemSelected);
+
         _stateChanged = true;
+    }
+}
+
+void    Item::MouseButtonEvent(const System::Event &event)
+{
+    if (event.mouseButton.button == System::Mouse::Left && event.type == System::Event::MouseButtonPressed)
+    {
+        Select();
+        if (event.mouseButton.doubled)
+            DoubleClicked();
     }
 }
 

@@ -47,13 +47,20 @@ namespace Nc
                 virtual Graphic::ISceneNode         *Clone() const                          {return new Item(*this);}
 
                 /** \return true if the item is selected. */
-                bool        Selected() const        {return _selected;}
+                bool            Selected() const        {return _selected;}
                 /** Select or unselect the item. */
-                void        Selected(bool st);
+                virtual void    Selected(bool st);
                 /** Select the item. */
-                void        Select()                {Selected(true);}
+                void            Select()                {Selected(true);}
                 /** Unselect the item. */
-                void        Unselect()              {Selected(false);}
+                void            Unselect()              {Selected(false);}
+
+                /** Called when the item is double clicked. */
+                virtual void    DoubleClicked()         {}
+
+            protected:
+                /** Manage item selection. */
+                virtual void    MouseButtonEvent(const System::Event &event);
 
             protected:
                 bool        _selected;
