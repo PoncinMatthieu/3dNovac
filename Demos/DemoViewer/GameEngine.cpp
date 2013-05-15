@@ -13,7 +13,7 @@ GameEngine::GameEngine(Nc::Graphic::IWindow *window, Nc::Engine::Manager *manage
     _demoFactory = new DemoFactory(manager);
 
     AddNewCmd(GUI::Event::Toggled,          (Nc::Engine::CmdFunction)&GameEngine::StartDemoCmd);
-    AddNewCmd(GUI::Event::ItemChanged,      (Nc::Engine::CmdFunction)&GameEngine::DemoSelectedCmd);
+    AddNewCmd(GUI::Event::ItemSelected,     (Nc::Engine::CmdFunction)&GameEngine::DemoSelectedCmd);
     AddNewCmd(GUI::Event::ReturnPressed,    (Nc::Engine::CmdFunction)&GameEngine::ConsolePushCommandCmd);
 }
 

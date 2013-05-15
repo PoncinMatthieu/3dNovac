@@ -209,6 +209,10 @@ namespace Nc
                 /** Send the given event. */
                 void                    SendEvent(GUI::Event::EventId e);
 
+                /** Set whether the widget should be rendered using it's relative position of not. Default is true. */
+                void                    RenderRelativePos(bool state)               {_renderRelativePos = state;}
+
+
             protected:
                 /** called when the widget gain the focus. */
                 virtual void            EnterFocus()                            {}
@@ -233,7 +237,7 @@ namespace Nc
                 /**
                     Set the stencil buffer if activated.
                     Here the clipping part is rectangular, so we simply use the scissor test insteed of using the stencil test.
-		    \return true
+                    \return true
                 */
                 virtual bool            RenderChildsBegin(Graphic::SceneGraph *scene);
                 /** Unset the stencil buffer if activated. */

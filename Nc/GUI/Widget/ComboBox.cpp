@@ -97,7 +97,7 @@ void    ComboBox::UpdateState()
 
     for (ListPItem::iterator it = _itemList.begin(); it != _itemList.end(); ++it)
     {
-        (*it)->Pos(Vector2i(PaddingLeft(), ((_spriteList->Size()[1] - (*it)->TextSize()[1]) / 2)));
+        (*it)->Pos(Vector2i(PaddingLeft(), 0));
     }
 
     if (!_listUnrolled && _currentUnfoldList != NULL)
@@ -157,6 +157,7 @@ void    ComboBox::AddItem(Item *item)
 
     _itemList.push_back(item);
     _currentItem = *_itemList.begin();
+    item->RenderRelativePos(false);
     _stateChanged = true;
 }
 
