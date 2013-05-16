@@ -86,7 +86,7 @@ void    Daemonizer::Fork(const FileName &pidFile, const FileName &workingDirecto
     // Save new SID in the given file for daemon management purpose.
     if (!pidFile.empty())
     {
-        int fd = open(pidFile.c_str(), O_WRONLY | O_CREAT);
+        int fd = open(pidFile.c_str(), O_WRONLY | O_CREAT, S_IXUSR | S_IRUSR | S_IWUSR);
         if (fd == -1)
             throw Exception("Daemonizer", "Failed open the pid file: " + pidFile + " - " + std::string(strerror(errno)));
 
