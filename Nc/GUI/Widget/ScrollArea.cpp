@@ -33,6 +33,7 @@ using namespace Nc::GUI;
 ScrollArea::ScrollArea(const AlignmentMask &alignment, const Vector2i &size)
     : Widget(alignment, size), _view(NULL)
 {
+    _alwaysReceiveEvents = true; // to manage the scroll correctly we need to receive events even if we don't have the focus.
     _scrollBarH = new ScrollBar(Left | Bottom, Horizontal);
     _scrollBarH->Percent(Vector2f(100, 0));
     _scrollBarH->Pos(Vector2f(0, -_scrollBarH->Size()[1]));
@@ -90,6 +91,23 @@ void ScrollArea::SetView(Widget *view)
 {
     _view = view;
     Resized();
+}
+
+void    ScrollArea::Update(float elapsedTime)
+{
+    Widget::Update(elapsedTime);
+
+
+}
+
+void ScrollArea::MouseButtonEvent(const Nc::System::Event &e)
+{
+    if (e.type == System::Event::MouseWheelMoved)
+    {
+        Vector2i mousePos = static_cast<Graphic::WindowInput*>(e.emitter)->MousePositionInGLCoord();
+        if (Widget::TestFocus(*this, mousePos))
+            _scrollBarV->MouseWheelEvent(e);
+    }
 }
 
 void ScrollArea::Resize()

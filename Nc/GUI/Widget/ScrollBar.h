@@ -61,12 +61,18 @@ namespace Nc
                 float       PageSize() const                    {return _pageSize;}
 
                 /** Set the total position in the document. */
-                void        Position(float s)                   {_position = s; _positionChangedByUser = true; _stateChanged = true;}
+                void        Position(float s);
                 /** \return the position of the slider. */
                 float       Position() const                    {return _position;}
 
                 /** \return true if the position has been changed at least once by the user. */
                 bool        PositionChangedByUser()             {return _positionChangedByUser;}
+
+                /**
+                    Manage mouse wheel scroll.
+                    The method is called from the ScrollArea.
+                 */
+                void        MouseWheelEvent(const Nc::System::Event &e);
 
             protected:
                 /** Handler of Mouse motion event. */
@@ -92,6 +98,12 @@ namespace Nc
                 float   GetSliderTranslation(float position);
                 /** \return the position in the document according to the given slider translation. */
                 float   GetPagePosition(float translation);
+
+                /**
+                    Move the slider using the given delta.
+                    Delta will be multiplied by 1% of the total size of the scroll area.
+                */
+                void    MoveSlider(float delta);
 
             private:
                 Orientation         _orientation;               ///< Define the orientation of the scroll bar.

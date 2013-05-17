@@ -82,7 +82,6 @@ void    TreeWidget::ItemChanged(TreeItem *item)
         _selectedItem->Unselect();
         _selectedItem = item;
     }
-    //_stateChanged = true;
 }
 
 void    TreeWidget::RenderChildsEnd(Graphic::SceneGraph *scene)
@@ -91,21 +90,9 @@ void    TreeWidget::RenderChildsEnd(Graphic::SceneGraph *scene)
     ScrollArea::RenderChildsEnd(scene);
 }
 
-/*
-void    TreeWidget::MouseButtonEvent(const System::Event &event)
-{
-//LOG << "plop" << std::endl;
-    if (event.mouseButton.button == System::Mouse::Left && event.type == System::Event::MouseButtonPressed)
-    {
-//        _treeView->CheckItemFocus(event);
-    }
-}
-*/
-
 TreeWidget::TreeView::TreeView(TreeWidget *widget, const AlignmentMask &alignment, const Vector2i &size)
     : Widget(alignment, size), _widget(widget)
 {
-    //_acceptFocus = false;
     Resize();
 }
 
@@ -164,65 +151,3 @@ void    TreeWidget::TreeView::Resize()
         _widget->Resize();
 }
 
-/*
-// visitor used to go through every item and select them
-struct SelectItemsVisitor : public GUI::Visitor::WidgetVisitor<SelectItemsVisitor>
-{
-    SelectItemsVisitor(const System::Event &e)
-        :   GUI::Visitor::WidgetVisitor<SelectItemsVisitor>(Utils::Metaprog::Seq<Item>::Type(),
-                                                            Utils::Metaprog::Seq<Widget>::Type(),
-                                                            Graph::VisitChilds, true, true),
-            event(e), selectedItem(NULL)
-    {
-    }
-
-    void VisitNode(Widget &w)
-    {
-    }
-
-    void VisitNode(Item &n)
-    {
-        if (selectedItem != NULL)
-            return;
-
-        if (n.Selected())
-            selectedItem = &n; */
-/*
-        // test if the mouse is on the item
-        int mousePos = static_cast<Graphic::WindowInput*>(event.emitter)->MousePositionInGLCoord()[1];
-
-        Vector2i    apos;
-        n.AbsolutePos(apos);
-
-        int top = apos[1] + n.Size()[1];
-        int bot = apos[1];
-
-        if (mousePos < top && mousePos > bot)
-        {
-            n.Select();
-            if (event.mouseButton.doubled)
-                n.DoubleClicked();
-            selectedItem = &n;
-        }
-*/ /*
-    }
-
-    const System::Event &event;
-    Item                *selectedItem;
-};*/
-/*
-void    TreeWidget::TreeView::CheckItemFocus(const System::Event &event)
-{
-    SelectItemsVisitor v(event);
-    v(*this);
-    if (v.selectedItem != NULL)
-    {
-        if (_widget->_selectedItem != v.selectedItem)
-        {
-            _widget->_selectedItem->Unselect();
-            _widget->_selectedItem = v.selectedItem;
-            v.selectedItem->SendEvent(Event::ItemSelected);
-        }
-    }
-}
-*/

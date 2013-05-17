@@ -105,7 +105,7 @@ namespace Nc
                 /** \return the relative position of the widget (including the alignment of the widget and it's padding's parent). */
                 void                    RelativePos(Vector2i &pos) const;
                 /** \return the absolute position of the widget (recursively includes the alignment of the widget and it's padding's parent). */
-                void                    AbsolutePos(Vector2i &pos);
+                void                    AbsolutePos(Vector2i &pos) const;
                 /** Notify a changement of position to the widget. The Repos method will be called at the next render pass. */
                 virtual void            Reposed();
 
@@ -114,12 +114,14 @@ namespace Nc
                 /** Set the percent size. If the percent value is different of null, the widget will be resized with a proportion of his parent. */
                 void                    Percent(const Vector2f &percent);
 
+                /** \return false if the widget receive events only once it has the focus. */
+                bool                    AlwaysReceiveEvents() const         {return _alwaysReceiveEvents;}
                 /** Set the focus statement. */
                 void                    Focus(bool state);
                 /** \return the focus statement. */
                 bool                    Focus() const                               {return _focus;}
-                /** Set the generateHandleAtEnterFocus statement. If it's true, the widget will generate an event when the widget will entered in focus. */
-                void                    GenerateHandleAtEnterFocus(bool state);
+                /** Set the generateEventAtEnterFocus statement. If it's true, the widget will generate an event when the widget will entered in focus. */
+                void                    GenerateEventAtEnterFocus(bool state);
                 /** Set if the widget accept focus or not. */
                 void                    AcceptFocus(bool state)                     {_acceptFocus = state;}
                 /** \return true if the widget accept to be focused. */
@@ -212,6 +214,8 @@ namespace Nc
                 /** Set whether the widget should be rendered using it's relative position of not. Default is true. */
                 void                    RenderRelativePos(bool state)               {_renderRelativePos = state;}
 
+                /** Test used to manage widget focus. */
+                static bool             TestFocus(const Widget &w, const Vector2i &pos);
 
             protected:
                 /** called when the widget gain the focus. */
@@ -296,15 +300,16 @@ namespace Nc
                 Vector2i                _pos;                       ///< Position if the widget (relative to the parent and the alignment mask).
 
                 Widget                  *_childFocused;             ///< The child which has the focus.
+                bool                    _alwaysReceiveEvents;       ///< If false, the widget will receive window events only when it has the focus.
                 bool                    _focus;                     ///< Mark if the widget has the focus.
                 bool                    _acceptFocus;               ///< if false, the widget doesn't accept focus and won't be selected during focus test.
                 bool                    _alwaysTestChildFocus;      ///< if true, even if the widget is not focused, the focus test will go through the childs.
+                bool                    _generateEventAtEnterFocus; ///< if true, genere an event when we enter in focus.
 
                 bool                    _inhibit;                   ///< eg: if a button or a parent of the button is set false, the button don't exec the handler.
                 bool                    _stateChanged;              ///< if true, the widget will be update before to be rendered.
                 bool                    _resized;                   ///< if true, the method resize will be called before the widget render itself and the size of the widget will be compute if possible.
                 bool                    _reposed;                   ///< if true, the method repos will be called before the widget render itself.
-                bool                    _generateHandleAtEnterFocus;///< if true, genere an handle when we enter in focus.
                 bool                    _resizable;                 ///< if false, the widget will not be resized.
                 Vector2f                _percent;                   ///< if the percent is different of null, then the size will be calculated in function of the parent size (if no parent then use the window size).
 

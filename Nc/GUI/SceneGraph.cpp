@@ -63,6 +63,24 @@ void SceneGraph::BringToFront(Widget *w)
     }
 }
 
+struct DispatchEvents : public Visitor::WidgetVisitor<DispatchEvents, false, void>
+{
+    DispatchEvents(const Nc::System::Event &e)
+        : WidgetVisitor<DispatchEvents, false, void>(   Utils::Metaprog::Seq<Widget>::Type(),
+                                                        Utils::Metaprog::Seq<Widget, Graphic::Entity, Graphic::Octree>::Type()),
+          event(e)
+    {
+    }
+
+    void    VisitNode(Widget &w)
+    {
+        if (w.AlwaysReceiveEvents() || w.Focus())
+            w.ManageWindowEvent(event);
+    }
+
+    const Nc::System::Event     &event;
+};
+
 void SceneGraph::ManageWindowEvent(const System::Event &event)
 {
 // update en cas de resize de la fenetre
@@ -85,35 +103,19 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
         for(ContainerType::reverse_iterator it = _childs.rbegin(); _widgetFocused == NULL && it != _childs.rend(); it++)
         {
             Widget *w = (*it)->AsWithoutThrow<Widget>();
-			if (w != NULL && w->Enabled() && w->AcceptFocus() && !w->Inhibited())
+			if (w != NULL && Widget::TestFocus(*w, mousePos))
             {
-                Vector2i    reelPos;
-                w->RelativePos(reelPos);
-                #ifdef _DEBUG_GUI_FOCUS
-                LOG_DEBUG << "Widget   : " << *w << std::endl;
-                LOG_DEBUG << "ReelPos  = " << reelPos << std::endl;
-                LOG_DEBUG << "Size     = " << w->Size() << std::endl;
-                LOG_DEBUG << "Mouse    = " << mousePos << std::endl;
-                #endif
-                if (Math::Test::PointInRect(mousePos, reelPos, w->Size()))
-                {
-                    _widgetFocused = w;
-                    _widgetFocused->Focus(true);
-                    #ifdef _DEBUG_GUI_FOCUS
-                    LOG_DEBUG << "Focused." << std::endl;
-                    #endif
-                }
-                #ifdef _DEBUG_GUI_FOCUS
-                LOG << "Not focused." << std::endl;
-                #endif
+                _widgetFocused = w;
+                _widgetFocused->Focus(true);
             }
         }
         if (lastWidgetToHaveTheFocus != NULL && lastWidgetToHaveTheFocus != _widgetFocused)
             lastWidgetToHaveTheFocus->Focus(false);
     }
-// send les event au widget qui a le focus
-    if (_widgetFocused != NULL)
-        _widgetFocused->ManageWindowEvent(event);
+
+// dispatch events to the widgets
+    DispatchEvents v(event);
+    v(*this);
 }
 
 void    SceneGraph::RemoveWidget(Widget *w)

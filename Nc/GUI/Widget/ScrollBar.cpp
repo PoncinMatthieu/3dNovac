@@ -149,6 +149,28 @@ void ScrollBar::MouseButtonEvent(const Nc::System::Event &event)
     }
 }
 
+void    ScrollBar::MouseWheelEvent(const Nc::System::Event &e)
+{
+    MoveSlider(-e.mouseWheel.delta);
+}
+
+void    ScrollBar::MoveSlider(float delta)
+{
+    delta *= (_totalSize * 0.01);
+    Position(_position + delta);
+}
+
+void    ScrollBar::Position(float s)
+{
+    _position = s;
+    if (_position < 0)
+        _position = 0;
+    else if (_position > _totalSize - _pageSize)
+        _position = _totalSize - _pageSize;
+    _positionChangedByUser = true;
+    _stateChanged = true;
+}
+
 void    ScrollBar::MouseButtonLeft(const Nc::System::Event &event)
 {
     bool inRect = false;
@@ -175,7 +197,7 @@ void    ScrollBar::MouseButtonLeft(const Nc::System::Event &event)
     {
         if (inRect && _position > 0)
         {
-            _position--;
+            MoveSlider(-1);
             _positionChangedByUser = true;
             _stateChanged = true;
         }
@@ -212,7 +234,7 @@ void    ScrollBar::MouseButtonRight(const Nc::System::Event &event)
     {
         if (inRect && _position < _totalSize - _pageSize)
         {
-            _position++;
+            MoveSlider(1);
             _positionChangedByUser = true;
             _stateChanged = true;
         }

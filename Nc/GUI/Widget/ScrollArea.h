@@ -36,8 +36,10 @@ namespace Nc
     {
         /// Provide a scrolling view onto another widget.
         /**
-            Use the size of the settle view 'SetView' to render the scroll area.
+            Use the size of the settled view 'SetView' to render the scroll area.
             The view must be a widget child of the ScrollArea.
+
+            \todo [ref #149] manage horizontal scroll
         */
         class LIB_NC_GUI ScrollArea : public Widget
         {
@@ -55,7 +57,12 @@ namespace Nc
                 /** Set the widget which will be used to setup the scroll area by using the size of the view object. */
                 void                SetView(Widget *view);
 
+                virtual void        Update(float elapsedTime);
+
             protected:
+                /** Handle mouse scroll. */
+                virtual void        MouseButtonEvent(const Nc::System::Event &e);
+
                 /** Resize the geometry of the scroll area. */
                 virtual void        Resize();
                 /** Check the state and update the matrix before rendering. */

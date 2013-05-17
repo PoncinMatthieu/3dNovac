@@ -47,10 +47,11 @@ void Widget::Init(const Vector2i &size, const AlignmentMask &alignment)
 {
     _childFocused = NULL;
     _inhibit = false;
+    _alwaysReceiveEvents = false;
     _focus = false;
     _acceptFocus = true;
     _alwaysTestChildFocus = false;
-    _generateHandleAtEnterFocus = false;
+    _generateEventAtEnterFocus = false;
     _resizable = true;
     _size = size;
     _alignment = alignment;
@@ -90,13 +91,14 @@ void Widget::Copy(const Widget &w)
     _childFocused = NULL;
     _inhibit = w._inhibit;
     _resizable = w._resizable;
+    _alwaysReceiveEvents = w._alwaysReceiveEvents;
     _focus = w._focus;
     _acceptFocus = w._acceptFocus;
     _alwaysTestChildFocus = w._alwaysTestChildFocus;
     _size = w._size;
     _pos = w._pos;
     _alignment = w._alignment;
-    _generateHandleAtEnterFocus = w._generateHandleAtEnterFocus;
+    _generateEventAtEnterFocus = w._generateEventAtEnterFocus;
     _margin = w._margin;
     _padding = w._padding;
     _percent = w._percent;
@@ -266,8 +268,6 @@ void Widget::ManageWindowEvent(const System::Event &event)
              event.type == System::Event::MouseWheelMoved)
         MouseButtonEvent(event);
     CheckFocus(event);
-    if (_childFocused != NULL)
-        _childFocused->ManageWindowEvent(event);
 }
 
 void Widget::CheckFocus(const System::Event &event)
@@ -381,7 +381,7 @@ void    Widget::RelativePos(Vector2i &relativePos) const
     relativePos += parentTranslate;
 }
 
-void    Widget::AbsolutePos(Vector2i &absolutePos)
+void    Widget::AbsolutePos(Vector2i &absolutePos) const
 {
     // compute the absolute pos only if the state changed
     //if (_stateChanged)
@@ -412,7 +412,7 @@ void Widget::Focus(bool state)
         _focus = state;
         if (!state && _childFocused != NULL)
             _childFocused->Focus(false);
-        if (_focus && _generateHandleAtEnterFocus && !_inhibit)
+        if (_focus && _generateEventAtEnterFocus && !_inhibit)
             SendEvent(Event::EnterFocus);
         ChangeChildsStateRecursive();
 
@@ -698,9 +698,9 @@ void    Widget::Uninhibit()
     ChangeChildsStateRecursive();
 }
 
-void    Widget::GenerateHandleAtEnterFocus(bool state)
+void    Widget::GenerateEventAtEnterFocus(bool state)
 {
-    _generateHandleAtEnterFocus = state;
+    _generateEventAtEnterFocus = state;
     _stateChanged = true;
 }
 
@@ -743,4 +743,25 @@ void    Widget::SendEvent(GUI::Event::EventId e)
     {
         _eventHandler.SendEvent(e, this);
     }
+}
+
+bool    Widget::TestFocus(const Widget &w, const Vector2i &point)
+{
+    if (!w.Enabled() && w.Inhibited() || !w.AcceptFocus())
+        return false;
+
+    // get absolute pos
+    Vector2i    reelPos;
+    w.AbsolutePos(reelPos);
+
+    #ifdef _DEBUG_GUI_FOCUS
+    LOG_DEBUG << "Focus     : " << std::endl;
+    LOG_DEBUG << "Widget    : " << w << std::endl;
+    LOG_DEBUG << "ReelPos   : " << reelPos << std::endl;
+    LOG_DEBUG << "Size      : " << w.Size() << std::endl;
+    LOG_DEBUG << "point     : " << point << std::endl;
+    LOG_DEBUG << "result    : " << Math::Test::PointInRect(point, reelPos, w.Size()) << std::endl;
+    #endif
+
+    return Math::Test::PointInRect(point, reelPos, w.Size());
 }

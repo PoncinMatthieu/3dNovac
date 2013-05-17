@@ -48,9 +48,6 @@ namespace Nc
                     TreeView &operator = (const TreeView &tv);
                     ~TreeView();
 
-                    /** Check item selection. */
-                    //virtual void            CheckItemFocus(const System::Event &event);
-
                     /** Resize the widget. Called when the widget or a parent has been resized. */
                     virtual void            Resize();
 
@@ -62,9 +59,6 @@ namespace Nc
                 TreeWidget(const TreeWidget &tw);
                 TreeWidget &operator = (const TreeWidget &tw);
                 ~TreeWidget();
-
-                /** The mouse button handler to choose an item. */
-                //void    MouseButtonEvent(const System::Event &event);
 
                 /** Insert an item node into the tree. */
                 void    Insert(TreeItem *items);

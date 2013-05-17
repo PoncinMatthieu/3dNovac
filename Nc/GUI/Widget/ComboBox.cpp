@@ -177,10 +177,16 @@ ComboBox::ComboBoxUnfoldList::ComboBoxUnfoldList(ComboBox *cb, const AlignmentMa
     : Widget(alignment, size), _cb(cb)
 {
     _pos = pos;
+    _new = true;
 }
 
 void        ComboBox::ComboBoxUnfoldList::MouseButtonEvent(const System::Event &event)
 {
+    if (_new)
+    {
+        _new = false;
+        return;
+    }
     if (event.mouseButton.button == System::Mouse::Left && event.type == System::Event::MouseButtonReleased)
     {
         Vector2i pos;

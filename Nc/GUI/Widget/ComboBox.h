@@ -67,6 +67,7 @@ namespace Nc
 
                     private:
                         ComboBox    *_cb;       ///< pointer to the comboBox.
+                        bool        _new;       ///< used to avoid managing the first button release event, and close the list immediatly.
                 };
 
 

@@ -76,30 +76,15 @@ bool CheckFocus::VisitNode(Widget &w)
     if (childFocused != NULL && childFocused->Childs().empty() && childFocused->_composedWidget.empty())
         return false;
 
-    if (!w.AcceptFocus() || !w.EnabledRecursif() || w.InhibitedRecursif())
-        return false;
+//    if (!w.EnabledRecursif() || w.InhibitedRecursif())
+//        return false;
 
-    Vector2i    pos;
-    w.AbsolutePos(pos);
-
-    #ifdef _DEBUG_GUI_FOCUS
-    LOG_DEBUG << "Widget    : " << w << std::endl;
-    LOG_DEBUG << "ReelPos   = " << pos << std::endl;
-    LOG_DEBUG << "Size      = " << w.Size() << std::endl;
-    LOG_DEBUG << "Mouse     = " << mousePos << std::endl;
-    #endif
-    if (Math::Test::PointInRect(mousePos, pos, w.Size()))
+    if (Widget::TestFocus(w, mousePos))
     {
         childFocused = &w;
         childFocused->Focus(true);
-        #ifdef _DEBUG_GUI_FOCUS
-        LOG_DEBUG << "Focused." << std::endl;
-        #endif
         return true;
     }
-    #ifdef _DEBUG_GUI_FOCUS
-    LOG << "Not focused." << std::endl;
-    #endif
     return w.AlwaysTestChildFocus();
 }
 
