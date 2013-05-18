@@ -107,6 +107,13 @@ UTF32::UTF32(const std::wstring &str)
     }
 }
 
+UTF32 UTF32::operator + (const UTF32 &str) const
+{
+    UTF32 newStr(*this);
+    newStr.append(str);
+    return newStr;
+}
+
 std::string             UTF32::ToStdString() const
 {
     std::string str;

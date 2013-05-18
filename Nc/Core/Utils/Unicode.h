@@ -51,6 +51,8 @@ namespace Nc
                     UTF32(const std::wstring &str);
                     virtual ~UTF32()    {}
 
+                    UTF32 operator + (const UTF32 &str) const;
+
                     /** \return the number of occurence of the caractere 'c' in the unicode string. */
                     unsigned int        CharCount(Nc::UInt32 c) const;
 
