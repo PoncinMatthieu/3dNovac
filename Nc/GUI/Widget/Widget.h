@@ -329,7 +329,6 @@ namespace Nc
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class Visitor::WidgetVisitor;
 
-                /** \todo to delete after adding an InvokationMethode on visitors */
                 friend struct Visitor::CheckFocus;
         };
     }

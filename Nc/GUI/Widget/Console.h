@@ -75,7 +75,7 @@ namespace Nc
                 virtual ~Console();
 
                 /** \return the line edit content. */
-                const Utils::Unicode::UTF32     &LineEditText() const       {return _lineEdit->PlainText();}
+                Utils::Unicode::UTF32           LineEditText() const       {return _lineEdit->PlainText();}
                 /** Clear the line edit. Most likely called after you receive a ReturnPressed event. */
                 void                            ClearLineEdit()             {_lineEdit->PlainText("");}
 

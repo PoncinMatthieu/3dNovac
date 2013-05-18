@@ -113,9 +113,21 @@ void SceneGraph::ManageWindowEvent(const System::Event &event)
             lastWidgetToHaveTheFocus->Focus(false);
     }
 
+/*
+// test focus
+    if (event.type == System::Event::MouseButtonPressed)
+    {
+        Widget *lastWidgetToHaveTheFocus = _widgetFocused;
+        Visitor::TestFocus focus(this, event, static_cast<Graphic::WindowInput*>(event.emitter)->MousePositionInGLCoord());
+        focus(*this);
+        _widgetFocused = focus.childFocused;
+        if (lastWidgetToHaveTheFocus != NULL && lastWidgetToHaveTheFocus != _widgetFocused)
+            lastWidgetToHaveTheFocus->Focus(false);
+    }
+*/
 // dispatch events to the widgets
-    DispatchEvents v(event);
-    v(*this);
+    DispatchEvents dispatch(event);
+    dispatch(*this);
 }
 
 void    SceneGraph::RemoveWidget(Widget *w)

@@ -83,7 +83,6 @@ const Vector2f      &Text::Size()
     if (_textFormater->NeedUpdate())
     {
         _textFormater->ComputeDrawables(_size, _drawables, _text);
-
     }
     return _size;
 }

@@ -55,9 +55,9 @@ namespace Nc
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the line edit. */
-                void                                PlainText(const Utils::Unicode::UTF32 &t)   {_font->PlainText(t); _stateChanged = true;}
+                void                    PlainText(const Utils::Unicode::UTF32 &t);
                 /** \return the text of the line edit. */
-                inline const Utils::Unicode::UTF32  &PlainText() const                          {return _font->PlainText();}
+                Utils::Unicode::UTF32   PlainText() const;
 
             protected:
                 /** update the geometry of the line edit. */
@@ -73,11 +73,13 @@ namespace Nc
                 void        Copy(const LineEdit &w);
 
             protected:
-                Graphic::Text       *_font;                     ///< the text in the line edit.
+                Graphic::Text       *_textLeft;                 ///< the text on the left of the cursor.
+                Graphic::Text       *_textRight;                ///< the text on the right of the cursor.
+                Graphic::Text       *_cursorText;               ///< to draw an underscore (cursor).
+                float               _currentOffset;             ///< store the current offset used to display the text, in case the text is longer that the size of the box.
                 bool                _editable;                  ///< if true, the linedit will receive events from the keyboard.
-                Graphic::Text       *_fontUnderscore;           ///< store the undescore draw next to the editable text.
-                bool                _fontUnderscoreDisplayed;   ///< if true, the underscore is displayed.
-                Utils::Clock        _clock;                     ///< clock used to draw the underscore next to the editable text and make it blink.
+                bool                _displayCursor;             ///< if true, the underscore is displayed.
+                Utils::Clock        _clock;                     ///< clock used to make the cursor blink.
         };
     }
 }

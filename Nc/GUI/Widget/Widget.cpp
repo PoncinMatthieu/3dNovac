@@ -747,7 +747,7 @@ void    Widget::SendEvent(GUI::Event::EventId e)
 
 bool    Widget::TestFocus(const Widget &w, const Vector2i &point)
 {
-    if (!w.Enabled() && w.Inhibited() || !w.AcceptFocus())
+    if (!w.Enabled() || w.Inhibited() || !w.AcceptFocus())
         return false;
 
     // get absolute pos
@@ -755,12 +755,12 @@ bool    Widget::TestFocus(const Widget &w, const Vector2i &point)
     w.AbsolutePos(reelPos);
 
     #ifdef _DEBUG_GUI_FOCUS
-    LOG_DEBUG << "Focus     : " << std::endl;
-    LOG_DEBUG << "Widget    : " << w << std::endl;
-    LOG_DEBUG << "ReelPos   : " << reelPos << std::endl;
-    LOG_DEBUG << "Size      : " << w.Size() << std::endl;
-    LOG_DEBUG << "point     : " << point << std::endl;
-    LOG_DEBUG << "result    : " << Math::Test::PointInRect(point, reelPos, w.Size()) << std::endl;
+    std::cout << "Focus: " << std::endl;
+    std::cout << "Widget    : " << w << std::endl;
+    std::cout << "ReelPos   : " << reelPos << std::endl;
+    std::cout << "Size      : " << w.Size() << std::endl;
+    std::cout << "point     : " << point << std::endl;
+    std::cout << "result    : " << Math::Test::PointInRect(point, reelPos, w.Size()) << std::endl;
     #endif
 
     return Math::Test::PointInRect(point, reelPos, w.Size());

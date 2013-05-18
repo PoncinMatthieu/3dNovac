@@ -33,7 +33,7 @@ using namespace Nc::Graphic;
 FontMap         PlainTextFormater::_mapFont;
 
 PlainTextFormater::PlainTextFormater(float charSize, const Color &color, const std::string &ttf, const Utils::Mask<Style> &s)
-    : _style(s), _charSize(charSize), _color(color), _documentSize(0), _alignment(Left)
+    : ITextFormater(), _style(s), _charSize(charSize), _color(color), _documentSize(0), _alignment(Left)
 {
     // search the font in the map
     FontMap::iterator it = _mapFont.find(ttf);
