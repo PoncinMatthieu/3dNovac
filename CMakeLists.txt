@@ -21,6 +21,15 @@ set(NC_VERSION "${NC_VERSION_MAJOR}.${NC_VERSION_MINOR}" )
 add_definitions(-DNC_VERSION=\"${NC_VERSION}\")
 message("*** Using Nc version ${NC_VERSION} ***")
 
+# remove graphical libs if we don't find Opengl, we most likely are building on a server.
+find_package(OpenGL QUIET)
+if (NOT ${OPENGL_FOUND})
+   message("*** Can't find OpenGL, removing Graphical libs from build. ***")
+   set(NC_BUILD_GRAPHIC_LIBS false)
+else()
+   set(NC_BUILD_GRAPHIC_LIBS true)
+endif()
+
 if(NOT DEFINED NC_BUILD_PLUGINS)
     set(NC_BUILD_PLUGINS true CACHE BOOL "If true, add the plugins to the project.")
 endif()
@@ -40,25 +49,27 @@ mark_as_advanced(LIBRARY_OUTPUT_PATH)
 # add 3dNovac modules
 # the second argument is usefull for an out of source build.
 add_subdirectory(./Nc/Core/ ./Nc/Core/)
-add_subdirectory(./Nc/Graphics/ ./Nc/Graphics/)
-add_subdirectory(./Nc/GUI/ ./Nc/GUI/)
-add_subdirectory(./Nc/Contrib/ ./Nc/Contrib/)
-add_subdirectory(./Nc/Audio/ ./Nc/Audio/)
 add_subdirectory(./Nc/Net/ ./Nc/Net/)
+if (NC_BUILD_GRAPHIC_LIBS)
+   add_subdirectory(./Nc/Graphics/ ./Nc/Graphics/)
+   add_subdirectory(./Nc/GUI/ ./Nc/GUI/)
+   add_subdirectory(./Nc/Contrib/ ./Nc/Contrib/)
+   add_subdirectory(./Nc/Audio/ ./Nc/Audio/)
+endif()
 
 # Following projects won't be compiled with the ALL target or when you execute "make", to compile then, you must specify the target in your IDE or by "make 'TargetName'".
 # Those projects are optional.
 # plugins
-if(NC_BUILD_PLUGINS)
+if(NC_BUILD_PLUGINS AND NC_BUILD_GRAPHIC_LIBS)
   add_subdirectory(./Plugin/FileFormatCollada/ ./Plugin/FileFormatCollada/)
 endif()
 
 # examples
-if(NC_BUILD_EXAMPLES)
+if(NC_BUILD_EXAMPLES AND NC_BUILD_GRAPHIC_LIBS)
   add_subdirectory(./Examples/ ./Examples/)
 endif()
 
 # demos
-if(NC_BUILD_DEMOS)
+if(NC_BUILD_DEMOS AND NC_BUILD_GRAPHIC_LIBS)
   add_subdirectory(./Demos/ ./Demos/)
 endif()
