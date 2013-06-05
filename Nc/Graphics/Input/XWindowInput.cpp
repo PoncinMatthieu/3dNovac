@@ -213,15 +213,15 @@ void XWindowInput::ProcessEvent(XEvent &event)
                     int length = Xutf8LookupString(_inputContext, &event.xkey, reinterpret_cast<char*>(keyBuffer), sizeof(keyBuffer), NULL, &returnedStatus);
                     if (length > 0)
                     {
-                        UInt32 text[2]; // just in case, but 1 character should be enough
-                        const UInt32* end = Utils::Convert::Unicode::ANSIToUTF32(keyBuffer, keyBuffer + length, text);
-
-                        if (end > text)
+                        UInt32 unicode = 0;
+                        unicode = Utils::Convert::Unicode::UTF8ToUTF32(keyBuffer, keyBuffer + length, unicode, 0);
+                        if (unicode != 0)
                         {
                             Event textEvt(this, Event::TextEntered);
-                            textEvt.text.unicode = text[0];
+                            textEvt.text.unicode = unicode;
                             GenereEvent(textEvt);
                         }
+
                     }
                 }
                 else
