@@ -121,6 +121,10 @@ namespace Nc
                 template<typename In, typename Out>
                 Out ANSIToUTF32(In begin, In end, Out output, const std::locale &lc = std::locale());
 
+                /** Generic function to convert an ANSI characters range to an UTF-32 characters range, using the given locale class. */
+                template<typename In, typename Out>
+                Out UTF8ToUTF32(In begin, In end, Out output, Nc::UInt32 replacement = '?');
+
                 /** Generic function to convert an UTF-16 characters range to an UTF-32 characters range, using the given locale class. */
                 template <typename In, typename Out>
                 Out UTF16ToUTF32(In begin, In end, Out output, Nc::UInt32 replacement = '?');
