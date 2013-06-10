@@ -81,6 +81,9 @@ namespace Nc
                 /** Set whether we always scroll to the end of the text or not. */
                 void                            AlwaysSetToEndOfText(bool state)  {_alwaysSetToEndOfText = state;}
 
+                /** \return the text document height */
+                unsigned int                    TextDocumentHeight()    {return _textDocument->text->Size()[1];}
+
                 /** \return the text. */
                 const Utils::Unicode::UTF32     &PlainText() const      {return _textDocument->text->PlainText();}
                 /** Set the text. */

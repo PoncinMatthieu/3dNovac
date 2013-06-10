@@ -37,6 +37,8 @@ using namespace Nc::System;
 using namespace Nc::GUI;
 using namespace Nc::Graphic;
 
+Widget::StencilStack     Widget::_stencilStack;
+
 Widget::Widget(const AlignmentMask &alignment, const Vector2i &size)
     : Object()
 {
@@ -237,7 +239,24 @@ bool Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
         if (size[1] < 0)
             size[1] = 0;
 
+        // reduce the stencil to the top of the stencil stack
+        if (_stencilStack.size() > 0)
+        {
+            if (pos[0] < _stencilStack.top().Min()[0])
+                pos[0] = _stencilStack.top().Min()[0];
+            if (pos[1] < _stencilStack.top().Min()[1])
+                pos[1] = _stencilStack.top().Min()[1];
+
+            if (size[0] > _stencilStack.top().Max()[0] - (pos[0] - _stencilStack.top().Min()[0]))
+                size[0] = _stencilStack.top().Max()[0] - (pos[0] - _stencilStack.top().Min()[0]);
+            if (size[1] > _stencilStack.top().Max()[1] - (pos[1] - _stencilStack.top().Min()[1]))
+                size[1] = _stencilStack.top().Max()[1] - (pos[1] - _stencilStack.top().Min()[1]);
+        }
+
         scene->GLState()->Scissor(pos[0], pos[1], size[0], size[1]);
+
+        // push the new stencil limit
+        _stencilStack.push(Box2i(pos, size));
     }
     return true;
 }
@@ -245,7 +264,14 @@ bool Widget::RenderChildsBegin(Graphic::SceneGraph *scene)
 void Widget::RenderChildsEnd(Graphic::SceneGraph *scene)
 {
     if (_useStencil)
-        scene->GLState()->Disable(GL::Enum::ScissorTest);
+    {
+        _stencilStack.pop();
+
+        if (_stencilStack.size() > 0)
+            scene->GLState()->Scissor(_stencilStack.top().Min()[0], _stencilStack.top().Min()[1], _stencilStack.top().Max()[0], _stencilStack.top().Max()[1]);
+        else
+            scene->GLState()->Disable(GL::Enum::ScissorTest);
+    }
 }
 
 void Widget::Draw(Graphic::SceneGraph *scene)

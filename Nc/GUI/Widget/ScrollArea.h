@@ -65,8 +65,6 @@ namespace Nc
 
                 /** Resize the geometry of the scroll area. */
                 virtual void        Resize();
-                /** Check the state and update the matrix before rendering. */
-                virtual void        RenderBegin(Graphic::SceneGraph *scene);
                 /** draw Debug GUI and update the matrix before rendering. */
                 virtual void        RenderEnd(Graphic::SceneGraph *scene);
                 /** Render the scroll area. */

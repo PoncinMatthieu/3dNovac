@@ -44,6 +44,9 @@ namespace Nc
         */
         class LIB_NC_GUI  Widget : public Graphic::Object
         {
+            private:
+                typedef std::stack<Box2i>   StencilStack;
+
             public:
                 NC_SYSTEM_DEFINE_OBJECT_INVOKABLE(Graphic::Object, System::Object, System::Object, Nc::GUI::Widget);
 
@@ -325,6 +328,8 @@ namespace Nc
                 Engine::Handler         _eventHandler;              ///< manage widget events.
 
                 //Vector2i                _absolutePos;               ///< for performance reason, we store the absolute position of the widget.
+
+                static StencilStack     _stencilStack;              ///< global stack used to stack/unstack stencil limits between child widgets.
 
                 template<typename VisitorType, bool IsConst, typename ReturnType>
                 friend class Visitor::WidgetVisitor;

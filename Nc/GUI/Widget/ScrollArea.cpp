@@ -180,11 +180,6 @@ void ScrollArea::Draw(Graphic::SceneGraph *scene)
     Widget::Draw(scene);
 }
 
-void ScrollArea::RenderBegin(Graphic::SceneGraph *scene)
-{
-    Widget::RenderBegin(scene);
-}
-
 void ScrollArea::RenderEnd(Graphic::SceneGraph *scene)
 {
     _scrollBarH->RenderNode(scene);
