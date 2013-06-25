@@ -44,6 +44,7 @@ add_subdirectory(./Nc/Graphics/ ./Nc/Graphics/)
 add_subdirectory(./Nc/GUI/ ./Nc/GUI/)
 add_subdirectory(./Nc/Contrib/ ./Nc/Contrib/)
 add_subdirectory(./Nc/Audio/ ./Nc/Audio/)
+add_subdirectory(./Nc/Net/ ./Nc/Net/)
 
 # Following projects won't be compiled with the ALL target or when you execute "make", to compile then, you must specify the target in your IDE or by "make 'TargetName'".
 # Those projects are optional.

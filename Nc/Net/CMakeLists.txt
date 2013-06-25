@@ -49,6 +49,8 @@ endif()
 if (NOT NC_NET_BUILD_TLS_BOTAN)
   file(GLOB Nc-Net-TLS-Botan ./TlsConnection.cpp ./TlsConnection.h)
   list(REMOVE_ITEM Nc-Net-sources ${Nc-Net-TLS-Botan})
+else()
+  include_directories(/usr/local/include/botan-1.10/)
 endif()
 
 if (NOT NC_NET_BUILD_KYOTOTYCOON)
