@@ -6,6 +6,8 @@
 #include "Define.h"
 #include "Packet.h"
 #include "Layer.h"
+#include "ReliableLayer.h"
+#include "FlowControl.h"
 
 namespace Nc
 {
@@ -17,7 +19,7 @@ namespace Nc
             public:
                 typedef void (Callback::*Method)(const Packet &p);
 
-                Callback(TcpConnection *tcpConnection = NULL);
+                Callback(TcpConnection *tcpConnection = NULL, UdpConnection *udpConnection = NULL);
                 virtual ~Callback();
 
                 /** Convert the callback to string. */
@@ -28,8 +30,10 @@ namespace Nc
 
                 /** \return the tcp handler. */
                 TcpConnection   *GetTcpConnection()         {return _tcpConnection;}
+                /** \return the udp handler. */
+                UdpConnection   *GetUdpConnection()         {return _udpConnection;}
                 /** Set the connection used by the callback. */
-                virtual void    SetupConnection(TcpConnection *tcpConnection);
+                virtual void    SetupConnections(TcpConnection *tcpConnection, UdpConnection *udpConnection = NULL);
 
                 /** Call the given callback, can be redefined, to for exemple manage a ping method and check if clients are responding. */
                 virtual void    CallCallback(Method callback, const Packet &p);
@@ -38,11 +42,29 @@ namespace Nc
                 virtual void    Update(float elapsedTime);
 
                 /** \return the tcp layer taking care of the protocol. */
-                Layer           &TcpLayer()             {return _tcpLayer;}
+                Layer           &TcpLayer()                             {return _tcpLayer;}
+                /** \return the udp layer taking care of the protocol. */
+                ReliableLayer   &UdpLayer()                             {return _udpLayer;}
+
+                /** Called to check lost packets from the udp layer. */
+                virtual void    CheckLostPackets(const PacketQueue &lostPackets)    {}
+                /** Called to send the game state to the udp connection. */
+                virtual void    SendStates()                                        {}
+
+                /** \return the time to the next update states on the client. */
+                float           NextUpdateStatesTime() const            {return (1.f / _flowControl.SendRate()) - _lastUpdateStatesTime;}
 
             protected:
                 TcpConnection   *_tcpConnection;            ///< handler for the tcp connection.
+                UdpConnection   *_udpConnection;            ///< handler for the udp connection.
+
                 Layer           _tcpLayer;                  ///< manage the tcp protocol application layer.
+                ReliableLayer   _udpLayer;                  ///< manage the udp protocol application layer.
+                FlowControl     _flowControl;               ///< class controlling the send rate to send to the client for the udp connection.
+                bool            _sendStates;                ///< if true, check acked packets and send states depending on the flow control.
+
+            private:
+                float           _lastUpdateStatesTime;
         };
     }
 }
