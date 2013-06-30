@@ -93,7 +93,7 @@ namespace Unicode
 	}
 
 	template<typename In, typename Out>
-        Out UTF8ToUTF32(In begin, In end, Out output, Nc::UInt32 replacement = '?')
+        Out UTF8ToUTF32(In begin, In end, Out output, Nc::UInt32 replacement)
 	{
 		// Some useful precomputed data
     		static const int trailing[256] =

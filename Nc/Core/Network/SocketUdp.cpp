@@ -151,7 +151,7 @@ bool    SocketUdp::Write(const unsigned char *src, unsigned int size, const Ip &
         int sent = 0;
         for (unsigned int len = 0; len < size; len += sent)
         {
-            sent = sendto(_descriptor, reinterpret_cast<const unsigned char*>(src) + len, size - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
+            sent = sendto(_descriptor, (const char*)src + len, size - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
             if (sent <= 0)
                 return false;
         }
@@ -182,7 +182,7 @@ int    SocketUdp::Read(unsigned char *dst, unsigned int maxSize, Ip &ip, unsigne
         #endif
 
         // Receive a chunk of bytes
-        r = recvfrom(_descriptor, dst, static_cast<int>(maxSize), 0, reinterpret_cast<sockaddr*>(&sender), &senderSize);
+        r = recvfrom(_descriptor, (char*)dst, static_cast<int>(maxSize), 0, reinterpret_cast<sockaddr*>(&sender), &senderSize);
 
         // Check the number of bytes received and fill the ip/port of the sender
         if (r > 0)
