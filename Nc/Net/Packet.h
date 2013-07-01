@@ -9,7 +9,7 @@ namespace Nc
     namespace Net
     {
         /// Encapsulate a received packet.
-        class Packet : public Utils::NonCopyable
+        class LIB_NC_NET Packet : public Utils::NonCopyable
         {
             public:
                 Packet(unsigned char *data, unsigned int size)

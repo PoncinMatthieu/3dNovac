@@ -120,7 +120,7 @@ unsigned int    TcpConnection::ManageReceivedPacket(unsigned char *buffer, unsig
         return readSize;
     }
 
-    typename MapCallback::iterator it = _callbacks.find(code);
+    MapCallback::iterator it = _callbacks.find(code);
     if (it != _callbacks.end())
     {
         try
@@ -176,7 +176,7 @@ void    TcpConnection::ReceiveRequests()
     if (r > 0)
     {
         unsigned int pos = 0;
-        while (pos < r)
+        while ((int)pos < r)
             pos += ManageReceivedPacket(_buffer + pos, r - pos);
     }
 }

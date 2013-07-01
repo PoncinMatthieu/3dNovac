@@ -45,7 +45,7 @@ namespace Nc
             int size;						// packet size in bytes
         };
 
-        struct PacketQueue : public std::list<PacketData>
+        struct /*LIB_NC_NET*/ PacketQueue : public std::list<PacketData>
         {
             /**
                 The method manage the wrap around of the sequence number. (When the sequence number reach the maximum number and then go back to 0)
