@@ -9,7 +9,7 @@ namespace Nc
     namespace GUI
     {
         /// Define an Item meant to be used with a TreeWidget.
-        class TreeItem : public Item
+        class LIB_NC_GUI TreeItem : public Item
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT_VISITABLE(Item, Nc::System::Object, Nc::GUI::TreeItem);
