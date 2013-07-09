@@ -85,7 +85,7 @@ namespace Nc
                     Write (send) to the descriptor an array of byte.
                     Close the socket automatically if the pipe is broken.
                 */
-                void            Write(const unsigned char src[], size_t size);
+                void            Write(const unsigned char *src, size_t size);
 
                 /**
                     Read (receive) from the descriptor an array of type T into \p dst.
@@ -99,19 +99,19 @@ namespace Nc
                     Close the socket automatically if the pipe is closed.
                     \return the received size. If the received size is 0 and you send more than 0 byte, it meens that the connection has been disconnected.
                 */
-                size_t          Read(unsigned char dst[], size_t size);
+                size_t          Read(unsigned char *dst, size_t size);
         };
 
         template<typename T, unsigned int D>
         void            SocketTcp::WriteDatagram(const Math::Array<T,D> &src)
         {
-            Write((const unsigned char*)src.data, src.Size());
+            Write(static_cast<const unsigned char*>(src.data), src.Size());
 		}
 
 		template<typename T, unsigned int D>
 		size_t          SocketTcp::ReadDatagram(Math::Array<T,D> &dst)
 		{
-            return Read((unsigned char*)dst.data, dst.Size());
+            return Read(static_cast<unsigned char*>(dst.data), dst.Size());
         }
     }
 }

@@ -162,14 +162,14 @@ void    SocketTcp::Write(const unsigned char src[], size_t size)
     }
 }
 
-size_t    SocketTcp::Read(unsigned char dst[], size_t size)
+size_t    SocketTcp::Read(unsigned char *dst, size_t size)
 {
     if (!IsValid())
         throw Utils::Exception("SocketTcp", "Can't read, The socket is not valid");
     size_t r = 0;
     if (size > 0)
     {
-        r = recv(_descriptor, dst, static_cast<int>(size), 0);
+		r = recv(_descriptor, (char*)dst, static_cast<int>(size), 0);
         if (r <= 0)
             Close(); // pipe closed, closing socket.
     }

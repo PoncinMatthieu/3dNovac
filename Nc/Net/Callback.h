@@ -14,7 +14,7 @@ namespace Nc
     namespace Net
     {
         /// Base class receiving every requests from an udp/tcp connections
-        class Callback : Utils::NonCopyable
+        class LIB_NC_NET Callback : Utils::NonCopyable
         {
             public:
                 typedef void (Callback::*Method)(const Packet &p);
