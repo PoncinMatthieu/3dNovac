@@ -252,8 +252,8 @@ namespace Nc
                     :   Utils::VisitorManager::InvokableVisitor<VisitorType, Base, ReturnType>(postVisits),
                         _visitMethod(visitTarget)
                 {
-                    InitVTableInvokable(visitableList, NodeInvoker());
-                    InitVTable(toVisitList, NodeVisiter());
+                    this->InitVTableInvokable(visitableList, NodeInvoker());
+                    this->InitVTable(toVisitList, NodeVisiter());
                 }
 
                 template<class NodeType>

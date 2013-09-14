@@ -39,13 +39,12 @@ public:
   void Write()
   {
     for (ListPendingRequest::iterator it = _pendingRequests.begin(); !_pendingRequests.empty(); it = _pendingRequests.erase(it))
-      if (!Nc::Network::SocketTcp::Write(it->c_str(), it->size()))
-	Close();
+      Nc::Network::SocketTcp::Write(reinterpret_cast<const unsigned char*>(it->c_str()), it->size());
   }
 
 
 private:
-  Nc::Math::Array<char, BUFF_SIZE + 1>	_buffer;		///< buffer for reading
+  Nc::Math::Array<unsigned char, BUFF_SIZE + 1>	_buffer;		///< buffer for reading
   ListPendingRequest			_pendingRequests;	///< streams to send
 };
 

@@ -33,14 +33,6 @@
 #include <time.h>
 
 #include "../Define.h"
-#include "Array.h"
-#include "Vector3D.h"
-#include "Vector2D.h"
-#include "Matrix4x4.h"
-#include "Box3D.h"
-#include "Box2D.h"
-#include "Pixel.h"
-#include "Test.h"
 
 /// Global Namespace of 3dNovac.
 namespace Nc
@@ -97,5 +89,14 @@ namespace Nc
         }
     }
 }
+
+#include "Array.h"
+#include "Vector3D.h"
+#include "Vector2D.h"
+#include "Matrix4x4.h"
+#include "Box3D.h"
+#include "Box2D.h"
+#include "Pixel.h"
+#include "Test.h"
 
 #endif

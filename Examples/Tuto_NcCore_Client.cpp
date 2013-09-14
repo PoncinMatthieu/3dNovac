@@ -8,12 +8,12 @@ using namespace Nc;
 
 int main()
 {
-  char			buf[BUFF_SIZE + 1];
-  float			timeout = 0;
-  unsigned int		port = 4242;
-  Network::Ip		ip("127.0.0.1");
+  unsigned char	        buf[BUFF_SIZE + 1];
+  float			        timeout = 0;
+  unsigned int		    port = 4242;
+  Network::Ip		    ip("127.0.0.1");
   Network::SocketTcp	socket;
-  Network::Select	select;
+  Network::Select	    select;
 
   // connection
   socket.Create();
