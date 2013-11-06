@@ -57,6 +57,9 @@ namespace Nc
                 /** Set the sprite of the widget. */
                 void                Sprite(Graphic::Sprite *sp);
 
+                /** Set whether we want to keep the ratio of the image or not. */
+                void                KeepRatio(bool state)           {_keepRatio = state;}
+
             protected:
                 /** Update the geometry of the image. */
                 virtual void    UpdateState();
