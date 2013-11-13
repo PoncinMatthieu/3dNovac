@@ -142,7 +142,7 @@ bool    SocketTcp::Accept(SocketTcp &newClient, Ip &newclientIp)
     return true;
 }
 
-void    SocketTcp::Write(const unsigned char src[], size_t size)
+void    SocketTcp::Write(const unsigned char *src, size_t size)
 {
     if (!IsValid())
         throw Utils::Exception("SocketTcp", "Can't write, The socket is not valid");
@@ -152,7 +152,7 @@ void    SocketTcp::Write(const unsigned char src[], size_t size)
         size_t sent = 0;
         for (size_t len = 0; len < size; len += sent)
         {
-            sent = send(_descriptor, reinterpret_cast<const char*>(src) + len, size - len, 0);
+	    sent = send(_descriptor, (const char*)src + len, size - len, 0);
             if (sent <= 0)
             {
                 Close(); // pipe broken, closing socket.
@@ -169,7 +169,7 @@ size_t    SocketTcp::Read(unsigned char *dst, size_t size)
     size_t r = 0;
     if (size > 0)
     {
-		r = recv(_descriptor, (char*)dst, static_cast<int>(size), 0);
+        r = recv(_descriptor, (char*)dst, static_cast<int>(size), 0);
         if (r <= 0)
             Close(); // pipe closed, closing socket.
     }

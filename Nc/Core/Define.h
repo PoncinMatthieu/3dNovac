@@ -86,10 +86,12 @@
 
 // Define LOG
     #ifndef LOG
-        #if defined(_DEBUG) && defined(_DEBUG_LOG)
-            #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
-        #else
-            #define _DEBUG_LOG_DEF
+        #if !defined(_DEBUG_LOG_DEF)
+            #if defined(_DEBUG) && defined(_DEBUG_LOG)
+                #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
+            #else
+                #define _DEBUG_LOG_DEF
+            #endif
         #endif
 
         #define LOG             Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 0)

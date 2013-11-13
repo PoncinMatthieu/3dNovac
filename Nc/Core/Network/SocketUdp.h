@@ -128,7 +128,7 @@ namespace Nc
                 int reelSize = src.Size() * sizeof(T);
                 for (int len = 0; len < reelSize; len += sent)
                 {
-                    sent = sendto(_descriptor, reinterpret_cast<const char*>(src.data) + len, reelSize - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
+                    sent = sendto(_descriptor, reinterpret_cast<const unsigned char*>(src.data) + len, reelSize - len, 0, reinterpret_cast<sockaddr*>(&target), sizeof(target));
                     if (sent <= 0)
                         return false;
                 }

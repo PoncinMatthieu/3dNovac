@@ -43,6 +43,12 @@ namespace Nc
                 Daemonizer();
                 virtual ~Daemonizer();
 
+                /** \return true if the application is launched as root. */
+                static bool     IsRoot();
+
+                /** Set the current uid with the given username. */
+                void            Setuid(const std::string &username);
+
                 /**
                     Daemonize the program.
                     Steps to daemonize a program are:

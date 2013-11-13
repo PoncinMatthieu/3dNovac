@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include <syslog.h>
 #include <string.h>
+#include <pwd.h>
 #include "Exception.h"
 #include "Daemonizer.h"
 
@@ -47,6 +48,20 @@ Daemonizer::Daemonizer()
 
 Daemonizer::~Daemonizer()
 {
+}
+
+bool    Daemonizer::IsRoot()
+{
+    return (getuid() == 0);
+}
+
+void    Daemonizer::Setuid(const std::string &username)
+{
+    struct passwd *pwd = getpwnam(username.c_str());
+    if (pwd == NULL)
+        throw Exception("Daemonizer", "Failed to fetch the uid for the given username: " + username);
+    if (setuid(pwd->pw_uid) != 0)
+        throw Exception("Daemonizer", "Failed to set the user id. - " + std::string(strerror(errno)));
 }
 
 void    Daemonizer::Fork(const FileName &pidFile, const FileName &workingDirectory)
@@ -78,8 +93,8 @@ void    Daemonizer::Fork(const FileName &pidFile, const FileName &workingDirecto
             throw Exception("Daemonizer", "Failed to change working directory. - " + std::string(strerror(errno)));
     }
 
-    // Close out the standard file descriptors
-    close(STDIN_FILENO);
+    // Close the standard file descriptors
+    //close(STDIN_FILENO); ///< closing stdin cause a "socket exception" with the mongodb driver when compiled in debug mode.
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
 
