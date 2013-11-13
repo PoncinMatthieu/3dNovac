@@ -4,6 +4,7 @@
 
 #include <mongo/client/dbclient.h>
 #undef LOG // force redefinition of the macro overwrite by mongodb headers
+#undef LOG_DEBUG
 
 #include <Nc/Core/Utils/Logger.h>
 #include <Nc/Core/Math/Math.h>

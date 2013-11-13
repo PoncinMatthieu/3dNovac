@@ -40,7 +40,16 @@ auto_ptr<mongo::DBClientCursor>     Mongo::Query(const std::string &collection, 
 {
     if (_db == NULL)
         throw Utils::Exception("Mongo::Query", "The db is not connected!");
-    return _db->query(_dbName + "." + collection, query, nToReturn, nToSkip, fieldsToReturn, queryOptions, batchSize);
+
+    try
+    {
+        return _db->query(_dbName + "." + collection, query, nToReturn, nToSkip, fieldsToReturn, queryOptions, batchSize);
+    }
+    catch(const mongo::SocketException& e)
+    {
+        LOG << "Error Mongo::Query: " << e.what() << " // " << e.toString() << std::endl;
+        throw;
+    }
 }
 
 void    Mongo::Insert(const string &collection, const BSONObj &obj)

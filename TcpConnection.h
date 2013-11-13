@@ -12,7 +12,7 @@ namespace Nc
     namespace Net
     {
         /// Manage a Tcp connection.
-        class TcpConnection : public Connection<Network::SocketTcp>
+        class LIB_NC_NET TcpConnection : public Connection<Network::SocketTcp>
         {
             protected:
                 typedef std::list<Math::Array<unsigned char> >		ListPendingRequest;

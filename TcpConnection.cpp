@@ -120,7 +120,7 @@ unsigned int    TcpConnection::ManageReceivedPacket(unsigned char *buffer, unsig
         return readSize;
     }
 
-    typename MapCallback::iterator it = _callbacks.find(code);
+    MapCallback::iterator it = _callbacks.find(code);
     if (it != _callbacks.end())
     {
         try
@@ -135,7 +135,18 @@ unsigned int    TcpConnection::ManageReceivedPacket(unsigned char *buffer, unsig
         }
     }
     else
+    {
         Error(UNKNOWN_PACKET);
+
+#ifdef _DEBUG
+        LOG_DEBUG << "[DEBUG] packet code was: " << code << std::endl;
+        LOG_DEBUG << "[DEBUG] callbacks registered: " << std::endl;
+        for (MapCallback::iterator it = _callbacks.begin(); it != _callbacks.end(); ++it)
+        {
+            LOG_DEBUG << "[DEBUG] code: " << it->first << std::endl;
+        }
+#endif
+    }
     return packetSize + headerSize;
 }
 
@@ -176,7 +187,7 @@ void    TcpConnection::ReceiveRequests()
     if (r > 0)
     {
         unsigned int pos = 0;
-        while (pos < r)
+        while ((int)pos < r)
             pos += ManageReceivedPacket(_buffer + pos, r - pos);
     }
 }

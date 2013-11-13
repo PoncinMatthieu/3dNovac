@@ -12,7 +12,7 @@ namespace Nc
         /**
             \sa ReliableLayer, to be used with Udp
         */
-        class Layer
+        class LIB_NC_NET Layer
         {
             private:
                 struct Header
