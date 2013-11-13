@@ -29,11 +29,15 @@ namespace Nc
                 virtual void            ToString(std::ostream &oss) const       {}
 
                 /** \return the tcp handler. */
-                TcpConnection   *GetTcpConnection()         {return _tcpConnection;}
+                TcpConnection		*GetTcpConnection()		{return _tcpConnection;}
+                /** \return the tcp handler. */
+                const TcpConnection	*GetTcpConnection() const	{return _tcpConnection;}
                 /** \return the udp handler. */
-                UdpConnection   *GetUdpConnection()         {return _udpConnection;}
+                UdpConnection		*GetUdpConnection()		{return _udpConnection;}
+                /** \return the udp handler. */
+                const UdpConnection	*GetUdpConnection() const	{return _udpConnection;}
                 /** Set the connection used by the callback. */
-                virtual void    SetupConnections(TcpConnection *tcpConnection, UdpConnection *udpConnection = NULL);
+                virtual void		SetupConnections(TcpConnection *tcpConnection, UdpConnection *udpConnection = NULL);
 
                 /** Call the given callback, can be redefined, to for exemple manage a ping method and check if clients are responding. */
                 virtual void    CallCallback(Method callback, const Packet &p);

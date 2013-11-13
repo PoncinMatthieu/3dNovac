@@ -61,6 +61,10 @@ void    Callback::Update(float elapsedTime)
         _tcpConnection->Disconnect();
     }
 
+    // no need to update the flow control if the udp is not set.
+    if (_udpConnection == NULL)
+        return;
+
     // update the flow control class.
     _flowControl.Update(elapsedTime, _udpLayer.RTT());
 

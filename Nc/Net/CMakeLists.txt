@@ -65,7 +65,7 @@ if (NC_NET_BUILD_MONGO)
   target_link_libraries(Nc-Net mongoclient boost_thread-mt boost_filesystem boost_program_options boost_system)
 endif()
 if (NC_NET_BUILD_TLS_BOTAN)
-  target_link_libraries(Nc-Net botan-1.10)
+  target_link_libraries(Nc-Net botan-1.10 ssl) # I don't know why, but I had to add the 'ssl' lib as well as botan.. ssl shouldn't be needed.
 endif()
 if (NC_NET_BUILD_KYOTOTYCOON)
   target_link_libraries(Nc-Net kyototycoon)
