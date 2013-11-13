@@ -173,7 +173,8 @@ namespace Nc
         template<typename T, template<typename> class N>
         void        BinaryTree<T,N>::Insert(const T &key)
         {
-            NodeType *n = new NodeType(key);
+            NodeType *n = new NodeType();
+			n->data = key;
             _root = (_root != NULL) ? _root->Insert(n) : n;
 
             // record first-last node

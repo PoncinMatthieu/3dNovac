@@ -185,7 +185,7 @@ namespace Nc
         }
 
         /// Provide a definition of input event designed especially to manage event of WindowInput.
-        struct LCORE Event
+        struct LIB_NC_CORE Event
         {
             /// Define a key evenement.
             struct KeyEvent
@@ -206,9 +206,10 @@ namespace Nc
             /// Define a mouse button evenement.
             struct MouseButtonEvent
             {
-                Mouse::Button button;
-                int           x;
-                int           y;
+                Mouse::Button   button;
+                int             x;
+                int             y;
+                bool            doubled;    ///< if true, the event is a double click.
             };
 
             /// Define a mouse weel event.
@@ -237,7 +238,7 @@ namespace Nc
                 Resized,
                 LostFocus,
                 GainedFocus,
-                TextEntered, ///\todo implement the text entered event under window.
+                TextEntered,
                 KeyPressed,
                 KeyReleased,
                 MouseWheelMoved,

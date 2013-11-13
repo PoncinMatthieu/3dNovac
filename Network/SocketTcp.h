@@ -46,7 +46,7 @@ namespace Nc
 				- Ip
 				- Select
 		*/
-        class LCORE SocketTcp : public ISocket
+        class LIB_NC_CORE SocketTcp : public ISocket
         {
             public:
                 SocketTcp();
@@ -77,62 +77,41 @@ namespace Nc
 
                 /**
                     Write (send) to the descriptor an array of type T.
-                    \return true if no error.
+                    Close the socket automatically if the pipe is broken.
                 */
                 template<typename T, unsigned int D>
-                bool            Write(const Math::Array<T,D> &src);
+                void            WriteDatagram(const Math::Array<T,D> &src);
                 /**
                     Write (send) to the descriptor an array of byte.
-                    \return true if no error.
+                    Close the socket automatically if the pipe is broken.
                 */
-                bool            Write(const char *src, unsigned int size);
+                void            Write(const unsigned char *src, size_t size);
 
                 /**
                     Read (receive) from the descriptor an array of type T into \p dst.
+                    Close the socket automatically if the pipe is closed.
                     \return the received size. If the received size is 0 and you send more than 0 byte, it meens that the connection has been disconnected.
                 */
                 template<typename T, unsigned int D>
-                int             Read(Math::Array<T,D> &dst);
+                size_t          ReadDatagram(Math::Array<T,D> &dst);
                 /**
                     Read (receive) from the descriptor an array of byte into \p dst.
+                    Close the socket automatically if the pipe is closed.
                     \return the received size. If the received size is 0 and you send more than 0 byte, it meens that the connection has been disconnected.
                 */
-                int             Read(char *dst, unsigned int maxSize);
+                size_t          Read(unsigned char *dst, size_t size);
         };
 
         template<typename T, unsigned int D>
-        bool            SocketTcp::Write(const Math::Array<T,D> &src)
+        void            SocketTcp::WriteDatagram(const Math::Array<T,D> &src)
         {
-            if (!IsValid())
-                throw Utils::Exception("SocketTcp", "Can't write, The socket is not valid");
-
-            if (src.Size() > 0)
-            {
-                int sent = 0;
-                int reelSize = src.Size() * sizeof(T);
-                for (int len = 0; len < reelSize; len += sent)
-                {
-					sent = send(_descriptor, static_cast<const char*>(src.data) + len, reelSize - len, 0);
-					if (sent <= 0)
-						return false;
-				}
-			}
-			return true;
+            Write(static_cast<const unsigned char*>(src.data), src.Size());
 		}
 
 		template<typename T, unsigned int D>
-		int             SocketTcp::Read(Math::Array<T,D> &dst)
+		size_t          SocketTcp::ReadDatagram(Math::Array<T,D> &dst)
 		{
-			if (!IsValid())
-				throw Utils::Exception("SocketTcp", "Can't read, The socket is not valid");
-			int r = 0;
-			if (dst.Size() > 0)
-			{
-				r = recv(_descriptor, static_cast<char*>(dst.data), static_cast<int>(dst.Size() * sizeof(T)), 0);
-                if (r != 0)
-                    r /= sizeof(T);
-			}
-            return r;
+            return Read(static_cast<unsigned char*>(dst.data), dst.Size());
         }
     }
 }

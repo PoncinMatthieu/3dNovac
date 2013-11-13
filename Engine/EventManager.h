@@ -48,7 +48,7 @@ namespace Nc
         typedef void (EventManager::*CmdFunction)(IEvent *e);
 
         /// Interface to define an engine event.
-        struct LCORE IEvent
+        struct LIB_NC_CORE IEvent
         {
             virtual ~IEvent()       {}
 
@@ -81,7 +81,7 @@ namespace Nc
             Cmds will be used to store command handler to be called at event reception.
 			The id is to identify the event, and call the function.
 		*/
-        struct LCORE Cmd
+        struct LIB_NC_CORE Cmd
         {
             Cmd(unsigned int i, CmdFunction f) : id(i), function(f)    {}
 
@@ -94,7 +94,7 @@ namespace Nc
             The Event manager allow to create command handlers by using the method 'AddNewCmd' which will take an id corresponding to the event and a pointer to a member function to call.
             Finnaly, events can be pushed from the Manager class to send events and call a command.
 		*/
-        class LCORE EventManager : public System::Object
+        class LIB_NC_CORE EventManager : public System::Object
         {
             public:
                 NC_SYSTEM_DEFINE_OBJECT(Nc::System::Object, Nc::Engine::EventManager);
@@ -132,7 +132,7 @@ namespace Nc
                 ListCmd                 _listCmd;                   ///< List of Event handler to use for the management of events.
                 System::Mutex           _mutexQueue;                ///< Protect the mutex queue.
 
-                friend LCORE std::ostream& operator << (std::ostream& Out, const EventManager& o);
+                friend LIB_NC_CORE std::ostream& operator << (std::ostream& Out, const EventManager& o);
         };
 
 

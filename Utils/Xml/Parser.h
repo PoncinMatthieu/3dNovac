@@ -44,7 +44,7 @@ namespace Nc
         namespace Xml
         {
             /// Provide a parser for reading an Xml format by using an std::istream.
-            class LCORE Parser
+            class LIB_NC_CORE Parser
             {
                 private:
                     enum TOKEN_TYPE {CDATA, DATA, TAG, END_TAG, COMMENT};

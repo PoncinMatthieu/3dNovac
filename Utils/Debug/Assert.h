@@ -33,27 +33,35 @@
 #include "CrashReporter.h"
 
 #ifndef Assert
-	#ifdef SYSTEM_WINDOWS
-		#define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
-	#else
-		#define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(__STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
-	#endif
+    #ifdef	NDEBUG
+        #define Assert(expr)		(__ASSERT_VOID_CAST (0))
+    #else
+        #ifdef SYSTEM_WINDOWS
+            #define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
+        #else
+            #define Assert(expr)    ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailed(__STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
+        #endif
+    #endif
 #endif
 
 #ifndef AssertError
-	#ifdef SYSTEM_WINDOWS
-		#define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, #expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
-	#else
-		#define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, __STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
-	#endif
+    #ifdef	NDEBUG
+        #define Assert(expr)		(__ASSERT_VOID_CAST (0))
+    #else
+        #ifdef SYSTEM_WINDOWS
+            #define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, #expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
+        #else
+            #define AssertError(expr, errorString)  ((expr) ? static_cast<void>(0) : Nc::Utils::AssertFailedError(errorString, __STRING(expr), __FILE__, __LINE__, __ASSERT_FUNCTION))
+        #endif
+    #endif
 #endif
 
 namespace Nc
 {
     namespace Utils
     {
-      LCORE void AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function);
-      LCORE void AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function);
+      LIB_NC_CORE void AssertFailed(const std::string &expr, const std::string &file, int line, const std::string &function);
+      LIB_NC_CORE void AssertFailedError(const std::string &error, const std::string &expr, const std::string &file, int line, const std::string &function);
     }
 }
 

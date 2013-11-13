@@ -45,7 +45,7 @@ namespace Nc
             \sa
                 - Input
         */
-        class LCORE InputListener : public Utils::NonCopyable
+        class LIB_NC_CORE InputListener : public Utils::NonCopyable
         {
             private:
                 typedef std::list<Input*>           ListInput;

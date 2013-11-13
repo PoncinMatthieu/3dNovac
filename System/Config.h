@@ -47,7 +47,7 @@ namespace Nc
                 \p Examples/bin/3dNovac.conf
                 \include bin/3dNovac.conf
         */
-        class LCORE Config : public Utils::Singleton<Config>
+        class LIB_NC_CORE Config : public Utils::Singleton<Config>
         {
             public:
                 /** Load the configuration file. */

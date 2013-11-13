@@ -59,16 +59,16 @@ endif()
 
 # set the export defines to export the symbole in the dll
 # those defines are more likely more usefull for Windows, but it could be interesting to keep these define on the other systems
-set_target_properties(Nc-Core PROPERTIES DEFINE_SYMBOL EXPORT_CORE)
+set_target_properties(Nc-Core PROPERTIES DEFINE_SYMBOL NC_EXPORT_CORE)
 
-# copy dll and .pdb files for excutable dependencies if NC_COPY_DEPENDENCIES_PATH is set
+# copy dll and .pdb files for excutable dependencies if the lib and bin output file are different
 if (WIN32)
-  if(NC_COPY_DEPENDENCIES_PATH)
-     add_custom_command(TARGET Nc-Core POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Core.dll ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  if(NOT ${LIBRARY_OUTPUT_PATH} EQUAL ${EXECUTABLE_OUTPUT_PATH})
+     add_custom_command(TARGET Nc-Core POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/Nc-Core.dll ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
      if (MSVC_IDE)
        if (${CMAKE_CFG_INTDIR} MATCHES "Debug")
-	 add_custom_command(TARGET Nc-Core POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${NC_DIR}/lib/${CMAKE_CFG_INTDIR}/Nc-Core.pdb ${NC_COPY_DEPENDENCIES_PATH}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+	 add_custom_command(TARGET Nc-Core POST_BUILD COMMAND "${CMAKE_COMMAND}" -E copy ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/Nc-Core.pdb ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_CFG_INTDIR}/ WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
        endif()
      endif()
    endif()

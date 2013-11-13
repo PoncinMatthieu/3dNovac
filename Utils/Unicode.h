@@ -40,7 +40,7 @@ namespace Nc
         namespace Unicode
         {
             /// Manipulate UTF32 string.
-            class LCORE UTF32 : public std::basic_string<Nc::UInt32>
+            class LIB_NC_CORE UTF32 : public std::basic_string<Nc::UInt32>
             {
                 public:
                     UTF32()  {}
@@ -50,6 +50,8 @@ namespace Nc
                     UTF32(const std::string &str);
                     UTF32(const std::wstring &str);
                     virtual ~UTF32()    {}
+
+                    UTF32 operator + (const UTF32 &str) const;
 
                     /** \return the number of occurence of the caractere 'c' in the unicode string. */
                     unsigned int        CharCount(Nc::UInt32 c) const;
@@ -64,7 +66,7 @@ namespace Nc
                     /** Convert and return the unicode string in standard std::wstring into the given std::wstring. */
                     std::wstring        &ToStdWString(std::wstring &str) const;
 
-                    friend LCORE std::ostream &operator << (std::ostream& os, const UTF32& s);
+                    friend LIB_NC_CORE std::ostream &operator << (std::ostream& os, const UTF32& s);
             };
         }
     }

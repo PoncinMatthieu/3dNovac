@@ -55,7 +55,7 @@ namespace Nc
                 - IEngine
                 - MainEngine
         */
-        class LCORE Manager : public Utils::NonCopyable
+        class LIB_NC_CORE Manager : public Utils::NonCopyable
         {
             public:
                 /// Define the engines permissions.

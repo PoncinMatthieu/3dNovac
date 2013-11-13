@@ -42,7 +42,7 @@ namespace Nc
 
 			Damn you windows!!!
 		*/
-		struct LCORE TagRegister
+		struct LIB_NC_CORE TagRegister
 		{
 			typedef std::map<std::string, size_t>	MapClassNameTagValue;
 

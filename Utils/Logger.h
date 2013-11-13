@@ -24,14 +24,13 @@
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_CORE_UTILS_LOG_H_
-#define NC_CORE_UTILS_LOG_H_
-
 #ifndef LOG
-    #if defined(_DEBUG) && defined(_DEBUG_LOG)
-        #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
-    #else
-        #define _DEBUG_LOG_DEF
+    #if !defined(_DEBUG_LOG_DEF)
+        #if defined(_DEBUG) && defined(_DEBUG_LOG)
+            #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
+        #else
+            #define _DEBUG_LOG_DEF
+        #endif
     #endif
 
     #define LOG             Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 0)
@@ -42,6 +41,9 @@
         #define LOG_DEBUG       Nc::Utils::Logger::Log(_DEBUG_LOG_DEF -1)
     #endif
 #endif
+
+#ifndef NC_CORE_UTILS_LOG_H_
+#define NC_CORE_UTILS_LOG_H_
 
 #include <iostream>
 #include <fstream>
@@ -62,7 +64,7 @@ namespace Nc
 
             The Logger is thread safe.
         */
-        class LCORE Logger : public Singleton<Logger>, NonCopyable
+        class LIB_NC_CORE Logger : public Singleton<Logger>, NonCopyable
         {
             public:
                 /** Prototype a function pointer to have a logging function. */
@@ -97,10 +99,13 @@ namespace Nc
                     Set an additionnel Logging function (function pointer).
                     See the typedef LogFunction to see the prototype.
                 */
-                inline void SetLoggingFunction(LogFunction f)   {_loggingfunction = f;}
+                inline void     SetLoggingFunction(LogFunction f)   {_loggingfunction = f;}
 
                 /** Close the file, with this you can change the conf file and relog, the function log automatically open the file. */
-                inline void CloseFile()                         {_file.close();}
+                inline void     CloseFile()                         {_file.close();}
+
+                /** Set whether the time should be writen for every log new lines or not. Default false. */
+                inline void     WriteTime(bool state)               {_writeTime = state;}
 
                 // surcharge de l'operateur << permettant d'appeler la fonction
                 // Write sur n'importe quel objet ayant defini la surcharge <<
@@ -135,8 +140,10 @@ namespace Nc
                 std::ofstream	_file;
                 FileName		_filename;
                 static int		_status;		// status d'ecriture du logger (default = 0; error = 1; debug = 2)
+                bool            _newLine;
+                bool            _writeTime;
 
-                friend /*LCORE*/ class Singleton<Logger>; // pour avoir acces a l'instance du singleton
+                friend /*LIB_NC_CORE*/ class Singleton<Logger>; // pour avoir acces a l'instance du singleton
         };
 
         template<class T>

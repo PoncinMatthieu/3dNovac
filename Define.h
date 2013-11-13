@@ -40,7 +40,7 @@
     #include <string>
 
     //#define NC_DYNAMIC_LINK
-    //#define EXPORT_MATH
+    //#define NC_EXPORT_CORE
 
 // define Operating System
 	#if !defined(SYSTEM_WINDOWS) && !defined(SYSTEM_LINUX) && !defined(SYSTEM_MACOS) && !defined(SYSTEM_FREEBSD)
@@ -72,24 +72,26 @@
 // linking option (static or shared)
     #ifdef SYSTEM_WINDOWS                                       // windows
         #ifdef NC_DYNAMIC_LINK                                  // dynamic
-            #ifdef EXPORT_CORE
-                #define LCORE       __declspec(dllexport)
+            #ifdef NC_EXPORT_CORE
+                #define LIB_NC_CORE       __declspec(dllexport)
             #else
-                #define LCORE       __declspec(dllimport)
+                #define LIB_NC_CORE       __declspec(dllimport)
             #endif
         #else                                                   // static (do nothing)
-            #define LCORE
+            #define LIB_NC_CORE
         #endif
     #else                                                       // others os (do nothing)
-        #define LCORE               ///< Linking option of Nc-Core module
+        #define LIB_NC_CORE               ///< Linking option of Nc-Core module
     #endif
 
 // Define LOG
     #ifndef LOG
-        #if defined(_DEBUG) && defined(_DEBUG_LOG)
-            #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
-        #else
-            #define _DEBUG_LOG_DEF
+        #if !defined(_DEBUG_LOG_DEF)
+            #if defined(_DEBUG) && defined(_DEBUG_LOG)
+                #define _DEBUG_LOG_DEF  __FILE__, __LINE__,
+            #else
+                #define _DEBUG_LOG_DEF
+            #endif
         #endif
 
         #define LOG             Nc::Utils::Logger::Log(_DEBUG_LOG_DEF 0)

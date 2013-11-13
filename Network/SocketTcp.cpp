@@ -142,31 +142,37 @@ bool    SocketTcp::Accept(SocketTcp &newClient, Ip &newclientIp)
     return true;
 }
 
-bool    SocketTcp::Write(const char *src, unsigned int size)
+void    SocketTcp::Write(const unsigned char *src, size_t size)
 {
     if (!IsValid())
         throw Utils::Exception("SocketTcp", "Can't write, The socket is not valid");
 
     if (size > 0)
     {
-        int sent = 0;
-        for (unsigned int len = 0; len < size; len += sent)
+        size_t sent = 0;
+        for (size_t len = 0; len < size; len += sent)
         {
-            sent = send(_descriptor, reinterpret_cast<const char*>(src) + len, size - len, 0);
+	    sent = send(_descriptor, (const char*)src + len, size - len, 0);
             if (sent <= 0)
-                return false;
+            {
+                Close(); // pipe broken, closing socket.
+                throw Utils::Exception("SocketTcp", "Failed to write over the socket.");
+            }
         }
     }
-    return true;
 }
 
-int    SocketTcp::Read(char *dst, unsigned int maxSize)
+size_t    SocketTcp::Read(unsigned char *dst, size_t size)
 {
     if (!IsValid())
         throw Utils::Exception("SocketTcp", "Can't read, The socket is not valid");
-    int r = 0;
-    if (maxSize > 0)
-        r = recv(_descriptor, dst, static_cast<int>(maxSize), 0);
+    size_t r = 0;
+    if (size > 0)
+    {
+        r = recv(_descriptor, (char*)dst, static_cast<int>(size), 0);
+        if (r <= 0)
+            Close(); // pipe closed, closing socket.
+    }
     return r;
 }
 

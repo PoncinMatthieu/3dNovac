@@ -47,7 +47,7 @@ namespace Nc
                 - SocketTcp
                 - SocketUdp
 		*/
-		class LCORE ISocket
+		class LIB_NC_CORE ISocket
         {
             public:
                 ISocket();

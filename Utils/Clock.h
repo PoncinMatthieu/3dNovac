@@ -45,13 +45,13 @@ namespace Nc
 			The clock is reset a first time in the constructor,
 			you can get the elapsed time since the last reset of the clock by calling the method ElapsedTime.
 		*/
-        class LCORE Clock
+        class LIB_NC_CORE Clock
         {
             public:
                 Clock()     {Reset();}
                 ~Clock()	{};
 
-                friend LCORE std::ostream &operator << (std::ostream &os, const Clock &cl);
+                friend LIB_NC_CORE std::ostream &operator << (std::ostream &os, const Clock &cl);
 
                 /** Reset the clock. */
                 inline void Reset()                     {_paused = false; _pauseTime = 0; _startTime = System::Time();}

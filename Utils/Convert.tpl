@@ -92,8 +92,53 @@ namespace Unicode
 		return output;
 	}
 
+	template<typename In, typename Out>
+        Out UTF8ToUTF32(In begin, In end, Out output, Nc::UInt32 replacement)
+	{
+		// Some useful precomputed data
+    		static const int trailing[256] =
+    		{
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        		2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5
+    		};
+    		static const UInt32 offsets[6] =
+    		{
+			0x00000000, 0x00003080, 0x000E2080, 0x03C82080, 0xFA082080, 0x82082080
+    		};
+
+    		// decode the character
+    		int trailingBytes = trailing[static_cast<UInt8>(*begin)];
+    		if (begin + trailingBytes < end)
+    		{
+			output = 0;
+        		switch (trailingBytes)
+        		{
+				case 5 : output += static_cast<UInt8>(*begin++); output <<= 6;
+            			case 4 : output += static_cast<UInt8>(*begin++); output <<= 6;
+            			case 3 : output += static_cast<UInt8>(*begin++); output <<= 6;
+            			case 2 : output += static_cast<UInt8>(*begin++); output <<= 6;
+            			case 1 : output += static_cast<UInt8>(*begin++); output <<= 6;
+            			case 0 : output += static_cast<UInt8>(*begin++);
+        		}
+        		output -= offsets[trailingBytes];
+    		}
+    		else
+    		{
+			// Incomplete character
+        		begin = end;
+        		output = replacement;
+    		}
+    		return output;
+	}
+
 	template <typename In, typename Out>
-    Out UTF16ToUTF32(In begin, In end, Out output, Nc::UInt32 replacement)
+    	Out UTF16ToUTF32(In begin, In end, Out output, Nc::UInt32 replacement)
 	{
 		for (Nc::UInt16 c = *begin++; begin < end; )
 		{

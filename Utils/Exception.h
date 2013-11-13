@@ -44,7 +44,7 @@ namespace Nc
             In windows the std::exception implementation can use an std::string in the constructor but not in linux,
             so this class assure you to have the same implementation for each OS.
         */
-        class LCORE Exception : public std::exception
+        class LIB_NC_CORE Exception : public std::exception
         {
             public:
                 Exception(const std::string &msg) throw()

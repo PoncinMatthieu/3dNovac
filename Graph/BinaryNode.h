@@ -175,26 +175,24 @@ namespace Nc
             - BinaryNodePolitic
         */
         template<typename T>
-        class BinaryNodeAVL : public Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
+        class BinaryNodeAVL : public AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >
         {
 		public:
             // Visual Studio 2010 won't compile using the correct form "Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >". Insteed it accept onle "Node" and seems to work even thought it souldn't.
             #ifdef SYSTEM_WINDOWS
-                typedef Node	ParentType;
+                typedef AbstractNode	ParentType;
                 NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
-                typedef Node	NodePolitic;
+                typedef AbstractNode	NodePolitic;
                 typedef BinaryNodeAVL	NodeType;
             #else
-                typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
+                typedef AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL<T> >    ParentType;
                 NC_UTILS_DEFINE_VISITABLE(Priv::INodeBasePolitic);
-                typedef Node<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
+                typedef AbstractNode<T, BinaryNodeAVLPolitic, BinaryNodeAVL>        NodePolitic;
                 typedef BinaryNodeAVL                                       NodeType;
             #endif
 
             BinaryNodeAVL()                                    : NodePolitic()               {}
-            BinaryNodeAVL(const T &data)                       : NodePolitic(data)           {}
             BinaryNodeAVL(NodeType *parent)                    : NodePolitic(parent)         {}
-            BinaryNodeAVL(const T &data, NodeType *parent)     : NodePolitic(data, parent)   {}
         };
 
         template<typename T, class NodeType, class Allocator>

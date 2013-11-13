@@ -19,40 +19,33 @@
     You should have received a copy of the GNU Lesser General Public License
     along with 3dNovac.  If not, see <http://www.gnu.org/licenses/>.
 
-    File Created At:        24/03/2011
+    File Created At:        13/06/2013
     File Author(s):         Poncin Matthieu
 
 -----------------------------------------------------------------------------*/
 
-#ifndef NC_CORE_UTILS_SYSTEM_API_H_
-#define NC_CORE_UTILS_SYSTEM_API_H_
+#ifndef NC_CORE_MATH_QUATERNION_H_
+#define NC_CORE_MATH_QUATERNION_H_
 
-    #include "../../Define.h"
+#include "../Define.h"
 
-	namespace Nc
-	{
-	    /// This namespace provide some multiarchi function and class.
-		namespace System
-		{
-		    /** Sleep in second. */
-		    LIB_NC_CORE void            Sleep(float second);
-		    /** \return time in second. */
-			LIB_NC_CORE double          Time();
-			/** remalloc a null terminated string. */
-            LIB_NC_CORE char*           Strdup(const char *str);
-            /** \return the current thread id. */
-            LIB_NC_CORE unsigned int    ThreadId();
-        }
-	}
+namespace Nc
+{
+    namespace Math
+    {
+        /// Define a Quaternion that can be used to manage rotation.
+        struct Quaternion
+        {
+            Quaternion();
+            Quaternion(float x, float y, float z, float w);
 
-	#if defined(SYSTEM_WINDOWS)
-        #include "Windows/Mutex.h"
-        #include "Windows/Thread.h"
-    #elif defined(SYSTEM_LINUX)
-        #include "Unix/Mutex.h"
-        #include "Unix/Thread.h"
-    #else
-        #error "Thread API not implemented for this system."
-    #endif
+            float   x;
+            float   y;
+            float   z;
+            float   w;
+        };
+    }
+}
 
 #endif
+

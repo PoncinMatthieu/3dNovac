@@ -44,8 +44,6 @@ namespace Nc
             The Visitor Manager implement two visitor.
             The first one allow you to visit an object by using a vtable and resolving the type and calling the visit method if you want to visit the true type by initialize the type you want to visit with a typelist.
             And the second allow you like the first to visit an object but use a second vtable to call methods which should be used to recall the visitor itself to visit a structure like a graph or a tree.
-
-            \todo Specialize the InvokableVisitor for (ReturnType == bool) to setup some Invokation method (for exemple to stop the visitation when result == false).
         */
         class VisitorManager
         {
@@ -159,6 +157,70 @@ namespace Nc
                             if (thunk != NULL)
                                 return (static_cast<VisitorType*>(this)->*thunk)(b);
                             return ReturnType();
+                        }
+
+                        /** Initialize the vtable with the given invoker and visitable typelist. */
+                        template<typename VisitedList, typename Invoker>
+                        void InitVTable(const VisitedList&, const Invoker&)
+                        {
+                            // instantiate the static vtable and set the vtable pointer
+                            _vtable = VTableManager::GetStaticVtable<VisitorType, VisitedList, Invoker, VTableType, VTableInitializer>();
+                        }
+
+                    private:
+                        const VTableType    *_vtable; // vtable pointer
+                };
+
+                /// specialization of the Visitor with a boolean return type
+                template<class VisitorType, class Base>
+                class Visitor<VisitorType, Base, bool>
+                {
+                    public:
+                        typedef bool    (Visitor::*Func)(Base&);
+                        typedef VTableManager::VTable<VTableVisitorType, const Base, Func>      VTableType;
+                        typedef Base                                                            BaseType;
+
+                    public:
+                        Visitor() : _vtable(0)      {}
+
+                        /** Method used to invoke the visit method. */
+                        template<typename Visitable, typename Invoker>
+                        bool Thunk(Base &b)
+                        {
+                            typedef typename GetVisitMethodArgumentType<Visitable, Base>::Type        VisitableType;
+                            return Invoker::template Invoke<bool, VisitorType, VisitableType>(static_cast<VisitorType&>(*this), static_cast<VisitableType&>(b));        // invoke visit method
+                        }
+
+                        /** Method used to invoke the visit method. */
+                        template<typename Visitable, typename Invoker>
+                        bool ConstThunk(const Base &b)
+                        {
+                            typedef typename GetVisitMethodArgumentType<Visitable, const Base>::Type        VisitableType;
+                            return Invoker::template Invoke<bool, VisitorType, VisitableType>(static_cast<VisitorType&>(*this), static_cast<VisitableType&>(b));        // invoke visit method
+                        }
+
+                        /** To visit the given class, call the visit method if the class is visitable. */
+                        bool operator() (Base &b)
+                        {
+                            if (_vtable == 0)
+                                throw Exception("Visitor", "The vtable of the visitor has not been initialized.");
+
+                            // fetch thunk and call it
+                            unsigned int    i = 0;
+                            size_t          index = b.Tag();
+                            Func            thunk = _vtable->GetFunc(index);
+                            //std::cout << "tag: " << b.Tag() << " thunk " << thunk << " " << b.GetClassName() << std::endl;
+
+                            while (thunk == NULL && index != 0)
+                            {
+                                index = b.ParentTag(i++);
+                                if (index != 0)
+                                    thunk = _vtable->GetFunc(index);
+                            }
+
+                            if (thunk != NULL)
+                                return (static_cast<VisitorType*>(this)->*thunk)(b);
+                            return true;
                         }
 
                         /** Initialize the vtable with the given invoker and visitable typelist. */

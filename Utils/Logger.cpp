@@ -44,6 +44,8 @@ Logger::Logger()
 {
     _filename = FileName("out.log");
     _loggingfunction = NULL;
+    _writeTime = false;
+    _newLine = true;
 }
 
 Logger::~Logger()
@@ -107,10 +109,29 @@ void Logger::CheckFile()
 
 void Logger::Write(const std::string &Msg, bool flush)
 {
+
+    if (_newLine && !Msg.empty())
+    {
+        _newLine = false;
+        if (_writeTime)
+        {
+            time_t rawtime;
+            struct tm *timeinfo;
+            char buffer[100];
+            time(&rawtime);
+            timeinfo = localtime(&rawtime);
+            if (timeinfo != NULL)
+            {
+                strftime(buffer, 100, "[%H:%M:%S - %d/%m/%Y] ", timeinfo);
+                Write(buffer, false);
+            }
+        }
+    }
+
     System::Locker l(&_mutex);
 
-  // log
-    if (_status == 0)
+  // log or debug log
+    if (_status == 0 || _status == 2)
     {
         #if defined(_DEBUG) && defined(SYSTEM_WINDOWS)
             OutputDebugStringA(Msg.c_str());
@@ -143,21 +164,7 @@ void Logger::Write(const std::string &Msg, bool flush)
             _file.flush();
         }
     }
-  // debug
-    else if (_status == 2)
-    {
-        #if defined(_DEBUG) && defined(SYSTEM_WINDOWS)
-            OutputDebugStringA(Msg.c_str());
-        #endif
-        if (_loggingfunction != NULL)
-            _loggingfunction(Msg, flush);
-        CheckFile();
-        cout << Msg;
-        _file << Msg;
-        if (flush)
-        {
-            cout << std::flush;
-            _file.flush();
-        }
-    }
+
+    if (flush)
+        _newLine = true;
 }

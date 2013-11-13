@@ -40,7 +40,7 @@ namespace Nc
         /**
             Store a list of EventManager to send events.
         */
-        class LCORE Handler
+        class LIB_NC_CORE Handler
         {
             private:
                 typedef std::list<EventManager*>        ListEventManager;

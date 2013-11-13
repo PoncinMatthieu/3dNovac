@@ -41,7 +41,7 @@ namespace Nc
 			\sa
 				- Locker
 		*/
-        class LCORE IMutex
+        class LIB_NC_CORE IMutex
         {
             public:
                 IMutex()            {}
