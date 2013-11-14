@@ -50,7 +50,7 @@ namespace Nc
             {
                 public:
                     /** TYPE, to define the type of Xml object. */
-                    enum TYPE {HEADER, INLINE, BLOCK};
+		    enum TYPE {HEADER, INLINE, BLOCK, COMMENT};
 
                 public:
                     Object(Object *parent = NULL);

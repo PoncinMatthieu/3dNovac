@@ -67,20 +67,17 @@ void Parser::ReadAll()
 
 void Parser::Read()
 {
-//    unsigned int i = 0;
+    unsigned int i = 0;
     Token       token;
     Object      *newObject;
 
     // parcour l'ensemble du fichier
     while (GenereToken(token))
     {
-        if (token.data.compare(0, 4, "<!--") != 0)
-        {
-//            cout << token.type << "\tNew Token Generated " << i << " with data = `" << token.data << "`" << endl;
-            CreateObject(token, newObject);
-        }
-        token.data.clear();
-//        i++;
+      //cout << token.type << "\tNew Token Generated " << i << " with data = `" << token.data << "`" << endl;
+      CreateObject(token, newObject);
+      token.data.clear();
+      i++;
     }
 }
 
@@ -123,10 +120,10 @@ bool Parser::SearchTokenInBuffer(Token &newToken, unsigned int &pos, const std::
     // search a tag, endtag or a data
     // parcour le buffer jusqu'a tombe sur un caractere
 
-//    cout << "buffer = `";
-//    for (unsigned int i = pos; i < size; i++)
-//        cout << _buffer[i];
-//    cout << "`" << endl;
+    //cout << "buffer = `";
+    //for (unsigned int i = pos; i < size; i++)
+      //    cout << _buffer[i];
+    //cout << "`" << endl;
 
     // si on est deja a la fin d'un bloc de data, on peut s'arreter maintenant
     if (!lastEndData && _buffer[pos] == '<' && newToken.type == DATA)
@@ -138,20 +135,35 @@ bool Parser::SearchTokenInBuffer(Token &newToken, unsigned int &pos, const std::
 
     // 2eme etape on avance le pointeur jusqu'a la fin du tag ou de la data, et verifie si on est a la fin du buffer
     for (; pos < (unsigned int)size && (_buffer[pos] != '>' && _buffer[pos] != '<'); ++pos);
-//    cout << "begin = " << begin << "  pos = " << pos << "  size = " << size << endl;
+    //cout << newToken.type << " begin = " << begin << "  pos = " << pos << "  size = " << size << endl;
 
     // enfin si le type du token a bien ete choisi, on peut continuer a ajouter la data au token
         // ajoute la data
     if (pos > begin && newToken.type != (TOKEN_TYPE)-1)
     {
         newToken.data += string(_buffer + begin, pos - begin);
+	//cout << "test type: " << newToken.type << endl;
+	//cout << "test data: " << newToken.data << endl;
         if (newToken.type == DATA && newToken.data.compare(0, 9, "<![CDATA[") == 0)
             newToken.type = CDATA;
+        if ((newToken.type == DATA || newToken.type == CDATA) && newToken.data.compare(0, 4, "<!--") == 0)
+            newToken.type = COMMENT;
         if (newToken.type == CDATA && newToken.data.size() > 2 && newToken.data.compare(newToken.data.size() - 2, 2, "]]") == 0)
+            newToken.data += '>';
+        if (newToken.type == COMMENT && newToken.data.size() > 2 && newToken.data.compare(newToken.data.size() - 2, 2, "--") == 0)
             newToken.data += '>';
     }
 
     if (newToken.type == CDATA && newToken.data.size() > 3 && newToken.data.compare(newToken.data.size() - 3, 3, "]]>") != 0)
+    {
+        endData = false;
+        if (pos < (unsigned int)size && (_buffer[pos] == '>' || _buffer[pos] == '<'))
+        {
+            newToken.data += _buffer[pos];
+            pos++;
+        }
+    }
+    if (newToken.type == COMMENT && newToken.data.size() > 3 && newToken.data.compare(newToken.data.size() - 3, 3, "-->") != 0)
     {
         endData = false;
         if (pos < (unsigned int)size && (_buffer[pos] == '>' || _buffer[pos] == '<'))
@@ -212,6 +224,7 @@ unsigned int Parser::ChooseTypeToken(Token &newToken, unsigned int &pos, const s
         else if (pos + 1 < (unsigned int)size && _buffer[pos] == '<' && _buffer[pos + 1] == '!')
         {
             newToken.type = CDATA;
+	    begin = pos;
             ++pos;
         }
         else if (pos + 1 < (unsigned int)size && !(_buffer[pos] == ' ' || _buffer[pos] == '\t' || _buffer[pos] == '\n' || _buffer[pos] == '\r'))// sinon, si on est pas arrive en fin de buffer, on a un tag
@@ -235,7 +248,7 @@ unsigned int Parser::ChooseTypeToken(Token &newToken, unsigned int &pos, const s
         }
     }
     // sinon si le lastCaract ou le premier caract est un debut de tag, il faut construire le type du token, avant d'ajouter la data
-    else if (newToken.type != CDATA && (lastCaract == '<' || _buffer[pos] == '<'))
+    else if (newToken.type != CDATA && newToken.type != COMMENT && (lastCaract == '<' || _buffer[pos] == '<'))
     {
         char c = (lastCaract == '<') ? _buffer[pos] : _buffer[pos + 1];
 
@@ -276,7 +289,13 @@ void Parser::CreateObject(Token &t, Object *&newObject)
     map<string, string>     param;
 
     // recup le nom et les params
-    if (t.type == TAG)
+    if (t.type == COMMENT)
+    {
+      newObject = new Object(name, Object::COMMENT, param, _lastObject);
+      newObject->Data() += t.data;
+      _lastObject->AddChild(newObject);
+    }
+    else if (t.type == TAG)
     {
         GetParamsAndName(t, name, param);
         newObject = new Object(name, t.objectType, param, _lastObject);

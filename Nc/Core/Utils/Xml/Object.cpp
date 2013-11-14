@@ -132,6 +132,12 @@ Object *Object::Line(const std::string &name)
 
 void Object::Write(std::ostream &out, unsigned int i) const
 {
+    if (_type == COMMENT)
+    {
+      out << _data << "\n";
+      return;
+    }
+
     // imprime les infos des objets
     for (int j = i; j > 0; --j)
         out <<"\t";
