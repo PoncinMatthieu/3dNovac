@@ -73,8 +73,8 @@ void    Button::DeleteButton()
 
 void    Button::Initialize(const std::string &text, const Vector2i &size, const std::string &ttf, const std::string &lookName)
 {
-    _buttonLook = new StripLook(lookName + StyleSheet::Name::Button);
-    _buttonLookToggled = new StripLook(lookName + StyleSheet::Name::ButtonPressed);
+    _buttonLook = new BoxLook(lookName + StyleSheet::Name::Button);
+    _buttonLookToggled = new BoxLook(lookName + StyleSheet::Name::ButtonPressed);
     UseLook(_buttonLook);
 
     _checkable = false;
@@ -83,14 +83,14 @@ void    Button::Initialize(const std::string &text, const Vector2i &size, const 
     _mouseButton = System::Mouse::Left;
     _buttonPressed = false;
 
-    _charSize = size.data[1] - (PaddingTop() + PaddingBottom());
+    _charSize = size.data[1] /*- (PaddingTop() + PaddingBottom())*/;
     _font = new Graphic::Text(text, _charSize, Color(1, 1, 1), ttf);
 }
 
 void    Button::Copy(const Button &w)
 {
-    _buttonLook = static_cast<StripLook*>(w._buttonLook->Clone());
-    _buttonLookToggled = static_cast<StripLook*>(w._buttonLookToggled->Clone());
+    _buttonLook = static_cast<BoxLook*>(w._buttonLook->Clone());
+    _buttonLookToggled = static_cast<BoxLook*>(w._buttonLookToggled->Clone());
     UseLook(_buttonLook);
 
     _colorDisable = w._colorDisable;
@@ -118,14 +118,14 @@ void Button::UpdateState()
         c = _colorDisable;
     formater->SetColor(c);
 
-    if (_widgetLook != NULL)
-        _widgetLook->color = c;
-
     // update the widget look, if pressed
     if (_toggled)
         _widgetLook = _buttonLookToggled;
     else
         _widgetLook = _buttonLook;
+
+    if (_widgetLook != NULL)
+        _widgetLook->color = c;
 
     // update the widget, which will update the look
     Widget::UpdateState();
@@ -146,7 +146,7 @@ void Button::UpdateState()
     // center the font
     const Vector2f &fontSize = _font->Size();
     _font->Matrix.Translation(PaddingLeft() + ((_size.data[0] - PaddingH()) / 2.f) - (fontSize.data[0] / 2.f),
-                              PaddingTop() + ((_size.data[1] - PaddingV()) / 2.f) - (fontSize.data[1] / 2.f), 0);
+                              PaddingBottom() + ((_size.data[1] - PaddingV()) / 2.f) - (fontSize.data[1] / 2.f), 0);
 }
 
 void Button::Draw(Graphic::SceneGraph *scene)

@@ -60,7 +60,7 @@ namespace Nc
                 /** Unfocus the given widget. */
                 void Unfocus(Widget *w)                         {w->Focus(false); _widgetFocused = NULL;}
                 /** Focus the given widget. */
-                void Focus(Widget *w)                           {_widgetFocused = w; _widgetFocused->Focus(true);}
+                void Focus(Widget *w)                           {Unfocus(); _widgetFocused = w; _widgetFocused->Focus(true);}
 
                 /** Manage the window events by dispatching the event to the good widget. */
                 virtual void    ManageWindowEvent(const Nc::System::Event &event);

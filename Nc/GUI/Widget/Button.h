@@ -87,8 +87,8 @@ namespace Nc
                 void                DeleteButton();
 
             protected:
-                StripLook               *_buttonLook;           ///< look used to render the button in it's normal state.
-                StripLook               *_buttonLookToggled;    ///< look used to render the button pressed.
+                BoxLook                 *_buttonLook;           ///< look used to render the button in it's normal state.
+                BoxLook                 *_buttonLookToggled;    ///< look used to render the button pressed.
                 Graphic::Text           *_font;                 ///< The text of the button.
                 float                   _charSize;              ///< Recorde the charsize used for the font.
                 bool                    _checkable;             ///< define if the button is a toggle button or not.

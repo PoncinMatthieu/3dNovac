@@ -36,6 +36,7 @@ namespace Nc
         /// Defines a lineEdit Widget.
         /**
             The line edit allow to enter text into an single line text field.
+            It can also display a password field.
 
             - Send an ReturnPressed event when the Return/Enter key is pressed.
             - Send a TextEntered event whenever the text changed from a keyboard event.
@@ -51,13 +52,16 @@ namespace Nc
                 LineEdit &operator = (const LineEdit &w);
                 ~LineEdit();
 
+                /** Set the password statement, if true the line edit will only display stars for every caracters. */
+                void                Password(bool state)        {_password = state;}
+
                 virtual ISceneNode  *Clone() const              {return new LineEdit(*this);}
                 virtual void        ToString(std::ostream &os) const;
 
                 /** Set the text of the line edit. */
                 void                    PlainText(const Utils::Unicode::UTF32 &t);
                 /** \return the text of the line edit. */
-                Utils::Unicode::UTF32   PlainText() const;
+                const Utils::Unicode::UTF32   &PlainText() const;
 
             protected:
                 /** update the geometry of the line edit. */
@@ -72,14 +76,22 @@ namespace Nc
                 /** Copy the widget. */
                 void        Copy(const LineEdit &w);
 
+                /** Update the graphic text left. */
+                void        UpdateTextLeft();
+                /** Update the graphic text right. */
+                void        UpdateTextRight();
+
             protected:
-                Graphic::Text       *_textLeft;                 ///< the text on the left of the cursor.
-                Graphic::Text       *_textRight;                ///< the text on the right of the cursor.
-                Graphic::Text       *_cursorText;               ///< to draw an underscore (cursor).
-                float               _currentOffset;             ///< store the current offset used to display the text, in case the text is longer that the size of the box.
-                bool                _editable;                  ///< if true, the linedit will receive events from the keyboard.
-                bool                _displayCursor;             ///< if true, the underscore is displayed.
-                Utils::Clock        _clock;                     ///< clock used to make the cursor blink.
+                Utils::Unicode::UTF32   _text;                      ///< text contained in the line edit
+                unsigned int            _cursorPosition;            ///< position of the cursor in the text.
+                Graphic::Text           *_textLeft;                 ///< the text displayed on the left of the cursor.
+                Graphic::Text           *_textRight;                ///< the text displayed on the right of the cursor.
+                Graphic::Text           *_cursorText;               ///< to draw an underscore (cursor).
+                float                   _currentOffset;             ///< store the current offset used to display the text, in case the text is longer that the size of the box.
+                bool                    _editable;                  ///< if true, the linedit will receive events from the keyboard.
+                bool                    _displayCursor;             ///< if true, the underscore is displayed.
+                Utils::Clock            _clock;                     ///< clock used to make the cursor blink.
+                bool                    _password;                  ///< if true, the LineEdit will only show stars '*' for each caracters
         };
     }
 }

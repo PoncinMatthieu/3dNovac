@@ -244,6 +244,36 @@ void BoxLook::Update(const Vector2i &size)
         lyRightTop = spriteRightTop->TextureBox().Length(1);
     }
 
+    // get the edge size
+    if (spriteBottomEdge != NULL)
+    {
+        if (lyLeftBottom < spriteBottomEdge->TextureBox().Length(1))
+            lyLeftBottom = spriteBottomEdge->TextureBox().Length(1);
+        if (lyRightBottom < spriteBottomEdge->TextureBox().Length(1))
+            lyRightBottom = spriteBottomEdge->TextureBox().Length(1);
+    }
+    if (spriteTopEdge != NULL)
+    {
+        if (lyLeftTop < spriteTopEdge->TextureBox().Length(1))
+            lyLeftTop = spriteTopEdge->TextureBox().Length(1);
+        if (lyRightTop < spriteTopEdge->TextureBox().Length(1))
+            lyRightTop = spriteTopEdge->TextureBox().Length(1);
+    }
+    if (spriteLeftEdge != NULL)
+    {
+        if (lxLeftBottom < spriteLeftEdge->TextureBox().Length(0))
+            lxLeftBottom = spriteLeftEdge->TextureBox().Length(0);
+        if (lxLeftTop < spriteLeftEdge->TextureBox().Length(0))
+            lxLeftTop = spriteLeftEdge->TextureBox().Length(0);
+    }
+    if (spriteRightEdge != NULL)
+    {
+        if (lxRightBottom < spriteRightEdge->TextureBox().Length(0))
+            lxRightBottom = spriteRightEdge->TextureBox().Length(0);
+        if (lxRightTop < spriteRightEdge->TextureBox().Length(0))
+            lxRightTop = spriteRightEdge->TextureBox().Length(0);
+    }
+
     // Set the size and position of the sprites
     if (spriteMiddle != NULL)
     {

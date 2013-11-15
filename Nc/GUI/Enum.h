@@ -96,6 +96,7 @@ namespace Nc
                 EventIdMax,
                 ReturnPressed,
                 TextEntered,
+                NextFocus,
             };
         }
     }

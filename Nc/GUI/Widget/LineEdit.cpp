@@ -38,8 +38,10 @@ LineEdit::LineEdit(const AlignmentMask &alignment, const Vector2i &size, const s
 {
     UseLook(new StripLook(looksName + StyleSheet::Name::LineEdit));
 
+    _cursorPosition = 0;
     _editable = true;
     _displayCursor = false;
+    _password = false;
     PaddingV(5);
 
     float charSize = 0;
@@ -74,10 +76,13 @@ LineEdit &LineEdit::operator = (const LineEdit &w)
 
 void    LineEdit::Copy(const LineEdit &w)
 {
+    _text = w._text;
+    _cursorPosition = w._cursorPosition;
     _textLeft = static_cast<Text*>(w._textLeft->Clone());
     _textRight = static_cast<Text*>(w._textRight->Clone());
     _cursorText = static_cast<Text*>(w._cursorText->Clone());
     _displayCursor = false;
+    _password = w._password;
     _currentOffset = 0;
     _editable = w._editable;
 }
@@ -85,7 +90,7 @@ void    LineEdit::Copy(const LineEdit &w)
 void    LineEdit::ToString(std::ostream &os) const
 {
     Widget::ToString(os);
-    os << " Text: " << _textLeft->PlainText() << _textRight->PlainText();
+    os << " Text: " << _text;
 }
 
 void    LineEdit::UpdateState()
@@ -151,14 +156,27 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         // 8 is the caracter code for backspace, we delete the last caracter on the left of the cursor
         if (event.text.unicode == 8 && !_textLeft->PlainText().empty())
         {
-            Utils::Unicode::UTF32 s = _textLeft->PlainText();
-            s.erase(s.end() - 1);
-            _textLeft->PlainText(s);
+            _text.erase(_cursorPosition - 1, 1);
+            _cursorPosition--;
+            UpdateTextLeft();
+            SendEvent(Event::TextEntered);
+        }
+        // 9 is the caracter code for tabulation, we send an event
+        else if (event.text.unicode == 9)
+        {
+            SendEvent(Event::NextFocus);
         }
         // 13 is the caracter code for Return/Enter
         else if (event.text.unicode == 13)
         {
             SendEvent(Event::ReturnPressed);
+        }
+        // 127 is the caracter code for delete
+        else if (event.text.unicode == 127 && _text.size() > _cursorPosition)
+        {
+            _text.erase(_cursorPosition, 1);
+            UpdateTextRight();
+            SendEvent(Event::TextEntered);
         }
         // add the caracter on the left of the cursor
         else
@@ -168,9 +186,9 @@ void LineEdit::KeyboardEvent(const System::Event &event)
             if ((event.text.unicode != '\0' && charSize != 0 /*&& _text->Size().data[0] + charSize < _size.data[0]*/) ||
                 (charSize == 0 && (event.text.unicode == ' ' || event.text.unicode == '\t')) /*&& _text->Size().data[0] + formater->GetCharSize() < _size.data[0]*/)
             {
-                Utils::Unicode::UTF32 s = _textLeft->PlainText();
-                s += event.text.unicode;
-                _textLeft->PlainText(s);
+                _text.insert(_cursorPosition, 1, event.text.unicode);
+                _cursorPosition++;
+                UpdateTextLeft();
                 SendEvent(Event::TextEntered);
             }
         }
@@ -181,6 +199,8 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         // move the cursor to the left
         if (event.key.code == System::Key::Left && _textLeft->PlainText().size() > 0)
         {
+            _cursorPosition--;
+
             Utils::Unicode::UTF32 sl = _textLeft->PlainText();
             Utils::Unicode::UTF32 sr = _textRight->PlainText();
 
@@ -193,6 +213,8 @@ void LineEdit::KeyboardEvent(const System::Event &event)
         // move the cursor to the right
         else if (event.key.code == System::Key::Right && _textRight->PlainText().size() > 0)
         {
+            _cursorPosition++;
+
             Utils::Unicode::UTF32 sl = _textLeft->PlainText();
             Utils::Unicode::UTF32 sr = _textRight->PlainText();
 
@@ -205,14 +227,55 @@ void LineEdit::KeyboardEvent(const System::Event &event)
     }
 }
 
+void    LineEdit::UpdateTextLeft()
+{
+    if (_password)
+    {
+        Utils::Unicode::UTF32 t;
+        Utils::Unicode::UTF32 c("*");
+        for (unsigned int i = 0; i < _cursorPosition; ++i)
+            t += c;
+        _textLeft->PlainText(t);
+    }
+    else
+        _textLeft->PlainText(_text.substr(0, _cursorPosition));
+}
+
+void    LineEdit::UpdateTextRight()
+{
+    if (_password)
+    {
+        Utils::Unicode::UTF32 t;
+        Utils::Unicode::UTF32 c("*");
+        for (unsigned int i = 0; i < _text.size() - _cursorPosition; ++i)
+            t += c;
+        _textRight->PlainText(t);
+    }
+    else
+        _textRight->PlainText(_text.substr(_cursorPosition, _text.size()));
+}
+
 void    LineEdit::PlainText(const Utils::Unicode::UTF32 &t)
 {
-    _textLeft->PlainText(t);
+    _text = t;
+    _cursorPosition = _text.size();
+    if (_password)
+    {
+        Utils::Unicode::UTF32 t;
+        Utils::Unicode::UTF32 c("*");
+        for (unsigned int i = 0; i < _cursorPosition; ++i)
+            t += c;
+        _textLeft->PlainText(t);
+    }
+    else
+    {
+        _textLeft->PlainText(_text);
+    }
     _textRight->PlainText("");
     _stateChanged = true;
 }
 
-Utils::Unicode::UTF32   LineEdit::PlainText() const
+const Utils::Unicode::UTF32   &LineEdit::PlainText() const
 {
-    return _textLeft->PlainText() + _textRight->PlainText();
+    return _text;
 }

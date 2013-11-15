@@ -51,12 +51,12 @@
   <Sprite name="WindowBoxRightBottom"		topX="28" topY="129" bottomX="39" bottomY="140" />
   <Sprite name="WindowBoxMiddle"			topX="10" topY="127" bottomX="26" bottomY="131" />
 
-  <Sprite name="ButtonStripLeft"			topX="0" topY="8" bottomX="6" bottomY="36" />
-  <Sprite name="ButtonStripMiddle"			topX="6" topY="8" bottomX="102" bottomY="36" />
-  <Sprite name="ButtonStripRight"			topX="102" topY="8" bottomX="107" bottomY="36" />
-  <Sprite name="ButtonPressedStripLeft"		topX="0" topY="36" bottomX="6" bottomY="64" />
-  <Sprite name="ButtonPressedStripMiddle"	topX="6" topY="36" bottomX="102" bottomY="64" />
-  <Sprite name="ButtonPressedStripRight"	topX="102" topY="36" bottomX="107" bottomY="64" />
+  <Sprite name="ButtonBoxLeftEdge"		topX="0" topY="8" bottomX="6" bottomY="36" />
+  <Sprite name="ButtonBoxMiddle"		topX="6" topY="8" bottomX="102" bottomY="36" />
+  <Sprite name="ButtonBoxRightEdge"		topX="101" topY="8" bottomX="107" bottomY="36" />
+  <Sprite name="ButtonPressedBoxLeftEdge"	topX="0" topY="36" bottomX="6" bottomY="64" />
+  <Sprite name="ButtonPressedBoxMiddle"		topX="6" topY="36" bottomX="102" bottomY="64" />
+  <Sprite name="ButtonPressedBoxRightEdge"	topX="101" topY="36" bottomX="107" bottomY="64" />
 
   <Sprite name="ScrollBarLeftButton"		topX="163" topY="9" bottomX="178" bottomY="25" />
   <Sprite name="ScrollBarSliderLeft"		topX="180" topY="9" bottomX="183" bottomY="25" />
