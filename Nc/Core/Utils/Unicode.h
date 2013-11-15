@@ -49,6 +49,7 @@ namespace Nc
                     UTF32(const Nc::UInt32 *str);
                     UTF32(const std::string &str);
                     UTF32(const std::wstring &str);
+                    UTF32(const std::basic_string<Nc::UInt32> &str);
                     virtual ~UTF32()    {}
 
                     UTF32 operator + (const UTF32 &str) const;
