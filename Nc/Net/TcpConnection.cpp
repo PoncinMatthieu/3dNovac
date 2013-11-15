@@ -16,6 +16,7 @@ TcpConnection::TcpConnection(const Nc::Network::Ip &ip, unsigned short port)
 
 TcpConnection::~TcpConnection()
 {
+    Disconnect();
 }
 
 void TcpConnection::Disconnect()
