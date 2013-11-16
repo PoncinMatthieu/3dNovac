@@ -36,6 +36,7 @@ namespace Nc
     {
         /// Abstract class to define 3d Camera.
         /**
+	    The camera can manage either perspective or orthographic projections.
             The camera is composed by an Eye, a Center and a vector Up.
 
             To create your own Camera3d, you will need to redefine the following methods:
@@ -54,11 +55,16 @@ namespace Nc
 
             public:
 				// /!\ near et far sont des define windows provenant de windef.h, ne pas changer le nom nearf en near !
-                Camera3d(IWindow *attachedWindow, float ratioAspect, float nearf, float farf, float fieldOfView);
+	        /** Setup the camera with the projection properties. If perspective is false, the projection will be orthographic. */
+	        Camera3d(IWindow *attachedWindow, float ratioAspect, float nearf, float farf, float fieldOfView, bool perspective = true);
                 virtual ~Camera3d() {};
 
+		/** \return true if the projection is a perspective. */
+		bool		Projection() const	{return _perspective;}
+		/** Set whether the projection is perspective or orthographic. */
+		void		Projection(bool projection);
                 /** Set the projection parameters. */
-                void            SetProjection(float ratioAspect, float nearf, float farf, float fieldOfView);
+		void            SetProjection(float ratioAspect, float nearf, float farf, float fieldOfView, bool perspective = true);
                 /** Update the projectionMatrix to a perspective projection. */
                 virtual void    UpdateProjection(SceneGraph *scene);
                 /**
@@ -114,6 +120,7 @@ namespace Nc
                 Vector3f        _up;                ///< Vector to define the up of the camera.
 
                 // projection properties
+		bool		_perspective;	    ///< if true, set the projection to an perspective, if false, to orthographic.
                 float           _ratioAspect;       ///< define the ratio of the perspective projection.
                 float           _near;              ///< define the near value of the perspective projection.
                 float           _far;               ///< define the far value of the perspective projection.

@@ -29,10 +29,10 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Camera3d::Camera3d(IWindow *attachedWindow, float ratioAspect, float nearf, float farf, float fieldOfView)
+Camera3d::Camera3d(IWindow *attachedWindow, float ratioAspect, float nearf, float farf, float fieldOfView, bool perspective)
     : Camera(attachedWindow, false),
       _center(0, 0, 0), _up(0, 0, 1),
-      _ratioAspect(ratioAspect), _near(nearf), _far(farf), _fieldOfView(fieldOfView),
+      _perspective(perspective), _ratioAspect(ratioAspect), _near(nearf), _far(farf), _fieldOfView(fieldOfView),
       _viewMatrixUpdated(true)
 {
     UpdateProjectionFrustum();
@@ -62,20 +62,37 @@ Vector3f GLContext::Get3dCoordinateFromProjection(int x, int y)
 }
 */
 
-void Camera3d::SetProjection(float ratioAspect, float nearf, float farf, float fieldOfView)
+void Camera3d::Projection(bool projection)
 {
+  _perspective = projection;
+  _resized = true;
+}
+
+void Camera3d::SetProjection(float ratioAspect, float nearf, float farf, float fieldOfView, bool perspective)
+{
+    _perspective = perspective;
     _ratioAspect = ratioAspect;
 
     _fieldOfView = fieldOfView;
     UpdateProjectionFrustum();
     _resized = true;
-	_near = nearf;
+    _near = nearf;
     _far = farf;
 }
 
 void    Camera3d::UpdateProjection(SceneGraph *scene)
 {
-    scene->ProjectionMatrix().SetProjection(_ratioAspect, _near, _far, _fieldOfView);
+  if (_perspective)
+    {
+      scene->ProjectionMatrix().SetPerspective(_ratioAspect, _near, _far, _fieldOfView);
+    }
+  else
+    {
+      Vector3f v = _center - _eye;
+      float height = v.Length();
+      height = tan(_fieldOfView/2) * height;
+      scene->ProjectionMatrix().SetOrtho(-height * _ratioAspect, height * _ratioAspect, -height, height, _near, _far);
+    }
 }
 
 void    Camera3d::Fix(SceneGraph *scene)
@@ -83,7 +100,13 @@ void    Camera3d::Fix(SceneGraph *scene)
     System::Locker l(&_mutexViewMatrix);
     Camera::Fix(scene);
     if (_viewMatrixUpdated)
-        scene->ViewMatrix() = _viewMatrix;
+      {
+	// if we are in an orthographic projection, we must update it with the camera, to win can adjust the height.
+	if (!_perspective)
+	  _resized = true;
+
+	scene->ViewMatrix() = _viewMatrix;
+      }
 }
 
 void    Camera3d::Resized(const Vector2ui &size)

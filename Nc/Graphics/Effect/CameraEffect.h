@@ -70,7 +70,7 @@ namespace Nc
                 /** \return the projection matrix which will be used to update the projection. */
                 inline const TMatrix    &Projection()                   {return _projectionMatrix;}
                 /** Will set the projection as given, automatically set the projection statement to true. */
-                void                    Projection(float ratioAspect, float nearf, float farf, float fieldOfView);
+                void                    Perspective(float ratioAspect, float nearf, float farf, float fieldOfView);
                 /** Will set the projection as a plane with the given corners, automatically set the projection statement to true. */
                 void                    Projection2d(unsigned int viewportX, unsigned int viewportY, unsigned int viewportWidth, unsigned int viewportHeight);
                 /** Will set the projection as a plane by using the viewport values, automatically set the projection statement to true. */

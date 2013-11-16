@@ -53,9 +53,9 @@ void    CameraEffect::Viewport(unsigned int viewportX, unsigned int viewportY, u
     _updateViewport = true;
 }
 
-void    CameraEffect::Projection(float ratioAspect, float nearf, float farf, float fieldOfView)
+void    CameraEffect::Perspective(float ratioAspect, float nearf, float farf, float fieldOfView)
 {
-    _projectionMatrix.SetProjection(ratioAspect, nearf, farf, fieldOfView);
+    _projectionMatrix.SetPerspective(ratioAspect, nearf, farf, fieldOfView);
     _updateProjection = true;
 }
 

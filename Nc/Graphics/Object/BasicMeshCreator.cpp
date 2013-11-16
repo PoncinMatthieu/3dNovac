@@ -136,7 +136,7 @@ Entity *BasicMeshCreator::Axis(const Vector3f &scale, bool withLegend, bool inCo
     // create the viewport effect and configure it
     CameraEffect *effect = new CameraEffect();
     effect->Viewport(0, 0, 150, 150);
-    effect->Projection(1, 0.1, 5, 60);
+    effect->Perspective(1, 0.1, 5, 60);
 
     effect->SetRenderingController(new AxisRenderingController(Utils::Metaprog::Seq<Graphic::Entity>::Type()));
 
