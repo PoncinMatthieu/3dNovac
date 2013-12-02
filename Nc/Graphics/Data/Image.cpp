@@ -67,3 +67,18 @@ void Image::LoadFromFile(const Utils::FileName &file)
     else
         throw Utils::Exception("Image", file + ": This file format is not supported");
 }
+
+void    Image::SaveToFile(const Utils::FileName &file)
+{
+    std::string ext = file.Extension();
+    Utils::Convert::ToLower(ext);
+
+    if (ext == "png")
+    {
+        ImageLoaderPng png;
+        png.Save(file, *this);
+    }
+    else
+        throw Utils::Exception("Image", file + ": This file format is not supported");
+}
+

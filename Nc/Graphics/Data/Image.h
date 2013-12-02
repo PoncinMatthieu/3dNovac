@@ -60,6 +60,10 @@ namespace Nc
                 /** Load an image from a file. */
                 void            LoadFromFile(const Utils::FileName &file);
 
+                // saving
+                /** Save the image into a file. */
+                void            SaveToFile(const Utils::FileName &file);
+
                 // transform
                 /** Reverse the image, usefull to create an OpenGL Texture. */
                 void            Reverse();
@@ -77,6 +81,8 @@ namespace Nc
                 inline const Pixel<>        &GetPixel(unsigned int x, unsigned int y) const     {return _pixels[(y * _size.data[0]) + x];}
                 /** \return the pixels in unsigned char*. */
                 inline const unsigned char  *GetPixels() const                                  {return reinterpret_cast<const unsigned char*>(_pixels.data);}
+                /** \return the pixels in unsigned char*. */
+                inline unsigned char        *GetPixels()                                        {return reinterpret_cast<unsigned char*>(_pixels.data);}
                 /** \return the array of pixels. */
                 inline Pixel<>              *GetPixelsArray()                                   {return _pixels.data;}
                 /** \return the size of the image. */

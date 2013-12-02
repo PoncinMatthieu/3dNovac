@@ -29,26 +29,34 @@
 using namespace Nc;
 using namespace Nc::Graphic;
 
-Sprite::Sprite(const Vector2f &size, const GL::Texture &t, const Box2i &box, const GL::Blend::Pattern &blendPattern)
-    : Object(), _needUpdate(true), _spriteSize(size), _textureBox(box), _color(1, 1, 1)
+Sprite::Sprite()
+    : Object(), _needUpdate(true), _color(1, 1, 1)
 {
-    Initialize(t, blendPattern);
+}
+
+Sprite::Sprite(const Vector2f &size, const GL::Texture &t, const Box2i &box, const GL::Blend::Pattern &blendPattern)
+    : Object(), _needUpdate(true), _color(1, 1, 1)
+{
+    Initialize(size, box, t, blendPattern);
 }
 
 Sprite::Sprite(const Vector2f &size, const GL::Texture &t, float percentBox, const GL::Blend::Pattern &blendPattern)
-    : Object(), _needUpdate(true), _spriteSize(size), _textureBox(Box2i(Vector2f(0,0), Vector2f(t.Size()[0] * percentBox / 100, t.Size()[1] * percentBox / 100))), _color(1, 1, 1)
+    : Object(), _needUpdate(true), _color(1, 1, 1)
 {
-    Initialize(t, blendPattern);
+    Initialize(size, Box2i(Vector2f(0,0), Vector2f(t.Size()[0] * percentBox / 100, t.Size()[1] * percentBox / 100)), t, blendPattern);
 }
 
 Sprite::Sprite(const GL::Texture &t, const GL::Blend::Pattern &blendPattern)
-    : Object(), _needUpdate(true), _spriteSize(t.Size()), _textureBox(Box2i(Vector2f(0,0), Vector2f(t.Size()[0], t.Size()[1]))), _color(1, 1, 1)
+    : Object(), _needUpdate(true), _color(1, 1, 1)
 {
-    Initialize(t, blendPattern);
+    Initialize(t.Size(), Box2i(Vector2f(0,0), Vector2f(t.Size()[0], t.Size()[1])), t, blendPattern);
 }
 
-void Sprite::Initialize(const GL::Texture &t, const GL::Blend::Pattern &blendPattern)
+void Sprite::Initialize(const Vector2f &spriteSize, const Box2i &textureBox, const GL::Texture &t, const GL::Blend::Pattern &blendPattern)
 {
+    _spriteSize = spriteSize;
+    _textureBox = textureBox;
+
     GL::GeometryBuffer<GL::DefaultVertexType::Textured2d,false> *geo = new GL::GeometryBuffer<GL::DefaultVertexType::Textured2d,false>(GL::Enum::TriangleStrip);
     geo->VBO().Init(4, GL::Enum::DataBuffer::StaticDraw);
 
@@ -90,4 +98,11 @@ void Sprite::UpdateGeometry()
     _needUpdate = false;
 }
 
+void    Sprite::SaveTexture(const Utils::FileName &f)
+{
+    // retreive the texture from the drawable
+    GL::Texture &t = _drawables[0]->Config->Textures[0];
 
+    // save the texture
+    t.SaveToFile(f);
+}

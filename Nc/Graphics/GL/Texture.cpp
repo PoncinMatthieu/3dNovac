@@ -68,9 +68,12 @@ void  Texture::Enable() const
 
 void  Texture::Disable() const
 {
-    // since OpenGL version 3.3, unbind a texture is unnecessary
-    // do nothing (maybe we will need to have a method to force the unbind ?)
-    //State::Instance().Unbind(_target);
+    // since OpenGL version 3.3, unbind a texture is most of the time unnecessary because we render the texture using shaders.
+    // However, when rendering with multitexture, we bind texture to different texture units.
+    // --> The textures must be disabled in texture unit it is used before being able to use it in another texture unit.
+
+    // to improve performance, we must be able to remove the call to the "Disable" method in many places.
+    State::Instance().Unbind(_target);
 }
 
 int Texture::MaxSize()
@@ -174,6 +177,35 @@ void Texture::LoadFromImage(const Image &image, Enum::Texture::Filter magnifying
         glGenerateMipmap(_target);
 
     Disable();
+}
+
+void Texture::SaveToImage(Image &image)
+{
+    CALLSTACK_INFO();
+
+    if (_texture == 0)
+        throw Utils::Exception("Texture", "The texture isn't created yet.");
+
+    image.InitSize(_size);
+
+    Enable();
+    glGetTexImage(_target, 0, GL_RGBA, Enum::UnsignedByte, image.GetPixels());
+    Disable();
+}
+
+void Texture::SaveToFile(const Utils::FileName &file)
+{
+    CALLSTACK_INFO();
+
+    // retreive the data
+    Image img;
+    SaveToImage(img);
+
+    // reverse the datas
+    img.Reverse();
+
+    // save the image
+    img.SaveToFile(file);
 }
 
 void Texture::LoadCubeMap(const Utils::FileName names[6])

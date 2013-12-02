@@ -40,9 +40,6 @@ namespace Nc
     namespace Graphic
     {
         /// Load a png file using the libpng.
-        /**
-            \todo Save method not implemented.
-        */
         class LIB_NC_GRAPHICS  ImageLoaderPng : public ImageLoader
         {
             public:
@@ -55,8 +52,10 @@ namespace Nc
                 virtual void    Save(const Utils::FileName &file, Image &image);
 
             private:
-                /** Initialize the libpng. */
-                void            InitPng(const Utils::FileName &file, FILE *fp, unsigned int &width, unsigned int &height, int &bit_depth, int &color_type);
+                /** Initialize the libpng for reading. */
+                void            InitReadPng(const Utils::FileName &file, FILE *fp, unsigned int &width, unsigned int &height, int &bit_depth, int &color_type);
+                /** Initialize the libpng for writing. */
+                void            InitWritePng(const Utils::FileName &file, FILE *fp, unsigned int width, unsigned int height);
 
                 png_structp     _pngPtr;
                 png_infop       _infoPtr;

@@ -36,7 +36,7 @@ namespace Nc
     {
         namespace GL
         {
-            ///< provide an opengl texture object.
+            /// provide an opengl texture object.
             class LIB_NC_GRAPHICS Texture : public Object
             {
                 public:
@@ -73,6 +73,11 @@ namespace Nc
                     void            LoadCubeMap(const Utils::FileName Names[6]);
                     /** Generate a 3d sphere map (to create a light map in the DefaultLightingMaterial class). */
                     void            GenereSphereMap(unsigned int diametre);
+
+                    /** Retreive the texture data into the given image object. */
+                    void            SaveToImage(Image &image);
+                    /** Retreive the texture data and save it into a file. */
+                    void            SaveToFile(const Utils::FileName &file);
 
                     /** Generate an empty ogl texture object. */
                     void            Create(Enum::Texture::Target target);

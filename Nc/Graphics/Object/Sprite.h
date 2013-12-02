@@ -73,15 +73,24 @@ namespace Nc
                 /** Set the color used to render the sprite. */
                 inline void                 SetColor(const Color &color) {_color = color; _needUpdate = true;}
 
+                /** \return the Blend object in order to change blending parameters. */
+                inline GL::Blend            &GetBlend()                 {return _drawables[0]->Config->GetBlend();}
+
+                /** Save the texture of the sprite in the given filename. */
+                void                        SaveTexture(const Utils::FileName &f);
+
             protected:
+                /** Protected default constructor. */
+                Sprite();
+
+                /** Initialize the sprite. */
+                void                        Initialize(const Vector2f &spriteSize, const Box2i &textureBox, const GL::Texture &t, const GL::Blend::Pattern &blendPattern);
+
                 /** Render the sprite. */
                 virtual void                Draw(SceneGraph *scene);
 
                 /** Update the geometry of the sprite. */
                 void                        UpdateGeometry();
-
-            private:
-                void                        Initialize(const GL::Texture &t, const GL::Blend::Pattern &blendPattern);
 
             protected:
                 bool        _needUpdate;        ///< set at true if the geometry needs to be updated.
