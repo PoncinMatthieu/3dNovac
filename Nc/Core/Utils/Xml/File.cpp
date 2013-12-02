@@ -26,6 +26,7 @@
 
 #include "File.h"
 #include "../Exception.h"
+#include "../Debug/CallStack.h"
 
 using namespace std;
 using namespace Nc::Utils;
@@ -49,6 +50,8 @@ Object  *File::Read(const FileName &f)
 
 Object *File::Read()
 {
+	CALLSTACK_INFO();
+
     ifstream    file;
 
     if (_filename.IsReadable())
@@ -62,6 +65,8 @@ Object *File::Read()
 
 void File::Save() const
 {
+	CALLSTACK_INFO();
+
     ofstream file(_filename.c_str());
     file << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>" << endl;
     for (ListObject::iterator it = _content->ListChild().begin(); it != _content->ListChild().end(); ++it)

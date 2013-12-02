@@ -27,6 +27,7 @@
 
 #include <string.h>
 #include "Parser.h"
+#include "../Debug/CallStack.h"
 
 using namespace std;
 using namespace Nc::Utils::Xml;
@@ -47,6 +48,8 @@ Parser::Parser(std::istream &in, bool parseHeader)
 
 void Parser::ReadAll()
 {
+	CALLSTACK_INFO();
+
     string      line;
     Object      *object;
     Token       t;
