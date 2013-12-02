@@ -52,18 +52,37 @@ namespace Nc
 
             /**
                 Create a grid.
-                \param size to specified the 2d size of the whole grid. A case has the size 1*1. The z coord is to specified the height of the grid.
+                \param size to set the 2d size of the whole grid. A case has the size 1*1. The z coord is to specified the height of the grid.
+                \param c the color of the grid lines.
+                \param scalingFactor to determine the size the cases inside the grid.
+                \return the resulting object.
+            */
+            LIB_NC_CONTRIB Object         *Grid(const Vector3f &size, const Color &c, float scalingFactor = 1);
+            /**
+                Create a grid drawable.
+                \param size to set the 2d size of the whole grid. A case has the size 1*1. The z coord is to specified the height of the grid.
+                \param c the color of the grid lines.
+                \param scalingFactor to determine the size the cases inside the grid.
+                \return the resulting drawable.
+            */
+            LIB_NC_CONTRIB GL::Drawable   *GridDrawable(const Vector3f &size, const Color &c, float scalingFactor = 1);
+
+            /**
+                Create an isometric grid.
+                \param tileSize to set the size of the tiles in the grid.
+                \param nbTiles to set the number of tiles in the grid.
                 \param c the color of the grid lines.
                 \return the resulting object.
             */
-            LIB_NC_CONTRIB Object         *Grid(const Vector3f &size, const Color &c);
+            LIB_NC_CONTRIB Object         *IsometricGrid(const Vector2i &tileSize, const Vector2i &nbTiles, const Color &c);
             /**
-                Create a grid drawable.
-                \param size to specified the 2d size of the whole grid. A case has the size 1*1. The z coord is to specified the height of the grid.
+                Create an isometric grid drawable.
+                \param tileSize to set the size of the tiles in the grid.
+                \param nbTiles to set the number of tiles in the grid.
                 \param c the color of the grid lines.
                 \return the resulting drawable.
             */
-            LIB_NC_CONTRIB GL::Drawable   *GridDrawable(const Vector3f &size, const Color &c);
+            LIB_NC_CONTRIB GL::Drawable   *IsometricGridDrawable(const Vector2i &tileSize, const Vector2i &nbTiles, const Color &c);
 
             /**
                 Create a circle.

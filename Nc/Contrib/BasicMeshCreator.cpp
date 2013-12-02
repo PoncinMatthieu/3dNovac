@@ -59,7 +59,7 @@ GL::Drawable        *BasicMeshCreator::PlanDrawable(const Vector2f &size)
     return new GL::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::TriangleStrip);
 }
 
-Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
+Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color, float scalingFactor)
 {
     // creation de la box
     Vector3f bmin(0.f, 0.f, size.data[2] - 0.1f);
@@ -68,13 +68,13 @@ Object      *BasicMeshCreator::Grid(const Vector3f &size, const Color &color)
     // creation du mesh
     Object *mesh = new Object(Box3f(bmin, bmax));
     mesh->Drawables().resize(1);
-    mesh->Drawables()[0] = GridDrawable(size, color);
+    mesh->Drawables()[0] = GridDrawable(size, color, scalingFactor);
     mesh->ChooseDefaultMaterial();
     mesh->UseSceneMaterial(false);
     return mesh;
 }
 
-GL::Drawable        *BasicMeshCreator::GridDrawable(const Vector3f &size, const Color &color)
+GL::Drawable        *BasicMeshCreator::GridDrawable(const Vector3f &size, const Color &color, float scalingFactor)
 {
     // creation des vertex en fontion de la taille
     unsigned int    x = size.data[0], y = size.data[1];
@@ -84,13 +84,61 @@ GL::Drawable        *BasicMeshCreator::GridDrawable(const Vector3f &size, const 
     Array<GL::DefaultVertexType::Colored>     vertices(nbVertices);
     for (unsigned int i = 0; i < x + 1; ++i)
     {
-        vertices[k++].Fill(i, 0, size.data[2], color);
-        vertices[k++].Fill(i, size.data[1], size.data[2], color);
+        vertices[k++].Fill(i * scalingFactor, 0, size.data[2], color);
+        vertices[k++].Fill(i * scalingFactor, size.data[1] * scalingFactor, size.data[2], color);
     }
     for (unsigned int i = 0; i < y + 1; ++i)
     {
-        vertices[k++].Fill(0, i, size.data[2], color);
-        vertices[k++].Fill(size.data[0], i, size.data[2], color);
+        vertices[k++].Fill(0, i * scalingFactor, size.data[2], color);
+        vertices[k++].Fill(size.data[0] * scalingFactor, i * scalingFactor, size.data[2], color);
+    }
+
+    return new GL::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::Lines);
+}
+
+Object      *BasicMeshCreator::IsometricGrid(const Vector2i &tileSize, const Vector2i &nbTiles, const Color &c)
+{
+    // creation de la box
+    Vector3f bmin(-(tileSize[0] / 2) * nbTiles[0], 0.f, -0.1f);
+    Vector3f bmax(+(tileSize[0] / 2) * nbTiles[1], ((tileSize[1] / 2) * nbTiles[0]) + ((tileSize[1] / 2) * nbTiles[1]), 0.1f);
+
+    // creation du mesh
+    Object *mesh = new Object(Box3f(bmin, bmax));
+    mesh->Drawables().resize(1);
+    mesh->Drawables()[0] = IsometricGridDrawable(tileSize, nbTiles, c);
+    mesh->ChooseDefaultMaterial();
+    mesh->UseSceneMaterial(false);
+    return mesh;
+}
+
+GL::Drawable        *BasicMeshCreator::IsometricGridDrawable(const Vector2i &tileSize, const Vector2i &nbTiles, const Color &c)
+{
+    // creation des vertex en fontion de la taille
+    unsigned int    nbVertices = (nbTiles[0] * 2) + (nbTiles[1] * 2) + 4;
+    unsigned int    k = 0;
+
+    Vector2i pos1;
+    Vector2i pos2(nbTiles[0] * (tileSize[0] / 2), nbTiles[0] * (tileSize[1] / 2));
+    Vector2i offset = Vector2i(-tileSize[0] / 2, tileSize[1] / 2);
+
+    Array<GL::DefaultVertexType::Colored>     vertices(nbVertices);
+    for (unsigned int i = 0; i < nbTiles[1] + 1; ++i)
+    {
+        vertices[k++].Fill(pos1[0], pos1[1], 0, c);
+        vertices[k++].Fill(pos2[0], pos2[1], 0, c);
+        pos1 += offset;
+        pos2 += offset;
+    }
+
+    pos1 = Vector2i();
+    pos2 = Vector2i(-nbTiles[1] * (tileSize[0] / 2), nbTiles[1] * (tileSize[1] / 2));
+    offset = tileSize / 2;
+    for (unsigned int i = 0; i < nbTiles[0] + 1; ++i)
+    {
+        vertices[k++].Fill(pos1[0], pos1[1], 0, c);
+        vertices[k++].Fill(pos2[0], pos2[1], 0, c);
+        pos1 += offset;
+        pos2 += offset;
     }
 
     return new GL::Drawable(vertices, GL::Enum::DataBuffer::StreamDraw, GL::Enum::Lines);
