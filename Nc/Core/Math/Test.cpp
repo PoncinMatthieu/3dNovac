@@ -50,6 +50,13 @@ namespace Nc
                 return (centerToTest.Length() < radius);
             }
 
+            bool    PointInEllipse(const Vector2f &pointTest, const Vector2f &center, const Vector2f &radius)
+            {
+                // an ellipse is defined by: (cx^2 / rx^2) + (cy^2 / ry^2)  = 1
+                // so to test if p is inside the ellipse, we can use the following: ((px - cx)^2 / rx^2) + ((py - cy)^2 / ry^2)  < 1
+                return (pow(pointTest[0] - center[0], 2) / pow(radius[0], 2) + pow(pointTest[1] - center[1], 2) / pow(radius[1], 2)  < 1);
+            }
+
             bool    IntersectionRectCircle(const Vector2f &rectPos, const Vector2f &rectSize, const Vector2f &circleCenter, float circleRadius)
             {
                 // compute the distance between the center of the circle and the center of the rectangle

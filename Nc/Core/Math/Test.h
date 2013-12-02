@@ -40,6 +40,7 @@ namespace Nc
             // test position 2d
             bool    LIB_NC_CORE   PointInRect(const Vector2i &pointTest, const Vector2i &rectPos, const Vector2i &rectSize);
             bool    LIB_NC_CORE   PointInCircle(const Vector2f &pointTest, const Vector2f &center, float radius);
+            bool    LIB_NC_CORE   PointInEllipse(const Vector2f &pointTest, const Vector2f &center, const Vector2f &raduis);
 
             // test intersection 2d
             bool    LIB_NC_CORE   IntersectionRectCircle(const Vector2f &RectPos, const Vector2f &RectSize, const Vector2f &circleCenter, float circleRadius);
