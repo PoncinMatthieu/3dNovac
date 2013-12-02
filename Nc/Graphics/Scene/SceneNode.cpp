@@ -53,6 +53,8 @@ bool    ISceneNode::EnabledRecursif() const
 
 void    ISceneNode::UpdateNode(float elapsedTime)
 {
+    CALLSTACK_INFO_ARG("Object: " + Utils::Convert::ToString(*this));
+
     if (_enabled)
     {
         if (_updatingController != NULL)
@@ -66,6 +68,8 @@ void    ISceneNode::UpdateNode(float elapsedTime)
 
 void    ISceneNode::RenderNode(SceneGraph *scene)
 {
+    CALLSTACK_INFO_ARG("Object: " + Utils::Convert::ToString(*this));
+
 	System::Locker l(&_mutex);
     if (_enabled)
     {
