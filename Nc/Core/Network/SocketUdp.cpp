@@ -58,15 +58,15 @@ void    SocketUdp::Close()
         #endif
                 LOG_ERROR << "Failed to close the socket" << std::endl;
         _descriptor = InvalidDescriptor();
-        _bindedPort = 0;
     }
+    _bindedPort = 0;
 }
 
 void    SocketUdp::Create()
 {
+    _bindedPort = 0;
     if (!IsValid())
     {
-        _bindedPort = 0;
         _descriptor = socket(AF_INET, SOCK_DGRAM, 0);
 		if (!IsValid())
 			throw Utils::Exception("SocketUdp", "Failed to create the socket udp.");

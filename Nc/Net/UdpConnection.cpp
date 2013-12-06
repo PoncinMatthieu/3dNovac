@@ -68,11 +68,12 @@ void    UdpConnection::Bind(unsigned short startingBoundPort)
         return;
     }
 
-    while (_socket.Bind(startingBoundPort) == false && startingBoundPort != 0)
+    bool result;
+    while ((result = _socket.Bind(startingBoundPort)) == false && startingBoundPort != 0)
     {
         ++startingBoundPort;
     }
-    if (startingBoundPort != 0)
+    if (result)
     {
         LOG_DEBUG << "UdpConnection::Bind: Bind on port " << startingBoundPort << std::endl;
         // set the socket non blocking

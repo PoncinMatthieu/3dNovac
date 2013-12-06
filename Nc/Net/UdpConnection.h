@@ -66,7 +66,7 @@ namespace Nc
                 /** Update the application layer. */
                 void            Update(float elapsedTime);
 
-                /** Bind the connection. */
+                /** Try to bind the connection to the given port. */
                 void            Bind(unsigned short startingBoundPort);
                 /** \return binded port. */
                 unsigned short  BoundPort() const                   {return _socket.BoundPort();}
